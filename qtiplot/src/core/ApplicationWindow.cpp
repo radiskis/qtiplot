@@ -17250,7 +17250,6 @@ void ApplicationWindow::folderItemChanged(Q3ListViewItem *it)
 	if (!it)
 		return;
 
-	it->setOpen(true);
 	changeFolder (((FolderListItem *)it)->folder());
 	folders->setFocus();
 }
