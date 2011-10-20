@@ -6080,6 +6080,10 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation>OpenOffice/LibreOffice (installation locale)</translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -13794,6 +13798,10 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
         <translation>bessel_in(double x, int n) :
   Fonction de bessel cylindrique à l&apos;ordre n, I_n(x).</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

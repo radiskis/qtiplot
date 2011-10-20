@@ -12329,6 +12329,10 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation>Lokale OpenOffice/LibreOffice-Installation</translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -22843,6 +22847,10 @@ Berechnet den Dilogarithmus eines realen Arguments. In der Lewin-Notation entspr
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
         <translation>bessel_in(double x, int n):
 Regulär veränderte zylindrische Bessel-Funktion der Ordnung N, I_n(x).</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

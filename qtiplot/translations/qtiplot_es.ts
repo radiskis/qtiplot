@@ -10447,6 +10447,10 @@ The following special codes can be used:
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -19388,6 +19392,10 @@ Do you want to insert cells?</source>
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
