@@ -6065,6 +6065,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation>Místně nainstalovaný OpenOffice/LibreOffice</translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -13828,6 +13832,10 @@ pokud e1 pak e2 jinak e3.</translation>
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
         <translation>bessel_in(double x, int n):
  Pravidelná upravená válcovitá Besselova funkce n-tého řádu, I_n(x).</translation>
+    </message>
+    <message>
+        <source>New Window</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

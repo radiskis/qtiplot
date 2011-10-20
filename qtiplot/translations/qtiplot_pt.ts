@@ -8124,6 +8124,10 @@ Os seguintes códigos podem ser usados:
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -18889,6 +18893,10 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Window</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

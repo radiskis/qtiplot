@@ -2140,6 +2140,9 @@ QString Graph::legendText(bool layerSpec, int fromIndex)
 					case TableLegend:
 						text += ",@WL";
 					break;
+					case DataSetName:
+						text += ",@D";
+					break;
 					default:
 					break;
 				}

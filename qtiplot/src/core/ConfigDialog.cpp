@@ -1919,6 +1919,7 @@ void ConfigDialog::languageChange()
 	legendDisplayBox->addItem(tr("Column comment"));
 	legendDisplayBox->addItem(tr("Table name"));
 	legendDisplayBox->addItem(tr("Table legend"));
+	legendDisplayBox->addItem(tr("Full dataset name"));
 	legendDisplayBox->setCurrentIndex(app->d_graph_legend_display);
 
 	attachToLabel->setText(tr("Attach objects to"));
