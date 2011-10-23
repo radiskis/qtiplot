@@ -776,7 +776,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 	d_common_axes_layout = true;
 
 	int layers = graphsList.size();
-	for (int i=0; i<layers; i++){
+	for (int i = 0; i < layers; i++){
 		int row = i / d_cols;
 		if (row >= d_rows )
 			row = d_rows - 1;
@@ -823,6 +823,15 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		if (horizontalAxis && row && !g->title().text().isEmpty())
 			g->setTitle(QString::null);
 
+		if (verticalAxis && !col && (row != d_rows - 1)){
+			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
+			if (scale){
+				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::yLeft);
+				if (sd)
+					sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+			}
+		}
+
 		if (verticalAxis && col){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
 			if (scale){
@@ -831,15 +840,36 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
 			}
+
+			if (row != d_rows - 1){
+				scale = g->axisWidget(QwtPlot::yRight);
+				if (scale){
+					ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::yRight);
+					if (sd)
+						sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+				}
+			}
 		}
 
-		if (horizontalAxis && row){
+		if (horizontalAxis){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
 			if (scale){
-				g->setAxisTitleString(QwtPlot::xTop, QString::null);
-				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
-				if (sd)
-					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+				if (row)
+					g->setAxisTitleString(QwtPlot::xTop, QString::null);
+
+				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
+				if (sd){
+					if (row)
+						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
+					else if (col)
+						sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+				}
+
+				if (col && row == d_rows - 1){
+					sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xBottom);
+					if (sd)
+						sd->setShowTicksPolicy(ScaleDraw::HideBegin);
+				}
 			}
 		}
 		g->updateLayout();
