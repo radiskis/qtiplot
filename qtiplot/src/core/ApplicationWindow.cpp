@@ -224,6 +224,7 @@ ApplicationWindow::ApplicationWindow(bool factorySettings)
 
 void ApplicationWindow::init(bool factorySettings)
 {
+	projectname = "untitled";
 	setWindowTitle(tr("QtiPlot - untitled"));
 	setObjectName(tr("QtiPlot"));
 	setDefaultOptions();
@@ -508,7 +509,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	appStyle = qApp->style()->objectName();
 	d_app_rect = QRect();
-	projectname = "untitled";
+
 	lastCopiedLayer = 0;
 	d_enrichement_copy = NULL;
 	d_arrow_copy = NULL;
@@ -6693,8 +6694,7 @@ bool ApplicationWindow::saveProject(bool compress)
 {
 	if (projectname == "untitled" || projectname.endsWith(".opj", Qt::CaseInsensitive) ||
 		projectname.endsWith(".ogm", Qt::CaseInsensitive) || projectname.endsWith(".ogw", Qt::CaseInsensitive)
-		|| projectname.endsWith(".ogg", Qt::CaseInsensitive))
-	{
+		|| projectname.endsWith(".ogg", Qt::CaseInsensitive)){
 		saveProjectAs();
 		return false;
 	}
@@ -10471,8 +10471,8 @@ void ApplicationWindow::savedProject()
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-		    if (w->isA("Matrix"))
-                ((Matrix *)w)->undoStack()->setClean();
+			if (w->isA("Matrix"))
+				((Matrix *)w)->undoStack()->setClean();
 		}
 		f = f->folderBelow();
 	}
