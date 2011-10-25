@@ -80,7 +80,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled(true);
 
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	ApplicationWindow *app = (ApplicationWindow *)parent;
 	d_3D_title_font = app->d_3D_title_font;
 	d_3D_numbers_font = app->d_3D_numbers_font;
 	d_3D_axes_font = app->d_3D_axes_font;
@@ -3545,8 +3545,10 @@ void ConfigDialog::resetDefaultSettings()
 	setApplication(app);
 
 	QString msg = tr("You need to restart QtiPlot before your changes become effective, would you like to do it now?");
-	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok)
-		app->newProject();
+	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok){
+		connect(this, SIGNAL(destroyed()), app, SLOT(newProject()));
+		close();
+	}
 }
 
 void ConfigDialog::setApplication(ApplicationWindow *app)
