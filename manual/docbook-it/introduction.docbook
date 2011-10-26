@@ -411,6 +411,15 @@ In una matrice si possono anche inserire valori letti direttamente in un file AS
 <para>Con un doppio clic su un elemento si visualizza l'elemento ingrandito su tutta l'area di lavoro, anche se prima era contrassegnato nascosto.</para>
 <para>Tramite l'esploratore, si possono organizzare i vari elementi del progetto in cartelle. Quando si seleziona una cartella, per impostazione di default, sono visualizzati solo gli elementi della cartella. Per visualizzare anche gli elementi contenuti nelle sottocartelle si deve aprire il men&ugrave; contestuale cliccando con il destro sulla cartella principale e attivare l'opzione <emphasis>Visualizza le finestre &rarr; della cartella e delle sottocartelle</emphasis>.</para>
 
+<figure id="fig-esploratore-progetto2">
+  <title>Visualizzare le cartelle del progetto di QtiPlot.</title>
+  <mediaobject>
+    <imageobject>
+      <imagedata  format="PNG" fileref="pics-it/esploratore-progetto2.png"/>
+    </imageobject>
+  </mediaobject>
+</figure>
+
 </sect2>
 
 </sect1>
