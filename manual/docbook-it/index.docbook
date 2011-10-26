@@ -378,7 +378,7 @@
 <!ENTITY add-eq-cmd "<command>Inserisci un testo di equazione</command>">
 <!ENTITY add-eq-lnk '<link linkend="add-eq-cmd"><command>Inserisci un testo di equazione</command></link>'>
 <!ENTITY add-eq-key "<keycode>Alt-Q</keycode>">
-<!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/equation.png"/></imageobject></inlinemediaobject>'>
+<!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/formula.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY remove-layer-cmd "<command>Elimina questa tavola</command>">
 <!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd">&remove-layer-cmd;</link>'>
@@ -423,7 +423,7 @@
 <!--
               menu: Plot Grafico
 -->
-<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Graficoo</link>'>
+<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Grafico</link>'>
 <!ENTITY line-cmd "<command>Linea</command>">
 <!ENTITY line-lnk '<link linkend="line-cmd"><command>Linea</command></link>'>
   <!ENTITY line-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lPlot.png"/></imageobject></inlinemediaobject>'>
@@ -1327,16 +1327,18 @@
   <para>- Nei tre capitoli successivi sono descritti i  <link linkend="reference">comandi</link>, i <link linkend="toolbars">pulsanti</link> delle barre degli strumenti e i  <link linkend="dialogs">dialoghi</link> usati in &appname;. Questi capitoli costituiscono il manuale di riferimento per &appname;.</para>
   <para>- Gli altri due capitoli successivi descrivono in modo pi&ugrave; approfondito alcune specifiche funzionalit&agrave; di &appname;:  <link linkend="analysis">la statistica, l'analisi matematica dei dati</link> e la gestione degli  <link linkend="scripting">script</link>.</para>
 
-<!-- Informazioni sul capitolo aggiunto per la traduzione italiana -->
-
-<para>- <link linkend="note">L'ultimo capitolo</link> non &egrave; presente nella versione originale di questa guida, ma &egrave; stato aggiunto dal traduttore per fornire informazioni sulla traduzione del manuale e del programma. I testi che non si riferiscono al funzionamento dell'applicazione non sono tradotti.</para>
-
 <!--data di traduzione -->
 
   <sidebar id="data-traduzione">  
   <para>Traduzione di Renato Rivoira <email>&email-renato;</email> del -09-2011 per QtiPlot versione 0.9.8.7</para> 
   <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
+
+<para>Questa traduzione, come quella del programma, &egrave; provvisoria ed &egrave; fornita senza garanzie, non &egrave; professionale e pu&ograve; contenere errori o imprecisioni. &Egrave; stata realizzata per agevolare l'uso didattico dell'applicazione e la comprensione del suo funzionamento. Quando si ha dimestichezza con la struttura del programma, forse &egrave; pi&ugrave; produttivo usare la versione inglese.</para>
+<para>Quando i lavori realizzati con QtiPlot sono importanti si deve fare assolutamente riferimento alla versione originale del manuale.</para>
+<para>In alcuni casi l'applicazione costruisce i testi assemblando i termini secondo la sintassi inglese. Per alcune voci del programma non &egrave; quindi possibile produrre una traduzione soddisfacente conforme alla struttura italiana. Per ovviare a questo inconveniente si dovrebbe intervenire sul codice dell'applicazione.</para>
+<para>Si ringrazia anticipatamente chi vorr&agrave; contribuire a migliorare questo lavoro con suggerimenti e correzioni. Le segnalazioni in merito saranno prese in considerazione per gli aggiornamenti.</para>
   </sidebar>
+
 </abstract>
 <keywordset>
   <keyword>QT</keyword>
@@ -1367,8 +1369,5 @@
 <chapter id="scripting">
   &scripting-chapter;
 </chapter>
-<chapter id="note">
-  &note-chapter;
-</chapter>
-  &faq-chapter;
+&faq-chapter;
 </book>
