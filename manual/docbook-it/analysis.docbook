@@ -175,7 +175,7 @@
     <title>Il risultato di un &fit-boltzmann-cmd;.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/fit-boltzmann.png"/>
+        <imagedata  format="PNG" fileref="pics/fit-bolzmann.png"/>
       </imageobject>
     </mediaobject>
   </figure>
