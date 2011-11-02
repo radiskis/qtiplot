@@ -87,39 +87,39 @@ void SmoothFilter::init (int m)
 
 void SmoothFilter::setMethod(int m)
 {
-if (m < 1 || m > 4){
-    QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-    tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess."));
-    d_init_err = true;
-    return;
-    }
-d_method = (SmoothMethod)m;
+	if (m < 1 || m > 4){
+		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+		tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess."));
+		d_init_err = true;
+		return;
+	}
+	d_method = (SmoothMethod)m;
 }
 
 void SmoothFilter::calculateOutputData(double *x, double *y)
 {
-    for (int i = 0; i < d_points; i++){
-	   x[i] = d_x[i];
-	   y[i] = d_y[i];//filtering frequencies
+	for (int i = 0; i < d_points; i++){
+		x[i] = d_x[i];
+		y[i] = d_y[i];//filtering frequencies
 	}
 
 	switch((int)d_method)
 	{
 		case 1:
-            d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("Savitzky-Golay smoothing");
-            smoothSavGol(x, y);
+			d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("Savitzky-Golay smoothing");
+			smoothSavGol(x, y);
 			break;
 		case 2:
-            d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("FFT smoothing");
-    		smoothFFT(x, y);
+			d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("FFT smoothing");
+			smoothFFT(x, y);
 			break;
 		case 3:
-            d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("average smoothing");
-    		smoothAverage(x, y);
+			d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("average smoothing");
+			smoothAverage(x, y);
 			break;
 		case 4:
-            d_explanation = tr("Lowess smoothing with f=%1 and %2 iterations").arg(d_f).arg(d_iterations);
-    		smoothLowess(x, y);
+			d_explanation = tr("Lowess smoothing with f=%1 and %2 iterations").arg(d_f).arg(d_iterations);
+			smoothLowess(x, y);
 			break;
 	}
 }
@@ -264,24 +264,29 @@ void SmoothFilter::smoothSavGol(double *, double *y_inout)
 	int points = d_sav_gol_points + d_smooth_points + 1;
 
 	if (points < d_polynom_order + 1){
+		QApplication::restoreOverrideCursor();
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 		tr("The polynomial order must be lower than the number of left points plus the number of right points!"));
+		d_init_err = true;
 		return;
 	}
 
 	if (d_n < points){
+		QApplication::restoreOverrideCursor();
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
 		tr("Tried to smooth over more points (left+right+1=%1) than given as input (%2).").arg(points).arg(d_n));
+		d_init_err = true;
 		return;
 	}
 
 	// Savitzky-Golay coefficient matrix, y' = H y
 	gsl_matrix *h = gsl_matrix_alloc(points, points);
 	if (int error = savitzkyGolayCoefficients(points, d_polynom_order, h)){
+		QApplication::restoreOverrideCursor();
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("Internal error in Savitzky-Golay algorithm.\n")
-				+ gsl_strerror(error));
+				tr("Internal error in Savitzky-Golay algorithm.\n") + gsl_strerror(error));
 		gsl_matrix_free(h);
+		d_init_err = true;
 		return;
 	}
 

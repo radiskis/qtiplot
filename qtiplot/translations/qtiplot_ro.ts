@@ -7653,7 +7653,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Shift+S</translation>
     </message>
 </context>
 <context>
@@ -9589,7 +9589,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Full dataset name</source>
-        <translation type="unfinished"></translation>
+        <translation>Numele complet al setului de date</translation>
     </message>
 </context>
 <context>
@@ -16830,12 +16830,14 @@ have the same number of rows.</source>
     <message>
         <source>gauss_cdf(x, sigma):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma.</source>
-        <translation type="unfinished"></translation>
+        <translation>gauss_cdf(x, sigma):
+Calculează funcţia de distribuţie cumulativă pentru o distribuţie gaussiană cu deviaţie standard sigma.</translation>
     </message>
     <message>
         <source>gauss_pdf(x, sigma):
  Computes the probability density at x for a Gaussian distribution with standard deviation sigma.</source>
-        <translation type="unfinished"></translation>
+        <translation>gauss_pdf(x, sigma):
+Calculează densitatea de probabilitate pentru o distribuţie gaussiană cu deviaţie standard sigma.</translation>
     </message>
     <message>
         <source>hazard(x):
@@ -16846,7 +16848,8 @@ have the same number of rows.</source>
     <message>
         <source>inv_gauss_cdf(x, sigma):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma.</source>
-        <translation type="unfinished"></translation>
+        <translation>inv_gauss_cdf(x, sigma):
+Calculează inversa funcţiei de distribuţie cumulativă pentru o distribuţie gaussiană cu deviaţie standard sigma.</translation>
     </message>
     <message>
         <source>min(x,y,...):
@@ -16889,7 +16892,7 @@ have the same number of rows.</source>
     <message>
         <source>sin(x):
  Calculate sine.</source>
-        <translation>cos(x):
+        <translation>sin(x):
  Calculează sinus.</translation>
     </message>
     <message>
@@ -17003,7 +17006,8 @@ have the same number of rows.</source>
     <message>
         <source>rnd(seed):
  Returns a pseudo-random number in the range 0 to 1. Calling this function several times with the same seed will return the same value.</source>
-        <translation type="unfinished"></translation>
+        <translation>rnd(seed):
+Returnează un număr pseudo-aleatoriu în intervalul de la 0 la 1. Apelarea aceastei funcţii de mai multe ori cu aceeaşi valoare pentru seed va returna acelaşi rezultat.</translation>
     </message>
     <message>
         <source>angle</source>
@@ -17390,51 +17394,60 @@ have the same number of rows.</source>
     <message>
         <source>chi2cdf(x, df):
  Computes the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2cdf(x, df):
+Calculează funcţia de distribuţie cumulativă pentru o distribuţie chi-pătrat cu df grade de libertate.</translation>
     </message>
     <message>
         <source>chi2inv(p, df):
  Computes the inverse of the cumulative distribution function for a chi-squared distribution with df degrees of freedom.</source>
-        <translation type="unfinished"></translation>
+        <translation>chi2inv(p, df):
+Calculează inversa funcţiei de distribuţie cumulativă pentru o distribuţie chi-pătrat, cu df grade de libertate.</translation>
     </message>
     <message>
         <source>normal(seed):
  Returns a normal random number using the Ziggurat algorithm.</source>
-        <translation type="unfinished"></translation>
+        <translation>normal(seed):
+Returnează un număr aleatoriu utilizând algoritmul Ziggurat.</translation>
     </message>
     <message>
         <source>normcdf(x):
  Computes the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>normcdf(x):
+Calculează funcţia de distribuţie cumulativă pentru o distribuţie gaussiană cu deviaţia standard sigma = 1.</translation>
     </message>
     <message>
         <source>norminv(p):
  Computes the inverse of the cumulative distribution function for a Gaussian distribution with standard deviation sigma = 1.0.</source>
-        <translation type="unfinished"></translation>
+        <translation>norminv(p):
+Calculează inversa funcţiei de distribuţie cumulativă pentru o distribuţie gaussiană cu deviaţia standard sigma = 1.</translation>
     </message>
     <message>
         <source>dilog(x):
  Compute the dilogarithm for a real argument. In Lewin&apos;s notation this is Li_2(x), the real part of the dilogarithm of a real x.</source>
-        <translation type="unfinished"></translation>
+        <translation>dilog(x):
+Calculează funcţia dilogaritm pentru un argument real. În notaţia lui Lewin aceasta echivalează cu Li_2 (x), partea reală a funcţiei dilogaritm a unui număr real x.</translation>
     </message>
     <message>
         <source>bessel_i0(x):
   Regular modified cylindrical Bessel function of zeroth order, I_0(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i0(x):
+Funcţia regulată modificată cilindrică Bessel de ordin zero, I_0(x).</translation>
     </message>
     <message>
         <source>bessel_i1(x):
   Regular modified cylindrical Bessel function of first order, I_1(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_i1(x):
+Funcţia regulată modificată cilindrică Bessel de ordinul întâi, I_1(x).</translation>
     </message>
     <message>
         <source>bessel_in(double x, int n):
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
-        <translation type="unfinished"></translation>
+        <translation>bessel_in(double x, int n):
+Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</translation>
     </message>
     <message>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Fereastră nouă</translation>
     </message>
 </context>
 <context>
@@ -18157,12 +18170,12 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Aţi încercat să neteziţi folosind mai multe puncte (stânga+dreapta+1=%1) decât are setul de date (%2).</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Eroare internă în algoritmul Savitzky-Golay.</translation>
     </message>
 </context>
 <context>

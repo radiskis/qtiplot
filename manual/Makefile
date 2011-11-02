@@ -1,4 +1,4 @@
-all: en it
+all: en pdf-it
 en: web pdf
 it: web-it pdf-it
 

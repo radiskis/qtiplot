@@ -1512,8 +1512,10 @@ void ApplicationWindow::initMainMenu()
 	help->addAction(actionDownloadManual);
 	help->addAction(actionTranslations);
 	help->insertSeparator();
+#ifndef QTIPLOT_PRO
 	help->addAction(actionTechnicalSupport);
 	help->addAction(actionDonate);
+#endif
 	help->addAction(actionHelpForums);
 	help->addAction(actionHelpBugReports);
 	help->insertSeparator();
@@ -5045,7 +5047,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	QList<MdiSubWindow*> tables = app->tableList();
 	foreach(MdiSubWindow* w, tables){
 		TableStatistics *ts = qobject_cast<TableStatistics *>(w);
-		if (ts && !ts->base())
+		if (ts)
 			ts->setBase(app->table(ts->baseName()));
 	}
 
@@ -12486,11 +12488,8 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 	for (int i = 1; i <= (*line).count('\t'); i++)
 		targets << (*line).section('\t',i,i).toInt();
 
-	Table *base = table(list[1]);
-	TableStatistics* w = newTableStatistics(base,
-			list[2]=="row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
-	if (!base)
-		w->setBaseName(list[1]);
+	TableStatistics* w = newTableStatistics(0, list[2] == "row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
+	w->setBaseName(list[1]);
 
 	setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
