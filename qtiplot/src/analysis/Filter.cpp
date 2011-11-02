@@ -307,7 +307,8 @@ void Filter::output()
 	}
 
 	calculateOutputData(x, y); //does the data analysis
-	addResultCurve(x, y);
+	if (!d_init_err)
+		addResultCurve(x, y);
 	free(x);
 	free(y);
 }
