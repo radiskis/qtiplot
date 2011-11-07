@@ -41,6 +41,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 
+#include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
@@ -171,7 +172,7 @@ void ImageWidget::draw(QPainter *painter, const QRect& rect)
 	drawFrame(painter, r);
 
 	int lw = d_frame_pen.width();
-    switch(d_frame){
+	switch(d_frame){
 		case None:
 			break;
 		case Line:
@@ -190,11 +191,49 @@ void ImageWidget::draw(QPainter *painter, const QRect& rect)
 		break;
 	}
 
-    if (d_frame != None && (painter->device()->devType() == QInternal::Widget ||
-        painter->device()->devType() == QInternal::Pixmap))
-        r.adjust(1, 1, 0, 0);
+	if (d_frame != None && (painter->device()->devType() == QInternal::Widget ||
+		painter->device()->devType() == QInternal::Pixmap))
+		r.adjust(1, 1, 0, 0);
 
 	painter->drawPixmap(r, d_pix);
+}
+
+void ImageWidget::drawFrame(QPainter *p, const QRect& rect)
+{
+	if (d_frame == None)
+		return;
+
+	p->save();
+
+	if (d_frame == Line){
+		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		p->setPen(pen);
+		int lw = pen.width()/2;
+		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
+		QwtPainter::drawRect(p, r);
+	} else if (d_frame == Shadow){
+		int lw = d_frame_pen.width()/2;
+
+		// calculate resolution factor
+		double factorX = (double)p->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
+		double factorY = (double)p->paintEngine()->paintDevice()->logicalDpiY()/(double)plot()->logicalDpiY();
+
+		int d = d_shadow_width + lw;
+		if (!(lw % 2))
+			d += 1;
+
+		QPainterPath contents;
+		QRect r = rect.adjusted(lw, lw, -qRound(d*factorX), -qRound(d*factorY));
+		contents.addRect(r);
+
+		QPainterPath shadow;
+		shadow.addRect(rect.adjusted(qRound(d_shadow_width*factorX), qRound(d_shadow_width*factorY), 0, 0));
+
+		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
+		QwtPainter::drawRect(p, r);
+	}
+
+	p->restore();
 }
 
 void ImageWidget::setPixmap(const QPixmap& pix)

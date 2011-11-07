@@ -70,6 +70,7 @@ public:
 
 private:
 	void draw(QPainter *painter, const QRect& r);
+	virtual void drawFrame(QPainter *p, const QRect& rect);
 	void paintEvent(QPaintEvent *e);
 	QPixmap d_pix;
 	//! The file from which the image was loaded.
