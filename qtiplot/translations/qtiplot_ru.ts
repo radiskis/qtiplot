@@ -47,11 +47,11 @@
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation>A</translation>
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished">Ж</translation>
+        <translation>B</translation>
     </message>
     <message>
         <source>One Way ANOVA</source>
@@ -63,7 +63,7 @@
     </message>
     <message>
         <source>Show current &amp;folder only</source>
-        <translation type="unfinished">&amp;Показывать только текущую папку</translation>
+        <translation>&amp;Показывать только текущую папку</translation>
     </message>
     <message>
         <source>Selected Data</source>
@@ -115,7 +115,7 @@
     </message>
     <message>
         <source>&amp;Table</source>
-        <translation type="unfinished">&amp;Таблица</translation>
+        <translation>&amp;Таблица</translation>
     </message>
     <message>
         <source>&amp;Notes Window</source>
@@ -123,7 +123,7 @@
     </message>
     <message>
         <source>Results &amp;Log</source>
-        <translation type="unfinished">&amp;Журнал результатов</translation>
+        <translation>&amp;Журнал результатов</translation>
     </message>
     <message>
         <source>&amp;Descriptive Statistics</source>
@@ -3999,7 +3999,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation type="unfinished">Сохранить окно как</translation>
+        <translation>Сохранить окно как</translation>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
@@ -4019,23 +4019,23 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Overwrite file?</source>
-        <translation type="unfinished">Перезаписать файл?</translation>
+        <translation>Перезаписать файл?</translation>
     </message>
     <message>
         <source>%1 already exists.</source>
-        <translation type="unfinished">%1 уже существует.</translation>
+        <translation>%1 уже существует.</translation>
     </message>
     <message>
         <source>Do you want to replace it?</source>
-        <translation type="unfinished">Заменить?</translation>
+        <translation>Заменить?</translation>
     </message>
     <message>
         <source>Yes, don&apos;t ask me again</source>
-        <translation type="unfinished"></translation>
+        <translation>Да, больше не спрашивать</translation>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Случайная &amp;XYZ...</translation>
     </message>
     <message>
         <source>&amp;Expand...</source>
@@ -4095,15 +4095,15 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save Folder As</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить папку как</translation>
     </message>
     <message>
         <source>Export Open Document Spreadsheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Экпортировать таблицу ODF</translation>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
-        <translation type="unfinished"></translation>
+        <translation>Экпортировать таблицу &amp;ODF...</translation>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
@@ -4115,63 +4115,63 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>dBase</source>
-        <translation type="unfinished"></translation>
+        <translation>dBase</translation>
     </message>
     <message>
         <source>Microsoft Access</source>
-        <translation type="unfinished"></translation>
+        <translation>Microsoft Access</translation>
     </message>
     <message>
         <source>SQLite 3</source>
-        <translation type="unfinished"></translation>
+        <translation>SQLite 3</translation>
     </message>
     <message>
         <source>Open Database</source>
-        <translation type="unfinished"></translation>
+        <translation>Open Database</translation>
     </message>
     <message>
         <source>&amp;Database...</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;База данных...</translation>
     </message>
     <message>
         <source>Align &amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по&amp;верху</translation>
     </message>
     <message>
         <source>Align &amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по&amp;низу</translation>
     </message>
     <message>
         <source>Align &amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по &amp;левой границе</translation>
     </message>
     <message>
         <source>Align &amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по &amp;правой границе</translation>
     </message>
     <message>
         <source>Align Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание поверху</translation>
     </message>
     <message>
         <source>Align Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание понизу</translation>
     </message>
     <message>
         <source>Align Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по левой границе</translation>
     </message>
     <message>
         <source>Align Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание по правой границе</translation>
     </message>
     <message>
         <source>Ctrl+Shift+P</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+P</translation>
     </message>
     <message>
         <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Alt+Shift+S</translation>
     </message>
 </context>
 <context>
@@ -4709,11 +4709,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>months</source>
-        <translation type="unfinished"></translation>
+        <translation>месяцы</translation>
     </message>
     <message>
         <source>years</source>
-        <translation type="unfinished"></translation>
+        <translation>годы</translation>
     </message>
 </context>
 <context>
@@ -5937,135 +5937,135 @@ The following special codes can be used:
     </message>
     <message>
         <source>Line Color</source>
-        <translation type="unfinished">Цвет линии</translation>
+        <translation>Цвет линии</translation>
     </message>
     <message>
         <source>Line Type</source>
-        <translation type="unfinished">Тип линии</translation>
+        <translation>Тип линии</translation>
     </message>
     <message>
         <source>Thickness</source>
-        <translation type="unfinished">Толщина</translation>
+        <translation>Толщина</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished">Сетка</translation>
+        <translation>Сетка</translation>
     </message>
     <message>
         <source>Major Grids</source>
-        <translation type="unfinished">Основная сетка</translation>
+        <translation>Основная сетка</translation>
     </message>
     <message>
         <source>Minor Grids</source>
-        <translation type="unfinished">Дополнительная сетка</translation>
+        <translation>Дополнительная сетка</translation>
     </message>
     <message>
         <source>An&amp;tialised</source>
-        <translation type="unfinished">Сгла&amp;живание</translation>
+        <translation>Сгла&amp;живание</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished"></translation>
+        <translation>Горизонтальная</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished"></translation>
+        <translation>Вертикальная</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Быстродействие</translation>
+        <translation>Быстродействие</translation>
     </message>
     <message>
         <source>&amp;Disable for curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>Не &amp;применять к кривым с более чем</translation>
     </message>
     <message>
         <source>data points</source>
-        <translation type="unfinished">точек</translation>
+        <translation>точек</translation>
     </message>
     <message>
         <source>&amp;Default options</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;По умолчанию</translation>
     </message>
     <message>
         <source>You need to restart QtiPlot before your changes become effective, would you like to do it now?</source>
-        <translation type="unfinished"></translation>
+        <translation>QtiPlot должен быть перезапущен, чтобы изменения вступили в силу. Перезапустить сейчас?</translation>
     </message>
     <message>
         <source>Open &amp;last project at startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Окрывать &amp;последний проект при запуске</translation>
     </message>
     <message>
         <source>Startup Scripts</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипты автозапуска</translation>
     </message>
     <message>
         <source>Choose the location of the startup scripts folder!</source>
-        <translation type="unfinished"></translation>
+        <translation>Указать местоположение скриптов автозагрузки!</translation>
     </message>
     <message>
         <source>Ask before modifying data &amp;points</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрашивать подтверждение на изменение &amp;данных</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenOffice.org</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation>JODConverter</translation>
     </message>
     <message>
         <source>Choose location</source>
-        <translation type="unfinished"></translation>
+        <translation>Указать местоположение</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
     <message>
         <source>Prompt on pasting &amp;values to tables</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтверждение при вставке &amp;данных в таблицу</translation>
     </message>
     <message>
         <source>Import Excel files using</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать файлы Excel используя</translation>
     </message>
     <message>
         <source>Excel Format Library</source>
-        <translation type="unfinished"></translation>
+        <translation>библиотеку формата Excel</translation>
     </message>
     <message>
         <source>Locally Installed Excel</source>
-        <translation type="unfinished"></translation>
+        <translation>локально установленный Excel</translation>
     </message>
     <message>
         <source>Attach objects to</source>
-        <translation type="unfinished"></translation>
+        <translation>Прикреплять объекты к</translation>
     </message>
     <message>
         <source>Page</source>
-        <translation type="unfinished"></translation>
+        <translation>Странице</translation>
     </message>
     <message>
         <source>Layer Scales</source>
-        <translation type="unfinished">Координатам</translation>
+        <translation>Координатам</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Со&amp;единять прямой через пропущенные данные</translation>
     </message>
     <message>
         <source>Locally Installed OpenOffice/LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>локально установленный OpenOffice/LibreOffice</translation>
     </message>
     <message>
         <source>Full dataset name</source>
-        <translation type="unfinished"></translation>
+        <translation>Полное название набора данных</translation>
     </message>
 </context>
 <context>
@@ -6264,7 +6264,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Apply to &amp;all layer curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить ко &amp;всем кривым данного слоя</translation>
     </message>
 </context>
 <context>
@@ -6391,23 +6391,23 @@ The following special codes can be used:
     </message>
     <message>
         <source>Axes</source>
-        <translation type="unfinished">Оси</translation>
+        <translation>Оси</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>Снизу</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished"></translation>
+        <translation>Вверху</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished"></translation>
+        <translation>Слева</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished"></translation>
+        <translation>Справа</translation>
     </message>
 </context>
 <context>
@@ -6658,7 +6658,7 @@ The following special codes can be used:
     <name>EllipseWidget</name>
     <message>
         <source>Ellipse</source>
-        <translation type="unfinished">Эллипс</translation>
+        <translation>Эллипс</translation>
     </message>
 </context>
 <context>
@@ -7028,74 +7028,70 @@ The following special codes can be used:
     </message>
     <message>
         <source>QtiPlot - Error</source>
-        <translation type="unfinished">QtiPlot - Ошибка</translation>
+        <translation>QtiPlot - Ошибка</translation>
     </message>
     <message>
         <source>This feature is not available for user defined function curves!</source>
-        <translation type="unfinished">Эта функция недоступна для кривых, определённых пользователем!</translation>
+        <translation>Эта функция недоступна для кривых, определённых пользователем!</translation>
     </message>
     <message>
         <source>The selected error column is empty!</source>
-        <translation type="unfinished">Выбранный столбец ошибок пуст!</translation>
+        <translation>Выбранный столбец ошибок пуст!</translation>
     </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Операция не выполена</translation>
     </message>
     <message>
         <source>JODConverter</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Please set the correct path in the preferences dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите правильный путь в настройках</translation>
     </message>
     <message>
         <source>Java</source>
-        <translation type="unfinished"></translation>
+        <translation>Java</translation>
     </message>
     <message>
         <source>OpenOffice.org</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Couldn&apos;t start</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно запустить</translation>
     </message>
     <message>
         <source>crashed</source>
-        <translation type="unfinished">совершил недопустимую ошибку</translation>
+        <translation>совершил недопустимую ошибку</translation>
     </message>
     <message>
         <source>timedout</source>
-        <translation type="unfinished">вышел за рамки предоставленного времени</translation>
+        <translation>вышел за рамки предоставленного времени</translation>
     </message>
     <message>
         <source>write error</source>
-        <translation type="unfinished">ошибка записи</translation>
+        <translation>ошибка записи</translation>
     </message>
     <message>
         <source>read error</source>
-        <translation type="unfinished">ошибка чтения</translation>
+        <translation>ошибка чтения</translation>
     </message>
     <message>
         <source>unknown error</source>
-        <translation type="unfinished">неизвестная ошибка</translation>
+        <translation>неизвестная ошибка</translation>
     </message>
     <message>
         <source>LibreOffice</source>
-        <translation type="unfinished"></translation>
+        <translation>LibreOffice</translation>
     </message>
 </context>
 <context>
@@ -7291,7 +7287,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Подробно</translation>
     </message>
 </context>
 <context>
@@ -7417,39 +7413,39 @@ The following special codes can be used:
     </message>
     <message>
         <source>2D</source>
-        <translation type="unfinished">2D</translation>
+        <translation>2D</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>The two matrices have different dimensions, the imaginary part will be neglected!</source>
-        <translation type="unfinished">Две матрицы имеют различный размер, мнимая часть будет игнорирована!</translation>
+        <translation>Две матрицы имеют различный размер, мнимая часть будет игнорирована!</translation>
     </message>
     <message>
         <source>RealMatrixFFT</source>
-        <translation type="unfinished"></translation>
+        <translation>RealMatrixFFT</translation>
     </message>
     <message>
         <source>Real part of the FFT transform of</source>
-        <translation type="unfinished">Действительная часть БПФ</translation>
+        <translation>Действительная часть БПФ</translation>
     </message>
     <message>
         <source>ImagMatrixFFT</source>
-        <translation type="unfinished"></translation>
+        <translation>ImagMatrixFFT</translation>
     </message>
     <message>
         <source>Imaginary part of the FFT transform of</source>
-        <translation type="unfinished">Мнимая часть БПФ</translation>
+        <translation>Мнимая часть БПФ</translation>
     </message>
     <message>
         <source>AmplitudeMatrixFFT</source>
-        <translation type="unfinished"></translation>
+        <translation>AmplitudeMatrixFFT</translation>
     </message>
     <message>
         <source>Amplitudes of the FFT transform of</source>
-        <translation type="unfinished">Амплитуды БПФ</translation>
+        <translation>Амплитуды БПФ</translation>
     </message>
 </context>
 <context>
@@ -7532,15 +7528,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>DC &amp;Shift Center</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Сместить нулевую компоненту в центр</translation>
     </message>
     <message>
         <source>Undo &amp;Shift</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить &amp;смещение</translation>
     </message>
     <message>
         <source>&amp;Zero pad to nearest power of 2 size</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнять &amp;нулями до ближайшей степени двойки</translation>
     </message>
 </context>
 <context>
@@ -8981,123 +8977,123 @@ The following special codes can be used:
     <name>GriddingDialog</name>
     <message>
         <source>QtiPlot - Random XYZ Gridding</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Selected Z Dataset</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Gridding Method</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Shepard (non-uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Shepard (uniform data)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Quick (noisy data)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Parameters</source>
-        <translation type="unfinished">Параметры</translation>
+        <translation>Параметры</translation>
     </message>
     <message>
         <source>Search Radius</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Quadratic</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>N&lt;sub&gt;q&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>N&lt;sub&gt;w&lt;/sub&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Matrix Dimensions</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Столбцов</translation>
+        <translation>Столбцов</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Строк</translation>
+        <translation>Строк</translation>
     </message>
     <message>
         <source>Matrix Coordinates</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>X Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>X Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Y Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Y Maximum</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Просмотр</translation>
+        <translation>&amp;Просмотр</translation>
     </message>
     <message>
         <source>Plot Type</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Проволочный каркас</translation>
+        <translation>Проволочный каркас</translation>
     </message>
     <message>
         <source>Hidden Line</source>
-        <translation type="unfinished">Скрытая линия</translation>
+        <translation>Скрытая линия</translation>
     </message>
     <message>
         <source>Crea&amp;te Plot</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation type="unfinished">&amp;Ok</translation>
+        <translation>&amp;Ok</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <source>X axis</source>
-        <translation type="unfinished">Ось X</translation>
+        <translation>Ось X</translation>
     </message>
     <message>
         <source>Y axis</source>
-        <translation type="unfinished">Ось Y</translation>
+        <translation>Ось Y</translation>
     </message>
 </context>
 <context>
@@ -9244,23 +9240,23 @@ The following special codes can be used:
     </message>
     <message>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжатие</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Нет</translation>
+        <translation>Нет</translation>
     </message>
     <message>
         <source>LZW</source>
-        <translation type="unfinished"></translation>
+        <translation>LZW</translation>
     </message>
     <message>
         <source>&amp;Preview</source>
-        <translation type="unfinished">&amp;Просмотр</translation>
+        <translation>&amp;Просмотр</translation>
     </message>
     <message>
         <source>Export preview of window: </source>
-        <translation type="unfinished"></translation>
+        <translation>Предварительный просмотр окна: </translation>
     </message>
 </context>
 <context>
@@ -9283,11 +9279,11 @@ The following special codes can be used:
     </message>
     <message>
         <source>pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>точек</translation>
     </message>
     <message>
         <source>Average</source>
-        <translation type="unfinished"></translation>
+        <translation>Среднее</translation>
     </message>
 </context>
 <context>
@@ -9306,7 +9302,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished">Изображения</translation>
+        <translation>Image</translation>
     </message>
 </context>
 <context>
@@ -9573,7 +9569,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Ignore lines containing</source>
-        <translation type="unfinished"></translation>
+        <translation>Исключить строки содержащие</translation>
     </message>
 </context>
 <context>
@@ -9624,43 +9620,43 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation type="unfinished">&amp;Добавить</translation>
+        <translation>&amp;Добавить</translation>
     </message>
     <message>
         <source>Clea&amp;r</source>
-        <translation type="unfinished">&amp;Очистить</translation>
+        <translation>&amp;Очистить</translation>
     </message>
     <message>
         <source>Rece&amp;nt</source>
-        <translation type="unfinished">По&amp;следние</translation>
+        <translation>По&amp;следние</translation>
     </message>
     <message>
         <source>Click here to select a recently typed expression</source>
-        <translation type="unfinished">Выбрать одно из последних введённых выражений</translation>
+        <translation>Выбрать одно из последних введённых выражений</translation>
     </message>
     <message>
         <source>Subintervals</source>
-        <translation type="unfinished"></translation>
+        <translation>Подынтервалы</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
+        <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Sorry, there are no recent expressions available!</source>
-        <translation type="unfinished">Нет доступных выражений!</translation>
+        <translation>Нет доступных выражений!</translation>
     </message>
     <message>
         <source>Recent Functions</source>
-        <translation type="unfinished">Последние функции</translation>
+        <translation>Последние функции</translation>
     </message>
     <message>
         <source>Please, choose a function:</source>
-        <translation type="unfinished">Выбрать функцию:</translation>
+        <translation>Выбрать функцию:</translation>
     </message>
 </context>
 <context>
@@ -9731,82 +9727,82 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
 </context>
 <context>
     <name>IntegrationDialog</name>
     <message>
         <source>QtiPlot - Integration Options</source>
-        <translation type="unfinished">QtiPlot - Параметры интегрирования</translation>
+        <translation>QtiPlot - Параметры интегрирования</translation>
     </message>
     <message>
         <source>Curve</source>
-        <translation type="unfinished"></translation>
+        <translation>Кривая</translation>
     </message>
     <message>
         <source>From Xmin</source>
-        <translation type="unfinished">Xmin</translation>
+        <translation>Xmin</translation>
     </message>
     <message>
         <source>To Xmax</source>
-        <translation type="unfinished">Xmax</translation>
+        <translation>Xmax</translation>
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation type="unfinished">&amp;Интегрировать</translation>
+        <translation>&amp;Интегрировать</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation type="unfinished">&amp;Закрыть</translation>
+        <translation>&amp;Закрыть</translation>
     </message>
     <message>
         <source>From row</source>
-        <translation type="unfinished"></translation>
+        <translation>от строки</translation>
     </message>
     <message>
         <source>To row</source>
-        <translation type="unfinished"></translation>
+        <translation>до строки</translation>
     </message>
     <message>
         <source>QtiPlot - Warning</source>
-        <translation type="unfinished">QtiPlot - Предупреждение</translation>
+        <translation>QtiPlot - Предупреждение</translation>
     </message>
     <message>
         <source>The curve &lt;b&gt; %1 &lt;/b&gt; doesn&apos;t exist anymore! Operation aborted!</source>
-        <translation type="unfinished">Кривая &lt;b&gt; %1 &lt;/b&gt; больше не существует! Операция отменена!</translation>
+        <translation>Кривая &lt;b&gt; %1 &lt;/b&gt; больше не существует! Операция отменена!</translation>
     </message>
     <message>
         <source>QtiPlot - Input error</source>
-        <translation type="unfinished">QtiPlot - Ошибка ввода</translation>
+        <translation>QtiPlot - Ошибка ввода</translation>
     </message>
     <message>
         <source>Please enter x limits that satisfy: from &lt; to!</source>
-        <translation type="unfinished">Значение Xmin должно быть меньше Xmax!</translation>
+        <translation>Значение Xmin должно быть меньше Xmax!</translation>
     </message>
     <message>
         <source>Integration of %1</source>
-        <translation type="unfinished">Интегрирование  %1</translation>
+        <translation>Интегрирование %1</translation>
     </message>
     <message>
         <source>Column</source>
-        <translation type="unfinished">Столбец</translation>
+        <translation>Столбец</translation>
     </message>
     <message>
         <source>Area</source>
-        <translation type="unfinished">Площадь</translation>
+        <translation>Площадь</translation>
     </message>
     <message>
         <source>&amp;Sort data</source>
-        <translation type="unfinished"></translation>
+        <translation>Со&amp;ртировать данные</translation>
     </message>
     <message>
         <source>Show &amp;plot</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать &amp;график</translation>
     </message>
     <message>
         <source>Show results &amp;table</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать &amp;таблицу с результатами</translation>
     </message>
 </context>
 <context>
@@ -10161,7 +10157,7 @@ have the same number of rows.</source>
     <name>LegendWidget</name>
     <message>
         <source>Legend</source>
-        <translation type="unfinished"></translation>
+        <translation>Легенда</translation>
     </message>
 </context>
 <context>
@@ -10539,23 +10535,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Resample</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>QtiPlot was built without support for ALGLIB, resampling is not possible!</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Smoothed</source>
-        <translation type="unfinished">Сглаженный</translation>
+        <translation>Сглаженный</translation>
     </message>
 </context>
 <context>
@@ -10680,23 +10676,23 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Columns</source>
-        <translation type="unfinished">Столбцов</translation>
+        <translation>Столбцов</translation>
     </message>
     <message>
         <source>Rows</source>
-        <translation type="unfinished">Строк</translation>
+        <translation>Строк</translation>
     </message>
     <message>
         <source>Method</source>
-        <translation type="unfinished"></translation>
+        <translation>Метод</translation>
     </message>
     <message>
         <source>Bilinear</source>
-        <translation type="unfinished"></translation>
+        <translation>Билинейный</translation>
     </message>
     <message>
         <source>Bicubic</source>
-        <translation type="unfinished"></translation>
+        <translation>Бикубический</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -11573,7 +11569,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Rotation</source>
-        <translation type="unfinished">Вращение</translation>
+        <translation>Вращение</translation>
     </message>
 </context>
 <context>
@@ -12020,7 +12016,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Please enter a positive bin size value!</source>
-        <translation type="unfinished">Пожалуйста введите положительное значение размера столбика!</translation>
+        <translation>Введите положительное значение размера корзины!</translation>
     </message>
     <message>
         <source>Please enter a valid bin size value!</source>
@@ -12064,7 +12060,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>QtiPlot - Bin size input error</source>
-        <translation type="unfinished">QtiPlot - Ошибка ввода размера корзины</translation>
+        <translation>QtiPlot - Ошибка ввода размера корзины</translation>
     </message>
     <message>
         <source>QtiPlot - End limit error</source>
@@ -12504,27 +12500,27 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Move upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вверх</translation>
     </message>
     <message>
         <source>Move downward</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить вверх</translation>
     </message>
     <message>
         <source>Move &amp;upward</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить в&amp;верх</translation>
     </message>
     <message>
         <source>Move do&amp;wnward</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить в&amp;низ</translation>
     </message>
     <message>
         <source>Statistics for</source>
-        <translation type="unfinished"></translation>
+        <translation>Статистика для</translation>
     </message>
     <message>
         <source>Apply Co&amp;lor</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить &amp;цвет</translation>
     </message>
     <message>
         <source>Box &amp;Labels</source>
@@ -12536,103 +12532,103 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Display</source>
-        <translation type="unfinished">Показывать как</translation>
+        <translation>Отображение</translation>
     </message>
     <message>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Значение</translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <source>Percentage (Value)</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент (значение)</translation>
     </message>
     <message>
         <source>Value (Percentage)</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение (процент)</translation>
     </message>
     <message>
         <source>&amp;Background Color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет &amp;фона</translation>
     </message>
     <message>
         <source>Background &amp;Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Фоновое &amp;изображение</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">Файл</translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <source>&amp;Resize layer to fit original image size</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Подогнать слой к размеру изображения</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation type="unfinished">&amp;Рамка</translation>
+        <translation>&amp;Рамка</translation>
     </message>
     <message>
         <source>Canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Холст</translation>
     </message>
     <message>
         <source>&amp;Standard Symbol</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Стандартный символ</translation>
     </message>
     <message>
         <source>&amp;Image</source>
-        <translation type="unfinished">&amp;Изображение</translation>
+        <translation>&amp;Изображение</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Просмотр</translation>
     </message>
     <message>
         <source>QtiPlot - Import image from file</source>
-        <translation type="unfinished">QtiPlot - Импортировать изображение из файла</translation>
+        <translation>QtiPlot - Импортировать изображение из файла</translation>
     </message>
     <message>
         <source>Auto&amp;scaling</source>
-        <translation type="unfinished">Авто&amp;масштабирование</translation>
+        <translation>Авто&amp;масштабирование</translation>
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation type="unfinished">Изменить &amp;диапазон...</translation>
+        <translation>Изменить &amp;диапазон...</translation>
     </message>
     <message>
         <source>&amp;Hide</source>
-        <translation type="unfinished">&amp;Скрыть</translation>
+        <translation>&amp;Скрыть</translation>
     </message>
     <message>
         <source>Data Drawing Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Параметры отображения данных</translation>
     </message>
     <message>
         <source>Co&amp;nnect line across missing data</source>
-        <translation type="unfinished"></translation>
+        <translation>Со&amp;единять прямой через пропущенные данные</translation>
     </message>
     <message>
         <source>&amp;Grid on top of data</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Сетка поверх данных</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation type="unfinished"></translation>
+        <translation>С&amp;лева</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation type="unfinished"></translation>
+        <translation>С&amp;права</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation type="unfinished"></translation>
+        <translation>С&amp;низу</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation type="unfinished"></translation>
+        <translation>С&amp;верху</translation>
     </message>
 </context>
 <context>
@@ -13435,7 +13431,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Min</source>
-        <translation type="unfinished"></translation>
+        <translation>Мин</translation>
     </message>
     <message>
         <source>D1 (1st decile)</source>
@@ -13447,7 +13443,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Median</source>
-        <translation type="unfinished">Медиана</translation>
+        <translation>Медиана</translation>
     </message>
     <message>
         <source>Q3 (3rd quartile)</source>
@@ -13459,15 +13455,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Max</source>
-        <translation type="unfinished"></translation>
+        <translation>Макс</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished">Размер</translation>
+        <translation>Размер</translation>
     </message>
     <message>
         <source>Attention!</source>
-        <translation type="unfinished"></translation>
+        <translation>Внимание!</translation>
     </message>
     <message>
         <source>Sample size must be between 3 and 5000.</source>
@@ -13479,7 +13475,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Dataset</source>
-        <translation type="unfinished">Набор данных</translation>
+        <translation>Набор данных</translation>
     </message>
     <message>
         <source>N</source>
@@ -13507,15 +13503,15 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Mean</source>
-        <translation type="unfinished">Среднее</translation>
+        <translation>Среднее</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Среднеквадратичное отклонение</translation>
+        <translation>Среднеквадратичное отклонение</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Стандартная Ошибка</translation>
+        <translation>Стандартная Ошибка</translation>
     </message>
     <message>
         <source>Two Sample Independent t-Test</source>
@@ -13539,11 +13535,11 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>greater</source>
-        <translation type="unfinished"></translation>
+        <translation>больше</translation>
     </message>
     <message>
         <source>less</source>
-        <translation type="unfinished"></translation>
+        <translation>меньше</translation>
     </message>
     <message>
         <source>Null Hypothesis</source>
@@ -13819,7 +13815,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Новое окно</translation>
     </message>
 </context>
 <context>
@@ -13936,7 +13932,7 @@ have the same number of rows.</source>
     <name>RectangleWidget</name>
     <message>
         <source>Rectangle</source>
-        <translation type="unfinished">Прямоугольник</translation>
+        <translation>Прямоугольник</translation>
     </message>
 </context>
 <context>
@@ -14316,7 +14312,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>untitled</source>
-        <translation type="unfinished">безымянный</translation>
+        <translation>безымянный</translation>
     </message>
 </context>
 <context>
@@ -14327,7 +14323,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>%1 Source (*.%2);</source>
-        <translation type="unfinished"></translation>
+        <translation>Исходный код %1 (*.%2);</translation>
     </message>
 </context>
 <context>
@@ -14538,12 +14534,12 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Попытка сглаживания по большему колличеству (left+right+1=%1) точек, чем указано (%2).</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка в алгоритме Савицкого-Голея.</translation>
     </message>
 </context>
 <context>
@@ -14593,27 +14589,27 @@ have the same number of rows.</source>
     <name>Statistics</name>
     <message>
         <source>QtiPlot</source>
-        <translation type="unfinished">QtiPlot</translation>
+        <translation>QtiPlot</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <source>You didn&apos;t specify a valid data set for this operation!</source>
-        <translation type="unfinished">Не указан допустимый набор данных для данной операции!</translation>
+        <translation>Не указан допустимый набор данных для данной операции!</translation>
     </message>
     <message>
         <source>Memory Allocation Error</source>
-        <translation type="unfinished">Ошибка выделения памяти</translation>
+        <translation>Ошибка выделения памяти</translation>
     </message>
     <message>
         <source>Not enough memory, operation aborted!</source>
-        <translation type="unfinished">Недостаточно памяти, операция отменена!</translation>
+        <translation>Недостаточно памяти, операция отменена!</translation>
     </message>
     <message>
         <source>There is no sample dataset called %1 in this project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутвует набор данных %1.</translation>
     </message>
 </context>
 <context>
@@ -15508,54 +15504,54 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Index of Row</source>
-        <translation type="unfinished"></translation>
+        <translation>Индекс строки</translation>
     </message>
     <message>
         <source>Number of Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Число столбцов</translation>
     </message>
     <message>
         <source>Standard Deviation</source>
-        <translation type="unfinished">Среднеквадратичное отклонение</translation>
+        <translation>Среднеквадратичное отклонение</translation>
     </message>
     <message>
         <source>Standard Error</source>
-        <translation type="unfinished">Стандартная Ошибка</translation>
+        <translation>Стандартная Ошибка</translation>
     </message>
     <message>
         <source>Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальное значение</translation>
     </message>
     <message>
         <source>Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное значение</translation>
     </message>
     <message>
         <source>Number of Points</source>
-        <translation type="unfinished"></translation>
+        <translation>Число точек</translation>
     </message>
     <message>
         <source>Column Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Название столбца</translation>
     </message>
     <message>
         <source>Rows Included</source>
-        <translation type="unfinished"></translation>
+        <translation>Учтённые строки</translation>
     </message>
     <message>
         <source>Index of Maximum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Индекс максимального значения</translation>
     </message>
     <message>
         <source>Index of Minimum Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Индекс минимального значения</translation>
     </message>
 </context>
 <context>
     <name>TexWidget</name>
     <message>
         <source>Equation</source>
-        <translation type="unfinished"></translation>
+        <translation>Уравнения</translation>
     </message>
 </context>
 <context>
