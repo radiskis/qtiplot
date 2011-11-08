@@ -734,7 +734,7 @@
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>V tomto okně nejsou dostupné žádné vrstvy nákresu.</translation>
+        <translation type="obsolete">V tomto okně nejsou dostupné žádné vrstvy nákresu.</translation>
     </message>
     <message>
         <source>Technical &amp;Support</source>
@@ -2068,7 +2068,7 @@ Jste si jist, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>U tohoto nákresu nejsou dostupné žádné vrstvy. Operace byla zrušena!</translation>
+        <translation type="obsolete">U tohoto nákresu nejsou dostupné žádné vrstvy. Operace byla zrušena!</translation>
     </message>
     <message>
         <source>&amp;Hide Window</source>
@@ -4153,6 +4153,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7057,7 +7061,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation>Nepodařilo se spustit</translation>
+        <translation type="obsolete">Nepodařilo se spustit</translation>
     </message>
     <message>
         <source>JODConverter</source>

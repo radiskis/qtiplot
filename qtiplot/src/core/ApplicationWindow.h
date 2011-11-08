@@ -1140,6 +1140,7 @@ private:
 	void goToParentFolder();
 	bool isProjectFile(const QString& fn);
 	void initSearchForUpdates();
+	Graph* activePlotLayer(bool = true);
 
 private slots:
 	void addColumnNameToCompleter(const QString& colName, bool remove = false);

@@ -4509,7 +4509,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>Nu există grafice disponibile în această fereastra!</translation>
+        <translation type="obsolete">Nu există grafice disponibile în această fereastra!</translation>
     </message>
     <message>
         <source>QtiPlot - Insert image from file</source>
@@ -4517,7 +4517,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Nu există grafice disponibile în această fereastra.</translation>
+        <translation type="obsolete">Nu există grafice disponibile în această fereastra.</translation>
     </message>
     <message>
         <source>QtiPlot - Duplicate window error</source>
@@ -7655,6 +7655,10 @@ Autocompletion will not be available!</source>
         <source>Alt+Shift+S</source>
         <translation>Alt+Shift+S</translation>
     </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10602,7 +10606,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation>Nu a fost găsit</translation>
+        <translation type="obsolete">Nu a fost găsit</translation>
     </message>
     <message>
         <source>JODConverter</source>

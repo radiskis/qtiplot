@@ -4768,7 +4768,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Det finns inga diagramlager tillgängliga i detta fönster.</translation>
+        <translation type="obsolete">Det finns inga diagramlager tillgängliga i detta fönster.</translation>
     </message>
     <message>
         <source>QtiPlot - Layer Geometry</source>
@@ -8218,7 +8218,7 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>Det finns inga lager tillgängliga för detta diagram. Åtgärd avbryts!</translation>
+        <translation type="obsolete">Det finns inga lager tillgängliga för detta diagram. Åtgärd avbryts!</translation>
     </message>
     <message>
         <source>&amp;Paste Tex Formula</source>
@@ -8732,6 +8732,10 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11855,10 +11859,6 @@ Följande specialkoder kan användas:
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

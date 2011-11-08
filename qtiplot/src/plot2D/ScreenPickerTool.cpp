@@ -149,6 +149,15 @@ DrawPointTool::DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject
 	d_table = NULL;
 }
 
+void DrawPointTool::setDataCurve(DataCurve *c)
+{
+	if (!c)
+		return;
+
+	d_curve = c;
+	d_table = c->table();
+}
+
 void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
 {
 	if (!d_app)
@@ -172,10 +181,13 @@ void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
 	if (d_table->numRows() <= rows)
 		d_table->setNumRows(rows + 10);
 
-	d_table->setCell(rows, 0, pos.x());
-	d_table->setCell(rows, 1, pos.y());
+	if (d_curve){
+		d_table->setCell(rows, d_table->colIndex(d_curve->xColumnName()), pos.x());
+		d_table->setCell(rows, d_table->colIndex(d_curve->title().text()), pos.y());
+	} else {
+		d_table->setCell(rows, 0, pos.x());
+		d_table->setCell(rows, 1, pos.y());
 
-	if (!d_curve){
 		d_curve = new DataCurve(d_table, d_table->colName(0), d_table->colName(1));
 		d_curve->setAxis(QwtPlot::xBottom, QwtPlot::yLeft);
 		d_curve->setPen(QPen(Qt::black, d_app->defaultCurveLineWidth));

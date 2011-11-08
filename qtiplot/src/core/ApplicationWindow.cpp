@@ -3910,21 +3910,10 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 
 void ApplicationWindow::addErrorBars()
 {
-	MdiSubWindow *w = activeWindow(MultiLayerWindow);
-    if (!w)
-		return;
-
-	MultiLayer* plot = (MultiLayer*)w;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g)
 		return;
+
 	if (!g->curveCount()){
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return;
@@ -7151,27 +7140,14 @@ QStringList ApplicationWindow::columnsList(Table::PlotDesignation plotType)
 
 void ApplicationWindow::showCurvesDialog()
 {
-	MdiSubWindow *w = activeWindow(MultiLayerWindow);
-	if (!w)
-		return;
-
-	if (((MultiLayer*)w)->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Error"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = ((MultiLayer*)w)->activeLayer();
+	Graph* g = activePlotLayer(false);
 	if (!g)
 		return;
 
 	if (g->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Error"),
-				tr("This functionality is not available for pie plots!"));
+		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("This functionality is not available for pie plots!"));
 	} else {
 		CurvesDialog* crvDialog = new CurvesDialog(this);
-		crvDialog->setAttribute(Qt::WA_DeleteOnClose);
 		crvDialog->setGraph(g);
 		crvDialog->resize(d_add_curves_dialog_size);
 		crvDialog->setModal(true);
@@ -8361,11 +8337,7 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 
 void ApplicationWindow::showCurveWorksheet()
 {
-	MultiLayer *w = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!w)
-		return;
-
-	Graph* g = w->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g)
 		return;
 
@@ -8374,48 +8346,29 @@ void ApplicationWindow::showCurveWorksheet()
 
 void ApplicationWindow::magnify(int mode)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer();
+	if (!g)
 		return;
 
-	if (plot->isEmpty()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setOn(true);
-		return;
-	}
-
-	QList<Graph *> layers = plot->layersList();
+	QList<Graph *> layers = g->multiLayer()->layersList();
     foreach(Graph *g, layers)
 		g->enablePanningMagnifier(true, mode);
 }
 
 void ApplicationWindow::zoomIn()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer();
+	if (!g)
 		return;
 
-	if (plot->isEmpty())
-	{
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setOn(true);
-		return;
-	}
-
-	if ((Graph*)plot->activeLayer()->isPiePlot())
-	{
+	if (g->isPiePlot()){
 		if (btnZoomIn->isOn())
-			QMessageBox::warning(this,tr("QtiPlot - Warning"),
-					tr("This functionality is not available for pie plots!"));
+			QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setOn(true);
 		return;
 	}
 
-	QList<Graph *> layers = plot->layersList();
+	QList<Graph *> layers = g->multiLayer()->layersList();
     foreach(Graph *g, layers){
 		if (!g->isPiePlot())
 			g->zoom(true);
@@ -8424,54 +8377,31 @@ void ApplicationWindow::zoomIn()
 
 void ApplicationWindow::zoomOut()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer(false);
+	if (!g || g->isPiePlot())
 		return;
 
-	if (plot->isEmpty() || (Graph*)plot->activeLayer()->isPiePlot())
-		return;
-
-	((Graph*)plot->activeLayer())->zoomOut();
+	g->zoomOut();
 	btnPointer->setOn(true);
 }
 
 void ApplicationWindow::setAutoScale()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"));
-		return;
-	}
-
-	Graph *g = (Graph*)plot->activeLayer();
+	Graph* g = activePlotLayer(false);
 	if (g)
 		g->setAutoScale();
 }
 
 void ApplicationWindow::removePoints()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = activePlotLayer();
 	if (!g || !g->validCurvesDataSize()){
 		btnPointer->setChecked(true);
 		return;
 	}
 
 	if (g->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
 	}
@@ -8501,31 +8431,17 @@ void ApplicationWindow::removePoints()
 
 void ApplicationWindow::movePoints(bool wholeCurve)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = activePlotLayer();
 	if (!g || !g->validCurvesDataSize()){
 		btnPointer->setChecked(true);
 		return;
 	}
 
 	if (g->isPiePlot()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
-
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
 	}
-
 
 	if (d_confirm_modif_2D_points){
 		QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot"),
@@ -8946,21 +8862,30 @@ void ApplicationWindow::showResults(const QString& s, bool ok)
 	showResults(ok);
 }
 
-void ApplicationWindow::showScreenReader()
+Graph* ApplicationWindow::activePlotLayer(bool resetPointerBtn)
 {
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
+		return 0;
 
-	QList<Graph *> layers = plot->layersList();
-    foreach(Graph *g, layers)
+	Graph* g = (Graph*)plot->activeLayer();
+	if (!g){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("There are no plot layers available in this window!"));
+		if (resetPointerBtn)
+			btnPointer->setChecked(true);
+		return 0;
+	}
+	return g;
+}
+
+void ApplicationWindow::showScreenReader()
+{
+	Graph *g = activePlotLayer();
+	if (!g)
+		return;
+
+	QList<Graph *> layers = g->multiLayer()->layersList();
+	foreach(Graph *g, layers)
 		g->setActiveTool(new ScreenPickerTool(g, info, SLOT(setText(const QString&))));
 
 	displayBar->show();
@@ -8968,36 +8893,34 @@ void ApplicationWindow::showScreenReader()
 
 void ApplicationWindow::drawPoints()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer();
+	if (!g)
 		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
 
-	QList<Graph *> layers = plot->layersList();
-    foreach(Graph *g, layers)
-        g->setActiveTool(new DrawPointTool(this, g, info, SLOT(setText(const QString&))));
+	QStringList curves = g->analysableCurvesList();
+	if (curves.size() > 0){
+		QString newItemString = tr("New");
+		curves.prepend(newItemString);
+		bool ok;
+		QString txt = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"), tr("Curve") + ": ", curves, 0, false, &ok);
+		if (!ok){
+			btnPointer->setChecked(true);
+			return;
+		}
+
+		DrawPointTool *tool = new DrawPointTool(this, g, info, SLOT(setText(const QString&)));
+		if (ok && !txt.isEmpty() && txt != newItemString)
+			tool->setDataCurve(g->dataCurve(g->curveIndex(txt.left(txt.indexOf(" [")))));
+		g->setActiveTool(tool);
+	} else
+		g->setActiveTool(new DrawPointTool(this, g, info, SLOT(setText(const QString&))));
 
 	displayBar->show();
 }
 
 void ApplicationWindow::showRangeSelectors()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no plot layers available in this window!"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer();
 	if (!g)
 		return;
 
@@ -9017,97 +8940,56 @@ void ApplicationWindow::showRangeSelectors()
 
 void ApplicationWindow::showCursor()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer();
+	if (!g)
 		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
+
+	if (g->isPiePlot()){
+		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
 		btnPointer->setChecked(true);
 		return;
 	}
 
-	if ((Graph*)plot->activeLayer()->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	QList<Graph *> layers = plot->layersList();
-    foreach(Graph *g, layers){
+	QList<Graph *> layers = g->multiLayer()->layersList();
+	foreach(Graph *g, layers){
 		if (g->isPiePlot() || !g->curveCount())
-            continue;
-        if (g->validCurvesDataSize())
+			continue;
+		if (g->validCurvesDataSize())
 			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
-    }
+	}
 	displayBar->show();
 }
 
 void ApplicationWindow::newLegend()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if ( g )
+	Graph *g = activePlotLayer();
+	if (g)
 		g->newLegend();
 }
 
 void ApplicationWindow::addTimeStamp()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty())
-	{
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if ( g )
+	Graph *g = activePlotLayer(false);
+	if (g)
 		g->addTimeStamp();
 }
 
 void ApplicationWindow::addRectangle()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("There are no layers available on this plot. Operation aborted!"));
 		actionAddRectangle->setChecked(false);
 		return;
 	}
 
-    g->setActiveTool(new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle, info, SLOT(setText(const QString&))));
+	g->setActiveTool(new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle, info, SLOT(setText(const QString&))));
 	btnPointer->setOn(false);
 }
 
 void ApplicationWindow::addEllipse()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("There are no layers available on this plot. Operation aborted!"));
 		actionAddEllipse->setChecked(false);
 		return;
 	}
@@ -9118,14 +9000,8 @@ void ApplicationWindow::addEllipse()
 
 void ApplicationWindow::addTexFormula()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("There are no layers available on this plot. Operation aborted!"));
 		actionAddFormula->setChecked(false);
 		return;
 	}
@@ -9136,14 +9012,8 @@ void ApplicationWindow::addTexFormula()
 
 void ApplicationWindow::addText()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("There are no layers available on this plot. Operation aborted!"));
 		actionAddText->setChecked(false);
 		return;
 	}
@@ -9154,22 +9024,12 @@ void ApplicationWindow::addText()
 
 void ApplicationWindow::addImage()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g)
 		return;
 
 	QString fn = getFileName(this, tr("QtiPlot - Insert image from file"), imagesDirPath, imageFilter(), 0, false);
-	if ( !fn.isEmpty() ){
+	if (!fn.isEmpty()){
 		QFileInfo fi(fn);
 		imagesDirPath = fi.dirPath(true);
 
@@ -9181,22 +9041,8 @@ void ApplicationWindow::addImage()
 
 void ApplicationWindow::drawLine()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty())
-	{
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if (g)
-	{
+	Graph *g = activePlotLayer();
+	if (g){
 		g->drawLine(true);
 		emit modified();
 	}
@@ -9204,19 +9050,7 @@ void ApplicationWindow::drawLine()
 
 void ApplicationWindow::drawArrow()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-
-		btnPointer->setOn(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph *g = activePlotLayer();
 	if (g){
 		g->drawLine(true, 1);
 		emit modified();
@@ -9225,28 +9059,18 @@ void ApplicationWindow::drawArrow()
 
 void ApplicationWindow::showLayerDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
+	Graph *g = activePlotLayer(false);
+	if (!g)
 		return;
-
-	if(plot->isEmpty()){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("There are no plot layers available in this window."));
-		return;
-	}
 
 	LayerDialog *id = new LayerDialog(this);
-	id->setMultiLayer(plot);
+	id->setMultiLayer(g->multiLayer());
 	id->exec();
 }
 
 void ApplicationWindow::showEnrichementDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (!g)
 		return;
 
@@ -9268,11 +9092,7 @@ void ApplicationWindow::showEnrichementDialog()
 
 void ApplicationWindow::showLineDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
+	Graph *g = activePlotLayer(false);
 	if (g){
 		ArrowMarker *lm = g->selectedArrow();
 		if (!lm)
@@ -11446,19 +11266,8 @@ FunctionDialog* ApplicationWindow::functionDialog()
 
 void ApplicationWindow::addFunctionCurve()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		return;
-	}
-
-	Graph* g = plot->activeLayer();
-	if ( g ) {
+	Graph *g = activePlotLayer(false);
+	if (g){
 		FunctionDialog* fd = functionDialog();
 		if (fd)
 			fd->setGraph(g);
@@ -12185,33 +11994,32 @@ void ApplicationWindow::extractGraphs()
 
 void ApplicationWindow::extractLayers()
 {
-    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
+	Graph *g = activePlotLayer(false);
+	if (!g)
+		return;
+	MultiLayer *plot = g->multiLayer();
 	if (!plot)
 		return;
 
-    Graph *g = plot->activeLayer();
-    if (!g)
-        return;
-
-    int curves = g->curveCount();
-    if (curves < 2){
-        QMessageBox::critical(this, tr("QtiPlot - Error"),
-        tr("You must have more than one dataset in the active layer!"));
+	int curves = g->curveCount();
+	if (curves < 2){
+		QMessageBox::critical(this, tr("QtiPlot - Error"),
+		tr("You must have more than one dataset in the active layer!"));
 		return;
-    }
+	}
 
-    for(int i = 0; i < curves; i++){
+	for(int i = 0; i < curves; i++){
 		Graph *ng = plot->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		if (ng){
-            ng->copy(g);
-            for(int j = 0; j < curves; j++){
-                if (j != i)
-                    ng->removeCurve(j);
-            }
+			ng->copy(g);
+			for(int j = 0; j < curves; j++){
+				if (j != i)
+					ng->removeCurve(j);
+			}
 		}
-    }
-    plot->removeLayer(g);
-    plot->arrangeLayers(true, false);
+	}
+	plot->removeLayer(g);
+	plot->arrangeLayers(true, false);
 }
 
 void ApplicationWindow::addInsetLayer(bool curves)
@@ -14132,7 +13940,6 @@ void ApplicationWindow::createActions()
 	connect(actionUnzoom, SIGNAL(activated()), this, SLOT(setAutoScale()));
 
 	actionMagnify = new QAction(QIcon(":/magnifier.png"), tr("Zoom &In/Out and Drag Canvas"), this);
-	connect(actionMagnify, SIGNAL(activated()), this, SLOT(magnify()));
 
 	actionMagnifyHor = new QAction(QIcon(":/magnifier_hor.png"), tr("Zoom/Drag Canvas &Horizontally"), this);
 	actionMagnifyVert = new QAction(QIcon(":/magnifier_vert.png"), tr("Zoom/Drag Canvas &Vertically"), this);
