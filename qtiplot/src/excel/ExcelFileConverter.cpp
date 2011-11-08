@@ -118,7 +118,7 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 	if (!QFile::exists(d_output_file)){
 		if (!QFile::exists(app->d_jodconverter_path)){
 			QMessageBox::critical(app, tr("Operation failed"),
-			tr("Coudn't start") + " <a href=\"http://www.artofsolving.com/opensource/jodconverter\">" + tr("JODConverter") + "</a>" + "<br>"
+			tr("Couldn't start") + " <a href=\"http://www.artofsolving.com/opensource/jodconverter\">" + tr("JODConverter") + "</a>" + "<br>"
 			+ tr("Please set the correct path in the preferences dialog") + "!");
 			return;
 		} else {
