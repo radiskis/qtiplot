@@ -2464,7 +2464,7 @@ Various parts of this file may not be displayed as expected.</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>В данном окне нет доступных слоёв.</translation>
+        <translation type="obsolete">В данном окне нет доступных слоёв.</translation>
     </message>
     <message>
         <source>There are no plot layers available in window &lt;b&gt;%1&lt;/b&gt;.&lt;br&gt;Graph window not exported!</source>
@@ -3567,7 +3567,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>В этом окне нет доступных слоёв!</translation>
+        <translation type="obsolete">В этом окне нет доступных слоёв!</translation>
     </message>
     <message>
         <source>Show find dialog</source>
@@ -4172,6 +4172,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>Alt+Shift+S</source>
         <translation>Alt+Shift+S</translation>
+    </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13626,7 +13630,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>A</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A</translation>
     </message>
     <message>
         <source>B</source>

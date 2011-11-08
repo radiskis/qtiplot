@@ -2217,7 +2217,7 @@ Tem certeza que quer continuar?</translation>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Não existem camadas gráficas disponíveis nesta janela.</translation>
+        <translation type="obsolete">Não existem camadas gráficas disponíveis nesta janela.</translation>
     </message>
     <message>
         <source>Hidden</source>
@@ -4894,10 +4894,6 @@ a primera representa o sinal e a segunda a função resposta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>There are no windows available in this folder!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6004,6 +6000,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9407,10 +9407,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

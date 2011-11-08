@@ -6411,7 +6411,7 @@ Operation aborted!</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Es sind keine Grafikebenen in diesem Fenster vorhanden.</translation>
+        <translation type="obsolete">Es sind keine Grafikebenen in diesem Fenster vorhanden.</translation>
     </message>
     <message>
         <source>Alt+L</source>
@@ -9500,7 +9500,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>In diesem Diagramm sind keine Ebenen vorhanden. Vorgang abgebrochen!</translation>
+        <translation type="obsolete">In diesem Diagramm sind keine Ebenen vorhanden. Vorgang abgebrochen!</translation>
     </message>
     <message>
         <source>&amp;Paste Tex Formula</source>
@@ -10158,6 +10158,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>Alt+Shift+S</source>
         <translation>Alt+Shift+S</translation>
+    </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -13435,7 +13439,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation>Konnte nicht gestartet werden</translation>
+        <translation type="obsolete">Konnte nicht gestartet werden</translation>
     </message>
     <message>
         <source>JODConverter</source>

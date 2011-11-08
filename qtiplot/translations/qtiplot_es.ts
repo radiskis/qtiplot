@@ -5150,7 +5150,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation type="unfinished">No hay capas gráficas disponibles en esta ventana.</translation>
+        <translation type="obsolete">No hay capas gráficas disponibles en esta ventana.</translation>
     </message>
     <message>
         <source>Hidden</source>
@@ -6308,10 +6308,6 @@ Varias partes de este archivo pueden no mostrarse como se esperaba.</translation
     </message>
     <message>
         <source>Please select a &apos;Y&apos; column first!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There are no layers available on this plot. Operation aborted!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8474,6 +8470,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Alt+Shift+S</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11505,10 +11505,6 @@ The following special codes can be used:
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

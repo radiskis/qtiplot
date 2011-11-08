@@ -976,7 +976,7 @@
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Il n&apos;y a pas de planche disponible dans cette fenêtre.</translation>
+        <translation type="obsolete">Il n&apos;y a pas de planche disponible dans cette fenêtre.</translation>
     </message>
     <message>
         <source>ALT+L</source>
@@ -3511,7 +3511,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>Il n&apos;y a pas de planches disponibles sur ce graphe. Opération interrompue !</translation>
+        <translation type="obsolete">Il n&apos;y a pas de planches disponibles sur ce graphe. Opération interrompue !</translation>
     </message>
     <message>
         <source>&amp;Paste Tex Formula</source>
@@ -4177,6 +4177,10 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>Alt+Shift+S</source>
         <translation>Alt+Shift+S</translation>
+    </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -7068,7 +7072,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Coudn&apos;t start</source>
-        <translation>Ne peut démarrer</translation>
+        <translation type="obsolete">Ne peut démarrer</translation>
     </message>
     <message>
         <source>JODConverter</source>

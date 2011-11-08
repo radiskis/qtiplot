@@ -960,15 +960,7 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>QtiPlot - Insert image from file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>There are no plot layers available in this window.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4590,6 +4582,10 @@ Autocompletion will not be available!</source>
         <source>Alt+Shift+S</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -7426,10 +7422,6 @@ The following special codes can be used:
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
