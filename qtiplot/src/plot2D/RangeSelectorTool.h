@@ -65,6 +65,8 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		double minYValue() const { return QMIN(d_active_marker.yValue(), d_inactive_marker.yValue()); }
 		double maxYValue() const { return QMAX(d_active_marker.yValue(), d_inactive_marker.yValue()); }
 		int dataSize() const { return qAbs(d_active_point - d_inactive_point); }
+		int activePoint(){return d_active_point;}
+		int inactivePoint(){return d_inactive_point;}
 		virtual bool eventFilter(QObject *obj, QEvent *event);
 		bool keyEventFilter(QKeyEvent *ke);
 

@@ -1361,7 +1361,7 @@ public:
     void setLabelsWhiteOut(bool whiteOut = true);
 
 	Table* table();
-
+	int tableRow(int);
 	int startRow();
 	int endRow();
 	void setRowRange(int startRow, int endRow);
@@ -1826,6 +1826,10 @@ public:
   PlotCurve* curve(const QString &title);
   QString curveTitle(int);
   DataCurve* dataCurve(int index);
+  DataCurve *selectedDataCurve();
+  int selectionActivePoint();
+  int selectionInactivePoint();
+  bool rangeSelectorsEnabled();
 
   void plotBox(Table *, const QStringList& names, int startRow = 0, int endRow = -1);
   BoxCurve * boxCurve(int index);

@@ -30,6 +30,7 @@
 #include <QVarLengthArray>
 #include <PenStyleBox.h>
 #include <ScreenPickerTool.h>
+#include <DataPickerTool.h>
 
 #include "Graph.h"
 #include "MultiLayer.h"
@@ -3427,20 +3428,20 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		}
 	} else {
 		int curves = names.count();
-		int errCurves = 0;
-		QStringList lst = QStringList(), masterCurvesLst = QStringList();
-		for (int i=0; i<curves; i++){//We rearrange the list so that the error bars are placed at the end
+		QStringList masterCurvesLst = QStringList(), errLst = QStringList();
+		for (int i = 0; i < curves; i++){//We rearrange the list so that the error bars are placed at the end
 			QString colName = names[i];
 			int j = w->colIndex(colName);
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr ||
-				w->colPlotDesignation(j) == Table::Label){
-				errCurves++;
-				lst << colName;
-			} else {
-				lst.prepend(colName);
+				w->colPlotDesignation(j) == Table::Label)
+				errLst << colName;
+			else
 				masterCurvesLst << colName;
-			}
 		}
+		int errCurves = errLst.size();
+		QStringList lst = QStringList(masterCurvesLst);
+		foreach(QString s, errLst)
+			lst.append(s);
 
 		for (int i = 0; i < curves; i++){
 			int j = w->colIndex(lst[i]);
@@ -7088,6 +7089,35 @@ bool Graph::rangeSelectorsEnabled()
 	if (d_range_selector && d_range_selector->isVisible())
 		return true;
 	return false;
+}
+
+DataCurve* Graph::selectedDataCurve()
+{
+	if (rangeSelectorsEnabled())
+		return (DataCurve*)d_range_selector->selectedCurve();
+
+	if (d_active_tool && d_active_tool->rtti() == PlotToolInterface::Rtti_DataPicker)
+		return (DataCurve*)(((DataPickerTool *)d_active_tool)->selectedCurve());
+
+	return 0;
+}
+
+int Graph::selectionActivePoint()
+{
+	if (rangeSelectorsEnabled())
+		return d_range_selector->activePoint();
+
+	if (d_active_tool && d_active_tool->rtti() == PlotToolInterface::Rtti_DataPicker)
+		return (((DataPickerTool *)d_active_tool)->selectedPointIndex());
+
+	return -1;
+}
+
+int Graph::selectionInactivePoint()
+{
+	if (rangeSelectorsEnabled())
+		return d_range_selector->inactivePoint();
+	return -1;
 }
 
 /*!
