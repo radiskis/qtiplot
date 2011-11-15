@@ -18314,6 +18314,10 @@ Do you want to insert cells?</source>
         <source>&amp;Top</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sy&amp;nchronize scales</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

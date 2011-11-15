@@ -480,6 +480,9 @@ void PlotDialog::initLayerPage()
 	boxAutoscaling = new QCheckBox(tr("Auto&scaling"));
 	boxBkgLayout->addWidget(boxAutoscaling, 5, 0);
 
+	boxSynchronizeScales = new QCheckBox(tr("Sy&nchronize scales"));
+	boxBkgLayout->addWidget(boxSynchronizeScales, 5, 3);
+
 	layerScaleFonts = new QCheckBox(tr("Scale &Fonts"));
 	boxBkgLayout->addWidget(layerScaleFonts, 6, 0);
 
@@ -2794,6 +2797,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxCanvasColor->blockSignals(true);
     boxAntialiasing->blockSignals(true);
 	boxAutoscaling->blockSignals(true);
+	boxSynchronizeScales->blockSignals(true);
     boxMargin->blockSignals(true);
     boxBackgroundTransparency->blockSignals(true);
 	bkgOpacitySlider->blockSignals(true);
@@ -2823,6 +2827,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxAntialiasing->setChecked(g->antialiasing());
 	boxAutoscaling->setChecked(g->isAutoscalingEnabled());
 	layerScaleFonts->setChecked(g->autoscaleFonts());
+	boxSynchronizeScales->setChecked(g->hasSynchronizedScaleDivisions());
 
 	boxLayerWidth->blockSignals(true);
 	boxLayerHeight->blockSignals(true);
@@ -2845,6 +2850,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxAntialiasing->blockSignals(false);
 	boxAutoscaling->blockSignals(false);
     boxMargin->blockSignals(false);
+	boxSynchronizeScales->blockSignals(false);
 
 	speedModeBox->blockSignals(true);
 	speedModeBox->setChecked(g->getDouglasPeukerTolerance() > 0.0);
@@ -3612,6 +3618,7 @@ void PlotDialog::applyFormatToLayer(Graph *g)
 
 	g->setAntialiasing(boxAntialiasing->isChecked());
 	g->enableAutoscaling(boxAutoscaling->isChecked());
+	g->setSynchronizedScaleDivisions(boxSynchronizeScales->isChecked());
 	g->updateScale();
 	g->setAutoscaleFonts(layerScaleFonts->isChecked());
 }
