@@ -7971,6 +7971,7 @@ void ApplicationWindow::plotDoubleYAxis()
 			g->setAutoScale();
 		}
 		g->updateAxisTitle(QwtPlot::yRight);
+		g->setSynchronizedScaleDivisions(false);
 	}
 }
 

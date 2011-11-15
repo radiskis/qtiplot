@@ -223,6 +223,10 @@ addCurve
 removeCurve
 deleteFitCurves
 dataCurve
+selectedDataCurve
+selectionActivePoint
+selectionInactivePoint
+rangeSelectorsEnabled
 functionCurve
 numCurves
 addFunction
@@ -672,6 +676,7 @@ labelsAlignment
 setLabelsAlignment
 startRow
 endRow
+tableRow
 setRowRange
 isFullRange
 setFullRange
