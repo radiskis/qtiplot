@@ -12453,6 +12453,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 		else if (s.startsWith ("<Autoscaling>") && s.endsWith ("</Autoscaling>"))
 			ag->enableAutoscaling(s.remove("<Autoscaling>").remove("</Autoscaling>").toInt());
+		else if (s.startsWith ("<SyncScales>") && s.endsWith ("</SyncScales>"))
+			ag->setSynchronizedScaleDivisions(s.remove("<SyncScales>").remove("</SyncScales>").toInt());
 		else if (s.startsWith ("<ScaleFonts>") && s.endsWith ("</ScaleFonts>"))
 			ag->setAutoscaleFonts(s.remove("<ScaleFonts>").remove("</ScaleFonts>").toInt());
 		else if (s.startsWith ("<GridOnTop>") && s.endsWith ("</GridOnTop>"))
@@ -13095,7 +13097,6 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		ag->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
 		ag->updateAxesTitles();
 		ag->updateLayout();
-		ag->setSynchronizedScaleDivisions(d_synchronize_graph_scales);
 		ag->blockSignals(false);
 	}
     return ag;

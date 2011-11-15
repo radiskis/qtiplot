@@ -12634,6 +12634,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>&amp;Top</source>
         <translation>&amp;Nahoře</translation>
     </message>
+    <message>
+        <source>Sy&amp;nchronize scales</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

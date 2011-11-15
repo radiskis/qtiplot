@@ -4365,6 +4365,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveTitle();
 	s+="<Antialiasing>" + QString::number(d_antialiasing) + "</Antialiasing>\n";
 	s+="<Autoscaling>" + QString::number(d_auto_scale) + "</Autoscaling>\n";
+	s+="<SyncScales>" + QString::number(d_synchronize_scales) + "</SyncScales>\n";
 	s+="<ScaleFonts>" + QString::number(autoScaleFonts) + "</ScaleFonts>\n";
 	s+="<GridOnTop>" + QString::number(d_grid_on_top) + "</GridOnTop>\n";
 	s+="<MissingDataGap>" + QString::number(d_missing_data_gap) + "</MissingDataGap>\n";

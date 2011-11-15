@@ -21593,6 +21593,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>&amp;Hide</source>
         <translation>Aus&amp;blenden</translation>
     </message>
+    <message>
+        <source>Sy&amp;nchronize scales</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

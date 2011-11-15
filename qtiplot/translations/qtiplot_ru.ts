@@ -12634,6 +12634,10 @@ have the same number of rows.</source>
         <source>&amp;Top</source>
         <translation>С&amp;верху</translation>
     </message>
+    <message>
+        <source>Sy&amp;nchronize scales</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
