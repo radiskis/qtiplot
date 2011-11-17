@@ -8762,6 +8762,18 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>&amp;Add Function</source>
         <translation>&amp;Ajouter la fonction</translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Interne</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Définie par l&apos;utilisateur</translation>
+    </message>
 </context>
 <context>
     <name>GaussAmpFit</name>

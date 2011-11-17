@@ -11411,6 +11411,18 @@ p, li { white-space: pre-wrap; }
         <source>Please, choose a function:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Incorporada</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Definida pelo usuário</translation>
+    </message>
 </context>
 <context>
     <name>GaussAmpFit</name>

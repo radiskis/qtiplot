@@ -13716,6 +13716,18 @@ Följande specialkoder kan användas:
         <source>&amp;Add Function</source>
         <translation>Lägg till &amp;funktion</translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Inbyggd</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Användardefinierad</translation>
+    </message>
 </context>
 <context>
     <name>GaussAmpFit</name>

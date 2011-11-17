@@ -8772,6 +8772,18 @@ The following special codes can be used:
         <source>&amp;Add Function</source>
         <translation>Добавить &amp;функцию</translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Встроенные</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Определённые пользователем</translation>
+    </message>
 </context>
 <context>
     <name>GaussAmpFit</name>

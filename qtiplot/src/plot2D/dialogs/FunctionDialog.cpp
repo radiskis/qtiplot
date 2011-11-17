@@ -2,7 +2,7 @@
     File                 : FunctionDialog.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Function dialog
 
@@ -34,6 +34,12 @@
 #include <DoubleSpinBox.h>
 #include <ScriptEdit.h>
 #include <NonLinearFit.h>
+#include <ExponentialFit.h>
+#include <PolynomialFit.h>
+#include <NonLinearFit.h>
+#include <SigmoidalFit.h>
+#include <LogisticFit.h>
+#include <MultiPeakFit.h>
 
 #include <QTextEdit>
 #include <QLineEdit>
@@ -53,6 +59,7 @@
 #include <QInputDialog>
 #include <QApplication>
 #include <QDialogButtonBox>
+#include <QDir>
 
 FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WFlags fl )
 : QDialog( parent, fl ), d_app(parent), d_active_editor(0), d_stand_alone(standAlone)
@@ -267,7 +274,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxFunctionExplain = new QTextEdit;
 	boxFunctionExplain->setReadOnly(true);
-	boxFunctionExplain->setMaximumHeight(80);
+	boxFunctionExplain->setMaximumHeight(130);
 	QPalette palette = boxFunctionExplain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	boxFunctionExplain->setPalette(palette);
@@ -276,12 +283,28 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	addFunctionBtn->setAutoDefault(false);
 	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
 
+	loadUserFunctions();
+	initBuiltInFitModels();
+
+	boxFunctionCategory = new QComboBox();
+	boxFunctionCategory->addItem(tr("Built-in"));
+	boxFunctionCategory->addItem(tr("Fit model"));
+	if (!d_user_functions.isEmpty())
+		boxFunctionCategory->addItem(tr("User defined"));
+	connect(boxFunctionCategory, SIGNAL(activated(int)), this, SLOT(updateFunctionsList(int)));
+
+	QLabel *label = new QLabel(tr("Function"));
+	QHBoxLayout *hbox4 = new QHBoxLayout();
+	hbox4->addWidget(label);
+	hbox4->addWidget(boxFunctionCategory);
+
 	boxMathFunctions = new QComboBox();
 	boxMathFunctions->addItems(MyParser::functionsList());
 	connect(boxMathFunctions, SIGNAL(activated(int)), this, SLOT(updateFunctionExplain(int)));
 	updateFunctionExplain(0);
 
 	QVBoxLayout *vbox = new QVBoxLayout();
+	vbox->addLayout(hbox4);
 	vbox->addWidget(boxMathFunctions);
 	vbox->addWidget(addFunctionBtn);
 
@@ -396,8 +419,8 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 		boxFunction->setText(formulas[0]);
 		boxFunction->blockSignals(false);
 
-		boxFrom->setValue(QMIN(c->startRange(), c->endRange()));
-		boxTo->setValue(QMAX(c->startRange(), c->endRange()));
+		boxFrom->setValue(qMin(c->startRange(), c->endRange()));
+		boxTo->setValue(qMax(c->startRange(), c->endRange()));
 		boxPoints->setValue(c->dataSize());
 	} else if (c->functionType() == FunctionCurve::Polar) {
 		boxPolarRadius->blockSignals(true);
@@ -432,9 +455,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 
 void FunctionDialog::clearList()
 {
-	int type = boxType->currentItem();
-	switch (type)
-	{
+	switch (boxType->currentIndex()){
 		case 0:
 			boxFunction->clear();
 			break;
@@ -472,10 +493,10 @@ bool FunctionDialog::acceptFunction()
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.ascii(), val);
+				parser.DefineConst(constName.toAscii().constData(), val);
 			}
 		}
-		parser.SetExpr(formula.ascii());
+		parser.SetExpr(formula.toAscii().constData());
 
 		parser.Eval();
 		x = end;
@@ -487,7 +508,7 @@ bool FunctionDialog::acceptFunction()
 	}
 
 	// Collecting all the information
-	int type = boxType->currentItem();
+	int type = boxType->currentIndex();
 	QStringList formulas;
 	formulas += formula;
 	if (d_app){
@@ -527,16 +548,16 @@ bool FunctionDialog::acceptParametric()
 	QMap<QString, double> constants;
 	try {
 		MyParser parser;
-		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
+		parser.DefineVar((boxParameter->text()).toAscii().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.ascii(), val);
+				parser.DefineConst(constName.toAscii().constData(), val);
 			}
 		}
-		parser.SetExpr(xformula.ascii());
+		parser.SetExpr(xformula.toAscii().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -550,15 +571,15 @@ bool FunctionDialog::acceptParametric()
 
 	try {
 		MyParser parser;
-		parser.DefineVar((boxParameter->text()).ascii(), &parameter);
+		parser.DefineVar((boxParameter->text()).toAscii().constData(), &parameter);
 
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
-				parser.DefineConst(constName.ascii(), val);
+				parser.DefineConst(constName.toAscii().constData(), val);
 		}
-		parser.SetExpr(yformula.ascii());
+		parser.SetExpr(yformula.toAscii().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -570,7 +591,7 @@ bool FunctionDialog::acceptParametric()
 		return false;
 	}
 	// Collecting all the information
-	int type = boxType->currentItem();
+	int type = boxType->currentIndex();
 	QStringList formulas;
 	formulas += xformula;
 	formulas += yformula;
@@ -610,16 +631,16 @@ bool FunctionDialog::acceptPolar()
 	QMap<QString, double> constants;
 	try {
 		MyParser parser;
-		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
+		parser.DefineVar((boxPolarParameter->text()).toAscii().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.ascii(), val);
+				parser.DefineConst(constName.toAscii().constData(), val);
 			}
 		}
-		parser.SetExpr(rformula.ascii());
+		parser.SetExpr(rformula.toAscii().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -633,14 +654,14 @@ bool FunctionDialog::acceptPolar()
 
 	try {
 		MyParser parser;
-		parser.DefineVar((boxPolarParameter->text()).ascii(), &parameter);
+		parser.DefineVar((boxPolarParameter->text()).toAscii().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
-				parser.DefineConst(constName.ascii(), val);
+				parser.DefineConst(constName.toAscii().constData(), val);
 		}
-		parser.SetExpr(tformula.ascii());
+		parser.SetExpr(tformula.toAscii().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -652,7 +673,7 @@ bool FunctionDialog::acceptPolar()
 		return false;
 	}
 	// Collecting all the information
-	int type = boxType->currentItem();
+	int type = boxType->currentIndex();
 	QStringList formulas;
 	formulas += rformula;
 	formulas += tformula;
@@ -783,32 +804,98 @@ void FunctionDialog::showPolarThetaLog()
 
 void FunctionDialog::insertFunction()
 {
-	QString fname = boxMathFunctions->currentText().remove("(").remove(")").remove(",").remove(";");
+	int category = boxFunctionCategory->currentIndex();
+	bool builtInFunc = (category == 0);
+	int index = boxMathFunctions->currentIndex();
+	Fit *fit = 0;
+	if (category == 1 && index < d_fit_models.size())
+		fit = d_fit_models[index];
+	else if (category == 2 && index < d_user_functions.size())
+		fit = d_user_functions[index];
+
+	QString formula;
+	if (fit){
+		formula = fit->formula();
+		connect(this, SIGNAL(constantsGuessingEnded()), this, SLOT(setUserFunctionParameters()));
+	}
+
+	QString fname = builtInFunc ? boxMathFunctions->currentText().remove("(").remove(")").remove(",").remove(";") : formula;
 	if (optionStack->currentWidget () == functionPage){
-		boxFunction->insertFunction(fname);
+		if (builtInFunc)
+			boxFunction->insertFunction(fname);
+		else
+			boxFunction->insertPlainText(fname);
 		boxFunction->setFocus();
 	} else if (optionStack->currentWidget () == parametricPage){
+		QString parName = boxParameter->text();
+		if (!builtInFunc && parName != QString("x"))
+			fname.replace(QRegExp("\\bx\\b"), parName);
+
 		if (d_active_editor == boxYFunction){
-			boxYFunction->insertFunction(fname);
+			if (builtInFunc)
+				boxYFunction->insertFunction(fname);
+			else
+				boxYFunction->insertPlainText(fname);
 			boxYFunction->setFocus();
 		} else if (d_active_editor == boxXFunction){
-			boxXFunction->insertFunction(fname);
+			if (builtInFunc)
+				boxXFunction->insertFunction(fname);
+			else
+				boxXFunction->insertPlainText(fname);
 			boxXFunction->setFocus();
 		}
 	} else if (optionStack->currentWidget () == polarPage){
+		QString parName = boxPolarParameter->text();
+		if (!builtInFunc && parName != QString("x"))
+			fname.replace(QRegExp("\\bx\\b"), parName);
+
 		if (d_active_editor == boxPolarRadius){
-			boxPolarRadius->insertFunction(fname);
+			if (builtInFunc)
+				boxPolarRadius->insertFunction(fname);
+			else
+				boxPolarRadius->insertPlainText(fname);
 			boxPolarRadius->setFocus();
 		} else if (d_active_editor == boxPolarTheta){
-			boxPolarTheta->insertFunction(fname);
+			if (builtInFunc)
+				boxPolarTheta->insertFunction(fname);
+			else
+				boxPolarTheta->insertPlainText(fname);
 			boxPolarTheta->setFocus();
 		}
 	}
 }
 
+void FunctionDialog::updateFunctionsList(int category)
+{
+	boxMathFunctions->clear();
+	if (category == 0)
+		boxMathFunctions->addItems(MyParser::functionsList());
+	else if (category == 1){
+		foreach(Fit *fit, d_fit_models)
+			boxMathFunctions->addItem(fit->objectName());
+
+		boxFunctionExplain->setText(d_fit_models[0]->formula());
+	} else if (category == 2){
+		if (d_user_functions.isEmpty())
+			return;
+
+		foreach(NonLinearFit *fit, d_user_functions)
+			boxMathFunctions->addItem(fit->objectName());
+
+		boxFunctionExplain->setText(d_user_functions[0]->formula());
+	}
+	updateFunctionExplain(0);
+}
+
 void FunctionDialog::updateFunctionExplain(int index)
 {
-	boxFunctionExplain->setText(MyParser::explainFunction(index));
+	int category = boxFunctionCategory->currentIndex();
+	if (category == 0)
+		boxFunctionExplain->setText(MyParser::explainFunction(index));
+	else if (category == 1 && d_fit_models.size() > index)
+		boxFunctionExplain->setText(d_fit_models[index]->formula());
+	else if (category == 2 && d_user_functions.size() > index)
+		boxFunctionExplain->setText(d_user_functions[index]->formula());
 }
 
 void FunctionDialog::guessConstants()
@@ -872,6 +959,8 @@ void FunctionDialog::guessConstants()
 		boxConstants->hide();
 	else if (!boxConstants->isVisible())
 		boxConstants->show();
+
+	emit constantsGuessingEnded();
 }
 
 void FunctionDialog::setConstants(FunctionCurve *c, const QMap<QString, double>& constants)
@@ -888,4 +977,69 @@ void FunctionDialog::setConstants(FunctionCurve *c, const QMap<QString, double>&
 		graph->updateSecondaryAxis(QwtPlot::yRight);
 		graph->replot();
 	}
+}
+
+void FunctionDialog::setUserFunctionParameters()
+{
+	int category = boxFunctionCategory->currentIndex();
+	if (!category)
+		return;
+
+	int index = boxMathFunctions->currentIndex();
+	if ((category == 1 && index >= d_fit_models.size()) ||
+		(category == 2 && (d_user_functions.isEmpty() || index >= d_user_functions.size())))
+		return;
+
+	Fit *fit = (category == 1) ? d_fit_models[index] : d_user_functions[index];
+	if (!fit)
+		return;
+
+	QStringList parameterNames = fit->parameterNames();
+
+	int rows = boxConstants->rowCount();
+	for (int i = 0; i < rows; i++){
+		QString name = boxConstants->item(i, 0)->text();
+		index = parameterNames.indexOf(name);
+		if (index >= 0)
+			((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->setValue(fit->initialGuess(index));
+	}
+
+	disconnect(this, SIGNAL(constantsGuessingEnded()), this, SLOT(setUserFunctionParameters()));
+}
+
+void FunctionDialog::loadUserFunctions()
+{
+	QString path = d_app->fitModelsPath + "/";
+	QDir dir(path);
+	QStringList lst = dir.entryList(QDir::Files | QDir::NoSymLinks, QDir::Name);
+
+	for (int i = 0; i < lst.count(); i++){
+		NonLinearFit *fit = new NonLinearFit(d_app);
+		if (fit->load(path + lst[i]) && fit->type() == Fit::User)
+			d_user_functions << fit;
+	}
+}
+
+void FunctionDialog::initBuiltInFitModels()
+{
+	d_fit_models << new SigmoidalFit(d_app);
+	d_fit_models << new ExponentialFit(d_app);
+	d_fit_models << new TwoExpFit(d_app);
+	d_fit_models << new ThreeExpFit(d_app);
+	d_fit_models << new MultiPeakFit(d_app);
+	d_fit_models << new GaussAmpFit(d_app);
+	d_fit_models << new LinearFit(d_app);
+	d_fit_models << new LinearSlopeFit(d_app);
+	d_fit_models << new LogisticFit(d_app);
+	d_fit_models << new MultiPeakFit(d_app, (Graph *)0, MultiPeakFit::Lorentz);
+	d_fit_models << new PolynomialFit(d_app);
+}
+
+FunctionDialog::~FunctionDialog()
+{
+	foreach(Fit *f, d_fit_models)
+		delete f;
+
+	foreach(NonLinearFit *f, d_user_functions)
+		delete f;
 }

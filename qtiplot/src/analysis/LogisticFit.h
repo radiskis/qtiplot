@@ -38,7 +38,7 @@ class LogisticFit : public Fit
 	public:
 		LogisticFit(ApplicationWindow *parent, QwtPlotCurve *);
 		LogisticFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
-		LogisticFit(ApplicationWindow *parent, Graph *g);
+		LogisticFit(ApplicationWindow *parent, Graph *g = 0);
 		LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		LogisticFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
