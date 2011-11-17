@@ -123,7 +123,7 @@ class GaussAmpFit : public Fit
 	public:
 		GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *);
 		GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
-		GaussAmpFit(ApplicationWindow *parent, Graph *g);
+		GaussAmpFit(ApplicationWindow *parent, Graph *g = 0);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 0, int endRow = -1);

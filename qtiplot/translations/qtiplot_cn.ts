@@ -14990,153 +14990,169 @@ The following special codes can be used:
 <context>
     <name>FunctionDialog</name>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="318"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="341"/>
         <source>QtiPlot - Add function curve</source>
         <translation>QtiPlot - 添加函数曲线</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="72"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="79"/>
         <source>Curve type </source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="68"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="75"/>
         <source>Click here to select a recently typed expression</source>
         <translation>点击这里选取一个最近输入过的表达式</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="69"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="76"/>
         <source>Rece&amp;nt</source>
         <translation>最近(&amp;n)</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="74"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="81"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="296"/>
         <source>Function</source>
         <translation>函数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="75"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="82"/>
         <source>Parametric plot</source>
         <translation>参数绘图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="76"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="83"/>
         <source>Polar plot</source>
         <translation>极坐标绘图</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="84"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="91"/>
         <source>f(x)= </source>
         <translation>f(x)= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="100"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="107"/>
         <source>From x= </source>
         <translation>从x= </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="105"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="112"/>
         <source>To x= </source>
         <translation>到x=</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="111"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="191"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="256"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="118"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="198"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="263"/>
         <source>Points</source>
         <translation>点</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="123"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="130"/>
         <source>Constant</source>
         <translation>常数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="123"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="130"/>
         <source>Value</source>
         <translation>值</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="137"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="204"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="144"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="211"/>
         <source>Parameter</source>
         <translation>参数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="178"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="243"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="185"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="250"/>
         <source>From</source>
         <translation>自</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="184"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="249"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="191"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="256"/>
         <source>To</source>
         <translation>至</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="708"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="713"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="724"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="290"/>
+        <source>Built-in</source>
+        <translation type="unfinished">内置</translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="291"/>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="293"/>
+        <source>User defined</source>
+        <translation type="unfinished">用户定义</translation>
+    </message>
+    <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="729"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="741"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="746"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="757"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="734"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="745"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="750"/>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="762"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="774"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="779"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="767"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="778"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="783"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="795"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="800"/>
         <source>QtiPlot</source>
         <translation>QtiPlot</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="708"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="724"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="741"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="757"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="774"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="729"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="745"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="762"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="778"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="795"/>
         <source>Sorry, there are no recent expressions available!</source>
         <translation>抱歉,没有最近可用的表达式！</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="713"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="729"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="746"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="762"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="779"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="734"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="750"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="767"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="783"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="800"/>
         <source>Recent Functions</source>
         <translation>最近用过的函数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="713"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="729"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="746"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="762"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="779"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="734"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="750"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="767"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="783"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="800"/>
         <source>Please, choose a function:</source>
         <translation>请选择一个函数：</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="156"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="163"/>
         <source>x = </source>
         <translation>x = </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="173"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="180"/>
         <source>y = </source>
         <translation>y = </translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="221"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="228"/>
         <source>R =</source>
         <translation>R =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="238"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="245"/>
         <source>Theta =</source>
         <translation>Theta =</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="288"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="311"/>
         <source>Clea&amp;r Function</source>
         <translation>清除函数(&amp;r)</translation>
     </message>
@@ -15157,23 +15173,23 @@ The following special codes can be used:
         <translation type="obsolete">清除函数</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="459"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="517"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="600"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="480"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="538"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="621"/>
         <source>QtiPlot - Input error</source>
         <translation>QtiPlot - 输入错误</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="459"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="480"/>
         <source>Please enter x limits that satisfy: from &lt; end!</source>
         <translation>请输入x满足from &lt; end 的上下限！</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="484"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="546"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="568"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="629"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="505"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="567"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="589"/>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="650"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="671"/>
         <source>QtiPlot - Input function error</source>
         <translation>QtiPlot - 输入函数错误</translation>
     </message>
@@ -15186,13 +15202,13 @@ The following special codes can be used:
         <translation type="obsolete">QtiPlot - 结束限制错误</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="518"/>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="601"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="539"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="622"/>
         <source>Please enter parameter limits that satisfy: from &lt; end!</source>
         <translation>请输入参数满足from &lt; end 的上下限！</translation>
     </message>
     <message>
-        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="275"/>
+        <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="282"/>
         <source>&amp;Add Function</source>
         <translation>添加函数(&amp;A)</translation>
     </message>

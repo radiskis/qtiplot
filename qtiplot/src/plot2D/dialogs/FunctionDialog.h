@@ -45,6 +45,8 @@ class QTextEdit;
 class DoubleSpinBox;
 class ScriptEdit;
 class ApplicationWindow;
+class NonLinearFit;
+class Fit;
 
 //! Function dialog
 class FunctionDialog : public QDialog
@@ -52,7 +54,8 @@ class FunctionDialog : public QDialog
     Q_OBJECT
 
 public:
-	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WFlags fl = 0 );
+	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WFlags fl = 0);
+	~FunctionDialog();
 
     void setCurveToModify(Graph *g, int curve);
     void setCurveToModify(FunctionCurve *c);
@@ -64,6 +67,7 @@ public slots:
 private slots:
 	void raiseWidget(int index);
 	void insertFunction();
+	void updateFunctionsList(int);
 	void updateFunctionExplain(int);
 	void accept();
 	bool acceptFunction();
@@ -78,9 +82,15 @@ private slots:
 	void guessConstants();
 	void buttonClicked(QAbstractButton *);
 	void clearList();
+	void setUserFunctionParameters();
+
+signals:
+	void constantsGuessingEnded();
 
 private:
 	void setConstants(FunctionCurve *c, const QMap<QString, double>& constants);
+	void loadUserFunctions();
+	void initBuiltInFitModels();
 
 	Graph *graph;
 	int curveID;
@@ -111,6 +121,7 @@ private:
 	QTableWidget *boxConstants;
 	QPushButton *addFunctionBtn;
 	QComboBox* boxMathFunctions;
+	QComboBox *boxFunctionCategory;
 	QTextEdit* boxFunctionExplain;
 	QPushButton *buttonFunctionLog, *buttonXParLog, *buttonYParLog, *buttonPolarRadiusLog, *buttonPolarRThetaLog;
 	QDialogButtonBox *buttonBox;
@@ -118,6 +129,8 @@ private:
 	ApplicationWindow *d_app;
 	ScriptEdit *d_active_editor;
 	bool d_stand_alone;
+	QList <NonLinearFit*> d_user_functions;
+	QList <Fit*> d_fit_models;
 };
 
 #endif // FUNCTIONDIALOG_H

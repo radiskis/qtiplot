@@ -8752,6 +8752,18 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Sorry, there are no recent expressions available!</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Vestavěno</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Stanoveno uživatelem</translation>
+    </message>
 </context>
 <context>
     <name>GaussAmpFit</name>

@@ -38,7 +38,7 @@ class SigmoidalFit : public Fit
 	public:
 		SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *);
 		SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *, double, double);
-		SigmoidalFit(ApplicationWindow *parent, Graph *g);
+		SigmoidalFit(ApplicationWindow *parent, Graph *g = 0);
 		SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		SigmoidalFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		SigmoidalFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);

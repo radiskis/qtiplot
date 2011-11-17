@@ -15422,6 +15422,18 @@ die Reihenfolge der Parameter ist wichtig!</translation>
         <source>&amp;Add Function</source>
         <translation>Funktion &amp;hinzufügen</translation>
     </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Eingebaut</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Benutzerdefiniert</translation>
+    </message>
 </context>
 <context>
     <name>FunctionDialogui</name>

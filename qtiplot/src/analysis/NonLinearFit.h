@@ -38,7 +38,7 @@ class NonLinearFit : public Fit
 	Q_OBJECT
 
 	public:
-		NonLinearFit(ApplicationWindow *parent, Graph *g);
+		NonLinearFit(ApplicationWindow *parent, Graph *g = 0);
 		NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c);
 		NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
