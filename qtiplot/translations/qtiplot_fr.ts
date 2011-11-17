@@ -4180,7 +4180,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouveau</translation>
     </message>
 </context>
 <context>
@@ -6086,7 +6086,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Full dataset name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de donnée complet</translation>
     </message>
 </context>
 <context>
@@ -12604,7 +12604,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Sy&amp;nchronize scales</source>
-        <translation type="unfinished"></translation>
+        <translation>Sy&amp;nchroniser les échelles</translation>
     </message>
 </context>
 <context>
@@ -13809,7 +13809,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Nouvelle fenêtre</translation>
     </message>
 </context>
 <context>
