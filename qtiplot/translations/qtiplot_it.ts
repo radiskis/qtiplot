@@ -2290,7 +2290,7 @@ Attenzione: questo modificherà la disposizione di quelle già esistenti! </tran
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="8903"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="13241"/>
@@ -4039,7 +4039,7 @@ Attenzione: questo modificherà la disposizione di quelle già esistenti! </tran
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14552"/>
         <source>&amp;Baseline...</source>
-        <translation>Linea &amp;base ...</translation>
+        <translation>&amp;Linea base...</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14555"/>
@@ -5939,7 +5939,7 @@ Il completamento automatico non sarà disponibile!</translation>
         <location filename="../src/plot2D/dialogs/AssociationsDialog.cpp" line="315"/>
         <source>Magn.</source>
         <comment>Magnitude, vector length</comment>
-        <translation>Lunghezza.</translation>
+        <translation>Magn.</translation>
     </message>
 </context>
 <context>
@@ -7197,7 +7197,7 @@ Si possono usare i seguenti caratteri speciali:
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1922"/>
         <source>Full dataset name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome completo del gruppo di dati</translation>
     </message>
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="1925"/>
@@ -7529,7 +7529,7 @@ Si possono usare i seguenti caratteri speciali:
     <message>
         <location filename="../src/core/ConfigDialog.cpp" line="2068"/>
         <source>Language</source>
-        <translation>Lingua          Italiano    vers 0.9.8.8 del 10.2011.
+        <translation>Lingua          Italiano    vers 0.9.8.9 del 11.2011.
                        Traduzione di Renato Rivoira</translation>
     </message>
     <message>
@@ -8600,7 +8600,7 @@ gli adattamenti lineari</translation>
     <message>
         <location filename="../src/plot2D/dialogs/CurvesDialog.cpp" line="66"/>
         <source>New curves style</source>
-        <translation>Nuovo tipo di curve</translation>
+        <translation>Stile delle nuove curve</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/CurvesDialog.cpp" line="68"/>
@@ -9331,12 +9331,12 @@ gli adattamenti lineari</translation>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="418"/>
         <source>Use &amp;Frame Color</source>
-        <translation>&amp;Usa il colore della sua cornice</translation>
+        <translation>&amp;Usa il colore del bordo</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="447"/>
         <source>Fill &amp;Pattern</source>
-        <translation>&amp;Riempimento dell&apos;oggetto</translation>
+        <translation>&amp;Campitura</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/EnrichmentDialog.cpp" line="457"/>
@@ -11709,17 +11709,17 @@ Discrepanza tra i dati e il modello di stima</translation>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="290"/>
         <source>Built-in</source>
-        <translation type="unfinished">Interna</translation>
+        <translation>Interna</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="291"/>
         <source>Fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modello di  adattamento</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="293"/>
         <source>User defined</source>
-        <translation type="unfinished">Utente (definita dall&apos;)</translation>
+        <translation>Utente</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/FunctionDialog.cpp" line="311"/>
@@ -14496,12 +14496,12 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/plot2D/MultiLayer.cpp" line="1958"/>
         <source>Total Y Offset (%)</source>
-        <translation>Scostamento Y totale (%)</translation>
+        <translation>Scostamento Y  (%)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/MultiLayer.cpp" line="1964"/>
         <source>Total X Offset (%)</source>
-        <translation>Scostamento X totale (%)</translation>
+        <translation>Scostamento X  (%)</translation>
     </message>
     <message>
         <location filename="../src/plot2D/MultiLayer.cpp" line="1974"/>
@@ -15494,7 +15494,7 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="483"/>
         <source>Sy&amp;nchronize scales</source>
-        <translation type="unfinished"></translation>
+        <translation>Si&amp;ncronizza le scale opposte</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="486"/>
@@ -16740,7 +16740,7 @@ o passo campione, base del rettangolo</translation>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="4066"/>
         <source>Magnitude</source>
-        <translation>Dimensione</translation>
+        <translation>Magnitudine</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/PlotDialog.cpp" line="4473"/>
@@ -18160,7 +18160,7 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
     <message>
         <location filename="../src/core/QtiPlotApplication.cpp" line="167"/>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuova finestra</translation>
     </message>
 </context>
 <context>
@@ -19579,7 +19579,7 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
         <location filename="../src/plot3D/SurfaceDialog.cpp" line="173"/>
         <location filename="../src/plot3D/SurfaceDialog.cpp" line="293"/>
         <source>Mesh</source>
-        <translation>Rete</translation>
+        <translation>Griglia</translation>
     </message>
     <message>
         <location filename="../src/plot3D/SurfaceDialog.cpp" line="183"/>
