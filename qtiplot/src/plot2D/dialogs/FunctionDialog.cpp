@@ -920,9 +920,20 @@ void FunctionDialog::guessConstants()
 			break;
 	}
 
+	if (text.isEmpty() || text == "+"){
+		boxConstants->hide();
+		return;
+	}
+
 	bool error = false;
 	string errMsg;
 	QStringList lst = NonLinearFit::guessParameters(text, &error, &errMsg, var);
+	if (!lst.size()){
+		boxConstants->hide();
+		return;
+	} else if (!boxConstants->isVisible())
+		boxConstants->show();
+
 	if (error)
 		return;
 
@@ -933,8 +944,10 @@ void FunctionDialog::guessConstants()
 		values << ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 	}
 
-	if (lst == constants)
+	if (lst == constants){
+		emit constantsGuessingEnded();
 		return;
+	}
 
 	boxConstants->setRowCount(lst.size());
 
@@ -954,11 +967,6 @@ void FunctionDialog::guessConstants()
 			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(apply()));
 		row++;
 	}
-
-	if (!lst.size())
-		boxConstants->hide();
-	else if (!boxConstants->isVisible())
-		boxConstants->show();
 
 	emit constantsGuessingEnded();
 }
