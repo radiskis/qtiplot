@@ -240,8 +240,8 @@
 <!ENTITY view-menu-lnk '<link linkend="sec-view-menu">Visualizza</link>'>
 <!ENTITY toolbars-cmd "<command>Barre degli strumenti...</command>">
   <!ENTITY toolbars-key "<keycode>Ctrl-Maiusc-T</keycode>">
-<!ENTITY plot-wizard-cmd "<command>Assistente per il grafico</command>">
-<!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Assistente per il grafico</command></link>'>
+<!ENTITY plot-wizard-cmd "<command>Grafico guidato</command>">
+<!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Grafico guidato</command></link>'>
   <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
   <!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
 
@@ -1330,7 +1330,7 @@
 <!--data di traduzione -->
 
   <sidebar id="data-traduzione">  
-  <para>Traduzione di Renato Rivoira <email>&email-renato;</email> del -09-2011 per QtiPlot versione 0.9.8.7</para> 
+  <para>Traduzione di Renato Rivoira <email>&email-renato;</email> del -11-2011 per QtiPlot versione 0.9.8.9</para> 
   <para>Avvertenza: QtiPlot viene periodicamente arricchito di nuove funzionalit&agrave; per cui alcune parti della traduzione possono risultare non completamente aggiornate. Si consiglia di verificare sempre in <ulink url="http://soft.proindependent.com/qtiplot.html">http://soft.proindependent.com/qtiplot.html</ulink> se sono disponibili ulteriori aggiornamenti.</para>
 
 <para>Questa traduzione, come quella del programma, &egrave; provvisoria ed &egrave; fornita senza garanzie, non &egrave; professionale e pu&ograve; contenere errori o imprecisioni. &Egrave; stata realizzata per agevolare l'uso didattico dell'applicazione e la comprensione del suo funzionamento. Quando si ha dimestichezza con la struttura del programma, forse &egrave; pi&ugrave; produttivo usare la versione inglese.</para>

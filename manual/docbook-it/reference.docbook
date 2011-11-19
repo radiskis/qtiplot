@@ -428,7 +428,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
      <para>Apre un menu pop-up che permette di abilitare o disabilitare le barre degli strumenti.</para>
 </sect2>
 <sect2 id="plot-wizard-cmd"><title>Visualizza &rarr; &plot-wizard-cmd; (&plot-wizard-key;)</title>
-     <para>Apre il dialogo <link linkend="plot-wizard-dialog">Assistente grafico</link> per creare un grafico guidato.</para>
+     <para>Apre il dialogo <link linkend="plot-wizard-dialog">Grafico guidato</link> per creare automaticamente un grafico standard.</para>
 
 <informalfigure id="visualizza-assistente">  
   <mediaobject>
@@ -1584,7 +1584,7 @@ Nei menu appaiono elementi diversi secondo quale tipo di finestra &egrave; attiv
 	    <title>La finestra di dialogo per il filtraggio Passa Banda &fft-band-pass-cmd;.</title>
 	    <mediaobject>
 	      <imageobject>
-	        <imagedata  format="PNG" fileref="pics/filter-fft-band-dialog.png"/>
+	        <imagedata  format="PNG" fileref="pics-it/filtro-fft-band-dialog.png"/>
 	      </imageobject>
 	    </mediaobject>
 	  </figure>
