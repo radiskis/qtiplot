@@ -220,7 +220,7 @@ I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e sposta
   <title>Definire un nuovo grafico di superficie 3D.</title>
   <mediaobject>
     <imageobject>
-      <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
+      <imagedata  format="PNG" fileref="pics-it/definire-surface-plot.png"/>
     </imageobject>
   </mediaobject>
 </figure>
@@ -259,7 +259,7 @@ I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e sposta
   <informalfigure>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
+        <imagedata  format="PNG" fileref="pics-it/matrice-set-dimensions.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>
@@ -345,7 +345,7 @@ I grafici 3D usano OpenGL quindi si possono facilmente ruotare, scalare e sposta
   <informalfigure>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/multilayer-step-4.png"/>
+        <imagedata  format="PNG" fileref="pics-it/multilayer-step-4.png"/>
       </imageobject>
     </mediaobject>
   </informalfigure>

@@ -352,7 +352,7 @@ Quando si seleziona <emphasis>Usa la tavolozza dei colori</emphasis>, le curve s
     <title>Opzioni per il grafico: propriet&agrave; della tavola.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
+        <imagedata  format="PNG" fileref="pics-it/custom-curves-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -568,7 +568,7 @@ Anche se la casella <emphasis>Modalit&agrave; veloce</emphasis> &egrave; selezio
     <title>La finestra di dialogo &new-surface-3d-plot-cmd; (funzione).</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/define-surface-plot.png"/>
+        <imagedata  format="PNG" fileref="pics-it/definire-surface-plot.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1156,7 +1156,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>La finestra di dialogo &set-dimensions-cmd; della matrice.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics-it/matrix-set-dimensions.png"/>
+        <imagedata  format="PNG" fileref="pics-it/matrice-set-dimensions.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1205,7 +1205,7 @@ del men&ugrave; <link linkend="sec-file-menu">File</link>. Pu&ograve; essere usa
     <title>La finestra di dialogo Imposta le &set-properties-cmd; della matrice.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/matrix-set-properties.png"/>
+        <imagedata  format="PNG" fileref="pics-it/matrice-set-properties.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1226,7 +1226,7 @@ del men&ugrave; <link linkend="sec-file-menu">File</link>. Pu&ograve; essere usa
     <title>La finestra di dialogo &set-values-cmd; della matrice.</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/matrix-set-values.png"/>
+        <imagedata  format="PNG" fileref="pics-it/matrice-set-values.png"/>
       </imageobject>
     </mediaobject>
   </figure>
