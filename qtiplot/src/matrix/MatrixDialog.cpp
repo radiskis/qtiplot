@@ -29,6 +29,7 @@
 #include "MatrixDialog.h"
 #include "Matrix.h"
 #include "MatrixCommand.h"
+#include <ApplicationWindow.h>
 
 #include <QPushButton>
 #include <QLabel>
@@ -74,6 +75,13 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	topLayout->setColStretch(3, 1);
 
 	bottomLayout->addStretch();
+
+	buttonProperties = new QPushButton();
+	buttonProperties->setIcon(QIcon(":/formula.png"));
+	buttonProperties->setToolTip(tr("Open Set Values Dialog"));
+	buttonProperties->setAutoDefault(false);
+	bottomLayout->addWidget( buttonProperties );
+
 	buttonApply = new QPushButton(tr( "&Apply" ));
 	buttonApply->setAutoDefault( true );
 	bottomLayout->addWidget( buttonApply );
@@ -97,7 +105,18 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
 	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openValuesDialog()));
 	connect(boxNumericDisplay, SIGNAL(activated(int)), this, SLOT(showPrecisionBox(int)));
+}
+
+void MatrixDialog::openValuesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixValuesDialog()));
+	this->accept();
 }
 
 void MatrixDialog::showPrecisionBox(int item)

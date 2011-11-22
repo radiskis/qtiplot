@@ -49,6 +49,7 @@ public:
     TableDialog(Table *t, QWidget* parent, Qt::WFlags fl = 0 );
 
 private slots:
+	void openColumnValuesDialog();
 	void prevColumn();
 	void nextColumn();
 	void updateColumn(int);
@@ -80,6 +81,7 @@ private:
 	QPushButton* buttonApply;
 	QPushButton* buttonPrev;
 	QPushButton* buttonNext;
+	QPushButton* buttonProperties;
     QLineEdit* colName;
     QCheckBox* enumerateAllBox;
     QCheckBox* applyToRightCols;

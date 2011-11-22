@@ -10640,6 +10640,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Set Columns Width</source>
         <translation>Nastavit šířku sloupců</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -10789,6 +10793,14 @@ K tomu lze použít následujících zvláštních kódů:
         <source>Dimensions</source>
         <translation>Rozměry</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -10835,6 +10847,10 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Cell(i,j)=</source>
         <translation>Buňka(i,j)=</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14431,6 +14447,10 @@ pokud e1 pak e2 jinak e3.</translation>
         <source>Use built-in muParser (much faster)</source>
         <translation>Použít vestavěný muParser (mnohem rychlejší)</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -15446,6 +15466,10 @@ pokud e1 pak e2 jinak e3.</translation>
     <message>
         <source>Column Width:</source>
         <translation>Šířka sloupce:</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

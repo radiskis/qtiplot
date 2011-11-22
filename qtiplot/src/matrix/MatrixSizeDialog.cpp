@@ -28,7 +28,7 @@
  ***************************************************************************/
 #include <MatrixSizeDialog.h>
 #include <MatrixCommand.h>
-
+#include <ApplicationWindow.h>
 #include <DoubleSpinBox.h>
 
 #include <QPushButton>
@@ -86,6 +86,19 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 
 	QHBoxLayout *bottomLayout = new QHBoxLayout();
 	bottomLayout->addStretch();
+
+	buttonProperties = new QPushButton();
+	buttonProperties->setIcon(QIcon(":/configure.png"));
+	buttonProperties->setToolTip(tr("Open Properties Dialog"));
+	buttonProperties->setAutoDefault(false);
+	bottomLayout->addWidget( buttonProperties );
+
+	buttonValues = new QPushButton();
+	buttonValues->setIcon(QIcon(":/formula.png"));
+	buttonValues->setToolTip(tr("Open Set Values Dialog"));
+	buttonValues->setAutoDefault(false);
+	bottomLayout->addWidget( buttonValues );
+
 	buttonApply = new QPushButton(tr("&Apply"));
 	buttonApply->setDefault( true );
 	bottomLayout->addWidget(buttonApply);
@@ -110,6 +123,28 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	connect( buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
 	connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept() ));
 	connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
+	connect( buttonValues, SIGNAL(clicked()), this, SLOT(openValuesDialog()));
+	connect( buttonProperties, SIGNAL(clicked()), this, SLOT(openPropertiesDialog()));
+}
+
+void MatrixSizeDialog::openValuesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixValuesDialog()));
+	this->accept();
+}
+
+void MatrixSizeDialog::openPropertiesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixDialog()));
+	this->accept();
 }
 
 void MatrixSizeDialog::apply()

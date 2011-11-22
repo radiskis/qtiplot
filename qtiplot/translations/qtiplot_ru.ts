@@ -10636,6 +10636,10 @@ have the same number of rows.</source>
         <source>Precision %1 digits</source>
         <translation>Точность %1</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -10785,6 +10789,14 @@ have the same number of rows.</source>
         <source>&amp;Apply</source>
         <translation>&amp;Применить</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -10831,6 +10843,10 @@ have the same number of rows.</source>
     <message>
         <source>Use built-in muParser (much faster)</source>
         <translation>Использовать встроенный muParser (значительно быстрее)</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14411,6 +14427,10 @@ have the same number of rows.</source>
         <source>Clear &amp;Formulas</source>
         <translation>&amp;Очистить</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -15446,6 +15466,10 @@ have the same number of rows.</source>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
         <translation type="obsolete">ггггММдд ЧЧ:мм:сс</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

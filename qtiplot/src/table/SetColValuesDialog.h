@@ -61,6 +61,7 @@ private slots:
 	bool apply();
 	void prevColumn();
 	void nextColumn();
+	void openColumnPropertiesDialog();
 	void insertFunction();
 	void insertCol();
 	void insertCell();
@@ -85,6 +86,7 @@ private:
     QPushButton* btnCancel;
     QPushButton *buttonPrev;
     QPushButton *buttonNext;
+	QPushButton *buttonProperties;
     QPushButton *addCellButton;
     QPushButton *btnApply;
 	QPushButton* buttonClearFormulas;

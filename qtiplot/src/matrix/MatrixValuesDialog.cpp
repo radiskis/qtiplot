@@ -56,7 +56,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
     gl1->addWidget(new QLabel(tr("For row (i)")), 0, 0);
 	startRow = new QSpinBox();
 	startRow->setRange(1, INT_MAX);
-    gl1->addWidget(startRow, 0, 1);
+	gl1->addWidget(startRow, 0, 1);
 	gl1->addWidget(new QLabel(tr("to")), 0, 2);
 	endRow =  new QSpinBox();
 	endRow->setRange(1, INT_MAX);
@@ -69,6 +69,8 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	endCol = new QSpinBox();
 	endCol->setRange(1, INT_MAX);
 	gl1->addWidget(endCol, 1, 3);
+	gl1->setColumnStretch(1, 1);
+	gl1->setColumnStretch(3, 1);
 
 	functions = new QComboBox(false);
 	functions->addItems(scriptEnv->mathFunctions());
@@ -76,19 +78,21 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	btnAddCell = new QPushButton(tr( "Add Ce&ll" ));
 
 	QHBoxLayout *hbox1 = new QHBoxLayout();
-	hbox1->addWidget(functions);
+	hbox1->addWidget(functions, 1);
 	hbox1->addWidget(btnAddFunction);
 	hbox1->addWidget(btnAddCell);
 
 	QVBoxLayout *vbox1 = new QVBoxLayout();
     vbox1->addLayout(gl1);
 	vbox1->addLayout(hbox1);
+	vbox1->addStretch();
 	QGroupBox *gb = new QGroupBox();
     gb->setLayout(vbox1);
     gb->setSizePolicy(QSizePolicy (QSizePolicy::Preferred, QSizePolicy::Preferred));
 
 	explain = new QTextEdit();
 	explain->setReadOnly(true);
+	explain->setMaximumHeight(100);
 	explain->setSizePolicy(QSizePolicy (QSizePolicy::Preferred, QSizePolicy::Preferred));
     QPalette palette = explain->palette();
     palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
@@ -109,7 +113,14 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));
     vbox2->addWidget(btnApply);
+
+	buttonProperties = new QPushButton();
+	buttonProperties->setIcon(QIcon(":/configure.png"));
+	buttonProperties->setToolTip(tr("Open Properties Dialog"));
+	vbox2->addWidget(buttonProperties);
+
 	btnCancel = new QPushButton(tr( "&Close" ));
+	btnCancel->setIcon(QIcon(":/delete.png"));
     vbox2->addWidget(btnCancel);
     vbox2->addStretch();
 
@@ -128,15 +139,27 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	}
 #endif
 	vbox3->addWidget(new QLabel(tr( "Cell(i,j)=" )));
-	vbox3->addLayout(hbox3);
+	vbox3->addLayout(hbox3, 1);
 
 	insertExplain(0);
 
 	connect(btnAddCell, SIGNAL(clicked()), this, SLOT(addCell()));
 	connect(btnAddFunction, SIGNAL(clicked()), this, SLOT(insertFunction()));
 	connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openPropertiesDialog()));
 	connect(btnCancel, SIGNAL(clicked()), this, SLOT(close()));
 	connect(functions, SIGNAL(activated(int)), this, SLOT(insertExplain(int)));
+}
+
+void MatrixValuesDialog::openPropertiesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixDialog()));
+	this->apply();
+	this->close();
 }
 
 QSize MatrixValuesDialog::sizeHint() const

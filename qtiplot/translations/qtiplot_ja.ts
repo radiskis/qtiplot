@@ -10856,6 +10856,10 @@ have the same number of rows.</source>
         <source>Precision %1 digits</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -10989,6 +10993,14 @@ have the same number of rows.</source>
         <source>&amp;Apply</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -11034,6 +11046,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Use built-in muParser (much faster)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14348,6 +14364,10 @@ have the same number of rows.</source>
         <source>Clear &amp;Formulas</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -15246,6 +15266,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -57,6 +57,7 @@ public:
     void setCompleter(QCompleter *);
 
 private slots:
+	void openPropertiesDialog();
 	bool apply();
 	void addCell();
 	void insertFunction();
@@ -80,6 +81,7 @@ private:
     QTextEdit* explain;
 	QSpinBox *startRow, *endRow, *startCol, *endCol;
 	QPushButton *btnApply;
+	QPushButton *buttonProperties;
 #ifdef SCRIPTING_PYTHON
 	QCheckBox *boxMuParser;
 #endif

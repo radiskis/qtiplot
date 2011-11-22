@@ -16626,6 +16626,10 @@ Vill du skjuta in celler?</translation>
         <source>Precision %1 digits</source>
         <translation>Precision %1 siffror</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -16775,6 +16779,14 @@ Vill du skjuta in celler?</translation>
         <source>&amp;Apply</source>
         <translation>&amp;Tillämpa</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -16841,6 +16853,10 @@ Vill du skjuta in celler?</translation>
     <message>
         <source>Use built-in muParser (much faster)</source>
         <translation>Använd inbyggd muParser (mycket snabbare)</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -20788,6 +20804,10 @@ Vill du skriva över den?</translation>
         <source>Clear &amp;Formulas</source>
         <translation>Rensa &amp;formler</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -21989,6 +22009,10 @@ den första representerar signalen och den andra svarsfunktionen!</translation>
     <message>
         <source>yyyyMMdd HH:mm:ss</source>
         <translation type="obsolete">yyyyMMdd HH:mm:ss</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

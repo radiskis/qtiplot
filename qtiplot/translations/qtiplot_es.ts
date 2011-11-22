@@ -16027,6 +16027,10 @@ Do you want to insert cells?</source>
         <source>Precision %1 digits</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -16180,6 +16184,14 @@ Do you want to insert cells?</source>
         <source>&amp;Apply</source>
         <translation type="unfinished">&amp;Aplicar</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -16245,6 +16257,10 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>Use built-in muParser (much faster)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -20030,6 +20046,10 @@ Do you want to overwrite it?</source>
         <source>Clear &amp;Formulas</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -21140,6 +21160,10 @@ Do you want to insert cells?</source>
     </message>
     <message>
         <source>&amp;Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
