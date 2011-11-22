@@ -57,11 +57,13 @@ private slots:
 	void apply();
 	//! Activate the numeric precision choice box
 	void showPrecisionBox(int item);
+	void openValuesDialog();
 
 private:
     Matrix *d_matrix;
 
     QPushButton* buttonOk;
+	QPushButton* buttonProperties;
 	QPushButton* buttonCancel, *buttonApply;
 	QSpinBox* boxColWidth, *boxPrecision;
 	QComboBox *boxFormat, *boxNumericDisplay;

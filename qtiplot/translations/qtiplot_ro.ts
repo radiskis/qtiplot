@@ -14219,6 +14219,10 @@ have the same number of rows.</source>
         <source>Precision %1 digits</source>
         <translation>%1 Cifre semnificative</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -14368,6 +14372,14 @@ have the same number of rows.</source>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Definire coordonate x[%1 : %2], y[%3 : %4]</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -14414,6 +14426,10 @@ have the same number of rows.</source>
     <message>
         <source>Set New Formula</source>
         <translation>Defineşte noua formulă</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -18047,6 +18063,10 @@ Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</transla
         <source>Clear &amp;Formulas</source>
         <translation>Şterge &amp;formulele</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -19110,6 +19130,10 @@ Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</transla
     <message>
         <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
         <translation>Pentru mai multe informaţii legate de formatul dată/timp vă rugăm să citiţi documentation Qt pentru clasa QDateTime!</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

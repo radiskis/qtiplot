@@ -10611,6 +10611,10 @@ have the same number of rows.</source>
         <source>Precision %1 digits</source>
         <translation>Précision %1 décimales</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -10756,6 +10760,14 @@ have the same number of rows.</source>
         <source>&amp;Apply</source>
         <translation>&amp;Appliquer</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -10802,6 +10814,10 @@ have the same number of rows.</source>
     <message>
         <source>Use built-in muParser (much faster)</source>
         <translation>Utiliser muParser interne (plus rapide)</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -14398,6 +14414,10 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
         <source>Clear &amp;Formulas</source>
         <translation>Effacer les &amp;formules</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -15433,6 +15453,10 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     <message>
         <source>Column Name:</source>
         <translation>Nom :</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

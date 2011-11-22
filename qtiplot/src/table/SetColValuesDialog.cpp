@@ -88,6 +88,12 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	hbox3->addWidget(buttonPrev);
 	buttonNext = new QPushButton("&>>");
 	hbox3->addWidget(buttonNext);
+
+	buttonProperties = new QPushButton();
+	buttonProperties->setIcon(QIcon(":/configure.png"));
+	buttonProperties->setToolTip(tr("Open Properties Dialog"));
+	hbox3->addWidget(buttonProperties);
+
 	gl1->addLayout(hbox3, 2, 0);
 	addCellButton = new QPushButton(tr( "Add cell" ));
 	gl1->addWidget(addCellButton, 2, 1);
@@ -159,7 +165,19 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
 	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
 	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
+	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openColumnPropertiesDialog()));
 	connect(buttonClearFormulas, SIGNAL(clicked()), this, SLOT(clearFormulas()));
+}
+
+void SetColValuesDialog::openColumnPropertiesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showColumnOptionsDialog()));
+	this->apply();
+	this->close();
 }
 
 void SetColValuesDialog::prevColumn()

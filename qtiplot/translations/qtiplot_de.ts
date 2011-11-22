@@ -18950,6 +18950,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>Precision %1 digits</source>
         <translation>Genauigkeit %1 Dezimalstellen</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -19099,6 +19103,14 @@ Wollen sie Zellen einfügen?</translation>
         <source>&amp;Apply</source>
         <translation>&amp;Anwenden</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -19177,6 +19189,10 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>Use built-in muParser (much faster)</source>
         <translation>Benutze eingebauten muParser (viel schneller)</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -23549,6 +23565,10 @@ Wollen Sie sie überschreiben?</translation>
         <source>Clear &amp;Formulas</source>
         <translation>&amp;Formeln löschen</translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -24719,6 +24739,10 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     <message>
         <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
         <translation>Lesen Sie die Qt-Dokumentation, um weitere Informationen über die unterstützten Zeit-/Datumsformate der QDateTime-Klasse zu erfahren!</translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

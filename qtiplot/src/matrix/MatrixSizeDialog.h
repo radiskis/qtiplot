@@ -55,10 +55,14 @@ private slots:
 	void accept();
 	//! Apply changes
 	void apply();
+	void openValuesDialog();
+	void openPropertiesDialog();
 
 private:
     QPushButton* buttonOk, *buttonApply;
 	QPushButton* buttonCancel;
+	QPushButton* buttonValues;
+	QPushButton* buttonProperties;
     QGroupBox* groupBox1, *groupBox2;
 	QSpinBox *boxCols, *boxRows;
 	DoubleSpinBox *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;

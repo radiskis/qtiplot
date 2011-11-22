@@ -190,7 +190,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	gl2->addWidget(new QLabel(tr( "To" )), 4, 0);
 	boxParTo = new DoubleSpinBox();
-	boxParTo->setValue(1);
+	boxParTo->setValue(2*M_PI);
 	boxParTo->setLocale(locale);
 	boxParTo->setDecimals(prec);
 	gl2->addWidget(boxParTo, 4, 1);
@@ -274,12 +274,13 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxFunctionExplain = new QTextEdit;
 	boxFunctionExplain->setReadOnly(true);
-	boxFunctionExplain->setMaximumHeight(130);
+	boxFunctionExplain->setMaximumHeight(80);
 	QPalette palette = boxFunctionExplain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	boxFunctionExplain->setPalette(palette);
 
 	addFunctionBtn = new QPushButton(tr( "&Add Function" ));
+	addFunctionBtn->setIcon(QIcon(":/plus.png"));
 	addFunctionBtn->setAutoDefault(false);
 	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
 
@@ -296,7 +297,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	QLabel *label = new QLabel(tr("Function"));
 	QHBoxLayout *hbox4 = new QHBoxLayout();
 	hbox4->addWidget(label);
-	hbox4->addWidget(boxFunctionCategory);
+	hbox4->addWidget(boxFunctionCategory, 1);
 
 	boxMathFunctions = new QComboBox();
 	boxMathFunctions->addItems(MyParser::functionsList());
@@ -306,11 +307,17 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	QVBoxLayout *vbox = new QVBoxLayout();
 	vbox->addLayout(hbox4);
 	vbox->addWidget(boxMathFunctions);
-	vbox->addWidget(addFunctionBtn);
 
 	buttonClear = new QPushButton(tr( "Clea&r Function" ));
-	connect( buttonClear, SIGNAL( clicked() ), this, SLOT(clearList()));
-	vbox->addWidget(buttonClear);
+	buttonClear->setIcon(QIcon(":/delete.png"));
+	connect(buttonClear, SIGNAL( clicked() ), this, SLOT(clearList()));
+
+	QHBoxLayout *hbox5 = new QHBoxLayout();
+	hbox5->addWidget(addFunctionBtn);
+	hbox5->addWidget(buttonClear);
+	hbox5->addStretch();
+
+	vbox->addLayout(hbox5);
 	vbox->addStretch();
 
 	QHBoxLayout *hbox3 = new QHBoxLayout();
@@ -872,7 +879,7 @@ void FunctionDialog::updateFunctionsList(int category)
 		boxMathFunctions->addItems(MyParser::functionsList());
 	else if (category == 1){
 		foreach(Fit *fit, d_fit_models)
-			boxMathFunctions->addItem(fit->objectName());
+			boxMathFunctions->addItem(fit->objectName() + "(x," + fit->parameterNames().join(",") + ")");
 
 		boxFunctionExplain->setText(d_fit_models[0]->formula());
 	} else if (category == 2){
@@ -880,7 +887,7 @@ void FunctionDialog::updateFunctionsList(int category)
 			return;
 
 		foreach(NonLinearFit *fit, d_user_functions)
-			boxMathFunctions->addItem(fit->objectName());
+			boxMathFunctions->addItem(fit->objectName() + "(x," + fit->parameterNames().join(",") + ")");
 
 		boxFunctionExplain->setText(d_user_functions[0]->formula());
 	}

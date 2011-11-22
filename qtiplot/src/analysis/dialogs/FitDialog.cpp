@@ -488,14 +488,15 @@ void FitDialog::initEditPage()
 	boxErrorMsg->hide();
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
-	btnAddTxt = new QPushButton(tr( "Add &expression" ) );
+	btnAddTxt = new QPushButton(tr("Add &expression"));
+	btnAddTxt->setIcon(QIcon(":/plus.png"));
     vbox1->addWidget(btnAddTxt);
-	btnAddName = new QPushButton(tr( "Add &name" ));
+	btnAddName = new QPushButton(tr("Add &name"));
     vbox1->addWidget(btnAddName);
-	buttonClear = new QPushButton(tr( "Rese&t" ));
+	buttonClear = new QPushButton(tr("Rese&t"));
     vbox1->addWidget(buttonClear);
 	vbox1->addStretch();
-	buttonCancel2 = new QPushButton(tr( "&Close" ));
+	buttonCancel2 = new QPushButton(tr("&Close"));
 	buttonCancel2->setPixmap(QPixmap(":/delete.png"));
     vbox1->addWidget(buttonCancel2);
 

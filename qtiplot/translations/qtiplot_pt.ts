@@ -14673,6 +14673,10 @@ p, li { white-space: pre-wrap; }
         <source>Precision %1 digits</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -14818,6 +14822,14 @@ p, li { white-space: pre-wrap; }
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>
@@ -14887,6 +14899,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Set New Formula</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -19604,6 +19620,10 @@ Deseja sobreescrevê-lo?</translation>
         <source>Use built-in muParser (much faster)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>SigmoidalFit</name>
@@ -20829,6 +20849,10 @@ Gostaria de inserir células?</translation>
     </message>
     <message>
         <source>&amp;Hidden</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

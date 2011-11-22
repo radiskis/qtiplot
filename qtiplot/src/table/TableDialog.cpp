@@ -27,7 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "TableDialog.h"
-#include "Table.h"
+#include <Table.h>
+#include <ApplicationWindow.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -50,6 +51,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     setName( "TableDialog" );
     setWindowTitle( tr( "QtiPlot - Column options" ) );
     setSizeGripEnabled(true);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	QHBoxLayout *hboxa = new QHBoxLayout();
 	hboxa->addWidget(new QLabel(tr( "Column Name:" )));
@@ -64,14 +66,21 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	buttonNext = new QPushButton("&>>");
 	buttonNext->setAutoDefault(false);
 
+	buttonProperties = new QPushButton();
+	buttonProperties->setIcon(QIcon(":/formula.png"));
+	buttonProperties->setToolTip(tr("Open Set Values Dialog"));
+	buttonProperties->setAutoDefault(false);
+
 #ifndef Q_OS_MAC
 	buttonPrev->setMaximumWidth(40);
 	buttonNext->setMaximumWidth(40);
+	buttonProperties->setMaximumWidth(40);
 #endif
 
 	QHBoxLayout *hboxb = new QHBoxLayout();
     hboxb->addWidget(buttonPrev);
     hboxb->addWidget(buttonNext);
+	hboxb->addWidget(buttonProperties);
     hboxb->addStretch();
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
@@ -190,6 +199,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 	connect(displayBox, SIGNAL(activated(int)), this, SLOT(updateDisplay(int)));
 	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
 	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
+	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openColumnValuesDialog()));
 	connect(precisionBox, SIGNAL(valueChanged(int)), this, SLOT(updatePrecision(int)));
 	connect(boxShowTableComments, SIGNAL(toggled(bool)), d_table, SLOT(showComments(bool)));
 }
@@ -198,6 +208,16 @@ void TableDialog::accept()
 {
 	apply();
 	close();
+}
+
+void TableDialog::openColumnValuesDialog()
+{
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (!app)
+		return;
+
+	connect(this, SIGNAL(destroyed()), app, SLOT(showColumnValuesDialog()));
+	this->accept();
 }
 
 void TableDialog::prevColumn()

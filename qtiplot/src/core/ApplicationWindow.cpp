@@ -7365,20 +7365,33 @@ void ApplicationWindow::showColsDialog()
 		t->resizeCols(cols);
 }
 
+void ApplicationWindow::showColumnOptionsDialog()
+{
+	Table *t = (Table*)activeWindow(TableWindow);
+	if (!t)
+		return;
+
+	if (t->selectedColumns().count()>0){
+		TableDialog* td = new TableDialog(t, this);
+		td->exec();
+	} else
+		QMessageBox::warning(this, tr("QtiPlot"), tr("Please select a column first!"));
+}
+
 void ApplicationWindow::showColumnValuesDialog()
 {
 	Table *w = (Table*)activeWindow(TableWindow);
 	if (!w)
 		return;
 
-    if (w->selectedColumns().count()>0 || w->table()->currentSelection() >= 0){
-        SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
-        vd->setTable(w);
-        if (d_completion)
-            vd->setCompleter(d_completer);
-        vd->exec();
-    } else
-        QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
+	if (w->selectedColumns().count()>0 || w->table()->currentSelection() >= 0){
+		SetColValuesDialog* vd = new SetColValuesDialog(scriptEnv, this);
+		vd->setTable(w);
+		if (d_completion)
+			vd->setCompleter(d_completer);
+		vd->exec();
+	} else
+		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::showExtractDataDialog()
@@ -8019,20 +8032,6 @@ void ApplicationWindow::showMatrixValuesDialog()
     if (d_completion)
         md->setCompleter(d_completer);
 	md->exec();
-}
-
-void ApplicationWindow::showColumnOptionsDialog()
-{
-	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	if(t->selectedColumns().count()>0) {
-		TableDialog* td = new TableDialog(t, this);
-		td->setAttribute(Qt::WA_DeleteOnClose);
-		td->exec();
-	} else
-		QMessageBox::warning(this, tr("QtiPlot"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::showGeneralPlotDialog()
@@ -14169,7 +14168,7 @@ void ApplicationWindow::createActions()
 	actionShowTitleDialog = new QAction(tr("&Title ..."), this);
 	connect(actionShowTitleDialog, SIGNAL(activated()), this, SLOT(showTitleDialog()));
 
-	actionShowColumnOptionsDialog = new QAction(tr("Column &Options ..."), this);
+	actionShowColumnOptionsDialog = new QAction(QIcon(":/configure.png"), tr("Column &Options ..."), this);
 	actionShowColumnOptionsDialog->setShortcut(tr("Ctrl+Alt+O"));
 	connect(actionShowColumnOptionsDialog, SIGNAL(activated()), this, SLOT(showColumnOptionsDialog()));
 
@@ -14308,7 +14307,7 @@ void ApplicationWindow::createActions()
 	actionAdd3DData = new QAction(tr("&Data Set..."), this);
 	connect(actionAdd3DData, SIGNAL(activated()), this, SLOT(add3DData()));
 
-	actionSetMatrixProperties = new QAction(tr("Set &Properties..."), this);
+	actionSetMatrixProperties = new QAction(QIcon(":/configure.png"), tr("Set &Properties..."), this);
 	connect(actionSetMatrixProperties, SIGNAL(activated()), this, SLOT(showMatrixDialog()));
 
 	actionSetMatrixDimensions = new QAction(tr("Set &Dimensions..."), this);
