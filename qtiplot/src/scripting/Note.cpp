@@ -301,7 +301,7 @@ void Note::saveTab(int index, const QString &fn)
 	f.close();
 }
 
-void Note::restore(const QStringList& data)
+void Note::restore(const QStringList& data, int, bool)
 {
 	QStringList::ConstIterator line = data.begin();
 	QStringList fields;

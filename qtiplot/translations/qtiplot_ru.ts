@@ -10747,7 +10747,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Coordinates</source>
-        <translation>Координаты</translation>
+        <translation type="obsolete">Координаты</translation>
     </message>
     <message>
         <source>Dimensions</source>
@@ -10795,6 +10795,34 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xy &amp;Mapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;x Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;y Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;z Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

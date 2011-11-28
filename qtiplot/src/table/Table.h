@@ -321,7 +321,7 @@ public slots:
 	//! \name Saving and Restoring
 	//@{
 	virtual void save(const QString &fn, const QString& geometry, bool = false);
-	void restore(const QStringList& lst);
+	void restore(const QStringList& lst, int fileVersion, bool fromTemplate = false);
 
 	QString saveHeader();
 	QString saveComments();

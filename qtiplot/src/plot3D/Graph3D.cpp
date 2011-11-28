@@ -259,21 +259,21 @@ void Graph3D::initCoord()
 		sp->coordinates()->axes[i].setMinors(5);
 	}
 
-	QString s = tr("X axis");
+	QString s = "%(?X)";
 	sp->coordinates()->axes[X1].setLabelString(s);
 	sp->coordinates()->axes[X2].setLabelString(s);
 	sp->coordinates()->axes[X3].setLabelString(s);
 	sp->coordinates()->axes[X4].setLabelString(s);
 	labels<<s;
 
-	s = tr("Y axis");
+	s = "%(?Y)";
 	sp->coordinates()->axes[Y1].setLabelString(s);
 	sp->coordinates()->axes[Y2].setLabelString(s);
 	sp->coordinates()->axes[Y3].setLabelString(s);
 	sp->coordinates()->axes[Y4].setLabelString(s);
 	labels<<s;
 
-	s = tr("Z axis");
+	s = "%(?Z)";
 	sp->coordinates()->axes[Z1].setLabelString(s);
 	sp->coordinates()->axes[Z2].setLabelString(s);
 	sp->coordinates()->axes[Z3].setLabelString(s);
@@ -1128,18 +1128,31 @@ void Graph3D::zoomChanged(double)
 
 void Graph3D::resetAxesLabels()
 {
+	if (labels.size() < 3)
+		return;
+
 	QString s = labels[0];
 	if (s == "%(?X)"){
-		if (d_matrix)
-			s = tr("X axis");
-		else {
+		if (d_matrix){
+			QString label = d_matrix->xLabel();
+			if (label.isEmpty())
+				s = tr("X axis");
+			else {
+				QString unit = d_matrix->xUnit();
+				if (unit.isEmpty())
+					s = label;
+				else
+					s = label + " (" + unit + ")";
+			}
+		} else {
 			QStringList lst = plotAssociation.split(",");
 			if (!lst.isEmpty()){
 				s = lst[0].remove("(X)");
 				int pos = s.lastIndexOf("_");
 				if (pos > 0)
 					s = s.right(s.length() - pos - 1);
-			}
+			} else
+				s = tr("X axis");
 		}
 	}
 
@@ -1150,16 +1163,26 @@ void Graph3D::resetAxesLabels()
 
 	s = labels[1];
 	if (s == "%(?Y)"){
-		if (d_matrix)
-			s = tr("Y axis");
-		else {
+		if (d_matrix){
+			QString label = d_matrix->yLabel();
+			if (label.isEmpty())
+				s = tr("Y axis");
+			else {
+				QString unit = d_matrix->yUnit();
+				if (unit.isEmpty())
+					s = label;
+				else
+					s = label + " (" + unit + ")";
+			}
+		} else {
 			QStringList lst = plotAssociation.split(",");
 			if (lst.size() > 1){
 				s = lst[1].remove("(Y)");
 				int pos = s.lastIndexOf("_");
 				if (pos > 0)
 					s = s.right(s.length() - pos - 1);
-			}
+			} else
+				s = tr("Y axis");
 		}
 	}
 
@@ -1170,16 +1193,26 @@ void Graph3D::resetAxesLabels()
 
 	s = labels[2];
 	if (s == "%(?Z)"){
-		if (d_matrix)
-			s = tr("Z axis");
-		else {
+		if (d_matrix){
+			QString label = d_matrix->zLabel();
+			if (label.isEmpty())
+				s = tr("Z axis");
+			else {
+				QString unit = d_matrix->zUnit();
+				if (unit.isEmpty())
+					s = label;
+				else
+					s = label + " (" + unit + ")";
+			}
+		} else {
 			QStringList lst = plotAssociation.split(",");
 			if (lst.size() > 2){
 				s = lst[2].remove("(Z)");
 				int pos = s.lastIndexOf("_");
 				if (pos > 0)
 					s = s.right(s.length() - pos - 1);
-			}
+			} else
+				s = tr("Z axis");
 		}
 	}
 
@@ -1191,34 +1224,11 @@ void Graph3D::resetAxesLabels()
 
 void Graph3D::setAxesLabels(const QStringList& l)
 {
-	if (l.isEmpty())
+	if (l.isEmpty() || this->labels == l)
 		return;
-
-	QString label = l[0];
-	sp->coordinates()->axes[X1].setLabelString(label);
-	sp->coordinates()->axes[X2].setLabelString(label);
-	sp->coordinates()->axes[X3].setLabelString(label);
-	sp->coordinates()->axes[X4].setLabelString(label);
-
-	if (l.size() < 2)
-		return;
-
-	label = l[1];
-	sp->coordinates()->axes[Y1].setLabelString(label);
-	sp->coordinates()->axes[Y2].setLabelString(label);
-	sp->coordinates()->axes[Y3].setLabelString(label);
-	sp->coordinates()->axes[Y4].setLabelString(label);
-
-	if (l.size() < 3)
-		return;
-
-	label = l[2];
-	sp->coordinates()->axes[Z1].setLabelString(label);
-	sp->coordinates()->axes[Z2].setLabelString(label);
-	sp->coordinates()->axes[Z3].setLabelString(label);
-	sp->coordinates()->axes[Z4].setLabelString(label);
 
 	labels = l;
+	resetAxesLabels();
 }
 
 void Graph3D::setXAxisLabel(const QString& label)
@@ -3270,7 +3280,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 	Graph3D *plot = app->newPlot3D(caption);
 
-	ApplicationWindow::restoreWindowGeometry(app, plot, lst[1]);
+	ApplicationWindow::restoreWindowGeometry(plot, lst[1]);
 	QString formula = fList[1];
 	if (!formula.isEmpty()){
 		if (formula.endsWith("(Y)", true)){//Ribbon plot

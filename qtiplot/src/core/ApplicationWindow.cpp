@@ -2356,6 +2356,45 @@ void ApplicationWindow::updateMatrixPlots(Matrix *m)
 	QApplication::restoreOverrideCursor();
 }
 
+void ApplicationWindow::updateMatrixPlotLabels(Matrix *m)
+{
+	if (!m)
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	QList<MdiSubWindow *> windows = windowsList();
+	foreach(MdiSubWindow *w, windows){
+		MultiLayer *plot2D = qobject_cast<MultiLayer *>(w);
+		Graph3D *plot3D = qobject_cast<Graph3D *>(w);
+		if (plot3D && plot3D->matrix() == m){
+			plot3D->resetAxesLabels();
+			plot3D->surface()->updateGL();
+		} else if (plot2D){
+			QList<Graph *> layers = plot2D->layersList();
+			foreach(Graph *g, layers){
+				bool update = false;
+				QList<QwtPlotItem *> curvesList = g->curvesList();
+				foreach (QwtPlotItem *it, curvesList){
+					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+						Spectrogram *sp = (Spectrogram *)it;
+						if (sp->matrix() == m){
+							g->updateAxesTitles();
+							update = true;
+						}
+					}
+				}
+				if (update)
+					g->updatePlot();
+			}
+		}
+	}
+
+	modifiedProject();
+
+	QApplication::restoreOverrideCursor();
+}
+
 void ApplicationWindow::add3DData()
 {
 	if (!hasTable()){
@@ -3448,6 +3487,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	connect(stack, SIGNAL(canUndoChanged(bool)), actionUndo, SLOT(setEnabled(bool)));
 	connect(stack, SIGNAL(canRedoChanged(bool)), actionRedo, SLOT(setEnabled(bool)));
 	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
+	connect(m, SIGNAL(modifiedLabel(Matrix*)), this, SLOT(updateMatrixPlotLabels(Matrix*)));
 	connect(m, SIGNAL(modifiedData(Matrix*)), this, SLOT(updateMatrixPlots(Matrix *)));
 	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
 	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
@@ -4907,7 +4947,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 				cont << s;
 			}
 			cont.pop_back();
-			m->restore(cont);
+			m->restore(cont, d_file_version);
 			progress.setValue(aux);
 		} else if  (s == "</folder>")
 			app->goToParentFolder();
@@ -4942,7 +4982,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 			app->setListViewDate(caption, graph[3]);
 			plot->setBirthDate(graph[3]);
 
-			restoreWindowGeometry(app, plot, t.readLine());
+			restoreWindowGeometry(plot, t.readLine());
 			plot->blockSignals(true);
 
 			if (d_file_version > 71){
@@ -5204,7 +5244,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 			w = multilayerPlot(generateUniqueName(tr("Graph")), 0, rows, cols);
 			if (w){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
-				restoreWindowGeometry(this, w, geometry);
+				restoreWindowGeometry(w, geometry);
 				if (d_file_version > 83){
 					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
 					ml->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
@@ -5254,8 +5294,8 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 				QStringList lst;
 				while (!t.atEnd())
 					lst << t.readLine();
-				w->restore(lst);
-				restoreWindowGeometry(this, w, geometry);
+				w->restore(lst, d_file_version, true);
+				restoreWindowGeometry(w, geometry);
 			}
 		}
 	}
@@ -6638,8 +6678,12 @@ QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 	return s;
 }
 
-void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s)
+void ApplicationWindow::restoreWindowGeometry(MdiSubWindow *w, const QString s)
 {
+	if (!w)
+		return;
+
+	ApplicationWindow *app = w->applicationWindow();
 	if (qobject_cast<Graph3D *>(w))
 		w->hide();
 
@@ -6653,7 +6697,8 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 				w->resize(width, height);
 		}
 		w->setStatus(MdiSubWindow::Minimized);
-		app->setListView(caption, tr("Minimized"));
+		if (app)
+			app->setListView(caption, tr("Minimized"));
 	} else if (s.contains ("maximized")){
 		w->setMaximized();
 	} else {
@@ -6664,12 +6709,12 @@ void ApplicationWindow::restoreWindowGeometry(ApplicationWindow *app, MdiSubWind
 		}
 		w->setStatus(MdiSubWindow::Normal);
 		if (lst.count() > 5) {
-			if (lst[5] == "hidden")
+			if (app && lst[5] == "hidden")
 				app->hideWindow(w);
 		}
 	}
 
-	if (s.contains ("active")) {
+	if (s.contains ("active")){
 		Folder *f = w->folder();
 		if (f)
 			f->setActiveWindow(w);
@@ -12105,7 +12150,7 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 	}
 
 	if (flist.size() >= 2)
-		restoreWindowGeometry(app, w, flist[1]);
+		restoreWindowGeometry(w, flist[1]);
 
 	if (flist.size() >= 3){
 		lst = flist[2].split("\t");
@@ -12119,77 +12164,12 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 
 Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList &flist)
 {
-	QStringList::const_iterator line = flist.begin();
-
-	QStringList list=(*line).split("\t");
-	QString caption=list[0];
-	int rows = list[1].toInt();
-	int cols = list[2].toInt();
-
-	Matrix* w = app->newMatrix(caption, rows, cols);
-	app->setListViewDate(caption,list[3]);
+	QStringList list = flist.first().split("\t");
+	QString caption = list[0];
+	Matrix* w = app->newMatrix(caption, list[1].toInt(), list[2].toInt());
+	app->setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
-
-	for (line++; line!=flist.end(); line++){
-		QStringList fields = (*line).split("\t");
-		if (fields[0] == "geometry") {
-			restoreWindowGeometry(app, w, *line);
-		} else if (fields[0] == "ColWidth") {
-			w->setColumnsWidth(fields[1].toInt());
-		} else if (fields[0] == "Formula") {
-			w->setFormula(fields[1]);
-		} else if (fields[0] == "<formula>") {
-			QString formula;
-			for (line++; line!=flist.end() && *line != "</formula>"; line++)
-				formula += *line + "\n";
-			formula.truncate(formula.length()-1);
-			w->setFormula(formula);
-		} else if (fields[0] == "TextFormat") {
-			if (fields[1] == "f")
-				w->setTextFormat('f', fields[2].toInt());
-			else
-				w->setTextFormat('e', fields[2].toInt());
-		} else if (fields[0] == "WindowLabel" && fields.size() >= 3) { // d_file_version > 71
-			w->setWindowLabel(fields[1]);
-			w->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
-		} else if (fields[0] == "Coordinates") { // d_file_version > 81
-			w->setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
-		} else if (fields[0] == "ViewType") { // d_file_version > 90
-			w->setViewType((Matrix::ViewType)fields[1].toInt());
-		} else if (fields[0] == "HeaderViewType") { // d_file_version > 90
-			w->setHeaderViewType((Matrix::HeaderViewType)fields[1].toInt());
-		} else if (fields[0] == "ColorPolicy"){// d_file_version > 90
-			w->setColorMapType((Matrix::ColorMapType)fields[1].toInt());
-		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
-			QStringList lst;
-			while ( *line != "</ColorMap>" )
-				lst << *(++line);
-			lst.pop_back();
-			w->setColorMap(LinearColorMap::fromXmlStringList(lst));
-		} else // <data> or values
-			break;
-	}
-	if (*line == "<data>") line++;
-
-	//read and set table values
-	for (; line!=flist.end() && *line != "</data>"; line++){
-		QStringList fields = (*line).split("\t");
-		int row = fields[0].toInt();
-		for (int col=0; col<cols; col++){
-		    QString cell = fields[col+1];
-		    if (cell.isEmpty())
-                continue;
-
-		    if (d_file_version < 90)
-                w->setCell(row, col, QLocale::c().toDouble(cell));
-            else if (d_file_version == 90)
-                w->setText(row, col, cell);
-			else
-				w->setCell(row, col, cell.toDouble());
-		}
-		qApp->processEvents(QEventLoop::ExcludeUserInput);
-	}
-	w->resetView();
+	w->restore(flist, d_file_version);
 	return w;
 }
 
@@ -12209,7 +12189,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	for (line++; line!=flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry" || fields[0] == "tgeometry") {
-			restoreWindowGeometry(app, w, *line);
+			restoreWindowGeometry(w, *line);
 		} else if (fields[0] == "header") {
 			fields.pop_front();
 			if (d_file_version >= 78)
@@ -12312,7 +12292,7 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 		} else if (fields[0] == "Range"){
 			w->setRange(fields[1].toInt(), fields[2].toInt());
 		} else if (fields[0] == "geometry")
-			restoreWindowGeometry(this, w, *line);
+			restoreWindowGeometry(w, *line);
 		else if (fields[0] == "header"){
 			fields.pop_front();
 
@@ -16414,7 +16394,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					cont << s;
 				}
 				cont.pop_back();
-				m->restore(cont);
+				m->restore(cont, d_file_version);
 			} else if  (s == "</folder>")
 				goToParentFolder();
 		}
@@ -16439,7 +16419,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				plot->setBirthDate(graph[3]);
 				plot->blockSignals(true);
 
-				restoreWindowGeometry(this, plot, t.readLine());
+				restoreWindowGeometry(plot, t.readLine());
 
 				if (d_file_version > 71){
 					QStringList lst = t.readLine().split("\t");

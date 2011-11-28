@@ -59,7 +59,7 @@ public:
     void renameTab(int, const QString&);
 
 	void save(const QString& fn, const QString &info, bool = false);
-	void restore(const QStringList&);
+	void restore(const QStringList&, int fileVersion, bool fromTemplate = false);
 
 public slots:
 	bool autoexec() const { return autoExec; }

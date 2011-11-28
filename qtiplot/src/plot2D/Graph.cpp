@@ -1203,6 +1203,11 @@ QString Graph::parseAxisTitle(int axis)
 		if (!c)
 			c = curve(0);
 
+		QwtPlotItem *it = plotItem(0);
+		Matrix *m = 0;
+		if (it && it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			m = ((Spectrogram *)it)->matrix();
+
 		if (c){
 			name = c->title().text();
 			int pos = name.lastIndexOf("_");
@@ -1239,11 +1244,26 @@ QString Graph::parseAxisTitle(int axis)
 				default:
 					break;
 			}
+		} else if (m){
+			bool colorScale = (axis == ((Spectrogram *)it)->colorScaleAxis());
+			name = colorScale ? m->zLabel() : m->yLabel();
+			QString unit = colorScale ? m->zUnit() : m->yUnit();
+			if (!unit.isEmpty())
+				name += " (" + unit + ")";
+			if (name.isEmpty())
+				s.replace("%(?Y)", tr("Y Axis Title"), Qt::CaseInsensitive);
+			else
+				s.replace("%(?Y)", name, Qt::CaseInsensitive);
 		} else
 			s.replace("%(?Y)", tr("Y Axis Title"), Qt::CaseInsensitive);
 	}
 
 	if (s.contains("%(?X)", Qt::CaseInsensitive)){
+		QwtPlotItem *it = plotItem(0);
+		Matrix *m = 0;
+		if (it && it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			m = ((Spectrogram *)it)->matrix();
+
 		DataCurve *c = dataCurve(0);
 		if (c){
 			name = c->xColumnName();
@@ -1278,6 +1298,15 @@ QString Graph::parseAxisTitle(int axis)
 				default:
 				  break;
 			}
+		} else if (m){
+			name = m->xLabel();
+			QString unit = m->xUnit();
+			if (!unit.isEmpty())
+				name += " (" + unit + ")";
+			if (name.isEmpty())
+				s.replace("%(?X)", tr("X Axis Title"), Qt::CaseInsensitive);
+			else
+				s.replace("%(?X)", name, Qt::CaseInsensitive);
 		} else
 			s.replace("%(?X)", tr("X Axis Title"), Qt::CaseInsensitive);
 	}
