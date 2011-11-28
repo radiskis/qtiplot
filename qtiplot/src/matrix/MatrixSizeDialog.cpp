@@ -223,25 +223,57 @@ void MatrixSizeDialog::apply()
 	double oxe = d_matrix->xEnd();
 	double oys = d_matrix->yStart();
 	double oye = d_matrix->yEnd();
+
+	QUndoStack *stack = d_matrix->undoStack();
 	if(oxs != fromX || oxe != toX || oys != fromY || oye != toY){
-		d_matrix->undoStack()->push(new MatrixSetCoordinatesCommand(d_matrix,
+		stack->push(new MatrixSetCoordinatesCommand(d_matrix,
 						oxs, oxe, oys, oye, fromX, toX, fromY, toY,
 						tr("Set Coordinates x[%1 : %2], y[%3 : %4]").arg(fromX).arg(toX).arg(fromY).arg(toY)));
 		d_matrix->setCoordinates(fromX, toX, fromY, toY);
 	}
 	d_matrix->setDimensions(boxRows->value(), boxCols->value());
 
-	d_matrix->setXLabel(xLabelLineEdit->text());
-	d_matrix->setXUnit(xUnitLineEdit->text());
-	d_matrix->setXComment(xCommentsTextEdit->toPlainText());
+	QString xLabel = xLabelLineEdit->text();
+	if (xLabel != d_matrix->xLabel())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->xLabel(), xLabel, Qt::XAxis, 0,
+						tr("Set X Axis Label") + " \"" + xLabel + "\""));
 
-	d_matrix->setYLabel(yLabelLineEdit->text());
-	d_matrix->setYUnit(yUnitLineEdit->text());
-	d_matrix->setYComment(yCommentsTextEdit->toPlainText());
+	QString xUnit = xUnitLineEdit->text();
+	if (xUnit != d_matrix->xUnit())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->xUnit(), xUnit, Qt::XAxis, 1,
+						tr("Set X Axis Unit") + " \"" + xUnit + "\""));
 
-	d_matrix->setZLabel(zLabelLineEdit->text());
-	d_matrix->setZUnit(zUnitLineEdit->text());
-	d_matrix->setZComment(zCommentsTextEdit->toPlainText());
+	QString xComment = xCommentsTextEdit->toPlainText();
+	if (xComment != d_matrix->xComment())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->xComment(), xComment, Qt::XAxis, 2, tr("Set X Axis Comment")));
+
+	QString yLabel = yLabelLineEdit->text();
+	if (yLabel != d_matrix->yLabel())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->yLabel(), yLabel, Qt::YAxis, 0,
+						tr("Set Y Axis Label") + " \"" + yLabel + "\""));
+
+	QString yUnit = yUnitLineEdit->text();
+	if (yUnit != d_matrix->yUnit())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->yUnit(), yUnit, Qt::YAxis, 1,
+						tr("Set Y Axis Unit") + " \"" + yUnit + "\""));
+
+	QString yComment = yCommentsTextEdit->toPlainText();
+	if (yComment != d_matrix->yComment())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->yComment(), yComment, Qt::YAxis, 2, tr("Set Y Axis Comment")));
+
+	QString zLabel = zLabelLineEdit->text();
+	if (zLabel != d_matrix->zLabel())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->zLabel(), zLabel, Qt::ZAxis, 0,
+						tr("Set Z Axis Label") + " \"" + zLabel + "\""));
+
+	QString zUnit = zUnitLineEdit->text();
+	if (zUnit != d_matrix->zUnit())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->zUnit(), zUnit, Qt::ZAxis, 1,
+						tr("Set Z Axis Unit") + " \"" + zUnit + "\""));
+
+	QString zComment = zCommentsTextEdit->toPlainText();
+	if (zComment != d_matrix->zComment())
+		stack->push(new MatrixSetStringCommand(d_matrix, d_matrix->zComment(), zComment, Qt::ZAxis, 2, tr("Set Z Axis Comment")));
 }
 
 void MatrixSizeDialog::accept()
