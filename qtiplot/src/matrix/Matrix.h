@@ -56,7 +56,7 @@ class QUndoStack;
 //! Matrix worksheet class
 class Matrix: public MdiSubWindow, public scripted
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
 
@@ -73,12 +73,12 @@ public:
 	 * \param f window flags
 	 */
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
-    Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
-    ~Matrix();
+	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+	~Matrix();
 
 	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise,
 				  RotateCounterClockwise, FFT, Clear, Calculate, MuParserCalculate, SetImage, ImportAscii};
-    enum HeaderViewType{ColumnRow, XY};
+	enum HeaderViewType{ColumnRow, XY};
 	enum ViewType{TableView, ImageView};
 	enum ColorMapType{Default, GrayScale, Rainbow, Custom};
 	enum ImportMode {
@@ -91,8 +91,8 @@ public:
 	void setViewType(ViewType, bool renderImage = true);
 	ViewType viewType(){return d_view_type;};
 
-    HeaderViewType headerViewType(){return d_header_view_type;};
-    void setHeaderViewType(HeaderViewType type);
+	HeaderViewType headerViewType(){return d_header_view_type;};
+	void setHeaderViewType(HeaderViewType type);
 
 	QImage image();
 	void displayImage(const QImage& image);
@@ -106,7 +106,7 @@ public:
 	void exportEMF(const QString& fileName);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
-    QUndoStack *undoStack(){return d_undo_stack;};
+	QUndoStack *undoStack(){return d_undo_stack;};
 
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
 
@@ -134,9 +134,9 @@ public:
 	void flipVertically();
 	void flipHorizontally();
 	void rotate90(bool clockwise = true);
-    void fft(bool inverse = false);
+	void fft(bool inverse = false);
 
-    ColorMapType colorMapType(){return d_color_map_type;};
+	ColorMapType colorMapType(){return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType);
 
 	LinearColorMap colorMap(){return d_color_map;};
@@ -296,7 +296,7 @@ public slots:
 	double dy(){return fabs(y_end - y_start)/(double)(numRows() - 1);};
 
 	//! Returns the bounding rect of the matrix coordinates
-  	QwtDoubleRect boundingRect();
+	QwtDoubleRect boundingRect();
 	//! Set the X and Y coordinate intervals
 	void setCoordinates(double xs, double xe, double ys, double ye);
 
@@ -320,7 +320,7 @@ public slots:
 
 	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
 
-    void copy(Matrix *m);
+	void copy(Matrix *m);
 	//! Tries to allocate memory for the workspace. Returns a NULL pointer if failure.
 	double *initWorkspace(int size);
 	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
@@ -340,13 +340,13 @@ private:
 	void initImage(const QImage& image);
 	void initImageView();
 	void initTableView();
-    void initGlobals();
+	void initGlobals();
 	bool ignoreUndo();
 
-    QStackedWidget *d_stack;
-    MatrixModel *d_matrix_model;
+	QStackedWidget *d_stack;
+	MatrixModel *d_matrix_model;
 	//! Pointer to the table view
-    QTableView *d_table_view;
+	QTableView *d_table_view;
 	//! Used to display the image view
 	QLabel *imageLabel;
 	//! Last formula used to calculate cell values
@@ -368,7 +368,7 @@ private:
 	//! Maximum value corresponding to the last color in the color map
 	double d_color_max;
 
-    //! Keeps track of the view type;
+	//! Keeps track of the view type;
 	ViewType d_view_type;
 	//! Keeps track of the header view type;
 	HeaderViewType d_header_view_type;
@@ -379,7 +379,7 @@ private:
 	//! Column width in pixels;
 	int d_column_width;
 	QShortcut *d_select_all_shortcut;
-    //! Undo/Redo commands stack
+	//! Undo/Redo commands stack
 	QUndoStack *d_undo_stack;
 	//! Pointer to a data buffer used for matrix operations.
 	double *d_workspace;

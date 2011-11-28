@@ -1757,6 +1757,30 @@ ye = m.yEnd()
 m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1)
 </programlisting>
 
+You can also define labels, units and comments for the X, Y or Z axis that can be used in plots:
+<programlisting>
+m.setXLabel("Width")
+print m.xLabel()
+m.setXUnit("cm")
+print m.xUnit()
+m.setXComment("X axis comment")
+print m.xComment()
+
+m.setYLabel("Height")
+print m.yLabel()
+m.setYUnit("mm")
+print m.yUnit()
+m.setYComment("Y axis comment")
+print m.yComment()
+
+m.setZLabel("Intensity")
+print m.zLabel()
+m.setZUnit("a.u.")
+print m.zUnit()
+m.setZComment("Z axis comment")
+print m.zComment()
+</programlisting>
+
 The horizontal and vertical headers of a matrix can display either the x/y coordinates or
 the column/row indexes:
 <programlisting>
@@ -2074,6 +2098,17 @@ l = g.activeLayer()
 will do the trick, but you can also select a layer by its number:
 <programlisting>
 l = g.layer(num)
+</programlisting>
+
+If a plot curve is selected using the "Data Reader" tool or the "Select Data Range" tool,
+you can get the coordinates of the selected data points using the method bellow:
+<programlisting>
+g = graph("Graph1").activeLayer()
+c = g.selectedDataCurve()
+print c.x(g.selectionActivePoint())
+print c.y(g.selectionActivePoint())
+print c.tableRow(g.selectionActivePoint()) + 1
+print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
 </programlisting>
 
 <sect3 id="Python-Title">

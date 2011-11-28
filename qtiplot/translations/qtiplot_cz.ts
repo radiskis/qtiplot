@@ -10829,6 +10829,42 @@ K tomu lze použít následujících zvláštních kódů:
         <source>&amp;z Labels</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Set X Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixValuesDialog</name>

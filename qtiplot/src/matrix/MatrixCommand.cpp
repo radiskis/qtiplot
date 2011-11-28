@@ -101,6 +101,116 @@ void MatrixSetFormulaCommand::undo()
 }
 
 /*************************************************************************/
+/*           Class MatrixSetStringCommand                               */
+/*************************************************************************/
+MatrixSetStringCommand::MatrixSetStringCommand(Matrix *m, const QString& oldString, const QString& newString, const Qt::Axis& axis, int type, const QString & text):
+QUndoCommand(text),
+d_matrix(m),
+d_old_string(oldString),
+d_new_string(newString),
+d_axis(axis),
+d_type(type)
+{
+	setText(m->objectName() + ": " + text);
+}
+
+void MatrixSetStringCommand::redo()
+{
+	if (!d_matrix)
+		return;
+
+	switch(d_type){
+		case 0://label
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXLabel(d_new_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYLabel(d_new_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZLabel(d_new_string);
+				break;
+			}
+		break;
+		case 1://unit
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXUnit(d_new_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYUnit(d_new_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZUnit(d_new_string);
+				break;
+			}
+		break;
+		case 2://comment
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXComment(d_new_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYComment(d_new_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZComment(d_new_string);
+				break;
+			}
+		break;
+	}
+}
+
+void MatrixSetStringCommand::undo()
+{
+	if (!d_matrix)
+		return;
+
+	switch(d_type){
+		case 0://label
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXLabel(d_old_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYLabel(d_old_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZLabel(d_old_string);
+				break;
+			}
+		break;
+		case 1://unit
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXUnit(d_old_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYUnit(d_old_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZUnit(d_old_string);
+				break;
+			}
+		break;
+		case 2://comment
+			switch(d_axis){
+				case Qt::XAxis:
+					d_matrix->setXComment(d_old_string);
+				break;
+				case Qt::YAxis:
+					d_matrix->setYComment(d_old_string);
+				break;
+				case Qt::ZAxis:
+					d_matrix->setZComment(d_old_string);
+				break;
+			}
+		break;
+	}
+}
+
+/*************************************************************************/
 /*           Class MatrixSetViewCommand                                  */
 /*************************************************************************/
 MatrixSetViewCommand::MatrixSetViewCommand(Matrix *m, Matrix::ViewType oldView,

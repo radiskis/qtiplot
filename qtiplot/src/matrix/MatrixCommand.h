@@ -62,6 +62,21 @@ private:
     QString d_new_formula;
 };
 
+class MatrixSetStringCommand: public QUndoCommand
+{
+public:
+	MatrixSetStringCommand(Matrix *m, const QString& oldString, const QString& newString, const Qt::Axis& axis, int type, const QString & text);
+	virtual void redo();
+	virtual void undo();
+
+private:
+	Matrix *d_matrix;
+	QString d_old_string;
+	QString d_new_string;
+	Qt::Axis d_axis;
+	int d_type;
+};
+
 class MatrixSetViewCommand: public QUndoCommand
 {
 public:

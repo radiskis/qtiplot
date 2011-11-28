@@ -14353,9 +14353,54 @@ stesso numero di righe.</translation>
         <translation>&amp;Esci</translation>
     </message>
     <message>
-        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="229"/>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="231"/>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Imposta le coordinate x[%1 : %2], y[%3 : %4]</translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="239"/>
+        <source>Set X Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="244"/>
+        <source>Set X Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="248"/>
+        <source>Set X Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="253"/>
+        <source>Set Y Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="258"/>
+        <source>Set Y Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="262"/>
+        <source>Set Y Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="267"/>
+        <source>Set Z Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="272"/>
+        <source>Set Z Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/matrix/MatrixSizeDialog.cpp" line="276"/>
+        <source>Set Z Axis Comment</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
