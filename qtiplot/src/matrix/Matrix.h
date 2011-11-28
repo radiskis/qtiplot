@@ -2,7 +2,7 @@
     File                 : Matrix.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Matrix worksheet class
 
@@ -171,6 +171,25 @@ public:
 
 	virtual QString sizeToString();
 
+	QString xLabel(){return d_x_label;};
+	void setXLabel(const QString&);
+	QString yLabel(){return d_y_label;};
+	void setYLabel(const QString&);
+	QString zLabel(){return d_z_label;};
+	void setZLabel(const QString&);
+	QString xUnit(){return d_x_unit;};
+	void setXUnit(const QString&);
+	QString yUnit(){return d_y_unit;};
+	void setYUnit(const QString&);
+	QString zUnit(){return d_z_unit;};
+	void setZUnit(const QString&);
+	QString xComment(){return d_x_comment;};
+	void setXComment(const QString&);
+	QString yComment(){return d_y_comment;};
+	void setYComment(const QString&);
+	QString zComment(){return d_z_comment;};
+	void setZComment(const QString&);
+
 public slots:
 	void exportPDF(const QString& fileName);
 	//! Print the Matrix
@@ -233,7 +252,7 @@ public slots:
 	void setFormula(const QString &s){formula_str = s;};
 
 	//! Load the matrix from a string list (i.e. lines from a project file)
-	void restore(const QStringList &l);
+	void restore(const QStringList &l, int fileVersion, bool fromTemplate = false);
 	//! Format the matrix format in a string to save it in a template file
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
 	void save(const QString &, const QString &, bool saveAsTemplate = false);
@@ -311,6 +330,7 @@ public slots:
 
 signals:
 	void modifiedData(Matrix *);
+	void modifiedLabel(Matrix *);
 
 private:
 	bool eventFilter(QObject *, QEvent *);
@@ -331,6 +351,9 @@ private:
 	QLabel *imageLabel;
 	//! Last formula used to calculate cell values
 	QString formula_str;
+	QString d_x_label, d_y_label, d_z_label;
+	QString d_x_unit, d_y_unit, d_z_unit;
+	QString d_x_comment, d_y_comment, d_z_comment;
 	//! Format code for displaying numbers
 	QChar txt_format;
 	//! Number of significant digits

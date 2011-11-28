@@ -68,7 +68,6 @@ public:
   CaptionPolicy captionPolicy();
   void setCaptionPolicy(CaptionPolicy);
 
-  virtual void restore(const QStringList& );
   Folder* folder();
 
   void askOnCloseEvent(bool)/PyName=confirmClose/;
@@ -1000,6 +999,25 @@ public:
 	double yEnd();
     void setCoordinates(double xs, double xe, double ys, double ye);
 
+	QString xLabel();
+	void setXLabel(const QString&);
+	QString yLabel();
+	void setYLabel(const QString&);
+	QString zLabel();
+	void setZLabel(const QString&);
+	QString xUnit();
+	void setXUnit(const QString&);
+	QString yUnit();
+	void setYUnit(const QString&);
+	QString zUnit();
+	void setZUnit(const QString&);
+	QString xComment();
+	void setXComment(const QString&);
+	QString yComment();
+	void setYComment(const QString&);
+	QString zComment();
+	void setZComment(const QString&);
+	QString formula();
     void setFormula(const QString &);
     bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool muParser = true);
 

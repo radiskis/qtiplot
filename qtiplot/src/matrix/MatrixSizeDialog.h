@@ -36,6 +36,7 @@ class QGroupBox;
 class QPushButton;
 class QSpinBox;
 class DoubleSpinBox;
+class QTextEdit;
 
 //! Matrix dimensions dialog
 class MatrixSizeDialog : public QDialog
@@ -63,8 +64,13 @@ private:
 	QPushButton* buttonCancel;
 	QPushButton* buttonValues;
 	QPushButton* buttonProperties;
-    QGroupBox* groupBox1, *groupBox2;
+	QGroupBox* coordinatesBox;
+	QGroupBox* xLabelsBox, *yLabelsBox, *zLabelsBox;
 	QSpinBox *boxCols, *boxRows;
+	QLineEdit *xLabelLineEdit, *yLabelLineEdit, *zLabelLineEdit;
+	QLineEdit *xUnitLineEdit, *yUnitLineEdit, *zUnitLineEdit;
+	QTextEdit *xCommentsTextEdit, *yCommentsTextEdit, *zCommentsTextEdit;
+	QTabWidget *tabsWidget;
 	DoubleSpinBox *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;
 	Matrix *d_matrix;
 };

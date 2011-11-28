@@ -1192,7 +1192,8 @@ via a proxy server. If you don't now how to set these options, contact your Netw
 <sect1 id="set-dimensions-dialog">
   <title>Set Matrix Dimensions</title>
       <indexterm><primary>matrix</primary></indexterm>
-  <para>This command appears in the &matrix-menu-lnk;. It allows direct specification of the number of rows and columns of a matrix. In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in new plots as the initial scale ranges. They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables if you choose to define the contents of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
+  <para>This command appears in the &matrix-menu-lnk;. It allows direct specification of the number of rows and columns of a matrix. In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in new plots as the initial scale ranges.
+  They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables if you choose to define the contents of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
   <figure id="fig-set-dimensions-dialog">
     <title>The &set-dimensions-cmd; dialog for matrix.</title>
     <mediaobject>
@@ -1201,6 +1202,10 @@ via a proxy server. If you don't now how to set these options, contact your Netw
       </imageobject>
     </mediaobject>
   </figure>
+
+<para>You can also define a <emphasis>Long Name</emphasis>, <emphasis>Units</emphasis> and <emphasis>Comments</emphasis>
+for X / Y / Z coordinates under the <emphasis>X Labels</emphasis>, <emphasis>Y Labels</emphasis> or <emphasis>Z Labels</emphasis> tab.
+These labels can be used as X / Y /Z axis labels in 3D graphs.</para>
 </sect1>
 
 <!-- ************************************************** -->

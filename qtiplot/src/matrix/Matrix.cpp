@@ -199,9 +199,9 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	t << QString::number(numRows())+"\t";
 	t << QString::number(numCols())+"\t";
 	if (notTemplate)
-        t << birthDate() + "\n";
-	t << info;
-	t << "ColWidth\t" + QString::number(d_column_width)+"\n";
+		t << birthDate();
+	t << "\n" + info;
+	t << "ColWidth\t" + QString::number(d_column_width) + "\n";
 	t << "<formula>\n" + formula_str + "\n</formula>\n";
 	t << "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
 	if (notTemplate)
@@ -210,6 +210,24 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	t << QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
 	t << "ViewType\t" + QString::number((int)d_view_type) + "\n";
     t << "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
+	if (!d_x_label.isEmpty())
+		t << "<xLabel>" + d_x_label + "</xLabel>\n";
+	if (!d_y_label.isEmpty())
+		t << "<yLabel>" + d_y_label + "</yLabel>\n";
+	if (!d_z_label.isEmpty())
+		t << "<zLabel>" + d_z_label + "</zLabel>\n";
+	if (!d_x_unit.isEmpty())
+		t << "<xUnit>" + d_x_unit + "</xUnit>\n";
+	if (!d_y_unit.isEmpty())
+		t << "<yUnit>" + d_y_unit + "</yUnit>\n";
+	if (!d_z_unit.isEmpty())
+		t << "<zUnit>" + d_z_unit + "</zUnit>\n";
+	if (!d_x_comment.isEmpty())
+		t << "<xComment>" + d_x_comment.replace("\n", "<br>") + "</xComment>\n";
+	if (!d_y_comment.isEmpty())
+		t << "<yComment>" + d_y_comment.replace("\n", "<br>") + "</yComment>\n";
+	if (!d_z_comment.isEmpty())
+		t << "<zComment>" + d_z_comment.replace("\n", "<br>") + "</zComment>\n";
 
 	if (d_color_map_type != Custom)
 		t << "ColorPolicy\t" + QString::number(d_color_map_type) + "\n";
@@ -253,66 +271,108 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
     t << "</matrix>\n";
 }
 
-void Matrix::restore(const QStringList &lst)
+void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplate)
 {
-	QStringList l;
-	QStringList::const_iterator i = lst.begin();
-
-	l = (*i++).split("\t");
-	setColumnsWidth(l[1].toInt());
-
-	l = (*i++).split("\t");
-	if (l[0] == "Formula")
-		formula_str = l[1];
-	else if (l[0] == "<formula>"){
-		for(formula_str=""; i != lst.end() && *i != "</formula>"; i++)
-			formula_str += *i + "\n";
-		formula_str.truncate(formula_str.length()-1);
-		i++;
-	}
-
-	l = (*i++).split("\t");
-	if (l[1] == "f")
-		setTextFormat('f', l[2].toInt());
-	else
-		setTextFormat('e', l[2].toInt());
-
-	l = (*i++).split("\t");
-	x_start = l[1].toDouble();
-	x_end = l[2].toDouble();
-	y_start = l[3].toDouble();
-	y_end = l[4].toDouble();
-
-	l = (*i++).split("\t");
-	d_view_type = (Matrix::ViewType)l[1].toInt();
-	l = (*i++).split("\t");
-	d_header_view_type = (Matrix::HeaderViewType)l[1].toInt();
-	l = (*i++).split("\t");
-	d_color_map_type = (Matrix::ColorMapType)l[1].toInt();
-
-	if (lst.contains ("<ColorMap>")){
-		QStringList aux;
-		while (*i != "</ColorMap>"){
-			aux << *i;
-			i++;
+	QStringList::const_iterator line = flist.begin();
+	for (line++; line != flist.end(); line++){
+		QString s = *line;
+		if (s.startsWith("<xLabel>")){// version > 0.9.8.9
+			setXLabel(s.remove("<xLabel>").remove("</xLabel>"));
+			continue;
+		} else if (s.startsWith("<yLabel>")){
+			setYLabel(s.remove("<yLabel>").remove("</yLabel>"));
+			continue;
+		} else if (s.startsWith("<zLabel>")){
+			setZLabel(s.remove("<zLabel>").remove("</zLabel>"));
+			continue;
+		} else if (s.startsWith("<xUnit>")){
+			setXUnit(s.remove("<xUnit>").remove("</xUnit>"));
+			continue;
+		} else if (s.startsWith("<yUnit>")){
+			setYUnit(s.remove("<yUnit>").remove("</yUnit>"));
+			continue;
+		} else if (s.startsWith("<zUnit>")){
+			setZUnit(s.remove("<zUnit>").remove("</zUnit>"));
+			continue;
+		} else if (s.startsWith("<xComment>")){
+			setXComment(s.remove("<xComment>").remove("</xComment>").replace("<br>", "\n"));
+			continue;
+		} else if (s.startsWith("<yComment>")){
+			setYComment(s.remove("<yComment>").remove("</yComment>").replace("<br>", "\n"));
+			continue;
+		} else if (s.startsWith("<zComment>")){
+			setZComment(s.remove("<zComment>").remove("</zComment>").replace("<br>", "\n"));
+			continue;
 		}
-		setColorMap(LinearColorMap::fromXmlStringList(aux));
+
+		QStringList fields = s.split("\t");
+		if (fields[0] == "geometry"){
+			ApplicationWindow::restoreWindowGeometry(this, s);
+		} else if (fields[0] == "ColWidth"){
+			setColumnsWidth(fields[1].toInt());
+		} else if (fields[0] == "Formula"){
+			setFormula(fields[1]);
+		} else if (fields[0] == "<formula>"){
+			QString formula;
+			for (line++; line != flist.end() && *line != "</formula>"; line++)
+				formula += *line + "\n";
+			formula.truncate(formula.length() - 1);
+			setFormula(formula);
+		} else if (fields[0] == "TextFormat"){
+			if (fields[1] == "f")
+				setTextFormat('f', fields[2].toInt());
+			else
+				setTextFormat('e', fields[2].toInt());
+		} else if (fields[0] == "WindowLabel" && fields.size() >= 3){//d_file_version > 71
+			setWindowLabel(fields[1]);
+			setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
+		} else if (fields[0] == "Coordinates"){// d_file_version > 81
+			setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
+		} else if (fields[0] == "ViewType"){// d_file_version > 90
+			setViewType((Matrix::ViewType)fields[1].toInt());
+		} else if (fields[0] == "HeaderViewType"){// d_file_version > 90
+			setHeaderViewType((Matrix::HeaderViewType)fields[1].toInt());
+		} else if (fields[0] == "ColorPolicy"){// d_file_version > 90
+			setColorMapType((Matrix::ColorMapType)fields[1].toInt());
+		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
+			QStringList lst;
+			while (*line != "</ColorMap>")
+				lst << *(++line);
+			lst.pop_back();
+			setColorMap(LinearColorMap::fromXmlStringList(lst));
+		} else // <data> or values
+			break;
 	}
 
-	if (!formula_str.isEmpty())
-		calculate();
+	if (fromTemplate){
+		if (!formula_str.isEmpty()){
+			calculate();
+			resetView();
+		}
+	} else {
+		if (*line == "<data>") line++;
 
-	if (d_view_type == ImageView){
-		if (d_table_view)
-			delete d_table_view;
-		if (d_select_all_shortcut)
-			delete d_select_all_shortcut;
-		initImageView();
-		d_stack->setCurrentWidget(imageLabel);
-		if (d_color_map_type == Rainbow)
-			setRainbowColorMap();
+		//read and set table values
+		int cols = numCols();
+		for (; line != flist.end() && *line != "</data>"; line++){
+			QStringList fields = (*line).split("\t");
+			int row = fields[0].toInt();
+			for (int col = 0; col < cols; col++){
+				QString cell = fields[col + 1];
+				if (cell.isEmpty())
+					continue;
+
+				if (fileVersion < 90)
+					setCell(row, col, QLocale::c().toDouble(cell));
+				else if (fileVersion == 90)
+					setText(row, col, cell);
+				else
+					setCell(row, col, cell.toDouble());
+			}
+			qApp->processEvents(QEventLoop::ExcludeUserInput);
+		}
+		resetView();
 	}
-	resetView();
 }
 
 void Matrix::setNumericPrecision(int prec)
@@ -1322,6 +1382,15 @@ void Matrix::copy(Matrix *m)
     d_view_type = m->viewType();
 	setColumnsWidth(m->columnsWidth());
 	formula_str = m->formula();
+	d_x_label = m->xLabel();
+	d_y_label = m->yLabel();
+	d_z_label = m->zLabel();
+	d_x_unit = m->xUnit();
+	d_y_unit = m->yUnit();
+	d_z_unit = m->zUnit();
+	d_x_comment = m->xComment();
+	d_y_comment = m->yComment();
+	d_z_comment = m->zComment();
     d_color_map_type = m->colorMapType();
     d_color_map = m->colorMap();
 
@@ -1812,6 +1881,87 @@ bool Matrix::eventFilter(QObject *object, QEvent *e)
 		displayImage(d_matrix_model->renderImage());
 
 	return QObject::eventFilter(object, e);
+}
+
+void Matrix::setXLabel(const QString& s)
+{
+	if (d_x_label == s)
+		return;
+
+	d_x_label = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setYLabel(const QString& s)
+{
+	if (d_y_label == s)
+		return;
+
+	d_y_label = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setZLabel(const QString& s)
+{
+	if (d_z_label == s)
+		return;
+
+	d_z_label = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setXUnit(const QString& s)
+{
+	if (d_x_unit == s)
+		return;
+
+	d_x_unit = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setYUnit(const QString& s)
+{
+	if (d_y_unit == s)
+		return;
+
+	d_y_unit = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setZUnit(const QString& s)
+{
+	if (d_z_unit == s)
+		return;
+
+	d_z_unit = s;
+	emit modifiedLabel(this);
+}
+
+void Matrix::setXComment(const QString& s)
+{
+	if (d_x_comment == s)
+		return;
+
+	d_x_comment = s;
+	emit modifiedWindow(this);
+}
+
+void Matrix::setYComment(const QString& s)
+{
+	if (d_y_comment == s)
+		return;
+
+	d_y_comment = s;
+	emit modifiedWindow(this);
+}
+
+void Matrix::setZComment(const QString& s)
+{
+	if (d_z_comment == s)
+		return;
+
+	d_z_comment = s;
+	emit modifiedWindow(this);
 }
 
 Matrix::~Matrix()

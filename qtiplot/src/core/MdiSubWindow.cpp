@@ -173,8 +173,8 @@ void MdiSubWindow::changeEvent(QEvent *event)
 bool MdiSubWindow::eventFilter(QObject *object, QEvent *e)
 {
 	if (e->type() == QEvent::ContextMenu && object == widget()){
-        emit showContextMenu();
-        return true;
+		emit showContextMenu();
+		return true;
 	}
 
 	if (e->type() == QEvent::Move && object == widget()){

@@ -3552,16 +3552,14 @@ void Table::copy(Table *m, bool values)
 	col_format = m->getColumnsFormat();
 }
 
-void Table::restore(const QStringList& flist)
+void Table::restore(const QStringList& flist, int fileVersion, bool)
 {
 	int cols = numCols();
 	QStringList::const_iterator line = flist.begin();
 	for (line; line != flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry" || fields[0] == "tgeometry"){
-			ApplicationWindow *app = applicationWindow();
-			if (app)
-				app->restoreWindowGeometry(app, this, *line);
+			ApplicationWindow::restoreWindowGeometry(this, *line);
 		} else if (fields[0] == "header") {
 			fields.pop_front();
 			loadHeader(fields);

@@ -104,7 +104,7 @@ public:
 
 	// TODO:
 	//! Not implemented yet
-	virtual void restore(const QStringList& ){};
+	virtual void restore(const QStringList&, int fileVersion, bool fromTemplate = false){};
 	virtual void save(const QString&, const QString &, bool = false){};
 	virtual void exportPDF(const QString&){};
 

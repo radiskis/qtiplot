@@ -378,6 +378,7 @@ public slots:
 	void editSurfacePlot();
 	void remove3DMatrixPlots(Matrix *m);
 	void updateMatrixPlots(Matrix *);
+	void updateMatrixPlotLabels(Matrix *);
 	void add3DData();
 	void change3DData();
 	void change3DData(const QString& colName);
@@ -621,7 +622,7 @@ public slots:
 	MdiSubWindow* openTemplate(const QString& fn);
 
 	QString windowGeometryInfo(MdiSubWindow *w);
-	static void restoreWindowGeometry(ApplicationWindow *app, MdiSubWindow *w, const QString s);
+	static void restoreWindowGeometry(MdiSubWindow *w, const QString s);
 	void restoreApplicationGeometry();
 	void resizeActiveWindow();
 	void resizeWindow();

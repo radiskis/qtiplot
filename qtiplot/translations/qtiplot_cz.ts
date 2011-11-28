@@ -10783,7 +10783,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Coordinates</source>
-        <translation>Souřadnice</translation>
+        <translation type="obsolete">Souřadnice</translation>
     </message>
     <message>
         <source>QtiPlot - Matrix Dimensions</source>
@@ -10799,6 +10799,34 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>xy &amp;Mapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;x Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;y Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;z Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

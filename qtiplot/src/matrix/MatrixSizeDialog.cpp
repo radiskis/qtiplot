@@ -46,20 +46,24 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizeGripEnabled(true);
 
-	groupBox1 = new QGroupBox(tr("Dimensions"));
-	QHBoxLayout *topLayout = new QHBoxLayout(groupBox1);
-	topLayout->addWidget( new QLabel(tr( "Rows" )) );
-	boxRows = new QSpinBox();
-	boxRows->setRange(1, INT_MAX);
-	topLayout->addWidget(boxRows);
-	topLayout->addStretch();
-	topLayout->addWidget( new QLabel(tr( "Columns" )) );
+	QGroupBox *dimBox = new QGroupBox(tr("Dimensions"));
+	QHBoxLayout *topLayout = new QHBoxLayout(dimBox);
+	topLayout->addWidget(new QLabel(tr("Columns") + " x " + tr("Rows") + " = "));
+
 	boxCols = new QSpinBox();
 	boxCols->setRange(1, INT_MAX);
-	topLayout->addWidget(boxCols);
+	topLayout->addWidget(boxCols, 1);
 
-	groupBox2 = new QGroupBox(tr("Coordinates"));
-	QGridLayout *centerLayout = new QGridLayout(groupBox2);
+	topLayout->addWidget( new QLabel(" x "));
+
+	boxRows = new QSpinBox();
+	boxRows->setRange(1, INT_MAX);
+	topLayout->addWidget(boxRows, 1);
+
+	tabsWidget = new QTabWidget();
+
+	coordinatesBox = new QGroupBox();
+	QGridLayout *centerLayout = new QGridLayout(coordinatesBox);
 	centerLayout->addWidget( new QLabel(tr( "X (Columns)" )), 0, 1 );
 	centerLayout->addWidget( new QLabel(tr( "Y (Rows)" )), 0, 2 );
 
@@ -84,6 +88,68 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	centerLayout->addWidget( boxYEnd, 2, 2 );
 	centerLayout->setRowStretch(3, 1);
 
+	tabsWidget->addTab(coordinatesBox, tr("xy &Mapping"));
+
+	xLabelsBox = new QGroupBox();
+	QGridLayout *xLabelsLayout = new QGridLayout(xLabelsBox);
+	xLabelsLayout->addWidget(new QLabel(tr("Long Name")), 0, 0);
+	xLabelLineEdit = new QLineEdit();
+	xLabelsLayout->addWidget(xLabelLineEdit, 0, 1);
+	xLabelsLayout->addWidget(new QLabel(tr("Units")), 1, 0);
+	xUnitLineEdit = new QLineEdit();
+	xLabelsLayout->addWidget(xUnitLineEdit, 1, 1);
+	xLabelsLayout->addWidget(new QLabel(tr("Comments")), 2, 0);
+	xCommentsTextEdit = new QTextEdit();
+	xCommentsTextEdit->setMaximumHeight(80);
+	xLabelsLayout->addWidget(xCommentsTextEdit, 2, 1);
+	xLabelsLayout->setColumnStretch(1, 1);
+	xLabelsLayout->setRowStretch(3, 1);
+	tabsWidget->addTab(xLabelsBox, tr("&x Labels"));
+
+	yLabelsBox = new QGroupBox();
+	QGridLayout *yLabelsLayout = new QGridLayout(yLabelsBox);
+	yLabelsLayout->addWidget(new QLabel(tr("Long Name")), 0, 0);
+	yLabelLineEdit = new QLineEdit();
+	yLabelsLayout->addWidget(yLabelLineEdit, 0, 1);
+	yLabelsLayout->addWidget(new QLabel(tr("Units")), 1, 0);
+	yUnitLineEdit = new QLineEdit();
+	yLabelsLayout->addWidget(yUnitLineEdit, 1, 1);
+	yLabelsLayout->addWidget(new QLabel(tr("Comments")), 2, 0);
+	yCommentsTextEdit = new QTextEdit();
+	yCommentsTextEdit->setMaximumHeight(80);
+	yLabelsLayout->addWidget(yCommentsTextEdit, 2, 1);
+	yLabelsLayout->setColumnStretch(1, 1);
+	yLabelsLayout->setRowStretch(3, 1);
+	tabsWidget->addTab(yLabelsBox, tr("&y Labels"));
+
+	zLabelsBox = new QGroupBox();
+	QGridLayout *zLabelsLayout = new QGridLayout(zLabelsBox);
+	zLabelsLayout->addWidget(new QLabel(tr("Long Name")), 0, 0);
+	zLabelLineEdit = new QLineEdit();
+	zLabelsLayout->addWidget(zLabelLineEdit, 0, 1);
+	zLabelsLayout->addWidget(new QLabel(tr("Units")), 1, 0);
+	zUnitLineEdit = new QLineEdit();
+	zLabelsLayout->addWidget(zUnitLineEdit, 1, 1);
+	zLabelsLayout->addWidget(new QLabel(tr("Comments")), 2, 0);
+	zCommentsTextEdit = new QTextEdit();
+	zCommentsTextEdit->setMaximumHeight(80);
+	zLabelsLayout->addWidget(zCommentsTextEdit, 2, 1);
+	zLabelsLayout->setColumnStretch(1, 1);
+	zLabelsLayout->setRowStretch(3, 1);
+	tabsWidget->addTab(zLabelsBox, tr("&z Labels"));
+
+	xLabelLineEdit->setText(m->xLabel());
+	xUnitLineEdit->setText(m->xUnit());
+	xCommentsTextEdit->setPlainText(m->xComment());
+
+	yLabelLineEdit->setText(m->yLabel());
+	yUnitLineEdit->setText(m->yUnit());
+	yCommentsTextEdit->setPlainText(m->yComment());
+
+	zLabelLineEdit->setText(m->zLabel());
+	zUnitLineEdit->setText(m->zUnit());
+	zCommentsTextEdit->setPlainText(m->zComment());
+
 	QHBoxLayout *bottomLayout = new QHBoxLayout();
 	bottomLayout->addStretch();
 
@@ -107,9 +173,9 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
 	buttonCancel = new QPushButton(tr("&Cancel"));
 	bottomLayout->addWidget( buttonCancel );
 
-	QVBoxLayout * mainLayout = new QVBoxLayout( this );
-	mainLayout->addWidget(groupBox1);
-	mainLayout->addWidget(groupBox2);
+	QVBoxLayout * mainLayout = new QVBoxLayout(this);
+	mainLayout->addWidget(dimBox);
+	mainLayout->addWidget(tabsWidget);
 	mainLayout->addLayout(bottomLayout);
 
 	boxRows->setValue(m->numRows());
@@ -164,6 +230,18 @@ void MatrixSizeDialog::apply()
 		d_matrix->setCoordinates(fromX, toX, fromY, toY);
 	}
 	d_matrix->setDimensions(boxRows->value(), boxCols->value());
+
+	d_matrix->setXLabel(xLabelLineEdit->text());
+	d_matrix->setXUnit(xUnitLineEdit->text());
+	d_matrix->setXComment(xCommentsTextEdit->toPlainText());
+
+	d_matrix->setYLabel(yLabelLineEdit->text());
+	d_matrix->setYUnit(yUnitLineEdit->text());
+	d_matrix->setYComment(yCommentsTextEdit->toPlainText());
+
+	d_matrix->setZLabel(zLabelLineEdit->text());
+	d_matrix->setZUnit(zUnitLineEdit->text());
+	d_matrix->setZComment(zCommentsTextEdit->toPlainText());
 }
 
 void MatrixSizeDialog::accept()
