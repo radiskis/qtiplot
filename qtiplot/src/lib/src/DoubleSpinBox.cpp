@@ -159,10 +159,10 @@ QString DoubleSpinBox::textFromValue (double value) const
 		return d_prefix + "0";
 	}
 
-	QString s = QString::null;
 	if (!specialValueText().isEmpty() && value == d_min_val)
-		s = specialValueText();
+		return specialValueText();
 
+	QString s = QString::null;
 	if (d_prec <= 14)
 		s = locale().toString(value, d_format, d_prec);
 	else
