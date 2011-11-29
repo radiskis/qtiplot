@@ -287,27 +287,30 @@ void PlotCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const
 
   \sa draw(), drawCurve(), drawDots()
 */
-void PlotCurve::drawSticks(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+void PlotCurve::drawSticks(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
 	if (d_skip_symbols < 2){
 		QwtPlotCurve::drawSticks(painter, xMap, yMap, from, to);
 		return;
 	}
 
-    int x0 = xMap.transform(baseline());
-    int y0 = yMap.transform(baseline());
+	double x0 = xMap.transform(baseline());
+	double y0 = yMap.transform(baseline());
 
-    for (int i = from; i <= to; i += d_skip_symbols){
-        const int xi = xMap.transform(x(i));
-        const int yi = yMap.transform(y(i));
+	for (int i = from; i <= to; i += d_skip_symbols){
+		const double xi = xMap.transform(x(i));
+		const double yi = yMap.transform(y(i));
 
-        if (curveType() == Xfy)
-            QwtPainter::drawLine(painter, x0, yi, xi, yi);
-        else
-            QwtPainter::drawLine(painter, xi, y0, xi, yi);
-    }
+		if (curveType() == Xfy){
+			if (xi == x0)
+				continue;
+			QwtPainter::drawLine(painter, QPointF(x0, yi), QPointF(xi, yi));
+		} else {
+			if (yi == y0)
+				continue;
+			QwtPainter::drawLine(painter, QPointF(xi, y0), QPointF(xi, yi));
+		}
+	}
 }
 
 void PlotCurve::setSkipSymbolsCount(int count)

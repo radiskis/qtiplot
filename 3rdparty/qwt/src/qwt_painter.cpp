@@ -44,6 +44,24 @@ bool QwtPainter::d_deviceClipping = false;
 bool QwtPainter::d_SVGMode = false;
 #endif
 
+static inline bool qwtIsClippingNeeded( const QPainter *painter, QRectF &clipRect )
+{
+	bool doClipping = false;
+	const QPaintEngine *pe = painter->paintEngine();
+	if ( pe && pe->type() == QPaintEngine::SVG )
+	{
+		// The SVG paint engine ignores any clipping,
+
+		if ( painter->hasClipping() )
+		{
+			doClipping = true;
+			clipRect = painter->clipRegion().boundingRect();
+		}
+	}
+
+	return doClipping;
+}
+
 static inline bool isClippingNeeded(const QPainter *painter, QRect &clipRect)
 {
     bool doClipping = false;
@@ -480,6 +498,25 @@ void QwtPainter::drawLine(QPainter *painter, int x1, int y1, int x2, int y2)
 #else
     painter->drawLine(p1, p2);
 #endif
+}
+
+//! Wrapper for QPainter::drawLine()
+void QwtPainter::drawLine( QPainter *painter, const QPointF &p1, const QPointF &p2 )
+{
+	QRectF clipRect;
+	const bool deviceClipping = qwtIsClippingNeeded( painter, clipRect );
+
+	if ( deviceClipping &&
+		!( clipRect.contains( p1 ) && clipRect.contains( p2 ) ) )
+	{
+		QPolygonF polygon;
+		polygon += p1;
+		polygon += p2;
+		drawPolyline( painter, polygon );
+		return;
+	}
+
+	painter->drawLine( p1, p2 );
 }
 
 /*!

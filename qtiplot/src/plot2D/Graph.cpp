@@ -3242,7 +3242,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	else
 		c->setSymbol(QwtSymbol(SymbolBox::style(cL->sType), QBrush(), pen, QSize(cL->sSize, cL->sSize)));
 
-	pen = QPen(cL->lCol, cL->lWidth, getPenStyle(cL->lStyle), Qt::SquareCap, Qt::MiterJoin);
+	pen = QPen(cL->lCol, cL->lWidth, getPenStyle(cL->lStyle), Qt::FlatCap, Qt::MiterJoin);
 	pen.setCosmetic(true);
 	c->setPen(pen);
 

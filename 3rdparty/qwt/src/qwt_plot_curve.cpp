@@ -838,23 +838,25 @@ void QwtPlotCurve::drawLines(QPainter *painter,
 
   \sa draw(), drawCurve(), drawDots(), drawLines(), drawSteps()
 */
-void QwtPlotCurve::drawSticks(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+void QwtPlotCurve::drawSticks(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-    int x0 = xMap.transform(d_data->reference);
-    int y0 = yMap.transform(d_data->reference);
+	double x0 = xMap.transform(d_data->reference);
+	double y0 = yMap.transform(d_data->reference);
 
-    for (int i = from; i <= to; i++)
-    {
-        const int xi = xMap.transform(x(i));
-        const int yi = yMap.transform(y(i));
+	for (int i = from; i <= to; i++){
+		const double xi = xMap.transform(x(i));
+		const double yi = yMap.transform(y(i));
 
-        if (d_data->curveType == Xfy)
-            QwtPainter::drawLine(painter, x0, yi, xi, yi);
-        else
-            QwtPainter::drawLine(painter, xi, y0, xi, yi);
-    }
+		if (d_data->curveType == Xfy){
+			if (xi == x0)
+				continue;
+			QwtPainter::drawLine(painter, QPointF(x0, yi), QPointF(xi, yi));
+		} else {
+			if (yi == y0)
+				continue;
+			QwtPainter::drawLine(painter, QPointF(xi, y0), QPointF(xi, yi));
+		}
+	}
 }
 
 /*!
