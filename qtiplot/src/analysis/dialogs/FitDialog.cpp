@@ -1005,6 +1005,9 @@ void FitDialog::showFitPage()
 		btnGuess->setVisible(d_current_fit->type() == Fit::BuiltIn);
     }
 
+	btnSaveGuesses->setEnabled(boxUseBuiltIn->isChecked());
+	btnLoadGuesses->setEnabled(boxUseBuiltIn->isChecked());
+
 	QStringList paramList = d_current_fit->parameterNames();
 	int parameters = d_current_fit->numParameters();
 	boxParams->clearContents();

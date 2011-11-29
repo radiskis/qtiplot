@@ -4617,7 +4617,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Properties...</source>
-        <translation>&amp;Proprietăti...</translation>
+        <translation>&amp;Proprietăţi...</translation>
     </message>
     <message>
         <source>Please use the project explorer to select a window!</source>
@@ -4745,7 +4745,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>P&amp;roperties...</source>
-        <translation>P&amp;roprietăti...</translation>
+        <translation>P&amp;roprietăţi...</translation>
     </message>
     <message>
         <source>&amp;Delete Layer</source>
@@ -5411,7 +5411,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Column &amp;Options ...</source>
-        <translation>&amp;Opţiuni coloană ...</translation>
+        <translation>Pr&amp;oprietăţi coloană ...</translation>
     </message>
     <message>
         <source>Ctrl+Alt+O</source>
@@ -5571,7 +5571,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Set &amp;Properties...</source>
-        <translation>&amp;Proprietăti...</translation>
+        <translation>&amp;Proprietăţi...</translation>
     </message>
     <message>
         <source>Set &amp;Dimensions...</source>
@@ -7657,7 +7657,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nou</translation>
     </message>
 </context>
 <context>
@@ -12355,15 +12355,15 @@ The following special codes can be used:
     </message>
     <message>
         <source>Built-in</source>
-        <translation type="unfinished">Funcţii predefinite</translation>
+        <translation>Funcţii predefinite</translation>
     </message>
     <message>
         <source>Fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>Funcţie de ajustare</translation>
     </message>
     <message>
         <source>User defined</source>
-        <translation type="unfinished">Funcţii utilizator</translation>
+        <translation>Funcţii utilizator</translation>
     </message>
 </context>
 <context>
@@ -12508,7 +12508,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Properties...</source>
-        <translation>&amp;Proprietăti...</translation>
+        <translation>&amp;Proprietăţi...</translation>
     </message>
     <message>
         <source>&amp;Rescale to show all</source>
@@ -14157,7 +14157,7 @@ have the same number of rows.</source>
     <name>MatrixDialog</name>
     <message>
         <source>QtiPlot - Matrix Properties</source>
-        <translation>QtiPlot - Proprietătile matricii</translation>
+        <translation>QtiPlot - Proprietăţile matricii</translation>
     </message>
     <message>
         <source>Cell Width</source>
@@ -14221,7 +14221,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculează valorile matricii</translation>
     </message>
 </context>
 <context>
@@ -14374,75 +14374,75 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietăţile matricii</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculează valorile matricii</translation>
     </message>
     <message>
         <source>xy &amp;Mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>Coor&amp;donate xy</translation>
     </message>
     <message>
         <source>Long Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nume lung</translation>
     </message>
     <message>
         <source>Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Unitate</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Comentariu</translation>
     </message>
     <message>
         <source>&amp;x Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichete &amp;X</translation>
     </message>
     <message>
         <source>&amp;y Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichete &amp;Y</translation>
     </message>
     <message>
         <source>&amp;z Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichete &amp;Z</translation>
     </message>
     <message>
         <source>Set X Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare etichetă axă X</translation>
     </message>
     <message>
         <source>Set X Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare unitate axă X</translation>
     </message>
     <message>
         <source>Set X Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare comentariu axă X</translation>
     </message>
     <message>
         <source>Set Y Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare etichetă axă Y</translation>
     </message>
     <message>
         <source>Set Y Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare unitate axă Y</translation>
     </message>
     <message>
         <source>Set Y Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare comentariu axă Y</translation>
     </message>
     <message>
         <source>Set Z Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare etichetă axă Z</translation>
     </message>
     <message>
         <source>Set Z Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare unitate axă Z</translation>
     </message>
     <message>
         <source>Set Z Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Schimbare comentariu axă Z</translation>
     </message>
 </context>
 <context>
@@ -14493,7 +14493,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietăţile matricii</translation>
     </message>
 </context>
 <context>
@@ -16327,7 +16327,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Sy&amp;nchronize scales</source>
-        <translation type="unfinished"></translation>
+        <translation>Sincronizează &amp;diviziunile</translation>
     </message>
 </context>
 <context>
@@ -18129,7 +18129,7 @@ Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</transla
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Proprietăţile coloanei</translation>
     </message>
 </context>
 <context>
@@ -18933,7 +18933,7 @@ Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</transla
     <name>TableDialog</name>
     <message>
         <source>QtiPlot - Column options</source>
-        <translation>QtiPlot - Opţiuni pentru coloană</translation>
+        <translation>QtiPlot - Proprietăţi coloană</translation>
     </message>
     <message>
         <source>Column Name:</source>
@@ -19197,7 +19197,7 @@ Funcţia regulată modificată cilindrică Bessel de ordinul n, I_n(x).</transla
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Calculează valorile coloanei</translation>
     </message>
 </context>
 <context>
