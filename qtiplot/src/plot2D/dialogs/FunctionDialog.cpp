@@ -274,7 +274,6 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxFunctionExplain = new QTextEdit;
 	boxFunctionExplain->setReadOnly(true);
-	boxFunctionExplain->setMaximumHeight(80);
 	QPalette palette = boxFunctionExplain->palette();
 	palette.setColor(QPalette::Active, QPalette::Base, Qt::lightGray);
 	boxFunctionExplain->setPalette(palette);
@@ -311,6 +310,9 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	buttonClear = new QPushButton(tr( "Clea&r Function" ));
 	buttonClear->setIcon(QIcon(":/delete.png"));
 	connect(buttonClear, SIGNAL( clicked() ), this, SLOT(clearList()));
+
+	boxFunctionExplain->setMaximumHeight(buttonClear->sizeHint().height() + boxMathFunctions->sizeHint().height() +
+										 boxFunctionCategory->sizeHint().height() + 10);
 
 	QHBoxLayout *hbox5 = new QHBoxLayout();
 	hbox5->addWidget(addFunctionBtn);
