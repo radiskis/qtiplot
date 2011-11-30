@@ -67,7 +67,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
 
 Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
@@ -245,7 +244,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 			int aux = d_cols*i;
 			bool emptyRow = true;
 			for(int j = 0; j < d_cols; j++){
-				if (gsl_finite(d_data[aux + j])){
+				if (finite(d_data[aux + j])){
 					emptyRow = false;
 					break;
 				}
@@ -257,12 +256,12 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 
 			for(int j = 0; j < cols; j++){
 				double val = d_data[aux + j];
-				if (gsl_finite(val))
+				if (finite(val))
 					t << QString::number(val, 'g', 16);
 				t << "\t";
 			}
 			double val = d_data[aux + cols];
-			if (gsl_finite(val))
+			if (finite(val))
 				t << QString::number(val, 'g', 16);
 			t << "\n";
 		}
@@ -467,7 +466,7 @@ double Matrix::determinant()
 	if (rows != cols){
 		QMessageBox::critical((ApplicationWindow *)applicationWindow(), tr("QtiPlot - Error"),
 				tr("Calculation failed, the matrix is not square!"));
-		return GSL_POSINF;
+		return NAN;
 	}
 
 	gsl_set_error_handler_off();
@@ -625,7 +624,7 @@ bool Matrix::canCalculate(bool useMuParser)
 			return false;
 
 		int codeLines = mup->codeLines();
-		if (codeLines == 1 && gsl_isnan(mup->evalSingleLine()))
+		if (codeLines == 1 && isnan(mup->evalSingleLine()))
 			return false;
         else if (codeLines > 1){
         	QVariant res = mup->eval();
@@ -810,7 +809,7 @@ void Matrix::pasteSelection()
 		int size = cells.count();
 		for(int j = 0; j<cols; j++){
 			if (j >= size){
-                clipboardBuffer[cell++] = GSL_NAN;
+				clipboardBuffer[cell++] = NAN;
 				continue;
 			}
 			bool numeric = true;
@@ -818,7 +817,7 @@ void Matrix::pasteSelection()
 			if (numeric)
 				clipboardBuffer[cell++] = value;
 			else
-				clipboardBuffer[cell++] = GSL_NAN;
+				clipboardBuffer[cell++] = NAN;
 		}
 	}
 
@@ -1236,7 +1235,7 @@ bool Matrix::isEmpty()
 	double *data = d_matrix_model->dataVector();
 	int size = numRows()*numCols();
 	for (int i = 0; i < size; i++){
-		if (gsl_finite(data[i]))
+		if (finite(data[i]))
 			return false;
 	}
 	return true;

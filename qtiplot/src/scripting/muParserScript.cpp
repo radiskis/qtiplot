@@ -37,8 +37,6 @@
 #include <QStringList>
 #include <QApplication>
 
-#include <gsl/gsl_math.h>
-
 using namespace mu;
 
 muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, const QString &name)
@@ -432,9 +430,9 @@ double muParserScript::evalSingleLine()
     try {
         val = parser.Eval();
     } catch (EmptySourceError *e) {
-        return GSL_NAN;
+		return NAN;
     } catch (ParserError &e) {
-		return GSL_NAN;
+		return NAN;
 	}
     return val;
 }

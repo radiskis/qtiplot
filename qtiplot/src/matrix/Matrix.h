@@ -48,6 +48,14 @@
 #define _Matrix_initial_rows_ 10
 #define _Matrix_initial_columns_ 3
 
+#include <cmath>
+
+#ifndef Q_OS_LINUX
+	#ifndef isnan
+		inline bool isnan(double x){return x != x;}
+	#endif
+#endif
+
 class QLabel;
 class QStackedWidget;
 class QShortcut;

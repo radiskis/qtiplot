@@ -40,7 +40,6 @@
 #include <stddef.h>
 #include <QMessageBox>
 #include <gsl/gsl_blas.h>
-#include <gsl/gsl_math.h>
 
 int expd3_f (const gsl_vector * x, void *params, gsl_vector * f){
     int n = ((struct FitData *)params)->n;
