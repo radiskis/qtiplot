@@ -4,7 +4,6 @@
 		========================================
 
 -->
-
 <title>Le finestre di dialogo</title>
 
 <!-- ************************************************** -->
@@ -1134,7 +1133,7 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
     <title>La finestra di dialogo &set-column-values-cmd; .</title>
     <mediaobject>
       <imageobject>
-        <imagedata  format="PNG" fileref="pics/set-column-values-dialog.png"/>
+        <imagedata  format="PNG" fileref="pics-it/colonna-valori.png"/>
       </imageobject>
     </mediaobject>
   </figure>
@@ -1151,7 +1150,8 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
 <sect1 id="set-dimensions-dialog">
   <title>Impostare le dimensioni della matrice</title>
       <indexterm><primary>matrix</primary></indexterm>
-  <para>Questo comando si trova nel men&ugrave; &matrix-menu-lnk;. Serve per specificare il numero di righe e di colonne che si vuole assegnare alla matrice. In questa finestra si stabilisce anche l'intervallo di valori per X, l'intervallo di valori per Y e il corrispondente punto di inizio. Questi dati sono usati nel grafico per determinare i valori sugli assi. Gli intervalli si possono anche definire mediante l'impostazione delle variabili x e y quando si decide di compilare la matrice con i valori di una funzione di x e y tramite il dialogo <link linkend="set-values-dialog">Imposta i valori</link>.</para>
+  <para>Questo comando si trova nel men&ugrave; &matrix-menu-lnk;. Serve per specificare il numero di righe e di colonne che si vuole assegnare alla matrice. In questa finestra si stabilisce anche l'intervallo di valori per X, l'intervallo di valori per Y e il corrispondente punto di inizio. Questi dati sono usati nel nuovo grafico per determinare gli intervalli sugli assi.
+Gli intervalli si possono anche definire mediante l'impostazione delle variabili x e y quando si decide di compilare la matrice con i valori di una funzione di x e y tramite il dialogo <link linkend="set-values-dialog">Imposta i valori</link>.</para>
   <figure id="fig-set-dimensions-dialog">
     <title>La finestra di dialogo &set-dimensions-cmd; della matrice.</title>
     <mediaobject>
@@ -1160,6 +1160,10 @@ I suggerimenti di completamento sono visualizzati automaticamente per le parole 
       </imageobject>
     </mediaobject>
   </figure>
+
+<para>Inoltre, nelle schede <emphasis>Etichette X</emphasis>, <emphasis>Etichette Y</emphasis> o <emphasis>Etichette Z</emphasis>, si pu&ograve; definire un <emphasis>Nome esteso</emphasis>, <emphasis>Unit&agrave;</emphasis> e <emphasis>Commenti</emphasis>
+per le coordinate X / Y / Z.
+Queste etichette sono applicabili come etichette degli assi X / Y /Z nei grafici 3D.</para>
 </sect1>
 
 <!-- ************************************************** -->
