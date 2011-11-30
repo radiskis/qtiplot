@@ -2,8 +2,8 @@
     File                 : MdiSubWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+	Copyright            : (C) 2006 - 2011 by Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : MDI sub window
 
  ***************************************************************************/
@@ -104,7 +104,7 @@ public:
 
 	// TODO:
 	//! Not implemented yet
-	virtual void restore(const QStringList&, int fileVersion, bool fromTemplate = false){};
+	virtual void restore(const QStringList&, int /*fileVersion*/, bool /*fromTemplate*/ = false){};
 	virtual void save(const QString&, const QString &, bool = false){};
 	virtual void exportPDF(const QString&){};
 
