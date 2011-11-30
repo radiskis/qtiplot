@@ -174,7 +174,7 @@ double MyParser::EvalRemoveSingularity(double *xvar, bool noisy) const
 				//QObject::tr("Found non-removable singularity at x = %1.").arg(*xvar));
 				throw Pole();
 			}
-			return GSL_NAN;
+			return NAN;
 	    }
 	}
 }

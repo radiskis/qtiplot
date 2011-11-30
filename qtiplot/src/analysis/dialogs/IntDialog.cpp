@@ -45,8 +45,6 @@
 #include <QLayout>
 #include <QInputDialog>
 
-#include <gsl/gsl_math.h>
-
 IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
     : QDialog( parent, fl),
 	d_graph(g)
@@ -187,21 +185,21 @@ bool IntDialog::validInput(const QString& function)
 		double xl = x, xr;
 		double y = parser.Eval();
 		bool wellDefinedFunction = true;
-		if (!gsl_finite(y)){// try to find a first well defined point (might help for some not really bad functions)
+		if (!finite(y)){// try to find a first well defined point (might help for some not really bad functions)
 			wellDefinedFunction = false;
 			for (int i = 0; i < lastButOne; i++){
 				xl = x;
 				x += step;
 				xr = x;
 				y = parser.Eval();
-				if (gsl_finite(y)){
+				if (finite(y)){
 					wellDefinedFunction = true;
 					int iter = 0;
 					double x0 = x, y0 = y;
 					while(fabs(xr - xl)/step > 1e-15 && iter < points){
 						x = 0.5*(xl + xr);
 						y = parser.Eval();
-						if (gsl_finite(y)){
+						if (finite(y)){
 							xr = x;
 							x0 = x;
 							y0 = y;

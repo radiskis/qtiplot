@@ -47,8 +47,6 @@
 #include <QHeaderView>
 #include <QInputDialog>
 
-#include <gsl/gsl_math.h>
-
 ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
 {

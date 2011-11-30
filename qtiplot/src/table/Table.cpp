@@ -59,7 +59,6 @@
 #include <Q3TableSelection>
 #include <Q3MemArray>
 
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_sort_vector.h>
@@ -582,7 +581,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			for (int i = startRow; i <= endRow; i++){
 				*r = i + 1.0;
 				double val = mup->evalSingleLine();
-				if (gsl_finite(val))
+				if (finite(val))
 					d_table->setText(i, col, dateTime(val).toString(fmt));
 			}
 		} else if (colType == Numeric){
@@ -603,7 +602,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 				QVariant ret = mup->eval();
 				if (ret.type() == QVariant::Double){
 					double val = ret.toDouble();
-					if (gsl_finite(val))
+					if (finite(val))
 						d_table->setText(i, col, dateTime(val).toString(fmt));
 				} else {
 					QApplication::restoreOverrideCursor();
@@ -693,7 +692,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 			QVariant ret = colscript->eval();
 			if (ret.type() == QVariant::Double){
 				double val = ret.toDouble();
-				if (gsl_finite(val))
+				if (finite(val))
 					d_table->setText(i, col, dateTime(val).toString(fmt));
 			} else {
 				QApplication::restoreOverrideCursor();

@@ -30,14 +30,13 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "Matrix.h"
-#include "MatrixModel.h"
-#include "MatrixCommand.h"
+#include <Matrix.h>
+#include <MatrixModel.h>
+#include <MatrixCommand.h>
 #include <muParserScript.h>
 #include <ScriptingEnv.h>
 #include <fft2D.h>
 
-#include <gsl/gsl_math.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_errno.h>
 
@@ -66,7 +65,7 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 		int cell = 0;
 		int size = rows*cols;
 		for (int i = 0; i < size; i++)
-            d_data[cell++] = GSL_NAN;
+			d_data[cell++] = NAN;
 	}
 }
 
@@ -175,7 +174,7 @@ double MatrixModel::cell(int row, int col)
 {
 	int i = d_cols*row + col;
 	if (i < 0 || i >= d_rows*d_cols)
-		return GSL_NAN;
+		return NAN;
 
 	return d_data[i];
 }
@@ -193,8 +192,8 @@ QString MatrixModel::text(int row, int col)
 {
 	int i = d_cols*row + col;
 	double val = d_data[i];
-    if (i < 0 || i >= d_rows*d_cols || gsl_isnan(val))
-        return "";
+	if (i < 0 || i >= d_rows*d_cols || isnan(val))
+		return "";
 
 	if (d_matrix){
 		QLocale locale = d_matrix->locale();
@@ -210,7 +209,7 @@ void MatrixModel::setText(int row, int col, const QString& text)
 		return;
 
  	if (text.isEmpty())
-		d_data[i] = GSL_NAN;
+		d_data[i] = NAN;
 	else {
 		if (d_matrix)
 			d_data[i] = d_matrix->locale().toDouble(text);
@@ -296,13 +295,13 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+	if (!index.isValid())
 		return QVariant();
 
-    int i = d_cols*index.row() + index.column();
+	int i = d_cols*index.row() + index.column();
 	double val = d_data[i];
-    if (gsl_isnan (val))
-        return QVariant();
+	if (isnan (val))
+		return QVariant();
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
 		if (d_matrix)
@@ -322,9 +321,9 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 	double valBefore = d_data[i];
  	if(role == Qt::EditRole){
 		if (value.toString().isEmpty())
-			d_data[i] = GSL_NAN;
+			d_data[i] = NAN;
 		else {
-			double val = GSL_NAN;
+			double val = NAN;
 			if (d_matrix)
 				val = d_matrix->locale().toDouble(value.toString());
 			else
@@ -412,7 +411,7 @@ bool MatrixModel::insertColumns(int column, int count, const QModelIndex & paren
             d_data[cell--] = d_data[oldCell--];
 
         for (int j = offset - 1; j >= column; j--)
-            d_data[cell--] = GSL_NAN;
+			d_data[cell--] = NAN;
 
         for (int j = column - 1; j >= 0; j--)
             d_data[cell--] = d_data[oldCell--];
@@ -437,7 +436,7 @@ bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
     for (int i = oldSize - 1; i >= startCell; i--)
         d_data[i + insertedCells] = d_data[i];
     for (int i = 0; i < insertedCells; i++)
-        d_data[startCell++] = GSL_NAN;
+		d_data[startCell++] = NAN;
 
 	endInsertRows();
 	return true;
@@ -473,7 +472,7 @@ QImage MatrixModel::renderImage()
 		QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++){
 			double val = d_data[i*d_cols + j];
-			if (gsl_isnan (val))
+			if (isnan(val))
 				*line++ = color_map.rgb(intensityRange, 0.0);
 			else if(fabs(val) < HUGE_VAL)
 				*line++ = color_map.rgb(intensityRange, val);
@@ -764,7 +763,7 @@ void MatrixModel::clear(int startRow, int endRow, int startCol, int endCol)
     for (int i = startRow; i <= endRow; i++){
         int aux = i*d_cols + startCol;
         for (int j = startCol; j <= endCol; j++){
-            d_data[aux++] = GSL_NAN;
+			d_data[aux++] = NAN;
         }
     }
 	QApplication::restoreOverrideCursor();
@@ -868,7 +867,7 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
                 if (res.canConvert(QVariant::Double))
                      d_data[aux++] = res.toDouble();
                 else
-                    d_data[aux++] = GSL_NAN;
+					d_data[aux++] = NAN;
                 qApp->processEvents();
             }
 		}
@@ -927,7 +926,7 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 				d_data[aux++] = res.toDouble();
 			else {
 				QApplication::restoreOverrideCursor();
-				d_data[aux++] = GSL_NAN;
+				d_data[aux++] = NAN;
 				return false;
 			}
 		}

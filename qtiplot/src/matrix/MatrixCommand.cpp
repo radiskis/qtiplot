@@ -29,7 +29,6 @@
 
 #include "MatrixCommand.h"
 #include <QApplication>
-#include <gsl/gsl_math.h>
 
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */

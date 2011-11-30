@@ -90,7 +90,7 @@ void Fit::init()
 	d_init_err = false;
 	chi_2 = -1;
 	d_rss = 0.0;
-	d_adjusted_r_square = GSL_NAN;
+	d_adjusted_r_square = NAN;
 	d_scale_errors = false;
 	d_sort_data = false;
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
@@ -786,7 +786,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 double Fit::lcl(int parIndex, double confidenceLevel)
 {
 	if (parIndex < 0 || parIndex >= d_p)
-		return GSL_NAN;
+		return NAN;
 
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	return d_results[parIndex] - t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
@@ -795,7 +795,7 @@ double Fit::lcl(int parIndex, double confidenceLevel)
 double Fit::ucl(int parIndex, double confidenceLevel)
 {
 	if (parIndex < 0 || parIndex >= d_p)
-		return GSL_NAN;
+		return NAN;
 
 	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
 	return d_results[parIndex] + t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
