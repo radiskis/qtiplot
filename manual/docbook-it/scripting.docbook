@@ -1641,6 +1641,30 @@ ye = m.yEnd()
 m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1)
 </programlisting>
 
+Inoltre &egrave; possibile definire etichette, unit&agrave; e commenti da utilizzare nel grafico per gli assi X, Y o Z:
+<programlisting>
+m.setXLabel("Width")
+print m.xLabel()
+m.setXUnit("cm")
+print m.xUnit()
+m.setXComment("X axis comment")
+print m.xComment()
+
+m.setYLabel("Height")
+print m.yLabel()
+m.setYUnit("mm")
+print m.yUnit()
+m.setYComment("Y axis comment")
+print m.yComment()
+
+m.setZLabel("Intensity")
+print m.zLabel()
+m.setZUnit("a.u.")
+print m.zUnit()
+m.setZComment("Z axis comment")
+print m.zComment()
+</programlisting>
+
 Per le intestazioni delle righe e delle colonne di una matrice si possono visualizzare le coordinate x / y o i numeri di colonna / riga:
 <programlisting>
 m.setHeaderViewType(Matrix.ColumnRow)

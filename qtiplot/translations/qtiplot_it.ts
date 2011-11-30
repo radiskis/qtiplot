@@ -3855,7 +3855,7 @@ Attenzione: questo modificherà la disposizione di quelle già esistenti! </tran
         <location filename="../src/core/ApplicationWindow.cpp" line="14409"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="15206"/>
         <source>3D &amp;Wire Frame</source>
-        <translation>&amp;Rete 3D</translation>
+        <translation>&amp;Reticolo 3D</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14412"/>
@@ -3867,7 +3867,7 @@ Attenzione: questo modificherà la disposizione di quelle già esistenti! </tran
         <location filename="../src/core/ApplicationWindow.cpp" line="14415"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="15208"/>
         <source>3D &amp;Polygons</source>
-        <translation>P&amp;oligoni 3D</translation>
+        <translation>&amp;Superficie 3D</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="14418"/>
@@ -5125,7 +5125,7 @@ Attenzione: questo modificherà la disposizione di quelle già esistenti! </tran
         <location filename="../src/core/ApplicationWindow.cpp" line="15407"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="15408"/>
         <source>Wireframe</source>
-        <translation>Rete 3D</translation>
+        <translation>Reticolo 3D</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15409"/>
@@ -12185,7 +12185,7 @@ Discrepanza tra i dati e il modello di stima</translation>
     <message>
         <location filename="../src/analysis/dialogs/GriddingDialog.cpp" line="165"/>
         <source>Wireframe</source>
-        <translation>Rete 3D</translation>
+        <translation>Reticolo 3D</translation>
     </message>
     <message>
         <location filename="../src/analysis/dialogs/GriddingDialog.cpp" line="166"/>
@@ -14094,7 +14094,7 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="81"/>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Valori</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixDialog.cpp" line="85"/>
@@ -14279,63 +14279,63 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="70"/>
         <source>First</source>
-        <translation>Prima</translation>
+        <translation>Primo</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="81"/>
         <source>Last</source>
-        <translation>Ultima</translation>
+        <translation>Ultimo</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="91"/>
         <source>xy &amp;Mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Valori XY</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="95"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="111"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="127"/>
         <source>Long Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nome esteso</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="98"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="114"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="130"/>
         <source>Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Unità</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="101"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="117"/>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="133"/>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Commenti</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="107"/>
         <source>&amp;x Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichetta &amp;X</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="123"/>
         <source>&amp;y Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichetta &amp;Y</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="139"/>
         <source>&amp;z Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Etichetta &amp;Z</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="158"/>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Proprietà</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="164"/>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Valori</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="168"/>
@@ -14360,47 +14360,47 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="239"/>
         <source>Set X Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;etichetta dell&apos;asse X</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="244"/>
         <source>Set X Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;unità dell&apos;asse X</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="248"/>
         <source>Set X Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta il commento dell&apos;asse X</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="253"/>
         <source>Set Y Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;etichetta dell&apos;asse Y</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="258"/>
         <source>Set Y Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;unità dell&apos;asse Y</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="262"/>
         <source>Set Y Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta il commento dell&apos;asse Y</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="267"/>
         <source>Set Z Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;etichetta dell&apos;asse Z</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="272"/>
         <source>Set Z Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta l&apos;unità dell&apos;asse Z</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixSizeDialog.cpp" line="276"/>
         <source>Set Z Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta il commento dell&apos;asse Z</translation>
     </message>
 </context>
 <context>
@@ -14444,7 +14444,7 @@ stesso numero di righe.</translation>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="119"/>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Proprietà</translation>
     </message>
     <message>
         <location filename="../src/matrix/MatrixValuesDialog.cpp" line="122"/>
@@ -19026,7 +19026,7 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
     <message>
         <location filename="../src/table/SetColValuesDialog.cpp" line="94"/>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Proprietà</translation>
     </message>
     <message>
         <location filename="../src/table/SetColValuesDialog.cpp" line="98"/>
@@ -20087,7 +20087,7 @@ Per x&lt;0 ci sono due rami di valori reali; questa funzione calcola quello in c
     <message>
         <location filename="../src/table/TableDialog.cpp" line="71"/>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Apri il dialogo Valori</translation>
     </message>
     <message>
         <location filename="../src/table/TableDialog.cpp" line="91"/>
