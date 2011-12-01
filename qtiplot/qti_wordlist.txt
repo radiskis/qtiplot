@@ -739,7 +739,9 @@ setFunctionType
 Normal
 Parametric
 Polar
+minorTickLength
 setMinorTicksType
+majorTickLength
 setMajorTicksType
 displayInfo
 infoLineEdit
@@ -930,3 +932,4 @@ yComment
 setYComment
 zComment
 setZComment
+axisScaleDiv
