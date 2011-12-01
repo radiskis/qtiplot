@@ -1949,7 +1949,8 @@ If you want to create a new Graph window for some data in table Table1, you can 
 t = table("Table1")
 g = plot(t, column, type)
 </programlisting>
-<varname>type</varname> specifies the desired plot type and can be one of the following numbers or the equivalent reserved word:
+<varname>column</varname>  can be either the name of the column (string value) or the column index (integer value) and
+<varname>type</varname>  specifies the desired plot type and can be one of the following numbers or the equivalent reserved word:
 	  <variablelist spacing="compact">
             <varlistentry>
               <term>0</term>
@@ -2244,6 +2245,9 @@ The axis ticks can be customized via the following functions:
 
 <programlisting>
 l.setTicksLength(minLength, majLength)
+print l.minorTickLength()
+print l.majorTickLength()
+
 l.setMajorTicksType(axis, majTicksType)
 l.setMinorTicksType(axis, minTicksType)
 l.setAxisTicksLength(axis, majTicksType, minTicksType, minLength, majLength)
@@ -2328,6 +2332,14 @@ where <varname>type</varname> specifies the desired scale type: <variablelist sp
 		  </variablelist>
 and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
 The other flags should be self-explanatory.</para>
+
+<para>It is possible to get information about the scale division of an axis via the following functions:</para>
+<programlisting>
+div = graph("Graph1").activeLayer().axisScaleDiv(Layer.Left)
+print div.lowerBound()
+print div.upperBound()
+print div.range()
+</programlisting>
 
 Defining a scale range for an axis doesn't automatically disable autoscaling.
 This means that if a curve is added or removed from the layer, the axes will still automatically

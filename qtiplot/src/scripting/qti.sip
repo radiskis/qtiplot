@@ -1774,6 +1774,20 @@ private:
 	Grid(const Grid&);
 };
 
+class QwtScaleDiv
+{
+%TypeHeaderCode
+#include <qwt_scale_div.h>
+%End
+	public:
+		double range();
+		double lowerBound();
+		double upperBound();
+
+	private:
+		QwtScaleDiv(const QwtScaleDiv&);
+};
+
 class QwtPlot : QFrame
 {
 %TypeHeaderCode
@@ -1953,13 +1967,16 @@ public:
   void setAxesLinewidth(int width);
   void drawAxesBackbones(bool yes);
   void setTicksLength(int minLength, int majLength);
-
+  int minorTickLength() const;
+  int majorTickLength() const;
   void setMajorTicksType(int axis, int type);
   void setMinorTicksType(int axis, int type);
 
   void enableAxisLabels(int axis, bool on);
   void setAxisLabelsColor(int axis, const QColor& color);
   void setLabelsNumericFormat(int axis, int format, int = 6, const QString& = QString()) /PyName=setAxisNumericFormat/;
+
+  QwtScaleDiv* axisScaleDiv (int axisId);
   void setScale(int axis, double start, double end, double step = 0.0,
                 int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false,
 				double left_break = -DBL_MAX, double right_break = DBL_MAX, int pos = 50,
@@ -2289,7 +2306,7 @@ public:
 %End
   Note* newNote(const QString& = QString::null);
   Note* currentNote();
-  MultiLayer *multilayerPlot(Table*, SIP_PYTUPLE, int=1) /PyName=plot/;
+  MultiLayer *plot(Table*, SIP_PYTUPLE, int=0);
 %MethodCode
 	if (a0 == 0) {
 	   sipIsErr = 1;
@@ -2310,16 +2327,23 @@ public:
 	  sipRes = sipCpp->multilayerPlot(a0, l, a2);
 	}
 %End
-  MultiLayer *multiLayerPlot(Table*, const QString&, int=1) /PyName=plot/;
+
+	MultiLayer *plot(Table*, const QString&, int=0);
 %MethodCode
-	if (a0 == 0) {
-	   sipIsErr = 1;
-	   PyErr_Format(PyExc_ValueError, "Invalid table in argument to plot().");
-	} else {
-	  QStringList l;
-	  l << *a1;
-	  sipRes = sipCpp->multilayerPlot(a0, l, a2);
-	}
+	if (a0 == 0){
+		sipIsErr = 1;
+		PyErr_Format(PyExc_ValueError, "Invalid table in argument to plot().");
+	} else
+		sipRes = sipCpp->multilayerPlot(a0, QStringList(*a1), a2);
+%End
+
+	MultiLayer *plot(Table*, int, int=0);
+%MethodCode
+	if (a0 == 0){
+		sipIsErr = 1;
+		PyErr_Format(PyExc_ValueError, "Invalid table in argument to plot().");
+	} else
+		sipRes = sipCpp->multilayerPlot(a0, QStringList(a0->colName(a1 - 1)), a2);
 %End
 
 	MultiLayer *waterfallPlot(Table*, SIP_PYTUPLE);
@@ -2349,9 +2373,7 @@ public:
 	MultiLayer* plotImageProfiles(Matrix*);
 	MultiLayer* plot(const QString&, double, double, int = 100);
 %MethodCode
-  QStringList l;
-  l << *a0;
-  sipRes = sipCpp->newFunctionPlot(l, a1, a2, a3);
+  sipRes = sipCpp->newFunctionPlot(QStringList() << *a0, a1, a2, a3);
 %End
 
   Graph3D *plot3D(const QString&);
