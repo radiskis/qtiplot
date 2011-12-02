@@ -383,17 +383,13 @@ void ApplicationWindow::init(bool factorySettings)
 	// this has to be done after connecting scriptEnv
 	scriptEnv->initialize();
 
-    //apply user settings
-    updateAppFonts();
+	//apply user settings
+	updateAppFonts();
 	setScriptingLanguage(defaultScriptingLang);
-    setAppColors(workspaceColor, panelsColor, panelsTextColor, true);
+	setAppColors(workspaceColor, panelsColor, panelsTextColor, true);
 
-    loadCustomActions();
-    initCompleter();
-#ifdef Q_OS_WIN
-	if (d_excel_import_method == LocalExcelInstallation)
-		detectExcel();
-#endif
+	loadCustomActions();
+	initCompleter();
 	loadPlugins();
 
 #ifdef SCRIPTING_PYTHON
@@ -529,6 +525,9 @@ void ApplicationWindow::setDefaultOptions()
 	d_excel_import_method = ExcelFormatLibrary;
 #ifdef Q_OS_WIN
 	d_has_excel = false;
+	detectExcel();
+	if (d_has_excel)
+		d_excel_import_method = LocalExcelInstallation;
 	d_java_path = QDir::toNativeSeparators("C:/Program Files/Java/jre6/bin/java.exe");
 	d_soffice_path = QDir::toNativeSeparators("C:/Program Files/OpenOffice.org 3/program/soffice.exe");
 #endif
@@ -543,6 +542,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_latex_compiler = Local;
 #endif
 	d_jodconverter_path = QDir::toNativeSeparators(aux + "/jodconverter/lib/jodconverter-cli-2.2.2.jar");
+	if (d_excel_import_method == ExcelFormatLibrary && QFile(d_soffice_path).exists())
+		d_excel_import_method = LocalOpenOffice;
 
 #ifdef TRANSLATIONS_PATH
 	d_translations_folder = TRANSLATIONS_PATH;
@@ -4238,13 +4239,13 @@ void ApplicationWindow::exportOds()
 #ifdef Q_OS_WIN
 void ApplicationWindow::detectExcel()
 {
-	QAxObject *excel = new QAxObject();
-	if (!excel->setControl("Excel.Application"))
-		return;
+	QString excelApp = "excel.exe";
+	QString path = "\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths";
+	QStringList keys = QSettings("HKEY_CURRENT_USER" + path, QSettings::NativeFormat).childGroups();
+	if (!keys.contains(excelApp))
+		keys = QSettings("HKEY_LOCAL_MACHINE" + path, QSettings::NativeFormat).childGroups();
 
-	excel->dynamicCall("Quit()");
-	delete excel;
-	d_has_excel = true;
+	d_has_excel = keys.contains(excelApp);
 }
 
 bool ApplicationWindow::importUsingExcel()
