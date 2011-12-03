@@ -815,7 +815,10 @@ n = note("Notes1")
 log = resultsLog()
 # visualizzare alcune informazioni nella barra degli strumenti per visualizzare i dati:
 displayInfo(text)
-	  </programlisting> cos&igrave; come &egrave; semplice aggiungere dei nuovi oggetti: <programlisting>
+# ottenere un puntatore all'oggetto QLineEdit e visualizzare le informazioni nel display della barra degli strumenti per visualizzare i dati:
+info = infoLineEdit()
+text = info.text()
+</programlisting> cos&igrave; come &egrave; semplice aggiungere dei nuovi oggetti: <programlisting>
 # creare una nuova tabella di nome "tony" con 5 righe e due colone:
 t = newTable("tony", 5, 2)
 # usare le impostazioni di default
@@ -826,15 +829,15 @@ m = newMatrix("gina", 42, 23)
 m = newMatrix()
 # creare una finestra di grafico vuota
 g = newGraph()
-# create a graph window named "test" with two layers disposed on a 2 rows x 1 column grid
+# creare una finestra di grafico deniminata "test" con due tavole disposte in una griglia di 2 righe e 1 colonna
 g = newGraph("test", 2, 2, 1)
-# create an empty 3D plot window with default title
+# creare un grafico 3D vuoto con il titolo di default
 p = newPlot3D()
-# create an empty note named "momo"
+# creare una finestra di note denominata "momo"
 n = newNote("momo")
-# use defaults
+# creare una finestra di note con il titolo di default
 n = newNote()
-</programlisting>Alla tabella, matrice, ecc selezionata si accede con i comandi:
+</programlisting>Alla tabella, matrice, ecc. selezionata si accede con i comandi:
 <programlisting>
 t = currentTable()
 m = currentMatrix()
@@ -868,6 +871,14 @@ La caption policy (didascalia titolo della finestra) pu&ograve; avere uno dei se
       </orderedlist>
 
 &Egrave; possibile accedere al nome o all'etichetta di una finestra utilizzando le funzioni <userinput>objectName()</userinput> e <userinput>windowLabel()</userinput>.
+
+Ecco come accedere e modificare la geometria di una finestra del progetto:
+<programlisting>
+t = table("Table1")
+t.setGeometry(10, 10, 800, 600)
+print t.x(), t.y(), t.width(), t.height()
+</programlisting>
+
 Per velocizzare il processo di editing, &egrave; possibile creare dei file di modello dalle tabelle e dalle matrici o dai grafici disponibili. I modelli possono essere utilizzati in seguito per creare facilmente delle finestre personalizzate:
 <programlisting>
 saveAsTemplate(graph("Graph1"), "my_plot.qpt")
@@ -957,7 +968,7 @@ Supponiamo di aver assegnato una tabella alla variabile
 <varname>t</varname>. &Egrave; possibile accedere ai valori numerici delle sue celle con:
 <programlisting>
 t.cell(col, row)
-# and
+# e
 t.setCell(col, row, value)
 </programlisting>
 <para>
@@ -967,7 +978,7 @@ Ogni volta che &egrave; necessario specificare una colonna, &egrave; possibile u
 Quando si lavora con testi arbitrari o con valori numerici rappresentati come testi, si pu&ograve; usare:
 <programlisting>
 t.text(col, row)
-# and
+# e
 t.setText(col, row, string)
 </programlisting>
 Un modo alternativo per ottenere o impostare il valore di una cella &egrave; quello di utilizzare il formato della colonna (testo, numerico, ...). Qtiplot si occupa di tutte le trasformazioni e genera un <varname>TypeError</varname> quando l'operazione non &egrave; possibile.
@@ -978,7 +989,7 @@ La colonna di tipo Date data accetta e restituisce l'oggetto <varname>datetime.d
 Una colonna di tipo Time ora accetta o restituisce l'oggetto <varname>datetime.time</varname> ora e accetta anche una <varname>QTime</varname>.
 <programlisting>
 t.cellData(col, row)
-# and
+# e
 t.setCellData(col, row, value)
 </programlisting>
 Al numero di colonne e righe si accede tramite:
@@ -1011,13 +1022,19 @@ rowTuple = t[idx] # i numeri di lista partono da 0
 rowTupleList = t[slice]
 </programlisting>
 
-Una tabella &egrave; iteratable (iterabile). I dati vengono restituiti in riga in modalit&agrave; di tupla.
+Una tabella &egrave; iterabile (iterable). I dati vengono restituiti in riga in modalit&agrave; di tupla.
 <programlisting>
 for c1, c2, c3 in t:
   # si assume che t ha tre colonne
 </programlisting>
 
-&Egrave; possibile assegnare i valori di una riga o di una colonna completa. Mentre i dati per una nuova riga devono essere una tupla la cui lunghezza deve corrispondere al numero di colonne, i dati di colonna devono solo essere iteratable (iterabili). Se l'iteratore si ferma prima di aver raggiunto la fine della tabella, viene posta una eccezione di interruzione di iterazione <varname>StopIteration</varname>.
+&Egrave; possibile assegnare valori casuali o valori casuali normali a una colonna completa oppure a un sottoinsieme di righe in una colonna specifica:
+<programlisting>
+	t.setRandomValues(col, startRow = 1, endRow = -1)
+	t.setNormalRandomValues(col, startRow = 1, endRow = -1, standardDeviation = 1.0)
+</programlisting>
+
+&Egrave; possibile assegnare i valori a una riga o ad una colonna completa. Mentre i dati per una nuova riga devono essere una tupla la cui lunghezza deve corrispondere al numero di colonne, i dati di colonna devono solo essere iterable (iterabili). Se l'iteratore si ferma prima di aver raggiunto la fine della tabella, viene posta una eccezione di interruzione di iterazione <varname>StopIteration</varname>.
 In combinazione con <varname>offset</varname> questo permette di riempire una parte di colonna. Un valore di offset positivo avvia il riempimento della colonna dopo questo numero di riga. Con un valore di offset negativo si ignorano i primi valori dell'iteratore.
 <programlisting>
 t.setColData(col, iterableValueSequence, offset=0)
@@ -1284,8 +1301,8 @@ t.deleteRows(startRowNumber, endRowNumber)
 </programlisting>
 &Egrave; anche possibile utilizzare l'istruzione <varname>del</varname> di Python per rimuovere le righe. Si noti che in questo caso viene utilizzato una lista di Python o slice (fetta di lista), che parte da 0 (invece dei numeri di riga che partono da 1).
 <programlisting>
-del t[5] # deletes row 6
-del t[0:4] # deletes row 1 to 5
+del t[5] # cancella la riga 6
+del t[0:4] # cancella le righe da 1 a 5
 </programlisting>
 
 I nomi delle colonne possono essere letti e scritti con:
@@ -1803,6 +1820,7 @@ Quando si desidera creare una nuova finestra di grafico per i dati in Tabella1, 
 t = table("Table1")
 g = plot(t, column, type)
 </programlisting>
+<varname>column</varname>  pu&ograve; essere sia il nome della colonna (valore stringa) che l'indice della colonna (valore numerico intero) e
 <varname>type</varname> specifica il tipo di grafico desiderato e pu&ograve; essere uno dei seguenti numeri o la parola riservata equivalente:
 	  <variablelist spacing="compact">
             <varlistentry>
@@ -1948,8 +1966,428 @@ ma &egrave; possibile anche selezionare una tavola indicando il suo numero:
 l = g.layer(num)
 </programlisting>
 
-<sect3 id="Python-Curves">
-<title>Operare con le curve</title>
+Se il tracciato di una curva &egrave; selezionato con gli strumenti "Leggi i dati" oppure "Seleziona un intervallo",
+si ottengono le coordinate dei dati selezionati attraverso il seguente metodo:
+<programlisting>
+g = graph("Graph1").activeLayer()
+c = g.selectedDataCurve()
+print c.x(g.selectionActivePoint())
+print c.y(g.selectionActivePoint())
+print c.tableRow(g.selectionActivePoint()) + 1
+print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
+</programlisting>
+
+<sect3 id="Python-Title">
+<title>Il titolo del grafico</title>
+<programlisting>
+l.setTitle("My beautiful plot")
+l.setTitleFont(QtGui.QFont("Arial", 12))
+l.setTitleColor(QtGui.QColor("red"))
+l.setTitleAlignment(QtCore.Qt.AlignLeft)
+</programlisting>
+Il parametro di allineamento pu&ograve; essere una qualsiasi combinazione dei parametri di allineamento di Qt (per maggiori informazioni consultare
+<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>.
+<para>Quando si desidera &egrave; possibile rimuovere il titolo del grafico utilizzando:</para>
+<programlisting>
+l.removeTitle()
+</programlisting>
+
+Ecco come &egrave; possibile aggiungere simboli greci nel titolo del grafico o in qualsiasi altro testo nella tavola: etichette degli assi, legende:
+<programlisting>
+<![CDATA[
+l.setTitle("normal text <font face=\"Symbol\">greek text</font>")
+]]>
+</programlisting>
+
+Utilizzando le specificazioni per i caratteri, &egrave; anche possibile modificare il colore solo di alcune parti del titolo:
+<programlisting>
+<![CDATA[
+l=newGraph().activeLayer()
+l.setTitle("<font color = red>red</font> <font color = yellow>yellow</font> <font color = blue>blue</font>")
+]]>
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Axes">
+<title>Personalizzare gli assi</title>
+Gli assi dalla tavola possono essere mostrati o nascosti utilizzando la funzione seguente:
+<programlisting>
+l.enableAxis(int axis, on = True)
+</programlisting>
+dove <varname>axis</varname> pu&ograve; essere un qualsiasi valore intero compreso tra 0 e 3, o la parola riservata equivalente:
+	  <variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Layer.Left</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Layer.Right</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Layer.Bottom</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Layer.Top</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+
+Quando un asse &egrave; attivato, &egrave; possibile personalizzarlo completamente tramite uno script Python. Ad esempio &egrave; possibile impostare il titolo:
+<programlisting>
+l.setAxisTitle(axis, "My axis title")
+l.setAxisTitleFont(axis, QtGui.QFont("Arial", 11))
+l.setAxisTitleColor(axis, QtGui.QColor("blue"))
+l.setAxisTitleAlignment(axis, alignFlags)
+</programlisting>
+il suo colore e il font utilizzato per le etichette di graduazione:
+<programlisting>
+l.setAxisColor(axis, QtGui.QColor("green"))
+l.setAxisFont(axis, QtGui.QFont("Arial", 10))
+</programlisting>
+
+Le etichette di graduazione di un asse possono essere abilitate o disabilitate, &egrave; possibile impostare il colore e il loro angolo di rotazione:
+<programlisting>
+l.enableAxisLabels(axis, on = True)
+l.setAxisLabelsColor(axis, QtGui.QColor("black"))
+l.setAxisLabelRotation(axis, angle)
+</programlisting>
+<varname>angle</varname> pu&ograve; essere un qualsiasi valore intero compreso tra -90 e 90 gradi. L'angolo di rotazione pu&ograve; essere impostato solo per gli assi orizzontali (inferiore e superiore).
+<para>Il formato numerico delle etichette pu&ograve; essere impostato mediante:</para>
+<programlisting>
+l.setAxisNumericFormat(axis, format, precision = 6, formula)
+</programlisting>
+dove <varname>format</varname> pu&ograve; assumere i seguenti valori: <variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Automatico: &egrave; usato il formato numerico pi&ugrave; compatto</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Decimale: i numeri sono visualizzati in forma di virgola mobile</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Scientifico: i numeri vengono visualizzati utilizzando la notazione esponenziale</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Apici: come scientifico, ma la parte esponenziale &egrave; visualizzato come una potenza di 10</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+<varname>precision</varname> &egrave; il numero di cifre significative e
+<varname>formula</varname> un'espressione matematica che pu&ograve; essere utilizzata per collegare le scale opposte. Il loro argomento deve essere <varname>x</varname> per gli assi orizzontali e <varname>y</varname> per gli assi verticali.
+Ad esempio, ipotizzando che l'asse inferiore visualizzi una gamma di lunghezze d'onda in nanometri, e che l'asse superiore rappresenti le energie equivalente in eV, con l'aiuto del codice sottostante tutte le lunghezze d'onda saranno automaticamente convertite in elettron-volt e il risultato sar&agrave; visualizzato nel formato di virgola mobile con due cifre significative dopo il punto decimale:
+<programlisting>
+l.setAxisNumericFormat(Layer.Top, 1, 2, "1239.8419/x")
+</programlisting>
+
+Le tacche di suddivisione dell'asse si possono personalizzare attraverso le seguenti funzioni:
+
+<programlisting>
+l.setTicksLength(minLength, majLength)
+print l.minorTickLength()
+print l.majorTickLength()
+
+l.setMajorTicksType(axis, majTicksType)
+l.setMinorTicksType(axis, minTicksType)
+l.setAxisTicksLength(axis, majTicksType, minTicksType, minLength, majLength)
+</programlisting>
+dove i parametri <varname>majTicksType</varname> e <varname>minTicksType</varname> specificano, rispettivamente, l'orientamento desiderato per le tacche di suddivisione principale e secondaria:
+<variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Layer.NoTicks: senza suddivisioni</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Layer.Out: orientamento delle tacche verso l'esterno</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>2.</term>
+              <listitem>
+                <para>Layer.InOut: orientamento delle tacche verso l'esterno e verso l'interno</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>3.</term>
+              <listitem>
+                <para>Layer.In: tacche verso l'interno</para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+<varname>minLength</varname> specifica la lunghezza delle tacche secondarie, in pixel e
+<varname>majLength</varname> la lunghezza delle tacche principali.
+
+<para>Inoltre, &egrave; possibile personalizzare le scale dei vari assi utilizzando: <programlisting>
+l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False)
+</programlisting>
+dove <varname>type</varname> specifica il tipo di scala desiderato: <variablelist spacing="compact">
+            <varlistentry>
+              <term>0.</term>
+              <listitem>
+                <para>Layer.Linear</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term>1.</term>
+              <listitem>
+                <para>Layer.Log10</para>
+              </listitem>
+            </varlistentry>
+			  <varlistentry>
+				<term>2.</term>
+				<listitem>
+				  <para>Layer.Ln</para>
+				</listitem>
+			  </varlistentry>
+			  <varlistentry>
+				<term>3.</term>
+				<listitem>
+				  <para>Layer.Log2</para>
+				</listitem>
+			  </varlistentry>
+				<varlistentry>
+				  <term>4.</term>
+				  <listitem>
+					<para>Layer.Reciprocal</para>
+				  </listitem>
+				</varlistentry>
+				<varlistentry>
+				  <term>5.</term>
+				  <listitem>
+					<para>Layer.Probability</para>
+				  </listitem>
+				</varlistentry>
+				  <varlistentry>
+					<term>6.</term>
+					<listitem>
+					  <para>Layer.Logit</para>
+					</listitem>
+				  </varlistentry>
+          </variablelist>
+e <varname>step</varname> definisce il passo (la dimensione dell'intervallo) per le tacche della suddivisione principale. Se non specificato (valore di default &egrave; 0.0), il passo viene calcolato automaticamente. Gli altri parametri dovrebbero essere auto-esplicativi.</para>
+
+<para>&Egrave; possibile ottenere informazioni sulla suddivisione della scala di un asse con le seguenti funzioni:</para>
+<programlisting>
+div = graph("Graph1").activeLayer().axisScaleDiv(Layer.Left)
+print div.lowerBound()
+print div.upperBound()
+print div.range()
+</programlisting>
+
+Definendo di un intervallo di scala per un asse non si disattiva automaticamente autoscaling. Questo significa che se viene aggiunta o rimossa una curva nella tavola, gli assi si adattano ancora automaticamente al nuovo intervallo di dati. Ci&ograve; si pu&ograve; evitare disabilitando la modalit&agrave; autoscaling, in questo modo le impostazioni personali per la scala vengano sempre prese in considerazione:
+<programlisting>
+l.enableAutoscaling(False)
+</programlisting>
+
+Quando si vuole ridimensionare la tavola in modo che tutti i punti dati sono visibili, &egrave; possibile utilizzare la seguente funzione:
+<programlisting>
+l.setAutoScale()
+</programlisting>
+
+La funzione precedente <varname>setScale</varname>, con una lista di argomenti pi&ugrave; lunga, pu&ograve; essere utilizzata per definire un intervallo di interruzione dell'asse:
+<programlisting>
+l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
+	left=-DBL_MAX, right=DBL_MAX, breakPosition=50, stepBeforeBreak=0.0, stepAfterBreak=0.0,
+	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True)
+</programlisting>
+Dove <varname>left</varname> &egrave; il limite sinistro dell'interruzione,
+<varname>right</varname> il limite destro,
+<varname>breakPosition</varname> &egrave; la posizione dell'interruzione, espresso in percentuale della lunghezza dell'asse,
+<varname>breakWidth</varname> &egrave; la lunghezza dell'interruzione in pixel.
+I nomi degli altri parametri dovrebbero essere auto-esplicativi.
+
+<para>Infine, &egrave; possibile specificare la larghezza della linea per tutti gli assi e abilitare o disabilitare la loro visualizzazione, utilizzando:</para>
+<programlisting>
+l.setAxesLinewidth(2)
+l.drawAxesBackbones(True)
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Canvas">
+<title>La tela del grafico</title>
+&Egrave; possibile visualizzare una cornice rettangolare (bordo della tela) intorno all'area di disegno del grafico e applicare un colore di sfondo o un'immagine all'area, utilizzando:<programlisting>
+l.setCanvasFrame(2, QtGui.QColor("red"))
+l.setCanvasColor(QtGui.QColor("lightGrey"))
+l.setCanvasBackgroundImage("C:/qtiplot/qtiplot/qtiplot_logo.png")
+</programlisting>
+
+Per accedere all'immagine di sfondo sono disponibili i seguenti comandi:
+<programlisting>
+pic = l.backgroundPixmap() # QPixmap
+path = l.canvasBackgroundFileName()
+</programlisting>
+
+Disegnare il bordo della tela e disattivare la visualizzazione degli assi &egrave; l'unica soluzione possibile per evitare che gli assi si tocchino alle estremit&agrave;.
+</sect3>
+
+<sect3 id="Python-Frame">
+<title>Il bordo della tavola</title>
+&Egrave; possibile visualizzare una cornice rettangolare intorno a tutta la tavola (bordo della tavola) e applicare un colore di sfondo alla tavola (all'esterno della tela), utilizzando:<programlisting>
+l.setFrame(2, QtGui.QColor("blue"))
+l.setBackgroundColor(QtGui.QColor("grey"))
+</programlisting>
+La distanza di default tra il bordo della tavola e gli altri elementi della tavola (assi, titolo) pu&ograve; essere modificata tramite:
+<programlisting>
+l.setMargin(10)
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Grid-2D">
+<title>Personalizzare la griglia</title>
+
+&Egrave; possibile visualizzare solo la parte di griglia associata ad un asse della tavola o l'intera griglia utilizzando:<programlisting>
+l.showGrid(axis)
+l.showGrid()
+l.setGridOnTop(on = True, update = True) # draw grid on top of data
+</programlisting>
+La griglia &egrave; visualizzata con il colore e lo stile di penna predefiniti. Per modificare queste impostazioni, cos&igrave; come per abilitare o disabilitare alcune linee di griglia, &egrave; possibile utilizzare le seguenti funzioni:<programlisting>
+grid = l.grid()
+grid.setMajPenX(QtGui.QPen(QtCore.Qt.red, 1))
+grid.setMinPenX(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.DotLine))
+grid.setMajPenY(QtGui.QPen(QtCore.Qt.green, 1))
+grid.setMinPenY(QtGui.QPen(QtCore.Qt.blue, 1, QtCore.Qt.DashDotLine))
+grid.enableXMax(True)
+grid.enableXMin()
+grid.enableYMax()
+grid.enableYMin(False)
+grid.enableZeroLineX(True)
+grid.enableZeroLineY(False)
+grid.setXZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
+grid.setYZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
+l.replot()
+</programlisting>
+Tutte le funzioni per la griglia che contengono una <varname>X</varname> si riferiscono alla griglia verticale, mentre con la <varname>Y</varname> si riferiscono alla griglia orizzontale.
+ Inoltre, con <varname>Maj</varname> si riferiscono alle linee della griglia principale e con <varname>Min</varname> alla griglia secondaria.
+</sect3>
+
+<sect3 id="Python-Legends">
+<title>La legenda del grafico</title>
+&Egrave; possibile aggiungere una nuova legenda in una tavola di grafico con: <programlisting>
+legend = l.newLegend()
+#oppure
+legend = l.newLegend("Inserire qu&igrave; un testo")
+</programlisting>
+
+Le legende sono speciali oggetti di testo che vengono aggiornati ogni volta che si aggiunge o rimuove una curva alla tavola. Hanno la funzione speciale <varname>auto-update</varname> che &egrave; abilitata di default.
+La funzione seguente restituisce <varname>True</varname> per un oggetto legenda:
+<programlisting>
+legend.isAutoUpdateEnabled()
+</programlisting>
+
+&Egrave; possibile abilitare o disabilitare l'aggiornamento automatico di una legenda / oggetto di testo con:
+<programlisting>
+legend.setAutoUpdate(False/True)
+</programlisting>
+
+&Egrave; possibile aggiungere testi:
+<programlisting>
+text = l.addText(legend)
+text.setOrigin(legend.x(), legend.y()+50)
+</programlisting>
+Notare che la funzione <varname>addText</varname> restituisce un riferimento diverso al nuovo oggetto di testo. &Egrave; possibile utilizzare in seguito questo nuovo riferimento per rimuovere il testo:
+<programlisting>
+l.remove(text)
+</programlisting>
+
+Dopo aver creato una legenda/testo, &egrave; molto facile personalizzarla. Quando si desidera modificare il testo si pu&ograve; usare:<programlisting>
+legend.setText("Inserire qu&igrave; il proprio testo")
+</programlisting>
+
+Tutte le altre propriet&agrave; della legenda: angolo di rotazione, colore del testo, colore di sfondo, stile della cornice, font e posizione dell'angolo alto a sinistra possono essere modificati tramite le seguenti funzioni:<programlisting>
+legend.setAngle(90)
+legend.setTextColor(QtGui.QColor("red"))
+legend.setBackgroundColor(QtGui.QColor("yellow"))
+legend.setFrameStyle(Frame.Shadow)
+legend.setFrameColor(QtCore.Qt.red)
+legend.setFrameWidth(3)
+legend.setFrameLineStyle(QtCore.Qt.DotLine)
+legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
+# impostare la posizione in alto a sinistra usando le coordinate della scala:
+legend.setOriginCoord(200.5, 600.32)
+# oppure impostare la posizione in alto a sinistra usando le coordinate in pixel:
+legend.setOrigin(5, 10)
+legend.repaint()
+</programlisting>
+
+Propriet&agrave; aggiuntive disponibili per il bordo delle legende sono: <varname>Legend.Line</varname> che disegna un rettangolo intorno al testo e 
+<varname>Legend.None</varname> (senza cornice).
+
+C'&egrave; anche una funzione che consente di aggiungere una marca temporale (time stamp indicazione della data e dell'ora) creata automaticamente:
+<programlisting>
+timeStamp = l.addTimeStamp()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Antialiasing">
+<title>Antialiasing</title>
+La funzione Antialiasing pu&ograve; essere abilitata o disabilitata sia per il disegno delle curve che degli altri oggetti della tavola. &Egrave; una funzione che consuma molte risorse:<programlisting>
+l.setAntialiasing(True, bool update = True)
+</programlisting>
+</sect3>
+
+<sect3 id="Python-ResizingLayers">
+<title>Ridimensionare le tavole</title>
+Una tavola pu&ograve; essere ridimensionata utilizzando i comandi indicati sotto, dove il primo argomento &egrave; la nuova larghezza, il secondo &egrave; la nuova altezza e le dimensioni sono definite in pixel:
+ <programlisting>
+ l.resize(200, 200);
+ l.resize(QSize(w, h))
+ </programlisting>
+
+ Se avete anche bisogno di riposizionare la tavola, &egrave; possibile utilizzare le seguenti funzioni, in cui i primi due argomenti specificano la nuova posizione dell'angolo in alto a sinistra della tela:
+ <programlisting>
+ l.setGeometry(100, 100, 200, 200);
+ l.setGeometry(QRect(x, y, w, h));
+ </programlisting>
+
+Il comportamento predefinito per i grafici 2D, quando si ridimensiona la tavola, &egrave; quello di adattare le dimensioni dei caratteri utilizzati per i vari testi, alla nuova dimensione della tavola. &Egrave; possibile modificare questo comportamento e mantenere invariate le dimensioni dei caratteri con:
+<programlisting>
+l.setAutoscaleFonts(False)
+</programlisting>
+</sect3>
+
+<sect3 id="Python-Resizing">
+<title>Ridimensionare l'area di disegno del tracciato (tela)</title>
+ L'area di disegno di una tavola (la tela), pu&ograve; essere ridimensionata utilizzando i metodi indicati sotto, dove il primo argomento &egrave; la nuova larghezza, il secondo &egrave; la nuova altezza e le dimensioni sono definite in pixel:
+ <programlisting>
+ l.setCanvasSize(200, 200);
+ l.setCanvasSize(QSize(w, h))
+ </programlisting>
+
+ Se avete anche bisogno di riposizionare la tela, &egrave; possibile utilizzare le seguenti funzioni, in cui i primi due argomenti specificano la nuova posizione dell'angolo in alto a sinistra della tela:
+ <programlisting>
+ l.setCanvasGeometry(100, 100, 200, 200);
+ l.setCanvasGeometry(QRect(x, y, w, h));
+ </programlisting>
+
+Ricordare che, quando si ridimensiona la tela della tavola utilizzando i metodi di cui sopra, i caratteri dei testi della tavola non sono adattati (ridimensionati).
+</sect3>
+</sect2>
+
+<sect2 id="Python-Curves">
+<title>Operare con le curve 2D</title>
 &Egrave; possibile aggiungere o rimuovere delle curve in o da una tavola:
 <programlisting>
 l.insertCurve(table, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
@@ -1965,6 +2403,14 @@ l.deleteFitCurves()
 &Egrave; possibile modificare l'ordine delle curve inserite in una tavola utilizzando la seguente funzione:
 <programlisting>
 l.changeCurveIndex(int oldIndex, int newIndex)
+l.reverseCurveOrder()
+</programlisting>
+
+Quando la colonna della tabella utilizzata per tracciare il grafico contiene delle celle vuote,  
+si pu&ograve; decidere se collegare le curve dove mancano dei dati oppure non collegarle.
+Questo comportamento si definisce con:
+<programlisting>
+l.showMissingDataGap(on = True, replot = True)
 </programlisting>
 
 A volte, quando si effettua l'analisi dei dati, si potrebbe aver bisogno del titolo della curva. &Egrave; possibile ottenerlo utilizzando:
@@ -1985,29 +2431,6 @@ dc = l.dataCurve(curveIndex)
 l.setCurveAxes(number, x-axis, y-axis)
 </programlisting>
 <para>dove number &egrave; il numero della curva, x-axis pu&ograve; essere 0 o 1 (in basso o in alto) e y-axis pu&ograve; essere 0 o 1 (a sinistra o a destra).</para>
-&Egrave; inoltre possibile aggiungere curve di funzioni analitiche in una tavola di grafico:
-<programlisting>
-c = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
-c.setTitle("x*sin(x)")
-c.setPen(Qt.green)
-c.setBrush(QtGui.QColor(0, 255, 0, 100))
-
-l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
-l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
-</programlisting>
-
-Quando si trattano curve di funzione analitica, &egrave; possibile personalizzarle con i metodi seguenti:
-<programlisting>
-c.setRange(0, 2*pi)
-c.setVariable("t")
-c.setFormulas("sin(t)", "cos(t)")
-c.setFunctionType(FunctionCurve.Polar) # or c.setFunctionType(FunctionCurve.Parametric)
-c.loadData(1000, xLog10Scale = False)
-
-c.setFunctionType(FunctionCurve.Normal)
-c.setFormula("cos(x)")
-c.loadData()
-</programlisting>
 
 In caso di necessit&agrave;, si pu&ograve; ottenere il numero di curve in una tavola con: <programlisting>
 l.numCurves()
@@ -2080,52 +2503,6 @@ print c.maxXValue()
 print c.minYValue()
 print c.maxYValue()
 </programlisting>
-</sect3>
-
-<sect3 id = "Python-ErrorBars">
-<title>Le barre di errore</title>
-
-A ogni curva dei dati, <emphasis>c</emphasis>, si possono aggiungere le barre di errore:
-<programlisting>
-errors = c.errorBarsList()
-</programlisting>
-
-Alle propriet&agrave; delle barre di errore di una curva si accede con i seguenti metodi:
-<programlisting>
-err = c.errorBarsList()[0]
-for i in range(0, err.dataSize()):
-	print err.errorValue(i)
-
-err.capLength()
-err.width()
-err.color()
-err.direction()
-err.xErrors()
-err.throughSymbol()
-err.plusSide()
-err.minusSide()
-c = err.masterCurve() # reference to the master curve to which the error bars curve is attached.
-err.detachFromMasterCurve() # equivalent to c.removeErrorBars(err)
-</programlisting>
-
-... e si modificano, con i seguenti metodi:
-<programlisting>
-err.setCapLength(12)
-err.setWidth(3)
-err.setColor(Qt.red)
-err.setDirection(ErrorBarsCurve.Vertical)
-err.setXErrors(True) # equivalent to err.setDirection(ErrorBarsCurve.Horizontal)
-err.drawThroughSymbol(True)
-err.drawPlusSide(True)
-err.drawMinusSide(False)
-err.setMasterCurve(c)
-</programlisting>
-
-&Egrave; possibile rimuovere tutte le barre di errore associate ad una curva utilizzando:
-<programlisting>
-c.clearErrorBars()
-</programlisting>
-</sect3>
 
 <sect3 id = "Python-PlotSymbols">
 <title>Simboli per i punti nei grafici</title>
@@ -2267,9 +2644,127 @@ I simboli per i punti disponibili in QtiPlot sono i seguenti:
               </listitem>
             </varlistentry>
           </variablelist>
-</sect3>
 
-<sect3 id = "Python-Spectrograms">
+&Egrave; anche possibile definire un'immagine personalizzata da utilizzare per rappresentare i punti della curva nel grafico:
+<programlisting>
+g = newGraph().activeLayer()
+c = g.addFunction("cos(x)", 0, 10, 20)
+c.setSymbol(ImageSymbol("qtiplot/manual/html/icons/help.png"))
+</programlisting>
+
+Ecco un esempio esplicativo di breve script per disegnare un simbolo personalizzato e assegnarlo ai punti della curva:
+<programlisting>
+pix = QtGui.QPixmap(QtCore.QSize(11, 11))
+pix.fill(Qt.transparent)
+p = QtGui.QPainter(pix)
+r = QtCore.QRect(0, 0, 10, 10)
+p.drawEllipse(r)
+p.setPen(QtGui.QPen(Qt.red))
+p.drawLine(5, 0, 5, 10)
+p.drawLine(0, 5, 10, 5)
+p.end()
+
+g = newGraph().activeLayer()
+c = g.addFunction("sin(x)", 0, 10, 20)
+c.setSymbol(ImageSymbol(pix))
+</programlisting>
+</sect3>
+</sect2>
+
+<sect2 id = "Python-AnalyticalFunctions">
+<title>Funzioni analitiche 2D</title>
+Ad una tavola di grafico &egrave; anche possibile aggiungere delle curve di funzioni analitiche:
+<programlisting>
+f = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
+f.setTitle("x*sin(x)")
+f.setPen(Qt.green)
+f.setBrush(QtGui.QColor(0, 255, 0, 100))
+
+l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
+l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
+</programlisting>
+
+&Egrave; creare un puntatore ad una curva di funzione analitica presente in una tavola utilizzandi il suo indice, come nel caso seguente:
+<programlisting>
+f = l.functionCurve(curveIndex)
+</programlisting>
+
+Quando si producono delle curve con una funzione analitica, esse si possono personalizzare nei modi seguenti:
+<programlisting>
+f.setRange(0, 2*pi)
+f.setVariable("t")
+f.setFormulas("sin(t)", "cos(t)")
+f.setFunctionType(FunctionCurve.Polar) # or c.setFunctionType(FunctionCurve.Parametric)
+f.loadData(1000, xLog10Scale = False)
+
+f.setFunctionType(FunctionCurve.Normal)
+f.setFormula("cos(x)")
+f.loadData()
+</programlisting>
+
+Se &egrave; necessario accedere ai valori e ai nomi dei parametri della funzione, sono disponibili i seguenti metodi:
+<programlisting>
+i = f.parametersCount() # the number of parameters in your function formula
+name = f.parameterName(index) # the name of the parameter of rang index as a QString
+p1 = f.parameterValue(index) # the value of the parameter of rang index as a double
+p2 = f.parameterValue(name) # the value of a parameter using its name string
+</programlisting>
+
+L'intervallo delle ascisse per ogni funzione &egrave; calcolato e visualizzato e si ottiene o si modica con:
+<programlisting>
+x1 = f.startRange()
+x2 = f.endRange()
+f.setRange(0.5, 15.2)
+</programlisting>
+</sect2>
+
+<sect2 id = "Python-ErrorBars">
+<title>Le barre di errore</title>
+
+A ogni curva dei dati, <emphasis>c</emphasis>, si possono aggiungere le barre di errore:
+<programlisting>
+errors = c.errorBarsList()
+</programlisting>
+
+Alle propriet&agrave; delle barre di errore di una curva si accede con i seguenti metodi:
+<programlisting>
+err = c.errorBarsList()[0]
+for i in range(0, err.dataSize()):
+	print err.errorValue(i)
+
+err.capLength()
+err.width()
+err.color()
+err.direction()
+err.xErrors()
+err.throughSymbol()
+err.plusSide()
+err.minusSide()
+c = err.masterCurve() # reference to the master curve to which the error bars curve is attached.
+err.detachFromMasterCurve() # equivalent to c.removeErrorBars(err)
+</programlisting>
+
+... e si modificano, con i seguenti metodi:
+<programlisting>
+err.setCapLength(12)
+err.setWidth(3)
+err.setColor(Qt.red)
+err.setDirection(ErrorBarsCurve.Vertical)
+err.setXErrors(True) # equivalent to err.setDirection(ErrorBarsCurve.Horizontal)
+err.drawThroughSymbol(True)
+err.drawPlusSide(True)
+err.drawMinusSide(False)
+err.setMasterCurve(c)
+</programlisting>
+
+&Egrave; possibile rimuovere tutte le barre di errore associate ad una curva utilizzando:
+<programlisting>
+c.clearErrorBars()
+</programlisting>
+</sect2>
+
+
+<sect2 id = "Python-Spectrograms">
 <title>Grafici in formato immagine e curve di livello (Spettrogrammi)</title>
 
 Come visto nella sezione precedente, &egrave; possibile creare grafici 2D da matrici. Ecco come si pu&ograve; fare in pratica:
@@ -2299,7 +2794,7 @@ m.calculate()
 
 s = newGraph().activeLayer().plotSpectrogram(m, Layer.ColorMap)
 s.setContourLevels((20.0, 30.0, 60.0, 80.0))
-s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # set global pen for the contour lines
+s.setDefaultContourPen(QtGui.QPen(Qt.yellow)) # imposta una penna globale per le curve di livello
 s.setLabelsWhiteOut(True)
 s.setLabelsColor(Qt.red)
 s.setLabelsFont(QtGui.QFont("Arial", 14))
@@ -2324,19 +2819,19 @@ s.setColorMapPen(bool on = True)
 Si pu&ograve; anche utilizzare una delle seguenti funzioni:
 <programlisting>
 s.setMatrix(Matrix *, bool useFormula = False)
-s.setUseMatrixFormula(bool useFormula = True)# calculate data to be drawn using matrix formula (if any)
+s.setUseMatrixFormula(bool useFormula = True)# calcola i dati da disegnare usando la formula della matrice (se esiste)
 s.setLevelsNumber(int)
 s.showColorScale(int axis, bool on = True)
 s.setGrayScale()
 s.setDefaultColorMap()
 s.setCustomColorMap(LinearColorMap map)
-s.showContourLineLabels(bool show = True) # enable/disable contour line labels
-s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
+s.showContourLineLabels(bool show = True) # abilita/disabilita le etichette delle curve di livello
+s.setLabelsOffset(int x, int y) # valori di scostamento delle etichette in % della dimensione del testo
 s.updateData()
 </programlisting>
-</sect3>
+</sect2>
 
-<sect3 id = "Python-Histograms">
+<sect2 id = "Python-Histograms">
 <title>Istogrammi</title>
 
 Come visto nella sezione precedente, &egrave; possibile creare istogrammi 2D da matrici o tabelle. Ecco un piccolo script che mostra come personalizzare un istogramma e come accedere alle informazioni statistiche nell'istogramma (posizioni bin (campioni), conteggio, media, deviazione standard, ecc ..):
@@ -2347,15 +2842,15 @@ m.calculate()
 
 g = newGraph().activeLayer()
 h = g.addHistogram(m)
-h.setBinning(10, 1, 90) # the bin size is set to 10, data range is set to [1, 90]
-h.loadData() # update the histogram
-g.replot() # update the display
+h.setBinning(10, 1, 90) # la classe impostata &egrave; 10 e l'intervallo &egrave; [1, 90]
+h.loadData() # aggiorna l'istogramma
+g.replot() # aggiorna il display
 
 # print histogram values:
 for i in range (0, h.dataSize()):
 	print i, "Bin start = ", h.x(i), "counts = ", h.y(i)
 
-# print statistic information:
+# stampare le informazioni statistiche:
 print "Standard deviation = ", h.standardDeviation()
 print "Mean = ", h.mean()
 </programlisting>
@@ -2364,48 +2859,9 @@ print "Mean = ", h.mean()
 <programlisting>
  h.setAutoBinning()
  </programlisting>
-</sect3>
+</sect2>
 
-<sect3 id = "Python-PieCurve">
-<title>Grafici a settori</title>
-Lo script seguente mostra come creare e personalizzare un grafico a settori:
-<programlisting>
-g = newGraph().activeLayer()
-pie = g.plotPie(table("Table1"), "2")
-pie.setRadius(70)
-pie.setViewAngle(40)
-pie.setThickness(20)
-pie.setStartAzimuth(45)
-pie.setLabelsEdgeDistance(50)
-pie.setCounterClockwise(True)
-pie.setBrushStyle(Qt.Dense3Pattern)
-pie.setFirstColor(3)
-pie.setPen(QtGui.QPen(Qt.red, 2))
-pie.setLabelValuesFormat(True)
-</programlisting>
-
-Per una recensione esaustiva dei metodi che danno accesso alle propriet&agrave; di un grafico a settori, si prega di consultare
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
-<sect3 id = "Python-VectorsCurve">
-<title>Grafici con vettori</title>
-Lo script seguente mostra come creare e personalizzare una curva vettore:
-<programlisting>
-g = newGraph().activeLayer()
-v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
-v.setVectorPen(Qt.red)
-v.fillArrowHead(False)
-v.setHeadAngle(15)
-v.setHeadLength(20)
-v.setPosition(VectorCurve.Middle)
-</programlisting>
-
-Per una recensione esaustiva dei metodi che danno accesso alle propriet&agrave; di una curva vettore, si prega di consultare
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
-
-<sect3 id = "Python-BoxWhiskersPlos">
+<sect2 id = "Python-BoxWhiskersPlos">
 <title>Grafici scatola e baffi</title>
 Lo script seguente mostra come creare e personalizzare un grafico scatola e baffi:
 <programlisting>
@@ -2425,355 +2881,57 @@ for i in range (0, g.numCurves()):
 			box.setWhiskersRange(BoxCurve.SD) # standard deviation
 </programlisting>
 
+Le seguenti funzioni consentono l'accesso alle informazioni statistiche per la serie di dati visualizzati in un grafico scatola e baffi:
+<programlisting>
+s = box.statistics() # restituisce le informazioni come stringa
+m = box.median()
+q = box.quantile(f) # f deve essere una frazione tra 0 e 1
+</programlisting>
+
 Per una recensione esaustiva sui metodi di accesso alle propriet&agrave; di questi grafici, si prega di consultare
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
-</sect3>
+</sect2>
 
-<sect3 id="Python-Title">
-<title>Il titolo del grafico</title>
+<sect2 id = "Python-PieCurve">
+<title>Grafici a settori</title>
+Lo script seguente mostra come creare e personalizzare un grafico a settori:
 <programlisting>
-l.setTitle("My beautiful plot")
-l.setTitleFont(QtGui.QFont("Arial", 12))
-l.setTitleColor(QtGui.QColor("red"))
-l.setTitleAlignment(QtCore.Qt.AlignLeft)
+g = newGraph().activeLayer()
+pie = g.plotPie(table("Table1"), "2")
+pie.setRadius(70)
+pie.setViewAngle(40)
+pie.setThickness(20)
+pie.setStartAzimuth(45)
+pie.setLabelsEdgeDistance(50)
+pie.setCounterClockwise(True)
+pie.setBrushStyle(Qt.Dense3Pattern)
+pie.setFirstColor(3)
+pie.setPen(QtGui.QPen(Qt.red, 2))
+pie.setLabelValuesFormat(True)
 </programlisting>
-Il parametro di allineamento pu&ograve; essere una qualsiasi combinazione dei parametri di allineamento di Qt (per maggiori informazioni consultare
-<ulink url="http://www.riverbankcomputing.com/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>.
-<para>Quando si desidera &egrave; possibile rimuovere il titolo del grafico utilizzando:</para>
+
+Per una recensione esaustiva dei metodi che danno accesso alle propriet&agrave; di un grafico a settori, si prega di consultare
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect2>
+
+<sect2 id = "Python-VectorsCurve">
+<title>Grafici con vettori</title>
+Lo script seguente mostra come creare e personalizzare una curva vettore:
 <programlisting>
-l.removeTitle()
+g = newGraph().activeLayer()
+v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
+v.setVectorPen(Qt.red)
+v.fillArrowHead(False)
+v.setHeadAngle(15)
+v.setHeadLength(20)
+v.setPosition(VectorCurve.Middle)
 </programlisting>
 
-Ecco come &egrave; possibile aggiungere simboli greci nel titolo del grafico o in qualsiasi altro testo nella tavola: etichette degli assi, legende:
-<programlisting>
-<![CDATA[
-l.setTitle("normal text <font face=\"Symbol\">greek text</font>")
-]]>
-</programlisting>
+Per una recensione esaustiva dei metodi che danno accesso alle propriet&agrave; di una curva vettore, si prega di consultare
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+</sect2>
 
-Utilizzando le specificazioni per i caratteri, &egrave; anche possibile modificare il colore solo di alcune parti del titolo:
-<programlisting>
-<![CDATA[
-l=newGraph().activeLayer()
-l.setTitle("<font color = red>red</font> <font color = yellow>yellow</font> <font color = blue>blue</font>")
-]]>
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Axes">
-<title>Personalizzare gli assi</title>
-Gli assi dalla tavola possono essere mostrati o nascosti utilizzando la funzione seguente:
-<programlisting>
-l.enableAxis(int axis, on = True)
-</programlisting>
-dove <varname>axis</varname> pu&ograve; essere un qualsiasi valore intero compreso tra 0 e 3, o la parola riservata equivalente:
-	  <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.Left</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Right</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Layer.Bottom</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Layer.Top</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
-
-Quando un asse &egrave; attivato, &egrave; possibile personalizzarlo completamente tramite uno script Python. Ad esempio &egrave; possibile impostare il titolo:
-<programlisting>
-l.setAxisTitle(axis, "My axis title")
-l.setAxisTitleFont(axis, QtGui.QFont("Arial", 11))
-l.setAxisTitleColor(axis, QtGui.QColor("blue"))
-l.setAxisTitleAlignment(axis, alignFlags)
-</programlisting>
-il suo colore e il font utilizzato per le etichette di graduazione:
-<programlisting>
-l.setAxisColor(axis, QtGui.QColor("green"))
-l.setAxisFont(axis, QtGui.QFont("Arial", 10))
-</programlisting>
-
-Le etichette di graduazione di un asse possono essere abilitate o disabilitate, &egrave; possibile impostare il colore e il loro angolo di rotazione:
-<programlisting>
-l.enableAxisLabels(axis, on = True)
-l.setAxisLabelsColor(axis, QtGui.QColor("black"))
-l.setAxisLabelRotation(axis, angle)
-</programlisting>
-<varname>angle</varname> pu&ograve; essere un qualsiasi valore intero compreso tra -90 e 90 gradi. L'angolo di rotazione pu&ograve; essere impostato solo per gli assi orizzontali (inferiore e superiore).
-<para>Il formato numerico delle etichette pu&ograve; essere impostato mediante:</para>
-<programlisting>
-l.setAxisNumericFormat(axis, format, precision = 6, formula)
-</programlisting>
-dove <varname>format</varname> pu&ograve; assumere i seguenti valori: <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Automatico: &egrave; usato il formato numerico pi&ugrave; compatto</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Decimale: i numeri sono visualizzati in forma di virgola mobile</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Scientifico: i numeri vengono visualizzati utilizzando la notazione esponenziale</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Apici: come scientifico, ma la parte esponenziale &egrave; visualizzato come una potenza di 10</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
-<varname>precision</varname> &egrave; il numero di cifre significative e
-<varname>formula</varname> un'espressione matematica che pu&ograve; essere utilizzata per collegare le scale opposte. Il loro argomento deve essere <varname>x</varname> per gli assi orizzontali e <varname>y</varname> per gli assi verticali.
-Ad esempio, ipotizzando che l'asse inferiore visualizzi una gamma di lunghezze d'onda in nanometri, e che l'asse superiore rappresenti le energie equivalente in eV, con l'aiuto del codice sottostante tutte le lunghezze d'onda saranno automaticamente convertite in elettron-volt e il risultato sar&agrave; visualizzato nel formato di virgola mobile con due cifre significative dopo il punto decimale:
-<programlisting>
-l.setAxisNumericFormat(Layer.Top, 1, 2, "1239.8419/x")
-</programlisting>
-
-Le tacche di suddivisione dell'asse si possono personalizzare attraverso le seguenti funzioni:
-
-<programlisting>
-l.setTicksLength(minLength, majLength)
-l.setMajorTicksType(axis, majTicksType)
-l.setMinorTicksType(axis, minTicksType)
-l.setAxisTicksLength(axis, majTicksType, minTicksType, minLength, majLength)
-</programlisting>
-dove i parametri <varname>majTicksType</varname> e <varname>minTicksType</varname> specificano, rispettivamente, l'orientamento desiderato per le tacche di suddivisione principale e secondaria:
-<variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.NoTicks: senza suddivisioni</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Out: orientamento delle tacche verso l'esterno</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>2.</term>
-              <listitem>
-                <para>Layer.InOut: orientamento delle tacche verso l'esterno e verso l'interno</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>3.</term>
-              <listitem>
-                <para>Layer.In: tacche verso l'interno</para>
-              </listitem>
-            </varlistentry>
-          </variablelist>
-<varname>minLength</varname> specifica la lunghezza delle tacche secondarie, in pixel e
-<varname>majLength</varname> la lunghezza delle tacche principali.
-
-<para>Inoltre, &egrave; possibile personalizzare le scale dei vari assi utilizzando: <programlisting>
-l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False)
-</programlisting>
-dove <varname>type</varname> specifica il tipo di scala desiderato: <variablelist spacing="compact">
-            <varlistentry>
-              <term>0.</term>
-              <listitem>
-                <para>Layer.Linear</para>
-              </listitem>
-            </varlistentry>
-            <varlistentry>
-              <term>1.</term>
-              <listitem>
-                <para>Layer.Log10</para>
-              </listitem>
-            </varlistentry>
-			  <varlistentry>
-				<term>2.</term>
-				<listitem>
-				  <para>Layer.Ln</para>
-				</listitem>
-			  </varlistentry>
-			  <varlistentry>
-				<term>3.</term>
-				<listitem>
-				  <para>Layer.Log2</para>
-				</listitem>
-			  </varlistentry>
-				<varlistentry>
-				  <term>4.</term>
-				  <listitem>
-					<para>Layer.Reciprocal</para>
-				  </listitem>
-				</varlistentry>
-				<varlistentry>
-				  <term>5.</term>
-				  <listitem>
-					<para>Layer.Probability</para>
-				  </listitem>
-				</varlistentry>
-				  <varlistentry>
-					<term>6.</term>
-					<listitem>
-					  <para>Layer.Logit</para>
-					</listitem>
-				  </varlistentry>
-          </variablelist>
-e <varname>step</varname> definisce il passo (la dimensione dell'intervallo) per le tacche della suddivisione principale. Se non specificato (valore di default &egrave; 0.0), il passo viene calcolato automaticamente. Gli altri parametri dovrebbero essere auto-esplicativi.</para>
-
-Definendo di un intervallo di scala per un asse non si disattiva automaticamente autoscaling Usa scala automatica per gli assi. Questo significa che se viene aggiunta o rimossa una curva nella tavola, gli assi si adattano ancora automaticamente al nuovo intervallo di dati. Ci&ograve; si pu&ograve; evitare disabilitando la modalit&agrave; autoscaling, in questo modo le impostazioni personali per la scala vengano sempre prese in considerazione:
-<programlisting>
-l.enableAutoscaling(False)
-</programlisting>
-
-Quando si vuole ridimensionare la tavola in modo che tutti i punti dati sono visibili, &egrave; possibile utilizzare la seguente funzione:
-<programlisting>
-l.setAutoScale()
-</programlisting>
-
-La funzione precedente <varname>setScale</varname>, con una lista di argomenti pi&ugrave; lunga, pu&ograve; essere utilizzata per definire un intervallo di interruzione dell'asse:
-<programlisting>
-l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
-	left=-DBL_MAX, right=DBL_MAX, breakPosition=50, stepBeforeBreak=0.0, stepAfterBreak=0.0,
-	minTicksBeforeBreak=4, minTicksAfterBreak=4, log10AfterBreak=False, breakWidth=4, breakDecoration=True)
-</programlisting>
-Dove <varname>left</varname> &egrave; il limite sinistro dell'interruzione,
-<varname>right</varname> il limite destro,
-<varname>breakPosition</varname> &egrave; la posizione dell'interruzione, espresso in percentuale della lunghezza dell'asse,
-<varname>breakWidth</varname> &egrave; la lunghezza dell'interruzione in pixel.
-I nomi degli altri parametri dovrebbero essere auto-esplicativi.
-
-<para>Infine, &egrave; possibile specificare la larghezza della linea per tutti gli assi e abilitare o disabilitare la loro visualizzazione, utilizzando:</para>
-<programlisting>
-l.setAxesLinewidth(2)
-l.drawAxesBackbones(True)
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Canvas">
-<title>La tela del grafico</title>
-&Egrave; possibile visualizzare una cornice rettangolare (bordo della tela) intorno all'area di disegno del grafico e applicare un colore di sfondo all'area, utilizzando:<programlisting>
-l.setCanvasFrame(2, QtGui.QColor("red"))
-l.setCanvasColor(QtGui.QColor("lightGrey"))
-</programlisting>
-Disegnare il bordo della tela e disattivare la visualizzazione degli assi &egrave; l'unica soluzione possibile per evitare che gli assi si tocchino alle estremit&agrave;.
-</sect3>
-
-<sect3 id="Python-Frame">
-<title>Il bordo della tavola</title>
-&Egrave; possibile visualizzare una cornice rettangolare intorno a tutta la tavola (bordo della tavola) e applicare un colore di sfondo alla tavola (all'esterno della tela), utilizzando:<programlisting>
-l.setFrame(2, QtGui.QColor("blue"))
-l.setBackgroundColor(QtGui.QColor("grey"))
-</programlisting>
-La distanza di default tra il bordo della tavola e gli altri elementi della tavola (assi, titolo) pu&ograve; essere modificata tramite:
-<programlisting>
-l.setMargin(10)
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Grid-2D">
-<title>Personalizzare la griglia</title>
-
-&Egrave; possibile visualizzare solo la parte di griglia associata ad un asse della tavola o l'intera griglia utilizzando:<programlisting>
-l.showGrid(axis)
-l.showGrid()
-</programlisting>
-La griglia &egrave; visualizzata con il colore e lo stile di penna predefiniti. Per modificare queste impostazioni, cos&igrave; come per abilitare o disabilitare alcune linee di griglia, &egrave; possibile utilizzare le seguenti funzioni:<programlisting>
-grid = l.grid()
-grid.setMajPenX(QtGui.QPen(QtCore.Qt.red, 1))
-grid.setMinPenX(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.DotLine))
-grid.setMajPenY(QtGui.QPen(QtCore.Qt.green, 1))
-grid.setMinPenY(QtGui.QPen(QtCore.Qt.blue, 1, QtCore.Qt.DashDotLine))
-grid.enableXMax(True)
-grid.enableXMin()
-grid.enableYMax()
-grid.enableYMin(False)
-grid.enableZeroLineX(True)
-grid.enableZeroLineY(False)
-grid.setXZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
-grid.setYZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
-l.replot()
-</programlisting>
-Tutte le funzioni per la griglia che contengono una <varname>X</varname> si riferiscono alla griglia verticale, mentre con la <varname>Y</varname> si riferiscono alla griglia orizzontale.
- Inoltre, con <varname>Maj</varname> si riferiscono alle linee della griglia principale e con <varname>Min</varname> alla griglia secondaria.
-</sect3>
-
-<sect3 id="Python-Legends">
-<title>La legenda del grafico</title>
-&Egrave; possibile aggiungere una nuova legenda in una tavola di grafico con: <programlisting>
-legend = l.newLegend()
-#or
-legend = l.newLegend("enter your text here")
-</programlisting>
-
-Le legende sono speciali oggetti di testo che vengono aggiornati ogni volta che si aggiunge o rimuove una curva alla tavola. Hanno la funzione speciale <varname>auto-update</varname> che &egrave; abilitata di default.
-La funzione seguente restituisce <varname>True</varname> per un oggetto legenda:
-<programlisting>
-legend.isAutoUpdateEnabled()
-</programlisting>
-
-&Egrave; possibile abilitare o disabilitare l'aggiornamento automatico di una legenda / oggetto di testo con:
-<programlisting>
-legend.setAutoUpdate(False/True)
-</programlisting>
-
-&Egrave; possibile aggiungere testi:
-<programlisting>
-text = l.addText(legend)
-text.setOrigin(legend.x(), legend.y()+50)
-</programlisting>
-Notare che la funzione <varname>addText</varname> restituisce un riferimento diverso al nuovo oggetto di testo. &Egrave; possibile utilizzare in seguito questo nuovo riferimento per rimuovere il testo:
-<programlisting>
-l.remove(text)
-</programlisting>
-
-Dopo aver creato una legenda/testo, &egrave; molto facile personalizzarla. Quando si desidera modificare il testo si pu&ograve; usare:<programlisting>
-legend.setText("Enter your text here")
-</programlisting>
-
-Tutte le altre propriet&agrave; della legenda: angolo di rotazione, colore del testo, colore di sfondo, stile della cornice, font e posizione dell'angolo alto a sinistra possono essere modificati tramite le seguenti funzioni:<programlisting>
-legend.setAngle(90)
-legend.setTextColor(QtGui.QColor("red"))
-legend.setBackgroundColor(QtGui.QColor("yellow"))
-legend.setFrameStyle(Frame.Shadow)
-legend.setFrameColor(QtCore.Qt.red)
-legend.setFrameWidth(3)
-legend.setFrameLineStyle(QtCore.Qt.DotLine)
-legend.setFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
-# set top-left position using scale coordinates:
-legend.setOriginCoord(200.5, 600.32)
-# or set top-left position using pixel coordinates:
-legend.setOrigin(5, 10)
-legend.repaint()
-</programlisting>
-
-Propriet&agrave; aggiuntive disponibili per il bordo delle legende sono: <varname>Legend.Line</varname> che disegna un rettangolo intorno al testo e 
-<varname>Legend.None</varname> (senza cornice).
-
-C'&egrave; anche una funzione che consente di aggiungere una marca temporale (time stamp indicazione della data e dell'ora) creata automaticamente:
-<programlisting>
-timeStamp = l.addTimeStamp()
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Arrows">
+<sect2 id="Python-Arrows">
 <title>Aggiungere frecce e linee alla tavola di grafico</title>
 <programlisting>
 arrow = ArrowMarker()
@@ -2810,9 +2968,9 @@ for i in range (0, g.numArrows()):
 g.replot()
 </programlisting>
 
-</sect3>
+</sect2>
 
-<sect3 id="Python-Images">
+<sect2 id="Python-Images">
 <title>Aggiungere immagini alla tavola</title>
 <programlisting>
 l = newGraph().activeLayer()
@@ -2836,9 +2994,9 @@ l.replot()
 <programlisting>
 l.remove(image)
 </programlisting>
-</sect3>
+</sect2>
 
-<sect3 id="Python-Rectangles">
+<sect2 id="Python-Rectangles">
 <title>Rettangoli</title>
 <programlisting>
 l = newGraph().activeLayer()
@@ -2861,9 +3019,9 @@ r2 = l.add(r)
 r2.setOrigin(200, 200)
 l.remove(r1)
 </programlisting>
-</sect3>
+</sect2>
 
-<sect3 id="Python-Ellipses">
+<sect2 id="Python-Ellipses">
 <title>Circonferenze e Ellissi</title>
 <programlisting>
 l = newGraph().activeLayer()
@@ -2879,53 +3037,10 @@ e.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
 
 l.add(e)
 </programlisting>
-</sect3>
+</sect2>
 
-<sect3 id="Python-Antialiasing">
-<title>Antialiasing</title>
-La funzione Antialiasing pu&ograve; essere abilitata o disabilitata sia per il disegno delle curve che degli altri oggetti della tavola. &Egrave; una funzione che consuma molte risorse:<programlisting>
-l.setAntialiasing(True, bool update = True)
-</programlisting>
-</sect3>
 
-<sect3 id="Python-ResizingLayers">
-<title>Ridimensionare le tavole</title>
-Una tavola pu&ograve; essere ridimensionata utilizzando i comandi indicati sotto, dove il primo argomento &egrave; la nuova larghezza, il secondo &egrave; la nuova altezza e le dimensioni sono definite in pixel:
- <programlisting>
- l.resize(200, 200);
- l.resize(QSize(w, h))
- </programlisting>
-
- Se avete anche bisogno di riposizionare la tavola, &egrave; possibile utilizzare le seguenti funzioni, in cui i primi due argomenti specificano la nuova posizione dell'angolo in alto a sinistra della tela:
- <programlisting>
- l.setGeometry(100, 100, 200, 200);
- l.setGeometry(QRect(x, y, w, h));
- </programlisting>
-
-Il comportamento predefinito per i grafici 2D, quando si ridimensiona la tavola, &egrave; quello di adattare le dimensioni dei caratteri utilizzati per i vari testi, alla nuova dimensione della tavola. &Egrave; possibile modificare questo comportamento e mantenere invariate le dimensioni dei caratteri con:
-<programlisting>
-l.setAutoscaleFonts(False)
-</programlisting>
-</sect3>
-
-<sect3 id="Python-Resizing">
-<title>Ridimensionare l'area di disegno del tracciato (tela)</title>
- L'area di disegno di una tavola (la tela), pu&ograve; essere ridimensionata utilizzando i metodi indicati sotto, dove il primo argomento &egrave; la nuova larghezza, il secondo &egrave; la nuova altezza e le dimensioni sono definite in pixel:
- <programlisting>
- l.setCanvasSize(200, 200);
- l.setCanvasSize(QSize(w, h))
- </programlisting>
-
- Se avete anche bisogno di riposizionare la tela, &egrave; possibile utilizzare le seguenti funzioni, in cui i primi due argomenti specificano la nuova posizione dell'angolo in alto a sinistra della tela:
- <programlisting>
- l.setCanvasGeometry(100, 100, 200, 200);
- l.setCanvasGeometry(QRect(x, y, w, h));
- </programlisting>
-
-Ricordare che, quando si ridimensiona la tela della tavola utilizzando i metodi di cui sopra, i caratteri dei testi della tavola non sono adattati (ridimensionati).
-</sect3>
-
-<sect3 id="Python-Exporting-2DPlots">
+<sect2 id="Python-Exporting-2DPlots">
 <title>Esportare i grafici o le tavole in differenti formati immagine</title>
 All'interno di Python si possono stampare ed esportare tavole e grafici. Il modo pi&ugrave; veloce per esportare un grafico o una tavola &egrave; il seguente: <programlisting>
 l.export(fileName)
@@ -2989,7 +3104,7 @@ Se, per il parametro  <varname>True</varname>, l'argomento &egrave; <varname>fon
 </para>
 
 <para>Tutte le funzioni di esportazione fanno riferimento all'estensione del nome del file, per stabilire il formato dell'immagine.</para>
-</sect3></sect2>
+</sect2>
 
 <sect2 id="Python-MultiLayer">
       <title>Disposizione delle tavole</title>
@@ -3079,13 +3194,20 @@ g.swapLayers(layerNum1, layerNum2)
 <sect2 id="Python-WaterfallPlots">
       <title>Grafici in cascata</title>
 
-I grafici in cascata conferiscono ai tracciati una disposizioni a cascata in una finestra di grafico 2D. &Egrave; possibile crearli e personalizzarli utilizzando le funzioni sottostanti:
+I grafici in cascata conferiscono ai tracciati una disposizioni a cascata in una finestra di grafico 2D.
+
+The waterfall graph is ideal .  The graph has a pseudo-3D effect, enabling you to see variations in the Z direction.
+
+Waterfall plots are ideal for comparing variations between multiple data sets created under similar conditions.
+A pseudo 3D effect is generated by applying an offset to all the data curves in a 2D plot layer.
+&Egrave; possibile crearli e personalizzarli utilizzando le funzioni sottostanti:
 <programlisting>
 g = waterfallPlot(table("Table1"), (2, 3, 4))
-g.setWaterfallOffset(15, 10)
-g.setWaterfallSideLines(True) # draw side lines for all the curves displayed
-g.setWaterfallFillColor(Qt.lightGray)
-g.reverseWaterfallOrder() # reverse the order of the displayed curves
+l = g.activeLayer()
+l.setWaterfallOffset(50, 20)# scostamento x/y in % dell'area di disegno larghezza/altezza
+l.setWaterfallSideLines(True) # tracciare le linee laterali per tutte le curve
+l.setWaterfallFillColor(Qt.lightGray)
+g.reverseWaterfallOrder() # invertire l'ordine delle curve visualizzate
 </programlisting>
 </sect2>
 
@@ -3602,6 +3724,42 @@ ifft.shiftFrequencies(False)
 ifft.setSampling(10)
 ifft.run()
 </programlisting>
+
+Inoltre &egrave; possibile eseguire trasformate di Fourrier 2D veloci su matrici.
+In questo caso il sottoprogramma accetta i seguenti parametri:
+<emphasis>rm</emphasis> - specifica la parte reale della matrice di input,
+<emphasis>im</emphasis> - specifica la parte immaginaria della matrice input,
+<emphasis>inverse</emphasis> - definisce la direzione della FFT,
+<emphasis>DCShift</emphasis> - quando questo parametro &egrave; true, la componente DC viene posta al centro della matrice risultante,
+in caso contrario, la componente DC viene posizionata ai quattro angoli della matrice risultante,
+<emphasis>norm</emphasis> - specica se normalizzare o non normalizzare l'ampiezza a 1,
+<emphasis>outputPower2Sizes</emphasis> - forza i valori delle matrici in uscita con potenze intere di 2 (zero padding viene utilizzato per inizializzare le celle mancanti)
+<programlisting>
+fft = FFT(Matrix *rm, Matrix *im = NULL, bool inverse = False, bool DCShift = True, bool norm = False, bool outputPower2Sizes = True)
+</programlisting>
+
+Ecco come eseguire la FFT 2D di una matrice chiamata "Matrix1",
+e la FFT inversa al fine di recuperare l'immagine originale:
+
+<programlisting>
+from qti import *
+m = matrix("Matrix1")
+m.setViewType(Matrix.ImageView) # accertarsi che la matrice sia visualizzata come immagine
+
+fft = FFT(m)
+fft.run()
+fft.amplitudesMatrix().resize(500, 400)
+
+rMatrix = fft.realOutputMatrix()
+rMatrix.hide()
+iMatrix = fft.imaginaryOutputMatrix()
+iMatrix.hide()
+
+ifft = FFT(rMatrix, iMatrix, True)
+ifft.run()
+ifft.realOutputMatrix().hide()
+ifft.imaginaryOutputMatrix().hide()
+</programlisting>
 </sect3>
 
 <sect3 id="Python-Filtering">
@@ -3839,6 +3997,148 @@ smooth.run()
 </sect3>
 </sect2>
 
+<sect2 id="Python-Statistics">
+<title>Statistiche</title>
+
+<sect3 id="Python-DescriptiveStatistics">
+<title>Statistiche descrittive</title>
+<programlisting>
+stats = Statistics("Table1_2")
+stats.run()
+
+print stats.mean()
+print stats.variance()
+print stats.standardDeviation()
+print stats.standardError()
+</programlisting>
+</sect3>
+
+Per tutti i sottostanti test statistici, dopo aver creato l'oggetto test, si possono utilizzare i seguenti metodi:
+
+<programlisting>
+test.showResultsLog(False) # disabilita la registrazione dei risultati
+test.showDescriptiveStatistics(False) # disabilita la visualizzazione dei risultati delle statistiche descrittive
+test.run()
+
+print test.statistic()
+print test.pValue()
+print test.logInfo()
+
+t = test.resultTable("MyResultTable") # Restituisce un puntatore alla tabella creata per visualizzare i risultati (il nome della tabella &egrave; facoltativo)
+</programlisting>
+
+<sect3 id="Python-tTest">
+<title>Test di ipotesi - Test t di Student</title>
+<programlisting>
+test = tTest(15.2, 0.05, "Table1_2") # One sample test, test mean = 15.2, significance level = 0.05
+test.run()
+
+test.setTestValue(15.0)
+test.setSignificanceLevel(0.5)
+test.setTail(tTest.Left) # or tTest.Right, or tTest.Both (default value)
+test.run()
+
+print test.t() # same as test.statistic()
+print test.dof() # degrees of freedom
+print test.power(0.5)
+print test.power(0.5, 50) # alternative sample size = 50
+print test.pValue()
+print test.lcl(90) # lower confidence limit for mean
+print test.ucl(90) # upper confidence limit for mean
+
+test = tTest(15.2, 0.05, "Table1_1", "Table1_2", True) # Two sample paired test
+print test.logInfo()
+
+test = tTest(15.2, 0.05, "Table1_1", "Table1_2") # Two sample independent test
+test.run()
+
+test.setSample1("Table2_1")
+test.setSample2("Table3_2", True) # Two sample paired test
+test.run()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-ChiSquareTest">
+<title>Test chi-quadro per la varianza</title>
+<programlisting>
+test = ChiSquareTest(88.2, 0.05, "Table1_2") # Test variance = 88.2, significance level = 0.05
+test.run()
+
+print test.chiSquare() # same as test.statistic()
+print test.pValue()
+print test.logInfo()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-ShapiroWilkTest">
+<title>Test di normalit&agrave; (Shapiro - Wilk)</title>
+<programlisting>
+test = ShapiroWilkTest("Table3_1")
+test.setSignificanceLevel(0.1)
+test.run()
+
+print test.w() # same as test.statistic()
+print test.pValue()
+print test.logInfo()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-OneWayANOVA">
+<title>ANOVA a un fattore</title>
+Per informazioni dettagliate consultare la 
+<ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentazione di TAMUANOVA library</ulink>.
+
+<programlisting>
+test = Anova()
+test.setSignificanceLevel(0.1) # default level is 0.05
+test.addSample("Table1_1");
+test.addSample("Table1_2");
+test.addSample("Table1_3");
+test.run()
+
+print test.fStat() # F statistic = ssm/sse (same as test.statistic())
+print test.pValue()
+print test.ssm() # "between-group" sum of squares
+print test.sse() # "within-group" sum of squares
+print test.sst() # total sum of squares
+
+test.showDescriptiveStatistics(False)
+print test.logInfo()
+</programlisting>
+</sect3>
+
+<sect3 id="Python-TwoWayANOVA">
+<title>ANOVA a due fattori</title>
+Per informazioni dettagliate consultare la 
+<ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentazione di TAMUANOVA library</ulink>.
+
+<programlisting>
+test = Anova(True)
+test.addSample("Table1_1", 1, 1) # Level factor A = 1, level factor B = 1
+test.addSample("Table1_2", 1, 2) # Level factor A = 1, level factor B = 2
+test.addSample("Table1_3", 2, 1) # Level factor A = 2, level factor B = 1
+test.addSample("Table1_4", 2, 2) # Level factor A = 2, level factor B = 2
+test.setAnovaTwoWayModel(2) # Fixed model = 0, Random model = 1, Mixed model = 2
+test.run()
+
+print test.fStatA() # F statistic for factor A
+print test.fStatB() # F statistic for factor B
+print test.fStatAB() # F statistic for the interaction
+print test.pValueA() # P value for factor A
+print test.pValueB() # P value for factor B
+print test.pValueAB() # P value for the interaction
+print test.ssa() # sum of squares for factor A
+print test.ssb() # sum of squares for factor B
+print test.ssab() # sum of squares for the interaction
+print test.msa() # mean square value for factor A
+print test.msb() # mean square value for factor B
+print test.msab() # mean square value for the interaction
+
+print test.logInfo()
+</programlisting>
+</sect3>
+</sect2>
+
 <sect2 id = "Python-Notes">
 <title>Lavorare con le Annotazioni</title>
 <para>
@@ -3884,7 +4184,7 @@ folder = QtCore.QDir(dirPath)
 # Creare un dialogo per immettere il testo che consente di scegliere il nome del modello (il modello, in questo caso, &egrave; disper1):
 namePattern = QtGui.QInputDialog.getText(qti.app, "Enter Pattern", "Text: ", QtGui.QLineEdit.Normal, "disper1")
 
-# Ricavare l'elenco dei nomi dei file nella directory di lavoro contenente il modello di prima:
+# Ottenere l'elenco dei nomi dei file nella directory di lavoro contenente il modello di prima:
 fileNames = folder.entryList (QtCore.QStringList ("*_" + namePattern[0] + "*.dat"))
 
 # Importare ogni file in una tabella nel nuovo progetto:
@@ -4094,6 +4394,12 @@ globals.x = 5
 <title>QtiPlot/Python API</title>
 Informazioni complete sulle API (Interfaccia di Programmazione di un'Applicazione) di QtiPlot / Python sono disponibili
 <ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">qu&igrave;</ulink>.
+</sect2>
+
+<sect2 id="PyQt-Class-Reference">
+<title>Guida a PyQt Class</title>
+La guida completa a PyQt class &egrave; consultabile
+<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">qu&igrave;</ulink>.
 </sect2>
 </sect1>
 
