@@ -103,6 +103,10 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	standardBox = new QRadioButton();
 	buttonGroup1->addButton(standardBox);
 	gridLayout->addWidget(standardBox, 2, 0 );
+
+	standardErrorBox = new QRadioButton();
+	buttonGroup1->addButton(standardErrorBox);
+	gridLayout->addWidget(standardErrorBox, 3, 0 );
 	gridLayout->setColStretch(1, 1);
 
 	groupBox3 = new QGroupBox();
@@ -125,10 +129,12 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 
 	QVBoxLayout * vbox2 = new QVBoxLayout();
 	buttonAdd = new QPushButton();
-	buttonAdd->setDefault( true );
+	buttonAdd->setIcon(QIcon(":/plus.png"));
+	buttonAdd->setDefault(true);
 	vbox2->addWidget(buttonAdd);
 
 	buttonCancel = new QPushButton();
+	buttonCancel->setIcon(QIcon(":/delete.png"));
 	vbox2->addWidget(buttonCancel);
 
 	vbox2->addStretch();
@@ -248,8 +254,10 @@ void ErrDialog::add()
 					aux++;
 				}
 			}
-		} else {
+		} else if (standardBox->isChecked() || standardErrorBox->isChecked()){
 			double sd = gsl_stats_sd(Y.data(), 1, r);
+			if (standardErrorBox->isChecked())
+				sd /= sqrt(r);
 			for (int i = 0; i < rows; i++){
 				if (!t->text(i, ycol).isEmpty())
 					t->setCell(i, col, sd);
@@ -267,14 +275,15 @@ void ErrDialog::add()
 
 void ErrDialog::languageChange()
 {
-    setWindowTitle( tr( "QtiPlot - Error Bars" ) );
-    xErrBox->setText( tr( "&X Error Bars" ) );
+	setWindowTitle( tr( "QtiPlot - Error Bars" ) );
+	xErrBox->setText( tr( "&X Error Bars" ) );
 	buttonAdd->setText( tr( "&Add" ) );
-    textLabel1->setText( tr( "Add Error Bars to" ) );
-    groupBox1->setTitle( tr( "Source of errors" ) );
-    percentBox->setText( tr( "Percent of data (%)" ) );
-    standardBox->setText( tr( "Standard Deviation of Data" ) );
-    yErrBox->setText( tr( "&Y Error Bars" ) );
-    buttonCancel->setText( tr( "&Close" ) );
-	columnBox->setText(tr("Existing column"));
+	textLabel1->setText( tr( "Add Error Bars to" ) );
+	groupBox1->setTitle( tr( "Source of errors" ) );
+	percentBox->setText( "&" + tr( "Percent of data (%)" ) );
+	standardBox->setText( "&" + tr( "Standard Deviation of Data" ) );
+	standardErrorBox->setText(tr( "Standard E&rror" ) );
+	yErrBox->setText( tr( "&Y Error Bars" ) );
+	buttonCancel->setText( tr( "&Close" ) );
+	columnBox->setText("&" + tr("Existing column"));
 }
