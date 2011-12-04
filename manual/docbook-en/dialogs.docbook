@@ -73,6 +73,10 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
       <listitem>
         <para>This command first calculates the standard deviation of the plotted values. This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
       </listitem>
+	  <term>4) The standard error of the values:</term>
+	  <listitem>
+		<para>This command first calculates the standard error of the plotted data values. A new column will be created in the active table and each row will be filled with the computed standard error.</para>
+	  </listitem>
     </varlistentry>
   </variablelist>
 
