@@ -7059,6 +7059,10 @@ Les codes spéciaux suivants peuvent être utilisés :
         <source>The selected error column is empty!</source>
         <translation>La colonne d&apos;erreur sélectionnée est vide !</translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>

@@ -11850,6 +11850,10 @@ Följande specialkoder kan användas:
         <source>The selected error column is empty!</source>
         <translation type="unfinished">Den valda felkolumnen är tom!</translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>

@@ -10575,7 +10575,7 @@ The following special codes can be used:
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>În&amp;chide</translation>
+        <translation>Î&amp;nchide</translation>
     </message>
     <message>
         <source>Existing column</source>
@@ -10592,6 +10592,10 @@ The following special codes can be used:
     <message>
         <source>The selected error column is empty!</source>
         <translation>Coloana de bare de eroare selecţionată este goală!</translation>
+    </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation>E&amp;roare standard</translation>
     </message>
 </context>
 <context>

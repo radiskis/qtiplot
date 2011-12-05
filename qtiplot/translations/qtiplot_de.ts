@@ -13426,6 +13426,10 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>The selected error column is empty!</source>
         <translation>Die ausgewählte Fehlerspalte ist leer!</translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>

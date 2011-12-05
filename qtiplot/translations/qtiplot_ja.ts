@@ -7413,6 +7413,10 @@ The following special codes can be used:
         <source>The selected error column is empty!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
