@@ -13,11 +13,11 @@
     </message>
     <message>
         <source>Move cursor in order to resize the new rectangle!</source>
-        <translation>Bougez le curseur afin de redimensionner le nouveau rectangle !</translation>
+        <translation>Déplacez le curseur afin de redimensionner le nouveau rectangle !</translation>
     </message>
     <message>
         <source>Move cursor in order to resize the new ellipse!</source>
-        <translation>Bougez le curseur afin de redimensionner la nouvelle éllipse !</translation>
+        <translation>Déplacez le curseur afin de redimensionner la nouvelle éllipse !</translation>
     </message>
 </context>
 <context>
@@ -4095,7 +4095,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation>Test du Chi² pour la &amp;variance...</translation>
+        <translation>Test du Chi² de &amp;variance...</translation>
     </message>
     <message>
         <source>Save Folder As</source>
@@ -4310,7 +4310,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Step</source>
-        <translation>Intervalle</translation>
+        <translation>Interval</translation>
     </message>
     <message>
         <source>Major Ticks</source>
@@ -8573,19 +8573,19 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>From Minimum</source>
-        <translation>Depuis le minimum</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <source>To Maximum</source>
-        <translation>au maximum</translation>
+        <translation>Max</translation>
     </message>
     <message>
         <source>Step Size</source>
-        <translation>valeur du pas</translation>
+        <translation>Pas</translation>
     </message>
     <message>
         <source>&amp;Apply</source>
-        <translation>&amp;Appliquer</translation>
+        <translation>C&amp;alculer</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
@@ -8593,7 +8593,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Ok</source>
-        <translation>&amp;Ok</translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>QtiPlot - Error</source>
@@ -8605,11 +8605,11 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>QtiPlot - Frequency input error</source>
-        <translation>QtiPlot - Erreur de la fréquence d&apos;entrée</translation>
+        <translation>QtiPlot - Erreur de fréquence</translation>
     </message>
     <message>
         <source>Please enter frequency limits that satisfy: From &lt; To !</source>
-        <translation>Veuillez entrer des fréquences limites telles que &quot;de &lt; à&quot; !</translation>
+        <translation>Veuillez entrer des fréquences limites telles que Min &lt; Max !</translation>
     </message>
     <message>
         <source>Count</source>
@@ -8740,7 +8740,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Clea&amp;r Function</source>
-        <translation>Efface&amp;r la fonction</translation>
+        <translation>Supprime&amp;r</translation>
     </message>
     <message>
         <source>&amp;Ok</source>
@@ -8760,19 +8760,19 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>&amp;Add Function</source>
-        <translation>&amp;Ajouter la fonction</translation>
+        <translation>P&amp;aramètres</translation>
     </message>
     <message>
         <source>Built-in</source>
-        <translation type="unfinished">Interne</translation>
+        <translation>Interne</translation>
     </message>
     <message>
         <source>Fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisateur</translation>
     </message>
     <message>
         <source>User defined</source>
-        <translation type="unfinished">Définie par l&apos;utilisateur</translation>
+        <translation>Définie par l&apos;utilisateur</translation>
     </message>
 </context>
 <context>
@@ -10613,7 +10613,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs</translation>
     </message>
 </context>
 <context>
@@ -10762,75 +10762,75 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriétés</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs</translation>
     </message>
     <message>
         <source>xy &amp;Mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>Carto&amp;graphie xy</translation>
     </message>
     <message>
         <source>Long Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom long</translation>
     </message>
     <message>
         <source>Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Unités</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaires</translation>
     </message>
     <message>
         <source>&amp;x Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes &amp;x</translation>
     </message>
     <message>
         <source>&amp;y Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes &amp;y</translation>
     </message>
     <message>
         <source>&amp;z Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquettes &amp;z</translation>
     </message>
     <message>
         <source>Set X Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette de l&apos;axe X</translation>
     </message>
     <message>
         <source>Set X Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Unité de l&apos;axe X</translation>
     </message>
     <message>
         <source>Set X Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire de l&apos;axe X</translation>
     </message>
     <message>
         <source>Set Y Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette de l&apos;axe Y</translation>
     </message>
     <message>
         <source>Set Y Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Unité de l&apos;axe Y</translation>
     </message>
     <message>
         <source>Set Y Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire de l&apos;axe Y</translation>
     </message>
     <message>
         <source>Set Z Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Étiquette de l&apos;axe Z</translation>
     </message>
     <message>
         <source>Set Z Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Unité de l&apos;axe Z</translation>
     </message>
     <message>
         <source>Set Z Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire de l&apos;axe Z</translation>
     </message>
 </context>
 <context>
@@ -10881,7 +10881,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriétés</translation>
     </message>
 </context>
 <context>
@@ -13606,7 +13606,7 @@ Calcule la fonction sinus de x.</translation>
     </message>
     <message>
         <source>different</source>
-        <translation>Différent</translation>
+        <translation>différente</translation>
     </message>
     <message>
         <source>greater</source>
@@ -13779,15 +13779,15 @@ Distribution en F inverse avec m et n degrés de liberté.</translation>
     </message>
     <message>
         <source>At the %1 level, the population means</source>
-        <translation>Au niveau %1, la moyenne de population</translation>
+        <translation>Au niveau %1, les moyennes de population</translation>
     </message>
     <message>
         <source>are significantly different</source>
-        <translation>sont nettement différents</translation>
+        <translation>sont nettement différentes</translation>
     </message>
     <message>
         <source>are not significantly different</source>
-        <translation>ne sont pas nettement différents</translation>
+        <translation>ne sont pas nettement différentes</translation>
     </message>
     <message>
         <source>The sample dataset (%1) must have at least one data point.</source>
@@ -13815,7 +13815,7 @@ Distribution en F inverse avec m et n degrés de liberté.</translation>
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation>Test du Chi² pour la variance</translation>
+        <translation>Test du Chi² de variance</translation>
     </message>
     <message>
         <source>Variance</source>
@@ -14480,7 +14480,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Propriétés</translation>
     </message>
 </context>
 <context>
@@ -14807,7 +14807,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>Chi-square Test for Variance</source>
-        <translation>Test du Chi² pour la variance</translation>
+        <translation>Test du Chi² de variance</translation>
     </message>
     <message>
         <source>Variance</source>
@@ -15520,7 +15520,7 @@ Calcule la fonction de distribution cumulée pur une distribution chi² avec df 
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs</translation>
     </message>
 </context>
 <context>
