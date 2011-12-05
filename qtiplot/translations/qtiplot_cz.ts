@@ -7048,6 +7048,10 @@ K tomu lze použít následujících zvláštních kódů:
         <source>The selected error column is empty!</source>
         <translation>Vybraný chybový sloupec je prázdný!</translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
