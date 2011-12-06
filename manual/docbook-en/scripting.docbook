@@ -2101,17 +2101,6 @@ will do the trick, but you can also select a layer by its number:
 l = g.layer(num)
 </programlisting>
 
-If a plot curve is selected using the "Data Reader" tool or the "Select Data Range" tool,
-you can get the coordinates of the selected data points using the method bellow:
-<programlisting>
-g = graph("Graph1").activeLayer()
-c = g.selectedDataCurve()
-print c.x(g.selectionActivePoint())
-print c.y(g.selectionActivePoint())
-print c.tableRow(g.selectionActivePoint()) + 1
-print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
-</programlisting>
-
 <sect3 id="Python-Title">
 <title>The plot title</title>
 <programlisting>
@@ -2677,6 +2666,16 @@ print c.minYValue()
 print c.maxYValue()
 </programlisting>
 
+If a plot curve is selected using the "Data Reader" tool or the "Select Data Range" tool,
+you can get the coordinates of the selected data points using the method bellow:
+<programlisting>
+g = graph("Graph1").activeLayer()
+c = g.selectedDataCurve()
+print c.x(g.selectionActivePoint())
+print c.y(g.selectionActivePoint())
+print c.tableRow(g.selectionActivePoint()) + 1
+print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
+</programlisting>
 <sect3 id = "Python-PlotSymbols">
 <title>Curve symbols</title>
 
