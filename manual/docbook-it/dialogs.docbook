@@ -45,7 +45,7 @@
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Ci sono tre modi per determinare la dimensione delle barre:</para>
+  <para>Ci sono quattro modi per determinare la dimensione delle barre:</para>
   <variablelist>
     <varlistentry>
       <term>1) Con i valori di una colonna della tabella:</term>
@@ -57,16 +57,24 @@
       <term>2) Con una percentuale dei valori:</term>
       <listitem>
         <para>2) Calcolando la percentuale dei valori: questo comando aggiunge una nuova colonna alla tabella associata al grafico e la compila con i risultati di V*E/100 dove V &egrave; il valore dei dati per un punto ed E &egrave; il valore della percentuale impostato. Il calcolo viene eseguito per ogni riga della tabella. La colonna creata in questo modo pu&ograve; essere utilizzata per tracciare le barre nel grafico con la procedura descritta per il caso precedente. La colonna pu&ograve; essere modificata come una normale colonna. Le barre nel grafico si adattano automaticamente a tutti i cambiamenti apportati alla colonna degli errori.</para>
+
       </listitem>
     </varlistentry>
     <varlistentry>
       <term>3) Con la deviazione standard dei valori:</term>
       <listitem>
         <para>3) Calcolando prima la deviazione standard dei valori. Questo ha significato solo quando i dati sono disposti intorno ad un valore medio. Come nel caso precedente, viene creata una nuova colonna nella tabella attiva e ogni riga viene compilata con la deviazione standard calcolata. Con questo metodo, il programma non conosce e non pu&ograve; calcolare la deviazione standard di ogni singolo punto. Quando ci&ograve; &egrave; necessario, si deve ripetere pi&ugrave; volte l'operazione utilizzando in ogni sessione i valori x e y del punto interessato.</para>
-<para>Quando &egrave; necessario visualizzare le barre di errore in modo asimmetrico &egrave; necessario definire due gruppi di barre di errore per la stessa curva: un gruppo per i limiti superiori (con il lato negativo disabilitato) e uno per i limiti inferiori (con il lato positivo disabilitato).</para>
+
       </listitem>
     </varlistentry>
+    <varlistentry>
+	  <term>4) Con l'errore standard dei valori:</term>
+	  <listitem>
+		<para>4) Calcolando prima l'errore standard dei dati del tracciato. Viene creata una nuova colonna nella tabella attiva e ogni riga viene compilata con l'errore standard calcolato.</para>
+	  </listitem>
+    </varlistentry>
   </variablelist>
+<para>Quando &egrave; necessario visualizzare le barre di errore in modo asimmetrico si devono definire due gruppi di barre di errore per la stessa curva: un gruppo per i limiti superiori (con il lato negativo disabilitato) e uno per i limiti inferiori (con il lato positivo disabilitato).</para>
   <figure id="fig-add-error-bars-2">
     <title>Esempio di un grafico con barre di errore X e Y.</title>
     <mediaobject>

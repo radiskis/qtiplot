@@ -9582,7 +9582,7 @@ gli adattamenti lineari</translation>
     <message>
         <location filename="../src/plot2D/dialogs/ErrDialog.cpp" line="285"/>
         <source>Standard E&amp;rror</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Errore standard</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/ErrDialog.cpp" line="286"/>

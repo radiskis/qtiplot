@@ -1966,17 +1966,6 @@ ma &egrave; possibile anche selezionare una tavola indicando il suo numero:
 l = g.layer(num)
 </programlisting>
 
-Se il tracciato di una curva &egrave; selezionato con gli strumenti "Leggi i dati" oppure "Seleziona un intervallo",
-si ottengono le coordinate dei dati selezionati attraverso il seguente metodo:
-<programlisting>
-g = graph("Graph1").activeLayer()
-c = g.selectedDataCurve()
-print c.x(g.selectionActivePoint())
-print c.y(g.selectionActivePoint())
-print c.tableRow(g.selectionActivePoint()) + 1
-print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
-</programlisting>
-
 <sect3 id="Python-Title">
 <title>Il titolo del grafico</title>
 <programlisting>
@@ -2504,6 +2493,15 @@ print c.minYValue()
 print c.maxYValue()
 </programlisting>
 
+Se il tracciato di una curva &egrave; selezionato con gli strumenti "Leggi i dati" oppure "Seleziona un intervallo",si ottengono le coordinate dei dati selezionati attraverso il seguente metodo:
+<programlisting>
+g = graph("Graph1").activeLayer()
+c = g.selectedDataCurve()
+print c.x(g.selectionActivePoint())
+print c.y(g.selectionActivePoint())
+print c.tableRow(g.selectionActivePoint()) + 1
+print c.tableRow(g.selectionInactivePoint()) + 1# utile solo per lo strumento "Seleziona un intervallo"
+</programlisting>
 <sect3 id = "Python-PlotSymbols">
 <title>Simboli per i punti nei grafici</title>
 
