@@ -7061,7 +7061,7 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>Standard E&amp;rror</source>
-        <translation type="unfinished"></translation>
+        <translation>E&amp;rreur type</translation>
     </message>
 </context>
 <context>
