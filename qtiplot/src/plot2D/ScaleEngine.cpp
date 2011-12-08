@@ -103,18 +103,18 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 
 double ScaleTransformation::xForm(double s, double s1, double s2, double p1, double p2) const
 {
-	if ((d_engine->type() == ScaleTransformation::Log10 || d_engine->type() == ScaleTransformation::Ln ||
-		 d_engine->type() == ScaleTransformation::Log2) && s < 0.0){
+	double maxScreenCoord = 1e4;
+	if ((d_engine->type() != ScaleTransformation::Linear) && s <= 0.0){
 		if (p1 < p2){
 			if (d_engine->testAttribute(QwtScaleEngine::Inverted))
-				return DBL_MAX;
+				return maxScreenCoord;
 			return -DBL_MAX;
 		}
 
 		if (d_engine->testAttribute(QwtScaleEngine::Inverted))
 			return -DBL_MAX;
 
-		return DBL_MAX;
+		return maxScreenCoord;
 	}
 
 	if (!d_engine->hasBreak()){
