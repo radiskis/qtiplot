@@ -722,6 +722,14 @@ if (sipIsErr == 0)
 		sipCpp->setReadOnlyColumn(col, a1);
 %End
 
+	int columnRole(SIP_PYOBJECT);
+%MethodCode
+	sipIsErr = 0;
+	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("h", sipCpp->colPlotDesignation(col));
+%End
+
     void setColumnRole(SIP_PYOBJECT, PlotDesignation);
 %MethodCode
   	sipIsErr = 0;

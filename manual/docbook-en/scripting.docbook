@@ -1395,9 +1395,10 @@ If <varname>enumerateRight</varname> is set to True, all the table columns start
 by default it is set to False.
 The plural forms get/set all headers at once.
 
-<para>You can change the plot role of a table column (abscissae, ordinates, error bars, etc...) using:</para>
+<para>You can change the plot role (abscissae, ordinates, error bars, etc...) of a table column <varname>col</varname> using:</para>
 <programlisting>
 t.setColumnRole(col, role)
+print t.columnRole(col)
 </programlisting>
 where <varname>role</varname> specifies the desired column role:
 <variablelist spacing="compact">

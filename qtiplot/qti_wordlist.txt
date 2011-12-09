@@ -83,6 +83,7 @@ comment
 setComment
 showComments
 setReadOnlyColumn
+columnRole
 setColumnRole
 setColumnWidth
 hideColumn

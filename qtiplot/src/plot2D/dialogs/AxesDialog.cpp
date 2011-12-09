@@ -1866,12 +1866,17 @@ int AxesDialog::exec()
 
 void AxesDialog::updateMinorTicksList(int scaleType)
 {
-	updatePlot();
+	if (scaleType != 1)
+		updatePlot();
 
 	boxMinorValue->clear();
-	if (scaleType)//log scale
+	if (scaleType){//log scale
 		boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
-	else
+		if (scaleType == 1){
+			boxMinorValue->setEditText("8");
+			updatePlot();
+		}
+	} else
 		boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
 
 	int a = mapToQwtAxis(axesList->currentRow());
