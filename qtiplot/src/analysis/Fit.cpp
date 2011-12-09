@@ -734,14 +734,15 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	outputTable->setColName(2, tr("UCL"));
 	outputTable->setColComment(2, tr("Upper %1 Confidence Limit").arg(confidenceLevel));
 
-	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	double dof = d_n - d_p;
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), dof);
 	double x_mean = gsl_stats_mean(d_x, 1, d_n);
 	double sxx = 0.0;//gsl_stats_tss (d_x, 1, d_n);
 	for (int i = 0; i < d_n; i++){
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-	double mse = d_rss/double(d_n - d_p);
+	double mse = d_rss/dof;
 
 	for (int i = 0; i < points; i++){
 		double x = X[i];
@@ -788,8 +789,9 @@ double Fit::lcl(int parIndex, double confidenceLevel)
 	if (parIndex < 0 || parIndex >= d_p)
 		return NAN;
 
-	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
-	return d_results[parIndex] - t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
+	double dof = d_n - d_p;
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), dof);
+	return d_results[parIndex] - t*sqrt(chi_2/dof*gsl_matrix_get(covar, parIndex, parIndex));
 }
 
 double Fit::ucl(int parIndex, double confidenceLevel)
@@ -797,8 +799,9 @@ double Fit::ucl(int parIndex, double confidenceLevel)
 	if (parIndex < 0 || parIndex >= d_p)
 		return NAN;
 
-	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
-	return d_results[parIndex] + t*sqrt(gsl_matrix_get(covar, parIndex, parIndex));
+	double dof = d_n - d_p;
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), dof);
+	return d_results[parIndex] + t*sqrt(chi_2/dof*gsl_matrix_get(covar, parIndex, parIndex));
 }
 
 void Fit::showPredictionLimits(double confidenceLevel)
@@ -853,14 +856,15 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	outputTable->setColName(2, tr("UPL"));
 	outputTable->setColComment(2, tr("Upper %1 Prediction Limit").arg(confidenceLevel));
 
-	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), d_n - d_p);
+	double dof = d_n - d_p;
+	double t = gsl_cdf_tdist_Pinv(1 - 0.5*(1 - confidenceLevel), dof);
 	double x_mean = gsl_stats_mean(d_x, 1, d_n);
 	double sxx = 0.0;
 	for (int i = 0; i < d_n; i++){
 		double dx = d_x[i] - x_mean;
 		sxx += dx*dx;
 	}
-	double mse = d_rss/double(d_n - d_p);
+	double mse = d_rss/dof;
 	for (int i = 0; i < points; i++){
 		double x = X[i];
 		double dx = x - x_mean;
@@ -875,6 +879,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		outputTable->setCell(i, 2, upLimit);
 		ucl[i] = upLimit;
 	}
+
 	for (int i = 0; i < outputTable->numCols(); i++)
 		outputTable->table()->adjustColumn(i);
 	app->hideWindow(outputTable);
