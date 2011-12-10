@@ -1866,18 +1866,40 @@ int AxesDialog::exec()
 
 void AxesDialog::updateMinorTicksList(int scaleType)
 {
-	if (scaleType != 1)
-		updatePlot();
-
 	boxMinorValue->clear();
-	if (scaleType){//log scale
-		boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
-		if (scaleType == 1){
+	switch(scaleType){
+		case 0://linear
+			btnMajor->setChecked(true);
+			stepDisabled();
+			boxMajorValue->setValue(8);
+			boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+			boxMinorValue->setEditText("4");
+		break;
+		case 1://Log10
+		case 2://ln
+		case 3://Log2
+			boxMinorValue->addItems(QStringList()<<"0"<<"2"<<"4"<<"8");
+			btnStep->setChecked(true);
+			stepEnabled();
+			boxStep->setValue(1.0);
 			boxMinorValue->setEditText("8");
-			updatePlot();
-		}
-	} else
-		boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+		break;
+		case 4://Reciprocal
+			boxMinorValue->addItems(QStringList()<<"0"<<"1"<<"4"<<"9"<<"14"<<"19");
+			boxMinorValue->setEditText("1");
+		break;
+		case 5://Probability
+			boxMinorValue->addItems(QStringList()<<"0");
+		break;
+		case 6://Logit
+			boxMinorValue->addItems(QStringList()<<"0");
+			btnStep->setChecked(true);
+			stepEnabled();
+			boxStep->setValue(1.0);
+		break;
+	}
+
+	updatePlot();
 
 	int a = mapToQwtAxis(axesList->currentRow());
 	boxMinorValue->setEditText(QString::number(d_graph->axisMaxMinor(a)));
