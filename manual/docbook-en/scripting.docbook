@@ -956,6 +956,12 @@ def showMessage():
 QtCore.QObject.connect(workspace(), QtCore.SIGNAL("subWindowActivated(QMdiSubWindow *)"), showMessage)
 </programlisting>
 
+It is possible to access the list of all MDI window objects in a QtiPlot project:
+<programlisting>
+for w in qti.app.windows():
+	print w.objectName()
+</programlisting>
+
 </sect2>
 
 <sect2 id="Python-Folders">
@@ -971,7 +977,7 @@ will continue with a depth-first recursive search of the project's root folder, 
 <programlisting>
 f = rootFolder()
 </programlisting>
-In order to access subfolders and windows, there are the following functions:
+In order to access subfolders and windows, the following functions are provided:
 <programlisting>
 f2 = f.folders()[number]
 f2 = f.folder(name, caseSensitive=True, partialMatch=False)
@@ -979,6 +985,9 @@ t = f.table(name, recursive=False)
 m = f.matrix(name, recursive=False)
 g = f.graph(name, recursive=False)
 n = f.note(name, recursive=False)
+lst = f.windows()
+for w in lst:
+	print w.objectName()
 </programlisting>
 If you supply True for the recursive argument, a depth-first recursive search of all subfolders will
 be performed and the first match returned.
