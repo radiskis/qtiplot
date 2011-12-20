@@ -1,0 +1,1511 @@
+<!--
+
+		DESCRIPTION OF THE DIFFERENT DIALOG BOXES
+		========================================
+
+-->
+<title>The Dialogs</title>
+
+<!-- ************************************************** -->
+<!--		Add Custom Script Action				-->
+<!-- ************************************************** -->
+<sect1 id="custom-action-dialog">
+  <title>Add Custom Action</title>
+  This dialog helps you define new Python script launchers that will be added to menus or tool bars in &appname;.
+  You can fully customize script launchers by defining: 1) a textual description
+  that will be displayed in the destination menu, (2) an icon, (3) a shortcut key sequence and (4) a tool tip.
+  The <emphasis>Tool Tip Text</emphasis>  is a short description that is displayed near the launcher button
+  when you hover the mouse over it. You must assign unique shortcut key sequences to your custom launchers.
+
+  <figure id="fig-add-custom-action-dialog">
+    <title>The &add-custom-action-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-custom-action.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>The <emphasis>Script File</emphasis> is the path to the Python script that will be executed when you click the launcher.
+When you click the <emphasis>Add</emphasis> button, all the settings for the new launcher are saved to an XML file
+in the directory specified in the <emphasis>Folder</emphasis> box. On start-up &appname; parses all XML files in this
+folder and creates the corresponding menu items or toolbar buttons.
+When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list
+of the dialog is removed from &appname; menus/tool bars and the corresponding XML file is deleted from
+the hard disk. Make sure that you have backed up the file if you will ever need it in the future!</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Errorbars				-->
+<!-- ************************************************** -->
+<sect1 id="add-error-bars-dialog">
+  <title>Add Error bars</title>
+  <para>This dialog is activated by selecting the &add-error-bars-lnk; from the &graph-menu-lnk;.</para>
+  <para>This command is used to plot X and/or Y error bars at each data point.</para>
+<!--
+  <para>Note that both the "add" and "OK" buttons will add errors bars. For this reason, if you have used the "add" button already, then you should close the dialog with the "cancel" button (NOT the "OK" button).</para> -->
+
+<para>Note that clicking on the "Close" button will not add any error bars to the plot. You must set up the parameters for the error bars first and then click on the "Add" button. If you click on "Close" without clicking "Add", there will be no error bars drawn.</para>
+  <figure id="fig-add-error-bars-1">
+    <title>The &add-error-bars-cmd; dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-error-bars-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>There are three ways to specify the sizes of the bars:</para>
+  <variablelist>
+    <varlistentry>
+      <term>1) From a column of the table:</term>
+      <listitem>
+        <para>In this case, the values in the selected column are used to compute the error bars. Specifically, if V is the value of a data point, and E the value from the same row of the errorbar column, the size of the corresponding bar will be V-E to V+E.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>2) A percentage of the values:</term>
+      <listitem>
+        <para>This command adds a new column to the table associated with the plot and fills it with result of calculating V*E/100 for each row in the table, where V is the plotted value and E is the selected percentage. This column is then used to plot the error bars in exactly the same manner as in the previous case. The new column can subsequently be edited like any other column. Any changes will be reflected in the size of the corresponding error bars.</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>3) The standard deviation of the values:</term>
+      <listitem>
+        <para>This command first calculates the standard deviation of the plotted values. This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
+      </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>4) The standard error of the values:</term>
+	  <listitem>
+		<para>This command first calculates the standard error of the plotted data values. A new column will be created in the active table and each row will be filled with the computed standard error.</para>
+	  </listitem>
+    </varlistentry>
+  </variablelist>
+
+<para>If you need to display asymmetric error bars you must define two sets of error bars for the same curve: one for the upper limits (with disabled minus side) and one for the lower limits (with disabled plus side).</para>
+
+  <figure id="fig-add-error-bars-2">
+    <title>Example of a plot with both X and Y Error Bars.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-error-bars-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add Function				-->
+<!-- ************************************************** -->
+<sect1 id="add-function-dialog">
+  <title>Add Function</title>
+  <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators *, +, /, -, and ^ (for multiplication, addition, division, subtraction and exponentiation, respectively). A complete set of intrinsic functions are available and these are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>.</para>
+  <para>The first item is the <emphasis>Curve Type</emphasis> and is used to select the form of the generator function. The simplest and most common function definition is the classical Cartesian coordinate definition, y=f(x). This is the default option and is simply named "Function". Just below this is a text pane in which to enter the function definition, The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range. At the very bottom is a "Function Selector" which contains a dropdown list of intrinsic functions and brief description of the function. Clicking on the <emphasis>Add Function</emphasis> button will copy the selected function into the function definition pane. </para>
+  <figure id="add-function-dialog-1">
+    <title>The &add-function-cmd; dialog box: Cartesian Coordinates.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>If the function expression contains terms that are recognizable as constants, e.g.: f(x) = a*x + b, &appname; will detect them and display a two column table on the right side of the dialog which contains input spin boxes that simplify setting appropriate values for the detected constants.</para>
+
+  <figure id="add-function-dialog-4">
+	<title>The &add-function-cmd; Dialog Box: Automatic Detection of Constants.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>linkend=
+
+  <para>A function can also be defined using a parametric definition by selecting "Parametric plot" as the <emphasis>Curve type</emphasis>. That is, given some variable, <emphasis>m</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(m) and y=g(m).</para>
+  <para>The first parameter is the name of the parametric variable (here <emphasis>m</emphasis>). It is followed by the definitions of the two functions, the range of the parametric variable, and the number of data points.</para>
+  <figure id="add-function-dialog-2">
+    <title>The &add-function-cmd; dialog box: Parametric Coordinates.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Finally, a polar definition of the function may be used by selecting "Polar plot" as the <emphasis>Curve type</emphasis>. Given some variable <emphasis>t</emphasis>, then the radius (<emphasis>R</emphasis>) and angle (<emphasis>Theta</emphasis>) are computed using two functions of that variable, R=f(t) and Theta=g(t), in a manner similar to the parametric function case. The (x,y) data points are then computed as x=R*cos(Theta) and y=R*sin(Theta).</para>
+  <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>). It is followed by the definition of the two functions, the range of the parametric variable, and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
+  <figure id="add-function-dialog-3">
+    <title>The &add-function-cmd; dialog box: Polar Coordinates.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-function-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add Layer				-->
+<!-- ************************************************** -->
+<sect1 id="add-layer-dialog">
+  <title>Add Layer</title>
+  <para>This dialog is opened when you add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size and locate it on top of existing layers. The new layer contains an empty plotting area. You can subsequently modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and picking the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
+  <figure id="fig-add-layer-dialog">
+    <title>The &add-layer-cmd; Dialog Box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-layer.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add / Remove curves			-->
+<!-- ************************************************** -->
+<sect1 id="add-remove-curve-dialog">
+  <title>Add/Remove Curves</title>
+  <para>This dialog is activated by selecting the command <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> from the <link linkend="sec-graph-menu">Graph Menu</link>.</para>
+  <para>The left window shows the columns available from the project's tables that may be used for plotting. If the <emphasis>Show current folder only</emphasis> option is checked, only tables from the active folder of the project will be listed in this window.
+  The right window lists the curves already plotted. In the case presented below, there are two tables that the &add-remove-curve-cmd;
+  dialog box lists for the selection of columns. You select a <emphasis>Y</emphasis> column to plot using this dialog. &appname; will use the column defined as X in the corresponding table for the <emphasis>X</emphasis> values.</para>
+  <figure id="fig-add-remove-curve">
+    <title>The &add-remove-curve-cmd; Dialog Box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>In this dialog box, if you select one curve of the plot in the right window,
+  you can change the columns used for X and Y with the <emphasis>Plot Association</emphasis> button.
+  In any case, you can't mix the X values from one table with the Y values from another one.
+  If you want to do this, you have to copy the columns into the same table.</para>
+  <para>If the curve selected is a function, you can modify it by pressing the <emphasis>Edit Function...</emphasis> button.
+  Refer to the <link linkend="add-function-dialog">&add-function-cmd; dialog box</link> for more details on functions editing.</para>
+<para>If the <emphasis>Show Range</emphasis> option is checked, the plot range of all the curves
+not defined as analytical functions will be also displayed in the right window of the dialog.
+The plot range is the interval of points which are visible in a curve. You can show/hide data points from
+a selected curve, without having to delete them, by pressing the <emphasis>Edit Range...</emphasis> button,
+which opens a dialog allowing to edit the plot range.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Arrange Layers				-->
+<!-- ************************************************** -->
+<sect1 id="arrange-layers-dialog">
+  <title>Arrange Layers</title>
+  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu </link>or by entering &arrange-layers-key;.
+
+<para>This dialog provides for modification of the geometrical arrangement of plot layers which are already present
+in the active graph window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
+
+<para>You can specify the number of rows and columns that define a grid of plots. With the default settings, &appname; computes the size of the layers in the grid from the size of the graph window.
+If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accommodate them.
+When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers will be kept unchanged when you manually resize the graph window.</para>
+
+<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the other hand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
+
+<para>Finally, it is also possible swap two layers using the <emphasis>Swap Layers</emphasis> controls. Simply select the Source and Destination layers and click the <emphasis>Swap</emphasis> button.</para>
+  <figure id="fig-define-layer-1">
+    <title>The &arrange-layers-cmd; dialog: the Geometry Tab</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/arrange-layers-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Once suitable choices have been made, clicking on either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons will arrange the layers to obtain the desired alignment of the vertical and horizontal axis.</para>
+  <figure id="fig-define-layer-3">
+    <title>Example of a vertical arrangement for two plots.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-layout-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Note that if modifications are later made to an aligned plots, then alignment of the different axes may be lost. Simply re-execute &arrange-layers-cmd; to again re-arrange the plot.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Arrow Dialog				-->
+<!-- ************************************************** -->
+<sect1 id="arrow-dialog">
+  <title>Line Options</title>
+  <para>This dialog allows modification of lines or arrows which have been created with either the <emphasis>&draw-arrow-cmd;</emphasis> command from the <link linkend="sec-graph-menu">Graph Menu</link> or by using &draw-arrow-key;. The dialog can also be opened by double clicking on an arrow or line, or by right clicking a selected arrow or line and then selecting <emphasis>Properties...</emphasis> from the resulting pop-up menu.</para>
+  <para>The <emphasis>Options</emphasis> tab of the dialog allows changing the color, line type, line width, and the presence or absence of arrow heads. Line width is set in pixels. It is possible to define a default style for all new lines by clicking the <emphasis>Set Default</emphasis> button.</para>
+  <figure id="fig-line-options-1">
+    <title>The <emphasis>Arrow Options</emphasis> Dialog: First Tab</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The <emphasis>Arrow Head</emphasis> tab is used to modify arrow head shape. Length is in pixels and the angle is in degrees. It is also possible to define a default style for arrow heads using the <emphasis>Set Default</emphasis> button.</para>
+  <figure id="fig-line-options-2">
+    <title>The <emphasis>Arrow Options</emphasis> Dialog: Second Tab</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The <emphasis>Geometry</emphasis> tab is used to specify the starting and ending points of the selected line/arrow. The coordinates can be set as a function of the scale values displayed on the left (Y) and bottom (X) axes, or in pixels, by choosing the desired method from the <emphasis>Unit</emphasis> pull-down list. Pixel coordinates are relative to the top-left corner of the layer which contains the line.</para>
+  <figure id="fig-line-options-3">
+    <title>The <emphasis>Geometry</emphasis> Dialog: Third Tab</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/line-options-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para></para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Column Options				-->
+<!-- ************************************************** -->
+<sect1 id="column-options-dialog">
+  <title>Column Options</title>
+  <para>This dialog is activated by selecting the <link linkend="column-options-cmd">&column-options-cmd;</link> command from the <link linkend="sec-table-menu">Table Menu</link>. At least one column must be selected before this command can be used.</para>
+  <figure id="fig-column-options">
+    <title>The &column-options-cmd; Dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/column-options.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The checkbox <emphasis>Enumerate all to the right</emphasis> is used to rename of all the columns which lie to the right of the selected column. For example, if the name of the selected column is "xyz", then the selected column and all of the following columns will be renamed to "xyz1", "xyz2", and so on.</para>
+  <para>The "&lt;&lt;" and "&gt;&gt;" buttons change the selected column. The highlighting of the column in the table behind the dialog box will change indicating that a new column has been selected. The column to which the formatting commands are applied is the one whose name appears in the "Column Name" box.</para>
+  <para>The <emphasis>Plot Designation</emphasis> selector is used to define which columns are to be used as X, Y or Z values or as error bars. In a table you can select several columns as X, in which case the column labels will display as [X1], [X2], etc. Multiple Y columns will display as [Y1], [Y2], etc. The same scheme is followed for multiple Z columns.</para>
+ <para>The <emphasis>Comment</emphasis> box allows entering text that will be displayed in the table header
+  just below the column name when the <emphasis>Display Comments in Header</emphasis> option is checked.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Contour Curves Options			-->
+<!-- ************************************************** -->
+<sect1 id="contour-options-dialog">
+  <title>Contour Curves Options</title>
+  <para>This dialog is activated by clicking on a contour curve (or on the plotting area) when a 3D plot has been created from a matrix with one of the following commands from the &plot3d-menu-lnk;: &contour-color-lnk;, &contour-lines-lnk; or &gray-scale-lnk;.</para>
+
+  <figure id="fig-contour-options-9">
+    <title>The Values tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-9.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+The <emphasis>Values </emphasis>tab allows choosing the matrix that is to serve as the data source for the plot.
+It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values </emphasis>box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.
+
+  <figure id="fig-contour-options-1">
+    <title>The Colors Tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>There are two groups of controls on this tab. Each group is activated by checking the box next to the group label. The first group of controls, labeled <emphasis>Image</emphasis>, are used to select the fill type of the contour plot. It is checked when filling of the contour plot is desired. If unchecked, no fill will be used. If filling is enabled, you may choose between gray-scale, a default color mapping and a custom color mapping with the 3 radio buttons. The default gray-scale and color maps are shown in the figure below.</para>
+  <informalfigure id="fig-contour-options-5">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-5.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <informalfigure id="fig-contour-options-6">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-6.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>You can only customize the colormap when the <emphasis>Custom Colors</emphasis> option is selected. A table with a set of numbers (the Z levels), and the color corresponding to each Z level, is presented. You can then add, remove or modify levels from the definition of the colormap. The first and last levels cannot be changed. These are always set to the minimum and maximum Z values. Note that this is only the definition of the colormap - it won't change the number of contour lines in your plot. An example of classical custom colormap is given here:</para>
+    <informalfigure id="fig-contour-options-3">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>As long as the <emphasis>Scale Colors</emphasis> checkbox remains checked, Z-values that fall between colormap levels will be displayed in colors that are interpolated between the colors defined for the bounding levels. It is also possible to define discrete colors for each level. To do this you must uncheck the <emphasis>Scale Colors</emphasis> checkbox. In this case, no interpolation will be done, and you must define enough levels in your colormap to produce a desirable result.</para>
+    <informalfigure id="fig-contour-options-4">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <para>The second group of settings must be enabled if you want a bar scale on your plot. You can then define its position and width.</para>
+
+	<figure id="fig-contour-options-7">
+    <title>The Contour Lines tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-7.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>The <emphasis>Contour Lines</emphasis> tab is used to customize settings applicable to the contour lines.
+You can select the number of lines and their color. If you check <emphasis>Use Default Pen</emphasis>, the color of the lines will be defined by the settings in the group of controls to the left of the checkbox.
+If you check <emphasis>Use Color Map</emphasis>, the lines will be colored as a function of the Z levels
+from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you check <emphasis>Use Table Custom Pen</emphasis>, the color of the lines will be determined by the settings defined in the <emphasis>Pen</emphasis> column of the table displaying the Z levels.</para>
+
+  <figure id="fig-contour-options-8">
+    <title>The Labels tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/contour-curve-dialog-8.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The <emphasis>Labels</emphasis> tab is used to enable/disable the display of a Z value
+  for each of the contour lines. You can globally customize the color, background,
+  font, rotation and position of the text labels. </para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Custom Curves Dialog			-->
+<!-- ************************************************** -->
+<sect1 id="custom-curves-dialog">
+  <title>Plot Details</title>
+  <para>This dialog is activated by selecting the <link linkend="format-plot-cmd">&format-plot-cmd;</link> from the <link linkend="sec-format-menu">Format Menu</link>. It may also be activated either by a double click on a plot or by right-clicking on a plot and selecting <emphasis>Plot Details...</emphasis>. If there is more than one layer in the window, &appname; will select the layer which contains the plot under the mouse pointer. The exact contents of the dialog will vary depending upon how the dialog was invoked and on the type of plot selected.</para>
+  <figure id="fig-custom-curves-1">
+    <title>The Plot Details Dialog: Layer properties.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>The second tab defines the properties of the plot canvas: the background color/image and the frame around the canvas.</para>
+  <figure id="fig-custom-canvas-1">
+	<title>The Plot Details Dialog: Canvas with a solid background color.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/custom-canvas-1.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
+  <figure id="fig-custom-canvas-2">
+	<title>The Plot Details Dialog: Canvas with a background image.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/custom-canvas-2.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+
+<para>The third tab defines the geometry of the plot layer.</para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog: Layer geometry.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-geometry.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The fourth tab can be used to customize the speed mode for the layer. This can be very useful when dealing with very large data sets. Speed mode uses the Douglas and Peucker algorithm, the purpose of which is to take a 'curve' composed of line segments (or points) and find a new curve with fewer points that is not too dissimilar from the original curve. The algorithm defines 'not too dissimilar' as a function of the maximum distance (tolerance) between the original curve and the new curve. The new curve then consists of a subset of the line segments (or points) that defined the original curve.
+
+When the speed mode is enabled, filtering of the data is activated only for the curves with more than the specified maximum number of data points.
+  </para>
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog: Layer Speed Mode.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-layer-speed.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The right part of the dialog box contains several tabs which depend on the kind of plot selected. They are described in the following subsections. The left part of the dialog window shows the curves which are plotted on the active layer. All modifications will be made to the selected curve. If the <emphasis>Plot Associations...</emphasis> button is visible, then you can change which columns are used by clicking it. This will open a dialog which can be used to select the columns of the table to be used as X and Y values.</para>
+
+  <figure id="fig-custom-curves-3">
+    <title>The Plot Details Dialog: Plot Associations.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ <para>If the <emphasis>Worksheet</emphasis> button visible, it may be used to access to the table which contains the columns for the selected curve.</para>
+
+<sect2 id="custom-curves-dialog-lines">
+<title>Custom curves for lines and scatter plots</title>
+
+  <para>The first tab on the right side of the dialog window allows definition of the pair of axes to which a curve is attached. Attaching different curves on the layer to different X/Y axis pairs permits placing several curves with different x/y scales on the same plot layer.</para>
+  <figure id="fig-custom-curves-line-1">
+    <title>The Plot Details Dialog: Assign Axes.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-axes.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+ <para>The second tab on the right side of the dialog window allows customizing the style of the plot line (color, line style, thickness). The connect button allows changing the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plots available.</para>
+  <figure id="fig-custom-curves-line-1">
+    <title>The Plot Details Dialog: Line formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The third tab is activated to select the symbol, and to modify the size, color and fill color of the selected symbol.</para>
+  <figure id="fig-custom-curves-line-2">
+    <title>The Plot Details Dialog: Symbol formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+    <para>The <emphasis>Labels</emphasis> tab is used if you want labels plotted at each data point in the plot. Options are provided to control the font, color, rotation angle and position of these labels.</para>
+  <figure id="fig-custom-curves-labels">
+    <title>The Plot Details Dialog: Labels formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-labels.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+<!-- Here* -->
+<sect2 id="custom-error-bars-box">
+<title>Custom error bars</title>
+  <figure id="fig-custom-error-bars">
+    <title>The Plot Details Dialog for formatting error bars.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-error-bars.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-curves-dialog-pie">
+<title>Plot Details for pie plots</title>
+  <para>These commands are available for <link linkend="pie-cmd">pie plots</link>. The first tab is used to customize the pie segments. The fields on the left are used to modify the border drawn around each segment. The color, type and width of line may be customized. The default is no border (line width = 0).</para>
+  <para>The fields on the right are used to define the fill style used for pie segments. The <emphasis>First color </emphasis>combo-box defines which color is used for the first segment. The remaining segments will be filled with colors that follow the order defined in the combo-box's list. The default value for this field is black, so segments 2, 3, ... will be red, green, etc.</para>
+  <para>The <emphasis>Pattern </emphasis>combo-box defines the fill pattern that will be used for all segments of the pie. The default value is solid fill.</para>
+  <figure id="fig-custom-curves-pie-1">
+    <title>The Plot Details Dialog for pies: Pie Segment Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-2">
+    <title>The Plot Details Dialog for pies: Pie Geometry.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-pie-3">
+    <title>The Plot Details Dialog for pies: Pie Labels Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-pie-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-curves-dialog-box">
+<title>Custom curves for box plots</title>
+  <figure id="fig-custom-curves-box-1">
+    <title>The Plot Details Dialog for box: Pattern Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-box-2">
+    <title>The Plot Details Dialog for box: Whiskers Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <figure id="fig-custom-curves-box-3">
+    <title>The Plot Details Dialog for box: Percentile Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-box-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="custom-curves-dialog-histogram">
+<title>Custom curves for pie histogram</title>
+  <figure id="fig-custom-curves-histogram-1">
+    <title>The Plot Details Dialog for histogram: Pattern Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure id="fig-custom-curves-histogram-2">
+    <title>The Plot Details Dialog for histogram: Spacing Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <figure id="fig-custom-curves-histogram-3">
+    <title>The Plot Details Dialog for histogram: Data Formatting.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/custom-curves-histogram-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Add surface function			-->
+<!-- ************************************************** -->
+<sect1 id="define-surface-plot-dialog">
+  <title>Define surface plot</title>
+  <para>This dialog is used when you enter the &new-surface-3d-plot-cmd; command. It allows for the creation of a new function of two variables. When the "Function" <emphasis>Surface type </emphasis>is selected the coordinate system will be Cartesian and the function will be of the form: z = f(x,y).</para>
+  <figure id="fig-define-surface-plot-dialog">
+    <title>The &new-surface-3d-plot-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-surface-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>You may also define the X, Y and Z scales and the mesh parameters.</para>
+
+<para>You can create parametric surfaces when the "Parametric" <emphasis>Surface type </emphasis>is selected. The only parameters allowed are latitude and longitude: <varname>u</varname> and <varname>v</varname>. Here, for example, is how you might plot a sphere having a radius equal to one:</para>
+  <figure id="fig-define-param-surface-plot-dialog">
+    <title>The &new-surface-3d-plot-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/define-param-surface-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>As in the case for functions, you can supply the drawing domain for the two angular parameters and you can define the mesh parameters. The more rows/columns you request, the better the resolution of the output image will be. However, this is at the cost of a larger memory consumption and an increased time of computation. A slow CPU and small amounts of memory will be limiting.</para>
+
+<para>Finally, you can provide information to the drawing routines about the rotational symmetry of the parametric surface using the two <varname>Periodic</varname> check box options (one for each parameter).</para>
+</sect1>
+<!-- ************************************************** -->
+<!--		Export ASCII				-->
+<!-- ************************************************** -->
+<sect1 id="export-ascii-dialog">
+  <title>Export ASCII</title>
+      <indexterm><primary>table</primary></indexterm>
+  <para>This dialog is activated by selecting the  <link linkend="export-ascii-cmd">&export-ascii-cmd;</link> command from the <link linkend="sec-file-menu">File Menu</link>. It is active if there is at least one table window in the project.</para>
+  <para>This command is used to export all or a part of the data of a project to an ASCII file. Alternatively, you can also choose to export the tables/matrices to one of the following formats: TeX (.tex), Open Document Format (.odf) or as web pages (.html).</para>
+  <figure id="fig-export-ascii">
+    <title>Export of a selection from a table to an ASCII file.</title>
+    <informalexample>
+      <para>In this example, the names of the selected columns will be
+  exported as the first line of the file. If the <emphasis>Include Column Comments </emphasis>option
+  were also checked then the comments displayed in the table header
+  would also be exported as the second line of the file. A TAB character
+  will be used as a separator between columns values. Since the
+  <emphasis>Export Selection </emphasis>option is checked, only the selected columns
+  will be exported.</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/export-ascii.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+<para>When the "Include Column Names" option is not checked, any column names will be ignored and the names "C1", "C2",... will be used in the exported file. The formatting of the numbers in each table column is preserved during the export. Make sure that adequate precision has been set before exporting to insure that the ASCII representation of the numbers in the output file is sufficiently accurate.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		FFT					-->
+<!-- ************************************************** -->
+<sect1 id="fft-dialog">
+  <title>Fast Fourier Transform</title>
+  <para>The &fft-cmd; dialog box can be used either on a table or on a plot. It is used to compute either the direct or inverse FFT. See the <link linkend="sec-fft">FFT section</link> in the <link linkend="analysis">Analysis chapter</link> for an example.</para>
+  <figure id="fig-fft-dialog-curve">
+    <title>The &fft-cmd; dialog box for a curve.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fft-dialog-curve.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>&appname; will create a new plot window containing the FFT amplitude curve, along with a new table which contains the real part, the imaginary part, the amplitude, and the phase of the FFT.</para>
+  <para>If the <emphasis>Normalize Amplitude</emphasis> check box is on, the amplitude curve is normalized to 1. If the <emphasis>Shift Results</emphasis> check box is on, the frequencies are shifted in order to obtain a centered x-scale.</para>
+  <figure id="fig-fft-dialog-table">
+    <title>The &fft-cmd; dialog box for a table.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fft-dialog-table.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>When performing an FFT on a table, you must select the sampling column (X-values) and one (for simple real values) or two (for complex values) columns of Y-values. Complex numbers have the real part of the Y-values in the first column and the imaginary part of the Y-values in the second column. If Y-values are simple reals, you don't have to select a column for the imaginary part. You can leave the combo box for the second column empty in this case.</para>
+  <para>By default, the <emphasis>Sampling Interval</emphasis> corresponds to the interval between X-values. Giving a smaller value makes no sense, but you can increase this value in order to sample fewer values.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Integrate dialog			-->
+<!-- ************************************************** -->
+
+<sect1 id="integrate-function-dialog">
+  <title>Integrate Function Dialog</title>
+  <para>This dialog box is opened when you select the &integrate-function-cmd; command from the &analysis-menu-lnk; Pressing the <emphasis>Integrate </emphasis>button performs a numerical integration of a user defined analytical function. This function is entered/edited in the <emphasis>Function</emphasis> text box. A combo box which lists internally defined functions is provided. Clicking the "Add" button will copy the selected function into the <emphasis>Function</emphasis> text box at the position of the text cursor. Clicking the "Clear" button will clear the entire contents of the <emphasis>Function</emphasis> text box. Clicking on the "Recent" button opens a dialog which contains a combo box that lists recently used functions. Selecting one of these and clicking "OK" will replace whatever is in the <emphasis>Function</emphasis> text box with the selected function. The second input field displays the name of the independent variable of the function (i.e., the variable of integration). It is set to <emphasis>X</emphasis> by default. The third parameter is the maximum number of subintervals that that the integration algorithm may use to integrate the function. The default value of 1000 should work in almost all circumstances. The fourth parameter is the tolerance limit. Smaller numbers will result in the algorithm using more subintervals. The default value of 0.01 should work for most functions. The next two fields are the lower and upper limits of integration. Set these to whatever values you need. The final item is the <emphasis>Plot Area </emphasis>check box. Leave this checked if you want a plot of the integrated function to be drawn on the currently active layer. A table of the plotted data can be generated by right clicking on the curve and selecting the <emphasis>Worksheet </emphasis>command.</para>
+  <figure id="fig-integrate-function-dialog">
+    <title>The &integrate-function-cmd; dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/integrate-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The numerical result of the integration will be listed in the <link linkend="sec-intro-log-window">Log Panel</link>.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Fit Wizard			-->
+<!-- ************************************************** -->
+<sect1 id="non-linear-curve-fit-dialog">
+  <title>The Fit Wizard</title>
+  <para>This dialog is activated by selecting the command <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> from the <link linkend="sec-analysis-menu-plot">Analysis Menu</link>. This command is active if a plot or a table window is selected. In the latter case, this command first creates a new plot window using the list of selected columns in the table.</para>
+  <para>This dialog is used to fit discrete data points with a mathematical function. The fitting is done by minimizing the least square difference between the data points and the Y values of the function.</para>
+  <sidebar>
+    <title>Note:</title>
+    <para>If the data points are modified, the fit is not re-calculated. Then, you need to remove the old fitted curve and to redo the fit with the same function and the new points.</para>
+  </sidebar>
+  <para>The top of the dialog box is used to select one of 4 <emphasis>Categories </emphasis>of functions: 1) user defined functions which have been previously saved, 2) the classical functions provided by &appname; in the analysis menu, 3) simple elementary (basic) built-in functions, and 4) external functions provided via plugins.</para>
+  <para>To choose a function, first select a category and then the desired function from the displayed Function list. Clicking on the checkbox under the selector will clear the contents of the function entry text pane (see below) and copy the selected function into it. You can also click the <emphasis>Add expression </emphasis>button to copy the selected function, but this will not clear any previous contents. If you've selected one of the "basic" functions, there will be no checkbox and you will need to use the <emphasis>Add expression </emphasis>button.</para>
+  <para>The bottom half of the dialog box allows you to define your own function. You can either write you own mathematical expression from scratch or add expressions from the function selector with the <emphasis>Add expression </emphasis>button. Once a custom expression is completed, clicking on the <emphasis>Save </emphasis>button will add the function to the list of user defined functions. The <emphasis>Name </emphasis>field will be used as the name of the function. A copy of the function is saved on disk with the extension ".fit". You can define the folder where ".fit" files are saved using either the <emphasis>Choose models folder...</emphasis> button (shown only when "User defined" is selected) or by selecting a new folder in the Save file dialog. Functions can be removed from the User Defined list by selecting them and clicking on the <emphasis>Remove</emphasis> button. You will be asked to confirm the deletion.</para>
+  <figure id="fig-non-linear-curve-fit-1">
+    <title>The first step of the &non-linear-curve-fit-cmd; dialog box.</title>
+    <informalexample>
+      <para>This first step is used to define the function which will be used for fitting. When you are ready to perform the fit, click on the &next-icon; button to activate the <emphasis>Fitting Session</emphasis>.</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The second step is to define the parameters for the fit. You have to give an initial guess for the fitting parameters.</para>
+  <figure id="fig-non-linear-curve-fit-2">
+    <title>The second step of the &non-linear-curve-fit-cmd; dialog box.</title>
+    <informalexample>
+      <para>This second step is used to define the parameters of the fit.</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para> In this second tab you can also choose a weighting method for your fit (the default is <emphasis>No weighting</emphasis>). The available weighting methods are:</para>
+  	  <orderedlist>
+	  <listitem>
+  	   <para><emphasis>No weight</emphasis>: all weighting coefficients are set to 1 (<emphasis>w<subscript>i</subscript> = 1</emphasis>). </para>
+  	  </listitem>
+  	  <listitem>
+  	   <para><emphasis>Instrumental</emphasis>: the values of the associated error bars are used as weighting coefficients <emphasis>w<subscript>i</subscript> = 1/er<subscript>i</subscript><superscript>2</superscript></emphasis>, where <emphasis>er<subscript>i</subscript></emphasis> are the error bar sizes stored in error bar columns. You must add Y-error bars to the analyzed curve before performing the fit.</para>
+  	  </listitem>
+  	  <listitem>
+  	    <para><emphasis>Statistical</emphasis>: the weighting coefficients are calculated as <emphasis>w<subscript>i</subscript> = 1/y<subscript>i</subscript></emphasis>,
+		where <emphasis>y<subscript>i</subscript></emphasis> are the y values in the fitted data set.</para>
+  	  </listitem>
+  	  <listitem>
+  	    <para><emphasis>Arbitrary Dataset</emphasis>: allows setting the weighting coefficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = 1/c<subscript>i</subscript></emphasis><superscript>2</superscript>,
+		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
+		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
+  	  </listitem>
+	  <listitem>
+  	    <para><emphasis>Direct Weighting</emphasis>: allows setting the weighting coefficients using an arbitrary data set <emphasis>w<subscript>i</subscript> = c<subscript>i</subscript></emphasis>,
+		where <emphasis>c<subscript>i</subscript></emphasis> are the values in the arbitrary data set.
+		The column used for the weighting must have a number of rows equal to the number of points in the fitted curve. </para>
+  	  </listitem>
+  	</orderedlist>
+  <para>After the fit, the log window is opened to show the results of the fitting process.</para>
+  <para>Depending on the settings in the <emphasis>Custom Output</emphasis> tab, a function curve (option <emphasis>Uniform X Function</emphasis>) or a new table (if you choose the option <emphasis>Same X as Fitting Data</emphasis>) will be created for each fit.
+  The new table includes all the X and Y values used to compute and to plot the fitted function and is
+  hidden by default. It can be found in and viewed from the <link linkend="project-explorer-dialog">project explorer</link>.</para>
+
+  <figure id="fig-non-linear-curve-fit-4">
+    <title>The third step of the &non-linear-curve-fit-cmd; dialog box.</title>
+    <informalexample>
+      <para>This third step is used to customize the output of a fitting operation.</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/fit-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>This dialog tab provides controls that can be used to evaluate the goodness of fit.
+The first  is the <emphasis>Residuals Plot</emphasis> button which is used to display the curve of
+the plot residuals. The <emphasis>Conf. Bands</emphasis> and <emphasis>Pred. Bands</emphasis> buttons can be used to generate confidence and prediction limits for the current fit, based on the user input confidence value.
+</para>
+
+<para>
+After the fit, a series of fit statistics are displayed in the log window allowing evaluation of  the goodness of fit. These values are:
+<orderedlist>
+  	  <listitem>Chi^2/doF </listitem>
+  	  <listitem>R-square</listitem>
+  	  <listitem>Adjusted R-square</listitem>
+  	  <listitem>RMSE (Root Mean Squared Error)</listitem>
+  	  <listitem>RSS (Residual Sum of Squares)</listitem>
+</orderedlist>
+
+For detailed explanations about the meaning of this statistical values, please visit the following
+<ulink url="http://www.mathworks.com/access/helpdesk_r13/help/toolbox/curvefit/ch_fitt9.html">link</ulink>.
+</para>
+
+<para>By default, reported errors are not automatically scaled by the square root of the
+reduced chi-squared value. You can choose to enable this option by checking the
+<emphasis>Scale errors with sqrt(Chi^2/doF)</emphasis> box.</para>
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		General Plot Options			-->
+<!-- ************************************************** -->
+<sect1 id="plot-options-dialog">
+  <title>General Plot Options</title>
+  <para>The first tab is used to set the general scales used for two or three axis plots.</para>
+  <figure id="fig-plot-options-1-dialog">
+    <title>General plot options dialog: The Scale Tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>In this tab, you can set the number of ticks used for each axis. This can be done in two ways: 1) Set the number of labels to use for the entire scale. Whatever number you enter, &appname; may adjust the value so as to produce a prettier plot (for example, if you enter 7 ticks for a 0..100 scale, &appname; will use 10 major ticks spaced evenly from 10 to 100). 2) Set the Step Increment and &appname; will generate as many ticks as needed to fill the scale range using the indicated increment. This produces tick spacings and labels which are more like those that are typically done on hand drawn graphs.</para>
+
+  <para>The grid tab is used to draw grid lines on the plot. The frequency of the lines are related to the number of labels and major ticks set with the <emphasis>Scale</emphasis> tab.</para>
+  <figure id="fig-plot-options-2-dialog">
+    <title>General plot options dialog: The Grid Tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-2.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The third tab is used to modify the setting of the different axes. You must select the axis to be customized in the right window. The label of that axis can then be modified in the title window - see the <link linkend="text-options-dialog">text options dialog</link> section for more details.</para>
+  <figure id="fig-plot-options-3-dialog">
+    <title>General plot options dialog: The Axis Tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The <emphasis>General</emphasis> settings tab is used to customize global aspects of the plot. The canvas is the area bounded by the axes. You can draw a box around this canvas and define its background color. The background area is the global drawing area of the graph window. You can also define a color border and a background color for this area as well. The <emphasis>margin</emphasis> parameter controls the distance between the drawing area limit and the canvas. If you want to modify the margin between the window limits and the drawing area, you must modify the layer parameters (manually with the mouse or with the <link linkend="arrange-layers-dialog">arrange layers dialog</link>.</para>
+  <figure id="fig-plot-options-4-dialog">
+    <title>General plot options dialog: General Settings.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-options-4.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The parameters in the <emphasis>Axes</emphasis> group allow modification of the linestyle used to draw the axes and ticks.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Plot Wizard				-->
+<!-- ************************************************** -->
+<sect1 id="plot-wizard-dialog">
+  <title>Plot Wizard</title>
+  <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-view-menu">View Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
+  <para>This dialog is used to build a new plot by selecting the columns from the tables available in the current project. First, select the table you want to use from the <emphasis>Worksheet</emphasis> combo box and click on <emphasis>New curve</emphasis> to create the curve. After that, select at least one column for X and one for Y using the &lt;-&gt;X and &lt;-&gt;Y buttons. You can also select columns for Z, X-errors and/or Y-errors using the buttons provided for these options.
+  The plot will be created using the default style defined using the '2D Plots -> Curves' tab in the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
+  <figure id="fig-plot-wizard">
+    <title>The plot wizard dialog box.</title>
+    <informalexample>
+      <para>In this example, one curve is selected from the first table, and the other from the second table (with X error bars)</para>
+    </informalexample>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-wizard.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Project Explorer			-->
+<!-- ************************************************** -->
+<sect1 id="project-explorer-dialog">
+  <title>Project Explorer</title>
+  <para>The project explorer shows a list of all the windows, tables, matrices and folders which are included in the current project. It can be used to create new folders and windows, to find existing ones, to make hidden elements visible, and to perform basic operations like: renaming, deleting, hiding, resizing, printing, etc. You can also use it to display a list of the dependencies and properties of any element in the project.</para>
+  <figure id="fig-project-explorer-1">
+    <title>The project explorer panel.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/explorer1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Preferences Dialog			-->
+<!-- ************************************************** -->
+<sect1 id="preferences-dialog">
+  <title>Preferences Dialog</title>
+  <para>The preference dialog is used to customize the default behavior of &appname;. There are six pages of options which are selected using one of icons from the column on the left hand side of the dialog. The text box at the top of the dialog shows the name of the selected page. No matter which page is selected, there are always 4 buttons along the bottom edge of the dialog: <emphasis>Default Options</emphasis>, <emphasis>Apply</emphasis>, <emphasis>OK</emphasis>, and <emphasis>Cancel</emphasis>. Changes must be confirmed using either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons. The <emphasis>OK</emphasis> button additionally closes the dialog. Upon confirmation, changes are saved and stored immediately. The <emphasis>Cancel</emphasis> button will not undo changes which have already been confirmed but provides a means of exiting the dialog without confirming any changes that are pending. Finally, the <emphasis>Default Options</emphasis> button will restore the values of all the items on the page/tab which is currently displayed to the program defaults. This is useful when you've lost track of what you may have changed.</para>
+
+<sect2 id="general-preferences"><title>General Preferences</title>
+  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/general.png"/></imageobject></inlinemediaobject> General icon displays the <emphasis>General</emphasis> options page. The controls that control the general options are grouped onto a set of 6 tabs. Each tab references a set of related options.</para>
+  <figure id="fig-preferences-dialog-1">
+    <title>The preferences dialog: general parameters for the application.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <sect3 id="general-preferences-application-tab"><title>Application Tab</title>
+  <para>Controls on the <emphasis>Application</emphasis> tab are used to set application wide defaults.</para>
+
+<para>The <emphasis>Language</emphasis> combo-box lists the translations available in &appname;. Select a language from this list. Control names, program labels, etc., will be displayed in this language.  All available translations can be downloaded from the following address:
+  <ulink url="http://soft.proindependent.com/translations.html">http://soft.proindependent.com/translations.html</ulink>. In order to be loaded by the application, translations must be placed in the folder specified in the <link linkend="general-preferences-file-locations-tab">File Locations</link> tab. By default, the folder is named <emphasis>translations</emphasis> and is located in the same folder as the &appname; executable. You can specify a different folder in the <emphasis>File Locations</emphasis> tab, if you wish.</para>
+
+<para> The <emphasis>Style</emphasis> combo-box defines the style used by &appname; for the window decorations. These include stylistic aspects of buttons, dialog boxes, window borders and titles, etc. Available styles are those currently available in the Qt library.</para>
+
+<para>The <emphasis>Font</emphasis> chooser selects the font used in the GUI (menus, dialogs, etc). It doesn't apply to plots.</para>
+
+<para>The <emphasis>Default Scripting Language</emphasis> combo-box is used to set the scripting language. muParser is the default. Python will also be available if Python support has been compiled into &appname;.</para>  
+
+<para>The <emphasis>Matrix Undo Stack Size</emphasis> is the number of operations that can be undone/redone when working on a matrix. By default it is set to ten operations. A high value for this parameter can be very costly in terms of memory consumption, especially for large matrices.</para>
+
+<para>The <emphasis>Endline character</emphasis> combo-box defines the end of line convention used by &appname; for copy/paste operations and for exporting matrices/tables to ASCII files. The end of line convention can be set to any one of the following:
+  <emphasis>Line Feed (LF)</emphasis>, <emphasis>Carriage Return + Line Feed (CRLF)</emphasis> or
+  <emphasis>Carriage Return (CR)</emphasis> only.</para>
+
+<para>The <emphasis>Start New Project</emphasis> combo-box is used to select what type of child window, if any, is created when a new project is started. The default is for new projects to contain an empty Table window.</para>
+
+<para>The <emphasis>Save Every</emphasis> check box is used to turn the auto-save feature on(checked) or off(unchecked). The associated textbox/spin button is used to set the autosave interval. The interval is in minutes. The textbox only accepts positive integer numeric input. All other input is ignored.</para>
+
+<para>The <emphasis>Backup project before saving</emphasis> option is used to create a backup copy of the current project before saving a changed project file. This option is enabled when checked.</para>
+
+<para>When checked, the <emphasis>Check for new versions at startup</emphasis> option will look for program updates on the internet each time the program is started. The default is disabled.</para>
+
+<para>When checked, the <emphasis>Enable Autocompletion</emphasis> option enables the autocompletion feature of &appname;. Starting with version 0.9.6, autocompletion is enabled by default in all &appname; editors (Notes, Script Windows, and values dialogs for matrices and tables). The autocompletion mechanism is based on a list of words provided by the <emphasis>qti_wordlist.txt</emphasis> file. This file, which is shipped with the source archive, must be placed in the same folder as the Python configuration files
+(see <link linkend="general-preferences-file-locations-tab">File Locations</link>, below), and is automatically loaded by
+&appname; on start-up. You can edit this file and add your own key words, one word per line. Completion suggestions are automatically popped-up for words that have more than two characters, but you can trigger autocompletion at any time using the shortcut &autocomplete-key;. <!--Ctrl U -->
+Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion</emphasis> option.</para>
+
+<para>When checked, the <emphasis>Open last project at startup</emphasis> option enables the feature that reloads the last active project when &appname; is restarted. The default is enabled.</para>
+</sect3>
+
+<sect3 id="general-preferences-confirmations-tab"><title>Confirmations Tab</title>
+  <para>The <emphasis>General Preferences: Confirmations</emphasis> tab contains a set of 8 check boxes that enable/disable various warning prompts. The first six are warnings given when deleting project windows (Folders, Tables, Matrices, 2D Plots, 3D Plots, and Notes). The remaining 2 are warnings given when 1) renaming or appending windows with names that are already used in the current project, and, 2) when attempting to overwrite an existing file.  All warnings are enabled by default.</para>
+  <informalfigure id="fig-preferences-dialog-2">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+
+<sect3 id="general-preferences-colors-tab"><title>Colors Tab</title>
+  <para>In this tab, you can change the default color for the &appname; workspace, the panel background color and the panel text color. Panels refer specifically to the <link linkend="sec-intro-log-window">Log Window</link> and the <link linkend="project-explorer-dialog">Project explorer</link>.</para>
+  <informalfigure id="fig-preferences-dialog-3">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+
+<sect3 id="general-preferences-numeric-format-tab"><title>Numeric Format Tab</title>
+  <para>The <emphasis>Numeric Format</emphasis> tab allows customizing several aspects of numeric formatting used by &appname;. The <emphasis>Number of Decimal Digits</emphasis> specifies the default precision used for any calculations applied to your data in Tables and Matrices. The <emphasis>Decimal Separators</emphasis> fields allow selection of the characters used as the decimal point and the thousands separator. By default, &appname; uses the <emphasis>locale</emphasis> settings detected on your system. Separate fields are provided for data in tables/matrices and data copied to the clipboard. The thousands separator can be eliminated completely from tables and matrices by checking the <emphasis>Omit Thousands Separator</emphasis> option. &appname; will convert all the existing data in your project to the new settings when you click the <emphasis>Apply</emphasis> button.</para>
+  <informalfigure id="fig-preferences-dialog-11">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog11.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+</sect3>
+
+<sect3 id="general-preferences-file-locations-tab"><title>File Locations Tab</title>
+   <para>The <emphasis>File Locations</emphasis> tab allows you to define custom locations for the folders containing the translation files, the manual files and the Python configuration files (<emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>) if &appname; was built with Python scripting support. Default folder entries are also provided for the <emphasis>LaTex Compiler</emphasis> and for <emphasis>scripts</emphasis> that are to be loaded at program startup. The <emphasis>LaTex Compiler </emphasis>folder only has meaning if &appname; was compiled with <emphasis>LaTex </emphasis>support.</para>
+  <figure id="fig-preferences-dialog-13">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect3>
+
+<sect3 id="general-preferences-internet-connections-tab"><title>Internet Connections Tab</title>
+<para>Settings on the <emphasis>Internet Connection</emphasis> tab are only needed if you connect to the internet
+via a proxy server. If you don't now how to set these options, contact your Network Administrator or other suitably knowledgeable person.</para>
+  <figure id="fig-preferences-dialog-16">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog16.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ </sect3>
+</sect2>
+
+<sect2 id="tables-preferences"><title>Tables Preferences</title>
+  <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/configTable.png"/></imageobject></inlinemediaobject> Tables icon opens the second page of the preferences dialog which allows customizing default aspects of <link linkend="sec-intro-table">tables</link>: background, text colors, and fonts for tables and labels.
+  By checking the <emphasis>Display Comments in Header</emphasis> option, column comments will also be
+  displayed in the table header, below the column names.
+  If the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked, all modifications in the values
+  of a column trigger a recalculation of all columns with formulas depending on the modified column.
+  </para>
+  <figure id="fig-preferences-dialog-4"><title>The preferences dialog: table options.</title>
+    <mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog4.png"/>
+    </imageobject></mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="2dplot-preferences"><title>2D Plot Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/config_curves.png"/></imageobject></inlinemediaobject> 2D Plots Icon opens the third page of the preferences dialog. This set of options is used to customize default aspects of <emphasis>2D plots</emphasis>.</para>
+
+<sect3 id="2dplot-preferences-options-tab"><title>Options Tab</title>
+<para>The <emphasis>Options </emphasis>tab is used to modify some general options. Most of the changes made to these
+  options will be applied only to newly created plots. Changing a few of these options, such as plot axis <emphasis>Autoscaling</emphasis>,
+  <emphasis>Antialiasing</emphasis> of curves and the behavior on resize events will affect extant plots.</para>
+  <figure id="fig-preferences-dialog-5">
+    <title>The preferences dialog: 2D plot options.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog5.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-curves-tab"><title>Curves Tab</title>
+  <para>The <emphasis>Curves </emphasis>tab contains a large number of controls that define the default style used when creating a new plot. The operation of these controls should be self evident.</para>
+  <informalfigure id="fig-preferences-dialog-6">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog6.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-axes-tab"><title>Axes Tab</title>
+  <para>The <emphasis>Axes </emphasis>tab allows specification of which plot axes will be displayed in a new layer and the dominant stylistic aspects of the axes.</para>
+  <informalfigure id="fig-preferences-dialog-15">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog15.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-ticks-tab"><title>Ticks Tab</title>
+  <para>The <emphasis>Ticks </emphasis>tab defines the default style for axis ticks drawn on newly created plots.</para>
+  <informalfigure id="fig-preferences-dialog-7">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog7.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-grid-tab"><title>Grid Tab</title>
+  <para>The <emphasis>Grid</emphasis> tab defines the default aspect of plot layer grids.</para>
+  <informalfigure id="fig-preferences-dialog-18">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog18.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-geometry-tab"><title>Geometry Tab</title>
+  <para>The <emphasis>Geometry </emphasis>tab defines the default size for the drawing area of a plot layer When the <emphasis>Keep aspect ratio </emphasis>option is checked, changing either the width or height will change proportionally change the other.</para>
+  <informalfigure id="fig-preferences-dialog-17">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog17.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-speed-tab"><title>Speed Tab</title>
+  <para>The <emphasis>Speed </emphasis>tab lets the user enable/disable antialiasing when drawing/redrawing 2D plots. Antialiasing is a major source of slow-down when rendering 2D plots. Unchecking the <emphasis>Antialiasing </emphasis>checkbox disables antialiasing for all curves, which probably will only be needed in extreme circumstances. Checking the <emphasis>Disable for curves with more than </emphasis>checkbox will disable antialiasing only for curves having data sets larger than the threshold set with the textbox to the right of the <emphasis>Disable for curves with more than </emphasis>checkbox. Disabling this option is probably not a good idea. The default is for both of these options to be enabled, with a threshold of 1000 data points. Proper setting of these options is essential to keeping the application responsive.</para>
+  <informalfigure id="fig-preferences-dialog-19">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/preferences-dialog19.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-fonts-tab"><title>Fonts Tab</title>
+  <para>The <emphasis>Fonts </emphasis>tab defines the default fonts used when creating new plots. Options are provided for the plot <emphasis>Title</emphasis>, plot <emphasis>Legend</emphasis>, <emphasis>Axes Labels</emphasis>, and <emphasis>Axes Numbers</emphasis>.</para>
+  <informalfigure id="fig-preferences-dialog-8">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog8.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect3>
+
+ <sect3 id="2dplot-preferences-print-tab"><title>Print Tab</title>
+   <para>The <emphasis>Print </emphasis> tab allows you to control a few default options that are used when printing 2D plots. If you want layers to be printed with their original dimensions, you must be sure to uncheck the <emphasis>Scale layers to paper size </emphasis>option. Checking the <emphasis>Print Cropmarks</emphasis> option ensures that some visible marks will be drawn around the borders of the plot.</para>
+  <informalfigure id="fig-preferences-dialog-12">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog12.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect3>
+</sect2>
+
+<sect2 id="3dplot-preferences"><title>3D Plot Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/logo.png"/></imageobject></inlinemediaobject> 3D Plots Icon opens the fourth page of the preferences dialog. This set of options is used to customize default aspects of three dimensional plots. Most of the options are self-explanatory. However, the <emphasis>Resolution </emphasis>option needs clarification. This option is more or less akin to a speed drawing mode, which can be very useful when working with large data sets. Larger values of the <emphasis>Resolution</emphasis> option result in fewer data points being drawn on 3D plots, and therefore a higher drawing speed. When <emphasis>Resolution </emphasis> is set to 1, all data points are drawn.</para>
+  <figure id="fig-preferences-dialog-9">
+    <title>The preferences dialog: 3D plot options.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog9.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="notes-preferences"><title>Notes Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/notes_32.png"/></imageobject></inlinemediaobject> Notes Icon opens the fifth page of the preferences dialog. This set of options is used to customize some of the default characteristics of the text editors, such as the length of the <emphasis>TAB</emphasis> character and the font. The user can also specify whether or not line numbers should be displayed. Displaying the line numbers can be particularly helpful when debugging Python scripts.</para>
+
+  <figure id="fig-preferences-dialog-notes">
+    <title>The preferences dialog: note options.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog14.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+
+<sect2 id="fitting-preferences"><title>Fitting Preferences</title>
+<para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fit.png"/></imageobject></inlinemediaobject> Fitting Icon opens the sixth page of the preferences dialog. This page is used to set default fitting options. Most of the options are standard and straightforward. The <emphasis>Generated Fit Curve </emphasis>options may be confusing at first glance. While it may be typical to plot a fit curve as y=f(x) using the original X data that was used in the fitting operation, &appname; provides the alternative (by selecting the <emphasis>Uniform X Function </emphasis>option) of plotting the curve using a user specified number of X data points (default=100) uniformly spaced over the X range of the fit. Since linear fits are completely defined by 2 points, you can also have &appname; default to simply plotting linear fits using 2 data points by checking the <emphasis>2 points for linear fits </emphasis>option.</para>
+  <figure id="fig-preferences-dialog-10">
+    <title>The preferences dialog: fitting options.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/preferences-dialog10.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Printer setup				-->
+<!-- ************************************************** -->
+<sect1 id="printer-setup-dialog">
+  <title>Printer-setup</title>
+  <para>This dialog box is opened by the &print-lnk; from the &file-menu-lnk; or by entering the &print-key; key. It is used to print the selected window (plot or table) and its exact appearance will depend both upon your operating system and the printers that you have available. The following screenshot shows the dialog on a Linux system with one printer that uses the KDE window manager.</para>
+  <figure id="fig-printer-setup">
+    <title>The &print-cmd; dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/dialog-print-setup-plot.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Column Values			-->
+<!-- ************************************************** -->
+<sect1 id="set-column-values-dialog">
+  <title>Set Column Values</title>
+      <indexterm><primary>table</primary></indexterm>
+  <para>This dialog is activated with the &set-column-values-lnk; from the &table-menu-lnk; or by entering the shortcut &set-column-values-key;. It provides for filling a column with the result of a function evaluation.</para>
+  <para>The available mathematical functions (assuming you are using the default scripting language, muParser) are listed in the <emphasis>function selector </emphasis>combo-box next to the <emphasis>Add function </emphasis>button. Details of these functions and supported mathematical operators are listed in the <link linkend= "sec-muParser">muParser</link> section in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. The special function, <emphasis>col(c)</emphasis>, is used to access the values of column <code>c</code>, where <code>c</code> is the column's number (as in <emphasis>col(2)</emphasis>) or its name in double quotes (as in <emphasis>col("time")</emphasis>).
+  You can also obtain values from other tables using the <emphasis>tablecol(t,c)</emphasis> function, where <code>t</code> is the table's name in double quotes and <code>c</code> is the column's number or its name in double quotes (example: <emphasis>tablecol("Table1","time")</emphasis>).</para>
+  <para>The variables <code>i</code> and <code>j</code> can be used to access the current row and column numbers. Similarly, <code>sr</code> and <code>er</code> represent the selected starting and ending row, respectively.
+  </para>
+  <para>Using Python as scripting language gives you even more possibilities. Not only can you use arbitrary Python code in the function body, but also access other objects within your project. For details, see the section on <link linkend="Python">Python </link>in the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>. Nevertheless, even though Python allows for a more powerful syntax, it can be quite slow for very large tables. Therefore you might want to use muParser instead, even when Python is set as the default script engine for your current project, Checking the <emphasis>Use built-in muParser</emphasis> option will force the use of muParser as the scripting engine. This greatly increases the speed of the evaluation for single line expressions.</para>
+
+  <figure id="fig-sec-column-values">
+    <title>The &set-column-values-cmd; dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/set-column-values-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>Warning: When you make changes to the values in a table which contains "filled" values, the dependent values are not recomputed unless the <emphasis>Automatically Recalculate Column Values</emphasis> option is checked in the <link linkend="tables-preferences">Tables tab</link> of the <emphasis>Preferences</emphasis> dialog. If this option is unchecked, you will have to explicitly tell &appname; to recalculate individual cells or whole columns or rows by selecting "Recalculate" from their context menu or by pressing &recalculate-key;.
+  </para><!-- fig-preferences-dialog-4 -->
+
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Dimensions				-->
+<!-- ************************************************** -->
+<sect1 id="set-dimensions-dialog">
+  <title>Set Matrix Dimensions</title>
+      <indexterm><primary>matrix</primary></indexterm>
+  <para>This command appears in the &matrix-menu-lnk;. It allows direct specification of the number of rows and columns of a matrix. In this window, you can also define a range for X-values and Y-values. These X and Y ranges will be used in new plots as the initial scale ranges.
+  They are also available via the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables if you choose to define the contents of the matrix with the <link linkend="set-values-dialog">Set Values Dialog</link>.</para>
+  <figure id="fig-set-dimensions-dialog">
+    <title>The &set-dimensions-cmd; dialog for matrix.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-dimensions.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>You can also define a <emphasis>Long Name</emphasis>, <emphasis>Units</emphasis> and <emphasis>Comments</emphasis>
+for X / Y / Z coordinates under the <emphasis>X Labels</emphasis>, <emphasis>Y Labels</emphasis> or <emphasis>Z Labels</emphasis> tab.
+These labels can be used as X / Y /Z axis labels in 3D graphs.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Import ASCII files			-->
+<!-- ************************************************** -->
+<sect1 id="set-import-options-dialog">
+<title>Import ASCII files</title>
+<indexterm><primary>table</primary></indexterm>
+
+<para>This dialog is activated by selecting the <link linkend="import-ascii-cmd">&import-ascii-cmd;</link> command from the <link linkend="sec-file-menu">File Menu</link>. It can be used to select several
+files at a time. The files are imported using a set of default options. You can
+display and edit these options by pressing the <emphasis>Advanced</emphasis> button.
+All your changes to the default import parameters will be saved.</para>
+
+<figure id="fig-set-import-options">
+    <title>The dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/set-import-options.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>You can define a custom file filter in the <emphasis>Files of type:</emphasis> field in order to preselect files. For example, typing *.mydata and then the "Enter" key will set a filter that will show only files of the form "XXX.mydata" in the directory view.</para>
+
+<para>Concerning the character which is used to separate column values, you must bear in mind that there
+is no grouping of separators, so if you use "SPACE", you must use only <emphasis>one</emphasis>
+separator between each column or check the <emphasis>Simplify white spaces</emphasis> option.</para>
+
+<para>If your data files have a particular structure, for example if they begin with several lines describing your experiment, you may skip the first n lines of the file. You can also skip all lines starting with a comment character/string. The comment string can be customized using the <emphasis>Ignore lines starting with</emphasis> text edit box.</para>
+
+<para>If you choose to use the first line to define column names and/or the second line as comments
+to be displayed in the table header, you must use the same separator between column names as that used between data columns.</para>
+
+<para>If the files you want to import were created using a different convention for the decimal and thousands separator characters than the current setting, then the <emphasis>Decimal Separators</emphasis> option can be used to configure &appname; to use a matching convention. For example, when a comma character is used for the decimal point instead of the dot character, simply change the <emphasis>Decimal Separators</emphasis> option to match. You can have &appname; ignore the Thousands separator altogether with the <emphasis>Omit thousands separator</emphasis> option.</para>
+
+<para>Finally, you can specify the kind of data to be imported in each column by pressing the
+ <emphasis>Column Types...</emphasis> button or by clicking on the column header in the preview table.
+ A dialog will pop-up allowing you to choose a data type (the default data type for each column is <emphasis>Numeric</emphasis>) and a column format date/time columns.</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Properties				-->
+<!-- ************************************************** -->
+<sect1 id="set-properties-dialog">
+  <title>Matrix Properties</title>
+  <para>This command is located in the &matrix-menu-lnk;. It allows setting some global properties of the selected matrix, such as the cell width (in pixels) and the format used for numbers.</para>
+  <figure id="fig-set-properties-dialog">
+    <title>The &set-properties-cmd; dialog for matrices.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-properties.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Set Matrix Values				-->
+<!-- ************************************************** -->
+<sect1 id="set-values-dialog">
+  <title>Set Matrix Values</title>
+      <indexterm><primary>matrix</primary></indexterm>
+  <para>This command is located in the &matrix-menu-lnk;. It allows filling in a matrix with the results of evaluating a function, <emphasis>z=f(i,j)</emphasis>, in which <code>i</code> and <code>j</code> are the row and column numbers.</para>
+  <para>You can use the X-values and Y-values defined with the &set-dimensions-lnk; command, and also define your functions based on the <emphasis>x</emphasis> and <emphasis>y</emphasis> variables.</para>
+  <para>Functions can span several lines. The available intrinsic functions are listed in the <link linkend="sec-muParser"> muParser</link> section of the Mathematical Expressions and Scripting chapter.</para>
+  <figure id="fig-set-values-dialog">
+    <title>The &set-values-cmd; dialog for matrix.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/matrix-set-values.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+<para>Using Python as scripting engine for the calculation of matrix values has the advantage of a more powerful syntax.  The drawback is that it can be quite slow for large matrices. You can use muParser instead, even if Python is set as the default script engine for your &appname; project, by checking the <emphasis>Use built-in muParser</emphasis> box. Note that muParser is very fast for the evaluation of single line expressions only, therefore try to avoid syntax like:
+<programlisting>
+    a = cell(1, 1)
+    b = cell(2, 2)
+    a*b*x + b*x*x + a
+</programlisting>
+in preference for something like the following:
+<programlisting>
+    cell(1, 1)*cell(2, 2)*x + cell(2, 2)*x*x + cell(1, 1)
+</programlisting>
+which will greatly increase the speed of evaluation!</para>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		Surface plot options			-->
+<!-- ************************************************** -->
+<sect1 id="surface-plot-options-dialog">
+  <title>Surface plot options</title>
+  <para>This dialog box is used to customize 3D function plots created using the &new-surface-3d-plot-lnk; from the &file-menu-lnk;. It is activated by a double click on a 3D plot.</para>
+
+ <sect2 id="surface-plot-options-scale-tab"><title>Scale Tab</title>
+ <para>The first tab is used to modify the X, Y, and Z ranges. It also allows specification of the number of labels (major ticks) to be drawn on the axes, as well as the number of minor ticks.</para>
+  <figure id="fig-surface-plot-options-1">
+    <title>The surface plot options dialog box.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog1.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ </sect2>
+
+ <sect2 id="surface-plot-options-axis-tab"><title>Axis Tab</title>
+ <para>The second tab defines the main parameters of the three axes: the axis label, its font,
+  and the length of the ticks. Tick length is defined in the same units as the axis range.
+  If the graph scales are changed, &appname; will re-calculate the length of the ticks.
+  The font button on this tab only allows modification of the font used for the label. The font used for axis numbers is selected using the font control on the <link linkend="surface-plot-options-general-tab">General Tab</link>. The superscript and subscript buttons allow for easy insertion of LaTeX superscript/subscript commands.
+  The superscript/subscript texts will only be rendered as such if you export the plot to a ".tex" file by
+  choosing the <emphasis>LaTeX file</emphasis> text mode in the advanced settings of the export dialog.
+  In order to render the superscripts/subscripts, the exported LaTex file must be compiled separately, therefore you need a LaTeX environment installed on your computer.
+  </para>
+  <informalfigure id="fig-surface-plot-options-2">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog2.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect2>
+
+ <sect2 id="surface-plot-options-grid-tab"><title>Grid Tab</title>
+  <para>The third tab is used to define or modify the properties of the plot grid.</para>
+  <informalfigure id="fig-surface-plot-options-3">
+    <mediaobject>
+      <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog7.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+ </sect2>
+
+ <sect2 id="surface-plot-options-title-tab"><title>Title Tab</title>
+  <para>The fourth tab is used to define or modify the title of the plot. You can add LaTex format subscripts, superscripts, bold characters, etc in your title in a manner identical to that described for LaTex formatting in the <link linkend="surface-plot-options-axis-tab">Axis Tab</link>.</para>
+  <informalfigure id="fig-surface-plot-options-4">
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog3.png"/>
+	  </imageobject>
+	</mediaobject>
+  </informalfigure>
+ </sect2>
+
+ <sect2 id="surface-plot-options-colors-tab"><title>Colors Tab</title>
+  <para>The fifth tab allows modification of the colors used for different elements of the plot.</para>
+  <informalfigure id="fig-surface-plot-options-4">
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog4.png"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+<para>The <emphasis>Linear color map</emphasis> group defines the color scheme which is used to show
+Z-values. If the <emphasis>Scale Colors</emphasis> box is checked, a Z value will be represented by a
+color defined as a linear interpolation between the adjacent values in the color table.</para>
+
+<para>You may also read a colormap from a file. The format of the file is simple: each line defines a color by red, green and blue values as integers between 0 and 255. Numbers should be separated by spaces. You can find several examples of colormaps on the
+ <ulink url="http://soft.proindependent.com/download.html">&appname; web site</ulink>.</para>
+ </sect2>
+
+ <sect2 id="surface-plot-options-general-tab"><title>General Tab</title>
+<para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behavior is to use perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use a vertical Z axis regardless of the view angle of the plot.</para>
+
+  <figure id="fig-surface-plot-options-5">
+	<title>The general plot options tab.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog5.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+ </sect2>
+
+ <sect2 id="surface-plot-options-print-tab"><title>Print Tab</title>
+<para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the printer's paper size or showing cropmarks.</para>
+
+  <figure id="fig-surface-plot-options-5">
+	<title>The 3D plot print options.</title>
+	<mediaobject>
+	  <imageobject>
+		<imagedata  format="PNG" fileref="pics/surface-plot-options-dialog6.png"/>
+	  </imageobject>
+	</mediaobject>
+  </figure>
+ </sect2>
+</sect1>
+
+
+<!-- ************************************************** -->
+<!--		Text options				-->
+<!-- ************************************************** -->
+<sect1 id="text-options-dialog">
+  <title>Text options</title>
+  <para>This dialog can be opened using several different commands, such as the &format-title-lnk;, or simply by double clicking on an axis title in your plot.
+  The <emphasis>Color</emphasis>, <emphasis>Font</emphasis> and <emphasis>Alignment</emphasis>
+  commands allow the modification of the general settings of the text label.
+  You can also specify the distance between the label and the corresponding axis, using the
+  <emphasis>Distance to axis</emphasis> box.</para>
+
+  <figure id="fig-text-options">
+    <title>The axis title options dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/text-options-dialog.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The following slightly modified dialog is opened when you double click on texts/legends
+  in your plot in order to customize them. It also allows adding text boxes to a plot layer.
+  When the text object is a legend (a listing of the curves plotted on the layer) the curve symbols and
+  lines are also drawn in the text box, in front of the curve names.
+  In order to display the symbol of a curve and the name of the data set,
+  the following syntax is used: <emphasis>\l(1.2)%(1.2)</emphasis>. In this example the first integer before the dot
+  is the index of the plot layer and the second value, the number 2, refers to the index
+  of the curve. The index of the layer is optional, if not specified, the parent layer is used.
+  </para>
+  <para>
+  The % character is an alias for the name of the data set.
+  By adding ",@C" or ",@L" to the number you can alternatively use the name or comment of the dataset, e.g.
+  <emphasis>\l(2)%(2,@C)</emphasis> will use the column name.
+  Additionally, you can use "@W" to display the table name and "@WL" for the table label.
+  To display the contents of a specific cell of the source data table use <emphasis>%(curve #,@L,col,row)</emphasis>.
+  If the col parameter is missing the y-column of the dataset is used.
+  </para>
+
+<para>If the <emphasis>Auto-update</emphasis> box is checked, the legend is updated each time
+a curve is added or removed from the plot layer.</para>
+
+<para>The <emphasis>TeX Output</emphasis> option specifies if LaTeX special characters should be escaped or not when exporting
+to .tex files. If the text contains LaTeX syntax (like superscripts, subscripts, etc...) and you want them to be interpreted
+by the LaTeX compiler, you should check this option.</para>
+
+<para>By pressing the <emphasis>Set As Default</emphasis> button, all text format options will
+be saved to the user preferences and will be applied to new text objects.
+The <emphasis>Apply to...</emphasis> button can be used to apply these format options to
+all text objects in the active plot layer, the current plot window, or all plot windows in the project. The scope of application of the new format can be chosen from the list box below the <emphasis>Apply to...</emphasis> button.</para>
+
+  <para>The <emphasis>Opacity</emphasis> of the <emphasis>Background color</emphasis> can have a value
+  between 0 (transparent background) and 255 (completely opaque background).</para>
+  <figure id="fig-text-options-legend">
+    <title>The legend/text options dialog.</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata  format="PNG" fileref="pics/text-options-dialog3.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>The text item can be modified in the text window. Several enhancements can be added to text:</para>
+  <itemizedlist>
+    <listitem><para>&lt;sub&gt;text&lt;/sub&gt; will draw the text as subscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon1.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;sup&gt;text&lt;/sup&gt; will draw the text as superscripts. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon2.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>Clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon3.png"/></imageobject></inlinemediaobject> button, opens a dialog for selecting lower case Greek characters:</para>
+    <informalfigure id="fig-text-options1">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog1.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon4.png"/></imageobject></inlinemediaobject> button opens a dialog for selecting upper case Greek characters:</para>
+    <informalfigure id="fig-text-options2">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog2.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Clicking on the integral symbol opens a dialog which allows selecting various mathematical symbols:</para>
+    <informalfigure id="fig-text-options4">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog4.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>Clicking on the arrow icon opens a dialog which allows selecting various arrow symbols:</para>
+    <informalfigure id="fig-text-options5">
+      <mediaobject>
+        <imageobject>
+          <imagedata  format="PNG" fileref="pics/text-options-dialog5.png"/>
+        </imageobject>
+      </mediaobject>
+    </informalfigure>
+    </listitem>
+    <listitem><para>&lt;b&gt;text&lt;/b&gt; will draw the text with bold characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon5.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;i&gt;text&lt;/i&gt; will draw the text with italic characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon6.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+    <listitem><para>&lt;u&gt;text&lt;/u&gt; will draw the text with underlined characters. You can insert this sequence by clicking on the <inlinemediaobject><imageobject><imagedata  format="PNG" fileref="pics/text-options-icon7.png"/></imageobject></inlinemediaobject> button.</para></listitem>
+  </itemizedlist>
+
+</sect1>

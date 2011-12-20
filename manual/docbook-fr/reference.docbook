@@ -1,0 +1,1622 @@
+<title>Command Reference</title>
+
+<para>
+The active items appearing in a menu depends upon which project window is active. For example, if the active window is a table, then all the items related to table functions are enabled and the others are automatically disabled.
+</para>
+
+<!--  **************  MENU FILE  ******************  -->
+<!--  *********************************************  -->
+
+<sect1 id="sec-file-menu">
+<title>The File Menu</title>
+
+<para>Many of the commands from the File Menu are also linked to corresponding icons in the <link linkend="sec-file-toolbar">File Toolbar</link>. Clicking one of these icons will directly execute the linked command.</para>
+
+
+<sect2 id="subsec-file-new"><title>File-> New -></title>
+
+		<sect3 id="new-project-cmd"><title>&new-project-cmd; (&new-project-key;)</title>
+			<para>Creates a new &appname; project file. If another project is already open and has been saved at least once,
+					 it will be closed before the new project is created. If another project is open but has never been saved,
+					 a dialog will be opened to ask if the current project should be saved.</para>
+		</sect3>
+		<sect3 id="new-folder-cmd"><title>&new-folder-cmd; (&new-folder-key;)</title>
+			<para>Adds a new folder to the project. The new folder is added to the current folder.</para>
+		</sect3>
+		<sect3 id="new-table-cmd"><title>&new-table-cmd; (&new-table-key;)</title>
+			<para>Creates a new (empty) table and adds it to the project. The empty table will have 30 rows and 2 columns.
+					The number of rows and columns can be changed with the &rows-lnk; and &columns-lnk; of the &table-menu-lnk;.</para>
+			<informalfigure id="fig-new-table"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-table.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>The properties of each column (numeric format, column width, etc) can be modified using the &column-options-lnk;
+				 of the &table-menu-lnk;. See the <link linkend="sec-intro-table">table section</link> for more details.</para>
+		</sect3>
+    <sect3 id="new-matrix-cmd"><title>&new-matrix-cmd; (&new-matrix-key;)</title>
+    	<para>Creates a new (empty) Matrix and adds it to the project. The empty matrix will have 32x32 cells. These
+				dimensions can be changed using the &set-dimensions-lnk; of the &matrix-menu-lnk;</para>
+			<informalfigure id="fig-new-matrix"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-matrix.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>See the <link linkend="sec-intro-matrix">matrix section</link> for more details.</para>
+		</sect3>
+    <sect3 id="new-note-cmd"><title>&new-note-cmd;</title>
+			<para>Creates a new note window and adds it to the project. A note is a simple text window which can be used
+				to add comments to the current project.</para>
+			<informalfigure id="fig-new-note"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-note1.png"/>
+			</imageobject></mediaobject></informalfigure>
+		</sect3>
+		<sect3 id="new-graph-cmd"><title>&new-graph-cmd; (&new-graph-key;)</title>
+			<para>Creates a new 2D plot, that is, a graph window with a single, empty layer, and adds it to the project.
+				Current defaults are used to create the layer, which is just a framework into which you add curves with
+				the &add-remove-curve-lnk;.</para>
+			<informalfigure id="fig-new-graph"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/new-graph.png"/>
+			</imageobject></mediaobject></informalfigure>
+    </sect3>
+    <sect3 id="new-function-plot-cmd"><title>&new-function-plot-cmd; (&new-function-plot-key;)</title>
+    	<para>Opens a <link linkend="add-function-dialog">dialog</link> which is used to create a 2D plot by specifying
+				an analytical function. See the <link linkend="sec-2d-plot-from-function">2D plot section</link> of the tutorial
+				for a general overview of this function.</para>
+			<para>The function can be defined in Cartesian, parametric or polar coordinates, see the &add-function-lnk;
+				for more details. </para>
+		</sect3>
+		<sect3 id="new-surface-3d-plot-cmd"><title>&new-surface-3d-plot-cmd; (&new-surface-3d-plot-key;)</title>
+     	<para>Opens a <link linkend="define-surface-plot-dialog">dialog</link> which is used to create a 3D plot by
+				specifying an analytical function. Only Cartesian coordinates are available.
+				See the <link linkend="sec-3d-plot-function">3D plot section</link> of the tutorial for more detail on this function.</para>
+		</sect3>
+	</sect2>
+
+	<sect2 id="open-cmd"><title>File -> &open-cmd; (&open-key;)</title>
+		<para>Opens an existing &appname; project file (.qti). If your project has been saved in a compressed format,
+			you must select the <emphasis>.qti.gz</emphasis> file format.</para>
+		<para>This command can also be used to open projects which have been built with <emphasis>Origin</emphasis> software.</para>
+  </sect2>
+
+<!-- Added entries for Open Excel and Open ODF Spreadsheet SRB (09/18/2010 )-->
+	<sect2 id="open-excel-cmd"><title>File -> &open-excel-cmd;</title>
+    <para>Opens a file dialog permitting you to select an Excel file. When a file is selected and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables. If the file contains graphs, &appname; will also import them, but only if you have Excel installed on your machine.</para>
+  </sect2>
+
+	<sect2 id="open-odf-cmd"><title>File -> &open-odf-cmd;</title>
+		<para>Opens a file dialog permitting you to select an OpenOffice spreadsheet file. When a file is selected
+			and opened, &appname; creates a new table for each sheet in the file and reads the spreadsheets into the tables.</para>
+  </sect2>
+
+	<sect2 id="open-image-file-cmd"><title>File-> &open-image-file-cmd; (&open-image-file-key;)</title>
+    <para>This command adds a new graph window to the &appname; project and loads an image file into it.
+			The image can be resized and moved around in the graph window if desired. It can also be copied and
+			inserted into another 2D plot with a result similar to that obtained using the &add-image-lnk;. An
+			image can also be used to generate an intensity matrix (see the &import-image-lnk;).</para>
+  </sect2>
+
+	<sect2 id="append-cmd"><title>File -> &append-cmd; (&append-key;)</title>
+		<para>Appends an existing &appname; project file (.qti) to the current project as a new folder.</para>
+		<para>This command can also be used to append projects which have been built with <emphasis>Origin</emphasis> software.</para>
+  </sect2>
+
+	<sect2 id="recent-projects-cmd"><title>File-> &recent-projects-cmd;</title>
+		<para>Opens a list of the most recently used &appname; project files. You can open one of these files
+			by selecting it from the list. If the file no longer exists or has been moved, an error message will
+			pop-up and the filename will be deleted from the list.</para>
+	</sect2>
+
+	<sect2 id="close-cmd"><title>File -> &close-cmd;</title>
+    <para>Closes current project, without quitting the application.</para>
+  </sect2>
+
+<!--export or print plots-->
+	<sect2 id="save-project-cmd"><title>File-> &save-project-cmd; (&save-project-key;)</title>
+   <para>Saves the current project. If the project hasn't been saved yet (an "untitled" project),
+			a dialog will open, allowing you to save the project to a specific location. In a project file,
+			all settings and all plots are stored in ASCII format.</para>
+		<para>If the project includes large tables, it may be useful to save the project in a compressed
+			file format. The free zlib library is used to save files in gzip format ( .qti.gz ).</para>
+	</sect2>
+
+	<sect2 id="save-project-as-cmd"><title>File-> &save-project-as-cmd; (&save-project-as-key;)</title>
+    <para>Saves the current project under a file name different than the current name.</para>
+  </sect2>
+
+	<sect2 id="save-window-as-cmd"><title>File-> &save-window-as-cmd;</title>
+		<para>The &save-window-as-cmd; command allows you to save tables and graphs from from one Qti project into a newly created project file. The command opens a standard file-save window in which you select the new project's name and location. Projects may be saved in either compressed or uncompressed form. If a graph window is selected, the new project will contain the graph and it's associated tables/matrices. If a table, matrix or note is chosen, the new project will contain only the selected table, matrix or note. In this case, dependent graphs are not included in the new project.</para>
+	</sect2>
+
+	<sect2 id="open-template-cmd"><title>File -> &open-template-cmd;</title>
+		<para>Opens an existing &appname; template file (.qpt). This command will create a new graph
+			window with one or more empty layers created using the same graphical parameters (window
+			geometry, fonts, colors, etc). as the layers in the saved template.</para>
+		<informalfigure id="fig-open-template">
+			<informalexample><para>The first figure below is a graph which was saved as a template. The second
+				figure is the graph with a new, empty layer created using the &open-template-cmd; command to load
+				the saved template file.</para></informalexample>
+			<mediaobject><imageobject><imagedata  format="PNG" fileref="pics/template2.png"/></imageobject></mediaobject>
+			<mediaobject><imageobject><imagedata  format="PNG" fileref="pics/template1.png"/></imageobject></mediaobject>
+		</informalfigure>
+		<para>You just have to add curves with the &add-remove-curve-lnk;, but note that the style used to draw
+			these curves is not kept in the template.</para>
+	</sect2>
+
+	<sect2 id="save-as-template-cmd"><title>File -> &save-as-template-cmd;</title>
+		<para>Save the active graph as a &appname; template file (.qpt). The resulting template will contain all
+			of the layers from the graph, including images, text labels (axes, etc), and any graphical parameters,
+			including the positions and sizes of the layers. Plotted data, the style used to draw curves, and any
+			associated scales are not saved in the template.</para>
+  </sect2>
+
+	<sect2 id="print-cmd"><title>File-> &print-cmd; (&print-key;)</title>
+    <para>Prints the active plot. A print <link linkend="printer-setup-dialog">dialog</link> is opened
+			where you can select the printer, different paper sizes, etc.</para>
+  </sect2>
+
+	<sect2 id="print-preview-cmd"><title>File-> &print-preview-cmd;</title>
+    <para>Displays a print preview for the active window. You can use this dialog to print the previewed window.</para>
+  </sect2>
+
+	<sect2 id="print-all-plots-cmd"><title>File-> &print-all-plots-cmd;</title>
+    <para>Prints all plots in the project. A print <link linkend="printer-setup-dialog">dialog</link> is opened
+			where you can select the printer, different paper sizes, etc.</para>
+  </sect2>
+
+	<sect2 id="export-graph-cmd"><title>File -> &export-graph-cmd;</title><!--beginning of Export Graph-->
+  	<para>The &export-graph-cmd; command appears in the file menu whenever a graph window is selected.
+			All graphs, or one graph at a time, can be exported in any of the available image formats. Since
+			all export options have the same image formats available, these will be described first. Depending
+			upon the image format chosen, you may be able to customize some image file parameters by checking
+			the <emphasis>show options</emphasis> check box. Available options vary according to the format chosen.</para>
+		<para>For the <emphasis>bmp, pbm, jpeg, xbm, pgm, ppm</emphasis> image formats, the only available option
+			is the quality of the image. This parameter defines the image compression ratio, and may be set to any
+			value between 0 and 100%. Higher values produce a better quality image and a larger file, while lower
+			values result in increasingly lossy compression, degraded image quality, and smaller file size.
+			For <emphasis>png</emphasis>, <emphasis>tiff</emphasis> and <emphasis>xpm</emphasis>, there is an option
+			to choose a transparent background.</para>
+    <informalfigure id="fig-export-graph-png"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-png.png"/>
+		</imageobject></mediaobject></informalfigure>
+  	<para>For <emphasis>eps</emphasis>, <emphasis>pdf</emphasis>, and <emphasis>ps</emphasis> file formats,
+			the option dialog is different again. The main parameters available are the desired resolution and the
+			size of the sheet of paper for which the image will be formatted. The default value for the resolution
+			is the screen resolution. If you increase the resolution, the overall size of the plot will be unchanged
+			but the quality of the graphic elements will be better.</para>
+		<para>By default the plot is exported to its real size on screen, but if you wish, you can choose a
+			different size  by checking the <emphasis>Custom print size</emphasis> box. In addition, there is
+			a <emphasis>Keep aspect ratio</emphasis> option. If you check this box and modify one dimension of
+			a plot, the other dimension will automatically be modified to keep the plot's aspect ratio the same.</para>
+    <informalfigure id="fig-export-graph-eps"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-eps.png"/>
+		</imageobject></mediaobject></informalfigure>
+		<para>When exporting the plot to LaTeX (.tex) there are two very useful options: <emphasis>Export font sizes
+			</emphasis> and	<emphasis>Escape special characters in title/axis labels</emphasis>. If checked, the first
+			option will include LaTeX commands in the output which keep the original font sizes. If not checked, the
+			font size specified in the preamble of the TeX document will be used for all text strings in the plot.
+			The second option specifies whether LaTeX special characters should be escaped or not when exporting. If
+			the title or the axis labels contain	LaTeX syntax (like superscripts, subscripts, etc...), and you want
+			them to be interpreted by the LaTeX compiler, you must uncheck this option.</para>
+		<informalfigure id="fig-export-graph-tex"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/export-graph-tex.png"/>
+		</imageobject></mediaobject></informalfigure>
+
+		<sect3 id="export-graph-current-cmd"><title>&export-graph-current-cmd; (&export-graph-current-key;)</title>
+			<para>This selection will save the active graph using one of the image formats described above.</para>
+		</sect3>
+    <sect3 id="export-graph-all-cmd"><title> &export-graph-all-cmd; (&export-graph-all-key;)</title>
+    	<para>This selection will save all graphs in the project using one of the image formats described above.</para>
+		</sect3>
+		<sect3 id="odf-presentation-cmd"><title> &odf-presentation-cmd;</title>
+			<para>This selection will save all the graphs in the project in an Open Document Format file (.odf)
+				that can be opened and edited with OpenOffice.</para>
+		</sect3>
+	</sect2><!--end of Export Graph-->
+
+	<sect2 id="export-cmd"><title>File -> &export-cmd;</title><!--Added entries for Export item. SRB (09/19/2010 ) -->
+  	<para>The &export-cmd; command appears in the file menu whenever a non-graph window (i.e., Table or Matrix) is selected.</para>
+		<sect3 id="export-ascii-cmd"><title>&export-ascii-cmd;</title>
+			<para>This command opens the <link linkend="export-ascii-dialog">Export ASCII</link> dialog, with which you can save the active table or matrix in a chosen ASCII format (".dat", ".html", ".odf", ".tex", ".txt", and ".xls" are available).</para>
+    </sect3>
+		<sect3 id="export-excel-cmd"><title> &export-excel-cmd;</title>
+      <para>This command opens the <link linkend="export-ascii-dialog">Export ASCII</link> dialog with the ".xls" format pre-selected.
+				This saves the active table or matrix as an Excel spreadsheet.</para>
+    </sect3>
+    <sect3 id="export-pdf-cmd"><title> &export-pdf-cmd; (&export-pdf-key;)</title>
+      <para>This command opens a generic file dialog to save the active window as a PDF document.</para>
+    </sect3>
+	</sect2><!--end of Export	item(SRB)-->
+
+	<sect2 id="sec-file-import"><title>File -> Import</title><!--Import data files-->
+
+		<sect3 id="import-ascii-cmd"><title>File -> &import-ascii-cmd; (&import-ascii-key;)</title>
+			<para> Opens the <link linkend="set-import-options-dialog">Import dialog</link> used to import ASCII
+				data files. The file to import, and the options for importation are set in this dialog.</para>
+		</sect3>
+
+		<sect3 id="import-sound-cmd"><title>File -> &import-sound-cmd; </title>
+			<para>This option allows you to import an uncompressed sound (.wav) file (PCM format).</para>
+		</sect3>
+
+		<sect3 id="import-image-cmd"><title>File-> &import-image-cmd;</title><!--Insertion of images--> 
+			<para>Using this command, an image may be loaded into a &appname; project and converted into an
+				intensity matrix. For each pixel, an intensity between 0 and 255 is computed from the intensities
+				of the three colors red, green and blue.</para>
+			<informalfigure id="fig-plot-intensity-matrix"><mediaobject><imageobject>
+				<imagedata  format="PNG" fileref="pics/plot-intensity-matrix.png"/>
+			</imageobject></mediaobject></informalfigure>
+			<para>This example shows the 3D plot drawn from the intensity matrix obtained from the &appname; logo.</para>
+		</sect3>
+	</sect2>
+
+	<sect2 id="quit-cmd"><title>File -> &quit-cmd; (&quit-key;)</title>
+    <para>Closes the application. You will be asked whether or not you want to save any changes.</para>
+  </sect2>
+</sect1><!--End of File Menu-->
+
+
+<!--  *********************************************  -->
+<!--  **************  Edit Menu  ******************  -->
+<!--  *********************************************  -->
+
+<sect1 id="sec-edit-menu"><title>The Edit Menu</title>
+	<sect2 id="undo-cmd"><title>Edit -> &undo-cmd; (&undo-key;)</title>
+     <para>Undo the last change to a note or matrix. Currently this function does not work for anything other than
+			notes and matrices.</para>
+  </sect2>
+	<sect2 id="redo-cmd"><title>Edit -> &redo-cmd; (&redo-key;)</title>
+		<para>Reverse the effect of the last "Undo" operation on a note or a matrix. Currently this function does
+			not work for anything other than notes and matrices.</para>
+  </sect2>
+	<sect2 id="cut-cmd"><title>Edit -> &cut-cmd; (&cut-key;)</title>
+		<para>While this command does not currently appear in the Edit Menu, the functionality is provided with
+			the &cut-key; key. The command copies the current selection to the clipboard and deletes the selection.
+			It currently works for tables and for 2D plots objects.</para>
+  </sect2>
+	<sect2 id="copy-cmd"><title>Edit -> &copy-cmd; (&copy-key;)</title>
+		<para>Copies the current selection to the clipboard. It currently works only for layers.</para>
+  </sect2>
+	<sect2 id="paste-cmd"><title>Edit -> &paste-cmd; (&paste-key;)</title>
+     <para>Pastes the content of the clipboard to the active window. It currently works only for layers.</para>
+  </sect2>
+	<sect2 id="delete-cmd"><title>Edit -> &delete-cmd; (&delete-key;)</title>
+     <para>Removes the current selection from the project. It currently works only for layers.</para>
+  </sect2>
+	<sect2 id="delete-fit-tables"><title>Edit -> &delete-fit-cmd;</title>
+    <para>Each time you fit your data to some mathematical model, a new table is created in which to put the results of the fit (i.e. the values computed by the model). These tables can be used to plot comparisons of experimental and fitted values. If you have completed several tentative fits, a number of fit result tables may be present in your project. This command allows you to remove the results of all the different fits that you have tested.</para>
+  </sect2>
+	<sect2 id="clear-log-cmd"><title>Edit -> &clear-log-cmd;</title>
+     <para>Allows the user to clear the log panel. All history information about analyses performed by the user will be deleted from the project file. The <link linkend="sec-intro-log-window">log panel</link> will then be empty.</para>
+  </sect2>
+	<sect2 id="preferences-cmd"><title>Edit -> &preferences-cmd;</title>
+     <para>Opens the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
+  </sect2>
+</sect1><!-- End of Edit Menu -->
+
+<!--  *********************************************  -->
+<!--  **************  View Menu  ******************  -->
+<!--  *********************************************  -->
+
+<sect1 id="sec-view-menu"><title>The View Menu</title>
+	<sect2 id="toolbars-cmd"><title>View -> &toolbars-cmd; (&toolbars-key;)</title>
+     <para>Opens a pop-up menu allowing you to enable/disable tool bars.</para>
+  </sect2>
+	<sect2 id="plot-wizard-cmd"><title>View -> &plot-wizard-cmd; (&plot-wizard-key;)</title>
+     <para>Opens the <link linkend="plot-wizard-dialog">Plot Wizard dialog</link>.</para>
+  </sect2>
+	<sect2 id="project-explorer-cmd"><title>View -> &project-explorer-cmd; (&project-explorer-key;)</title>
+     <para>Opens/Closes the <link linkend="project-explorer-dialog">Project Explorer</link> dialog, which gives an overview
+			of the structure of a project and allows the user to perform various operations on the windows (tables and plots)
+			in the workspace.</para>
+  </sect2>
+	<sect2 id="results-log-cmd"><title>View -> &results-log-cmd;</title>
+     <para>Opens/Closes a <link linkend="sec-intro-log-window">panel</link> displaying a history of all data analysis operations performed by the user.</para>
+  </sect2>
+	<sect2 id="undo-stack-cmd"><title>View -> &undo-stack-cmd;</title>
+     <para>Shows/Hides the matrix Undo/Redo Stack window. The Undo/Redo stack contains the history of editing changes for a selected matrix. When any matrix is selected, its Undo/Redo information will be copied into this window. If another matrix is selected, the data for that matrix will be swapped into the list. Only one matrix can have it's Undo/Redo information showing at a time. The depth of the stack (i.e., number of possible undo steps) is set in the "Applications" tab in the "General" section of the <link linkend="preferences-dialog">Preferences dialog</link>. Each list entry consists of the name of the matrix followed by the identity of the cell that was edited. Each edit pushes another entry onto the list. The current position in the Undo/Redo history is highlighted. Undo (&undo-key; or &undo-icon;) or Redo (&redo-key; or &redo-icon;) will move the highlight as appropriate. The history can be rapidly traversed by clicking on a stack entry, which will move the highlight to the clicked entry and revert the matrix to that point in the history. Each time the project is saved, the save-project icon ( &save-project-icon; ) is placed next to the stack entry that was highlighted at the time of the file save operation. This serves as a reminder to the user of exactly what version of the matrix resides on disk.</para>
+  </sect2>
+	<sect2 id="console-cmd"><title>View -> &console-cmd;</title>
+     <para>Shows/Hides the scripting console window.</para>
+  </sect2>
+</sect1><!-- End of View Menu -->
+
+<!--  *********************************************  -->
+<!--  ************  Scripting Menu  ***************  -->
+<!--  *********************************************  -->
+
+<sect1 id="sec-scripting-menu"><title>The Scripting Menu</title>
+	<sect2 id="subsec-general-scripting"><title>General Scripting Commands</title>
+		<para>These are commands that always appear in the Scripting menu, regardless of the window type selected</para>
+		<sect3 id="script-language-cmd"><title>Scripting -> &script-language-cmd;</title>
+     <para>Opens a dialog used to select the scripting language for the current project.</para>
+  	</sect3>
+		<sect3 id="restart-scripting-cmd"><title>Scripting -> &restart-scripting-cmd;</title>
+     <para>Reinitializes the scripting environment.</para>
+  	</sect3>
+		<sect3 id="add-custom-action-cmd"><title>Scripting -> &add-custom-action-cmd;</title>
+     <para>Opens the <link linkend="custom-action-dialog">Custom Action dialog</link>,
+	 which allows you to define menu items and toolbar buttons that launch Python scripts.</para>
+  	</sect3>
+	</sect2>
+	<sect2 id="subsec-notes-specific-scripting"><title>Notes Specific Scripting Commands</title>
+		<para>If the active window in the project is a Notes window, the following additional items will also
+			be available in the scripting menu:</para>
+			<sect3 id="execute-cmd"><title>Scripting -> &execute-cmd; (&execute-key;)</title>
+				<para>Executes the line where the mouse cursor is placed in the Notes window.</para>
+  		</sect3>
+			<sect3 id="execute-all-cmd"><title>Scripting -> &preferences-cmd; (&execute-all-key;)</title>
+     		<para>Executes all lines in the Notes window.</para>
+  		</sect3>
+			<sect3 id="evaluate-cmd"><title>Scripting -> &evaluate-cmd; (&evaluate-key;)</title>
+     		<para>Evaluates the line where the mouse cursor is placed in the Notes window.</para>
+  		</sect3>
+			<sect3><title>Rename Tab...</title>
+				<para>Opens a standard dialog which permits changing the name of the active notes tab.</para>
+			</sect3>
+			<sect3><title>Add Tab</title>
+				<para>Adds a new tab to the active notes window. The new tab will be named <emphasis>untitled</emphasis> by default.
+					The tab may be renamed at any time using the Rename Tab... command.</para>
+			</sect3>
+			<sect3><title>Close Tab</title>
+				<para>Closes (deletes) the active Notes tab. The contents of the tab will be lost. No warning is given!</para>
+			</sect3>
+		</sect2>
+</sect1><!-- End of Scripting Menu -->
+
+<!--  ************************************************  -->
+<!--  		Beginning of Graph Menu			-->
+<!--  ************************************************  -->
+
+<sect1 id="sec-graph-menu"><title>The Graph Menu</title>
+	<para>This menu is only active (visible) when a graph window is selected.</para>
+	<sect2 id="add-remove-curve-cmd"><title>Graph -> &add-remove-curve-cmd; (&add-remove-curve-key;)</title>
+		<para>Opens the <link linkend="add-remove-curve-dialog">&add-remove-curve-cmd; dialog</link>, allowing easy
+			addition or removal of curves from the active plot layer. This dialog can also be used to modify a curve
+			which is already plotted by changing the columns which are used as X or Y values. The curve is added to
+			the currently active layer. If there is no layer on the graph, an error message will pop-up.</para>
+  </sect2>
+	<sect2 id="add-function-cmd"><title>Graph -> &add-function-cmd; (&add-function-key;)</title>
+		<para>Opens the <link linkend="add-function-dialog">&add-function-cmd; dialog</link>. This command is used
+			to add new function curves to an existing layer. New curves are added to the currently active layer.</para>
+  </sect2>
+	<sect2 id="add-error-bars-cmd"><title>Graph -> &add-error-bars-cmd; (&add-error-bars-key;)</title>
+     <para>Opens the <link linkend="add-error-bars-dialog">&add-error-bars-cmd; dialog</link>. You can
+			add error bars to X and/or Y values on an existing plot. Error bars are added to the currently active layer.</para>
+  </sect2>
+	<sect2 id="new-legend-cmd"><title>Graph -> &new-legend-cmd; (&new-legend-key;)</title>
+     <para>Adds a new legend object to the active layer. You can have more than one legend on a plot.
+			These legends can later be customized by double clicking on a given legend.</para>
+  </sect2>
+	<sect2 id="add-eq-cmd"><title>Graph -> &add-eq-cmd; (&add-eq-key;)</title>
+    <para>This command is used to add a <emphasis>Tex</emphasis> formatted equation on a layer. When selected,
+			the cursor changes to an edit text cursor. You must then click in the plot area to specify the position of
+			the new Tex equation. A Tex equation editor will pop-up allowing you to enter the equation to be displayed
+			and set all its properties (color, font, etc...)</para>
+	</sect2>
+	<sect2 id="add-text-cmd"><title>Graph -> &add-text-cmd; (&add-text-key;)</title>
+    <para>This command is used to add text items on a layer. When selected, the cursor changes to an edit text cursor.
+			You must then click in the plot area to specify the position of the new text box. A text dialog will pop-up
+			allowing you to type the text to be displayed and set all its properties (color, font, etc...)</para>
+	</sect2>
+	<sect2 id="draw-arrow-cmd"><title>Graph -> &draw-arrow-cmd; (&draw-arrow-key;)</title>
+    <para>Changes the active layer's operational mode to drawing mode. You must click on the layer canvas in order
+			to specify the starting point for the new arrow, and then click once more to specify its ending point. You can
+			edit the new arrow using the Arrow dialog. Switch back to the normal operating mode by clicking the "Pointer"
+			icon in the Plot toolbar.</para>
+	</sect2>
+	<sect2 id="draw-line-cmd"><title>Graph -> &draw-line-cmd; (&draw-line-key;)</title>
+     <para>Changes the active layer's operational mode to drawing mode. You must click on the layer canvas in order
+			to specify the starting point for the new line, and then click once more to specify its ending point. You can
+			edit the new line using the line dialog. Switch back to  normal operating mode by clicking the "Pointer" icon
+			in the Plot toolbar.</para>
+	</sect2>
+	<sect2 id="add-rectangle-cmd"><title>Graph -> &add-rectangle-cmd; (&add-rectangle-key;)</title>
+     <para>Draws a rectangular box on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to indicate the first corner of the rectangle, then drag the cursor to the opposite corner of the rectangle. Once the second point is specified, release the left mouse button to draw the rectangle. The pointer automatically changes back to normal mode.</para>
+	</sect2>
+	<sect2 id="add-ellipse-cmd"><title>Graph -> &add-ellipse-cmd; (&add-ellipse-key;)</title>
+     <para>Draws a elliptical shape on the active plot layer. After selecting this command, the pointer changes to a crosshair target. Click and hold the left mouse button on the active layer to indicate the first corner of the ellipse's bounding rectangle, then drag the cursor to the opposite corner of the bounding rectangle. Once the second point is specified, release the left mouse button to draw the ellipse. The pointer automatically changes back to normal mode. Circles may be drawn using this command by setting the height and width equal. (The object properties dialog can be used to set height and width to exactly the same value.)</para>
+	</sect2>
+	<sect2 id="add-time-stamp-cmd"><title>Graph -> &add-time-stamp-cmd; (&add-time-stamp-key;)</title>
+     <para>This command is used to add a special label in the active layer which contains the current date and time. The properties of this label can be customized like any other label added by the &add-text-lnk;.</para>
+     <para>The date and time copied into a timestamp label is not modified later if the plot is modified, saved, etc.</para>
+	</sect2>
+	<sect2 id="add-image-cmd"><title>Graph -> &add-image-cmd; (&add-image-key;)</title>
+     <para>Opens a file dialog allowing you to select an image to be added to the active plot layer. Only a link to the image file will be saved into the project file and not the image itself. The new image is added to the left-top corner of the layer and can be moved with the mouse using drag-and-drop.</para>
+	</sect2>
+	<sect2 id="zorder-commands"><title>Z-Order Commands...</title><!-- SRB (09/23/2010 ) -->
+		<para>The zorder commands act upon the last few items. Even though they do not appear in the graph menu, they are in
+		the plot toolbar and in the object drop down lists when right clicking a selected object.</para>
+
+		<sect3 id="zorder-top-cmd"><title>&zorder-top-cmd;</title>
+			<para>Although this command does <emphasis>not</emphasis> appear in the Graph menu, it does act upon
+				the objects created using the last few commands (specifically legend, equation, text, timestamp, ellipse,
+				rectangle and image objects). When a suitable object is selected, this command will be available, either
+				from the &plot-toolbar-lnk; or from the drop-down list that appears when right-clicking on a selected object.
+				When the command is used, the object will be made visible by being promoted to the front of the plot layer.
+				It does not affect the z-order relative to other objects. Their relative z-order depends only upon their
+				order of creation.</para>
+		</sect3>
+		<sect3 id="zorder-bottom-cmd"><title>&zorder-bottom-cmd;</title>
+     <para>Although this command does <emphasis>not</emphasis> appear in the Graph menu, it does act upon the objects created using the last few commands (specifically legend, equation, text, timestamp, ellipse, rectangle and image objects). When a suitable object is selected, this command will be available, either from the &plot-toolbar-lnk; or from the drop-down list that appears when right-clicking on a selected object. When the command is used, the object will be made invisible by being demoted to the back of the plot layer. It does not affect the z-order relative to other objects. Their relative z-order depends only upon their order of creation.</para>
+		</sect3>
+	</sect2>
+	<sect2 id="add-layer-cmd"><title>Graph -> &add-layer-cmd; (&add-layer-key;)</title>
+     <para>Adds a new layer to a graph window. The command opens a <link linkend="add-layer-dialog">dialog</link> which allows you to select whether the new layer is to be added to the left-top corner of the plot window or to a best-guess position (based on a layer positioning algorithm in columns and rows).</para>
+  </sect2>
+
+<!--Add empty inset layer and add inset curve layer SRB (09/23/2010 ) -->
+	<sect2 id="add-inset-layer-cmd"><title>Graph -> &add-inset-layer-cmd;</title>
+     <para>This is a convenience command that creates a new, small sized, empty layer located on top of the currently selected layer. Once this layer is created, you can further resize, move, set it's properties and add curves to it as needed. Inset layers are not linked to another layer in any way. They just happen to be located in the same place on the graph window. In fact the inset layer can be moved anywhere on the graph window and is treated like a normal layer in every way. When the inset layer is completely contained inside another layer, it will disappear under that layer when it is selected. The new inset layer has it's own layer select button in the upper left of the graph window. Clicking on this button will bring the inset back to the front, rendering it visible again.</para>
+	</sect2>
+	<sect2 id="add-inset-curve-layer-cmd"><title>Graph -> &add-inset-curve-layer-cmd;</title>
+     <para>This command is essentially identical to the &add-inset-layer-cmd; command, with the single exception that any curves contained in the currently active layer are duplicated in the new inset layer.</para>
+	</sect2>
+	<sect2 id="arrange-layers-cmd"><title>Graph -> &arrange-layers-cmd; (&arrange-layers-key;)</title>
+     <para>Opens the <link linkend="arrange-layers-dialog">Arrange layers dialog</link>. This dialog allows you to customize the layout of the layers in the active graph window.</para>
+	</sect2>
+	<sect2 id="auto-arrange-layers-cmd"><title>Graph -> &auto-arrange-layers-cmd; command</title>
+    <para>Automatically arranges all the layers in the active graph window. There must be at least 2 layers on the graph. Layers are packed into the smallest dimensioned array possible. All layers are scaled to fit into the existing graph window. Rows are added until a the smallest square array is filled, at which point an additional column is added. Rows are then filled and additional rows added until the array is again square. For example, 2 layers results in a 1x2 array. 3 layers produces a 2x2 array with an empty space in the second row. 4 layers produces a full 2x2 array. Adding another layer will produce a 2x3 array, with one empty space in the second row. Additional layers result in more rows and columns being added to contain all the layers.</para>
+  </sect2>
+
+<!--Add extract to graph and extract layer SRB (09/23/2010 ) -->
+
+	<sect2 id="extract-graphs-cmd"><title>Graph -> &extract-graphs-cmd; command</title>
+    <para>Each layer in the currently active graph window is copied into its own, newly created, graph window. The scale and size of the new layer is the same as the original layer. The original graph window remains unchanged.</para>
+	</sect2>
+	<sect2 id="extract-layers-cmd"><title>Graph -> &extract-layers-cmd; command</title>
+    <para>Each curve in the currently active layer is moved onto a newly created layer. The original layer is destroyed. The newly created layers are then auto arranged (see the &auto-arrange-layers-lnk; command). </para>
+	</sect2>
+	<sect2 id="remove-layer-cmd"><title>Graph -> &remove-layer-cmd; (&remove-layer-key;)</title>
+    <para>Deletes the active layer and pops-up a question dialog allowing you to choose whether the remaining layers should be automatically re-arranged or not.</para>
+  </sect2>
+</sect1><!-- End of Graph Menu -->
+
+<!--  ************************************************  -->
+<!--  ************Beginning of Plot Menus*************  -->
+<!--  ************************************************  -->
+
+<sect1 id="sec-plot-menu"><title>The Plot Menu</title><!--beginning of plot 2d-->
+	<para>This menu is active only when a table is selected. These commands allow plotting data from the selected table.
+		As a group, all of these commands create a new graph window which contains a single, empty layer. The newly created
+		plot is drawn on this empty layer.</para>
+
+	<sect2 id="line-cmd"><title>&line-cmd;</title>
+    <para>Plots the selected data columns using "Line" style. The command can also be activated by clicking on the &line-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+		<informalfigure id="fig-plot-line"><mediaobject><imageobject>
+       <imagedata  format="PNG" fileref="pics/plot-gallery-line.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+
+	<sect2 id="scatter-cmd"><title>&scatter-cmd;</title>
+    <para>Similar to the &line-cmd; command except that the plot is drawn using "Scatter" style. The command can also be activated by clicking on the &scatter-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+		<informalfigure id="fig-plot-scatter"><mediaobject><imageobject>
+            <imagedata  format="PNG" fileref="pics/plot-gallery-scatter.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+
+	<sect2 id="line-symbol-cmd"><title>&line-symbol-cmd;</title>
+    <para>Identical to the &line-cmd; command except that the plot is drawn using "Line + Symbol" style. This command can also be activated by clicking on the &line-symbol-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+		<informalfigure id="fig-plot-linesymbols"><mediaobject><imageobject>
+			<imagedata  format="PNG" fileref="pics/plot-gallery-linesymbols.png"/>
+		</imageobject></mediaobject></informalfigure>
+	</sect2>
+	<sect2 id="special-line-symbol-cmd"><title>&special-line-symbol-cmd; -></title><!--beginning of Special Line/Symbol-->
+    <para>Selecting &special-line-symbol-cmd; opens up a sub-menu of additional commands for plotting specialized graphs
+			 consisting of lines and symbols.</para>
+		<sect3 id="vertical-drop-lines-cmd"><title>&vertical-drop-lines-cmd;</title>
+	  	<para>Plots the selected data columns using "Vertical drop lines" style. Once the plot is created,
+				the drawing style of the data series can be customized with the
+				<link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+			<informalfigure id="fig-plot-droplines"><mediaobject><imageobject>
+            <imagedata  format="PNG" fileref="pics/plot-gallery-droplines.png"/>
+    	</imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="spline-cmd"><title>&spline-cmd;</title>
+	  	<para>Plots the selected data columns using "Spline" style. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+			<informalfigure id="fig-plot-spline"><mediaobject><imageobject>
+         <imagedata  format="PNG" fileref="pics/plot-gallery-spline.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="vertical-steps-cmd"><title>&vertical-steps-cmd;</title>
+	  	<para>Plots the selected data columns using "Vertical Steps" style. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+      <informalfigure id="fig-plot-vert-step"><mediaobject><imageobject>
+         <imagedata  format="PNG" fileref="pics/plot-gallery-vert-step.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="horizontal-steps-cmd"><title>&horizontal-steps-cmd;</title>
+	  	<para>Plots the selected data columns using "Horizontal Steps" style. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
+      <informalfigure id="fig-plot-hor-step"><mediaobject><imageobject>
+         <imagedata  format="PNG" fileref="pics/plot-gallery-hor-step.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="double-y-cmd"><title>&double-y-cmd;</title>
+	  	<para>Creates a double Y axis graph. Requires a selection of at least two Y columns (or a range from at least two columns).</para>
+		</sect3>
+    <sect3 id="waterfall-plot-cmd"><title>&waterfall-plot-cmd;</title>
+	  	<para>Creates a new graph window containing a waterfall plot generated from data in the selected columns. Each column is drawn as a separate curve which is offset from the previous one in both <emphasis>X</emphasis> and <emphasis>Y</emphasis>, creating the so-called waterfall effect. The figure shown below is a simple example of a waterfall plot where each column is simply an attenuated version of the previous column.</para>
+			<informalfigure id="fig-waterfall-plot"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-gallery-waterfall.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+   	<sect3 id="zoom-plot-cmd"><title>&zoom-plot-cmd;</title>
+	  	<para>Creates a new graph with 2 layers. The first is a standard plot layer which contains a curve for each
+				selected <emphasis>Y</emphasis> column. The second is a special layer which has 2 components: 1) There is a
+				standard plot layer that shows a portion of the first layer's surface in a magnified view; 2) There is a
+				separate graphical window that can be sized and dragged around the first layer to specify the portion of
+				that layer which is shown in the magnified view. The figure below shows a typical <emphasis>zoom</emphasis> plot.</para>
+      <informalfigure id="fig-zoom-plot"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-gallery-zoom.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+	</sect2><!--end of Special Line/Symbol-->
+
+	<sect2 id="columns-cmd"><title>&columns-cmd;</title>
+    <para>Plots the selected data columns using "Columns" style, that is vertical bars.</para>
+    <informalfigure id="fig-plot-bars"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-gallery-bars.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+	<sect2 id="rows-cmd"><title>&rows-cmd;</title>
+		<para>Plots the selected data columns using "Rows" style.</para>
+    <informalfigure id="fig-plot-rows"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-gallery-rows.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+
+	<sect2 id="special-bar-column-cmd"><title>Special Bar/Column -></title><!--beginning of Special Bar/Column-->
+		<para>Selecting &special-bar-column-cmd; opens up a sub-menu of commands for plotting specialized bar and column
+			graphs.</para>
+  	<sect3 id="stack-bar-cmd"><title>&stack-bar-cmd;</title>
+	  	<para>The &stack-bar-cmd; command plots a stack-bar for each selected row in the currently active table. They may be used to conveniently display cumulative data that changes over time, such as budgetary information. The stack-bars are drawn one above the other in a position determined by the X value of the corresponding row. Each stack-bar is composed of a set of joined segments. The widths of the segments are set by the Y values in the row and their relative positions correspond to the column order in the table. Each segment is plotted in a color corresponding to the column number of the Y value determining the segment's width. Colors, segment outlining, vertical separation of the stack-bars, and the axis values can all be customized. An example of a stack-bar plot is shown below, followed by the table that was used to generate the plot.</para>
+			<informalfigure id="stack-bar-plot"><mediaobject><imageobject>
+      	<imagedata  format="PNG" fileref="pics/plot-gallery-stack-bar.png"/>
+    	</imageobject></mediaobject></informalfigure>
+			<para>A stack-bar plot showing a hypothetical budgetary breakdown for a 5 year period. The data in the table shown
+				below was used to generate this plot.</para>
+    	<informalfigure id="stack-row-data"><mediaobject><imageobject>
+      	<imagedata  format="PNG" fileref="pics/stack-bar-data.png"/>
+    	</imageobject></mediaobject></informalfigure>
+		</sect3>
+  	<sect3 id="stack-column-cmd"><title>&stack-column-cmd;</title>
+	  	<para>The &stack-column-cmd; command plots a stack-column for each selected row in the currently active table.
+			It is essentially the same as the &stack-bar-lnk; plot, but drawn as vertical stack-columns rather than
+			horizontal stack-bars.</para>
+		</sect3>
+	</sect2><!--end of Special Bar/Column-->
+
+	<sect2 id="area-cmd"><title>&area-cmd;</title>
+    <para>Plots the selected data columns using "Area" style.</para>
+    <informalfigure id="fig-plot-area"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-gallery-area.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+	<sect2 id="pie-cmd"><title>&pie-cmd;</title>
+    <para>Creates a pseudo 3D Pie plot using the selected column in the active table window (only one column allowed).</para>
+    <informalfigure id="fig-plot-pie"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-gallery-pie.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+	<sect2 id="vectors-xyxy-cmd"><title>&vectors-xyxy-cmd;</title>
+    <para>Creates a vectors plot using the selected columns in the active table window. You must select four columns for this particular type of plot. The first two columns give the coordinates of the starting points of the vectors, the last two columns give the coordinates of the end points.</para>
+    <informalfigure id="fig-plot-vectors"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/plot-gallery-vectors.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+	<sect2 id="vectors-xyam-cmd"><title>&vectors-xyam-cmd;</title>
+    <para>Creates a vectors plot using the selected columns in the active table window. You must select four columns for this particular type of plot. The first two columns give the coordinates of the starting points of the vectors, the last two columns give the angles (in radians) and magnitudes of the vectors.</para>
+  </sect2><!--end of plot 2d-->
+
+	<sect2 id="statistical-graphs"><title>Statistical Graphs -></title><!--beginning of Plot -> Statistical Graphs-->
+    <para>Selecting the <emphasis>Statistical Graphs -> </emphasis> item opens up a sub-menu of commands for plotting
+			various statistical	graphs. Statistical plots do not give a direct drawing of the selected table data. However,
+			a representation of the frequency distribution of the Y-values is plotted.</para>
+    <sect3 id="box-plot-cmd"><title>&box-plot-cmd;</title>
+	  	<para>Creates a box plot using the selected data columns in the active table window. This type of plot is used to give a graphical representation of some of the classical parameters of a frequency distribution, such as the mean, the min and max values, the position of the 95 and 5 percentiles, etc. The choice of the statistical parameters and the graphical parameters can be modified with the <link linkend="custom-curves-dialog-box">Custom curves dialog</link>.</para>
+			<informalfigure id="fig-plot-box"><mediaobject><imageobject>
+       <imagedata  format="PNG" fileref="pics/plot-gallery-box.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="histogram-cmd"><title>&histogram-cmd;</title>
+	  	<para>Creates a frequency histogram of the selected data columns in the active table window. The default binning
+				uses 10 steps between the max and the min of Y-values. This can be modified with the
+				<link linkend="custom-curves-dialog-histogram">Custom curves dialog</link>.</para>
+      <informalfigure id="fig-plot-histogram"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/plot-gallery-histogram.png"/>
+      </imageobject></mediaobject></informalfigure>
+      <para>Note that this command plots a frequency distribution that is <emphasis>computed</emphasis> from your data.
+				If you want to draw a histogram directly from data values, use the &bars-cmd; plot instead.</para>
+		</sect3>
+    <sect3 id="stacked-histogram-cmd"><title>&stacked-histogram-cmd;</title>
+	 		<para>Creates vertically stacked layers displaying the histograms of the selected data columns in the active
+				table window (one histogram per layer) See the &vertical-2-layers-lnk; for more details.</para>
+		</sect3>
+    <sect3 id="stem-and-leaf-cmd"><title>&stem-and-leaf-cmd;</title>
+	  	<para>Generates a stem-and-leaf tabular plot from the selected column in a new <emphasis>note</emphasis> window. Stem-and-Leaf plots are similar to histograms but are represented using rows of decimal digits. Like a histogram, data is binned, usually by taking the most significant digits (MSDs) as "stem" values which are listed in a column on the left. The least significant digit(s) from all values having identical MSDs are then listed to the right of each stem value. From a statistical point of view, this gives the appearance of a histogram but preserves the actual data values in the plot. When this command is executed, you will be given the opportunity to select/confirm the binning increment, which is given as a power of 10 and defaults to a power of 1 (that is, a binning increment of 10).</para>
+		<informalfigure id="fig-stem-and-leaf"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/stem-and-leaf.png"/>
+    </imageobject></mediaobject></informalfigure>
+    	<para>This figure shows a typical stem-and-leaf representation of 48 random data points which are roughly Gaussian (i.e., normally distributed) and uses the default binning increment of 10. </para>
+		</sect3>
+  </sect2><!--end of Plot -> Statistical Graphs-->
+
+
+	<sect2><title>Panel -></title><!--beginning of Plot -> Panel-->
+    <para>Selecting the <emphasis>Plot -> Panel -></emphasis> menu item opens a sub-menu of commands that can be used
+				to quickly obtain some commonly used arrangements of multiple plots. Unlike other commands in this menu,
+				the new graph window that is created may have more than one layer (as needed).</para>
+    <sect3 id="vertical-2-layers-cmd"><title>&vertical-2-layers-cmd;</title>
+		  <para>Creates 2 vertically stacked layers. The data columns selected in the active table window (one curve per layer) are plotted on these layers.</para>
+		</sect3>
+    <sect3 id="horizontal-2-layers-cmd"><title>&horizontal-2-layers-cmd;</title>
+	  	<para>Creates 2 horizontally stacked layers. The data columns selected in the active table window (one curve per layer) are plotted on these layers.</para>
+		</sect3>
+		<sect3 id="four-layers-cmd"><title>&four-layers-cmd;</title>
+		  <para>Creates 4 layers on a 2x2 grid. The data columns selected in the active table window (one curve per layer) are plotted on these layers.</para>
+		</sect3>
+		<sect3 id="stacked-layers-cmd"><title>&stacked-layers-cmd;</title>
+	  	<para>Creates a group of vertically stacked layers, one layer per Y-Coordinate column selected. Data columns selected in the active table window (one curve per layer) are plotted on these layers.</para>
+		</sect3>
+		<sect3 id="custom-panel-cmd"><title>&custom-panel-cmd;</title>
+	  	<para>Opens the <emphasis>Arrange Layers</emphasis> dialog which allows complete customization of the layer layout.</para>
+    </sect3>
+  </sect2><!--end of Plot -> Panel-->
+
+	<sect2 id="subsec-plot-3d"><title>Data -> Plot 3D -></title><!--beginning of Plot -> Plot 3D ->	-->
+    <para>Selecting the <emphasis>Plot -> Plot 3D -></emphasis> menu item opens a sub-menu of commands used
+				to draw some common 3D plots of 2D data.</para>
+		<sect3 id="ribbons-cmd"><title>&ribbons-cmd;</title>
+		  <para>Makes a 3D plot of the selected data column in the active table window (only one column allowed) using "Ribbon" style.</para>
+    	<informalfigure id="fig-3dplot-ribbons"><mediaobject><imageobject>
+      	<imagedata  format="PNG" fileref="pics/3d-gallery-ribbons.png"/>
+    	</imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="bars-cmd"><title>&bars-cmd;</title>
+	  	<para>Makes a 3D plot of the selected data column in the active table window (only one column allowed)
+				using "3D Bars" style.</para>
+      <informalfigure id="fig-3dplot-columns"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/3d-gallery-columns.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+    <sect3 id="scatter3d-cmd"><title>&scatter-cmd;</title>
+		  <para>Makes a 3D plot of the selected data column in the active table window (only one column allowed)
+				using "3D Dots" style. The 3D point symbol style can be changed via the 3D Plots Settings dialog.</para>
+      <informalfigure id="fig-3dplot-crosshairs"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/3d-gallery-cross-hairs.png"/>
+      </imageobject></mediaobject></informalfigure>
+      <para>With scatter plots, you can choose the kind of graphic item which is used to plot the data points. The example above is done with cross hairs, but you can also select points or cones. This can be done either with the corresponding icons of the &plot3d-toolbar-lnk; (respectively &cross-hairs-icon; &dots-icon; and &cones-icon; for cross-hairs, dots and cones) or with the <link linkend="custom-curves-dialog">custom-curves dialog</link>.</para>
+		</sect3>
+    <sect3 id="trajectory-cmd"><title>&trajectory-cmd;</title>
+	  	<para>Makes a 3D plot of the selected data column in the active table window (only one column allowed) using "3D Line" style. The line width and color may be changed via the 3D Plots Settings dialog.</para>
+      <informalfigure id="fig-3dplot-trajectory"><mediaobject><imageobject>
+        <imagedata  format="PNG" fileref="pics/3d-gallery-trajectory.png"/>
+      </imageobject></mediaobject></informalfigure>
+		</sect3>
+  </sect2><!--end of plot -> Plot 3D ->	-->
+</sect1><!--end of menu plot-->
+
+<!-- ************************************************** -->
+<!-- ******************Plot 3D menu******************** -->
+<!-- ************************************************** -->
+
+<sect1 id="sec-plot3d-menu"><title>The 3D Plot menu</title>
+	<para>This menu is only active (visible) when a matrix is selected.</para>
+
+  <sect2><title>&mesh-cmd;</title>
+    <para>Makes a 3D plot of the selected matrix using the "3D mesh" style.</para>
+    <informalfigure id="fig-3d-mesh"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-mesh.png"/>
+     </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2><title>&mesh-hidden-cmd;</title>
+    <para>Makes a 3D plot of the matrix using the "3D mesh" style with hidden lines.</para>
+    <informalfigure id="fig-3d-hidden"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-hidden.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2><title>&polygons-cmd;</title>
+    <para>Makes a 3D plot of the matrix using the "3D polygons" style.</para>
+    <informalfigure id="fig-3d-polygons"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-polygons.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2><title>&mesh-polygons-cmd;</title>
+    <para>Makes a 3D plot of the matrix using the "3D polygons" style with the mesh drawn.</para>
+    <informalfigure id="fig-3d-meshpolygons"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-meshpolygons.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2><title>&bars-cmd;</title>
+    <para>Makes a 3D plot of the selected data column in the active table window (only one column allowed) using the "3D Bars" style.</para>
+    <informalfigure id="fig-3d-bars"><mediaobject><imageobject>
+       <imagedata  format="PNG" fileref="pics/3d-gallery-bars.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2><title>&scatter-cmd;</title>
+    <para>Makes a 3D plot of the selected data column in the active table window (only one column allowed) using the "3D Dots" style. The 3D point symbol style can be changed via the <link linkend="surface-plot-options-dialog">3D Plots Settings dialog</link>.</para>
+    <informalfigure id="fig-3d-scatter"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-dots.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2 id="contour-color-cmd"><title>&contour-color-cmd;</title>
+	  <para>Makes a color map plot of the data in the active matrix window. The contour lines and the colormap settings may be changed by clicking on the plotting area. This will activate the <link linkend="contour-options-dialog">Contour Options Dialog</link>.</para>
+    <informalfigure id="fig-3dplot-contour-color"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-contour-fill.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+  <sect2 id="contour-lines-cmd"><title>&contour-lines-cmd;</title>
+	  <para>Makes a contour plot of the data in the active matrix window. The contour lines and the colormap settings may be changed by clicking on the plotting area. This will activate the <link linkend="contour-options-dialog">Contour Options Dialog</link>.</para>
+    <informalfigure id="fig-3dplot-contour"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-contour.png"/>
+    </imageobject></mediaobject></informalfigure>
+  </sect2>
+
+  <sect2 id="gray-scale-cmd"><title>&gray-scale-cmd;</title>
+	  <para>Makes a gray map plot of the data in the active matrix window. The contour lines and the colormap settings may be changed by clicking on the plotting area. This will activate the <link linkend="contour-options-dialog">Contour Options Dialog</link>.</para>
+    <informalfigure id="fig-3dplot-gray-map"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/3d-gallery-gray-map.png"/>
+    </imageobject></mediaobject></informalfigure>
+	</sect2>
+</sect1>
+
+<!-- ************************************************** -->
+<!--		beginning of menu Data			-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-data-menu">  <title>The Data Menu</title>
+  <para>This menu is visible and active only when a graph window is selected. Commands in this menu will act
+    on the plot/layer that is currently active in the graph window. All of these commands are switches - that is,
+    they switch on an operational mode which remains in effect until it is canceled by selecting another
+    command or by using the &pointer-cmd; command.</para>
+  <sect2 id="pointer-cmd"><title>Data -> &pointer-cmd;</title>
+    <para>For many of the remaining commands in this menu, &appname; will be locked into a special mode corresponding to that command, and that command's special pointer will be used instead of the normal pointer. This command is used to exit any of these special modes, returning &appname; to its normal mode and pointer behavior.</para>
+  </sect2>
+  <sect2 id="zoom-inoutdrag-cmd"><title>Data -> &zoom-inoutdrag-cmd;&zoom-inoutdrag-key;</title>
+    <para>Switches the active plot layer into a dynamic zoom/drag mode. Upon command execution, the default mode is "dynamic drag". To drag the plot, simply left click anywhere in the plotting area and drag the plot around with the mouse. Drop it at the new location by releasing the left mouse button. To zoom the plot, switch to dynamic zoom mode by first right clicking somewhere in the plot area. (This will probably pop-up a context menu that you should ignore.) Next, left click at a suitable zoom reference point in the plot area to enter dynamic zoom mode (this will also dismiss any pop-up menu). Once in dynamic zoom mode, scale the plot by moving the mouse cursor up to zoom out, or down to zoom in. Right and left mouse movements have no effect. You should use some foresight in picking the zoom reference point. For example, selecting a point at the bottom of the plot area will limit zooming to upward mouse travel - that is, you will only be able to zoom out. Once a suitable zoom factor has been found, left click anywhere in the plot to accept the zoom and return to dynamic drag mode.</para>
+    <para>Note that the mouse wheel is always active when using this command. It can be used to zoom while in either dynamic drag or dynamic zoom modes. Also note that in either mode, zooming leaves the plot's aspect ratio unchanged.</para> 
+  </sect2>
+
+  <sect2 id="zoom-draghoriz-cmd"><title>Data -> &zoom-draghoriz-cmd;&zoom-draghoriz-key;</title>
+    <para>Switches the active plot layer into a dynamic zoom/drag mode which is limited to the horizontal direction. Upon command execution, the default mode is "dynamic horizontal drag". To drag the plot, simply left click anywhere in the plotting area and drag the plot to the right or left with the mouse. Drop it at the new location by releasing the left mouse button. Note that it may appear that you can move the plot up or down while dragging, but the original vertical location will be restored when the plot is dropped at the new horizontal location. To zoom the plot, switch to dynamic horizontal zoom mode by first right clicking somewhere in the plot area. (This will probably pop-up a context menu that you should ignore.) Next, left click at a suitable zoom reference point in the plot area to enter dynamic horizontal zoom mode (this will also dismiss any pop-up menu). Once in dynamic horizontal zoom mode, scale the plot's width by moving the mouse cursor up to zoom out, or down to zoom in. Right and left mouse movements have no effect. You should use some foresight in picking the zoom reference point. For example, selecting a point at the bottom of the plot area will limit zooming to upward mouse travel - that is, you will only be able to zoom out. Once a suitable zoom factor has been found, left click anywhere in the plot to accept the zoom and return to dynamic horizontal drag mode.</para>
+    <para>Note that the mouse wheel is always active when using this command. It can be used to zoom while in either dynamic horizontal drag or dynamic horizontal zoom modes. Also note that in either horizontal mode, zooming will change the plot's aspect ratio.</para> 
+  </sect2>
+
+  <sect2 id="zoom-dragvert-cmd"><title>Data -> &zoom-dragvert-cmd;&zoom-dragvert-key;</title>
+    <para>Switches the active plot layer into a dynamic zoom/drag mode which is limited to the vertical direction. Upon command execution, the default mode is "dynamic vertical drag". To drag the plot, simply left click anywhere in the plotting area and drag the plot up or down with the mouse. Drop it at the new location by releasing the left mouse button. Note that it may appear that you can move the plot right or left while dragging, but the original horizontal location will be restored when the plot is dropped at the new vertical location. To zoom the plot, switch to dynamic vertical zoom mode by first right clicking somewhere in the plot area. (This will probably pop-up a context menu that you should ignore.) Next, left click at a suitable zoom reference point in the plot area to enter dynamic vertical zoom mode (this will also dismiss any pop-up menu). Once in dynamic vertical zoom mode, scale the plot's height by moving the mouse cursor up to zoom out, or down to zoom in. Right and left mouse movements have no effect. You should use some foresight in picking the zoom reference point. For example, selecting a point at the bottom of the plot area will limit zooming to upward mouse travel - that is, you will only be able to zoom out. Once a suitable zoom factor has been found, left click anywhere in the plot to accept the zoom and return to dynamic vertical drag mode.</para>
+    <para>Note that the mouse wheel is always active when using this command. It can be used to zoom while in either dynamic vertical drag or dynamic vertical zoom modes. Also note that in either vertical mode, zooming will change the plot's aspect ratio.</para> 
+  </sect2>
+
+	<sect2 id="zoom-in-cmd"><title>Data -> &zoom-in-cmd; (&zoom-in-key;)</title>
+    <para>Switches the active plot layer to zoom mode. The mouse cursor shape changes to a magnifying lens when it is inside a plot canvas. To zoom the plot, draw a box around a selected part of the plot by clicking at one corner of the desired box, dragging the mouse pointer to the opposite corner of the box and clicking a second time. The plot will be zoomed up such that the contents of the drawn box now fills the existing plotting area.</para>
+	</sect2>
+	<sect2 id="zoom-out-cmd"><title>Data -> &zoom-out-cmd; (&zoom-out-key;)</title>
+    <para>This command cancels a previous zoom operation. A zoom history is kept so that you can do multiple zoom out commands to step backwards through the zoom history. A separate zoom history is maintained for each plot layer. Executing this command does not set any special mode of its own but it will cancel any other special mode that is currently in effect (i.e., it performs an implicit &pointer-cmd; command).</para>
+	</sect2>
+	<sect2 id="rescale-cmd"><title>Data -> &rescale-cmd;  (&rescale-key;)</title>
+    <para>Rescales the active plot layer after a zoom operation so that all data on the graph is visible. This command does not set any special mode of its own, but unlike the &zoom-out-cmd; command, it does not alter any other mode that may be in effect. Nevertheless, it does delete the zoom history of the rescaled plot.</para>
+	</sect2>
+	<sect2 id="data-reader-cmd"><title>Data -> &data-reader-cmd; (&data-reader-key;)</title>
+    <para>Shows a red cross cursor and opens the Data Display toolbar giving easy and quick access
+    to the values of the data points. Select data points by moving the cursor with the Left
+    and Right arrow keys or, more easily and quickly, by clicking on them with the mouse.
+    Navigate through the curves on the plot layer with the Up and Down arrow keys.
+    The [Home] key  makes the data reader jump to the beginning of the selected curve
+    and the [End] key to its end point.</para>
+	</sect2>
+	<sect2 id="select-data-range-cmd"><title>Data -> &select-data-range-cmd; (&select-data-range-key;)</title>
+    <para>Shows two vertical line cursors that are used for selecting a data range when performing analysis operations. Only one cursor is active at a time. The active cursor is red, the other is black. You change which cursor is active with the Left and Right arrow keys. Move the active cursor with the arrows keys while keeping the Ctrl key pressed or, more easily and quickly, by clicking on a curve point. Note that the mouse cursor shape changes to a rectangular target while inside the active plot canvas. Navigate through the curves on the plot layer using the Up and Down arrow keys. When this tool is active you can easily copy, paste or cut the whole selected data range using the well-known shortcuts: Ctrl+C, Ctrl+V and Ctrl+X, respectively.</para>
+	</sect2>
+	<sect2 id="screen-reader-cmd"><title>Data -> &screen-reader-cmd;</title>
+    <para>Opens the Data Display toolbar and changes the mouse cursor shape to a small cross target. The coordinates
+		of the cursor with respect to the axes of the active plot layer are displayed in a text field that floats along
+		with the mouse cursor. Clicking the left mouse button at any point will draw a red crosshair at that point and
+		copy the x and y coordinates of that point into the data display.</para>
+  </sect2>
+
+  <sect2 id="draw-datapoints-cmd"><title>Data -> &draw-datapoints-cmd;</title>
+    <para>This command is very similar to the &screen-reader-cmd; command but with the addition of the ability to add data points to a plot by double clicking at each of the desired points. Each invocation of this command will create a new table titled "DrawN", where N is an integer number that is incremented after each new table addition. These tables can be renamed and reformatted after creation using the standard window manipulation commands.</para>
+  </sect2>
+
+  <sect2 id="move-data-points-cmd"><title>Data -> &move-data-points-cmd; (&move-data-points-key;)</title>
+    <para>Allows modification of the position of data points on the active plot layer by simple drag-and-drop. When selecting this command, you will be asked to confirm that you understand that any changes you make will automatically modify the data in the corresponding tables (as well as all plots depending on that data). The coordinates of the cursor with respect to the axes of the plot layer are displayed in a text field that floats along with the mouse cursor. However, the Data Display toolbar is also opened to provide a higher resolution display the new coordinates. </para>
+	</sect2>
+	<sect2 id="remove-data-points-cmd"><title>Data -> &remove-data-points-cmd; (&remove-data-points-key;)</title>
+    <para>Allows removal of data points from the active plot layer by double-clicking on them.  When selecting this command, you will be asked to confirm that you understand that any changes you make will also modify the data in the corresponding tables (as well as all plots depending on that data). The coordinates of the cursor with respect to the axes of the plot layer are displayed in a text field that floats along with the mouse cursor. The coordinates of all points selected for removal are shown in the Data Display toolbar.</para>
+  </sect2>
+
+<!--Added drag-curve command. SRB (09/22/2010 ) -->
+  <sect2 id="drag-curve-cmd"><title>Data -> &drag-curve-cmd;</title>
+    <para>Allows dragging an entire curve on the selected plot layer. Left Click and hold down the mouse button on any point on a curve to select the curve for dragging. A red cross-hair will be drawn at the point to indicate that the curve is selected. The curve may then be dragged around on the plot layer with the mouse as long as the left mouse button is held down. Releasing the mouse button will drop the curve at the new location. This process moves all the data points and changes the coordinates in the associated table. When selecting this command, you will be asked to confirm that you understand that dragging curves will modify the data in the corresponding tables (as well as all other plots depending on that data). The coordinates of the cursor with respect to the axes of the plot layer are displayed in a text field that floats along with the mouse cursor.</para>
+  </sect2>
+</sect1><!--End of menu Data-->
+
+<!-- ************************************************** -->
+<!--		beginning of menu Analysis		-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-analysis-menu">
+  <title>The Analysis Menu</title>
+  <para>The commands available in this menu change depending upon whether a table or a plot is selected.</para>
+<sect2 id="sec-analysis-menu-table"><title>Commands for the analysis of data in tables</title>
+
+<!--		beginning of menu Analysis of Tables	-->
+<sect3 id="descriptive-statistics"><title>Descriptive Statistics</title>
+
+<sect4 id="statistics-on-columns-cmd"><title>&statistics-on-columns-cmd;</title>
+    <para>The &desc-stats-ptr;&statistics-on-columns-cmd; command creates a new table providing basic statistical information about the selected columns in the active table: average, variance, standard deviation, max value, etc...</para>
+    <informalfigure id="fig-statistics-columns">
+      <mediaobject>
+        <imageobject><imagedata  format="PNG" fileref="pics/statistics-columns.png"/></imageobject>
+      </mediaobject>
+    </informalfigure>
+  <para>If you select several columns in one table, one line of statistical information will be created for each  selected column. However, you can not select columns from different tables and obtain one single table of statistics.</para>
+</sect4>
+
+<sect4 id="statistics-on-rows-cmd"><title>&statistics-on-rows-cmd;</title>
+    <para>The &desc-stats-ptr;&statistics-on-rows-cmd; command creates a new table providing basic statistical information about the selected rows in the active table: average, variance, standard deviation, max value, etc. Prior to version 0.9.8.4, statistics were calculated on data in all columns in a selected row which contained numeric data of any kind, whether the column was visible or not. As of version 0.9.8.4, statistics are calculated only on numeric data in visible columns. Usually, statistics should be calculated on data of a similar type - Y values for example. This feature permits selection of only those columns that should be included in the statistical calculation.</para>
+    <para>See the &statistics-on-columns-lnk; command for details on exactly what statistical values are calculated.</para>
+</sect4>
+
+<sect4 id="frequency-count-cmd"> <title>&frequency-count-cmd;</title>
+    <para>The &desc-stats-ptr;&frequency-count-cmd; command calculates the frequency distribution of the data in the selected column. A dialog is popped up which allows selecting the data range and the bin width. The results are placed in a newly created table. This table will contain 4 columns with rows for each bin. These rows contain 1) the center value of the bin, the frequency (count) for the bin, the lower limit of the bin, and the cumulative frequency up to that bin. If more than one column is selected, an error dialog will pop-up.</para>
+</sect4>
+
+<sect4 id="normality-test-cmd"> <title>&normality-test-cmd;</title>
+    <para>The &desc-stats-ptr;&normality-test-cmd; command computes a <ulink url="http://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test">Shapiro-Wilk test</ulink> on the selected column to determine how well the column conforms to a normal distribution. For a detailed discussion of this topic, see the Wikipedia article on <ulink url="http://en.wikipedia.org/wiki/Normality_test"> Normality Testing</ulink>.</para>
+</sect4>
+</sect3>
+ 
+<sect3 id="hypothesis-testing"><title>Hypothesis-Testing</title>
+  <sect4 id="t-test-1-cmd"><title>&t-test-1-cmd;</title>
+<para>The &hyp-test-ptr;&t-test-1-cmd; command performs a Student's t-test on a the selected column of data to estimate the statistical likelihood that the mean has a specific value. It is assumed that the data are normally distributed. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> makes for excellent reading on this topic.</para></sect4>
+  <sect4 id="t-test-2-cmd"><title>&t-test-2-cmd;</title>
+<para>The &hyp-test-ptr;&t-test-2-cmd; command performs a Student's t-test on two selected columns of data to estimate the statistical likelihood that the means are the same. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/T-test">Student's t-test</ulink> for more information.</para></sect4>
+</sect3>
+
+<sect3 id="anova"><title>ANOVA</title>
+  <sect4 id="anova-1-cmd"><title>&anova-1-cmd;</title>
+<para>The Analysis -> ANOVA -> &anova-1-cmd; command performs a One-way analysis of variance on a the selected column of data. The results of the test are placed in the Results Log. The Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/One-way_ANOVA">One-way ANOVA</ulink> for a more detailed discussion.</para></sect4>
+
+  <sect4 id="anova-2-cmd"><title>&anova-2-cmd;</title>
+<para>The Analysis -> ANOVA -> &anova-2-cmd; command performs a Two-way analysis of variance on a the selected columns of data. The results of the test are placed in the Results Log. See the Wikipedia article on the <ulink url="http://en.wikipedia.org/wiki/Analysis_of_variance">Analysis of Variance</ulink> for more details about this topic.</para></sect4>
+</sect3>
+
+<sect3 id="sort-column-cmd"> <title>&sort-column-cmd;</title>
+    <para>The &analysis-ptr;&sort-column-cmd; command sorts the selected columns. If more than one column is selected, you have the option to sort them: </para>
+  <itemizedlist>
+    <listitem><para>separately: each column will be sorted independently in ascending or descending order</para>
+</listitem>
+    <listitem><para>together: the column selected as the <emphasis>leading column</emphasis> will be sorted into ascending or descending order. The other selected columns will be sorted so as to keep the rows unchanged.</para>
+</listitem>
+  </itemizedlist>
+    <informalfigure id="sort-table-dialog"><mediaobject><imageobject>
+      <imagedata  format="PNG" fileref="pics/sort-table-dialog.png"/>
+    </imageobject></mediaobject></informalfigure>
+</sect3>
+
+<sect3 id="sort-table-cmd"><title>&sort-table-cmd;</title>
+    <para>The &analysis-ptr;&sort-table-cmd; command functions in the the same manner as the <link linkend="sort-column-cmd">&sort-column-cmd;</link> command, except that it operates on all columns of the active table.</para>
+</sect3>
+
+<sect3 id="normalize-cmd"><title>&normalize-cmd;</title>
+    <para>These commands are used to normalize data in tables. In this case, normalization is the process of dividing each entry in the column by the column's maximum positive value, making the maximum range value equal to 1. Data is not re-centered so negative values will remain negative and the minimum value may be less than -1. Columns are normalized separately. The command does not create new columns for the normalized data but replaces the values in the selected columns with their normalized values. There are 2 variants of this command:</para>
+
+      <sect4 id="normalize-column-cmd"><title>&normalize-column-cmd;</title>
+	  <para>The &norm-ptr;&normalize-column-cmd; command normalizes only the selected column or columns. If you want the normalized data in a new column, use the &add-column-cmd; command to create a new column, fill it using a "copy/paste" sequence and then normalize the new column. </para>
+      </sect4>
+
+      <sect4 id="normalize-table-cmd"><title>&normalize-table-cmd;</title>
+	  <para>The &norm-ptr;&normalize-table-cmd; command normalizes all the columns of the table. It is not a global normalization of all values of the table: each column is normalized separately.</para>
+      </sect4>
+</sect3>
+
+<sect3 id="differentiate-column-cmd"><title>Differentiate Column</title>
+    <para>The &analysis-ptr; <command>Differentiate Column</command> command computes the derivative of the selected Y column using centered finite differences. A new plot is created displaying the result of the numerical differentiation.</para>
+    <para>This command creates a new (hidden) table that contains one column of X-values and one column of derivatives of the Y-values.</para>
+</sect3>
+
+<sect3 id="integrate-column-cmd"><title>Integrate Column</title>
+    <para>The &analysis-ptr; <command>Integrate Column</command> command computes the integral of the selected Y column using the trapezoidal. A new plot is created displaying the result of the numerical integration.</para>
+    <para>This command creates a new (hidden) table that contains one column of X-values and one column of integrated Y-values.</para>
+</sect3>
+
+<sect3 id="fft-cmd"><title>&fft-cmd;</title>
+    <para>The &analysis-ptr;&fft-cmd; command computes a direct or inverse Fast Fourier Transform. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. See the <link linkend="sec-fft">fft section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<sect3 id="correlate-cmd"><title>&correlate-cmd;</title>
+    <para>The &analysis-ptr;&correlate-cmd; command computes the cross-correlation of the two selected columns. See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<sect3 id="autocorrelate-cmd"><title>&autocorrelate-cmd;</title>
+    <para>The &analysis-ptr;&autocorrelate-cmd; command computes the cross-correlation of the selected column with itself (auto-correlation). See the <link linkend="sec-correlate">correlate section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<sect3 id="convolute-cmd"><title>&convolute-cmd;</title>
+    <para>Does a convolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-convolute">convolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<sect3 id="deconvolute-cmd"><title>&deconvolute-cmd;</title>
+    <para>The &analysis-ptr;&deconvolute-cmd; command computes the deconvolution of two selected columns. The first one being the response and the second the signal. See the <link linkend="sec-deconvolute">deconvolution section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<sect3 id="non-linear-curve-fit-cmd"><title>&non-linear-curve-fit-cmd; (&non-linear-curve-fit-key;)</title>
+    <para>Opens the <link linkend="non-linear-curve-fit-dialog">Non-linear Fit</link> dialog, allowing you to choose the curve to fit, the algorithm and tolerance to use, and the number of iterations to be performed. You also enter the analytical function, the names of the fitting parameters and their initial (guessed) values. See the <link linkend="sec-non-linear-curve-fit">Non Linear Curve Fit section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
+</sect3>
+
+<!--		End of menu Analysis of Tables		-->
+</sect2>
+<sect2 id="sec-analysis-menu-plot">
+  <title>Commands for the analysis of curves in plots</title>
+  <para>The following items are enabled only if the active window is a 2D Multilayer Plot Window. If the active plot layer contains more than one curve, and the Data Range Selectors are not enabled, a dialog window will pop-up allowing you to select the curve you want to analyze.</para>
+  <para>In most cases (except for integration), a new red curve is added to the active plot layer and a new table containing the data used to plot this curve is added to the workspace. Useful information about the operation performed will be shown in the Results Log display.</para>
+  <para>The commands for the<link linkend="fft-cmd">&fft-cmd;</link> and <link linkend="non-linear-curve-fit-cmd">&non-linear-curve-fit-cmd;</link> are presented in the <link linkend="sec-analysis-menu-table">Table Analysis Menu</link>.</para>
+
+<!--		Beginning of menu Analysis of Plots	-->
+<sect3 id="translate-cmd"><title>&translate-cmd;</title>
+  <para>This next group of are 2 commands are used for translating curves horizontally and vertically.</para>
+  <sect4 id="translate-vertical-cmd"><title>Vertical</title>
+    <para>The Analysis -> &translate-vertical-cmd; command is used to move a curve in the vertical direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point can then be selected anywhere in the active graph region. The vertical distance between the selected points will be calculated, and the selected curve will be translated by this amount. The net result is to place the selected graph point at the new vertical location. Horizontal distance is ignored. This allows selection of the second point at one of the vertical axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the vertical direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
+  </sect4>
+  <sect4 id="translate-horizontal-cmd"><title>Horizontal</title>
+    <para>The Analysis -> &translate-horizontal-cmd; command is used to move a curve in the horizontal direction. When the command is selected, the cursor changes to a box and cross with an X-Y coordinate display which floats along with the cursor. You then select 2 points. The first must be a point on a curve. When the first points is selected, a crosshair will be drawn to indicate it's location. The second point then can be selected anywhere on the active graph region. The horizontal distance between the selected points will be calculated, and the curve will be translated horizontally by this amount. The net result is to place the selected graph point at the new location. Vertical distance is ignored. This allows selection of the second point at one of the horizontal axes, facilitating alignment of the selected graph point with some value on that axis. The second point may also be another curve point (either on the same or a different curve), a feature which makes it easy to align two or more curves in the horizontal direction. <emphasis>Warning: </emphasis> the underlying curve's data is modified by this operation. No other warning will be given.</para>
+  </sect4>
+</sect3>
+
+<sect3 id="subtract-cmd"><title>&subtract-cmd;</title><para>The &subtract-cmd; group is also used to translate curves, however, in these cases, some functional relationship is used.</para>
+  <sect4 id="subtract-baseline-cmd"><title>&subtract-baseline-cmd;</title>
+    <para>The Analysis &subtract-baseline-cmd; command opens the <emphasis>Baseline</emphasis> dialog.</para>
+
+    <informalfigure id="subtract-baseline">
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/baseline-dialog.png"/></imageobject></mediaobject>
+    </informalfigure> 
+  </sect4>
+
+  <sect4 id="subtract-reference-data-cmd"><title>&subtract-reference-data-cmd;</title>
+    <para>The Analysis &subtract-reference-data-cmd; command opens the <emphasis>Math on Data Sets</emphasis> dialog.</para>
+    <informalfigure id="subtract-reference-data">
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/mathondatasets-dialog.png"/></imageobject></mediaobject>
+    </informalfigure> 
+  </sect4>
+
+  <sect4 id="subtract-straight-line-cmd"><title>&subtract-straight-line-cmd;</title>
+    <para>The Analysis &subtract-straight-line-cmd; command operates in a manner similar to the Analysis -> &subtract-baseline-lnk;. However, in this case, the two points which are selected define the end-points of a straight line which is subtracted from <emphasis>all </emphasis>the curves on the layer.The cursor changes to a cross target with an X-Y coordinate display which floats along with the cursor, similar to that used in the Analysis -> &subtract-baseline-lnk;. When the first point is selected, it will be marked with a small circle and crosshairs. As soon as the second point is selected, the line between the two points will be subtracted from the curves. <emphasis>Warning: </emphasis> the underlying curves' data is modified by this operation. No other warning will be given.</para>
+  </sect4>
+</sect3>
+
+<sect3><title>&differentiate-cmd;</title>
+    <para>the Analysis -> &differentiate-cmd; command creates a new plot displaying the resulting curve of the numerical differentiation. The computation of the derivative is done by centered finite differences. A new table is created which contains one column for X-values and one column for derivatives of Y-values. It also creates a new plot of the derivative.</para>
+</sect3>
+<!--************************************************************************** -->
+
+<sect3 id="integrate-curve-cmd"><title>&integrate-curve-cmd;</title>
+    <para>the Analysis -> &integrate-curve-cmd; command performs a piecewise numerical integration of a curve on the selected layer. Curves are integrated using the trapezoidal rule. There must be at least one curve on the layer. If there are multiple curves, a dialog will be opened asking you to select which curve to use for the integration:</para>
+    <informalfigure id="fig-integrate-curve">
+      <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/integrate-curve.png"/></imageobject></mediaobject>
+    </informalfigure> 
+<para> After selecting a curve, you may either proceed by clicking "OK" or abort with "Cancel". If there is only one curve on the layer, the integration is performed immediately upon selecting the &integrate-curve-cmd; command. A new Graph Window will be created containing a plot of the integrated curve, the data for which is stored in a new (hidden) table. </para>
+</sect3>
+<!--************************************************************************** -->
+
+<sect3 id="integrate-function-cmd"><title>&integrate-function-cmd;</title>
+    <para>The Analysis -> &integrate-function-cmd; command provides the capability of performing the numerical integration of a user defined function. The <link linkend="integrate-function-dialog">Function Integration dialog</link> is opened when this command is executed.  This dialog provides for the definition of the function, the variable of integration, and the parameters that control the integration. Integration is performed using the QAGS algorithm from the GNU Scientific Library. For many functions, all you need do is set the limits of integration and click the "Integrate" button. The default values for the other parameters will usually produce excellent results. For some functions, especially those containing singularities and discontinuities, you may need to experiment with the number of sub-intervals and the tolerance limit to obtain acceptable results. However, a detailed discussion of the use of these 2 parameters is beyond the scope of this manual. If the <emphasis>Plot Area </emphasis> option is checked, a curve of the integrated function will be added to the currently active layer. In any case, an entry is made in the <link linkend="sec-intro-log-window">Log Panel</link> which contains the numerical result of the computed definite integral over the specified interval.</para>
+</sect3>
+<!--************************************************************************** -->
+
+<sect3 id="smooth-cmd"><title>&smooth-cmd;</title><para>There are 4 variants of the &smooth-cmd; menu item:</para>
+    
+<!--************************************************************************** -->
+  <sect4 id="savitsky-golay-cmd"><title>Savitski-Golay</title>
+	  <para>The Analysis -> &savitsky-golay-cmd; command performs a smoothing of the selected curve using the Savitzky-Golay method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
+	  <informalequation><mediaobject><imageobject>
+	        <imagedata format="PNG" fileref="equations/savitzky-golay.png"/>
+	  </imageobject></mediaobject></informalequation>
+	  <para>The f<subscript>i</subscript> values are computed by fitting the data points to a polynomial. They depend on the number of points used for the smoothing of the curve and the order of the polynomial. Compared to the moving window average method, the advantage of this smoothing method is that the values of extrema are not truncated. The dialog allows specification of the curve which will be smoothed, the order of the polynomial, the number of data points used for the polynomial fit before and after each point, and the color used to draw the smoothed curved. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
+	  <figure id="fig-smooth-1"><title>The &savitsky-golay-cmd; dialog.</title>
+	    <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/smooth-1-dialog.png"/></imageobject></mediaobject>
+	  </figure>
+  </sect4>
+<!--************************************************************************** -->
+
+	<sect4 id="moving-window-cmd"><title>Moving Window Average...</title>
+	  <para>The Analysis -> &moving-window-cmd; command performs a smoothing of the selected curve with the moving window average method. The formula used to smooth the curve defined by the points y<subscript>i</subscript>=f(x<subscript>i</subscript>) is:</para>
+	  <informalequation><mediaobject><imageobject>
+	        <imagedata format="PNG" fileref="equations/equation_moving_window.png"/>
+	      </imageobject></mediaobject></informalequation>
+    <para>The greater the number of points, <emphasis>n</emphasis>, the smoother the resulting curve z<subscript>i</subscript>=f(x<subscript>i</subscript>) will be. The dialog allows  specification of the curve which will be smoothed, the value of <emphasis>n</emphasis> and the color used to draw the smoothed curve. A new table will be created to store the data points x<subscript>i</subscript>, z<subscript>i</subscript>.</para>
+	  <figure id="fig-smooth-2"><title>The &moving-window-cmd; dialog.</title>
+	    <mediaobject><imageobject><imagedata  format="PNG" fileref="pics/smooth-2-dialog.png"/></imageobject></mediaobject>
+	  </figure>
+  </sect4>
+<!--************************************************************************** -->
+
+   <sect4 id="lowess-cmd"><title>Lowess...</title>
+	  <para>The Analysis -> &lowess-cmd; command performs a smoothing of the selected curve using the Lowess (aka Loess) algorithm.
+      It provides a  robust locally weighted regression and is well suited to smooth data for which no
+      formal model exists.</para>
+    <para>The parameter <emphasis>f</emphasis> is the fraction of points which define the local neighborhood.
+      A value of 0.2 uses 20% of the curve total points as neighbors for each data point (+/- 10%).
+      Values of <emphasis>f</emphasis> closer to 1 yield smoother curves.
+      The <emphasis>iterations</emphasis> parameter specifies the number of times to run the algorithm runs over the entire data set,
+      each time refining the local weights. In most cases, two iterations will be sufficient.</para>
+	  <figure id="fig-smooth-3"><title>The &lowess-cmd; dialog.</title><mediaobject><imageobject>
+	        <imagedata  format="PNG" fileref="pics/smooth-3-dialog.png"/>
+	      </imageobject></mediaobject></figure>
+      </sect4>
+</sect3>
+
+<!--************************************************************************** -->
+<sect3 id="fft-filter-cmd "><title>&fft-filter-cmd;</title>
+    <para>The Analysis -> &fft-filter-cmd; menu item provides Lowpass, Highpass, Bandpass and Bandreject filter topologies:</para>
+
+<!--************************************************************************** -->
+  <sect4 id="fft-low-pass-cmd"><title>Low Pass;</title>
+	  <para>The Analysis -> &fft-low-pass-cmd; command uses an FFT based digital filter to attenuate the high frequencies present in an input signal. See the <link linkend="sec-fft-filter-low">filtering section</link> for more details. A dialog box will be opened in which you can select the curve (input signal) to filter and the cut-off frequency of the filter.</para>
+	  <figure id="fig-fft-filter-low-dialog"><title>The &fft-low-pass-cmd; dialog.</title><mediaobject><imageobject>
+	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
+	      </imageobject></mediaobject></figure>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+  </sect4>
+<!--************************************************************************** -->
+
+  <sect4 id="fft-high-pass-cmd"><title>High Pass...</title>
+	  <para>The Analysis -> &fft-high-pass-cmd; command uses an FFT based digital filter to attenuate the low frequencies present in an input signal. See the <link linkend="sec-fft-filter-high">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and the cut-off frequency of the filter.</para>
+	  <figure id="fig-fft-filter-high-dialog"><title>The &fft-high-pass-cmd; dialog.</title><mediaobject><imageobject>
+	        <imagedata  format="PNG" fileref="pics/filter-fft-low-dialog.png"/>
+	      </imageobject></mediaobject></figure>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+  </sect4>
+<!--************************************************************************** -->
+   <sect4 id="fft-band-pass-cmd"><title>Band Pass...</title>
+	  <para>The Analysis -> &fft-band-pass-cmd; command uses an FFT based digital filter to attenuate both high and low frequencies present in an input signal. See the <link linkend="sec-fft-filter-band">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the low and high cutoff frequencies of the filter.</para>
+	  <figure id="fig-fft-filter-band-dialog"><title>The &fft-band-pass-cmd; dialog.</title><mediaobject><imageobject>
+	        <imagedata  format="PNG" fileref="pics/filter-fft-band-dialog.png"/>
+	      </imageobject></mediaobject></figure>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+   </sect4>
+<!--************************************************************************** -->
+  <sect4 id="fft-band-stop-cmd"><title>Band Block...</title>
+	  <para>The Analysis -> &fft-band-pass-cmd; command uses an FFT based digital filter to remove a band of frequencies from a signal while leaving those frequencies above and below the stop band. See the <link linkend="sec-fft-filter-block">filtering section</link> for more details. A dialog box will be opened in which you can select the curve to filter and both the lower and upper stop-band frequencies of the filter.</para>
+	  <figure id="fig-fft-filter-block-dialog">
+	    <title>The &fft-band-block-cmd; dialog.</title>
+	    <mediaobject>
+	      <imageobject>
+	        <imagedata  format="PNG" fileref="pics/filter-fft-block-dialog.png"/>
+	      </imageobject>
+	    </mediaobject>
+	  </figure>
+	  <para>This command creates a new table containing the filtered data, and adds a new curve to the current layer. The curve is a plot of the filtered data.</para>
+  </sect4>
+</sect3>
+<!--************************************************************************** -->
+
+<sect3 id="interpolate-cmd"><title>Analysis -> Interpolate...</title>
+    <para>The Analysis -> &interpolate-cmd; command performs an interpolation using the selected method. The curve must have enough data points to compute interpolated points, if not a warning message will be popped up.</para>
+    <para>The available interpolation methods are <emphasis>Linear</emphasis> (the curve must contain at least 3 points), <emphasis>Cubic Spline</emphasis> (the curve you analyze must contain at least 4 points), <emphasis>Non-rounded Akime spline</emphasis> (the curve you analyze must contain at least 5 points). See the <link linkend="sec-interpolate">Analysis chapter</link> for a comparison of the different methods.</para>
+	  <figure id="fig-interpolate-dialog">
+	    <title>The &interpolate-cmd; dialog.</title>
+	    <mediaobject>
+	      <imageobject>
+	        <imagedata  format="PNG" fileref="pics/interpolate-dialog.png"/>
+	      </imageobject>
+	    </mediaobject>
+	  </figure>
+    <para>This command creates a new curve on the current layer, and a new table.</para>
+</sect3>
+
+<sect3 id="fft-cmd"><title>&fft-cmd;</title>
+    <para>The Analysis -> &fft-cmd; command performs a <link linkend="sec-fft">forward or inverse FFT</link> of the selected curve. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. </para>
+    <para>The inverse FFT transform of a forward transform will result in a data set identical to that used for the forward transform.</para>
+</sect3>
+
+<sect3 id="fit-linear-cmd"><title>Fit Linear</title>
+    <para>The Analysis -> &fit-linear-cmd; command performs a <link linkend="sec-fit-linear">linear fit</link> of the selected curve. The results will be given in the <link linkend="sec-intro-log-window">Log panel</link></para>
+</sect3>
+
+<sect3 id="fit-polynomial-cmd"><title>&fit-polynomial-cmd;</title>
+    <para>The Analysis -> &fit-polynomial-cmd; command opens the Polynomial Fit dialog, allowing you to choose the curve to fit, the order of the polynomial function to use, the number of points of the resulting curve and the abscissa limits for the fit.</para>
+</sect3>
+
+<sect3 id="fit-exp-decay-cmd"><title>Fit Exponential Decay</title>
+    <para>Analysis -> &fit-exp-decay-cmd; provides 3 forms of exponential decay:</para>
+      <sect4 id="fit-exp-decay-1-cmd"><title>First Order...</title>
+	      <para>The Analysis -> &fit-exp-decay-1-cmd; opens the Exponential Fit dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+      <sect4 id="fit-exp-decay-2-cmd"><title>Second Order...</title>
+	  <para>The Analysis -> &fit-exp-decay-2-cmd; opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+      <sect4 id="fit-exp-decay-3-cmd"><title>Third Order...</title>
+	  <para>The Analysis -> &fit-exp-decay-3-cmd; opens a dialog, allowing you to choose the curve to fit and the initial guesses for the fit parameters.</para>
+      </sect4>
+</sect3>
+
+<sect3 id="fit-exp-growth-cmd"><title>&fit-exp-growth-cmd;</title>
+    <para>Analysis -> &fit-exp-growth-cmd; performs an exponential growth fit to the selected curve.</para>
+</sect3>
+
+<sect3 id="fit-boltzmann-cmd"><title>&fit-boltzmann-cmd;</title>
+    <para>The Analysis -> &fit-boltzmann-cmd; performs a fit to a <link linkend="sec-fit-boltzmann">Boltzmann function</link> on the selected curve. It can be used to obtain the correlation equation of an <link linkend="sec-fit-boltzmann">S shaped data set</link>.</para>
+</sect3>
+
+<sect3 id="fit-gaussian-cmd"><title>&fit-gaussian-cmd;</title>
+    <para>The Analysis -> &fit-gaussian-cmd; performs a Gaussian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-gaussian">bell shaped data set</link>.</para>
+</sect3>
+
+<sect3 id="fit-lorentzian-cmd"><title>&fit-lorentzian-cmd;</title>
+    <para>Analysis -> &fit-lorentzian-cmd; performs a Lorentzian fit to the selected curve. It can be used to obtain the correlation equation of a <link linkend="sec-fit-lorentzian">bell shaped data set</link>. </para>
+
+</sect3>
+
+<sect3 id="fit-multipeak-gaussian-cmd"><title>&fit-multipeak-gaussian-cmd;</title>
+    <para>The Analysis -> &fit-multipeak-gaussian-cmd; performs a fit to a <link linkend="sec-fit-multipeak">sum of N Gaussian functions</link> on the selected curve.</para>
+</sect3>
+
+<sect3 id="fit-multipeak-lorentzian-cmd"><title>Analysis -> &fit-multipeak-lorentzian-cmd;</title>
+    <para>The Analysis -> &fit-multipeak-lorentzian-cmd; performs a fit to a <link linkend="sec-fit-multipeak">sum of N Lorentzian functions</link> on the selected curve.</para>
+</sect3>
+</sect2>
+<!--		End of menu Analysis of Plots		-->
+</sect1>
+<!-- ************************************************** -->
+<!--		End of menu Analysis			-->
+<!-- ************************************************** -->
+
+
+<!-- ************************************************** -->
+<!--		beginning of menu Table			-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-table-menu"> <title>The Table Menu</title>
+  <para>This menu is only active when a table is selected.</para>
+
+	<sect2 id="set-column-as-cmd"><title>&set-column-as-cmd;</title>
+    <para>Selecting the &set-column-as-cmd; item opens a sub-menu of command that are used to define the kind of
+			data stored in the various columns of a table.</para>
+    <sect3 id="set-column-as-x-cmd"><title>&set-column-as-x-cmd;</title>
+        <para>Define the selected column as abscissa for the plots. You can define more than one column as X-values in a table, they are referenced as X1, X2, etc.</para>
+    </sect3>
+    <sect3 id="set-column-as-y-cmd"><title>&set-column-as-y-cmd;</title>
+      <para>For 2D plots, this command defines the selected column as Y-values for the plots. For 3D plots, Y columns can be used as the second abscissa.</para>
+    </sect3>
+    <sect3 id="set-column-as-z-cmd"><title>&set-column-as-z-cmd;</title>
+        <para>For 3D plots, Z columns will be used as plotted values.</para>
+    </sect3>
+    <sect3 id="set-column-as-x-error-cmd"><title>&set-column-as-x-error-cmd;</title>
+        <para>Define the selected column for use as the error bar width for the abscissae.</para>
+    </sect3>
+    <sect3 id="set-column-as-y-error-cmd"><title>&set-column-as-y-error-cmd;</title>
+        <para>Define the selected column for use as the error bar heights for the Y-values.</para>
+    </sect3>
+    <sect3 id="set-read-only-column-cmd"><title>&set-read-only-column-cmd;</title>
+        <para>Set the selected columns as read-only.</para>
+    </sect3>
+    <sect3 id="set-read-write-column-cmd"><title>&set-read-write-column-cmd;</title>
+        <para>Restore write access to the selected columns.</para>
+    </sect3>
+    <sect3 id="set-column-as-label-cmd"><title>&set-column-as-label-cmd;</title>
+        <para>Sets the selected columns as <emphasis>label</emphasis> columns. Can be used for comments and row descriptions.</para>
+    </sect3>
+		<sect3 id="set-column-as-none-cmd"><title>&set-column-as-none-cmd;</title>
+        <para>No special function is assigned. The selected column can be used in different ways in several plots (as X values, Y values, etc). These columns are disregarded in statistical calculations.</para>
+		</sect3>
+  </sect2>
+
+	<sect2 id="column-options-cmd"><title>Column Options...</title>
+    <para>This command is used to define the global parameters of each column such as numeric format, column name, etc. See the <link linkend="column-options-dialog">corresponding dialog box section</link> for more details.</para>
+	</sect2>
+	<sect2 id="set-column-values-cmd"><title>&set-column-values-cmd;</title>
+    <para>This command is used to fill the selected column with the values resulting from a mathematical formula. See the <link linkend="set-column-values-dialog">corresponding dialog box section</link> for more details.</para>
+	</sect2>
+	<sect2 id="recalculate-cmd"><title>&recalculate-cmd;</title>
+    <para>When you fill a column (named for example 'C1') with the results of a formula (by using the &set-column-values-lnk;), the values of the column are calculated only once when you define the formula. If your formula depends on values of another column (name for example 'C2'), the values of 'C1' are not updated if you modify the values in 'C2'. This command is used to recalculate the values of the selected column.</para>
+	</sect2>
+	<sect2 id="fill-column-with-cmd"><title>Fill column with</title>
+    <para>These commands are used to fill selected columns with special values:</para>
+    <sect3 id="fill-column-with-row-number-cmd"><title>&fill-column-with-row-number-cmd;</title>
+      <para>Each element in the column is filled with its corresponding row number.</para>
+    </sect3>
+
+    <sect3 id="fill-column-with-random-values-cmd"><title>&fill-column-with-random-values-cmd;</title>
+      <para>Each element in the column is filled with a random value between 0 and 1.</para>
+    </sect3>
+
+    <sect3 id="fill-column-with-normal-random-values-cmd"><title>&fill-column-with-normal-random-values-cmd;</title>
+      <para>The rows in the selected column are filled with normally distributed random values calculate
+        using the <ulink url="http://seehuhn.de/pages/ziggurat">Ziggurat method</ulink> with a mean
+        of 0.0 and a standard deviation of 1.0. The computational routine is from the Gnu Scientific Library (look
+        <ulink url="http://www.gnu.org/software/gsl/manual/html_node/The-Gaussian-Distribution.html">here</ulink>
+        for more details).</para>
+    </sect3>
+	</sect2>
+	<sect2 id="clear-cmd"><title>&clear-cmd;</title>
+    <para>Removes all the values of the selected column.</para>
+  </sect2>
+
+  <sect2 id="add-column-cmd"><title>&add-column-cmd;</title>
+    <para>Adds a new column to the table. Regardless the selected column, new columns are inserted to the right of the rightmost column in the table.</para>
+  </sect2>
+
+  <sect2 id="set-columns-cmd"><title>&set-columns-cmd;</title>
+   <para>Used to define the number of columns in the table. Columns are added/removed from the right hand side of the table. Be Careful! If you decrease the number of columns in a table, any data contained in the removed columns will be lost!</para>
+  </sect2>
+
+  <sect2 id="hide-columns-cmd"><title>&hide-columns-cmd;</title>
+    <para>The &hide-columns-cmd; command hides all the selected columns. The remaining visible columns are grouped together into a single block. Hidden columns may be shown using the &show-all-columns-cmd; command.</para>
+  </sect2>
+
+  <sect2 id="show-all-columns-cmd"><title>&show-all-columns-cmd;</title>
+    <para>The &show-all-columns-cmd; command unhides any hidden columns in the selected table.</para>
+  </sect2>
+
+  <sect2 id="adjust-column-width-cmd"><title>&adjust-column-width-cmd;</title>
+    <para>The &adjust-column-width-cmd; command resets the width of all selected columns to a value that is optimal for the data that is contained in the column. Optimal width is considered to be just wide enough to show all digits.</para>
+  </sect2>
+
+  <sect2 id="move-column-first-cmd"><title>&move-column-first-cmd;</title>
+    <para>Moves the selected column to the beginning of the table. </para>
+  </sect2>
+
+  <sect2 id="move-column-left-cmd"><title>&move-column-left-cmd;</title>
+    <para>Moves the selected column to the left. </para>
+  </sect2>
+
+  <sect2 id="move-column-right-cmd"><title>&move-column-right-cmd;</title>
+   <para>Moves the selected column to the right. </para>
+  </sect2>
+
+  <sect2 id="move-column-last-cmd"><title>&move-column-last-cmd;</title>
+   <para>Moves the selected column to the end of the table. </para>
+  </sect2>
+
+  <sect2 id="swap-columns-cmd"><title>&swap-columns-cmd;</title>
+   <para>Swaps the selected columns. </para>
+  </sect2>
+
+  <sect2 id="set-rows-cmd"><title>&set-rows-cmd;</title>
+   <para>Allows direct definition of the number of rows in the table. Rows are added/removed from the end of the table.
+		Be Careful! If you decrease the number of rows in a table, any data contained in removed rows will be lost.</para>
+  </sect2>
+
+  <sect2 id="delete-rows-interval-cmd"><title>&delete-rows-interval-cmd;</title>
+   <para>A dialog is opened that permits selection, and subsequent deletion, of a range of rows selected by row index number.</para>
+  </sect2>
+
+  <sect2 id="move-row-cmd"><title>Move Row ></title>
+    <para>These commands are used to move selected rows up or down in a table:</para>
+    <sect3 id="move-row-up-cmd"><title>&move-row-up-cmd;</title>
+       <para>The selected row is moved up one place in the table.</para>
+    </sect3>
+
+    <sect3 id="move-row-down-cmd"><title>&move-row-down-cmd;</title>
+      <para>The selected row is moved down one place in the table.</para>
+    </sect3>
+  </sect2>
+
+  <sect2 id="go-to-row-cmd"><title>&go-to-row-cmd; (&go-to-row-key;)</title>
+    <para>This command opens a dialog which allows you to select the row index that will become the current row in the selected table or matrix.</para>
+  </sect2>
+
+  <sect2 id="go-to-column-cmd"><title>&go-to-column-cmd; (&go-to-column-key;)</title>
+   <para>This command opens a dialog which allows you to select the column index that will become the current column in the selected table or matrix.</para>
+  </sect2>
+
+  <sect2 id="extract-data-cmd"><title>&extract-data-cmd;</title>
+    <para>The &extract-data-cmd; command opens a dialog which allows you to define a set of conditions that are used to filter the data in the currently active table. When a condition has been defined,  <emphasis>Applying</emphasis> the condition will create a new table into which all rows that meet the condition will be copied. The original table is unchanged. For example, the condition <emphasis>col("1")>=.1</emphasis> will generate a new table that contains all the rows from the active table which have a value greater than 0.1 in column 1.</para>
+  </sect2>
+
+  <sect2 id="convert-to-matrix-cmd"><title>&convert-to-matrix-cmd;</title>
+    <para>This command is used to convert a table into a matrix. It is mainly used to import data from files into a matrix: first import the data into a table, and then use this command to convert the table into a matrix.</para>
+  </sect2>
+</sect1><!--End of menu Table-->
+
+<!-- ************************************************** -->
+<!--		beginning of menu Matrix		-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-matrix-menu">
+  <title>The Matrix Menu</title>
+  <para>This menu is only active when a matrix is selected.</para>
+
+  <sect2 id="set-properties-cmd"><title>&set-properties-cmd;</title>
+    <para>This command opens a <link linkend="set-properties-dialog">dialog window</link> which is used to specify some view parameters of the matrix (cell width, format of numbers).</para>
+	</sect2>
+
+	<sect2 id="set-dimensions-cmd"><title>&set-dimensions-cmd; (&set-dimensions-key;)</title>
+    <para>This command opens a <link linkend="set-dimensions-dialog">dialog window</link> which is used to specify the size of a matrix. It can also be used to specify the X and Y ranges which will be used as axis ranges for a 3D-plot of the matrix data.</para>
+	</sect2>
+
+	<sect2 id="set-values-cmd"><title>&set-values-cmd; (&set-values-key;)</title>
+    <para>This command opens a <link linkend="set-values-dialog">dialog window</link> which is used to fill in a matrix with the result of a function z=f(i,j) in which i and j stand for the row and column numbers.</para>
+	</sect2>
+
+	<sect2 id="recalculate-cmd"><title>&recalculate-cmd; (&recalculate-key;)</title>
+    <para>This command allows you to recalculate the matrix cell values using a predefined formula. Useful when the formula is changed.</para>
+	</sect2>
+	<sect2 id="rotate90-cmd"><title>&rotate90-cmd; (&rotate90-key;)</title>
+    <para>This command performs a clockwise 90 degrees rotation of the active matrix.</para>
+	</sect2>
+	<sect2 id="rotate90-cmd"><title>&rotate-90-cmd; (&rotate-90-key;)</title>
+    <para>This command performs a counterclockwise 90 degrees rotation of the active matrix.</para>
+	</sect2>
+	<sect2 id="flipV-cmd"><title>&flipV-cmd; (&flipV-key;)</title>
+    <para>Flips the selected matrix vertically.</para>
+	</sect2>
+	<sect2 id="flipH-cmd"><title>&flipH-cmd; (&flipH-key;)</title>
+    <para>Flips the selected matrix horizontally.</para>
+  </sect2>
+
+  <sect2 id="expand-cmd"><title>&expand-cmd;</title>
+	<para>Opens the matrix resampling dialog. Expanding operation is preselected in the dialog.</para>
+  </sect2>
+
+  <sect2 id="shrink-cmd"><title>&shrink-cmd;</title>
+	<para>Opens the matrix resampling dialog. Shrinking operation is preselected in the dialog.</para>
+  </sect2>
+
+  <sect2 id="smooth-cmd"><title>&smooth-cmd;</title>
+	<para>Matrix smoothing is performed by shrinking and then expanding the matrix using bilinear interpolation.
+If the number of columns or rows is less than 32, the matrix is first expanded so that the row number and the column number are both twice of the original.
+Then the expanded matrix is shrunk to the original size.
+Through this process of expanding and shrinking, the size of the output matrix will be exactly the same as the original matrix. However, the data will be much smoother.
+If both the number of columns and the number of rows in the original matrix are greater than 31, the matrix is first shrunk and then expanded to obtain the smoothed matrix.
+</para>
+  </sect2>
+
+	<sect2 id="transpose-cmd"><title>&transpose-cmd;</title>
+    <para>Perform a Transpose operation on the selected matrix.</para>
+	</sect2>
+	<sect2 id="invert-cmd"><title>&invert-cmd;</title>
+    <para>Invert the selected matrix.</para>
+	</sect2>
+	<sect2 id="determinant-cmd"><title>&determinant-cmd;</title>
+    <para>Compute the determinant of the selected matrix.</para>
+  </sect2>
+
+  <sect2><title>Go To Commands</title>
+   <para>The &go-to-row-lnk; and &go-to-column-lnk; commands are the same as those described in the &table-menu-lnk;</para>
+	</sect2>
+
+  <sect2><title>View Commands</title>
+   <para>This group of commands allows you to choose how the matrix will be displayed.</para>
+   <sect3><title>&image-view-cmd; (&image-view-key;)</title>
+	   <para>Displays the selected matrix as an image.</para>
+	 </sect3>
+   <sect3><title>&table-view-cmd; (&table-view-key;)</title>
+    <para>Displays the selected matrix as a data table.</para>
+	 </sect3>
+  </sect2>
+
+  <sect2><title>Palette</title>
+    <para></para>
+    <sect3><title>&gray-scale-cmd;</title>
+  	  <para>If the selected matrix is viewed as an image, this command sets the palette to a gray scale.</para>
+    </sect3>
+     <sect3><title>&rainbow-palette-cmd;</title>
+	  <para>If the selected matrix is viewed as an image, this command sets the palette to a predefined color scale.</para>
+    </sect3>
+	  <sect3><title>&custom-palette-cmd;</title>
+	  <para>Opens a dialog allowing customization the palette used by the selected matrix when the matrix is displayed as an image.</para>
+    </sect3>
+  </sect2>
+  <sect2 id="show-col-row-cmd"><title>&show-col-row-cmd; (&show-col-row-key;)</title>
+    <para>When this option is checked, the horizontal and vertical headers of the selected matrix will display the column/row indexes.</para>
+	</sect2>
+	<sect2 id="show-x-y-cmd"><title>&show-x-y-cmd; (&show-x-y-key;)</title>
+    <para>When this option is checked, the horizontal and vertical headers of the selected matrix will display the x/y coordinates.</para>
+	</sect2>
+	<sect2 id="convert-to-spreadsheet-cmd"><title>&convert-to-table-cmd;</title>
+    <para>Convert the selected matrix into a table.</para>
+  </sect2>
+</sect1><!--End of menu Matrix-->
+
+<!-- ************************************************** -->
+<!--		beginning of menu Format		-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-format-menu"> <title>The Format Menu</title>
+  <para>This menu is only active when a plot is selected.</para>
+
+  <sect2 id="format-plot-cmd"><title>&format-plot-cmd;</title>
+    <para>For classical 2D plots, opens the <link linkend="plot-options-dialog">format plot dialog</link> with the general plot options tab selected. It is used to customize line styles and colors of the plot frame, etc.</para>
+    <para>For surface plots, this command opens the <link linkend="fig-surface-plot-options-5">surface plot options</link> with the general plot options tab selected. In this case the aspect ratio of the plot can also be modified.</para>
+  </sect2>
+  <sect2 id="format-curves-cmd"><title>&format-curves-cmd;</title>
+   <para>Opens the <link linkend="custom-curves-dialog">Custom Curves dialog</link>. Used to customize the line style and colors used to draw curves.</para>
+   <para>If the selected plot is a surface plot, this menu item is not shown.</para>
+  </sect2>
+  <sect2 id="format-scales-cmd"><title>&format-scales-cmd;</title>
+   <para>Opens the <link linkend="fig-plot-options-1-dialog">format plot dialog</link> with the scales tab selected. Used to customize the ranges on the different axes. Note that any modification in an associated table, or of the plotted curves, will result in a reset of these scales to the default values.</para>
+   <para>For surface plots, this command opens the
+    <link linkend="fig-surface-plot-options-1">surface plot options</link> with the scales
+    options tab selected.</para>
+  </sect2>
+  <sect2 id="format-axes-cmd"><title>&format-axes-cmd;</title>
+   <para>Opens the <link linkend="fig-plot-options-3-dialog">format plot dialog</link> with the axes tab selected. Used to customize the settings for the different axes, such as axis/tick size and color, axis labels, etc.</para>
+   <para>For surface plots, this command opens the <link linkend="fig-surface-plot-options-2">surface plot options</link> with the axis options tab selected.</para>
+  </sect2>
+  <sect2 id="format-grid-cmd"><title>&format-grid-cmd;</title>
+    <para>Opens the <link linkend="fig-plot-options-2-dialog">format plot dialog</link> with the grid tab selected. Used to add and customize grid lines on the different axes.</para>
+    <para>This menu item is not shown for surface plots.</para>
+  </sect2>
+  <sect2 id="format-title-cmd"><title>&format-title-cmd;</title>
+   <para>Opens a <link linkend="text-options-dialog">text options dialog</link>, which permits modification of text and properties (color, font, alignment) of the plot title.</para>
+   <para>For surface plots, this command opens the <link linkend="fig-surface-plot-options-3">surface plot options</link> with the title options tab selected.</para>
+  </sect2>
+</sect1><!--End of menu Format-->
+
+<!-- ************************************************** -->
+<!--		beginning of menu Window		-->
+<!-- ************************************************** -->
+
+<sect1 id="sec-window-menu"><title>The Windows Menu</title>
+  <para>In addition to the items listed below, this menu will also display a list containing the first ten windows created in the workspace. These windows can be made active, or can be shown if they are hidden, by selecting their name from the list. If your project contains more then ten windows, you must use the Project explorer in order to perform these operations on the remaining windows.</para>
+
+  <sect2><title>Folders</title>
+    <para>Opens a menu displaying a list of all the folders and subfolders in the project. The active folder is highlighted.
+    You can change the active folder in a project by selecting an item from this list.</para>
+  </sect2>
+  <sect2><title>Cascade</title>
+    <para>Arranges the visible windows in the project in a cascading style.</para>
+  </sect2>
+  <sect2><title>Tile</title>
+    <para>Tiles the visible windows in the project.</para>
+  </sect2>
+  <sect2><title>Next (<keycode>F5</keycode>)</title>
+    <para>Makes the next visible window in the workspace stack the active window.</para>
+  </sect2>
+  <sect2><title>Previous (<keycode>F6</keycode>)</title>
+    <para>Makes the previous visible window in the workspace stack the active window.</para>
+  </sect2>
+  <sect2><title>Rename Window</title>
+    <para>Opens a dialog permitting you to change the title of the currently active window.</para>
+  </sect2>
+  <sect2 id="duplicate-window-cmd"><title>Duplicate</title>
+    <para>Clones the active window.</para>
+  </sect2>
+
+  <sect2 id="script-window-cmd"><title>Script Window (<keycode>F3</keycode>)</title>
+    <para>Opens the script console window.</para>
+  </sect2>
+
+  <sect2><title>Window Geometry...</title>
+    <para>Opens a dialog used to change the size and the position of the active window. The size of any contained plots will be scaled to the new window size.</para>
+  </sect2>
+
+  <sect2><title>Hide Window</title>
+    <para>Hides the active window. A hidden window can be made visible again using the Project explorer.</para>
+  </sect2>
+
+  <sect2><title>Close Window (<keycode>Ctrl-W</keycode>)</title>
+    <para>Closes the active window. A dialog will pop-up asking you to confirm the operation if the corresponding option in the Preferences dialog ("Confirmations" tab) is checked.</para>
+  </sect2>
+
+  <sect2><title>Numbered Window List</title>
+		<para>A numbered list of the current folder's windows appears at the bottom of the Window Menu. This list may contain up to
+			9 entries. Clicking on one of the entries in this list will activate that window (that is, display the window, and
+			unhide it if necessary.  If there are more than 9 entries, the <emphasis>More Windows...</emphasis> command will
+			be added to the	Window Menu immediately following the last item in the numbered window list. Selecting the
+			<emphasis>More Windows...</emphasis> command opens the &project-explorer-lnk;, which provides access to all windows in
+		 all folders in the project.</para>
+	</sect2>
+</sect1><!--End of menu Window-->
+
+<sect1 id="sec-plot3d"><title>Customization of 3D plots</title>
+  <para>These commands are not available in any menu or by using any keyboard shortcut. However,
+    they can be accessed through the <link linkend="sec-plot3d-toolbar">3D toolbar</link>.</para>
+
+  <sect2 id="frame-cmd"><title>&frame-cmd;</title>
+    <para>This command can be accessed by a click on the &frame-icon;</para>
+    <para>Draws only the three axes on the active 3D plot.</para>
+ </sect2>
+
+  <sect2 id="box-cmd"><title>&box-cmd;</title>
+    <para>This command can be accessed by a click on the &box-icon;</para>
+    <para>Draws the three axes on the active 3D plot, and a box around it.</para>
+ </sect2>
+
+  <sect2 id="no-axes-cmd"><title>&no-axes-cmd;</title>
+    <para>This command can be accessed by a click on the &no-axes-icon;</para>
+    <para>Doesn't draw the three axes nor the box on the active 3D plot.</para>
+ </sect2>
+
+  <sect2 id="front-grid-cmd"><title>&front-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &front-grid-icon;</para>
+    <para>Draws a grid on the front panel of the active 3D plot. The position of this grid is on the plane defined by y=y<subscript>min</subscript>.</para>
+ </sect2>
+
+  <sect2 id="back-grid-cmd"><title>&back-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &back-grid-icon;</para>
+    <para>Draws a grid on the back panel of the active 3D plot. The position of this grid is on the plane defined by y=y<subscript>max</subscript>.</para>
+ </sect2>
+
+  <sect2 id="left-grid-cmd"><title>&left-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &left-grid-icon;</para>
+    <para>Draws a grid on the left panel of the active 3D plot. The position of this grid is on the plane defined by x=x<subscript>min</subscript>.</para>
+ </sect2>
+
+  <sect2 id="right-grid-cmd"><title>&right-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &right-grid-icon;</para>
+    <para>Draws a grid on the right panel of the active 3D plot. The position of this grid is on the plane defined by x=x<subscript>max</subscript>.</para>
+ </sect2>
+
+  <sect2 id="top-grid-cmd"><title>&top-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &top-grid-icon;</para>
+    <para>Draws a grid on the top panel of the active 3D plot. The position of this grid is on the plane defined by z=z<subscript>max</subscript>.</para>
+ </sect2>
+
+  <sect2 id="floor-grid-cmd"><title>&floor-grid-cmd;</title>
+    <para>This command can be accessed by a click on the &floor-grid-icon;</para>
+    <para>Draws a grid on the floor panel of the active 3D plot.  The position of this grid is on the plane defined by z=z<subscript>min</subscript>.</para>
+ </sect2>
+
+  <sect2 id="perspective-cmd"><title>&perspective-cmd;</title>
+    <para>This command can be accessed by a click on the &perspective-icon;</para>
+    <para>Enables/Disables 3D perspective mode.</para>
+ </sect2>
+
+  <sect2 id="reset-rotation-cmd"><title>&reset-rotation-cmd;</title>
+    <para>This command can be accessed by a click on the &reset-rotation-icon;</para>
+    <para>Resets the rotation of the 3D plot to the default value.</para>
+ </sect2>
+
+  <sect2 id="autoscale-cmd"><title>&autoscale-cmd;</title>
+    <para>This command can be accessed by a click on the &autoscale-icon;</para>
+    <para>Finds the best layout of the 3D plot to fit the window size. It readjusts the length of the axis ticks to a default value.</para>
+ </sect2>
+
+  <sect2 id="bar-style-cmd"><title>&bar-style-cmd;</title>
+    <para>This command can be accessed by a click on the &bar-style-icon;</para>
+    <para>If the active 3D plot is a <link linkend="fig-3d-bars">3D histogram</link>, this command permits modification of the style used to draw the bars.</para>
+ </sect2>
+
+  <sect2 id="dots-cmd"><title>&dots-cmd;</title>
+    <para>This command can be accessed by a click on the &dots-icon;</para>
+    <para>If the active 3D plot is a <link linkend="fig-3d-scatter">3D scatter</link>, this command permits modification of the style used to draw data points as dots.</para>
+ </sect2>
+
+  <sect2 id="cones-cmd"><title>&cones-cmd;</title>
+    <para>This command can be accessed by a click on the &cones-icon;</para>
+    <para>If the active 3D plot is a <link linkend="fig-3d-scatter">3D scatter</link>, this command permits modification of the style used to draw data points as cones. It it then possible to modify the drawing parameters of the cones by double clicking on the plotting area.</para>
+ </sect2>
+
+  <sect2 id="cross-hairs-cmd"><title>&cross-hairs-cmd;</title>
+    <para>This command can be accessed by a click on the &cross-hairs-icon;</para>
+    <para>If the active 3D plot is a <link linkend="fig-3d-scatter">3D scatter</link>, this command permits modification of the style used to draw data points as cross-hairs. It it then possible to modify the drawing parameters of the crosses by double clicking on the plotting area.</para>
+ </sect2>
+
+  <sect2 id="mesh-cmd"><title>&mesh-cmd;</title>
+    <para>This command can be accessed by a click on the &mesh-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to modify the style of the surface to be drawn as a simple wireframe.</para>
+ </sect2>
+
+  <sect2 id="mesh-hidden-cmd"><title>&mesh-hidden-cmd;</title>
+    <para>This command can be accessed by a click on the &mesh-hidden-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to modify the style of the surface to be drawn as a wireframe. A computation of hidden lines is performed.</para>
+ </sect2>
+
+  <sect2 id="polygons-cmd"><title>&polygons-cmd;</title>
+    <para>This command can be accessed by a click on the &polygons-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to modify the style of the surface to be drawn as polygons.</para>
+ </sect2>
+
+  <sect2 id="mesh-polygons-cmd"><title>&mesh-polygons-cmd;</title>
+    <para>This command can be accessed by a click on the &mesh-polygons-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to modify the style of the surface to be drawn as polygons with a mesh.</para>
+  </sect2>
+
+  <sect2 id="floor-cmd"><title>&floor-cmd;</title>
+    <para>This command can be accessed by a click on the &floor-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to add a filled area projection of the surface on the floor of the plot.</para>
+  </sect2>
+
+  <sect2 id="isolines-cmd"><title>&isolines-cmd;</title>
+    <para>This command can be accessed by a click on the &isolines-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to add an isoline.</para>
+ </sect2>
+
+  <sect2 id="empty-cmd"><title>&empty-cmd;</title>
+    <para>This command can be accessed by a click on the &empty-icon;</para>
+    <para>If the active 3D plot is a 3D surface, this command is used to remove any projection from the floor.</para>
+ </sect2>
+
+  <sect2 id="animation-cmd"><title>&animation-cmd;</title>
+    <para>This command can be accessed by a click on the &animation-icon;</para>
+    <para>Enables/disables animation.</para>
+ </sect2>
+</sect1><!--End of Plot-3d -->
