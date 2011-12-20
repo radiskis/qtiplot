@@ -905,6 +905,12 @@ def showMessage():
 QtCore.QObject.connect(workspace(), QtCore.SIGNAL("subWindowActivated(QMdiSubWindow *)"), showMessage)
 </programlisting>
 
+In un progetto QtiPlot &egrave; possibile accere alla lista di tutti gli oggetti della finestra MDI:
+<programlisting>
+for w in qti.app.windows():
+	print w.objectName()
+</programlisting>
+
 </sect2>
 
 <sect2 id="Python-Folders">
@@ -925,6 +931,9 @@ t = f.table(name, recursive=False)
 m = f.matrix(name, recursive=False)
 g = f.graph(name, recursive=False)
 n = f.note(name, recursive=False)
+lst = f.windows()
+for w in lst:
+	print w.objectName()
 </programlisting>
 Se l'argomento di recursive &egrave; True viene eseguita una ricerca di profondit&agrave; ricorsiva in tutte le sottocartelle e restituito il primo risultato positivo.
 <para>Si possono creare nuove cartelle utilizzando:</para>
@@ -1317,9 +1326,10 @@ Se <varname>enumerateRight</varname> &egrave; impostato su True, tutte le colonn
 <varname>newName</varname> pi&ugrave; un indice numerico crescente.
 Per default questo parametro &egrave; impostato su False. Le forme plurali operano su tutte le intestazioni.
 
-<para>&Egrave; possibile modificare il ruolo di una colonna della tabella nel grafico (ascisse, ordinate, le barre di errore, ecc ..) utilizzando:</para>
+<para>&Egrave; possibile modificare il ruolo (ascisse, ordinate, barre di errore, ecc ..) che una colonna <varname>col</varname> di tabella svolge nel grafico utilizzando:</para>
 <programlisting>
 t.setColumnRole(col, role)
+print t.columnRole(col)
 </programlisting>
 dove <varname>role</varname> specifica il ruolo che si vuole assegnare alla colonna:
 <variablelist spacing="compact">
