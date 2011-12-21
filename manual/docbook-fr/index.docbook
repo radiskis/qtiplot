@@ -44,7 +44,7 @@
 <!--
               menu: File
 -->
-<!ENTITY file-menu-lnk '<link linkend="sec-file-menu">Le menu Fichier</link>'>
+<!ENTITY file-menu-lnk '<link linkend="sec-file-menu">menu Fichier</link>'>
 <!ENTITY new-project-cmd "<command>Nouveau ->Projet</command>">
 <!ENTITY new-project-lnk '<link linkend="new-project-cmd"><command>Nouveau -> Projet</command> command</link>'>
   <!ENTITY new-project-key "<keycode>Ctrl-N</keycode>">
@@ -56,35 +56,35 @@
   <!ENTITY new-folder-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newfolder.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-table-cmd "<command>Nouveau -> Table</command>">
-<!ENTITY new-table-lnk '<link linkend="new-table-cmd"><command>Nouveau -> Table</command> command</link>'>
+<!ENTITY new-table-lnk '<link linkend="new-table-cmd">commande <command>Nouveau -> Table</command></link>'>
   <!ENTITY new-table-key "<keycode>Ctrl-T</keycode>">
   <!ENTITY new-table-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/table.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-matrix-cmd "<command>Nouveau -> Matrice</command>">
-<!ENTITY new-matrix-lnk '<link linkend="new-matrix-cmd"><command>Nouveau -> Matrice</command> command</link>'>
+<!ENTITY new-matrix-lnk '<link linkend="new-matrix-cmd">commande <command>Nouveau -> Matrice</command></link>'>
   <!ENTITY new-matrix-key "<keycode>Ctrl-M</keycode>">
   <!ENTITY new-matrix-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_matrix.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-note-cmd "<command>Nouveau -> Commentaire</command>">
-<!ENTITY new-note-lnk '<link linkend="new-note-cmd"><command>Nouveau -> Commentaire</command> command</link>'>
+<!ENTITY new-note-lnk '<link linkend="new-note-cmd">commande <command>Nouveau -> Commentaire</command></link>'>
   <!ENTITY new-note-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_note.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-graph-cmd "<command>Nouveau -> Graphe</command>">
-<!ENTITY new-graph-lnk '<link linkend="new-graph-cmd"><command>Nouveau -> Graphe</command> command</link>'>
+<!ENTITY new-graph-lnk '<link linkend="new-graph-cmd">commande <command>Nouveau -> Graphe</command></link>'>
   <!ENTITY new-graph-key "<keycode>Ctrl-G</keycode>">
   <!ENTITY new-graph-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/new_graph.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY new-function-plot-cmd "<command>Nouveau -> Fonction</command>">
-<!ENTITY new-function-plot-lnk '<link linkend="new-function-plot-cmd"><command>Nouveau -> Fonction</command> command</link>'>
+<!ENTITY new-function-plot-lnk '<link linkend="new-function-plot-cmd">commande <command>Nouveau -> Fonction</command></link>'>
   <!ENTITY new-function-plot-key "<keycode>Ctrl-F</keycode>">
   <!ENTITY new-function-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newF.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY new-surface-3d-plot-cmd "<command>Nouveau -> Graphe de surface 3D</command>">
-<!ENTITY new-surface-3d-plot-lnk '<link linkend="new-surface-3d-plot-cmd"><command>Nouveau -> Graphe de surface 3D</command> command</link>'>
+<!ENTITY new-surface-3d-plot-lnk '<link linkend="new-surface-3d-plot-cmd">commande <command>Nouveau -> Graphe de surface 3D</command></link>'>
   <!ENTITY new-surface-3d-plot-key "<keycode>Ctrl-Alt-Z</keycode>">
   <!ENTITY new-surface-3d-plot-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newFxy.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY open-cmd "<command>Ouvrir</command>">
-<!ENTITY open-lnk '<link linkend="open-cmd"><command>Ouvrir</command> command</link>'>
+<!ENTITY open-lnk '<link linkend="open-cmd">commande <command>Ouvrir</command></link>'>
   <!ENTITY open-key "<keycode>Ctrl-O</keycode>">
   <!ENTITY open-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileopen.png"/></imageobject></inlinemediaobject>'>
 
@@ -173,16 +173,16 @@
 <!ENTITY print-all-plots-cmd "<command>Print All Plots</command>">
 <!ENTITY print-all-plots-lnk '<link linkend="print-all-plots-cmd"><command>Print All Plots</command> command</link>'>
 <!--export-ascii-cmd and export-excel-cmd added by SRB-->
-<!ENTITY export-ascii-cmd "<command>Export ASCII</command>">
-<!ENTITY export-ascii-lnk '<link linkend="export-ascii-cmd"><command>Export ASCII</command> command</link>'>
+<!ENTITY export-ascii-cmd "<command>Exporter -> Fichier ASCII</command>">
+<!ENTITY export-ascii-lnk '<link linkend="export-ascii-cmd">commande <command>Exporter -> Fichier ASCII</command></link>'>
 <!ENTITY export-ascii-key "<keycode></keycode>">
 
 <!ENTITY export-excel-cmd "<command>Export Excel</command>">
 <!ENTITY export-excel-lnk '<link linkend="export-excel-cmd"><command>Export Excel</command> command</link>'>
 <!ENTITY export-excel-key "<keycode></keycode>">
 
-<!ENTITY import-ascii-cmd "<command>Import -> Import ASCII...</command>">
-<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd"><command>Import -> Import ASCII...</command> command</link>'>
+<!ENTITY import-ascii-cmd "<command>Importer -> Fichier ASCII...</command>">
+<!ENTITY import-ascii-lnk '<link linkend="import-ascii-cmd">commande <command>Importer -> Fichier ASCII...</command></link>'>
 <!ENTITY import-ascii-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/import.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY import-ascii-key "<keycode>Ctrl-K</keycode>">
 
@@ -231,14 +231,14 @@
 <!ENTITY delete-fit-cmd "<command>Delete Fit Tables</command>">
 <!ENTITY delete-fit-lnk '<link linkend="delete-fit-cmd"><command>Delete Fit Tables</command> command</link>'>
   <!ENTITY delete-fit-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/close.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY clear-log-cmd "<command>Clear Log Information</command>">
-<!ENTITY clear-log-lnk '<link linkend="clear-log-cmd"><command>Clear Log Information</command> command</link>'>
+<!ENTITY clear-log-cmd "<command>Effacer l'historique</command>">
+<!ENTITY clear-log-lnk '<link linkend="clear-log-cmd">commande <command>Effacer lhistorique</command></link>'>
 <!ENTITY preferences-cmd "<command>Preferences...</command>">
-<!ENTITY preferences-lnk '<link linkend="preferences-cmd"><command>Preferences...</command> command</link>'>
+<!ENTITY preferences-lnk '<link linkend="preferences-cmd">commande <command>Préférences...</command></link>'>
 <!--
               menu: View
 -->
-<!ENTITY view-menu-lnk '<link linkend="sec-view-menu">View menu</link>'>
+<!ENTITY view-menu-lnk '<link linkend="sec-view-menu">menu Affichage</link>'>
 <!ENTITY toolbars-cmd "<command>Toolbars...</command>">
   <!ENTITY toolbars-key "<keycode>Ctrl-Shift-T</keycode>">
 <!ENTITY plot-wizard-cmd "<command>Plot Wizard</command>">
@@ -246,15 +246,15 @@
   <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
   <!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY project-explorer-cmd "<command>Project Explorer</command>">
-<!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd">&project-explorer-cmd;</link>'>
+<!ENTITY project-explorer-cmd "<command>Explorateur de projet</command>">
+<!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd">commande &project-explorer-cmd;</link>'>
 <!ENTITY project-explorer-key "<keycode>Ctrl-E</keycode>">
 <!ENTITY project-explorer-icon '<inlinemediaobject><imageobject>
 	<imagedata format="PNG" fileref="icons/folder.png"/>
 </imageobject></inlinemediaobject>'>
 
 <!ENTITY results-log-cmd "<command>Results log</command>">
-<!ENTITY results-log-lnk '<link linkend="results-log-cmd"><command>Results log</command> command</link>'>
+<!ENTITY results-log-lnk '<link linkend="results-log-cmd">commande <command>Historique</command></link>'>
   <!ENTITY results-log-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/log.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY undo-stack-cmd "<command>Undo/Redo Stack...</command>">
@@ -288,7 +288,7 @@
 <!--
               menu: Graph
 -->
-<!ENTITY graph-menu-lnk '<link linkend="sec-graph-menu">Graph menu</link>'>
+<!ENTITY graph-menu-lnk '<link linkend="sec-graph-menu">menu Graphe</link>'>
 <!ENTITY add-remove-curve-cmd "<command>Add/Remove Curves...</command>">
 <!ENTITY add-remove-curve-lnk '<link linkend="add-remove-curve-cmd"><command>Add/Remove Curves...</command> command</link>'>
   <!ENTITY add-remove-curve-key "<keycode>Alt-C</keycode>">
@@ -343,8 +343,8 @@
   <!ENTITY zorder-bottom-key "<keycode></keycode>">
   <!ENTITY zorder-bottom-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lower.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY add-layer-cmd "<command>Add Layer</command>">
-<!ENTITY add-layer-lnk '<link linkend="add-layer-cmd"><command>Add Layer</command></link>'>
+<!ENTITY add-layer-cmd "<command>Ajouter une planche</command>">
+<!ENTITY add-layer-lnk '<link linkend="add-layer-cmd">commande <command>Ajouter une planche</command></link>'>
   <!ENTITY add-layer-key "<keycode>Alt-L</keycode>">
   <!ENTITY add-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/newLayer.png"/></imageobject></inlinemediaobject>'>
 
@@ -383,8 +383,8 @@
 <!ENTITY add-eq-key "<keycode>Alt-Q</keycode>">
 <!ENTITY add-eq-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/formula.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY remove-layer-cmd "<command>Remove Layer</command>">
-<!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd">&remove-layer-cmd;</link>'>
+<!ENTITY remove-layer-cmd "<command>Supprimer la planche</command>">
+<!ENTITY remove-layer-lnk '<link linkend="remove-layer-cmd">commande &remove-layer-cmd;</link>'>
   <!ENTITY remove-layer-key "<keycode>Alt-R</keycode>">
   <!ENTITY remove-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 
@@ -395,7 +395,7 @@
 <!--
               menu: Plot3d
 -->
-<!ENTITY plot3d-menu-lnk '<link linkend="sec-plot3d-menu">Plot 3D menu</link>'>
+<!ENTITY plot3d-menu-lnk '<link linkend="sec-plot3d-menu">menu Graphe 3D</link>'>
 <!ENTITY mesh-cmd "<command>3D Wire Frame</command>">
 <!ENTITY mesh-lnk '<link linkend="mesh-cmd"><command>3D Wire Frame</command> command</link>'>
   <!ENTITY mesh-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lineMesh.png"/></imageobject></inlinemediaobject>'>
@@ -451,11 +451,11 @@
 <!ENTITY vertical-steps-lnk '<link linkend="vertical-steps-cmd">&vertical-steps-cmd;</link>'>
   <!ENTITY vertical-steps-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vert_steps.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY columns-cmd "<command>Columns</command>">
-<!ENTITY columns-lnk '<link linkend="columns-cmd">&columns-cmd;</link>'>
+<!ENTITY columns-cmd "<command>Nombre de colonnes</command>">
+<!ENTITY columns-lnk '<link linkend="columns-cmd">commande &columns-cmd;</link>'>
   <!ENTITY columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vertBars.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY rows-cmd "<command>Rows</command>">
-<!ENTITY rows-lnk '<link linkend="rows-cmd">&rows-cmd;</link>'>
+<!ENTITY rows-cmd "<command>Nombre de rangées</command>">
+<!ENTITY rows-lnk '<link linkend="rows-cmd">commande &rows-cmd;</link>'>
   <!ENTITY rows-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/hBars.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY special-bar-column-cmd "<command>Special Bar+Column</command>">
@@ -586,75 +586,75 @@
               menu: Matrix
 -->
 
-<!ENTITY matrix-menu-lnk '<link linkend="sec-matrix-menu">Matrix menu</link>'>
-<!ENTITY set-properties-cmd "<command>Set Properties...</command>">
-<!ENTITY set-properties-lnk '<link linkend="set-properties-cmd"><command>Set Properties...</command> command</link>'>
+<!ENTITY matrix-menu-lnk '<link linkend="sec-matrix-menu">menu Matrice</link>'>
+<!ENTITY set-properties-cmd "<command>Propriétés...</command>">
+<!ENTITY set-properties-lnk '<link linkend="set-properties-cmd">commande <command>Propriétés...</command></link>'>
 
-<!ENTITY set-dimensions-cmd "<command>Set Dimensions...</command>">
-<!ENTITY set-dimensions-lnk '<link linkend="set-dimensions-cmd"><command>Set Dimensions...</command> command</link>'>
+<!ENTITY set-dimensions-cmd "<command>Dimensions...</command>">
+<!ENTITY set-dimensions-lnk '<link linkend="set-dimensions-cmd">commande <command>Dimensions...</command></link>'>
 <!ENTITY set-dimensions-key "<keycode>Ctrl-D</keycode>">
 
-<!ENTITY set-values-cmd "<command>Set Values...</command>">
-<!ENTITY set-values-lnk '<link linkend="set-values-cmd"><command>Set Values...</command> command</link>'>
+<!ENTITY set-values-cmd "<command>Valeurs...</command>">
+<!ENTITY set-values-lnk '<link linkend="set-values-cmd">commande <command>Valeurs...</command></link>'>
 <!ENTITY set-values-key "<keycode>Ctrl-Q</keycode>">
 
-<!ENTITY recalculate-cmd "<command>Recalculate</command>">
+<!ENTITY recalculate-cmd "<command>Recalculer</command>">
 <!ENTITY recalculate-key "<keycode>Ctrl-Return</keycode>">
 
-<!ENTITY rotate90-cmd "<command>Rotate 90</command>">
+<!ENTITY rotate90-cmd "<command>Tourner de 90°</command>">
 <!ENTITY rotate90-key "<keycode>Ctrl-Shift-R</keycode>">
 
-<!ENTITY rotate-90-cmd "<command>Rotate -90</command>">
+<!ENTITY rotate-90-cmd "<command>Tourner de -90°</command>">
 <!ENTITY rotate-90-key "<keycode>Ctrl-Alt-R</keycode>">
 
-<!ENTITY flipV-cmd "<command>Flip V</command>">
+<!ENTITY flipV-cmd "<command>Mirroir V</command>">
 <!ENTITY flipV-key "<keycode>Ctrl-Shift-V</keycode>">
 
-<!ENTITY flipH-cmd "<command>Flip H</command>">
+<!ENTITY flipH-cmd "<command>Mirroir H</command>">
 <!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
 
-<!ENTITY expand-cmd "<command>Expand...</command>">
-<!ENTITY expand-lnk '<link linkend="expand-cmd"><command>Expand...</command> command</link>'>
+<!ENTITY expand-cmd "<command>Étendre...</command>">
+<!ENTITY expand-lnk '<link linkend="expand-cmd">commande <command>Étendre...</command></link>'>
 
-<!ENTITY shrink-cmd "<command>Shrink...</command>">
-<!ENTITY shrink-lnk '<link linkend="shrink-cmd"><command>Shrink...</command> command</link>'>
+<!ENTITY shrink-cmd "<command>Réduire...</command>">
+<!ENTITY shrink-lnk '<link linkend="shrink-cmd">commande <command>Réduire...</command></link>'>
 
-<!ENTITY smooth-cmd "<command>Smooth</command>">
-<!ENTITY smooth-lnk '<link linkend="smooth-cmd"><command>Smooth</command> command</link>'>
+<!ENTITY smooth-cmd "<command>Lisser</command>">
+<!ENTITY smooth-lnk '<link linkend="smooth-cmd">commande <command>Lisser</command></link>'>
 
-<!ENTITY transpose-cmd "<command>Transpose</command>">
-<!ENTITY transpose-lnk '<link linkend="transpose-cmd"><command>Transpose</command> command</link>'>
+<!ENTITY transpose-cmd "<command>Transposer</command>">
+<!ENTITY transpose-lnk '<link linkend="transpose-cmd">commander <command>Transposer</command></link>'>
 
-<!ENTITY invert-cmd "<command>Invert</command>">
-<!ENTITY invert-lnk '<link linkend="invert-cmd"><command>Invert</command> command</link>'>
+<!ENTITY invert-cmd "<command>Inverser</command>">
+<!ENTITY invert-lnk '<link linkend="invert-cmd">commander <command>Inverser</command></link>'>
 
-<!ENTITY image-view-cmd "<command>Image mode</command>">
+<!ENTITY image-view-cmd "<command>Convertir en image</command>">
 <!ENTITY image-view-key "<keycode>Ctrl-Shift-I</keycode>">
 
-<!ENTITY table-view-cmd "<command>Data mode</command>">
+<!ENTITY table-view-cmd "<command>Convertir en données</command>">
 <!ENTITY table-view-key "<keycode>Ctrl-Shift-D</keycode>">
 
-<!ENTITY gray-scale-cmd "<command>Gray Scale</command>">
+<!ENTITY gray-scale-cmd "<command>Échelle de gris</command>">
 
-<!ENTITY rainbow-palette-cmd "<command>Rainbow</command>">
+<!ENTITY rainbow-palette-cmd "<command>Arc-en-ciel</command>">
 
-<!ENTITY custom-palette-cmd "<command>Custom</command>">
+<!ENTITY custom-palette-cmd "<command>Personnalisé</command>">
 
-<!ENTITY show-col-row-cmd "<command>Show Column/Row</command>">
+<!ENTITY show-col-row-cmd "<command>Montrer ligne/colonne</command>">
 <!ENTITY show-col-row-key "<keycode>Ctrl-Shift-C</keycode>">
 
-<!ENTITY show-x-y-cmd "<command>Show X/Y</command>">
+<!ENTITY show-x-y-cmd "<command>Montrer X/Y</command>">
 <!ENTITY show-x-y-key "<keycode>Ctrl-Shift-X</keycode>">
 
-<!ENTITY determinant-cmd "<command>Determinant</command>">
-<!ENTITY determinant-lnk '<link linkend="determinant-cmd"><command>Determinant</command> command</link>'>
-<!ENTITY convert-to-table-cmd "<command>Convert to Spreadsheet</command>">
+<!ENTITY determinant-cmd "<command>Déterminant</command>">
+<!ENTITY determinant-lnk '<link linkend="determinant-cmd">commande <command>Déterminant</command></link>'>
+<!ENTITY convert-to-table-cmd "<command>Convertir en feuille de calcul</command>">
 
-<!ENTITY convert-to-table-lnk '<link linkend="convert-to-table-cmd"><command>Convert to Spreadsheet</command> command</link>'>
+<!ENTITY convert-to-table-lnk '<link linkend="convert-to-table-cmd">commande <command>Convertir en feuille de calcul</command></link>'>
 <!--
               menu: Table
 -->
-<!ENTITY table-menu-lnk '<link linkend="sec-table-menu">Table menu</link>'>
+<!ENTITY table-menu-lnk '<link linkend="sec-table-menu">menu Table</link>'>
 
 <!ENTITY set-column-as-cmd "<command>Set Column As</command>">
 <!ENTITY set-column-as-lnk '<link linkend="set-column-as-cmd"><command>Set Column As</command> command</link>'>
@@ -698,13 +698,13 @@
 <!ENTITY set-column-as-none-key "">
 <!ENTITY set-column-as-none-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/disregard_col.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY column-options-cmd "<command>Column Options...</command>">
-<!ENTITY column-options-lnk '<link linkend="column-options-cmd"><command>Column Options...</command> command</link>'>
+<!ENTITY column-options-cmd "<command>Propriétés...</command>">
+<!ENTITY column-options-lnk '<link linkend="column-options-cmd">commande <command>Propriétés...</command></link>'>
 <!ENTITY column-options-key "<keycode>Ctrl-Alt-O</keycode>">
 
 <!ENTITY recalculate-key "<keycode>Ctrl+RETURN</keycode>">
 <!ENTITY set-column-values-cmd "<command>Set Column Values...</command>">
-<!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd"><command>Set Column Values...</command> command</link>'>
+<!ENTITY set-column-values-lnk '<link linkend="set-column-values-cmd">commande <command>Fixer les valeurs de la colonne...</command></link>'>
 <!ENTITY set-column-values-key "<keycode>Alt-Q</keycode>">
 <!ENTITY set-column-values-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/formula.png"/></imageobject></inlinemediaobject>'>
 
@@ -809,8 +809,8 @@
 <!ENTITY extract-data-lnk '<link linkend="go-to-column-cmd">&go-to-column-cmd;</link>'>
 <!ENTITY extract-data-key "<keycode></keycode>">
 
-<!ENTITY convert-to-matrix-cmd "<command>Convert to Matrix</command>">
-<!ENTITY convert-to-matrix-lnk '<link linkend="convert-to-matrix-cmd"><command>Convert to Matrix</command> command</link>'>
+<!ENTITY convert-to-matrix-cmd "<command>Convertir en Matrice</command>">
+<!ENTITY convert-to-matrix-lnk '<link linkend="convert-to-matrix-cmd">commande <command>Convertir en Matrice</command></link>'>
 <!-- Missing: Direct, 2D Binning, Regular XYZ-->
 <!--
               menu: Analysis of tables
@@ -1129,7 +1129,7 @@
 <!--
               toolbar: 3D plot
 -->
-<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">3D plot toolbar</link>'>
+<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">barre outils Graphe 3D</link>'>
 <!ENTITY frame-cmd "<command>Frame</command>">
 <!ENTITY frame-lnk '<link linkend="frame-cmd"><command>Frame</command> command</link>'>
   <!ENTITY frame-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/free_axes.png"/></imageobject></inlinemediaobject>'>
@@ -1310,10 +1310,10 @@
 
 
 &introduction-chapter;
+<!--
 <chapter id="using">
   &using-chapter;
 </chapter>
-<!--
 <chapter id="reference">
   &reference-chapter;
 </chapter>
