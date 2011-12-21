@@ -7,18 +7,18 @@ problems. Basically a long version of the abstract.  Don't include a
 revision history. (see installation appendix comment) -->
 
 <sect1 id="sec-qtiplot-intro">
-<title>Que fait donc &appname; </title>
+<title>Que fait donc &appname; ?</title>
 
 <para>&appname; est un programme de représentation graphique et d'analyse de données à deux et trois dimensions. Les graphes peuvent être produits à partir de données issues de <link linkend="sec-intro-table">tables</link> ou à partir de fonctions analytiques.</para>
-<para>Le projet a été créé par &ion; en 2000. Ion a été le seul programmeur de 2000 à 2005. Depuis 2006, de nouveaux contributeurs l'ont rejoint et le projet est désormais hébergé sur <ulink url="www.berlios.de/projects/qtiplot/">BerliOS</ulink>. L'objectif du logiciel est de fournir un outil pour l'analyse et la représentation de données tel un logiciel commercial comme Origin.</para>
+<para>Le projet a été créé par &ion; en 2000. Ion a été le seul programmeur de 2000 à 2005. Depuis 2006, de nouveaux contributeurs l'ont rejoint et le projet est désormais hébergé sur <ulink url="www.berlios.de/projects/qtiplot/">BerliOS</ulink>. L'objectif du logiciel est de fournir un outil pour l'analyse et la représentation de données à 'instar d' un logiciel commercial comme Origin.</para>
 
-<para>&appname; est un outil dynamique : les graphbes créés à partir d'un jeu de données et les tables de ces données sont interconnectées. Quand une table est modifiée,tous les objets qui en dépendent (courbes, échelles, légendes), sont automatiquement modifés. Par exemple, effacer une table, ou quelques colonnes, supprimera automatiquement, les courbes correspondantes. Les graphes peuvent être exportés en plueisurs formats graphiques (jpeg, png, bmp, pdf, etc) et insérer comme images dans des documents ou des présentations. </para>
+<para>&appname; est un outil dynamique : les graphes créés à partir d'un jeu de données et les tables de ces données sont interconnectées. Quand une table est modifiée, tous les objets qui en dépendent (courbes, échelles, légendes), sont automatiquement modifés. Par exemple, effacer une table, ou quelques colonnes, supprimera automatiquement, les courbes correspondantes. Les graphes peuvent être exportés en plueisurs formats graphiques (jpeg, png, bmp, pdf, etc) et insérés comme images dans des rapports ou des présentations. </para>
 
 <para>Tous les paramètres des tables, projets et graphes peuvent être sauvegardés dans un fichier projet ayant une extension ".qti". Ces fichiers projets peuvent être ouverts en utilisant la <link linkend="specify-a-file"> ligne de commande</link>, le <link linkend="sec-file-menu">menu Fichier</link>, ou en utilisant l'icone <emphasis>Ouvrir un projet</emphasis> à partir de la <link linkend="sec-file-toolbar">barre d'outil Fichier</link>.</para>
 
-<para>Les opérations d'analyse de données (integration, interpolation, FFT, ajustement de courbe, etc.) peuvent être réalisés sur les courbes 2D via le menu Analyse. Les résultats de ces opérations sont aussi enregistrés dans le fichiers projet. Il peuvent être visualisés en utilisqant à tout moment, le &results-log-lnk; et peuvent être effacés via la and can be deleted from the project file via the &clear-log-lnk;.</para>
+<para>Les opérations d'analyse de données (integration, interpolation, FFT, ajustement de courbe, etc.) peuvent être réalisés sur les courbes 2D via le menu Analyse. Les résultats de ces opérations sont aussi enregistrés dans le fichier projet. Il peuvent être visualisés en utilisant à tout moment, la &results-log-lnk; et peuvent être effacés via la &clear-log-lnk;.</para>
 
-<para>Quand l'application est lancée, un nouveau fichier projet snas nom est créé, consistant en une fenêtre grise principale (l'environnement de traail) qui peut contenir initailement, une fenêtre vide, selon vos préférences. Le type de cette fenêtre peut être personnalisée en utilisant la <link linkend="preferences-dialog">Preferences dialog</link>. Elle peut être une table, une matrice, un commentaire ou un graphe 2D vide. Afin d'être opérationnel, cette fençetre doit contenir au moins un de ces objets. Les tables ou matrices vides, peuvent créées manuellement (&new-table-lnk;) et remplies avec des données ou bien créées en important un fichier ASCII (&import-ascii-lnk;), ce qui créer automatiquement une nouvelle table.</para>
+<para>Quand l'application est lancée, un nouveau fichier projet sans nom est créé, consistant en une fenêtre grise principale (l'environnement de travail) qui peut contenir initialement une fenêtre vide, selon vos préférences. Le type de cette fenêtre peut être personnalisé en utilisant la <link linkend="preferences-dialog">Preferences</link>. Elle peut être une table, une matrice, un commentaire ou un graphe 2D vide. Afin d'être opérationnelle, cette fenêtre doit contenir au moins un de ces objets. Les tables ou matrices vides, peuvent être créées manuellement (&new-table-lnk;) et remplies avec des données ou bien créées en important un fichier ASCII (&import-ascii-lnk;), ce qui créé automatiquement une nouvelle table.</para>
 
 <para>L'utilisateur peut facilement naviguer dans le projet à l'aide de l'explorateur de projet ou des menus. L'explorateur de projet permet aussi à l'utilisateur de réaliser diverses opéraions sur la fenêtre (tables et graphes) comme : cacher, minimiser, fermer, renommer, imprimer, etc.</para>
 
@@ -43,11 +43,11 @@ qtiplot nom_fichier.&file-ext;
 qtiplot nom_fichier_texte
 </screen>
 
-<para>Dans ce dernier cas, un nouveau projet "Sans nom" sera créé, contenant une table avec les données du fichier ASCII ainsi qu'un graphe 2D de toutes les colonnes en fonction de la première colonne du fichier. L'utilisateur doit s'assurer que le fichier texte est proprement formaté. Le fichier sera lu et interprété en utilisant les préférences de la boite de dialogue &import-ascii-lnk;. Les valeurs par défaut de ces préférences sont :</para>
+<para>Dans ce dernier cas, un nouveau projet "Sans nom" sera créé, contenant une table avec les données du fichier ASCII ainsi qu'un graphe 2D de toutes les colonnes en fonction de la première colonne du fichier. L'utilisateur doit s'assurer que le fichier texte est proprement formaté. Le fichier sera lu et interprété en utilisant les préférences de la &import-ascii-lnk;. Les valeurs par défaut de ces préférences sont :</para>
 <itemizedlist>
-  <listitem><para>le séparateur par défaut est ";" mais peut être changé dans la boite de &preferences-lnk;,</para></listitem>
+  <listitem><para>le séparateur par défaut est ";" mais peut être changé par la &preferences-lnk;,</para></listitem>
   <listitem><para>toutes les lignes sont lues,</para></listitem>
-  <listitem><para>la première lignes est utilisée pour les noms de colonnes,</para></listitem>
+  <listitem><para>la première ligne est utilisée pour les noms de colonnes,</para></listitem>
   <listitem><para>les espaces de fin de ligne ne sont pas supprimées,</para></listitem>
   <listitem><para>les espaces ne sont pas simplifiées.</para></listitem>
 </itemizedlist>
@@ -76,7 +76,7 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
 
 <sect1 id="general-concepts">
 <title>Concepts généraux et termes utilisés</title>
-<para>Plusieurs graphes et les données associées peuvent être sauvegardées dans un fichier <emphasis>projet</emphasis>. Le projet est alors, le conteneur principal de &appname;. Les copies d'écrans suivantes donnent un exemple d'une session typique. Cette exemple montre le <link linkend="sec-intro-log-window">panneau de log</link> au dessus de l'environnement de travail, l'<link linkend="sec-intro-project-explorer">explorateur de projet</link> en dessous, ainsi qu'une<link linkend="sec-intro-table">table</link> et un <link linkend="sec-intro-plot-window">graphe</link>. D'autres fenres sont soit minimisées soit cachées.</para>
+<para>Plusieurs graphes et les données associées peuvent être sauvegardées dans un fichier <emphasis>projet</emphasis>. Le projet est alors, le conteneur principal de &appname;. La copie d'écran suivante donne un exemple d'une session typique. Elle montre l'<link linkend="sec-intro-log-window">historique</link> au dessus de l'environnement de travail, l'<link linkend="sec-intro-project-explorer">explorateur de projet</link> en dessous, ainsi qu'une <link linkend="sec-intro-table">table</link> et un <link linkend="sec-intro-plot-window">graphe</link>. D'autres fenêtres sont soit minimisées soit cachées.</para>
 
 <figure id="fig-qtiplot-session">
   <title>Une session typique de &appname;</title>
@@ -86,64 +86,60 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
     </imageobject>
   </mediaobject>
 </figure>
-<para><emphasis>Note générale sur le style windows MDI.</emphasis> &appname; utilise le style Multiple Document Interface (MDI) pour ces sous-fençetres (par exemple pour les graphes, le stables, etc.). C'est un mécanisme pratique pour placer des sous-fenêtre sur une fenêtre mère (la fenêtre projet). De telles collections de fenêtres sont alors gérées comme un lors des déplacements ou des minimisations des fenêtres. However, the behavior of maximized sub-windows is one feature of the MDI interface that may cause some confusion at first. As would be expected, sub-windows maximize to the size of the main window's workspace rather than to the size of the screen, but the default for maximized sub-windows is to have no title bar. As a consequence, there are no control boxes attached to the window, leaving the (incorrect) impression that once maximized, control boxes can no longer be used to minimize, normalize or close the sub-window. However, control boxes for a maximized sub-window are still present, they have just been moved to the extreme right hand side of the main window's menu bar. Since only one sub-window can be maximized at a time, there is no ambiguity regarding which sub-window this set of control boxes will operate upon. Finally, as a reminder of which sub-window is maximized, the Name and label of the maximized sub-window are appended to main window's title as:</para>
-<para>    "&appname; - ProjectName - [WindowName - WindowLabel]"</para>
+<para><emphasis>Note générale sur le style windows MDI.</emphasis> &appname; utilise le style Multiple Document Interface (MDI) pour ces sous-fenêtres (par exemple pour les graphes, les tables, etc.). C'est un mécanisme pratique pour placer des sous-fenêtres sur une fenêtre mère (la fenêtre projet). De telles séries de fenêtres sont alors gérées lors des déplacements ou des minimisations des fenêtres. Quoiqu'il en soit, le comportement des sous-fenêtres maximisées est une des fonctionnalité de l'interfaçage MDI qui peut être déroutante de prime abord. Comme il pourrait être attendu, les sous-fenêtres sont maximisées à la taille de l'environnement de travail plutôt qu'à la taille de la fenêtre principale, mais par défaut, il n'y a pas de barre de titre. Par conséquent, cela donne la fausse impression qu'une fois maximisée, il n'y a pas de contrôles pour fermer, maximiser et minimiser la sous-fenêtre. Ceux-ci sont en fait présents à l'extrème droite du coté de la barre de menus de la fenêtre principale. Puisqu'une seule sous-fenêtre peut être maximisée, le nom et le label de celle-ci sont ajoutés au titre de la fenêtre principale ainsi :</para>
+
+<para>    "&appname; - NomDuProjet - [NomDeLaFenetre - Label]"</para>
 <para> </para>
 
-<para>There are numerous commands available in &appname;. The specific subset of commands available depends on the element which is selected. Therefore, the main menu bar changes when you select a particular element of the project. Moreover, you can access the set of commands relevant to a given element by activating the context menu with the right button of the mouse when the mouse pointer is floating over the chosen element.</para>
-<para>In a project, the containers which can be used are:</para>
+<para>Il existe de nombreuses commandes disponibles dans &appname;. Celles-ci dependent de l'élément sélectionné. Par conséquent, la barre de menu principale est modifiée quand un élément particulier du projet est sélectionné. Vous pouvez accéder aux commandes pertinentes par le menu contextuel à l'aide du bouton droit de la souris lorsque vous êtes sur cet élément.</para>
+<para>Dans un projet, les conteneurs qui peuvent être utilisés sont :</para>
 
 <variablelist>
   <varlistentry>
-    <term><link linkend="sec-intro-table">A Table</link></term>
+    <term><link linkend="sec-intro-table">Une table</link></term>
     <listitem>
       <indexterm><primary>table</primary></indexterm>
-      <para>A table is a spreadsheet like object which can be used to store the data you are entering. The table is contained in its own window (the Table Window). It can be used to perform some calculations and statistical analysis of that data.
-      In each table, columns can be labeled as X-values or Y-values for 2D-plotting, or Z-values if you plan to build a
-      3D-plot.</para>
-      <para>A table can be created using the &new-table-lnk;. There are then several ways to fill the table with data.
-      If you want to read your data from an ASCII file, you can import it from the file into a table using the &import-ascii-lnk;. You can also manually enter each value from the keyboard. Finally, you can fill the table with the results of evaluating a mathematical function using the (&set-column-values-lnk; from the &table-menu-lnk;)</para>
+      <para>Une table se présente sous la forme d'un tableur qui peut être utilisé pour stocker des données. La table est une fenêtre à part entière (la fenêtre Table). Elle peut être utilisée pour réaliser des calculs ou de l'analyse statistique des données. Pour chaque table, les colonnes peuvent être labelisées comme X, Y pour le tracé de graphes 2D ou Z si vous envisagez de contruire un graphe 3D.</para>
+      <para>Une table peut être créée en utilisant la &new-table-lnk;. Il y a ensuite, plusieurs façons de remplir la table avec des données. Si vous voulez lire vos données d'un fichier ASCII, vous pouvez les importer en utilisant la &import-ascii-lnk;. Vous pouvez aussi entrer manuellement chaque valeur à partir du clavier. Enfin, vous pouvez la remplir avec le resultat d'une évaluation mathématique en utilisant la &set-column-values-lnk; à partir du &table-menu-lnk;</para>
     </listitem>
   </varlistentry>
   <varlistentry>
-    <term><link linkend="sec-intro-matrix">A Matrix</link></term>
+    <term><link linkend="sec-intro-matrix">Une matrice</link></term>
     <listitem>
-      <indexterm><primary>matrix</primary></indexterm>
-      <para>A matrix is a special table which is used to store the data points for surface 3D plots. It contains Z-values and doesn't include any column or row which could be designed as X-values or Y-values. Nevertheless, you can specify the X-values and the Y-values with the &set-dimensions-lnk; command from the &matrix-menu-lnk;.</para>
-      <para>A matrix is created using the &new-matrix-lnk;. If you want to read matrix data from an ASCII file, you can import the data from the file into a table using the &import-ascii-lnk;, and then convert this table to a matrix with the &convert-to-matrix-lnk;. In the same way as for tables, you can also fill a matrix with the results of evaluating a function z=(i,j) in which i and j are row and column numbers (&set-values-lnk; from the &matrix-menu-lnk;)</para>
+      <indexterm><primary>matrice</primary></indexterm>
+      <para>Une matrice est une table spéciale qui peut être utilisée pour stocker des points d'une surface 3D. Elle contient des valeurs en Z et ne possède pas de colonnes ou de lignes qui pourraient être définies comme des colonnes X ou Y. Néanmois, vous pouvez spécifier des valeurs de X et Y avec la &set-dimensions-lnk; du &matrix-menu-lnk;.</para>
+      <para>Une matrice est créée en utilisant la &new-matrix-lnk;. Si vous souhaitez lire des données d'une matrice d'un fichier ASCII, vous pouvez importer les données à partir d'un fichier en utilisant la &import-ascii-lnk;, puis il faut convertir cette table en une matrice avec la &convert-to-matrix-lnk;. Comme pour les tables, vous pouvez aussi remplir la matrice avec les résultats d'une évaluation mathématique d'une fonction z=(i,j) où i et j sont les numéros des colonnes et des lignes (&set-values-lnk; à partir du &matrix-menu-lnk;)</para>
     </listitem>
   </varlistentry>
   <varlistentry>
-    <term><link linkend="sec-intro-plot-window">A Graph</link></term>
+    <term><link linkend="sec-intro-plot-window">Un graphe</link></term>
     <listitem>
       <indexterm>
-        <primary>graph</primary>
+        <primary>graphe</primary>
       </indexterm>
-      <para>A graph can contain one or several <emphasis>layers</emphasis>. A layer consists of axes, text items, graphics, and a single <emphasis>plotting area</emphasis> bounded by the axes lines. One or more <emphasis>curves</emphasis>, generated from data or functions, are placed into the plotting area to create a <emphasis>plot</emphasis>. Layers and their contained plots can be arranged in many ways to build matrix of plots. Throughout this document, the term <emphasis>plot window</emphasis> is used as a synonym for a graph.</para>
-      <para>A new layer can be added to an existing graph with the &add-layer-lnk; from the &graph-menu-lnk;. you can also remove an existing layer with the &remove-layer-lnk;, but if you remove a layer, the plot on that layer will also be deleted. You can also copy a layer from one graph to another, or copy an existing graph into another (the window will be added as a new layer - see the section on <link linkend="sec-multilayer-plots">Multilayer Plots</link> for more details).</para>
-      <para>Curves can be added to a plot in several ways. You can select data from tables or matrices to generate the curve, or, create a curve from a function of one or two variables (see sections <link linkend="sec-2d-plots">2D plots</link> and <link linkend="sec-3d-plots">3D plots</link>).</para>
+      <para>Un graphe peut contenir une ou plusieurs <emphasis>planches</emphasis>. Une planche consiste en une <emphasis>zone de tracé</emphasis> unique avec des axes, du texte, des courbes et entourée par des lignes d'axe. Une ou plusieurs <emphasis>courbes</emphasis>, issues de données ou de fonctions sont placées sur la zone de tracé pour créer un <emphasis>graphe</emphasis>. Les planches et leurs graphes peuvent être disposées de diverses manières pour construire des matrices de graphes.</para>
+      <para>Une nouvelle planche peut être ajoutée à un graphe existant avec la &add-layer-lnk; à partir du &graph-menu-lnk;. Vous pouvez aussi effacer une planche existante avec la &remove-layer-lnk;, mais dans ce cas, vous effacez aussi le graphe de la planche. Vous pouvez aussi copier une planche à partir d'un graphe vers un autre ou copier un graphe existant vers un autre (la fenêtre sera ajoutée comme une nouvelle planche -- voir la section sur les <link linkend="sec-multilayer-plots">graphes multiplanches</link> pour plus de détails).</para>
+      <para>Les courbes peuvent être ajoutées de plusieurs façons. Vous pouvez sélectionner les données à partir de tables ou de matrices pour créer la courbe, ou créer la courbe à partir d'une foncton d'une ou deux variables (voir les sections <link linkend="sec-2d-plots">Graphes 2D</link> et <link linkend="sec-3d-plots">Graphes 3D</link>).</para>
     </listitem>
   </varlistentry>
   <varlistentry>
-    <term><link linkend="sec-intro-note">A Note</link></term>
+    <term><link linkend="sec-intro-note">La fenêtre Commentaire</link></term>
     <listitem>
-      <para>This window is a text container which can simply be used to insert comments
-      into a project, but is really far more powerful than that.
-      It can be used as a calculator, for executing single commands, and for writing scripts.</para>
+      <para>Cette fenêtre contient du texte et peut simplement être utilisée pour insérer des commentaires dans un projet, mais c'est en fait plus puissant que cela. Il peut être utilisé comme calculatrice pour exécuter des commandes simples ou pour écrire des scripts.</para>
     </listitem>
   </varlistentry>
   <varlistentry>
-    <term><link linkend="sec-intro-log-window">The Log Window</link></term>
+    <term><link linkend="sec-intro-log-window">L'historique</link></term>
     <listitem>
-      <para>This window is used to store the results of all calculations which have been done. If this window is not visible, you can find it with the <link linkend="sec-intro-project-explorer">Project Explorer</link> or with the &results-log-lnk;.</para>
-      <para>The text in the log window is also saved in the project file, so that when you load a previously saved project, the results-log panel is re-filled with the results of previous calculations.</para>
+      <para>Cette fenêtre est utilisée pour stocker les résultats de tous les calculs qui ont été fait. Si elle n'est pas visible, vous pouvez la retrouver avec l'<link linkend="sec-intro-project-explorer">explorateur de projet</link> ou avec la &results-log-lnk;.</para>
+      <para>Le texte de l'historique est aussi sauvegardé dans le fichier projet, ainsi, quand vous chargez un projet précédent, l'historique est présent avec les résultats des calculs antérieurs.</para>
     </listitem>
   </varlistentry>
   <varlistentry>
-    <term><link linkend="sec-intro-project-explorer">The Project Explorer</link></term>
+    <term><link linkend="sec-intro-project-explorer">L'explorateur de projet</link></term>
     <listitem>
-      <para>This window is used to list all the windows contained in a project. The <link linkend="project-explorer-dialog">Project Explorer</link> gives quick access to all elements of a project, hidden or visible. It can be used to perform some operations on the listed windows such as hiding a window, renaming a window, etc.</para>
-      <para>Since version 0.8.5, a project file can include several independent projects. In this case, the containers of each project are stored in different folders.</para>
+      <para>Cette fenêtre est utilisée pour lister toutes les autres fenêtres du projet. L'<link linkend="project-explorer-dialog">explorateur de projet</link> permet un accès rapide à tous les élèments d'un projet, caché ou visible. Il peut être utilisé pour réaliser des opérations du genre : cacher une fenêtre, renommer une fenêtre, etc.</para>
+      <para>Depuis la version 0.8.5, un fichier projet peut inclure plusieurs projets indépendants. Dans ce cas, les conteneurs de chaque projets sont stockés dans différents dossiers.</para>
     </listitem>
   </varlistentry>
 </variablelist>
@@ -153,15 +149,15 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
 		==============================
 -->
 <sect2 id="sec-intro-table">
-<title>Tables</title>
+<title>Les tables</title>
 
       <indexterm><primary>table</primary></indexterm>
 <para>
-When working with data, tables are the main focus of &appname;. Fundamentally, a table is simplified spreadsheet contained in a Window which can be used to control, edit, and convert data. Tables are also highly customizable: all colors and font preferences can be set using the &preferences-lnk; of the &view-menu-lnk;, and you can resize a table in terms of rows and columns using the &table-menu-lnk; with &rows-lnk; or &columns-lnk;.
+Lorsque l'on travaille avec des données, les tables possèdent le focus principale de &appname;. Fondamentalement, une table est une feuille de calcul simplifiée contenue dans une fenêtre qui peut être utilisée pour conrôler, éditer et convertir des données. Les tables sont hautement personnabilisables : toutes les préférences sur les couleurs et les polices s'appliquent en utilisant la &preferences-lnk; du &view-menu-lnk;, et vous pouvez redimensionner les lignes et les colonnes d'une table en utilisant le &table-menu-lnk; avec la &rows-lnk; ou la &columns-lnk;.
 </para>
 
 <figure id="fig-the-table">
-  <title>The &appname; table</title>
+  <title>Une table &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/table.png"/>
@@ -169,17 +165,17 @@ When working with data, tables are the main focus of &appname;. Fundamentally, a
   </mediaobject>
 </figure>
 
-<para> Every column of a table has a label, and can be assigned a format: numeric, text, date or time. Each column can also have one of the following flags set: X, Y, Z, X-error, Y-error, label, or none (i.e., a simple column without any special flag). X flagged columns are the abscissae while Y flagged columns are the ordinates used when creating a 2D plot from data. A column must have either the X or Y flag set to be available for use in a 2D plot. The X-error and Y-error columns can be used to add error bars to a curve in a 2D plot. Flags can be changed using the <link linkend="column-options-dialog">Column options dialog</link>. To reach this dialog, simply double-click on the column label or use the  &column-options-lnk; from the &table-menu-lnk;.</para>
+<para> Chaque colonne d'une table possède un label, auquel nous pouvons donner un format : numerique, texte, date ou heure. Chaque colonne peut aussi avoir un drapeau tel : X, Y, Z, X-erreur, Y-erreur, label, or aucun (i.e., une simple colonne sans rien). Les colonnes en X représentenent les absisses tandis que les colonnes labellisées Y sont les ordonnées pour la création d'un graphe 2D. Une colonne doit avoir un drapeau X ou Y pour pouvoir être tracée sur un graphe. Les colonnes  X-erreur and Y-erreur peuvent être utilisées pour ajouter des barres d'erreurs sur une courbe d'un graphe 2D. Ces drapeaux peuvent être modifiés par les <link linkend="column-options-dialog">Propriétés</link>. Pour faire afficher cette boîte de dialogue, faites simplement un double-clic sur l'en-tête de colonne ou bien, utilisez la &column-options-lnk; du &table-menu-lnk;.</para>
 
-<para> A table column is selected by left clicking on it's label. Multiple columns are selected in one of 2 ways. First, if the columns are adjacent, it is most convenient to left click on the first desired column's label and, while holding the left mouse button down, drag the mouse pointer over the labels of the column you wish to select. Second, in the case where desired columns are not adjacent, you can select additional columns by keeping the <keycode>Ctrl</keycode> key pressed while left clicking on the desired column's label. This also allows you to deselect specific columns. You can select all the columns of a selected table by pressing (<keycode>Ctrl+A</keycode>).</para>
+<para> Une colonne de table est sélectionnée en cliquant sur son label. Plusieurs colonnes sont sélectionnées de différentes façons. Premièrement, si les colonnes sont cote-à-cote, il est plus pratique de cliquer sur la première colonne puis, tout en maintenant le bouton de la souris enfoncé, de sélectionner les autres colonnes en passant sur les autres labels. Par contre, lorsque les colonnes ne sont adjacentes, vous pouvez les sélectionner successivement par l'appui simultané des touches <keycode>Ctrl</keycode> et clic droit de la souris sur les labels de la colonne. Ce clic vous permet auusi de désélectionner la colonne. Pour les désélectionner toutes, pressez (<keycode>Ctrl+A</keycode>).</para>
 
-<para> You can perform various operations on selected columns : fill with data, normalize, sort, view statistics and finally, generate curves from your data. All these functions can be reached by right clicking on the column label or by using the &table-menu-lnk;.</para>
+<para> Vous pouvez réaliser diverses opérations sur les colonnes sélectionnées : remplir avec des données, normaliser, trier, faire des statistiques et enfin, créer des courbes. Toutes ces fonctions peuvent être obtenues grâce au menu contextuel sur le label de la colonne ou en utilisant le &table-menu-lnk;.</para>
 
-<para> All other table functions: rename, duplicate, export, print, and close can be reached via the context menu (right click anywhere in the table outside the column labels area). </para>
+<para> Toutes les autres fonctions : renommer, dupliquer, exporter, imprimer et fermer peuvent aussi être affichées par le menu contextuel (clic droit en dehors des labels). </para>
 
-<para> You can cut, copy and paste data between tables or between a table and another application (Excel, Gnumeric, etc.).</para>
+<para> Vous pouvez copier, couper et coller, les données entre tables et même entre tables d'une autre application (Excel, Gnumeric, etc.).</para>
 
-<para> You can import single or multiple ASCII files using the &import-ascii-lnk; from the &file-menu-lnk;. Of course you can also export the data from a table to a text file using the &export-ascii-lnk;.</para>
+<para> Vous pouvez importer un ou plusieurs fichier ASCII en utilisant la &import-ascii-lnk; du &file-menu-lnk;. Bien évidemment, vous pouvez aussi exporter les données d'une table vers un fichier texte en utilisant la &export-ascii-lnk;.</para>
 
 </sect2>
 
@@ -188,22 +184,17 @@ When working with data, tables are the main focus of &appname;. Fundamentally, a
 		===============================
 -->
 <sect2 id="sec-intro-matrix">
-<title>Matrix</title>
+<title>Les Matrices</title>
 
       <indexterm><primary>matrix</primary></indexterm>
-<para>The matrix is a special table which is used for data which depends on two variables.
-This special table can be used to create 3D plots as well as 2D image/contour plots
-via the &plot3d-menu-lnk; and the &plot3d-toolbar-lnk;.
+<para>Une matrice est une table spéciale qui est utilisée pour les données qui dépendent de deux variables. Elle peut être utilisée pour créer des graphes 3D ainsi que des images 2D ou des lignes de contour. par le &plot3d-menu-lnk; et la &plot3d-toolbar-lnk;.
 
-One difference between a table and a matrix is that matrices may function in one of two modes:
-they can display data in table form or they can display an image. Therefore matrices can be
-used as a basic image viewer and also as an image editor, since they implement some image manipulation functions like: 90 degrees rotation, horizontal and vertical mirroring, etc.</para>
+Une différence entre une table et une matrice est que les matrices peuvent avoir deux modes : elles peuvent afficher les données de la table ou elles peuvent afficher une image. Par conséquent, les matrices peuvent être utilisées comme un visualisateur rudimentaire d'images et aussi comme un éditeur puisque quelques fonctions de manipulation sont implémentées comme : rotation à 90°, mirroirs vertical et horizontal, etc.</para>
 
-<para>In a matrix there is no special column nor special row for X or Y labels or values. Nevertheless,
-you can specify an X-scale and a Y-scale with the &set-dimensions-lnk;.</para>
+<para>Dans une matrice, il n'y a ni de colonne spéciale ni de ligne spéciale pour les indexes ou les valeurs de X ou Y. Néanmoins, vous pouvez spécifier une échelle en X et Y avec la &set-dimensions-lnk;.</para>
 
 <figure id="fig-matrix">
-  <title>The &appname; matrix</title>
+  <title>Les matrices dans &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/matrix.png"/>
@@ -211,11 +202,8 @@ you can specify an X-scale and a Y-scale with the &set-dimensions-lnk;.</para>
   </mediaobject>
 </figure>
 
-<para>The values which are stored in a matrix can be generated from a function of the form
-z=f(i, j, x, y) with the &set-values-lnk;,
-i and j being the column and row numbers and x and y the corresponding coordinates.
-
-They can also be read directly from an ASCII file with the &import-ascii-lnk; or from an image file.</para>
+<para>Les valeurs qui sont stockées dans une matrice peuvent être créées à partir d'une fonction de la forme z=f(i, j, x, y) avec la &set-values-lnk;,
+i et j étant les numéros des colonnes et des lignes et x et y étant les coordonnées correspondantes. Vous pouvez aussi lire les données directement à partir d'un fichier ASCII avec la &import-ascii-lnk; ou à partir d'un fichier image.</para>
 
 </sect2>
 
@@ -224,12 +212,12 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
 		====================================
 -->
 <sect2 id="sec-intro-plot-window">
-<title>Plot Window</title>
+<title>Les graphes</title>
 
-<para>The plot window (that is, a graph), provides a container for plotting data. It contains one or more layers, which are the main containers of a graph. Each layer contains a plotting area into which curves are placed when creating a plot. Each layer has its own geometry and graphic properties (background color, frame, etc). The example presented below shows a graph with two layers which have different geometries.</para>
+<para>Un graphe est un conteneur pour tracer des données. Il contient une ou plusieurs planches, qui sont les conteneurs principaux d'un graphe. Chaque planche contient une zone de tracé dans laquelle, chaque courbe est placée au moment de la création du graphe. Chaque planche possède sa propre géométrie et ses propres propriétés graphiques (couleur d'arrière plan, cadre, etc.) L'example ci-dessous, présente un graphe avec deux planches qui possèdent des géométries différentes.</para>
 
 <figure id="fig-plot-window">
-  <title>An example of &appname; 2D graph</title>
+  <title>Example d'un graphe 2D de &appname; avec deux planches</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot-window.png"/>
@@ -237,34 +225,29 @@ They can also be read directly from an ASCII file with the &import-ascii-lnk; or
   </mediaobject>
 </figure>
 
-<para>Each layer can be activated by clicking on its corresponding gray button  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> in the top-left corner of the window.</para>
+<para>Chaque planche peut être activée en cliquant sur son bouton gris correspondant  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> dans le coin en haut à gauche de la fenêtre.</para>
 
-<para>Some graph elements can be accessed by a double click on an element in a layer. These are:</para>
+<para>Plusieurs caraéctéristiques du graphe sont accessibles par un double clic sur un élément de la planche. Ce sont : </para>
 
 <itemizedlist>
 <listitem>
-<para>the graph itself: this will open the <link linkend="custom-curves-dialog">Custom Curve Dialog</link>. You can then add new curves to the plot, or change the way the curves are plotted.</para>
+<para>le graphe lui-même. La <link linkend="custom-curves-dialog">boîte de dialogue des Propriétés</link> s'ouvrira. Vous pourrez alors ajouter de nouvelles courbes ou bien modifier l'apparence des courbes existantes.</para>
 </listitem>
 <listitem>
-<para>The axes or the axes labels: this will open the <link linkend="plot-options-dialog">General Plot Options Dialog</link>. It is used to customize the axes, the numbers and labels of the axes, and the grid.</para>
+<para>les axes ou les labels des axes : Le clic ouvrira la <link linkend="plot-options-dialog">boîte de dialogue des Options Générales</link>. Il vous permet de personnaliser les axes, les caractères et les labels des axes et de la grille.</para>
 </listitem>
 <listitem>
-<para>Text items, including the legend: this will open the <link linkend="text-options-dialog">Text Options Dialog</link> which allows customizing the font of the label and the frame in which it is drawn.</para>
+<para>Les objets Texte, incluant la légende : Le clic ouvrira la <link linkend="text-options-dialog">boîte de dialogue des Options de Texte</link> permettant de personnaliser les polices de caractères des labels et du cadre dans lequel ils sont présents.</para>
 </listitem>
 <listitem>
-<para>Arrow/Line items: this will open the <link linkend="arrow-dialog">Line Options Dialog</link>.</para>
+<para>Les objets Flêche/Ligne : Le clic fera apparaitre la <link linkend="arrow-dialog">boîte de dialogue des Options des Lignes</link>.</para>
 </listitem>
 <listitem>
-<para>Image items: this will open a dialog allowing you to customize the geometry and the position of the image.</para>
+<para>Les objets Image : Une boîte de dialogue s'ouvrira qui vous permettra de personnaliser la géométrie et la position de l'image.</para>
 </listitem>
 </itemizedlist>
 
-<para>A left click on a layer element selects it. You can deselect any element by pressing the <emphasis>Escape</emphasis> key.
-A right click on a layer element pops-up a context menu allowing quick access to its properties dialog.
-Last but not least, you should know that &appname; provides multiple selection for objects in a layer.
-In order to add an object to an existing selection keep the <emphasis>Shift</emphasis>
-key pressed and click on the element you want to add to the selection.
-Elements in a multiple selection can be moved and resized together with the mouse.</para>
+<para>Un clic gauche sur un élément de la planche, le sélectionne. Vous pouvez le déselectionner à l'aide de la touchee <emphasis>Escape</emphasis> key. Un clic droit, fait apparaitre, le menu contextuel permettant, un accès rapide aux propriétés. Enfin, le dernier mais pas le moindre, vous devez savoir que que &appname; permet la sélection multiple d'objects différents d'une planche. Afin d'ajouter un objet à une sélection existante, pressez la touche <emphasis>Shift</emphasis> et cliquez sur l'élément que vous voulez ajouter. Les sélections mutiples peuvent être déplacées et redimmensionnées avec la souris.</para>
 
 </sect2>
 
@@ -273,18 +256,12 @@ Elements in a multiple selection can be moved and resized together with the mous
 		===========================================
 -->
 <sect2 id="sec-intro-note">
-<title>Note</title>
+<title>Les commentaires</title>
 
-<para>A note can simply be used to insert text (comments, notes, etc) into a project,
-  but is really far more powerful than that. It can be used as a calculator,
-  for executing single commands and for writing scripts.
-  Evaluation of mathematical expressions and execution of code is done via a note's context menu,
-  the Scripting menu or convenient keyboard shortcuts.
-  For information on expression syntax, supported mathematical functions and how to write scripts,
-  see <link linkend="scripting">here</link>.</para>
+<para>Un commentaire peut simplement être utilisé pour insérer du texte (commentaire, note, etc.) dans un projet, mais il est beaucoup plus puissant que cela. Il peut être utilisé comme calculatrice, pour exécuter de simples commandes ou pour écrire des scripts. L'évaluation d'expressions mathématiques et l'éxécution de code est réalisée via le menu contextuel, le menu du Script ou bien par un raccourci clavier. Pour plus d'informations sur la syntaxe, les expressions mathématiques supportées et l'écriture de scripts, reportez vous <link linkend="scripting">ici</link>.</para>
 
 <figure id="fig-note-window">
-  <title>The &appname; Note Window</title>
+  <title>La fenêtre de commentaire de &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/new-note1.png"/>
@@ -292,11 +269,7 @@ Elements in a multiple selection can be moved and resized together with the mous
   </mediaobject>
 </figure>
 
-<para>Note windows provide powerful text editor functionalities, particularly helpful
-when writing scripts: customizable Python syntax highlighting, line number display, find and replace text,
-and autocompletion suggestions for words having more than two characters.
-You can manually trigger autocompletion by using Ctrl+U. The colors used for syntax highlighting can be customized
-via the <emphasis>Notes</emphasis> tab in the <link linkend="fig-preferences-dialog-notes">Preferences dialog</link>.</para>
+<para>Les fenêtres de commentaires offrent de puissantes fonctionnalités d'édition de texte, partoculièrement utiles pour l'écriture des scripts : personnalisation de la surbrillance de la syntaxe de Python, affichage des numéros de lignes, les fonctions rechercher et remplacer, l'autocompletion por les mots de plus de deux caractères. Vous pouvez activer/désactiver l'autocomplétion par les touches Ctrl+U. Les couleurs de la syntaxe peuvent être personnalisées via l'onglet <emphasis>Commentaires</emphasis> de la <link linkend="fig-preferences-dialog-notes">boîte de dialogue Préférences</link>.</para>
 </sect2>
 
 <!--
@@ -304,12 +277,12 @@ via the <emphasis>Notes</emphasis> tab in the <link linkend="fig-preferences-dia
 		=====================================
 -->
 <sect2 id="sec-intro-log-window">
-<title>Log Window</title>
+<title>L'historique</title>
 
-<para>This window keeps a history of all analysis which has been done in the project. It panel contains the results of all the correlations, fittings, etc.</para>
+<para>Cette fenêtre garde un historique de toutes les analyses qui ont été faites dans le projet. Elle contient tous les résultats des corrélations, des ajustements, etc.</para>
 
 <figure id="fig-log-window">
-  <title>The &appname; Log window</title>
+  <title>La fenêtre Historique de &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/log-window.png"/>
@@ -323,12 +296,12 @@ via the <emphasis>Notes</emphasis> tab in the <link linkend="fig-preferences-dia
 		===========================================
 -->
 <sect2 id="sec-intro-project-explorer">
-<title>The Project Explorer</title>
+<title>L'explorateur de projet</title>
 
-<para>The project explorer can be opened/closed using the &project-explorer-lnk; from the &view-menu-lnk; or by clicking on the &project-explorer-icon; in the <link linkend="sec-file-toolbar">file toolbar</link>.</para>
+<para>L'explorateur de projet peut être ouvert et fermé en utilisant la &project-explorer-lnk; à partir du &view-menu-lnk; ou en cliquant sur l'&project-explorer-icon; dans la <link linkend="sec-file-toolbar">barre outil Fichier</link>.</para>
 
 <figure id="fig-project-explorer">
-  <title>The &appname; Project Explorer</title>
+  <title>L'explorateur de projet de &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/explorer1.png"/>
@@ -336,9 +309,9 @@ via the <emphasis>Notes</emphasis> tab in the <link linkend="fig-preferences-dia
   </mediaobject>
 </figure>
 
-<para>It gives an overview of the structure of a project and allows the user to perform various operations on the windows (tables, graphs, and notes) in the workspace: hiding, minimizing, closing, renaming, printing, etc. These functions can be reached via the context menu, obtained by right-clicking on an item in the explorer.</para>
-<para>By double-clicking on an item, the corresponding window is shown maximized in the workspace, even if it was hidden before.</para>
-<para>From the project explorer window, different objects can be organized into folders. When selecting a folder, the default policy is that only the objects contained in it will be shown in the workspace window. You can also display all the objects in subfolders if you change this policy with the "View Windows" command to "Windows in Active Folder and Subfolders".</para>
+<para>Il fournit une vue d'ensemble de la structure du projet et permet à l'utilisateur de réaliser diverses opérations sur les fenêtres (tables, graphes, et commentaires) dans l'environnement de travail : cacher, minimiser, fermer, renommer, imprimer, etc. Ces fonctions peuvent être appelées via le menu contextuel et affichées par un clic droit sur un des objets de l'explorateur.</para>
+<para>En double cliquant sur un objet, la fenêtre correspondante s'ouvre dans l'environnement de travail, même si elle était cachée auparavant.</para>
+<para>À partir de l'explorateur de projet, les différents objets peuvent être organisés dans des dossiers. Quand vous en sélectionnez un, la règle par défaut, impose que seuls les objets du dossiers pourront être affichés. Vous pouvez aussi afficher tous les objets des sous-dossiers si vous modifiez cetteY règle avec la commande "View Windows" pour "Windows in Active Folder and Subfolders".</para>
 
 </sect2>
 
