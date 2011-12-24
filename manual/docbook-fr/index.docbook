@@ -89,28 +89,28 @@
   <!ENTITY open-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/fileopen.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY append-cmd "<command>Ajouter un projet...</command>">
-<!ENTITY append-lnk '<link linkend="append-cmd"><command>Ajouter un projet...</command> command</link>'>
+<!ENTITY append-lnk '<link linkend="append-cmd">commande <command>Ajouter un projet...</command></link>'>
   <!ENTITY append-key "<keycode>Ctrl-Alt-A</keycode>">
   <!ENTITY append-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/append_file.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY recent-projects-cmd "<command>Projets récents</command>">
-<!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd"><command>Projets récents</command> command</link>'>
+<!ENTITY recent-projects-lnk '<link linkend="recent-projects-cmd">commande <command>Projets récents</command></link>'>
 <!ENTITY close-cmd "<command>Close</command>">
 
 <!ENTITY open-image-file-cmd "<command>Ouvrir un fichier image</command>">
-<!ENTITY open-image-file-lnk '<link linkend="open-image-file-cmd"><command>Ouvrir un fichier image</command> command</link>'>
+<!ENTITY open-image-file-lnk '<link linkend="open-image-file-cmd">commande <command>Ouvrir un fichier image</command></link>'>
   <!ENTITY open-image-file-key "<keycode>Ctrl-I</keycode>">
 
 <!ENTITY import-image-cmd "<command>Importer une image...</command>">
 <!ENTITY import-image-lnk '<link linkend="import-image-cmd"><command>Importer une image...</command> command</link>'>
 
 <!ENTITY save-project-cmd "<command>Sauvegarder</command>">
-<!ENTITY save-project-lnk '<link linkend="save-project-cmd"><command>Sauvegarder</command> command</link>'>
+<!ENTITY save-project-lnk '<link linkend="save-project-cmd">commande <command>Sauvegarder</command></link>'>
   <!ENTITY save-project-key "<keycode>Ctrl-S</keycode>">
   <!ENTITY save-project-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/filesave.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY save-project-as-cmd "<command>Sauvegarder sous...</command>">
-<!ENTITY save-project-as-lnk '<link linkend="save-project-as-cmd"><command>Sauvegarder sous...</command> command</link>'>
+<!ENTITY save-project-as-lnk '<link linkend="save-project-as-cmd">commande <command>Sauvegarder sous...</command></link>'>
  <!ENTITY save-project-as-key "<keycode>Ctrl-Shift-S</keycode>">
 
 <!ENTITY save-window-as-cmd "<command>Sauvegarder la fenêtre sous...</command>">
@@ -135,17 +135,17 @@
 <!ENTITY save-as-template-cmd "<command>Save as Template</command>">
 <!ENTITY save-as-template-lnk '<link linkend="save-as-template-cmd"><command>Save as Template</command> command</link>'>
   <!ENTITY save-as-template-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/save_template.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY export-graph-cmd "<command>Export Graph</command>">
-<!ENTITY export-graph-lnk '<link linkend="export-graph-cmd"><command>Export Graph</command> command</link>'>
-<!ENTITY export-graph-current-cmd "<command>Export Graph -> Current</command>">
-<!ENTITY export-graph-current-lnk '<link linkend="export-graph-current-cmd"><command>Export Graph -> Current</command> command</link>'>
+<!ENTITY export-graph-cmd "<command>Exporter le Graphe</command>">
+<!ENTITY export-graph-lnk '<link linkend="export-graph-cmd">commande <command>Exporter le Graphe</command></link>'>
+<!ENTITY export-graph-current-cmd "<command>Exporter -> Ce graphe</command>">
+<!ENTITY export-graph-current-lnk '<link linkend="export-graph-current-cmd">commande <command>Exporter -> Ce graphe</command></link>'>
   <!ENTITY export-graph-current-key "<keycode>Alt-G</keycode>">
-<!ENTITY export-graph-all-cmd "<command>Export Graph -> All</command>">
-<!ENTITY export-graph-all-lnk '<link linkend="export-graph-all-cmd"><command>Export Graph -> All</command> command</link>'>
+<!ENTITY export-graph-all-cmd "<command>Exporter -> Tous les Graphes</command>">
+<!ENTITY export-graph-all-lnk '<link linkend="export-graph-all-cmd">commande <command>Exporter -> Tous les graphes</command></link>'>
   <!ENTITY export-graph-all-key "<keycode>Alt-X</keycode>">
 <!--export-cmd added SRB -->
-<!ENTITY export-cmd "<command>Export</command>">
-<!ENTITY export-lnk '<link linkend="export-cmd"><command>Export</command> command</link>'>
+<!ENTITY export-cmd "<command>Exporter</command>">
+<!ENTITY export-lnk '<link linkend="export-cmd"><command>Exporter</command></link>'>
 
 <!ENTITY odf-presentation-cmd "<command>File -> Create Open Document Presentation...</command>">
 <!ENTITY odf-presentation-lnk '<link linkend="odf-presentation-cmd"><command>File -> Create Open Document Presentation...</command> command</link>'>
@@ -306,12 +306,12 @@
   <!ENTITY new-legend-key "<keycode>Ctrl-L</keycode>">
   <!ENTITY new-legend-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/legend.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY add-text-cmd "<command>Add Text</command>">
-<!ENTITY add-text-lnk '<link linkend="add-text-cmd"><command>Add Text</command></link>'>
+<!ENTITY add-text-cmd "<command>Ajouter du texte</command>">
+<!ENTITY add-text-lnk '<link linkend="add-text-cmd">commande <command>Ajouter du texte</command></link>'>
   <!ENTITY add-text-key "<keycode>Alt-T</keycode>">
   <!ENTITY add-text-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/text.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY draw-arrow-cmd "<command>Draw Arrow</command>">
-<!ENTITY draw-arrow-lnk '<link linkend="draw-arrow-cmd"><command>Draw Arrow</command></link>'>
+<!ENTITY draw-arrow-cmd "<command>Ajouter une flêche</command>">
+<!ENTITY draw-arrow-lnk '<link linkend="draw-arrow-cmd">commande <command>Ajouter une flêche</command></link>'>
   <!ENTITY draw-arrow-key "<keycode>Ctrl-Alt-A</keycode>">
   <!ENTITY draw-arrow-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrow.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY draw-line-cmd "<command>Draw Line</command>">
@@ -388,8 +388,8 @@
   <!ENTITY remove-layer-key "<keycode>Alt-R</keycode>">
   <!ENTITY remove-layer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY arrange-layers-cmd "<command>Arrange Layers</command>">
-<!ENTITY arrange-layers-lnk '<link linkend="arrange-layers-cmd"><command>Arrange Layers</command></link>'>
+<!ENTITY arrange-layers-cmd "<command>Redisposer des planches</command>">
+<!ENTITY arrange-layers-lnk '<link linkend="arrange-layers-cmd">commande <command>Redisposer des planches</command></link>'>
   <!ENTITY arrange-layers-key "<keycode>Shift-A</keycode>">
   <!ENTITY arrange-layers-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/arrangeLayers.png"/></imageobject></inlinemediaobject>'>
 <!--
@@ -411,8 +411,8 @@
 <!ENTITY bars-cmd "<command>Bars</command>">
 <!ENTITY bars-lnk '<link linkend="bars-cmd"><command>Bars</command> command</link>'>
   <!ENTITY bars-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/bars.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY scatter3d-cmd "<command>Scatter</command>">
-<!ENTITY scatter3d-lnk '<link linkend="scatter3d-cmd"><command>Scatter</command> command</link>'>
+<!ENTITY scatter3d-cmd "<command>Nuage de points</command>">
+<!ENTITY scatter3d-lnk '<link linkend="scatter3d-cmd">commande <command>Nuage de points</command></link>'>
   <!ENTITY scatter3d-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/scatter.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY contour-color-cmd "<command>Contour+Color Fill</command>">
 <!ENTITY contour-color-lnk '<link linkend="contour-color-cmd"><command>Contour+Color Fill</command> command</link>'>
@@ -426,12 +426,12 @@
 <!--
               menu: Plot
 -->
-<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Plot menu</link>'>
+<!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">menu Plot</link>'>
 <!ENTITY line-cmd "<command>Line</command>">
 <!ENTITY line-lnk '<link linkend="line-cmd"><command>Line</command> command</link>'>
   <!ENTITY line-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lPlot.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY scatter-cmd "<command>Scatter</command>">
-<!ENTITY scatter-lnk '<link linkend="scatter-cmd"><command>Scatter</command> command</link>'>
+<!ENTITY scatter-cmd "<command>Nuage de points</command>">
+<!ENTITY scatter-lnk '<link linkend="scatter-cmd">commande <command>Nuage de points</command></link>'>
   <!ENTITY scatter-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pPlot.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY line-symbol-cmd "<command>Line+Symbol</command>">
 <!ENTITY line-symbol-lnk '<link linkend="line-symbol-cmd"><command>Line+Symbol</command> command</link>'>
@@ -522,8 +522,8 @@
 	<imagedata format="PNG" fileref="icons/leaf.png"/>
 </imageobject></inlinemediaobject>'>
 
-<!ENTITY panel-cmd "<command>Panel</command>">
-<!ENTITY panel-lnk '<link linkend="panel-cmd">&panel-cmd; command</link>'>
+<!ENTITY panel-cmd "<command>Panneaux</command>">
+<!ENTITY panel-lnk '<link linkend="panel-cmd">commande &panel-cmd;</link>'>
 
 <!ENTITY vertical-2-layers-cmd "<command>Vertical 2 Layers</command>">
 <!ENTITY vertical-2-layers-lnk '<link linkend="vertical-2-layers-cmd">&vertical-2-layers-cmd; command</link>'>
@@ -1058,8 +1058,8 @@
               menu: Format
 -->
 <!ENTITY format-menu-lnk '<link linkend="sec-format-menu">Format menu</link>'>
-<!ENTITY format-plot-cmd "<command>Plot...</command>">
-<!ENTITY format-plot-lnk '<link linkend="format-plot-cmd"><command>Plot...</command> command</link>'>
+<!ENTITY format-plot-cmd "<command>Graphe...</command>">
+<!ENTITY format-plot-lnk '<link linkend="format-plot-cmd">commande <command>Graphe...</command></link>'>
 <!ENTITY format-curves-cmd "<command>Curves...</command>">
 <!ENTITY format-curves-lnk '<link linkend="format-curves-cmd"><command>Curves...</command> command</link>'>
 <!ENTITY format-scales-cmd "<command>Scales...</command>">
@@ -1193,11 +1193,11 @@
 <!--
               toolbar: File
 -->
-<!ENTITY file-toolbar-lnk '<link linkend="sec-file-toolbar">File toolbar</link>'>
+<!ENTITY file-toolbar-lnk '<link linkend="sec-file-toolbar">barre outil Fichier</link>'>
 <!--
               toolbar: Plot
 -->
-<!ENTITY plot-toolbar-lnk '<link linkend="sec-plot-toolbar">Plot toolbar</link>'>
+<!ENTITY plot-toolbar-lnk '<link linkend="sec-plot-toolbar">barre outil Graphe</link>'>
 <!--
               toolbar: Table
 -->
@@ -1308,12 +1308,11 @@
 
 </bookinfo>
 
-
 &introduction-chapter;
-<!--
 <chapter id="using">
   &using-chapter;
 </chapter>
+<!--
 <chapter id="reference">
   &reference-chapter;
 </chapter>
