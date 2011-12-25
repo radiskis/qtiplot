@@ -10,17 +10,17 @@ revision history. (see installation appendix comment) -->
 <title>Que fait donc &appname; ?</title>
 
 <para>&appname; est un programme de représentation graphique et d'analyse de données à deux et trois dimensions. Les graphes peuvent être produits à partir de données issues de <link linkend="sec-intro-table">tables</link> ou à partir de fonctions analytiques.</para>
-<para>Le projet a été créé par &ion; en 2000. Ion a été le seul programmeur de 2000 à 2005. Depuis 2006, de nouveaux contributeurs l'ont rejoint et le projet est désormais hébergé sur <ulink url="www.berlios.de/projects/qtiplot/">BerliOS</ulink>. L'objectif du logiciel est de fournir un outil pour l'analyse et la représentation de données à 'instar d' un logiciel commercial comme Origin.</para>
+<para>Le projet a été créé par &ion; en 2000. Ion a été le seul programmeur de 2000 à 2005. Depuis 2006, de nouveaux contributeurs l'ont rejoint et le projet est désormais hébergé sur <ulink url="www.berlios.de/projects/qtiplot/">BerliOS</ulink>. L'objectif du logiciel est de fournir un outil pour l'analyse et la représentation de données à l'instar d'un logiciel commercial comme Origin.</para>
 
-<para>&appname; est un outil dynamique : les graphes créés à partir d'un jeu de données et les tables de ces données sont interconnectées. Quand une table est modifiée, tous les objets qui en dépendent (courbes, échelles, légendes), sont automatiquement modifés. Par exemple, effacer une table, ou quelques colonnes, supprimera automatiquement, les courbes correspondantes. Les graphes peuvent être exportés en plueisurs formats graphiques (jpeg, png, bmp, pdf, etc) et insérés comme images dans des rapports ou des présentations. </para>
+<para>&appname; est un outil dynamique : les graphes créés à partir d'un jeu de données et les tables de ces données sont interconnectées. Quand une table est modifiée, tous les objets qui en dépendent (courbes, échelles, légendes), sont automatiquement modifés. Par exemple, effacer une table, ou quelques colonnes, supprimera automatiquement, les courbes correspondantes. Les graphes peuvent être exportés en plusieurs formats graphiques (jpeg, png, bmp, pdf, etc) et insérés comme images dans des rapports ou des présentations. </para>
 
 <para>Tous les paramètres des tables, projets et graphes peuvent être sauvegardés dans un fichier projet ayant une extension ".qti". Ces fichiers projets peuvent être ouverts en utilisant la <link linkend="specify-a-file"> ligne de commande</link>, le <link linkend="sec-file-menu">menu Fichier</link>, ou en utilisant l'icone <emphasis>Ouvrir un projet</emphasis> à partir de la <link linkend="sec-file-toolbar">barre d'outil Fichier</link>.</para>
 
-<para>Les opérations d'analyse de données (integration, interpolation, FFT, ajustement de courbe, etc.) peuvent être réalisés sur les courbes 2D via le menu Analyse. Les résultats de ces opérations sont aussi enregistrés dans le fichier projet. Il peuvent être visualisés en utilisant à tout moment, la &results-log-lnk; et peuvent être effacés via la &clear-log-lnk;.</para>
+<para>Les opérations d'analyse de données (intégration, interpolation, FFT, ajustement de courbe, etc.) peuvent être réalisés sur les courbes 2D via le menu Analyse. Les résultats de ces opérations sont aussi enregistrés dans le fichier projet. Il peuvent être visualisés en utilisant à tout moment, la &results-log-lnk; et peuvent être effacés via la &clear-log-lnk;.</para>
 
-<para>Quand l'application est lancée, un nouveau fichier projet sans nom est créé, consistant en une fenêtre grise principale (l'environnement de travail) qui peut contenir initialement une fenêtre vide, selon vos préférences. Le type de cette fenêtre peut être personnalisé en utilisant la <link linkend="preferences-dialog">Preferences</link>. Elle peut être une table, une matrice, un commentaire ou un graphe 2D vide. Afin d'être opérationnelle, cette fenêtre doit contenir au moins un de ces objets. Les tables ou matrices vides, peuvent être créées manuellement (&new-table-lnk;) et remplies avec des données ou bien créées en important un fichier ASCII (&import-ascii-lnk;), ce qui créé automatiquement une nouvelle table.</para>
+<para>Quand l'application est lancée, un nouveau fichier projet sans nom est créé, consistant en une fenêtre grise principale (l'environnement de travail) qui peut contenir initialement une fenêtre vide, selon vos préférences. Le type de cette fenêtre peut être personnalisé en utilisant la boîte de dialogue <link linkend="preferences-dialog">Préférences</link>. Elle peut être une table, une matrice, un commentaire ou un graphe 2D vide. Afin d'être opérationnelle, cette fenêtre doit contenir au moins un de ces objets. Les tables ou matrices vides, peuvent être créées manuellement (&new-table-lnk;) et remplies avec des données ou bien créées en important un fichier ASCII (&import-ascii-lnk;), ce qui créé automatiquement une nouvelle table.</para>
 
-<para>L'utilisateur peut facilement naviguer dans le projet à l'aide de l'explorateur de projet ou des menus. L'explorateur de projet permet aussi à l'utilisateur de réaliser diverses opéraions sur la fenêtre (tables et graphes) comme : cacher, minimiser, fermer, renommer, imprimer, etc.</para>
+<para>L'utilisateur peut facilement naviguer dans le projet à l'aide de l'explorateur de projet ou des menus. L'explorateur de projet permet aussi à l'utilisateur de réaliser diverses opérations sur la fenêtre (tables et graphes) comme : cacher, minimiser, fermer, renommer, imprimer, etc.</para>
 
 </sect1>
 
@@ -100,7 +100,7 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
     <listitem>
       <indexterm><primary>table</primary></indexterm>
       <para>Une table se présente sous la forme d'un tableur qui peut être utilisé pour stocker des données. La table est une fenêtre à part entière (la fenêtre Table). Elle peut être utilisée pour réaliser des calculs ou de l'analyse statistique des données. Pour chaque table, les colonnes peuvent être labelisées comme X, Y pour le tracé de graphes 2D ou Z si vous envisagez de contruire un graphe 3D.</para>
-      <para>Une table peut être créée en utilisant la &new-table-lnk;. Il y a ensuite, plusieurs façons de remplir la table avec des données. Si vous voulez lire vos données d'un fichier ASCII, vous pouvez les importer en utilisant la &import-ascii-lnk;. Vous pouvez aussi entrer manuellement chaque valeur à partir du clavier. Enfin, vous pouvez la remplir avec le resultat d'une évaluation mathématique en utilisant la &set-column-values-lnk; à partir du &table-menu-lnk;</para>
+      <para>Une table peut être créée en utilisant la &new-table-lnk;. Il y a ensuite, plusieurs façons de remplir la table avec des données. Si vous voulez lire vos données d'un fichier ASCII, vous pouvez les importer en utilisant la &import-ascii-lnk;. Vous pouvez aussi entrer manuellement chaque valeur à partir du clavier. Enfin, vous pouvez la remplir avec le résultat d'une évaluation mathématique en utilisant la &set-column-values-lnk; à partir du &table-menu-lnk;</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -117,15 +117,15 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
       <indexterm>
         <primary>graphe</primary>
       </indexterm>
-      <para>Un graphe peut contenir une ou plusieurs <emphasis>planches</emphasis>. Une planche consiste en une <emphasis>zone de tracé</emphasis> unique avec des axes, du texte, des courbes et entourée par des lignes d'axe. Une ou plusieurs <emphasis>courbes</emphasis>, issues de données ou de fonctions sont placées sur la zone de tracé pour créer un <emphasis>graphe</emphasis>. Les planches et leurs graphes peuvent être disposées de diverses manières pour construire des matrices de graphes.</para>
-      <para>Une nouvelle planche peut être ajoutée à un graphe existant avec la &add-layer-lnk; à partir du &graph-menu-lnk;. Vous pouvez aussi effacer une planche existante avec la &remove-layer-lnk;, mais dans ce cas, vous effacez aussi le graphe de la planche. Vous pouvez aussi copier une planche à partir d'un graphe vers un autre ou copier un graphe existant vers un autre (la fenêtre sera ajoutée comme une nouvelle planche -- voir la section sur les <link linkend="sec-multilayer-plots">graphes multiplanches</link> pour plus de détails).</para>
+      <para>Un graphe peut contenir une ou plusieurs <emphasis>planches</emphasis>. Une planche consiste en une <emphasis>zone de tracé</emphasis> unique avec des axes, du texte, des courbes et entourée par des lignes d'axe. Une ou plusieurs <emphasis>courbes</emphasis>, issues de données ou de fonctions sont placées sur la zone de tracé pour créer un <emphasis>graphe</emphasis>. Les planches et leurs graphes peuvent être disposées de diverses manières pour construire des jeux de graphes.</para>
+      <para>Une nouvelle planche peut être ajoutée à un graphe existant avec la &add-layer-lnk; à partir du &graph-menu-lnk;. Vous pouvez aussi effacer une planche existante avec la &remove-layer-lnk;, mais dans ce cas, vous effacez aussi le graphe de la planche. Vous pouvez aussi copier une planche à partir d'un graphe vers une autre ou copier un graphe existant vers un autre (la fenêtre sera ajoutée comme une nouvelle planche -- voir la section sur les <link linkend="sec-multilayer-plots">graphes multiplanches</link> pour plus de détails).</para>
       <para>Les courbes peuvent être ajoutées de plusieurs façons. Vous pouvez sélectionner les données à partir de tables ou de matrices pour créer la courbe, ou créer la courbe à partir d'une foncton d'une ou deux variables (voir les sections <link linkend="sec-2d-plots">Graphes 2D</link> et <link linkend="sec-3d-plots">Graphes 3D</link>).</para>
     </listitem>
   </varlistentry>
   <varlistentry>
     <term><link linkend="sec-intro-note">La fenêtre Commentaire</link></term>
     <listitem>
-      <para>Cette fenêtre contient du texte et peut simplement être utilisée pour insérer des commentaires dans un projet, mais c'est en fait plus puissant que cela. Il peut être utilisé comme calculatrice pour exécuter des commandes simples ou pour écrire des scripts.</para>
+      <para>Cette fenêtre contient du texte et peut simplement être utilisée pour insérer des commentaires dans un projet, mais c'est en fait plus puissant que cela. Elle peut être utilisé comme calculatrice pour exécuter des commandes simples ou pour écrire des scripts.</para>
     </listitem>
   </varlistentry>
   <varlistentry>
@@ -153,7 +153,7 @@ Attention : Les graphes 2D ne sont pas encore correctement gérés dans ce mode 
 
       <indexterm><primary>table</primary></indexterm>
 <para>
-Lorsque l'on travaille avec des données, les tables possèdent le focus principale de &appname;. Fondamentalement, une table est une feuille de calcul simplifiée contenue dans une fenêtre qui peut être utilisée pour conrôler, éditer et convertir des données. Les tables sont hautement personnabilisables : toutes les préférences sur les couleurs et les polices s'appliquent en utilisant la &preferences-lnk; du &view-menu-lnk;, et vous pouvez redimensionner les lignes et les colonnes d'une table en utilisant le &table-menu-lnk; avec la &rows-lnk; ou la &columns-lnk;.
+Lorsque l'on travaille avec des données, les tables possèdent le focus principal de &appname;. Fondamentalement, une table est une feuille de calcul simplifiée contenue dans une fenêtre qui peut être utilisée pour contrôler, éditer et convertir des données. Les tables sont hautement personnabilisables : toutes les préférences sur les couleurs et les polices s'appliquent en utilisant la &preferences-lnk; du &view-menu-lnk;, et vous pouvez redimensionner les lignes et les colonnes d'une table en utilisant le &table-menu-lnk; avec la &rows-lnk; ou la &columns-lnk;.
 </para>
 
 <figure id="fig-the-table">
@@ -165,13 +165,13 @@ Lorsque l'on travaille avec des données, les tables possèdent le focus princip
   </mediaobject>
 </figure>
 
-<para> Chaque colonne d'une table possède un label, auquel nous pouvons donner un format : numerique, texte, date ou heure. Chaque colonne peut aussi avoir un drapeau tel : X, Y, Z, X-erreur, Y-erreur, label, or aucun (i.e., une simple colonne sans rien). Les colonnes en X représentenent les absisses tandis que les colonnes labellisées Y sont les ordonnées pour la création d'un graphe 2D. Une colonne doit avoir un drapeau X ou Y pour pouvoir être tracée sur un graphe. Les colonnes  X-erreur and Y-erreur peuvent être utilisées pour ajouter des barres d'erreurs sur une courbe d'un graphe 2D. Ces drapeaux peuvent être modifiés par les <link linkend="column-options-dialog">Propriétés</link>. Pour faire afficher cette boîte de dialogue, faites simplement un double-clic sur l'en-tête de colonne ou bien, utilisez la &column-options-lnk; du &table-menu-lnk;.</para>
+<para>Chaque colonne d'une table possède un label, auquel nous pouvons donner un format : numerique, texte, date ou heure. Chaque colonne peut aussi avoir un drapeau tel : X, Y, Z, X-erreur, Y-erreur, label, ou aucun (i.e., une simple colonne sans rien). Les colonnes en X représentent les abcisses tandis que les colonnes labellisées Y sont les ordonnées pour la création d'un graphe 2D. Une colonne doit avoir un drapeau X ou Y pour pouvoir être tracée sur un graphe. Les colonnes  X-erreur and Y-erreur peuvent être utilisées pour ajouter des barres d'erreurs sur une courbe d'un graphe 2D. Ces drapeaux peuvent être modifiés par les <link linkend="column-options-dialog">Propriétés</link>. Pour faire afficher cette boîte de dialogue, faites simplement un double-clic sur l'en-tête de colonne ou bien, utilisez la &column-options-lnk; du &table-menu-lnk;.</para>
 
-<para> Une colonne de table est sélectionnée en cliquant sur son label. Plusieurs colonnes sont sélectionnées de différentes façons. Premièrement, si les colonnes sont cote-à-cote, il est plus pratique de cliquer sur la première colonne puis, tout en maintenant le bouton de la souris enfoncé, de sélectionner les autres colonnes en passant sur les autres labels. Par contre, lorsque les colonnes ne sont adjacentes, vous pouvez les sélectionner successivement par l'appui simultané des touches <keycode>Ctrl</keycode> et clic droit de la souris sur les labels de la colonne. Ce clic vous permet auusi de désélectionner la colonne. Pour les désélectionner toutes, pressez (<keycode>Ctrl+A</keycode>).</para>
+<para>Une colonne de table est sélectionnée en cliquant sur son label. Plusieurs colonnes sont sélectionnées de différentes façons. Premièrement, si les colonnes sont cote-à-cote, il est plus pratique de cliquer sur la première colonne puis, tout en maintenant le bouton de la souris enfoncé, de sélectionner les autres colonnes en passant sur les autres labels. Par contre, lorsque les colonnes ne sont pas adjacentes, vous pouvez les sélectionner successivement par l'appui simultané des touches <keycode>Ctrl</keycode> et clic droit de la souris sur les labels de la colonne. Ce clic vous permet auusi de désélectionner la colonne. Pour les désélectionner toutes, pressez (<keycode>Ctrl+A</keycode>).</para>
 
-<para> Vous pouvez réaliser diverses opérations sur les colonnes sélectionnées : remplir avec des données, normaliser, trier, faire des statistiques et enfin, créer des courbes. Toutes ces fonctions peuvent être obtenues grâce au menu contextuel sur le label de la colonne ou en utilisant le &table-menu-lnk;.</para>
+<para>Vous pouvez réaliser diverses opérations sur les colonnes sélectionnées : remplir avec des données, normaliser, trier, faire des statistiques et enfin, créer des courbes. Toutes ces fonctions peuvent être obtenues grâce au menu contextuel sur le label de la colonne ou en utilisant le &table-menu-lnk;.</para>
 
-<para> Toutes les autres fonctions : renommer, dupliquer, exporter, imprimer et fermer peuvent aussi être affichées par le menu contextuel (clic droit en dehors des labels). </para>
+<para>Toutes les autres fonctions : renommer, dupliquer, exporter, imprimer et fermer peuvent aussi être affichées par le menu contextuel (clic droit en dehors des labels). </para>
 
 <para> Vous pouvez copier, couper et coller, les données entre tables et même entre tables d'une autre application (Excel, Gnumeric, etc.).</para>
 
@@ -202,8 +202,7 @@ Une différence entre une table et une matrice est que les matrices peuvent avoi
   </mediaobject>
 </figure>
 
-<para>Les valeurs qui sont stockées dans une matrice peuvent être créées à partir d'une fonction de la forme z=f(i, j, x, y) avec la &set-values-lnk;,
-i et j étant les numéros des colonnes et des lignes et x et y étant les coordonnées correspondantes. Vous pouvez aussi lire les données directement à partir d'un fichier ASCII avec la &import-ascii-lnk; ou à partir d'un fichier image.</para>
+<para>Les valeurs qui sont stockées dans une matrice peuvent être créées à partir d'une fonction de la forme z=f(i, j, x, y) avec la &set-values-lnk;, i et j étant les numéros des colonnes et des lignes et x et y étant les coordonnées correspondantes. Vous pouvez aussi lire les données directement à partir d'un fichier ASCII avec la &import-ascii-lnk; ou à partir d'un fichier image.</para>
 
 </sect2>
 
@@ -214,10 +213,10 @@ i et j étant les numéros des colonnes et des lignes et x et y étant les coord
 <sect2 id="sec-intro-plot-window">
 <title>Les graphes</title>
 
-<para>Un graphe est un conteneur pour tracer des données. Il contient une ou plusieurs planches, qui sont les conteneurs principaux d'un graphe. Chaque planche contient une zone de tracé dans laquelle, chaque courbe est placée au moment de la création du graphe. Chaque planche possède sa propre géométrie et ses propres propriétés graphiques (couleur d'arrière plan, cadre, etc.) L'example ci-dessous, présente un graphe avec deux planches qui possèdent des géométries différentes.</para>
+<para>Un graphe est un conteneur pour tracer des données. Il contient une ou plusieurs planches, qui sont les conteneurs principaux d'un graphe. Chaque planche contient une zone de tracé dans laquelle, chaque courbe est placée au moment de la création du graphe. Chaque planche possède sa propre géométrie et ses propres propriétés graphiques (couleur d'arrière plan, cadre, etc.) L'exemple ci-dessous, présente un graphe avec deux planches qui possèdent des géométries différentes.</para>
 
 <figure id="fig-plot-window">
-  <title>Example d'un graphe 2D de &appname; avec deux planches</title>
+  <title>Exemple d'un graphe 2D de &appname; avec deux planches</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/plot-window.png"/>
@@ -234,20 +233,20 @@ i et j étant les numéros des colonnes et des lignes et x et y étant les coord
 <para>le graphe lui-même. La <link linkend="custom-curves-dialog">boîte de dialogue des Propriétés</link> s'ouvrira. Vous pourrez alors ajouter de nouvelles courbes ou bien modifier l'apparence des courbes existantes.</para>
 </listitem>
 <listitem>
-<para>les axes ou les labels des axes : Le clic ouvrira la <link linkend="plot-options-dialog">boîte de dialogue des Options Générales</link>. Il vous permet de personnaliser les axes, les caractères et les labels des axes et de la grille.</para>
+<para>les axes ou les labels des axes : le clic ouvrira la <link linkend="plot-options-dialog">boîte de dialogue des Options Générales</link>. Elle vous permet de personnaliser les axes, les caractères et les labels des axes et de la grille.</para>
 </listitem>
 <listitem>
-<para>Les objets Texte, incluant la légende : Le clic ouvrira la <link linkend="text-options-dialog">boîte de dialogue des Options de Texte</link> permettant de personnaliser les polices de caractères des labels et du cadre dans lequel ils sont présents.</para>
+<para>Les objets Texte, incluant la légende : le clic ouvrira la <link linkend="text-options-dialog">boîte de dialogue des Options de Texte</link> permettant de personnaliser les polices de caractères des labels et du cadre dans lequel ils sont présents.</para>
 </listitem>
 <listitem>
-<para>Les objets Flêche/Ligne : Le clic fera apparaitre la <link linkend="arrow-dialog">boîte de dialogue des Options des Lignes</link>.</para>
+<para>Les objets Flêche/Ligne : le clic fera apparaitre la <link linkend="arrow-dialog">boîte de dialogue des Options des Lignes</link>.</para>
 </listitem>
 <listitem>
-<para>Les objets Image : Une boîte de dialogue s'ouvrira qui vous permettra de personnaliser la géométrie et la position de l'image.</para>
+<para>Les objets Image : une boîte de dialogue s'ouvrira qui vous permettra de personnaliser la géométrie et la position de l'image.</para>
 </listitem>
 </itemizedlist>
 
-<para>Un clic gauche sur un élément de la planche, le sélectionne. Vous pouvez le déselectionner à l'aide de la touchee <emphasis>Escape</emphasis> key. Un clic droit, fait apparaitre, le menu contextuel permettant, un accès rapide aux propriétés. Enfin, le dernier mais pas le moindre, vous devez savoir que que &appname; permet la sélection multiple d'objects différents d'une planche. Afin d'ajouter un objet à une sélection existante, pressez la touche <emphasis>Shift</emphasis> et cliquez sur l'élément que vous voulez ajouter. Les sélections mutiples peuvent être déplacées et redimmensionnées avec la souris.</para>
+<para>Un clic gauche sur un élément de la planche, le sélectionne. Vous pouvez le déselectionner à l'aide de la touche <emphasis>Escape</emphasis> key. Un clic droit, fait apparaitre, le menu contextuel permettant, un accès rapide aux propriétés. Enfin, le dernier mais pas le moindre, vous devez savoir que que &appname; permet la sélection multiple d'objects différents d'une planche. Afin d'ajouter un objet à une sélection existante, pressez la touche <emphasis>Shift</emphasis> et cliquez sur l'élément que vous voulez ajouter. Les sélections mutiples peuvent être déplacées et redimmensionnées avec la souris.</para>
 
 </sect2>
 
@@ -258,7 +257,7 @@ i et j étant les numéros des colonnes et des lignes et x et y étant les coord
 <sect2 id="sec-intro-note">
 <title>Les commentaires</title>
 
-<para>Un commentaire peut simplement être utilisé pour insérer du texte (commentaire, note, etc.) dans un projet, mais il est beaucoup plus puissant que cela. Il peut être utilisé comme calculatrice, pour exécuter de simples commandes ou pour écrire des scripts. L'évaluation d'expressions mathématiques et l'éxécution de code est réalisée via le menu contextuel, le menu du Script ou bien par un raccourci clavier. Pour plus d'informations sur la syntaxe, les expressions mathématiques supportées et l'écriture de scripts, reportez vous <link linkend="scripting">ici</link>.</para>
+<para>Un commentaire peut simplement être utilisé pour insérer du texte (commentaire, note, etc.) dans un projet, mais il est beaucoup plus puissant que cela. Il peut être utilisé comme calculatrice, pour exécuter de simples commandes ou pour écrire des scripts. L'évaluation d'expressions mathématiques et l'éxécution de code sont réalisées via le menu contextuel, le menu du Script ou bien par un raccourci clavier. Pour plus d'informations sur la syntaxe, les expressions mathématiques supportées et l'écriture de scripts, reportez vous <link linkend="scripting">ici</link>.</para>
 
 <figure id="fig-note-window">
   <title>La fenêtre de commentaire de &appname;</title>
@@ -266,10 +265,11 @@ i et j étant les numéros des colonnes et des lignes et x et y étant les coord
     <imageobject>
       <imagedata  format="PNG" fileref="pics/new-note1.png"/>
     </imageobject>
+
   </mediaobject>
 </figure>
 
-<para>Les fenêtres de commentaires offrent de puissantes fonctionnalités d'édition de texte, partoculièrement utiles pour l'écriture des scripts : personnalisation de la surbrillance de la syntaxe de Python, affichage des numéros de lignes, les fonctions rechercher et remplacer, l'autocompletion por les mots de plus de deux caractères. Vous pouvez activer/désactiver l'autocomplétion par les touches Ctrl+U. Les couleurs de la syntaxe peuvent être personnalisées via l'onglet <emphasis>Commentaires</emphasis> de la <link linkend="fig-preferences-dialog-notes">boîte de dialogue Préférences</link>.</para>
+<para>Les fenêtres de commentaires offrent de puissantes fonctionnalités d'édition de texte, particulièrement utiles pour l'écriture des scripts : personnalisation de la surbrillance de la syntaxe de Python, affichage des numéros de lignes, les fonctions rechercher et remplacer, l'autocompletion pour les mots de plus de deux caractères. Vous pouvez activer/désactiver l'autocomplétion par les touches Ctrl+U. Les couleurs de la syntaxe peuvent être personnalisées via l'onglet <emphasis>Commentaires</emphasis> de la <link linkend="fig-preferences-dialog-notes">boîte de dialogue Préférences</link>.</para>
 </sect2>
 
 <!--
@@ -311,7 +311,7 @@ i et j étant les numéros des colonnes et des lignes et x et y étant les coord
 
 <para>Il fournit une vue d'ensemble de la structure du projet et permet à l'utilisateur de réaliser diverses opérations sur les fenêtres (tables, graphes, et commentaires) dans l'environnement de travail : cacher, minimiser, fermer, renommer, imprimer, etc. Ces fonctions peuvent être appelées via le menu contextuel et affichées par un clic droit sur un des objets de l'explorateur.</para>
 <para>En double cliquant sur un objet, la fenêtre correspondante s'ouvre dans l'environnement de travail, même si elle était cachée auparavant.</para>
-<para>À partir de l'explorateur de projet, les différents objets peuvent être organisés dans des dossiers. Quand vous en sélectionnez un, la règle par défaut, impose que seuls les objets du dossiers pourront être affichés. Vous pouvez aussi afficher tous les objets des sous-dossiers si vous modifiez cetteY règle avec la commande "View Windows" pour "Windows in Active Folder and Subfolders".</para>
+<para>À partir de l'explorateur de projet, les différents objets peuvent être organisés dans des dossiers. Quand vous en sélectionnez un, la règle par défaut, impose que seuls les objets du dossiers pourront être affichés. Vous pouvez aussi afficher tous les objets des sous-dossiers si vous modifiez cette règle avec la commande "View Windows" pour "Windows in Active Folder and Subfolders".</para>
 
 </sect2>
 

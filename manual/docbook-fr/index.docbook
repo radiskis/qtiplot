@@ -613,7 +613,7 @@
 <!ENTITY flipH-cmd "<command>Mirroir H</command>">
 <!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
 
-<!ENTITY expand-cmd "<command>Étendre...</command>">
+<!ENTITY expand-cmd "<command>Etendre...</command>">
 <!ENTITY expand-lnk '<link linkend="expand-cmd">commande <command>Étendre...</command></link>'>
 
 <!ENTITY shrink-cmd "<command>Réduire...</command>">
