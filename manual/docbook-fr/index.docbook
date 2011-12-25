@@ -476,7 +476,7 @@
   <!ENTITY vectors-xyam-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/vectXYAM.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY double-y-cmd "<command>Double-Y</command>">
-<!ENTITY double-y-lnk '<link linkend="double-y-cmd"><command>Double-Y</command></link>'>
+<!ENTITY double-y-lnk '<link linkend="double-y-cmd">commande <command>Double-Y</command></link>'>
 <!ENTITY double-y-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/plot_double_y.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY waterfall-plot-cmd "<command>Waterfall</command>">
@@ -878,8 +878,8 @@
 <!ENTITY normalize-column-lnk '<link linkend="normalize-column-cmd"><command>Normalize -> Columns</command> command</link>'>
 <!ENTITY normalize-table-cmd "<command>Normalize -> Table</command>">
 <!ENTITY normalize-table-lnk '<link linkend="normalize-table-cmd"><command>Normalize -> Table</command> command</link>'>
-<!ENTITY correlate-cmd "<command>Correlate</command>">
-<!ENTITY correlate-lnk '<link linkend="correlate-cmd"><command>Correlate</command> command</link>'>
+<!ENTITY correlate-cmd "<command>Corrélation</command>">
+<!ENTITY correlate-lnk '<link linkend="correlate-cmd">commande <command>Corrélation</command></link>'>
 <!ENTITY autocorrelate-cmd "<command>Autocorrelate</command>">
 <!ENTITY autocorrelate-lnk '<link linkend="autocorrelate-cmd"><command>Autocorrelate</command> command</link>'>
 <!ENTITY convolute-cmd "<command>Convolute</command>">
@@ -944,8 +944,8 @@
 <!ENTITY interpolate-lnk '<link linkend="interpolate-cmd"><command>Interpolate...</command> command</link>'>
 <!ENTITY fit-fft-cmd "<command>Fit FFT</command>">
 <!ENTITY fit-fftr-lnk '<link linkend="fit-linear-cmd"><command>Fit Linear</command> command</link>'>
-<!ENTITY fit-linear-cmd "<command>Fit Linear</command>">
-<!ENTITY fit-linear-lnk '<link linkend="fit-linear-cmd"><command>Fit Linear</command> command</link>'>
+<!ENTITY fit-linear-cmd "<command>Ajustement linéaire</command>">
+<!ENTITY fit-linear-lnk '<link linkend="fit-linear-cmd">commande <command>Ajustement linéaire</command></link>'>
 <!ENTITY fit-polynomial-cmd "<command>Fit Polynomial...</command>">
 <!ENTITY fit-polynomial-lnk '<link linkend="fit-polynomial-cmd"><command>Fit Polynomial...</command> command</link>'>
 
@@ -978,16 +978,16 @@
 <!--
               menu: Analysis
 -->
-<!ENTITY analysis-menu-lnk '<link linkend="sec-analysis-menu">Analysis menu</link>'>
+<!ENTITY analysis-menu-lnk '<link linkend="sec-analysis-menu">menu Analyse</link>'>
 <!ENTITY fft-cmd "<command>FFT...</command>">
-<!ENTITY fft-lnk '<link linkend="fft-cmd"><command>FFT...</command> command</link>'>
-<!ENTITY non-linear-curve-fit-cmd "<command>Fit Wizard...</command>">
-<!ENTITY non-linear-curve-fit-lnk '<link linkend="non-linear-curve-fit-cmd"><command>The Fit Wizard...</command> command</link>'>
+<!ENTITY fft-lnk '<link linkend="fft-cmd">commande <command>FFT...</command></link>'>
+<!ENTITY non-linear-curve-fit-cmd "<command>Assistant d ajustement...</command>">
+<!ENTITY non-linear-curve-fit-lnk '<link linkend="non-linear-curve-fit-cmd">commande <command>Assistant d ajustement...</command></link>'>
   <!ENTITY non-linear-curve-fit-key "<keycode>Ctrl-Y</keycode>">
 <!--
               menu: Data
 -->
-<!ENTITY data-menu-lnk '<link linkend="sec-data-menu">Data menu</link>'>
+<!ENTITY data-menu-lnk '<link linkend="sec-data-menu">menu Data</link>'>
 <!ENTITY pointer-cmd "<command>Disable tools</command>">
 <!ENTITY pointer-lnk '<link linkend="pointer-cmd"><command>Disable tools</command> command</link>'>
   <!ENTITY pointer-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/pointer.png"/></imageobject></inlinemediaobject>'>
@@ -1026,7 +1026,7 @@
   <!ENTITY data-reader-key "<keycode>Ctrl-D</keycode>">
   <!ENTITY data-reader-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/select.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY select-data-range-cmd "<command>Select Data Range</command>">
-<!ENTITY select-data-range-lnk '<link linkend="select-data-range-cmd"><command>Select Data Range</command> command</link>'>
+<!ENTITY select-data-range-lnk '<link linkend="select-data-range-cmd">commande <command>Choisir la gamme de données</command></link>'>
   <!ENTITY select-data-range-key "<keycode>Alt-S</keycode>">
   <!ENTITY select-data-range-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/cursors.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY screen-reader-cmd "<command>Screen Reader</command>">
@@ -1308,6 +1308,7 @@
 
 </bookinfo>
 
+
 &introduction-chapter;
 <chapter id="using">
   &using-chapter;
@@ -1322,12 +1323,15 @@
 <chapter id="dialogs">
   &dialogs-chapter;
 </chapter>
+-->
 <chapter id="analysis">
   &analysis-chapter;
 </chapter>
+<!--
 <chapter id="scripting">
   &scripting-chapter;
 </chapter>
-&faq-chapter;
 -->
+&faq-chapter;
+
 </book>
