@@ -1,97 +1,97 @@
 <chapter id="faq">
-<title>Frequently asked questions</title>
+<title>Foires Aux Questions</title>
 
 <qandaset defaultlabel='qanda'>
 
 <qandaentry>
   <question>
-    <para>How can I visualise data from a text file?</para>
+    <para>Comment puis-je visualiser des données contenues dans un fichier texte ?</para>
   </question>
   <answer>
-    <para>Go to the &file-menu-lnk; and select the &import-ascii-lnk;.</para>
+    <para>Allez dans le &file-menu-lnk; et sélectionnez la &import-ascii-lnk;.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I plot data from a table (worksheet)?</para>
+    <para>Comment puis-je tracer des données d'une tableau (tableur) ?</para>
   </question>
   <answer>
-    <para>Click on the table header to choose the columns to plot and then right click. Chose the 'Plot' option from the pop-up menu and then the type of plot you want.</para>
-    <para>You can also use the plot assistant: press 'CTRL+ALT+W' keys to show it, or go to 'View' menu -> 'Plot wizard'.</para>
+    <para>Cliquez sur l'en-tête de la table pour choisir les colonnes à tracer puis faites un clic droit. Choisissez l'option 'Graphe' du menu, puis le type de graphe que vous voulez.</para>
+    <para>Vous pouvez aussi utiliser l'assistant : pressez 'CTrl+Alt+W' pour l'afficher ou bien, encore, allez au menu 'Affichage' -> 'Assistant graphique'.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I export a plot to an image format?</para>
+    <para>Comment puis-j exporter vers une image ?</para>
   </question>
   <answer>
-    <para>Right click in the plot window and chose the 'Export' option.</para>
+    <para>Faites un clic droit sur le graphe et choisissez l'option 'Exporter'.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>Can I export transparent images?</para>
+    <para>Puis-je exporter vers un format d'image transparente ?</para>
   </question>
   <answer>
-    <para>Yes, ".png" images have transparent background. See the &export-graph-current-lnk;.</para>
+    <para>Oui, les images '.png' ont un fond transparent. Voir la &export-graph-current-lnk;.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I export a text file?</para>
+    <para>Comment puis-je exporter vers un fichier texte ?</para>
   </question>
   <answer>
-    <para>Go to the &file-menu-lnk; and select the &export-ascii-lnk;.</para>
+    <para>Allez dans le &file-menu-lnk; et sélectionnez la &export-ascii-lnk;.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I choose a window using the project explorer?</para>
+    <para>Comment puis-je choisir une fenêtre avec l'explorateur de projet ?</para>
   </question>
   <answer>
-    <para>Double click on the window name will show the window maximized, even if it was hidden before.</para>
+    <para>Un double clic sur le nom de la fenêtre, fera apparaitre la fenêtre en mode maximisé, même si elle est cachée.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I choose the data range from a plot curve, when doing a curve fit?</para>
+    <para>Comment puis-je choisir la gamme des données d'un graphe, quand je veux faire un ajustement ?</para>
   </question>
   <answer>
-    <para>Go to the &data-menu-lnk; and use the &select-data-range-lnk;. Click in the plot window and use the 'Up' and 'Down' arrows keys to select the curve to analyse. Keeping 'CTRL' button and 'Left' or 'Right' arrow keys simultaneousely pressed permit to move the selected cursor and consequently to modify the data range.</para>
+    <para>Allez dans le &data-menu-lnk; et utilisez la &select-data-range-lnk;. Cliquez sur le graphe et utilisez les flêches 'haut' et 'bas' pour sélectionner la courbe à analyser. En gardant les touches 'Ctrl' et une des flêches 'gauche' ou 'droit' simultanément appuyées, permet de déplacer la courbe sélectionnée et par conséquent, de modifier la gamme des données.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>Can I fit a plot curve using my own function?</para>
+    <para>Puis-je ajuster une courbe en utilisant ma propre fonction ?</para>
   </question>
   <answer>
-    <para>Go to the &analysis-menu-lnk; and select the &non-linear-curve-fit-lnk;. Define the function (myFunction=...), enter the initial guesses for the parameters, choose the fitting range and the number of iterations and click 'OK'</para>
+    <para>Allez dans le &analysis-menu-lnk; et sélectionnez la &non-linear-curve-fit-lnk;. Définissez la fonction (maFonction = ...), entrez les données initiales pour les paramètres, choisissez la gamme et le nombre d'itérations puis cliquez 'Ok'.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I visualize a pixel line profile from an image?</para>
+    <para>Comment puis-je visualiser un profil en ligne de pixels d'une image ?</para>
   </question>
   <answer>
-    <para>Right click on the image you want to analyse and select the option 'View pixel line profile' from the popup menu. A dialog window opens and allows you to select the number of pixels used for the analysis. Choose a value and click "OK". Then click on the image to select the start point and move your mouse to select an end point while keeping the left button pressed. When you release the left button a plot window appears, representing the pixel intensity versus pixel index.</para>
+    <para>Faites un clic droit sur l'image que vous voulez analyser et sélectionnez l'option 'Voir le profil en pixel suivant une ligne' du menu contextuel. Une boîte de dialogue s'ouvre et vous permet de choisir le nombre de pixels utilisés. Choisissez une valeur et cliquez 'Ok'. Ensuite, cliquez sur l'image pour fixer le premier point et déplacer la souris pour choisir le point final, tout en maintenant le bouton gauche de la souris appuyé. Quand vous le relachez, une fenêtre apparait, contenant le profil en long en intensité en fonction de l'indice des pixels.</para>
   </answer>
 </qandaentry>
 
 <qandaentry>
   <question>
-    <para>How can I make a graph that has one x-axis, but two y-axes with different orders of magnitude?</para>
+    <para>Comment puis-je faire un graphe qui possède un seul axe X mais deux axes Y avec différents ordres de grandeurs d'amplitude ?</para>
   </question>
   <answer>
     <para>
-	Select at least two columns that you want to display and use the &double-y-lnk;.
+	Sélectionnez au moins deux colonnes que vous voulez afficher et utilisez la &double-y-lnk;.
 	</para>
   </answer>
 </qandaentry>
