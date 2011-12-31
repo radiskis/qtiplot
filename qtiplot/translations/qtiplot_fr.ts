@@ -158,11 +158,11 @@
     </message>
     <message>
         <source>Move data points</source>
-        <translation>Déplacer un point</translation>
+        <translation>Déplacer des points</translation>
     </message>
     <message>
         <source>Remove data points</source>
-        <translation>Supprimer un point</translation>
+        <translation>Supprimer des points</translation>
     </message>
     <message>
         <source>Draw line</source>
@@ -688,15 +688,15 @@
     </message>
     <message>
         <source>Plot area</source>
-        <translation>Graphe</translation>
+        <translation>Aires</translation>
     </message>
     <message>
         <source>&amp;Pie</source>
-        <translation>&amp;Secteur</translation>
+        <translation>&amp;parts de tarte</translation>
     </message>
     <message>
         <source>Plot pie</source>
-        <translation>Secteurs</translation>
+        <translation>Graphe en parts de tarte</translation>
     </message>
     <message>
         <source>&amp;Vectors &amp;XYXY</source>
@@ -972,7 +972,7 @@
     </message>
     <message>
         <source>This functionality is not available for pie plots!</source>
-        <translation>Cette fonctionnalité n&apos;est pas disponible pour des graphes à secteurs !</translation>
+        <translation>Cette fonctionnalité n&apos;est pas disponible pour des graphes en parts de tarte !</translation>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
@@ -2282,7 +2282,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>Re&amp;move Pie Curve</source>
-        <translation>&amp;Effacer les secteurs</translation>
+        <translation>&amp;Effacer les parts de tarte</translation>
     </message>
     <message>
         <source>Anal&amp;yze</source>
@@ -2379,7 +2379,7 @@ La première représente le signal et la seconde, la réponse de la fonction !</
     </message>
     <message>
         <source>&amp;Rescale to Show All</source>
-        <translation>&amp;Échelle automatique</translation>
+        <translation>&amp;Pleine échelle</translation>
     </message>
     <message>
         <source>Add Time Stamp</source>
@@ -3820,7 +3820,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Stack &amp;Bar</source>
-        <translation>&amp;Barres empilées</translation>
+        <translation>&amp;Rangées empilées</translation>
     </message>
     <message>
         <source>Stack &amp;Column</source>
@@ -4065,7 +4065,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation>&amp;Test de Student à un échantill&amp;on...</translation>
+        <translation>Test de Student à un échantill&amp;on...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
@@ -12336,7 +12336,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Pie</source>
-        <translation>Diagramme</translation>
+        <translation>parts de tarte</translation>
     </message>
     <message>
         <source>&amp;Scale layers to paper size</source>
@@ -12424,7 +12424,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Pie Geometry</source>
-        <translation>Géométrie du diagramme</translation>
+        <translation>Géométrie des parts de tarte</translation>
     </message>
     <message>
         <source>Automatic &amp;Format</source>
@@ -12448,7 +12448,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Dist. from Pie Edge</source>
-        <translation>Distance depuis le coin</translation>
+        <translation>Distance depuis le bord des parts</translation>
     </message>
     <message>
         <source>Counter cloc&amp;kwise</source>
