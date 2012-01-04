@@ -38,6 +38,12 @@ class Grid : public QwtPlotGrid
 public:
     Grid();
 
+	void enableXMaj(bool on = true){return enableX(on);};
+	bool xMajEnabled(){return xEnabled();};
+
+	void enableYMaj(bool on = true){return enableY(on);};
+	bool yMajEnabled(){return yEnabled();};
+
     bool xZeroLineEnabled(){return (mrkX != NULL)?true:false;};
     void enableZeroLineX(bool enable = true);
     bool yZeroLineEnabled(){return (mrkY != NULL)?true:false;};

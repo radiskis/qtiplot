@@ -774,10 +774,17 @@ class Graph: public QwtPlot
   		Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
 		//! Restores a spectrogram. Used when opening a project file.
   		void restoreSpectrogram(ApplicationWindow *app, const QStringList& lst);
+
+		//! \name Histograms
+		//@{
+		QwtHistogram* histogram(int index);
+		//! Convenience function provided for Python scripts
+		QwtHistogram* addHistogram(Table*, const QString& colName, int startRow = 0, int endRow = -1);
         //! Add a matrix histogram  to the graph
         QwtHistogram* addHistogram(Matrix *m);
         //! Restores a histogram from a project file.
         QwtHistogram* restoreHistogram(Matrix *m, const QStringList& l);
+		//@}
 
 		bool antialiasing(){return d_antialiasing;};
 		//! Enables/Disables antialiasing of plot items.

@@ -3667,6 +3667,38 @@ DataCurve* Graph::insertCurve(Table* xt, const QString& xColName, Table* yt, con
 	return c;
 }
 
+QwtHistogram * Graph::histogram(int index)
+{
+	DataCurve *c = dataCurve(index);
+	if (c && c->type() == Histogram)
+		return (QwtHistogram*)c;
+
+	return 0;
+}
+
+//! Convenience function provided for Python scripts
+QwtHistogram* Graph::addHistogram(Table* w, const QString& colName, int startRow, int endRow)
+{
+	if (!w)
+		return 0;
+
+	QString name(colName);
+	QString aux = w->objectName() + "_";
+	if (!name.startsWith(aux))
+		name.prepend(aux);
+
+	QwtHistogram *h = new QwtHistogram(w, name, startRow, endRow);
+	insertCurve(h);
+	h->loadData();
+
+	CurveLayout cl = initCurveLayout(Histogram);
+	updateCurveLayout(h, &cl);
+
+	addLegendItem();
+	updatePlot();
+	return h;
+}
+
 QwtHistogram* Graph::addHistogram(Matrix *m)
 {
 	if (!m)
