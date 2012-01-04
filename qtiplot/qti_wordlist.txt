@@ -154,12 +154,12 @@ setFont
 setOriginCoord
 setOrigin
 Grid
-enableXMax
-xMaxEnabled
+enableXMaj
+xMajEnabled
 enableXMin
 xMinEnabled
-enableYMax
-yMaxEnabled
+enableYMaj
+yMajEnabled
 enableYMin
 yMinEnabled
 xZeroLineEnabled
@@ -233,6 +233,7 @@ addFunction
 addPolarFunction
 addParametricFunction
 addErrorBars
+histogram
 addHistogram
 addArrow
 arrowsList

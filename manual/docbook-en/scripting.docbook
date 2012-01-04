@@ -2423,9 +2423,9 @@ grid.setMajPenX(QtGui.QPen(QtCore.Qt.red, 1))
 grid.setMinPenX(QtGui.QPen(QtCore.Qt.yellow, 1, QtCore.Qt.DotLine))
 grid.setMajPenY(QtGui.QPen(QtCore.Qt.green, 1))
 grid.setMinPenY(QtGui.QPen(QtCore.Qt.blue, 1, QtCore.Qt.DashDotLine))
-grid.enableXMax(True)
+grid.enableXMaj()
 grid.enableXMin()
-grid.enableYMax()
+grid.enableYMaj(False)
 grid.enableYMin(False)
 grid.enableZeroLineX(True)
 grid.enableZeroLineY(False)
@@ -3024,6 +3024,22 @@ s.updateData()
 <title>Histograms</title>
 
 As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
+The script bellow shows a straightforward way of plotting a histogram from a table column:
+<programlisting>
+h = newGraph().activeLayer().addHistogram(table("Table1"), "Table1_2")
+h.setBinning(5, 1, 30)
+h.loadData()
+</programlisting>
+
+It is also possible to get a reference to a previously created histogram and to modify it according to your needs:
+<programlisting>
+g = graph("Graph1").activeLayer()
+h = g.histogram(0)# g is a plot containing one histogram
+h.setBinning(2, 1, 30)
+h.loadData()
+g.replot()
+</programlisting>
+
 Here's a small script showing how to customize a histogram and how to get access to the
 statistical information in the histogram (bin positions, counts, mean, standard deviation, etc...):
 <programlisting>
@@ -3048,8 +3064,8 @@ print "Mean = ", h.mean()
 
 You can also enable autobinning (a default number of ten bins will be used):
 <programlisting>
- h.setAutoBinning()
- </programlisting>
+h.setAutoBinning()
+</programlisting>
 </sect2>
 
 <sect2 id = "Python-BoxWhiskersPlos">

@@ -1747,13 +1747,17 @@ public:
 
 	Grid();
 
+	//! obsolete, use enableXMaj() instead
 	void enableX(bool = true) /PyName=enableXMax/;
-	bool xEnabled() /PyName=xMaxEnabled/;
+	void enableXMaj(bool on = true);
+	bool xMajEnabled();
 	void enableXMin(bool = true);
 	bool xMinEnabled();
 
+	//! obsolete, use enableYMaj() instead
 	void enableY(bool = true) /PyName=enableYMax/;
-	bool yEnabled() /PyName=yMaxEnabled/;
+	void enableYMaj(bool on = true);
+	bool yMajEnabled();
 	void enableYMin(bool = true);
 	bool yMinEnabled();
 
@@ -1917,6 +1921,8 @@ public:
 		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
+  QwtHistogram* histogram(int);
+  QwtHistogram* addHistogram(Table*, const QString& colName, int startRow = 0, int endRow = -1);
   QwtHistogram* addHistogram(Matrix*);
   Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
   Spectrogram* spectrogram(Matrix *m);
