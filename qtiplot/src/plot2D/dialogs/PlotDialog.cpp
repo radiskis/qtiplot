@@ -3165,13 +3165,14 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         }
     }
 
-    if (curveType == Graph::Histogram){//Histogram page
-        QwtHistogram *h = (QwtHistogram*)i;
-        if (h){
-            automaticBox->setChecked(h->autoBinning());
-            setAutomaticBinning();
-        }
-    }
+	if (curveType == Graph::Histogram){//Histogram page
+		QwtHistogram *h = (QwtHistogram*)i;
+		if (h){
+			bool autoBin = h->autoBinning();
+			automaticBox->setChecked(autoBin);
+			setAutomaticBinning(autoBin);
+		}
+	}
 
     if (curveType == Graph::VectXYXY || curveType == Graph::VectXYAM){//Vector page
         VectorCurve *v = (VectorCurve*)i;
@@ -3963,32 +3964,31 @@ bool PlotDialog::acceptParams()
 void PlotDialog::setAutomaticBinning(bool on)
 {
 	GroupBoxH->setEnabled(!on);
-	if (on){
-		QTreeWidgetItem *it = listBox->currentItem();
-		if (!it)
-			return;
 
-		CurveTreeItem *item = (CurveTreeItem *)it;
-		QwtPlotItem *plotItem = (QwtPlotItem *)item->plotItem();
-		if (!plotItem)
-			return;
+	QTreeWidgetItem *it = listBox->currentItem();
+	if (!it)
+		return;
 
-		QwtHistogram *h = (QwtHistogram *)plotItem;
-		if (!h || h->type() != Graph::Histogram)
-			return;
+	CurveTreeItem *item = (CurveTreeItem *)it;
+	QwtPlotItem *plotItem = (QwtPlotItem *)item->plotItem();
+	if (!plotItem)
+		return;
 
-		binSizeBox->blockSignals(true);
-		binSizeBox->setValue(h->binSize());
-		binSizeBox->blockSignals(false);
+	QwtHistogram *h = (QwtHistogram *)plotItem;
+	if (!h || h->type() != Graph::Histogram)
+		return;
 
-		histogramBeginBox->blockSignals(true);
-		histogramBeginBox->setValue(h->begin());
-		histogramBeginBox->blockSignals(false);
+	binSizeBox->blockSignals(true);
+	binSizeBox->setValue(h->binSize());
+	binSizeBox->blockSignals(false);
 
-		histogramEndBox->blockSignals(true);
-		histogramEndBox->setValue(h->end());
-		histogramEndBox->blockSignals(false);
-	}
+	histogramBeginBox->blockSignals(true);
+	histogramBeginBox->setValue(h->begin());
+	histogramBeginBox->blockSignals(false);
+
+	histogramEndBox->blockSignals(true);
+	histogramEndBox->setValue(h->end());
+	histogramEndBox->blockSignals(false);
 }
 
 void PlotDialog::setBoxType(int index)
