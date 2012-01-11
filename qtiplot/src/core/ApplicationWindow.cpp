@@ -12539,7 +12539,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 					if (d_file_version < 72)
 						colsList.prepend(w->colName(curve[1].toInt()));
 					else
-                        colsList.prepend(curve[1]);
+						colsList.prepend(curve[1]);
 
 					int startRow = 0;
 					int endRow = -1;
@@ -12573,17 +12573,16 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				}
 
-				if(plotType == Graph::Histogram){
-				    QwtHistogram *h = (QwtHistogram *)ag->curve(curveID);
+				if (plotType == Graph::Histogram){
+					QwtHistogram *h = (QwtHistogram *)ag->curve(curveID);
 					if (d_file_version <= 76)
-                        h->setBinning(curve[16].toInt(),curve[17].toDouble(),curve[18].toDouble(),curve[19].toDouble());
+						h->setBinning(curve[16].toInt(),curve[17].toDouble(),curve[18].toDouble(),curve[19].toDouble());
 					else
 						h->setBinning(curve[17].toInt(),curve[18].toDouble(),curve[19].toDouble(),curve[20].toDouble());
-                    h->loadData();
+					h->loadData();
 				}
 
-				if(plotType == Graph::VerticalBars || plotType == Graph::HorizontalBars ||
-						plotType == Graph::Histogram){
+				if (plotType == Graph::VerticalBars || plotType == Graph::HorizontalBars || plotType == Graph::Histogram){
 					if (d_file_version <= 76)
 						ag->setBarsGap(curveID, curve[15].toInt(), 0);
 					else
@@ -12678,7 +12677,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 			curveID++;
 		} else if (s.contains ("ErrorBars")){
-			QStringList curve = s.split("\t", QString::SkipEmptyParts);
+			QStringList curve = s.split("\t");
 			if (!app->renamedTables.isEmpty()){
 				QString caption = (curve[4]).left((curve[4]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
