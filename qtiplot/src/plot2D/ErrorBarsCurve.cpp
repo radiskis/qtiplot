@@ -240,25 +240,26 @@ QwtDoubleRect ErrorBarsCurve::boundingRect() const
 	int size = dataSize();
 
 	QwtArray <double> X(size), Y(size), min(size), max(size);
-	for (int i=0; i<size; i++){
-		X[i]=x(i);
-		Y[i]=y(i);
+	for (int i = 0; i < size; i++){
+		double xv = x(i), yv = y(i), errv = err[i];
+		X[i] = xv;
+		Y[i] = yv;
 		if (type == Vertical){
-			min[i] = y(i) - err[i];
-			max[i] = y(i) + err[i];
+			min[i] = yv - errv;
+			max[i] = yv + errv;
 		} else {
-			min[i] = x(i) - err[i];
-			max[i] = x(i) + err[i];
+			min[i] = xv - errv;
+			max[i] = xv + errv;
 		}
 	}
 
 	QwtArrayData *erMin, *erMax;
-	if (type == Vertical) {
-		erMin=new QwtArrayData(X, min);
-		erMax=new QwtArrayData(X, max);
+	if (type == Vertical){
+		erMin = new QwtArrayData(X, min);
+		erMax = new QwtArrayData(X, max);
 	} else {
-		erMin=new QwtArrayData(min, Y);
-		erMax=new QwtArrayData(max, Y);
+		erMin = new QwtArrayData(min, Y);
+		erMax = new QwtArrayData(max, Y);
 	}
 
 	QwtDoubleRect minrect = erMin->boundingRect();
@@ -294,8 +295,8 @@ void ErrorBarsCurve::loadData()
 	if (!d_master_curve)
 		return;
 
-    if (!plot())
-        return;
+	if (!plot())
+		return;
 
 	Table *mt = d_master_curve->table();
 	if (!mt)
@@ -304,29 +305,50 @@ void ErrorBarsCurve::loadData()
 	int xcol = mt->colIndex(d_master_curve->xColumnName());
 	int ycol = mt->colIndex(d_master_curve->title().text());
 	int errcol = d_table->colIndex(title().text());
-	if (xcol<0 || ycol<0 || errcol<0)
+
+	bool histogram = d_master_curve->type() == Graph::Histogram;
+	if (histogram && (ycol < 0 || errcol < 0))
+		return;
+	else if (!histogram && (xcol < 0 || ycol < 0 || errcol <0))
 		return;
 
 	d_start_row = d_master_curve->startRow();
 	d_end_row = d_master_curve->endRow();
-    int r = abs(d_end_row - d_start_row) + 1;
+	int r = abs(d_end_row - d_start_row) + 1;
 	QVector<double> X(r), Y(r), err(r);
-    int data_size = 0;
-    QLocale locale = d_table->locale();
-	for (int i = d_start_row; i <= d_end_row; i++){
-		QString xval = mt->text(i, xcol);
-		QString yval = mt->text(i, ycol);
-		QString errval = d_table->text(i, errcol);
-		if (!xval.isEmpty() && !yval.isEmpty()){
-			X[data_size] = d_master_curve->x(data_size);
-			Y[data_size] = d_master_curve->y(data_size);
+	int data_size = 0;
+	QLocale locale = d_table->locale();
 
+	if (histogram){
+		int size = d_master_curve->dataSize();
+		for (int i = d_start_row; i <= d_end_row && data_size < size; i++){
+			QString errval = d_table->text(i, errcol);
 			if (!errval.isEmpty())
 				err[data_size] = locale.toDouble(errval);
 			else
 				err[data_size] = 0.0;
 
+			X[data_size] = d_master_curve->x(data_size);
+			Y[data_size] = d_master_curve->y(data_size);
+
 			data_size++;
+		}
+	} else {
+		for (int i = d_start_row; i <= d_end_row; i++){
+			QString xval = mt->text(i, xcol);
+			QString yval = mt->text(i, ycol);
+			QString errval = d_table->text(i, errcol);
+			if (!xval.isEmpty() && !yval.isEmpty()){
+				X[data_size] = d_master_curve->x(data_size);
+				Y[data_size] = d_master_curve->y(data_size);
+
+				if (!errval.isEmpty())
+					err[data_size] = locale.toDouble(errval);
+				else
+					err[data_size] = 0.0;
+
+				data_size++;
+			}
 		}
 	}
 
@@ -357,7 +379,7 @@ QStringList ErrorBarsCurve::plotAssociation()
 
 bool ErrorBarsCurve::updateData(Table *t, const QString& colName)
 {
-	if (d_table != t || colName != title().text())
+	if (d_table != t)
 		return false;
 
 	loadData();

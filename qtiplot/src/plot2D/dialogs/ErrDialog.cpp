@@ -200,9 +200,6 @@ void ErrDialog::add()
 		return;
 	}
 
-	if (curve->xColumnName().isEmpty())
-		return;
-
 	int direction = xErrBox->isChecked() ? 0 : 1;
 
 	ErrorBarsCurve *er = NULL;
