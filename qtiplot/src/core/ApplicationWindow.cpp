@@ -2,7 +2,7 @@
 	File                 : ApplicationWindow.cpp
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2011 by Ion Vasilief,
+	Copyright            : (C) 2004 - 2012 by Ion Vasilief,
 						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen, Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot's main window
@@ -9857,13 +9857,16 @@ void ApplicationWindow::analysisMenuAboutToShow()
 		anovaMenu->addAction(actionTwoWayANOVA);
 #endif
         analysisMenu->insertSeparator();
-		if (((Table *)w)->selectedColumns().count() > 1){
-			QMenu *sortMenu = analysisMenu->addMenu("&" + tr("Sort Columns"));
-			sortMenu->addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
-			sortMenu->addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+
+		bool columns = ((Table *)w)->selectedColumns().count() > 1;
+		QString sortMenuText = columns ? "&" + tr("Sort Columns") : tr("Sort Colu&mn");
+		QMenu *sortMenu = analysisMenu->addMenu(sortMenuText);
+		sortMenu->addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
+		sortMenu->addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+		if (columns)
 			sortMenu->addAction(actionSortSelection);
-			analysisMenu->addMenu(sortMenu);
-		}
+		analysisMenu->addMenu(sortMenu);
+
         analysisMenu->addAction(actionSortTable);
 
 		normMenu->clear();
