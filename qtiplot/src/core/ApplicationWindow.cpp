@@ -12692,7 +12692,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				DataCurve *mc = useMasterIndex ? ag->dataCurve(curve[11].toInt()) : ag->masterCurve(curve[2], curve[3]);
 				ErrorBarsCurve *err = ag->addErrorBars(mc, errTable, curve[4], curve[1].toInt(),
 					curve[5].toDouble(), curve[6].toInt(), QColor(curve[7]),
-					curve[8].toInt(), curve[10].toInt(), curve[9].toInt());
+					curve[8].toInt(), curve[10].toInt(), curve[9].toInt(), true);
 
 				if (!mc && useMasterIndex){
 					mcIndexes << curve[11].toInt();
