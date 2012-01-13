@@ -2,7 +2,7 @@
     File                 : QwtHistogram.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2006 - 2009 by Ion Vasilief
+	Copyright            : (C) 2006 - 2012 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Histogram class
 
@@ -27,7 +27,8 @@
  *                                                                         *
  ***************************************************************************/
 #include "QwtHistogram.h"
-#include "Graph.h"
+#include <ErrorBarsCurve.h>
+#include <Graph.h>
 #include <Matrix.h>
 #include <MatrixModel.h>
 #include <QPainter>
@@ -195,6 +196,9 @@ void QwtHistogram::loadData()
 	gsl_histogram_free (h);
 	if (d_show_labels)
 		loadLabels();
+
+	foreach(ErrorBarsCurve *err, d_error_bars)
+		err->loadData();
 }
 
 void QwtHistogram::loadDataFromMatrix()

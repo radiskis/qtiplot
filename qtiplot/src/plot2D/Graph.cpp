@@ -3322,8 +3322,11 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yCol
 }
 
 ErrorBarsCurve* Graph::addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
-				int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
+				int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus, bool force)
 {
+	if (!c && !force)
+		return 0;
+
 	ErrorBarsCurve *er = new ErrorBarsCurve(type, errTable, errColName);
 	insertCurve(er);
 
@@ -3442,20 +3445,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		plotBox(w, names, startRow, endRow);
 	else if (style == VectXYXY || style == VectXYAM)
 		plotVectors(w, names, style, startRow, endRow);
-	else if (style == Histogram){
-		int curves = names.count();
-		for (int i=0; i<curves; i++){
-			QwtHistogram *h = new QwtHistogram(w, names[i], startRow, endRow);
-			if (h){
-				insertCurve(h);
-				h->loadData();
-				CurveLayout cl = initCurveLayout(style, curves);
-				cl.lWidth = lWidth;
-				updateCurveLayout(h, &cl);
-				addLegendItem();
-			}
-		}
-	} else {
+	else {
 		int curves = names.count();
 		QStringList masterCurvesLst = QStringList(), errLst = QStringList();
 		for (int i = 0; i < curves; i++){//We rearrange the list so that the error bars are placed at the end
@@ -3478,7 +3468,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
 				int xcol = w->colX(j);
 				int ycol = w->colY(j, xcol, masterCurvesLst);
-				if (xcol < 0 || ycol < 0)
+				if ((style == Histogram && ycol < 0) || (style != Histogram && (xcol < 0 || ycol < 0)))
 					return false;
 
 				ErrorBarsCurve *er = NULL;
@@ -3506,8 +3496,17 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 					mc->setLabelsColumnName(labelsCol);
 				} else
 					return false;
-			} else
-				c = (PlotCurve *)insertCurve(w, lst[i], style, startRow, endRow);
+			} else {
+				if (style == Histogram){
+					c = new QwtHistogram(w, lst[i], startRow, endRow);
+					if (c){
+						insertCurve(c);
+						((QwtHistogram*)c)->loadData();
+						addLegendItem();
+					}
+				} else
+					c = (PlotCurve *)insertCurve(w, lst[i], style, startRow, endRow);
+			}
 
 			if (c && c->type() != ErrorBars){
 				CurveLayout cl = initCurveLayout(style, curves - errCurves);
@@ -5935,13 +5934,15 @@ DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
 {
 	QString master_curve = xColName + "(X)," + yColName + "(Y)";
 	foreach(QwtPlotItem *it, d_curves){
-        if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-            continue;
-        if (((PlotCurve *)it)->type() == Function)
-            continue;
+		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			continue;
+		if (((PlotCurve *)it)->type() == Function)
+			continue;
 
-		if (((DataCurve *)it)->xColumnName() == xColName && it->title().text() == yColName)
-			return (DataCurve *)it;
+		DataCurve *c = (DataCurve *)it;
+		if ((c->type() == Histogram && it->title().text() == yColName) ||
+			(c->type() != Histogram && c->xColumnName() == xColName && it->title().text() == yColName))
+			return c;
 	}
 	return NULL;
 }
