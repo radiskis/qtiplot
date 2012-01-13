@@ -7488,13 +7488,8 @@ void ApplicationWindow::sortSelection()
 void ApplicationWindow::normalizeActiveTable()
 {
 	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	if (int(t->selectedColumns().count())>0)
+	if (t)
 		t->normalize();
-	else
-		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a column first!"));
 }
 
 void ApplicationWindow::normalizeSelection()
