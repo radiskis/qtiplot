@@ -114,12 +114,15 @@ IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WFlags fl )
 
 	ApplicationWindow *app = (ApplicationWindow *)parent;
 
+	int rows = t->numRows();
 	gl1->addWidget(new QLabel(tr("From row")), 0, 0);
 	boxStartRow = new QSpinBox();
+	boxStartRow->setRange(1, rows);
 	gl1->addWidget(boxStartRow, 0, 1);
 
 	gl1->addWidget(new QLabel(tr("To row")), 1, 0);
 	boxEndRow = new QSpinBox();
+	boxEndRow->setRange(1, rows);
 	gl1->addWidget(boxEndRow, 1, 1);
 
 	boxSortData = new QCheckBox(tr("&Sort data"));
