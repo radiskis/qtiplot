@@ -196,7 +196,7 @@ void PolynomialFit::fit()
 		showLegend();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
+	if (app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 }
 
@@ -318,7 +318,7 @@ void LinearFit::fit()
 	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
+	if (app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 }
 
@@ -419,7 +419,7 @@ void LinearSlopeFit::fit()
 	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
+	if (app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 }
 

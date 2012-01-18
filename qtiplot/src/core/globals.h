@@ -39,6 +39,6 @@ const char * extra_version = ".10";
 const char * svn_revision = " svn 2321";//SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
 
 //! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2011 Ion Vasilief";
+const char * copyright_string = "Copyright (C) 2004-2012 Ion Vasilief";
 //! Release date as a string
-const char * release_date = " 2011/12/10";
+const char * release_date = " 2012/01/17";

@@ -724,7 +724,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	fit_output_precision = 13;
 	pasteFitResultsToPlot = false;
-	writeFitResultsToLog = true;
+	d_write_fit_results_to_log = true;
 	generateUniformFitPoints = true;
 	fitPoints = 100;
 	generatePeakCurves = true;
@@ -5716,7 +5716,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/Fitting");
 	fit_output_precision = settings.value("/OutputPrecision", 15).toInt();
 	pasteFitResultsToPlot = settings.value("/PasteResultsToPlot", false).toBool();
-	writeFitResultsToLog = settings.value("/WriteResultsToLog", true).toBool();
+	d_write_fit_results_to_log = settings.value("/WriteResultsToLog", true).toBool();
 	generateUniformFitPoints = settings.value("/GenerateFunction", true).toBool();
 	fitPoints = settings.value("/Points", 100).toInt();
 	generatePeakCurves = settings.value("/GeneratePeakCurves", true).toBool();
@@ -6207,7 +6207,7 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/Fitting");
 	settings.setValue("/OutputPrecision", fit_output_precision);
 	settings.setValue("/PasteResultsToPlot", pasteFitResultsToPlot);
-	settings.setValue("/WriteResultsToLog", writeFitResultsToLog);
+	settings.setValue("/WriteResultsToLog", d_write_fit_results_to_log);
 	settings.setValue("/GenerateFunction", generateUniformFitPoints);
 	settings.setValue("/Points", fitPoints);
 	settings.setValue("/GeneratePeakCurves", generatePeakCurves);

@@ -4107,15 +4107,17 @@ and band block (<varname>FFTFilter.BandBlock</varname>).
 </sect3>
 <sect3 id="Python-Fitting">
 <title>Fitting</title>
-        Assuming you have a graph named "Graph1" displaying a curve entitled "Table1_2" on its active layer,
-        a minimal Fit example would be:
-        <programlisting>
+Assuming you have a graph named "Graph1" displaying a curve entitled "Table1_2" on its active layer,
+a minimal Fit example would be:
+<programlisting>
 f = GaussFit(graph("Graph1").activeLayer().curve(0))
 f.guessInitialValues()
 f.fit()
-	  </programlisting> This creates a new GaussFit object on the curve, lets it guess
-        the start parameters and does the fit. The following fit types are
-        supported: <itemizedlist>
+</programlisting>
+This creates a new GaussFit object on the curve, lets it guess
+the start parameters and does the fit. The following fit types are
+supported:
+<itemizedlist>
             <listitem>
               <para>LinearFit(curve)</para>
             </listitem>
@@ -4228,6 +4230,12 @@ f.dataSize()
 f.numParameters()
 f.parametersTable("params")
 f.covarianceMatrix("cov")
+</programlisting>
+
+Writing the fit results to log is a time consuming operation and, especially when you need to
+perform a large number of fits, you can disable/enable this functionality using:
+<programlisting>
+setWriteFitResultsToLog(False) # the boolean parameter of this method is True by default
 </programlisting>
 
 There are a number of statistical functions allowing you to test the goodness of the fit:

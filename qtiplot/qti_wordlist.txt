@@ -935,3 +935,5 @@ setYComment
 zComment
 setZComment
 axisScaleDiv
+writeFitResultsToLog
+setWriteFitResultsToLog
