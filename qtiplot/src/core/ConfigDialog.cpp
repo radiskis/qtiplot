@@ -1015,7 +1015,7 @@ void ConfigDialog::initFittingPage()
 	boxPrecision->setValue(app->fit_output_precision);
 
 	logBox = new QCheckBox();
-	logBox->setChecked(app->writeFitResultsToLog);
+	logBox->setChecked(app->writeFitResultsToLog());
 	fitParamsLayout->addWidget(logBox, 1, 0);
 
 	plotLabelBox = new QCheckBox();
@@ -2637,7 +2637,7 @@ void ConfigDialog::apply()
 	// fitting page
 	app->fit_output_precision = boxPrecision->value();
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
-	app->writeFitResultsToLog = logBox->isChecked();
+	app->setWriteFitResultsToLog(logBox->isChecked());
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
 	app->generatePeakCurves = groupBoxMultiPeak->isChecked();
@@ -3772,7 +3772,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	groupBoxMultiPeak->setChecked(app->generatePeakCurves);
 	boxPeaksColor->setColor(app->peakCurvesColor);
 	boxPrecision->setValue(app->fit_output_precision);
-	logBox->setChecked(app->writeFitResultsToLog);
+	logBox->setChecked(app->writeFitResultsToLog());
 	plotLabelBox->setChecked(app->pasteFitResultsToPlot);
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
 	boxMultiPeakMsgs->setChecked(app->d_multi_peak_messages);

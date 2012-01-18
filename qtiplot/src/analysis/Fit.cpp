@@ -975,7 +975,7 @@ void Fit::fit()
 	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog)
+	if (app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(iterations, status));
 
 	QApplication::restoreOverrideCursor();

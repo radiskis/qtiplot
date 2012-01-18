@@ -2435,6 +2435,9 @@ public:
   Matrix* tableToMatrixRegularXYZ(Table* t, const QString& colName);
   Table* matrixToTable(Matrix* m, MatrixToTableConversion = Direct);
 
+  bool writeFitResultsToLog();
+  void setWriteFitResultsToLog(bool on = true);
+
   QTextEdit *resultsLog();
   void displayInfo(const QString& text);
   QLineEdit *infoLineEdit();

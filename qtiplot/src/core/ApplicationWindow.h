@@ -254,6 +254,9 @@ public:
 	void setExcelImportMethod(const ExcelImportMethod& method){d_excel_import_method = method;};
 
 	void showNoDataMessage();
+	//! Write fit output information to Result Log
+	bool writeFitResultsToLog(){return d_write_fit_results_to_log;}
+	void setWriteFitResultsToLog(bool on = true){d_write_fit_results_to_log = on;}
 
 public slots:
 	//! \name Projects and Project Files
@@ -1320,7 +1323,7 @@ public:
 	bool pasteFitResultsToPlot;
 
 	//! Write fit output information to Result Log
-	bool writeFitResultsToLog;
+	bool d_write_fit_results_to_log;
 
 	//! precision used for the output of the fit operations
 	int fit_output_precision;

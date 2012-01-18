@@ -663,7 +663,7 @@ void FitDialog::initAdvancedPage()
     gb2->setLayout(gl2);
 
 	logBox = new QCheckBox (tr("&Write Parameters to Result Log"));
-	logBox->setChecked(app->writeFitResultsToLog);
+	logBox->setChecked(app->writeFitResultsToLog());
 	connect( logBox, SIGNAL(stateChanged(int)), this, SLOT(enableApplyChanges(int)));
 
 	plotLabelBox = new QCheckBox (tr("&Paste Parameters to Plot"));
@@ -770,7 +770,7 @@ void FitDialog::applyChanges()
 	}
 
 	app->pasteFitResultsToPlot = plotLabelBox->isChecked();
-	app->writeFitResultsToLog = logBox->isChecked();
+	app->setWriteFitResultsToLog(logBox->isChecked());
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
 	if (d_current_fit && !d_current_fit->isA("PolynomialFit") &&
