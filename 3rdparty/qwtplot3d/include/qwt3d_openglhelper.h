@@ -2,11 +2,8 @@
 #define __openglhelper_2003_06_06_15_49__
 
 #include "qglobal.h"
-#if QT_VERSION < 0x040000
-#include <qgl.h>
-#else
-#include <QtOpenGL/qgl.h>
-#endif
+#include <QtOpenGL>
+#include <GL/glu.h>
 
 namespace Qwt3D
 {
@@ -97,8 +94,8 @@ inline void getMatrices(GLdouble* modelMatrix, GLdouble* projMatrix, GLint* view
 inline bool ViewPort2World(double& objx, double& objy, double& objz, double winx, double winy, double winz)
 {
 	GLdouble modelMatrix[16];
-  GLdouble projMatrix[16];
-  GLint viewport[4];
+	GLdouble projMatrix[16];
+	GLint viewport[4];
 
 	getMatrices(modelMatrix, projMatrix, viewport);
 	int res = gluUnProject(winx, winy, winz, modelMatrix, projMatrix, viewport, &objx, &objy, &objz);
