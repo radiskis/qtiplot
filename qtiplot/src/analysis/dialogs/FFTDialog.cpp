@@ -170,31 +170,30 @@ void FFTDialog::updateShiftLabel()
 
 void FFTDialog::accept()
 {
-    if (d_type == onMatrix){
-        fftMatrix();
-        close();
-        return;
-    }
+	if (d_type == onMatrix){
+		fftMatrix();
+		close();
+		return;
+	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-    FFT *fft = NULL;
-	if (graph){
-		QString name = boxName->currentText();
-		fft = new FFT(app, graph->curve(name.left(name.indexOf(" ["))));
-	} else if (d_table){
+	FFT *fft = NULL;
+	if (graph)
+		fft = new FFT(app, graph->curve(boxName->currentText()));
+	else if (d_table){
 		if (boxReal->currentText().isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please choose a column for the real part of the data!"));
 			boxReal->setFocus();
 			return;
 		}
-        fft = new FFT(app, d_table, boxReal->currentText(), boxImaginary->currentText());
+		fft = new FFT(app, d_table, boxReal->currentText(), boxImaginary->currentText());
 	}
-    fft->setInverseFFT(backwardBtn->isChecked());
-    fft->setSampling(boxSampling->value());
-    fft->normalizeAmplitudes(boxNormalize->isChecked());
-    fft->shiftFrequencies(boxOrder->isChecked());
-    fft->run();
-    delete fft;
+	fft->setInverseFFT(backwardBtn->isChecked());
+	fft->setSampling(boxSampling->value());
+	fft->normalizeAmplitudes(boxNormalize->isChecked());
+	fft->shiftFrequencies(boxOrder->isChecked());
+	fft->run();
+	delete fft;
 	close();
 }
 
@@ -221,7 +220,7 @@ void FFTDialog::activateDataSet(const QString& s)
 		int col = d_table->colIndex(s);
 		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
 	} else if (graph){
-		PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
+		PlotCurve *c = graph->curve(s);
 		if (!c)
 			return;
 		boxSampling->setValue(c->x(1) - c->x(0));

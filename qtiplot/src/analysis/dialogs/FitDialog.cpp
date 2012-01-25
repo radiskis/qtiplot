@@ -847,7 +847,7 @@ void FitDialog::setGraph(Graph *g)
 
 void FitDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = d_graph->curve(s.left(s.indexOf(" [")));
+	QwtPlotCurve *c = d_graph->curve(s);
 	if (!c)
 		return;
 
@@ -1452,9 +1452,7 @@ void FitDialog::accept()
 
 		d_current_fit->setInitialGuesses(paramsInit);
 
-		QString name = boxCurve->currentText();
-		name = name.left(name.indexOf(" ["));
-		if (!d_current_fit->setDataFromCurve(d_graph->curve(name), start, end) ||
+		if (!d_current_fit->setDataFromCurve(d_graph->curve(boxCurve->currentText()), start, end) ||
 			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
 						   tableNamesBox->currentText() + "_" + colNamesBox->currentText())) return;
 
@@ -1788,8 +1786,7 @@ void FitDialog::guessInitialValues()
 		return;
 
 	if (d_current_fit->type() == Fit::BuiltIn){
-		QString name = boxCurve->currentText();
-		d_current_fit->setDataFromCurve(name.left(name.indexOf(" [")), boxFrom->value(), boxTo->value());
+		d_current_fit->setDataFromCurve(boxCurve->currentText(), boxFrom->value(), boxTo->value());
 		d_current_fit->guessInitialValues();
 		//modifyGuesses (paramsInit);
 	}

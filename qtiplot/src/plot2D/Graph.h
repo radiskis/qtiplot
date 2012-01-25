@@ -303,8 +303,9 @@ class Graph: public QwtPlot
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
 		//! map curve title to index
-		int curveIndex(const QString &title){return plotItemsList().indexOf(title);}
+		int curveIndex(const QString &);
 		DataCurve* dataCurve(int index);
+		DataCurve* dataCurve(const QString &);
 		FunctionCurve* functionCurve(int index);
 		//! get curve by index
 		PlotCurve* curve(int index);

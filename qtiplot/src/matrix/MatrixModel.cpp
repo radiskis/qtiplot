@@ -102,7 +102,7 @@ void MatrixModel::setImage(const QImage& image)
 	int cell = 0;
 	for (int i = 0; i < d_rows; i++){
 		for (int j = 0; j < d_cols; j++)
-			d_data[cell++] = qGray(image.pixel (j, i));
+			d_data[cell++] = qGray(image.pixel(j, i));
 	}
 }
 

@@ -197,8 +197,7 @@ void SubtractDataDialog::interpolate()
 	if (!graph)
 		return;
 
-	QString name = boxInputName->currentText();
-	DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
+	DataCurve *c = graph->dataCurve(boxInputName->currentText());
 	if (!c)
 		return;
 

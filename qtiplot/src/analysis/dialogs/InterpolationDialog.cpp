@@ -121,7 +121,6 @@ void InterpolationDialog::interpolate()
 		boxName->addItems(curvesList);
 		return;
 	}
-	curveName = curveName.left(curveName.indexOf(" ["));
 
 	double from = boxStart->value();
 	double to = boxEnd->value();
@@ -153,11 +152,11 @@ void InterpolationDialog::setGraph(Graph *g)
 
 	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
 	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
-};
+}
 
 void InterpolationDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(s.left(s.indexOf(" [")));
+	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(s);
 	if (!c)
 		return;
 
@@ -169,7 +168,7 @@ void InterpolationDialog::activateCurve(const QString& s)
 	graph->range(c, &start, &end);
 	boxStart->setValue(QMIN(start, end));
 	boxEnd->setValue(QMAX(start, end));
-};
+}
 
 void InterpolationDialog::changeDataRange()
 {

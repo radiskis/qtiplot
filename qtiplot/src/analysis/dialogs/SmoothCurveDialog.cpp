@@ -135,10 +135,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 
 void SmoothCurveDialog::smooth()
 {
-	QString curveName = boxName->currentText();
-	curveName = curveName.left(curveName.indexOf(" ["));
-
-	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(curveName), smooth_method);
+	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(boxName->currentText()), smooth_method);
 	if (smooth_method == SmoothFilter::SavitzkyGolay){
 		sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
 		sf->setPolynomOrder(boxOrder->value());
@@ -165,7 +162,7 @@ void SmoothCurveDialog::setGraph(Graph *g)
 void SmoothCurveDialog::activateCurve(const QString& s)
 {
 	if (smooth_method == SmoothFilter::Average){
-		PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
+		PlotCurve *c = graph->curve(s);
 		if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
 			return;
 

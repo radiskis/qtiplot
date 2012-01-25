@@ -175,7 +175,7 @@ void ExpDecayDialog::setGraph(Graph *g)
 
 void ExpDecayDialog::activateCurve(const QString& s)
 {
-	PlotCurve *c = graph->curve(s.left(s.indexOf(" [")));
+	PlotCurve *c = graph->curve(s);
 	if (!c)
 		return;
 
@@ -201,12 +201,12 @@ void ExpDecayDialog::changeDataRange()
 
 void ExpDecayDialog::fit()
 {
-	QString curve = boxName->currentText();
-	PlotCurve *c = graph->curve(curve.left(curve.indexOf(" [")));
+	QString curveName = boxName->currentText();
+	PlotCurve *c = graph->curve(curveName);
 	QStringList curvesList = graph->analysableCurvesList();
-	if (!c || !curvesList.contains(curve)){
+	if (!c || !curvesList.contains(curveName)){
 		QMessageBox::critical(this,tr("QtiPlot - Warning"),
-				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curve));
+				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curveName));
 		boxName->clear();
 		boxName->addItems(curvesList);
 		return;
