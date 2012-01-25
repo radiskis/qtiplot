@@ -192,8 +192,7 @@ void ErrDialog::add()
 		return;
 
 	QString name = nameLabel->currentText();
-	name = name.left(name.indexOf(" ["));
-	DataCurve *curve = g->dataCurve(g->curveIndex(name));
+	DataCurve *curve = g->dataCurve(name);
 	if (!curve){
 		QMessageBox::critical(app, tr("QtiPlot - Error"),
 		tr("This feature is not available for user defined function curves!"));
@@ -218,7 +217,7 @@ void ErrDialog::add()
 		}
 		er = g->addErrorBars(curve, errTable, errColumnName, direction);
 	} else {
-		Table *t = app->table(name);
+		Table *t = curve->table();
 		if (!t)
 			return;
 		if (direction == ErrorBarsCurve::Horizontal)
@@ -229,7 +228,7 @@ void ErrDialog::add()
 		int r = curve->dataSize();
 		int rows = t->numRows();
 		int col = t->numCols() - 1;
-		int ycol = t->colIndex(name);
+		int ycol = t->colIndex(curve->title().text());
 		if (!direction)
 			ycol = t->colIndex(curve->xColumnName());
 

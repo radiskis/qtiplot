@@ -127,8 +127,6 @@ void PolynomFitDialog::fit()
 		return;
 	}
 
-	curveName = curveName.left(curveName.indexOf(" ["));
-
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
 	if (fitter->setDataFromCurve((QwtPlotCurve *)graph->curve(curveName), boxStart->value(), boxEnd->value())){
@@ -160,7 +158,7 @@ void PolynomFitDialog::setGraph(Graph *g)
 void PolynomFitDialog::activateCurve(const QString& s)
 {
 	double start, end;
-	int n_points = graph->range((QwtPlotCurve *)graph->curve(s.left(s.indexOf(" ["))), &start, &end);
+	int n_points = graph->range((QwtPlotCurve *)graph->curve(s), &start, &end);
 
 	boxStart->setValue(start);
 	boxEnd->setValue(end);

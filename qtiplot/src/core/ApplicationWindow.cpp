@@ -2687,31 +2687,34 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 		fn = getFileName(this, tr("QtiPlot - Import image from file"), imagesDirPath, imageFilter(), 0, false);
 		if ( !fn.isEmpty() ){
 			QFileInfo fi(fn);
-			imagesDirPath = fi.dirPath(true);
+			imagesDirPath = fi.absolutePath();
 		}
 	}
 
-    QImage image(fn);
-    if (image.isNull())
-        return 0;
+	QImageReader reader(fn);
+	QImage image = reader.read();
+	if (image.isNull()){
+		QMessageBox::critical(this, tr("QtiPlot - Error"), reader.errorString());
+		return 0;
+	}
 
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    MdiSubWindow *w = activeWindow(MatrixWindow);
-    Matrix* m = NULL;
-    if (w && !newWindow){
-        m = (Matrix *)w;
-        m->importImage(fn);
-    } else {
-        m = new Matrix(scriptEnv, image, "", this);
-        initMatrix(m, generateUniqueName(tr("Matrix")));
-        m->show();
-        m->setWindowLabel(fn);
-        m->setCaptionPolicy(MdiSubWindow::Both);
-    }
+	MdiSubWindow *w = activeWindow(MatrixWindow);
+	Matrix* m = NULL;
+	if (w && !newWindow){
+		m = (Matrix *)w;
+		m->importImage(image);
+	} else {
+		m = new Matrix(scriptEnv, image, "", this);
+		initMatrix(m, generateUniqueName(tr("Matrix")));
+		m->show();
+		m->setWindowLabel(fn);
+		m->setCaptionPolicy(MdiSubWindow::Both);
+	}
 
-    QApplication::restoreOverrideCursor();
-    return m;
+	QApplication::restoreOverrideCursor();
+	return m;
 }
 
 QString ApplicationWindow::imageFilter()
@@ -8951,7 +8954,7 @@ void ApplicationWindow::drawPoints()
 
 		DrawPointTool *tool = new DrawPointTool(this, g, info, SLOT(setText(const QString&)));
 		if (ok && !txt.isEmpty() && txt != newItemString)
-			tool->setDataCurve(g->dataCurve(g->curveIndex(txt.left(txt.indexOf(" [")))));
+			tool->setDataCurve(g->dataCurve(txt));
 		g->setActiveTool(tool);
 	} else
 		g->setActiveTool(new DrawPointTool(this, g, info, SLOT(setText(const QString&))));
@@ -13109,7 +13112,7 @@ void ApplicationWindow::showDataSetDialog(Analysis operation)
 	QString txt = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
 					tr("Curve") + ": ", curves, 0, false, &ok);
 	if (ok && !txt.isEmpty())
-		analyzeCurve(g, g->curve(txt.left(txt.indexOf(" ["))), operation);
+		analyzeCurve(g, g->curve(txt), operation);
 }
 
 void ApplicationWindow::analyzeCurve(Graph *g,  QwtPlotCurve *c, Analysis operation)

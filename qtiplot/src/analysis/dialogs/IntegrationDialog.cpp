@@ -176,7 +176,6 @@ void IntegrationDialog::integrateCurve()
 		boxName->addItems(curvesList);
 		return;
 	}
-	curveName = curveName.left(curveName.indexOf(" ["));
 
 	double from = boxStart->value();
 	double to = boxEnd->value();
@@ -217,7 +216,7 @@ void IntegrationDialog::activateCurve(const QString& s)
 	if (!d_graph)
 		return;
 
-	QwtPlotCurve *c = (QwtPlotCurve *)d_graph->curve(s.left(s.indexOf(" [")));
+	QwtPlotCurve *c = (QwtPlotCurve *)d_graph->curve(s);
 	if (!c)
 		return;
 

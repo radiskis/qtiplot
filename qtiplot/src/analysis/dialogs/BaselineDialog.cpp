@@ -225,8 +225,7 @@ void BaselineDialog::createBaseline()
 	disableBaselineTool();
 
 	if (btnAutomatic->isChecked()){
-		QString name = boxInputName->currentText();
-		Interpolation *i = new Interpolation(app, graph->curve(name.left(name.indexOf(" ["))), boxInterpolationMethod->currentIndex());
+		Interpolation *i = new Interpolation(app, graph->curve(boxInputName->currentText()), boxInterpolationMethod->currentIndex());
 		i->setOutputPoints(boxPoints->value());
 		i->run();
 		delete i;
@@ -235,8 +234,7 @@ void BaselineDialog::createBaseline()
 	} else if (btnEquation->isChecked()){
 		double start = graph->axisScaleDiv(QwtPlot::xBottom)->lowerBound();
 		double end = graph->axisScaleDiv(QwtPlot::xBottom)->upperBound();
-		QString name = boxInputName->currentText();
-		DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
+		DataCurve *c = graph->dataCurve(boxInputName->currentText());
 		if (c){
 			start = c->minXValue();
 			end = c->maxXValue();
@@ -281,8 +279,7 @@ void BaselineDialog::subtractBaseline(bool add)
 	if (!graph)
 		return;
 
-	QString name = boxInputName->currentText();
-	DataCurve *c = graph->dataCurve(graph->curveIndex(name.left(name.indexOf(" ["))));
+	DataCurve *c = graph->dataCurve(boxInputName->currentText());
 	if (!c)
 		return;
 

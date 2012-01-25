@@ -3058,6 +3058,62 @@ DataCurve * Graph::dataCurve(int index)
 	return 0;
 }
 
+int Graph::curveIndex(const QString &title)
+{
+	if (title.contains("[") && title.endsWith("]")){
+		int index = -1;
+		foreach(QwtPlotItem *it, d_curves){
+			index++;
+			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+				continue;
+			int type = ((PlotCurve*)it)->type();
+			if (type == ErrorBars || type == Function)
+				continue;
+
+			DataCurve *c = (DataCurve*)it;
+			QString s = c->title().text() + " [" + QString::number(c->startRow() + 1) + ":" + QString::number(c->endRow() + 1) + "]";
+			if (s == title)
+				return index;
+		}
+	}
+	return plotItemsList().indexOf(title);
+}
+
+DataCurve * Graph::dataCurve(const QString &s)
+{
+	QString title(s);
+	bool checkRange = false;
+	int startRow = 0, endRow = 0;
+	if (s.contains("[") && s.endsWith("]")){
+		title.chop(1);
+		checkRange = true;
+		int pos1 = s.indexOf(" [");
+		QStringList range = title.right(title.length() - pos1 - 2).split(":");
+		if (range.size() != 2)
+			return 0;
+		title = title.left(pos1);
+		startRow = range[0].toInt() - 1;
+		endRow = range[1].toInt() - 1;
+	}
+
+	foreach(QwtPlotItem *it, d_curves){
+		if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
+			continue;
+		if (((PlotCurve *)it)->type() == Function)
+			continue;
+		if (it->title().text() != title)
+			continue;
+
+		DataCurve *c = (DataCurve *)it;
+		if (!checkRange)
+			return c;
+
+		if (checkRange && c->startRow() == startRow && c->endRow() == endRow)
+			return c;
+	}
+	return 0;
+}
+
 FunctionCurve * Graph::functionCurve(int index)
 {
 	PlotCurve *c = curve(index);

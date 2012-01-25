@@ -130,17 +130,15 @@ void FilterDialog::filter()
 		}
 	}
 
-	QString name = boxName->currentText();
-	name = name.left(name.indexOf(" ["));
-	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(name), filter_type);
+	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentText()), filter_type);
 	if (filter_type == FFTFilter::BandPass){
-    	f->setBand(from, to);
-    	f->enableOffset(boxOffset->isChecked());
-    } else if (filter_type == FFTFilter::BandBlock){
-    	f->setBand(from, to);
-    	f->enableOffset(!boxOffset->isChecked());
-    } else
-    	f->setCutoff(from);
+		f->setBand(from, to);
+		f->enableOffset(boxOffset->isChecked());
+	} else if (filter_type == FFTFilter::BandBlock){
+		f->setBand(from, to);
+		f->enableOffset(!boxOffset->isChecked());
+	} else
+		f->setCutoff(from);
 
 	f->setColor(boxColor->color());
 	f->run();
@@ -152,5 +150,5 @@ void FilterDialog::setGraph(Graph *g)
 	if (!g)
 		return;
 	graph = g;
-	boxName->addItems (g->analysableCurvesList());
+	boxName->addItems(g->analysableCurvesList());
 }
