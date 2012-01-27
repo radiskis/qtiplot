@@ -5029,15 +5029,15 @@ void Graph::copy(Graph* g)
 
 	d_Douglas_Peuker_tolerance = g->getDouglasPeukerTolerance();
 
-	copyCurves(g);
-
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		copyScaleDraw(g, i);
 		setAxisLabelRotation(i, g->labelsRotation(i));
 	}
 
+	copyCurves(g);
+
 	updateAxesTitles();
-    updateLayout();
+	updateLayout();
 	d_auto_scale = g->isAutoscalingEnabled();
 
 	d_zoomer[0]->setZoomBase();
