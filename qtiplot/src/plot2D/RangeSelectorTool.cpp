@@ -87,7 +87,7 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target,
 
 	setTrackerMode(QwtPicker::AlwaysOn);
 	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-	d_graph->canvas()->setCursor(QCursor(QPixmap(":/vizor.png"), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 	d_graph->canvas()->setFocus();
 	d_graph->replot();
 
@@ -641,7 +641,7 @@ void RangeSelectorTool::setEnabled(bool on)
 {
     d_enabled = on;
     if (on)
-		d_graph->canvas()->setCursor(QCursor(QPixmap(":/vizor.png"), -1, -1));
+		d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 }
 
 void RangeSelectorTool::setVisible(bool on)
@@ -653,7 +653,7 @@ void RangeSelectorTool::setVisible(bool on)
 
     if (on){
 		setTrackerMode(QwtPicker::AlwaysOn);
-		d_graph->canvas()->setCursor(QCursor(QPixmap(":/vizor.png"), -1, -1));
+		d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 		d_active_marker.attach(d_graph);
 		d_inactive_marker.attach(d_graph);
 	} else {

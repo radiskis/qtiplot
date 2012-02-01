@@ -58,12 +58,12 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 	d_selection_marker.setLinePen(QPen(Qt::red,1));
 
 	setTrackerMode(QwtPicker::AlwaysOn);
-	if (d_mode == Move || d_mode == MoveCurve) {
+	if (d_mode == Move || d_mode == MoveCurve){
 		setSelectionFlags(QwtPicker::PointSelection | QwtPicker::DragSelection);
 		d_graph->canvas()->setCursor(Qt::PointingHandCursor);
 	} else {
 		setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-		d_graph->canvas()->setCursor(QCursor(QPixmap(":/vizor.png"), -1, -1));
+		d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 	}
 
 	if (status_target)
