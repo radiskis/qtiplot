@@ -49,7 +49,7 @@ ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, c
 	d_selection_marker.setLinePen(QPen(Qt::red, 1));
 	setTrackerMode(QwtPicker::AlwaysOn);
 	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
-	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);

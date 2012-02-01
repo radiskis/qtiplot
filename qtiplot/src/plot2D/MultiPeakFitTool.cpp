@@ -51,7 +51,7 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
-	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	QString msg = tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!");
 	if (app->d_multi_peak_messages)

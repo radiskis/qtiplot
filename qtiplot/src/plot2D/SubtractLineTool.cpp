@@ -44,7 +44,7 @@ SubtractLineTool::SubtractLineTool(Graph *graph, ApplicationWindow *app, const Q
 	if (status_target)
 		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	d_picker_tool = new ScreenPickerTool(d_graph, this, SIGNAL(statusText(const QString&)));
-	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png"), -1, -1));
+	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	QString msg = tr("Move cursor and click to select and double-click/press 'Enter' to set the position of the first point!");
 	emit statusText(msg);
