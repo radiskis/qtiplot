@@ -68,7 +68,7 @@
 
 <para>Vous pouvez personnaliser votre graphe et les élémets de la planche. En double-cliquant sur un point de la courbe, vous ferez appraître la <link linkend="custom-curves-dialog">boîte de dialogue Personnaliser les graphes</link>, qui est utiliser pour modifier les symbôles de la courbes. Un double clic sur un axe ouvre la <link linkend="plot-options-dialog">boîte de dialogue des Options générales des graphes</link>, où vous pouvez changez les échelles, les polices des labels d'axes, etc.where you can change scales, fonts for the axis labels, etc. 
 
-Vous pouvez aussi ajouter des lignes aux grilles des axes X et Y. Enfin, un double clic sur un objet texte (Titre X, Titre Y, Titre) vous permet de changer le texte et sa forme. À titre d'example, plusieurs modifications ont été faites pour obtenir le graphe ci-dessous :</para>
+Vous pouvez aussi ajouter des lignes aux grilles des axes X et Y. Enfin, un double clic sur un objet texte (Titre X, Titre Y, Titre) vous permet de changer le texte et sa forme. A titre d'example, plusieurs modifications ont été faites pour obtenir le graphe ci-dessous :</para>
 
 <figure id="fig-simple-2dplot-3">
   <title>Premier graphe 2D : le graphe fini</title>
@@ -360,7 +360,7 @@ Pour ce faire, la planche voulue doit être sélectionnée, soit en cliquant dan
     </mediaobject>
   </figure>
 
-<para>Après ceci, vous pouvez personnaliser votre graphe. À la fin, les modifications faites sur les axes ou sur les labels des axes, peuvent avoir modifiées la géométrie des deux graphes. De nouveau, vous pouvez réarranger les deux graphes en utilisant la &arrange-layers-lnk; une seconde fois.</para>
+<para>Après ceci, vous pouvez personnaliser votre graphe. A la fin, les modifications faites sur les axes ou sur les labels des axes, peuvent avoir modifiées la géométrie des deux graphes. De nouveau, vous pouvez réarranger les deux graphes en utilisant la &arrange-layers-lnk; une seconde fois.</para>
 
   <figure>
    <title>Graphe multiplanche : Forme finale</title>

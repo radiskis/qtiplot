@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "/usr/share/xml/docbook/schema/dtd/4.4/docbookx.dtd" [
 
   <!ENTITY appname "QtiPlot">
@@ -224,8 +224,8 @@
 <!ENTITY paste-lnk '<link linkend="paste-cmd">commande <command>Coller</command></link>'>
   <!ENTITY paste-key "<keycode>Ctrl-V</keycode>">
   <!ENTITY paste-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/paste.png"/></imageobject></inlinemediaobject>'>
-<!ENTITY delete-cmd "<command>Éffacer</command>">
-<!ENTITY delete-lnk '<link linkend="delete-cmd">commande <command>Éffacer</command></link>'>
+<!ENTITY delete-cmd "<command>Effacer</command>">
+<!ENTITY delete-lnk '<link linkend="delete-cmd">commande <command>Effacer</command></link>'>
   <!ENTITY delete-key "Del">
   <!ENTITY delete-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/erase.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY delete-fit-cmd "<command>Delete Fit Tables</command>">
@@ -614,7 +614,7 @@
 <!ENTITY flipH-key "<keycode>Ctrl-Shift-H</keycode>">
 
 <!ENTITY expand-cmd "<command>Etendre...</command>">
-<!ENTITY expand-lnk '<link linkend="expand-cmd">commande <command>Étendre...</command></link>'>
+<!ENTITY expand-lnk '<link linkend="expand-cmd">commande <command>Etendre...</command></link>'>
 
 <!ENTITY shrink-cmd "<command>Réduire...</command>">
 <!ENTITY shrink-lnk '<link linkend="shrink-cmd">commande <command>Réduire...</command></link>'>
@@ -634,7 +634,7 @@
 <!ENTITY table-view-cmd "<command>Convertir en données</command>">
 <!ENTITY table-view-key "<keycode>Ctrl-Shift-D</keycode>">
 
-<!ENTITY gray-scale-cmd "<command>Échelle de gris</command>">
+<!ENTITY gray-scale-cmd "<command>Echelle de gris</command>">
 
 <!ENTITY rainbow-palette-cmd "<command>Arc-en-ciel</command>">
 
@@ -685,10 +685,10 @@
 
 <!ENTITY set-read-only-column-cmd "<command>Fixer à -> lecture seule</command>">
 <!ENTITY set-read-only-column-lnk '<link linkend="set-read-only-column-cmd">commande <command>Fixer à -> lecture seule</command></link>'>
-<!ENTITY set-read-write-column-cmd "<command>Fixer à -> Lecture/Écriture</command>">
-<!ENTITY set-read-write-column-lnk '<link linkend="set-read-only-column-cmd">commande <command>Fixer à -> Lecture/Écriture</command></link>'>
+<!ENTITY set-read-write-column-cmd "<command>Fixer à -> Lecture/Ecriture</command>">
+<!ENTITY set-read-write-column-lnk '<link linkend="set-read-only-column-cmd">commande <command>Fixer à -> Lecture/Ecriture</command></link>'>
 
-<!ENTITY set-column-as-label-cmd "<command>Fixer à -> Étiquette</command>">
+<!ENTITY set-column-as-label-cmd "<command>Fixer à -> Etiquette</command>">
 <!ENTITY set-column-as-label-lnk '<link linkend="set-column-as-label-cmd">&set-column-as-label-cmd;</link>'>
 <!ENTITY set-column-as-label-key "">
 <!ENTITY set-column-as-label-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/set_label_col.png"/></imageobject></inlinemediaobject>'>
@@ -775,8 +775,8 @@
 <!ENTITY move-column-last-key "">
 <!ENTITY move-column-last-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/move_col_last.png"/></imageobject></inlinemediaobject>'>
 
-<!ENTITY swap-columns-cmd "<command>Échanger les colonnes</command>">
-<!ENTITY swap-columns-lnk '<link linkend="swap-columns-cmd">commande <command>Échanger les colonnes</command></link>'>
+<!ENTITY swap-columns-cmd "<command>Echanger les colonnes</command>">
+<!ENTITY swap-columns-lnk '<link linkend="swap-columns-cmd">commande <command>Echanger les colonnes</command></link>'>
 <!ENTITY swap-columns-key "">
 <!ENTITY swap-columns-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/swap_columns.png"/></imageobject></inlinemediaobject>'>
 
@@ -1062,8 +1062,8 @@
 <!ENTITY format-plot-lnk '<link linkend="format-plot-cmd">commande <command>Graphe...</command></link>'>
 <!ENTITY format-curves-cmd "<command>Courbes...</command>">
 <!ENTITY format-curves-lnk '<link linkend="format-curves-cmd">commande <command>Courbes...</command></link>'>
-<!ENTITY format-scales-cmd "<command>Échelles...</command>">
-<!ENTITY format-scales-lnk '<link linkend="format-scales-cmd">commandes <command>Échelles...</command></link>'>
+<!ENTITY format-scales-cmd "<command>Echelles...</command>">
+<!ENTITY format-scales-lnk '<link linkend="format-scales-cmd">commandes <command>Echelles...</command></link>'>
 <!ENTITY format-axes-cmd "<command>Axes...</command>">
 <!ENTITY format-axes-lnk '<link linkend="format-axes-cmd">commandes <command>Axes...</command></link>'>
 <!ENTITY format-grid-cmd "<command>Grille...</command>">
@@ -1129,7 +1129,8 @@
 <!--
               toolbar: 3D plot
 -->
-<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">barre outils Graphe 3D</link>'>
+<!ENTITY plot3d-toolbar-cmd "<command>barre d'outils Graphe 3D</command>">
+<!ENTITY plot3d-toolbar-lnk '<link linkend="sec-plot3d-toolbar">&plot3d-toolbar-cmd;</link>'>
 <!ENTITY frame-cmd "<command>Axes</command>">
 <!ENTITY frame-lnk '<link linkend="frame-cmd">commande <command>Axes</command></link>'>
   <!ENTITY frame-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/free_axes.png"/></imageobject></inlinemediaobject>'>
@@ -1193,15 +1194,18 @@
 <!--
               toolbar: File
 -->
-<!ENTITY file-toolbar-lnk '<link linkend="sec-file-toolbar">Barre outil Fichier</link>'>
+<!ENTITY file-toolbar-cmd "<command>Barre d'outil Fichier</command>">
+<!ENTITY file-toolbar-lnk '<link linkend="sec-file-toolbar">&file-toolbar-cmd;</link>'>
 <!--
               toolbar: Plot
 -->
-<!ENTITY plot-toolbar-lnk '<link linkend="sec-plot-toolbar">Barre outil Graphe</link>'>
+<!ENTITY plot-toolbar-cmd "<command>Barre d'outil Graphe</command>">
+<!ENTITY plot-toolbar-lnk '<link linkend="sec-plot-toolbar">&plot-toolbar-cmd;</link>'>
 <!--
               toolbar: Table
 -->
-<!ENTITY table-toolbar-lnk '<link linkend="sec-table-toolbar">Barre outil Table</link>'>
+<!ENTITY table-toolbar-cmd "<command>Barre d'outil Table</command>">
+<!ENTITY table-toolbar-lnk '<link linkend="sec-table-toolbar">&table-toolbar-cmd;</link>'>
 
 <!--
       Toolbar Sub-table Entries. Used to link sub-tables to tables in toolbars.docbook. SRB (09/25/2010 )
@@ -1308,7 +1312,6 @@
 
 </bookinfo>
 
-<!--
 &introduction-chapter;
 <chapter id="using">
   &using-chapter;
@@ -1317,15 +1320,13 @@
 <chapter id="reference">
   &reference-chapter;
 </chapter>
--->
 <chapter id="toolbars">
   &toolbars-chapter;
 </chapter>
-<!--
+
 <chapter id="dialogs">
   &dialogs-chapter;
 </chapter>
-
 <chapter id="analysis">
   &analysis-chapter;
 </chapter>
@@ -1333,5 +1334,4 @@
   &scripting-chapter;
 </chapter>
 &faq-chapter;
--->
 </book>

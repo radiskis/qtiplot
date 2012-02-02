@@ -10,8 +10,8 @@ web:
 web-it:
 	docbook2html -d qtiplot.dsl docbook-it/index.docbook -e no-valid
 web-fr:
-	export SP_ENCODING=XML
-	export SP_CHARSET_FIXED=YES
+#	export SP_ENCODING=XML
+#	export SP_CHARSET_FIXED=YES
 	docbook2html -d qtiplot.dsl docbook-fr/index.docbook -e no-valid
 
 pdf:
