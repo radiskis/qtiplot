@@ -60,7 +60,7 @@ qtiplot nom_fichier_texte
 
 <para>Les options possibles sont :</para>
 <itemizedlist>
-<listitem><para>-a ou --about : affiche la boîte de dialogue "À propos" puis quitte</para></listitem>
+<listitem><para>-a ou --about : affiche la boîte de dialogue "A propos" puis quitte</para></listitem>
 <listitem><para>-c ou --console : affiche la fenêtre de script uniquement</para></listitem>
 <listitem><para>-d ou --default-settings : lance &appname; avec les valeurs par défaut</para></listitem>
 <listitem><para>-h ou --help : affiche les options de la ligne de commande</para></listitem>
@@ -311,7 +311,7 @@ Une différence entre une table et une matrice est que les matrices peuvent avoi
 
 <para>Il fournit une vue d'ensemble de la structure du projet et permet à l'utilisateur de réaliser diverses opérations sur les fenêtres (tables, graphes, et commentaires) dans l'environnement de travail : cacher, minimiser, fermer, renommer, imprimer, etc. Ces fonctions peuvent être appelées via le menu contextuel et affichées par un clic droit sur un des objets de l'explorateur.</para>
 <para>En double cliquant sur un objet, la fenêtre correspondante s'ouvre dans l'environnement de travail, même si elle était cachée auparavant.</para>
-<para>À partir de l'explorateur de projet, les différents objets peuvent être organisés dans des dossiers. Quand vous en sélectionnez un, la règle par défaut, impose que seuls les objets du dossiers pourront être affichés. Vous pouvez aussi afficher tous les objets des sous-dossiers si vous modifiez cette règle avec la commande "View Windows" pour "Windows in Active Folder and Subfolders".</para>
+<para>A partir de l'explorateur de projet, les différents objets peuvent être organisés dans des dossiers. Quand vous en sélectionnez un, la règle par défaut, impose que seuls les objets du dossiers pourront être affichés. Vous pouvez aussi afficher tous les objets des sous-dossiers si vous modifiez cette règle avec la commande "View Windows" pour "Windows in Active Folder and Subfolders".</para>
 
 </sect2>
 

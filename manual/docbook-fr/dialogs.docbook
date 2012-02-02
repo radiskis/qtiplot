@@ -4,21 +4,19 @@
 		========================================
 
 -->
-<title>The Dialogs</title>
+<title>Les boîtes de dialogue</title>
 
 <!-- ************************************************** -->
 <!--		Add Custom Script Action				-->
 <!-- ************************************************** -->
 <sect1 id="custom-action-dialog">
-  <title>Add Custom Action</title>
-  This dialog helps you define new Python script launchers that will be added to menus or tool bars in &appname;.
-  You can fully customize script launchers by defining: 1) a textual description
-  that will be displayed in the destination menu, (2) an icon, (3) a shortcut key sequence and (4) a tool tip.
-  The <emphasis>Tool Tip Text</emphasis>  is a short description that is displayed near the launcher button
-  when you hover the mouse over it. You must assign unique shortcut key sequences to your custom launchers.
+  <title>Ajouter une action personnalisée</title>
+Cette de dialogue vous aide à définir de nouveaux script Python qui seront ajouter aux menus ou aux barres d'outils de &appname;.
+Vous pouvez pleinement personnaliser ces scripts en définisant : 1) une description qui sera affiché dans le menu destination, (2) une icône, (3) un raccourci clavier et (4), un texte de bouton.
+Un <emphasis>texte de bouton</emphasis>  est une brève descriptoin qui est affichée à coté du bouton de lancement du script lorsque vous survoler ce bouton avec la souris. Vous devez assigner un raccourci unique à vos lanceurs.
 
   <figure id="fig-add-custom-action-dialog">
-    <title>The &add-custom-action-cmd; dialog box.</title>
+    <title>La boîte de dialoque &add-custom-action-cmd;.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-custom-action.png"/>
@@ -26,52 +24,49 @@
     </mediaobject>
   </figure>
 
-<para>The <emphasis>Script File</emphasis> is the path to the Python script that will be executed when you click the launcher.
-When you click the <emphasis>Add</emphasis> button, all the settings for the new launcher are saved to an XML file
-in the directory specified in the <emphasis>Folder</emphasis> box. On start-up &appname; parses all XML files in this
-folder and creates the corresponding menu items or toolbar buttons.
-When you press the <emphasis>Remove</emphasis> button, the launcher selected in the left side list
-of the dialog is removed from &appname; menus/tool bars and the corresponding XML file is deleted from
-the hard disk. Make sure that you have backed up the file if you will ever need it in the future!</para>
+<para>Le <emphasis>fichier de script</emphasis> est le chemin vers le script Python qui sera exécuté en cliquant sur le lanceur. Quand vous cliquez sur le bouton <emphasis>Ajouter</emphasis>, toute la configuration du nouveau lanceur est sauvegardée dans un fichier XML, dans le répertoire spécifié dans l'emplacement <emphasis>Répertoire</emphasis>. Au démarrage, &appname; parcourt tous les fichiers XML de ce répertoire et crée les entrées de menu et les boutons dans la barre d'outils.
+Quand vous cliquez sur le bouton <emphasis>Supprimer</emphasis>, le lanceur sélectionné dans la liste sur le coté gauche de la boîte de dialogue est alors supprimé des menus/barre d'outils de &appname; et le fichier XML est effacé de l'ordinateur.
+Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultérieurement !</para>
 </sect1>
 
 <!-- ************************************************** -->
 <!--		Errorbars				-->
 <!-- ************************************************** -->
 <sect1 id="add-error-bars-dialog">
-  <title>Add Error bars</title>
-  <para>This dialog is activated by selecting the &add-error-bars-lnk; from the &graph-menu-lnk;.</para>
-  <para>This command is used to plot X and/or Y error bars at each data point.</para>
+  <title>Ajouter des barres d'erreurs</title>
+  <para>Cette boîte de dialogue est activée en sélectionnant la &add-error-bars-lnk; du &graph-menu-lnk;.</para>
+  <para>Cette commande est utilisée pour tracer des barres d'erreurs en X et/ou Y à chaque point de donnée.</para>
 <!--
   <para>Note that both the "add" and "OK" buttons will add errors bars. For this reason, if you have used the "add" button already, then you should close the dialog with the "cancel" button (NOT the "OK" button).</para> -->
 
-<para>Note that clicking on the "Close" button will not add any error bars to the plot. You must set up the parameters for the error bars first and then click on the "Add" button. If you click on "Close" without clicking "Add", there will be no error bars drawn.</para>
+<para>Notez que cliquer sur le bouton "Fermer" n'ajoutera aucune barre d'erreur au graphe. Vous devez d'abord fixer les paramètres des barres d'erreurs puis cliquez sur le bouton "Ajouter". Si vous cliquez sur "Fermer" sans cliquer sur "Ajouter, aucune barre d'erreur ne sera tracée.
+</para>
   <figure id="fig-add-error-bars-1">
-    <title>The &add-error-bars-cmd; dialog.</title>
+    <title>La boe de dialogue &add-error-bars-cmd;.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-error-bars-1.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>There are three ways to specify the sizes of the bars:</para>
+  <para>Il existe trois façons de spécifier la taille des barres d'erreurs :</para>
   <variablelist>
     <varlistentry>
-      <term>1) From a column of the table:</term>
+      <term>1) A partir d'une colonne de la table :</term>
       <listitem>
-        <para>In this case, the values in the selected column are used to compute the error bars. Specifically, if V is the value of a data point, and E the value from the same row of the errorbar column, the size of the corresponding bar will be V-E to V+E.</para>
+        <para>Dans ce cas, les valeurs de la colonne sélectionnée sont utilisées pour le calcul des barres d'erreurs. Spécifiquement, si V est la valeur d'un point et E, la valeur de la même ligne de la colonne erreurbarre, la taille de la barre sera comprise entre V-E et V+E.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>2) A percentage of the values:</term>
+      <term>2) A partir d'un pourcentage des valeurs :</term>
       <listitem>
-        <para>This command adds a new column to the table associated with the plot and fills it with result of calculating V*E/100 for each row in the table, where V is the plotted value and E is the selected percentage. This column is then used to plot the error bars in exactly the same manner as in the previous case. The new column can subsequently be edited like any other column. Any changes will be reflected in the size of the corresponding error bars.</para>
+        <para>Cette commande ajoute une nouvelle colonne à la table associée au graphe et la remplit avec le résultat de V*E/100 pour chaque ligne de la table, où V est la valeur tracée et E est le pourcentage choisi. Cette colonne est aussi utilisée pour tracer les barres d'erreurs exactement de la même manière que la possibilité précédente. La nouvelle colonne peut alors être éditée comme toutes les autres. Les changements affecteront la taille des barres d'erreurs correspondantes.</para>
       </listitem>
     </varlistentry>
     <varlistentry>
-      <term>3) The standard deviation of the values:</term>
+      <term>3) A partir de l'erreur type :</term>
       <listitem>
-        <para>This command first calculates the standard deviation of the plotted values. This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
+        <para>Cette commande calcule d'abord l'erreur type des valeurs tracées. Ceci a une This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
       </listitem>
 	</varlistentry>
 	<varlistentry>
@@ -465,6 +460,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
         <imagedata  format="PNG" fileref="pics/custom-curves-4.png"/>
       </imageobject>
     </mediaobject>
+
   </figure>
 
   <para>The third tab is activated to select the symbol, and to modify the size, color and fill color of the selected symbol.</para>

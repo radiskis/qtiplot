@@ -7,10 +7,10 @@ Les commandes qui ont un lien ensemble, sont regroupées dans un certain nombre 
 
 <para>Les barres d'outils visibles seront montrées dans un des deux formats disponibles selon la place disponible à l'emplacement de l'ancrage. Par défaut, lorsqu'il y a suffisament de place, toutes les icones seront visibles en une unique colonne ou rangée. Si il n'y a pas suffisamment de place pour toutes les afficher, la barre d'outils sera réduite à la place nécessaire. Dans ce cas, le symbôle ">>" sera affiché pour indiquer que des icones sont cachés. Tant que la barre d'outils n'est pas devalidé, un clic gauche sur le symbôle ">>" étendra temporairement la barre et affichera les commandes cachées, ce qui permettra de les exécuter. C'est en déplaçant le pointeur de la souris, en dehors de la barre, qu'elle reprendra sa taille. Notez que les barres d'outils placées sur le bureau, seront toujours montrées entièrement.</para>
 <sect1 id="sec-edit-toolbar">
-<title>La barre d'outils Édition</title>
+<title>La barre d'outils Edition</title>
 
 <figure id="fig-edit-toolbar">
-  <title>La barre d'outils Édition de &appname;</title>
+  <title>La barre d'outils Edition de &appname;</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="pics/edit-toolbar.png"/>
@@ -19,7 +19,7 @@ Les commandes qui ont un lien ensemble, sont regroupées dans un certain nombre 
 </figure>
 
 <table tocentry="1" pgwide="1" frame="border">
-<title>Les commandes de la barre d'outils Édition</title>
+<title>Les commandes de la barre d'outils Edition</title>
 <tgroup cols="4">
   <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
@@ -68,7 +68,7 @@ Les commandes qui ont un lien ensemble, sont regroupées dans un certain nombre 
    <entry>&delete-icon;</entry>
    <entry>&delete-lnk;</entry>
    <entry>&delete-key;</entry>
-   <entry>Éfface la sélection actuelle.</entry>
+   <entry>Efface la sélection actuelle.</entry>
   </row>
 </tbody>
 </tgroup>
@@ -962,7 +962,7 @@ La <emphasis>barre d'outils Fichier</emphasis> fournit en un clic, un accès aux
    <entry>&trajectory-icon;</entry>
    <entry><link linkend="trajectory-cmd">Graphe -> &trajectory-cmd;</link></entry>
    <entry></entry>
-   <entry>Crée un graphe 3D avec des trajectoires (fleĉhes de vecteurs).</entry>
+   <entry>Crée un graphe 3D avec des trajectoires (flêches de vecteurs).</entry>
   </row>
 </tbody>
 </tgroup>
@@ -1113,7 +1113,7 @@ La <emphasis>barre d'outils Fichier</emphasis> fournit en un clic, un accès aux
    <entry>&swap-columns-icon;</entry>
    <entry><link linkend="swap-columns-cmd">Table -> &swap-columns-cmd;</link></entry>
    <entry>&swap-columns-key;</entry>
-   <entry>Échange les deux clonnes sélectionnées.</entry>
+   <entry>Echange les deux clonnes sélectionnées.</entry>
   </row>
 
    <row>

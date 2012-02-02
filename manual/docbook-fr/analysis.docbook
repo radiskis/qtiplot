@@ -14,7 +14,7 @@
 <para>Cette fonction est accessible par la <link linkend="fft-cmd">&fft-lnk;</link>, qui se situe dans le <link linkend="sec-analysis-menu">menu Analyse</link> lorsqu'une table ou un graphe est sélectionné. La transformée de Fourier décompose en composantes élémentaires, en supposant que le signal x(t) peut être décrit comme une somme :</para>
 
 <equation>
-  <title>Équation de Fourier</title>
+  <title>Equation de Fourier</title>
   <mediaobject>
     <imageobject>
       <imagedata format="PNG" fileref="equations/equation_fourier.png"/>
@@ -162,7 +162,7 @@
 <para>Cette commande est utilisée pour ajustée une courbe de forme générale sigmaoïdale. L'expression de cette fonction est :</para>
 
 <equation>
-  <title>Équation de Boltzmann</title>
+  <title>Equation de Boltzmann</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="equations/equation_bolzmann.png"/>
@@ -200,7 +200,7 @@
 
 <para>Cette commande est utilisée pour ajuster une courbe en forme de cloche. L'expression d'une telle fonction est :</para>
 
-<equation><title>Équation de Gauss</title>
+<equation><title>Equation de Gauss</title>
   <mediaobject><imageobject>
       <imagedata  format="PNG" fileref="equations/equation_gauss.png"/>
     </imageobject></mediaobject>
@@ -225,7 +225,7 @@
 <para>Cette commande est utilisée pour ajuster une courbe en forme de cloche. L'expression d'une telle fonction est :</para>
 
 <equation>
-  <title>Équation de Lorentz</title>
+  <title>Equation de Lorentz</title>
   <mediaobject>
     <imageobject>
       <imagedata  format="PNG" fileref="equations/equation_lorentz.png"/>
@@ -252,7 +252,7 @@
 <title>Ajustements multipics</title>
 
 <para>Ce type d'ajustement vous permet d'ajuster vos points en une somme de fonctions Gaussiennes ou Lorentziennes.</para>
-<para>La première étape consiste à spécifier le nombre de pics que l'on recherche. Ensuite, vous devez donner leurs positions sur la courbe. Vous faites ceci en cliquant aux différents emplacements des pics, que vous validez individuellement avec la touche <emphasis>ENTRÉE</emphasis>.</para>
+<para>La première étape consiste à spécifier le nombre de pics que l'on recherche. Ensuite, vous devez donner leurs positions sur la courbe. Vous faites ceci en cliquant aux différents emplacements des pics, que vous validez individuellement avec la touche <emphasis>ENTREE</emphasis>.</para>
   <figure id="fig-fit-multipeak">
     <title>Résultats de la &fit-multipeak-gaussian-cmd;</title>
     <mediaobject>
