@@ -10009,6 +10009,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 	if (w){
 		if (w->isA("MultiLayer") || w->isA("Graph3D")){
 			fileMenu->addMenu (exportPlotMenu);
+			exportPlotMenu->addAction(actionExportLayer);
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
 		#if QT_VERSION >= 0x040500
@@ -10918,13 +10919,13 @@ void ApplicationWindow::showGraphContextMenu()
 		cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
 
 	QMenu exports(this);
-	exports.addAction(tr("&Layer"), this, SLOT(exportLayer()));
-	exports.addAction(tr("&Window"), this, SLOT(exportGraph()));
+	exports.addAction(actionExportLayer);
+	exports.addAction(actionExportGraph);
 	cm.insertItem(tr("E&xport"),&exports);
 
 	QMenu prints(this);
-	prints.addAction(tr("&Layer"), plot, SLOT(printActiveLayer()));
-	prints.addAction(tr("&Window"), plot, SLOT(print()));
+	prints.addAction(tr("&Layer") + "...", plot, SLOT(printActiveLayer()));
+	prints.addAction(tr("&Window") + "...", plot, SLOT(print()));
 	cm.insertItem(QPixmap(":/fileprint.png"), tr("&Print"),&prints);
 
 	cm.addSeparator();
@@ -13852,7 +13853,11 @@ void ApplicationWindow::createActions()
 	actionAutomaticLayout = new QAction(QIcon(":/auto_layout.png"), tr("Automatic Layout"), this);
 	connect(actionAutomaticLayout, SIGNAL(activated()), this, SLOT(autoArrangeLayers()));
 
-	actionExportGraph = new QAction(tr("&Current"), this);
+	actionExportLayer = new QAction(tr("&Layer") + "...", this);
+	actionExportLayer->setShortcut(tr("Ctrl+Shift+L"));
+	connect(actionExportLayer, SIGNAL(activated()), this, SLOT(exportLayer()));
+
+	actionExportGraph = new QAction(tr("&Window") + "...", this);
 	actionExportGraph->setShortcut( tr("Ctrl+Alt+G") );
 	connect(actionExportGraph, SIGNAL(activated()), this, SLOT(exportGraph()));
 
@@ -14887,7 +14892,10 @@ void ApplicationWindow::translateActionsStrings()
 	actionAutomaticLayout->setMenuText(tr("Automatic Layout"));
 	actionAutomaticLayout->setToolTip(tr("Automatic Layout"));
 
-	actionExportGraph->setMenuText(tr("&Current") + "...");
+	actionExportLayer->setMenuText(tr("&Layer") + "...");
+	actionExportLayer->setShortcut(tr("Ctrl+Shift+L"));
+
+	actionExportGraph->setMenuText(tr("&Window") + "...");
 	actionExportGraph->setShortcut(tr("Ctrl+Alt+G"));
 	actionExportGraph->setToolTip(tr("Export current graph"));
 

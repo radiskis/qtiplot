@@ -78,14 +78,22 @@ void FrameWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
+void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
 {
-	int x = map[QwtPlot::xBottom].transform(calculateXValue());
-	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	int x = map[QwtPlot::xBottom].transform(d_x);
+	int y = map[QwtPlot::yLeft].transform(d_y);
+	int right = map[QwtPlot::xBottom].transform(d_x_right);
+	int bottom = map[QwtPlot::yLeft].transform(d_y_bottom);
+
+	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+	QPen pen = d_frame_pen;
+	if (scaleFactor != 1.0)
+		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
 
 	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
+
+	if (scaleFactor != 1.0)
+		d_frame_pen = pen;//restore original pen
 }
 
 void FrameWidget::setFrameStyle(int style)

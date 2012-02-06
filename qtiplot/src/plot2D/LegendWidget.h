@@ -59,7 +59,7 @@ public:
 	void setFont(const QFont& font);
 
 	void showTextEditor();
-    void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 
 	QString saveToString();
 	static void restore(Graph *g, const QStringList& lst);

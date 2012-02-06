@@ -34,12 +34,10 @@
 
 #include "Graph.h"
 #include "MultiLayer.h"
-#include "Grid.h"
 #include "CanvasPicker.h"
 #include "ErrorBarsCurve.h"
 #include "TexWidget.h"
 #include "LegendWidget.h"
-#include "ArrowMarker.h"
 #include "ScalePicker.h"
 #include "TitlePicker.h"
 #include "PieCurve.h"
@@ -1631,16 +1629,21 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 	} else
 		r.setSize(size);
 
+	double scaleFactor = (double)size.height()/(double)height();
 	if (scaleFontsFactor == 0)
-		scaleFontsFactor = (double)size.height()/(double)height();
+		scaleFontsFactor = scaleFactor;
 
 	QPixmap pixmap(size);
 	if (transparent)
 		pixmap.fill(Qt::transparent);
 	else
 		pixmap.fill();
+
+	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor);
+	filter.setScaleFactor(scaleFactor);
+
 	QPainter p(&pixmap);
-	print(&p, r, ScaledFontsPrintFilter(scaleFontsFactor));
+	print(&p, r, filter);
 	p.end();
 
 	return pixmap;
@@ -1848,18 +1851,18 @@ void Graph::print()
 			plotRect.moveTo(x_margin, y_margin);
 		}
 
-        QPainter paint(&printer);
+		QPainter paint(&printer);
 		if (multiLayer()->printCropmarksEnabled()){
 			QRect cr = plotRect; // cropmarks rectangle
 			cr.addCoords(-1, -1, 2, 2);
-            paint.save();
-            paint.setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
-            paint.drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
-            paint.drawLine(paperRect.left(), cr.bottom(), paperRect.right(), cr.bottom());
-            paint.drawLine(cr.left(), paperRect.top(), cr.left(), paperRect.bottom());
-            paint.drawLine(cr.right(), paperRect.top(), cr.right(), paperRect.bottom());
-            paint.restore();
-        }
+			paint.save();
+			paint.setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
+			paint.drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
+			paint.drawLine(paperRect.left(), cr.bottom(), paperRect.right(), cr.bottom());
+			paint.drawLine(cr.left(), paperRect.top(), cr.left(), paperRect.bottom());
+			paint.drawLine(cr.right(), paperRect.top(), cr.right(), paperRect.bottom());
+			paint.restore();
+		}
 
 		print(&paint, plotRect, ScaledFontsPrintFilter(fontFactor));
 	}
@@ -6807,6 +6810,12 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	// reset the widget attributes again. This way we produce a lot of
 	// useless layout events ...
 
+	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+	int minTickLength = minorTickLength();
+	int majTickLength = majorTickLength();
+	if (scaleFactor != 1.0)
+		setTicksLength(qRound(scaleFactor*minTickLength), qRound(scaleFactor*majTickLength));
+
 	pfilter.apply((QwtPlot *)this);
 
 	int axisId;
@@ -6833,15 +6842,14 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 		layoutOptions |= QwtPlotLayout::IgnoreLegend;
 
 	int bw = lineWidth();
-	plotLayout()->activate(this,
-		QwtPainter::metricsMap().deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)), layoutOptions);
+	plotLayout()->activate(this, metricsMap.deviceToLayout(plotRect.adjusted(bw, bw, -bw, -bw)), layoutOptions);
 
 	QRect canvasRect = plotLayout()->canvasRect();
 
 	// The border of the bounding rect needs to be scaled to
 	// layout coordinates, so that it is aligned to the axes
 
-	QRect boundingRect( canvasRect.left() - 1, canvasRect.top() - 1,
+	QRect boundingRect(canvasRect.left() - 1, canvasRect.top() - 1,
 		canvasRect.width() + 2, canvasRect.height() + 2);
 	boundingRect = metricsMap.layoutToDevice(boundingRect);
 	boundingRect.setWidth(boundingRect.width() - 1);
@@ -6862,7 +6870,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 		map[axisId].setScaleInterval(scaleDiv.lowerBound(), scaleDiv.upperBound());
 
 		double from, to;
-		if ( axisEnabled(axisId) ){
+		if (axisEnabled(axisId)){
 			const int sDist = axisWidget(axisId)->startBorderDist();
 			const int eDist = axisWidget(axisId)->endBorderDist();
 			const QRect &scaleRect = plotLayout()->scaleRect(axisId);
@@ -6871,7 +6879,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 				from = metricsMap.layoutToDeviceX(scaleRect.left() + sDist);
 				to = metricsMap.layoutToDeviceX(scaleRect.right() + 1 - eDist);
 			} else {
-				from = metricsMap.layoutToDeviceY(scaleRect.bottom() + 1 - eDist );
+				from = metricsMap.layoutToDeviceY(scaleRect.bottom() + 1 - eDist);
 				to = metricsMap.layoutToDeviceY(scaleRect.top() + sDist);
 			}
 		} else {
@@ -6936,7 +6944,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 			lw->setFont(font);
 		}
 
-		f->print(painter, map);
+		f->print(painter, map, pfilter);
 
 		if (lw)//restore original font
 			lw->setFont(fnt);
@@ -7010,6 +7018,10 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 		if (scaleWidget){
 			int baseDist = scaleWidget->margin();
 
+			int lw = scaleWidget->penWidth();
+			if (scaleFactor != 1.0)
+				scaleWidget->setPenWidth(qRound(scaleFactor*lw));
+
 			int startDist, endDist;
 			scaleWidget->getBorderDistHint(startDist, endDist);
 
@@ -7031,8 +7043,18 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 				}
 			}
 			printScale(painter, axisId, startDist, endDist, baseDist, scaleRect);
+			if (scaleFactor != 1.0){
+				scaleWidget->setPenWidth(lw);
+				QwtScaleDraw *sd = (QwtScaleDraw *)scaleWidget->scaleDraw();
+				sd->setTickLength(QwtScaleDiv::MajorTick, majTickLength);
+				sd->setTickLength(QwtScaleDiv::MediumTick, minTickLength);
+				sd->setTickLength(QwtScaleDiv::MinorTick, minTickLength);
+			}
 		}
 	}
+	if (scaleFactor != 1.0)//reset original tick lengths
+		setTickLength(minTickLength, majTickLength);
+
 	QwtPainter::resetMetricsMap();
 
 	plotLayout()->invalidate();
@@ -7042,7 +7064,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 		// restore the previous base line dists
 		for (axisId = 0; axisId < QwtPlot::axisCnt; axisId++ ){
 			QwtScaleWidget *scaleWidget = (QwtScaleWidget *)axisWidget(axisId);
-			if ( scaleWidget  )
+			if (scaleWidget)
 				scaleWidget->setMargin(baseLineDists[axisId]);
 		}
 	}
@@ -7060,7 +7082,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 			lw->setFont(font);
 		}
 
-		f->print(painter, map);
+		f->print(painter, map, pfilter);
 
 		if (lw)//restore original font
 			lw->setFont(fnt);

@@ -2,7 +2,7 @@
     File                 : MultiLayer.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2006 - 2010 by Ion Vasilief
+	Copyright            : (C) 2006 - 2012 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : Multi layer widget
 
@@ -1003,6 +1003,9 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		pic.fill();
 	QPainter p(&pic);
 
+	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor);
+	filter.setScaleFactor(yScale);
+
 	QList<Graph*> lst = stackOrderedLayersList();
 	foreach (Graph *g, lst){
 		int gx = qRound(g->x()*xScale);
@@ -1010,7 +1013,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		int gw = qRound(g->width()*xScale);
 		int gh = qRound(g->height()*yScale);
 
-		g->print(&p, QRect(gx, gy, gw, gh), ScaledFontsPrintFilter(scaleFontsFactor));
+		g->print(&p, QRect(gx, gy, gw, gh), filter);
 	}
 
 	p.end();

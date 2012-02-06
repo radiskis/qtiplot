@@ -46,7 +46,7 @@ public:
 	QString formula(){return d_formula;};
 	void setFormula(const QString& s){d_formula = s;};
 	
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter & = QwtPlotPrintFilter());
 	virtual QString saveToString();
 	
 	void clone(TexWidget* t);
