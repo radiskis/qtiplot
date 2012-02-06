@@ -66,23 +66,28 @@ void TexWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
+void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
 {
-	int x = map[QwtPlot::xBottom].transform(calculateXValue());
-	int y = map[QwtPlot::yLeft].transform(calculateYValue());
-	int xr = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int yr = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	int x = map[QwtPlot::xBottom].transform(d_x);
+	int y = map[QwtPlot::yLeft].transform(d_y);
+	int xr = map[QwtPlot::xBottom].transform(d_x_right);
+	int yr = map[QwtPlot::yLeft].transform(d_y_bottom);
 	int width = abs(xr - x);
 	int height = abs(yr - y);
+
+	QPen pen = d_frame_pen;
+	double xfactor = 1.0, yfactor = 1.0, scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+	if (scaleFactor != 1.0){
+		xfactor = yfactor = scaleFactor;
+		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
+	} else {// calculate resolution factor
+		xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+		yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	}
 
 	drawFrame(painter, QRect(x, y, width, height));
 
 	int lw = d_frame_pen.width();
-
-	// calculate resolution factor
-	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-
 	int margin_x = qRound(d_margin*xfactor);
 	int margin_y = qRound(d_margin*yfactor);
 
@@ -94,6 +99,9 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 		h -= d_margin;
 	}
 	painter->drawPixmap(QRect (x + lw + margin_x, y + lw + margin_y, w, h), d_pix);
+
+	if (scaleFactor != 1.0)
+		d_frame_pen = pen;//restore original pen
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)

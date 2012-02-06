@@ -43,6 +43,7 @@
 class ArrowMarker: public QObject, public QwtPlotMarker
 {
 public:
+	enum RttiValues {Rtti_PlotLineArrow = 2000};
 	enum Operation { None, MoveStart, MoveEnd, MoveBoth };
 	enum AttachPolicy {Page, Scales};
     ArrowMarker();
@@ -131,6 +132,8 @@ public:
 
 	void setAttachPolicy(AttachPolicy attachTo);
 	AttachPolicy attachPolicy(){return d_attach_policy;};
+
+	virtual int rtti() const {return Rtti_PlotLineArrow;}
 
 private:
 	void displayInfo(bool clear = false);

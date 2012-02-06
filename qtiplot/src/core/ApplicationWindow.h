@@ -1498,7 +1498,7 @@ private:
 	QAction *actionOpenQtDesignerUi, *actionCommentSelection, *actionUncommentSelection;
 #endif
 	QAction *actionSwapColumns, *actionMoveColRight, *actionMoveColLeft, *actionMoveColFirst, *actionMoveColLast, *actionShowScriptWindow;
-	QAction *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
+	QAction *actionExportLayer, *actionExportGraph, *actionExportAllGraphs, *actionPrint, *actionPrintAllPlots, *actionShowExportASCIIDialog;
 	QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
 	QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
 	QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;

@@ -110,7 +110,7 @@ public:
 	void showContextMenu(){emit showMenu();};
 	void showPropertiesDialog(){emit showDialog();};
 
-    virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+	virtual void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter & = QwtPlotPrintFilter());
     void resetOrigin(){setOriginCoord(d_x, d_y);};
 	void resetCoordinates(){setCoordinates(d_x, d_y, d_x_right, d_y_bottom);};
 

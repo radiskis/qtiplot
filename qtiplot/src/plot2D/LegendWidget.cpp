@@ -96,19 +96,26 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
+void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
 {
-	int x = map[QwtPlot::xBottom].transform(calculateXValue());
-	int y = map[QwtPlot::yLeft].transform(calculateYValue());
+	int x = map[QwtPlot::xBottom].transform(d_x);
+	int y = map[QwtPlot::yLeft].transform(d_y);
 
-	// calculate resolution factor
-	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-
+	QPen pen = d_frame_pen;
 	// save screen geometry parameters
 	int space = h_space;
 	int left = left_margin;
 	int top = top_margin;
+
+	double xfactor = 1.0, yfactor = 1.0, scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+	if (scaleFactor != 1.0){
+		xfactor = scaleFactor;
+		top_margin *= scaleFactor;
+		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
+	} else {// calculate resolution factor
+		xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+		yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	}
 
 	h_space = int(h_space*xfactor);
 	left_margin = int(left_margin*xfactor);
@@ -138,6 +145,9 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	h_space = space;
 	left_margin = left;
 	top_margin = top;
+
+	if (scaleFactor != 1.0)
+		d_frame_pen = pen;//restore original pen
 }
 
 void LegendWidget::setText(const QString& s)

@@ -155,15 +155,22 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
+void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
 {
-	int x = map[QwtPlot::xBottom].transform(calculateXValue());
-	int y = map[QwtPlot::yLeft].transform(calculateYValue());
+	int x = map[QwtPlot::xBottom].transform(d_x);
+	int y = map[QwtPlot::yLeft].transform(d_y);
+	int right = map[QwtPlot::xBottom].transform(d_x_right);
+	int bottom = map[QwtPlot::yLeft].transform(d_y_bottom);
 
-	int right = map[QwtPlot::xBottom].transform(calculateRightValue());
-	int bottom = map[QwtPlot::yLeft].transform(calculateBottomValue());
+	QPen pen = d_frame_pen;
+	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+	if (scaleFactor != 1.0)
+		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
 
 	draw(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
+
+	if (scaleFactor != 1.0)
+		d_frame_pen = pen;//restore original pen
 }
 
 void ImageWidget::draw(QPainter *painter, const QRect& rect)
