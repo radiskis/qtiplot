@@ -68,7 +68,7 @@ void Axis::setMajors(int val)
 	if (val == majorintervals_)
 		return;
 	
-	majorintervals_ = (val<=0) ? 1 : val; // always >= 1
+	majorintervals_ = (val < 0) ? 0 : val; // always >= 0
 }
 
 /*!
@@ -79,7 +79,7 @@ void Axis::setMinors(int val)
 	if (val == minorintervals_)
 		return;
 
-	minorintervals_ = (val<=0) ? 1 : val; // always >= 1
+	minorintervals_ = (val < 0) ? 0 : val; // always >= 0
 }
 
 void Axis::setTicLength(double majorl, double minorl)
@@ -143,18 +143,24 @@ void Axis::drawLabel()
 	label_.setPlot(plot());
 
 	double width = 0.0;
-	for (unsigned i = 0; i != markerLabel_.size(); i++){
+	for (unsigned i = 0; i < markerLabel_.size(); i++){
 		double aux = markerLabel_[i].width();
 		if (aux > width)
 			width = aux;
 	}
 
 	Triple center = begin() + (end_ - beg_)/2;
-	Triple ticEnd = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_));
 
-	double rap = (width + labelgap_ + label_.textHeight())/(World2ViewPort(ticEnd) - World2ViewPort(center)).length();
+	Triple unitEnd = ViewPort2World(World2ViewPort(center + ticOrientation()));
+	double dist = labelgap_ + 0.5*label_.height();
+	if (majorintervals_)
+		dist += width + numbergap_;
+	dist /= (World2ViewPort(unitEnd) - World2ViewPort(center)).length();
 
-	Triple pos = ViewPort2World(World2ViewPort(center + ticOrientation() * lmaj_*(1 + rap)));
+	if (majorintervals_)
+		dist += lmaj_;
+
+	Triple pos = ViewPort2World(World2ViewPort(center + dist*ticOrientation()));
 	setLabelPosition(pos, Center);
 
 	Triple end = World2ViewPort(end_);
@@ -163,7 +169,7 @@ void Axis::drawLabel()
 
 	int ax = 0;
 	Qwt3D::CoordinateSystem *coords = plot()->coordinates();
-		for (int i = 0; i < (int)coords->axes.size(); i++){
+	for (int i = 0; i < (int)coords->axes.size(); i++){
 		Qwt3D::Axis axis = coords->axes[i];
 		if (axis.begin() == beg_ && axis.end() == end_){
 			ax = i;
@@ -176,7 +182,7 @@ void Axis::drawLabel()
 			angle += 180;
 		if (angle > 180 && angle < 270)
 			angle -= 180;
-			}
+	}
 
 	label_.draw(angle);
 }
