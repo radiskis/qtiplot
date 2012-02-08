@@ -1449,7 +1449,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	sp->coordinates()->axes[axis3].setLimits(start, end);
 	sp->coordinates()->axes[axis4].setLimits(start, end);
 
-	if(scaleType[axis] != type){
+	if (scaleType[axis] != type){
 		sp->coordinates()->axes[axis1].setScale(type);
 		sp->coordinates()->axes[axis2].setScale(type);
 		sp->coordinates()->axes[axis3].setScale(type);

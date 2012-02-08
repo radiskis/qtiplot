@@ -161,83 +161,79 @@ int LinearScale::autoscale(double& a, double& b, double start, double stop, int 
 
 //! Creates the major and minor vector for the scale
 void LinearScale::calculate()
-{		
-  majors_p.clear();
+{
+	majors_p.clear();
 	minors_p.clear();
-  
-  double interval = mstop_p-mstart_p;
+
+	if (!majorintervals_p)
+		return;
+
+	double interval = mstop_p-mstart_p;
 
 	double runningval;
-  int i=0;
+	int i = 0;
 
-  // majors
+	// majors
 
-  // first tic
-//  if (mstart_p<start_p || mstop_p>stop_p)
-//    return;  
-    
-  majors_p.push_back(mstart_p);
-  
-  // remaining tics
-  for (i = 1; i <= majorintervals_p; ++i) 
-	{
+	// first tic
+	//  if (mstart_p<start_p || mstop_p>stop_p)
+	//    return;
+
+	majors_p.push_back(mstart_p);
+
+	// remaining tics
+	for (i = 1; i <= majorintervals_p; ++i){
 		double t = double(i) / majorintervals_p;
 		runningval = mstart_p + t * interval;
-    if (runningval>stop_p)
-      break;
-    if (isPracticallyZero(mstart_p, -t*interval)) // prevent rounding errors near 0
-      runningval = 0.0;
-    majors_p.push_back(runningval);
+		if (runningval>stop_p)
+			break;
+		if (isPracticallyZero(mstart_p, -t*interval)) // prevent rounding errors near 0
+			runningval = 0.0;
+		majors_p.push_back(runningval);
 	}
-  majorintervals_p = majors_p.size();
-  if (majorintervals_p)
-    --majorintervals_p;
-
+	majorintervals_p = majors_p.size();
+	if (majorintervals_p)
+		--majorintervals_p;
 
 	// minors
 
-  if (!majorintervals_p || !minorintervals_p) // no valid interval
-  {
-    minorintervals_p = 0;
-    return;
-  }
-  
-  // start_p      mstart_p
-  //  |_____________|_____ _ _ _
+	if (!majorintervals_p || !minorintervals_p){// no valid interval
+		minorintervals_p = 0;
+		return;
+	}
 
-  double step = (majors_p[1]-majors_p[0]) / minorintervals_p;
-  if (isPracticallyZero(step))
-    return;
+	// start_p      mstart_p
+	//  |_____________|_____ _ _ _
 
-  runningval = mstart_p-step;
-	while (runningval>start_p)
-	{
-		minors_p.push_back(runningval);								
+	double step = (majors_p[1]-majors_p[0]) / minorintervals_p;
+	if (isPracticallyZero(step))
+		return;
+
+	runningval = mstart_p-step;
+	while (runningval>start_p){
+		minors_p.push_back(runningval);
 		runningval -= step;
 	}
 
-  //       mstart_p            mstop_p
-  //  ________|_____ _ _ _ _ _ ___|__________
+	//       mstart_p            mstop_p
+	//  ________|_____ _ _ _ _ _ ___|__________
 
-  for (i=0; i!=majorintervals_p; ++i)
-  {
-    runningval = majors_p[i] + step;
-    for (int j=0; j!=minorintervals_p; ++j)
-    {
-		  minors_p.push_back(runningval);								
-		  runningval += step;
-	  }
-  }
-  
-  //    mstop_p       stop_p
-  // _ _ _|_____________|
+	for (i = 0; i != majorintervals_p; ++i){
+		runningval = majors_p[i] + step;
+		for (int j=0; j!=minorintervals_p; ++j){
+				minors_p.push_back(runningval);
+				runningval += step;
+		 }
+	}
 
-  runningval = mstop_p + step;
-  while (runningval<stop_p)
-  {
-	  minors_p.push_back(runningval);								
-	  runningval += step;
-  }
+	//    mstop_p       stop_p
+	// _ _ _|_____________|
+
+	runningval = mstop_p + step;
+	while (runningval<stop_p){
+		minors_p.push_back(runningval);
+		runningval += step;
+	}
 }
 
 void LogScale::setupCounter(double& k, int& step)

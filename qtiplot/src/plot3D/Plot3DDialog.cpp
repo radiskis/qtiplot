@@ -149,9 +149,12 @@ void Plot3DDialog::initScalesPage()
 	QGridLayout *gl2 = new QGridLayout();
 	gl2->addWidget(new QLabel(tr("Major Ticks")), 0, 0);
 	boxMajors = new QSpinBox();
+	boxMajors->setMinimum(1);
+	boxMajors->setSpecialValueText(tr("None"));
 	gl2->addWidget(boxMajors, 0, 1);
 	gl2->addWidget(new QLabel(tr("Minor Ticks")), 1, 0);
 	boxMinors = new QSpinBox();
+	boxMinors->setSpecialValueText(tr("None"));
 	gl2->addWidget(boxMinors, 1, 1);
 	gl2->setRowStretch(2, 1);
 
@@ -263,6 +266,7 @@ void Plot3DDialog::initTitlePage()
 
 	QVBoxLayout* vl = new QVBoxLayout();
 	boxTitle = new QTextEdit();
+	boxTitle->setAcceptRichText(false);
 	boxTitle->setMaximumHeight(80);
 	vl->addWidget(boxTitle);
 
@@ -425,7 +429,6 @@ void Plot3DDialog::initGeneralPage()
 	gl1->addWidget(new QLabel( tr( "Distance labels - axis" )), 4, 0);
 	boxDistance = new QSpinBox();
 	boxDistance->setRange(-1000, 1000);
-	boxDistance->setSingleStep(5);
 	gl1->addWidget(boxDistance, 4, 1);
 
 	boxZoom = new QSpinBox();
@@ -1064,11 +1067,11 @@ void Plot3DDialog::viewScaleLimits(int axis)
 	boxTo->blockSignals(false);
 
 	boxMajors->blockSignals(true);
-	boxMajors->setValue(a.majors());
+	boxMajors->setValue(a.majors() + 1);
 	boxMajors->blockSignals(false);
 
 	boxMinors->blockSignals(true);
-	boxMinors->setValue(a.minors());
+	boxMinors->setValue(a.minors() - 1);
 	boxMinors->blockSignals(false);
 
 	boxType->setCurrentIndex(d_plot->axisType(axis));
@@ -1165,7 +1168,7 @@ bool Plot3DDialog::updatePlot()
 	} else if (generalDialog->currentPage() == (QWidget*)scale){
 		double start = qMin(boxFrom->value(), boxTo->value());
 		double end = qMax(boxFrom->value(), boxTo->value());
-		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value(), boxMinors->value(), (Qwt3D::SCALETYPE)boxType->currentIndex());
+		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value() - 1, boxMinors->value() + 1, (Qwt3D::SCALETYPE)boxType->currentIndex());
 		d_plot->setAxisNumericFormat(axesList->currentRow(), boxTickLabelsFormat->currentIndex(), boxPrecision->value());
 		viewScaleLimits(axesList->currentRow());
 	} else if (generalDialog->currentPage() == axes){
