@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Graph.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2004-2008 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Graph widget
+	File                 : Graph.h
+	Project              : QtiPlot
+	--------------------------------------------------------------------
+	Copyright            : (C) 2004 - 2012 by Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Graph widget
 
  ***************************************************************************/
 
@@ -943,191 +943,15 @@ signals:
 
 class ScaledFontsPrintFilter: public QwtPlotPrintFilter
 {
-
 public:
-	ScaledFontsPrintFilter(double factor){d_factor = factor; d_dpi_factor = 1.0;};
-	virtual QFont font(const QFont &f, Item item) const
-	{
-		if (d_factor == 1.0 || d_factor <= 0.0)
-			return f;
+	ScaledFontsPrintFilter(double factor, double scaleFactor = 1.0);
 
-		if (item == Title || item == AxisScale || item == AxisTitle || item == Marker){
-			QFont fnt(f);
-			fnt.setPointSizeF(d_factor*f.pointSizeF());
-			return fnt;
-		}
-		return f;
-	}
+	virtual QFont font(const QFont &, Item) const;
+	virtual void apply(QwtPlotItem *) const;
+	virtual void reset(QwtPlotItem *) const;
 
 	double scaleFontsFactor(){return d_factor;}
-
 	double scaleFactor(){return d_dpi_factor;}
-	void setScaleFactor(double f){d_dpi_factor = f;}
-
-	void apply(QwtPlotItem *item) const
-	{
-		if (d_dpi_factor == 1.0)
-			return;
-
-		switch(item->rtti())
-		{
-			case QwtPlotItem::Rtti_PlotGrid:
-			{
-				Grid *grid = (Grid *)item;
-
-				QPen pen = grid->majPen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				grid->setMajPen(pen);
-
-				pen = grid->minPen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				grid->setMinPen(pen);
-
-				pen = grid->majPenY();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				grid->setMajPenY(pen);
-
-				pen = grid->minPenY();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				grid->setMinPenY(pen);
-
-				break;
-			}
-			case QwtPlotItem::Rtti_PlotCurve:
-			{
-				QwtPlotCurve *c = (QwtPlotCurve *)item;
-
-				QwtSymbol symbol = c->symbol();
-
-				QPen pen = symbol.pen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				symbol.setPen(pen);
-				symbol.setSize(d_dpi_factor*symbol.size());
-
-				c->setSymbol(symbol);
-
-				pen = c->pen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				c->setPen(pen);
-
-				break;
-			}
-			case QwtPlotItem::Rtti_PlotMarker:
-			{
-				QwtPlotMarker *m = (QwtPlotMarker *)item;
-
-				QPen pen = m->linePen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				m->setLinePen(pen);
-
-				QwtSymbol symbol = m->symbol();
-
-				pen = symbol.pen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				symbol.setPen(pen);
-
-				m->setSymbol(symbol);
-
-				break;
-			}
-
-			case ArrowMarker::Rtti_PlotLineArrow:
-			{
-				ArrowMarker *a = (ArrowMarker *)item;
-				a->setHeadLength(d_dpi_factor*a->headLength());
-
-				QPen pen = a->linePen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				a->setLinePen(pen);
-
-				QwtSymbol symbol = a->symbol();
-
-				pen = symbol.pen();
-				pen.setWidthF(d_dpi_factor*pen.widthF());
-				symbol.setPen(pen);
-
-				a->setSymbol(symbol);
-
-				break;
-			}
-			default:
-				break;
-		}
-	}
-
-	void reset(QwtPlotItem *item) const
-	{
-		if (d_dpi_factor == 1.0)
-			return;
-
-		switch(item->rtti())
-		{
-			case QwtPlotItem::Rtti_PlotGrid:
-			{
-				Grid *grid = (Grid *)item;
-
-				QPen pen = grid->majPen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				grid->setMajPen(pen);
-
-				pen = grid->minPen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				grid->setMinPen(pen);
-
-				pen = grid->majPenY();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				grid->setMajPenY(pen);
-
-				pen = grid->minPenY();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				grid->setMinPenY(pen);
-
-				break;
-			}
-			case QwtPlotItem::Rtti_PlotCurve:
-			{
-				QwtPlotCurve *c = (QwtPlotCurve *)item;
-
-				QwtSymbol symbol = c->symbol();
-				QPen pen = symbol.pen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				symbol.setPen(pen);
-				symbol.setSize(symbol.size()/d_dpi_factor);
-
-				c->setSymbol(symbol);
-
-				pen = c->pen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				c->setPen(pen);
-
-				break;
-			}
-			case QwtPlotItem::Rtti_PlotMarker:
-			{
-				QwtPlotMarker *m = (QwtPlotMarker *)item;
-
-				QPen pen = m->linePen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				m->setLinePen(pen);
-
-				break;
-			}
-
-			case ArrowMarker::Rtti_PlotLineArrow:
-			{
-				ArrowMarker *a = (ArrowMarker *)item;
-				a->setHeadLength(a->headLength()/d_dpi_factor);
-
-				QPen pen = a->linePen();
-				pen.setWidthF(pen.widthF()/d_dpi_factor);
-				a->setLinePen(pen);
-
-				break;
-			}
-			default:
-				break;
-		}
-	}
 
 private:
 	double d_factor;

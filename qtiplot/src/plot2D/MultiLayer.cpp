@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : MultiLayer.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
+	File                 : MultiLayer.cpp
+	Project              : QtiPlot
+	--------------------------------------------------------------------
 	Copyright            : (C) 2006 - 2012 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Multi layer widget
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Multi layer widget
 
  ***************************************************************************/
 
@@ -1003,8 +1003,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		pic.fill();
 	QPainter p(&pic);
 
-	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor);
-	filter.setScaleFactor(yScale);
+	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor, yScale);
 
 	QList<Graph*> lst = stackOrderedLayersList();
 	foreach (Graph *g, lst){
