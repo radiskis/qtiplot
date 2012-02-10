@@ -1791,6 +1791,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			analysisMenu->menuAction()->setVisible(true);
 			tableMenu->menuAction()->setVisible(true);
 
+			actionSaveTemplate->setEnabled(!qobject_cast<TableStatistics*>(w));
 			actionTableRecalculate->setEnabled(true);
 			actionAddColToTable->setEnabled(true);
 			actionShowColumnValuesDialog->setEnabled(true);
