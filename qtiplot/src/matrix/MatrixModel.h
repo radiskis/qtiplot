@@ -2,7 +2,7 @@
 	File                 : MatrixModel.h
 	Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2007 by Ion Vasilief
+	Copyright            : (C) 2007 - 2012 by Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : QtiPlot's matrix model
 
@@ -42,25 +42,25 @@ class Matrix;
 
 class MatrixModel : public QAbstractTableModel
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
-    MatrixModel(const QImage& image, QObject *parent);
-    ~MatrixModel(){free(d_data);};
+	MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
+	MatrixModel(const QImage& image, QObject *parent);
+	~MatrixModel(){free(d_data);};
 
-    Matrix *matrix(){return d_matrix;};
+	Matrix *matrix(){return d_matrix;};
 
 	Qt::ItemFlags flags( const QModelIndex & index ) const;
 
-    bool canResize(int rows, int cols);
+	bool canResize(int rows, int cols);
 	void setDimensions(int rows, int cols);
 	void resample(int rows, int cols, int method = 0);
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	void setRowCount(int rows);
 
-    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	void setColumnCount(int cols);
 
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
@@ -81,11 +81,11 @@ public:
 	QImage renderImage();
 
 	double data(int row, int col) const;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	bool setData(const QModelIndex & index, const QVariant & value, int role);
 
-    double* dataVector(){return d_data;};
-    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	double* dataVector(){return d_data;};
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	void setImage(const QImage& image);
 
@@ -109,10 +109,13 @@ public:
 	double* dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 
+	bool hasCalculatedValues(){return d_calculated_values;}
+	void setCalculatedValues(bool on = true){d_calculated_values = on;}
+
 private:
 	void init();
-    int d_rows, d_cols;
-    double *d_data;
+	int d_rows, d_cols;
+	double *d_data;
 	Matrix *d_matrix;
 	//! Format code for displaying numbers
 	char d_txt_format;
@@ -120,6 +123,8 @@ private:
 	int d_num_precision;
 	//! Locale used to display data
 	QLocale d_locale;
+	//! Flag telling if matrix values are calculated using formula_str
+	bool d_calculated_values;
 
 	//! Pointers to GSL matrices used during inversion operations
 	gsl_matrix *d_direct_matrix, *d_inv_matrix;

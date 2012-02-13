@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Matrix.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2006 - 2011 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Matrix worksheet class
+	File                 : Matrix.h
+	Project              : QtiPlot
+	--------------------------------------------------------------------
+	Copyright            : (C) 2006 - 2012 by Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Matrix worksheet class
 
  ***************************************************************************/
 
