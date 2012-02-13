@@ -41,33 +41,33 @@ d_index(index),
 d_val_before(valBefore),
 d_val_after(valAfter)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixEditCellCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    Matrix *m = d_model->matrix();
-    if (m){
-        d_model->setCell(d_index.row(), d_index.column(), d_val_after);
-        m->resetView();
-        m->notifyChanges();
-    }
+	Matrix *m = d_model->matrix();
+	if (m){
+		d_model->setCell(d_index.row(), d_index.column(), d_val_after);
+		m->resetView();
+		m->notifyChanges();
+	}
 }
 
 void MatrixEditCellCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    Matrix *m = d_model->matrix();
-    if (m){
-        d_model->setCell(d_index.row(), d_index.column(), d_val_before);
-        m->resetView();
-        m->notifyChanges();
-    }
+	Matrix *m = d_model->matrix();
+	if (m){
+		d_model->setCell(d_index.row(), d_index.column(), d_val_before);
+		m->resetView();
+		m->notifyChanges();
+	}
 }
 
 /*************************************************************************/
@@ -80,23 +80,23 @@ d_matrix(m),
 d_old_formula(oldFormula),
 d_new_formula(newFormula)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetFormulaCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setFormula(d_new_formula);
+	d_matrix->setFormula(d_new_formula);
 }
 
 void MatrixSetFormulaCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setFormula(d_old_formula);
+	d_matrix->setFormula(d_old_formula);
 }
 
 /*************************************************************************/
@@ -219,23 +219,23 @@ d_matrix(m),
 d_old_view(oldView),
 d_new_view(newView)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetViewCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setViewType(d_new_view);
+	d_matrix->setViewType(d_new_view);
 }
 
 void MatrixSetViewCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setViewType(d_old_view);
+	d_matrix->setViewType(d_old_view);
 }
 
 /*************************************************************************/
@@ -248,23 +248,23 @@ d_matrix(m),
 d_old_view(oldView),
 d_new_view(newView)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetHeaderViewCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setHeaderViewType(d_new_view);
+	d_matrix->setHeaderViewType(d_new_view);
 }
 
 void MatrixSetHeaderViewCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setHeaderViewType(d_old_view);
+	d_matrix->setHeaderViewType(d_old_view);
 }
 
 /*************************************************************************/
@@ -276,23 +276,23 @@ d_matrix(m),
 d_old_width(oldWidth),
 d_new_width(newWidth)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetColWidthCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setColumnsWidth(d_new_width);
+	d_matrix->setColumnsWidth(d_new_width);
 }
 
 void MatrixSetColWidthCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setColumnsWidth(d_old_width);
+	d_matrix->setColumnsWidth(d_old_width);
 }
 
 /*************************************************************************/
@@ -307,23 +307,23 @@ d_new_format(newFormat),
 d_old_prec(oldPrec),
 d_new_prec(newPrec)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetPrecisionCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setNumericFormat(d_new_format, d_new_prec);
+	d_matrix->setNumericFormat(d_new_format, d_new_prec);
 }
 
 void MatrixSetPrecisionCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setNumericFormat(d_old_format, d_old_prec);
+	d_matrix->setNumericFormat(d_old_format, d_old_prec);
 }
 
 /*************************************************************************/
@@ -342,23 +342,23 @@ d_new_xe(nxe),
 d_new_ys(nys),
 d_new_ye(nye)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 }
 
 void MatrixSetCoordinatesCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setCoordinates(d_new_xs, d_new_xe, d_new_ys, d_new_ye);
+	d_matrix->setCoordinates(d_new_xs, d_new_xe, d_new_ys, d_new_ye);
 }
 
 void MatrixSetCoordinatesCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    d_matrix->setCoordinates(d_old_xs, d_old_xe, d_old_ys, d_old_ye);
+	d_matrix->setCoordinates(d_old_xs, d_old_xe, d_old_ys, d_old_ye);
 }
 
 /*************************************************************************/
@@ -372,7 +372,7 @@ d_matrix(m),
 d_map_type_before(type_before),
 d_map_type_after(type_after)
 {
-    setText(m->objectName() + ": " + text);
+	setText(m->objectName() + ": " + text);
 
 	d_map_before = LinearColorMap(map_before);
 	d_map_after = LinearColorMap(map_after);
@@ -380,11 +380,11 @@ d_map_type_after(type_after)
 
 void MatrixSetColorMapCommand::redo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
 	switch(d_map_type_after){
-        case Matrix::Default:
+		case Matrix::Default:
 			d_matrix->setDefaultColorMap();
 		break;
 
@@ -404,11 +404,11 @@ void MatrixSetColorMapCommand::redo()
 
 void MatrixSetColorMapCommand::undo()
 {
-    if (!d_matrix)
-        return;
+	if (!d_matrix)
+		return;
 
-    switch(d_map_type_before){
-        case Matrix::Default:
+	switch(d_map_type_before){
+		case Matrix::Default:
 			d_matrix->setDefaultColorMap();
 		break;
 
@@ -436,27 +436,27 @@ d_start_row(startRow),
 d_count(count),
 d_data(data)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixDeleteRowsCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->removeRows(d_start_row, d_count);
+	d_model->removeRows(d_start_row, d_count);
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixDeleteRowsCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    d_model->insertRows(d_start_row, d_count);
+	d_model->insertRows(d_start_row, d_count);
 	double *data = d_model->dataVector();
 	int cols = d_model->columnCount();
 	int size = cols * d_count;
@@ -475,26 +475,26 @@ QUndoCommand(text),
 d_model(model),
 d_start_row(startRow)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixInsertRowCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->insertRows(d_start_row, 1);
+	d_model->insertRows(d_start_row, 1);
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixInsertRowCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->removeRows(d_start_row, 1);
+	d_model->removeRows(d_start_row, 1);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -508,27 +508,27 @@ d_start_col(startCol),
 d_count(count),
 d_data(data)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixDeleteColsCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->removeColumns(d_start_col, d_count);
+	d_model->removeColumns(d_start_col, d_count);
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixDeleteColsCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    d_model->insertColumns(d_start_col, d_count);
+	d_model->insertColumns(d_start_col, d_count);
 	double *data = d_model->dataVector();
 	int rows = d_model->rowCount();
 	int cols = d_model->columnCount();
@@ -549,26 +549,26 @@ QUndoCommand(text),
 d_model(model),
 d_start_col(startCol)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixInsertColCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->insertColumns(d_start_col, 1);
+	d_model->insertColumns(d_start_col, 1);
 	QApplication::restoreOverrideCursor();
 }
 
 void MatrixInsertColCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->removeColumns(d_start_col, 1);
+	d_model->removeColumns(d_start_col, 1);
 	QApplication::restoreOverrideCursor();
 }
 
@@ -582,39 +582,39 @@ d_old_size(oldSize),
 d_new_size(newSize),
 d_backup(data)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixSetSizeCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    d_model->setDimensions(d_new_size.width(), d_new_size.height());
+	d_model->setDimensions(d_new_size.width(), d_new_size.height());
 	d_model->matrix()->resetView();
 }
 
 void MatrixSetSizeCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	int rows = d_old_size.width();
 	int cols = d_old_size.height();
-    d_model->setDimensions(rows, cols);
+	d_model->setDimensions(rows, cols);
 
 	double *data = d_model->dataVector();
-    if (!data)
-        return;
+	if (!data)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	int cell = 0;
-    for (int i = 0; i < rows; i++){
-        for (int j = 0; j < cols; j++){
-            data[cell] = d_backup[cell];
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < cols; j++){
+			data[cell] = d_backup[cell];
 			cell++;
 		}
-    }
+	}
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
@@ -707,13 +707,13 @@ d_start_col(startCol),
 d_end_col(endCol),
 d_data(data)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixUndoCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	switch(d_operation){
 		case Matrix::Clear:
@@ -728,28 +728,28 @@ void MatrixUndoCommand::redo()
 		default:
 		break;
 	}
-    d_model->matrix()->resetView();
+	d_model->matrix()->resetView();
 }
 
 void MatrixUndoCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    double *data = d_model->dataVector();
-    if (!data)
-        return;
+	double *data = d_model->dataVector();
+	if (!data)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    int cols = d_model->columnCount();
+	int cols = d_model->columnCount();
 	int aux = 0;
-    for (int i = d_start_row; i <= d_end_row; i++){
-        int row = i*cols + d_start_col;
-        for (int j = d_start_col; j <= d_end_col; j++)
-            data[row++] = d_data[aux++];
-    }
-    d_model->matrix()->resetView();
+	for (int i = d_start_row; i <= d_end_row; i++){
+		int row = i*cols + d_start_col;
+		for (int j = d_start_col; j <= d_end_col; j++)
+			data[row++] = d_data[aux++];
+	}
+	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -765,10 +765,10 @@ d_inverse(inverse)
 
 void MatrixFftCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    d_model->fft(d_inverse);
+	d_model->fft(d_inverse);
 }
 
 /*************************************************************************/
@@ -784,21 +784,21 @@ d_old_view(oldView)
 
 void MatrixSetImageCommand::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    d_model->setDimensions(d_end_row - d_start_row + 1, d_end_col - d_start_col + 1);
+	d_model->setDimensions(d_end_row - d_start_row + 1, d_end_col - d_start_col + 1);
 	d_model->matrix()->setViewType(d_old_view);
 	MatrixUndoCommand::undo();
 }
 
 void MatrixSetImageCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    d_model->setImage(d_image);
-    Matrix *m = d_model->matrix();
+	d_model->setImage(d_image);
+	Matrix *m = d_model->matrix();
 	m->setViewType(Matrix::ImageView, false);
 	m->displayImage(d_image);
 }
@@ -827,8 +827,8 @@ d_locale(locale)
 
 void MatrixImportAsciiCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	d_model->importASCII(d_path, d_sep, d_ignore_lines, d_strip_spaces, d_simplify_spaces,
 						d_comment, d_mode, d_locale, d_end_line, d_max_rows);
@@ -842,15 +842,15 @@ QUndoCommand(text),
 d_model(model),
 d_operation(op)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixSymmetryOperation::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    switch(d_operation){
+	switch(d_operation){
 		case Matrix::Transpose:
 			d_model->transpose();
 		break;
@@ -872,15 +872,20 @@ void MatrixSymmetryOperation::redo()
 		default:
 		break;
 	}
-	d_model->matrix()->resetView();
+
+	Matrix *m = d_model->matrix();
+	m->resetView();
+	m->notifyChanges();
+	m->notifyModifiedData();
+	d_model->setCalculatedValues(false);
 }
 
 void MatrixSymmetryOperation::undo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
-    switch(d_operation){
+	switch(d_operation){
 		case Matrix::Transpose:
 			d_model->transpose();
 		break;
@@ -902,7 +907,12 @@ void MatrixSymmetryOperation::undo()
 		default:
 		break;
 	}
-	d_model->matrix()->resetView();
+
+	Matrix *m = d_model->matrix();
+	m->resetView();
+	m->notifyChanges();
+	m->notifyModifiedData();
+	d_model->setCalculatedValues(false);
 }
 
 /*************************************************************************/
@@ -924,16 +934,16 @@ d_old_cols(oldCols),
 d_clipboard_data(clipboardData),
 d_backup_data(backupData)
 {
-    setText(model->matrix()->objectName() + ": " + text);
+	setText(model->matrix()->objectName() + ": " + text);
 }
 
 void MatrixPasteCommand::redo()
 {
-    if (!d_model)
-        return;
+	if (!d_model)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
+	d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
@@ -941,11 +951,11 @@ void MatrixPasteCommand::redo()
 void MatrixPasteCommand::undo()
 {
 	if (!d_model)
-        return;
+		return;
 
  	double *data = d_model->dataVector();
-    if (!data)
-        return;
+	if (!data)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -954,13 +964,13 @@ void MatrixPasteCommand::undo()
 	if (d_old_cols != d_model->columnCount())
 		d_model->setColumnCount(d_old_cols);
 
-    int cols = d_model->columnCount();
+	int cols = d_model->columnCount();
 	int aux = 0;
-    for (int i = d_start_row; i <= d_end_row; i++){
-        int row = i*cols + d_start_col;
-        for (int j = d_start_col; j <= d_end_col; j++)
-            data[row++] = d_backup_data[aux++];
-    }
-    d_model->matrix()->resetView();
+	for (int i = d_start_row; i <= d_end_row; i++){
+		int row = i*cols + d_start_col;
+		for (int j = d_start_col; j <= d_end_col; j++)
+			data[row++] = d_backup_data[aux++];
+	}
+	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }

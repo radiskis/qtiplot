@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : Matrix.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2011 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Matrix worksheet class
+	File                 : Matrix.cpp
+	Project              : QtiPlot
+	--------------------------------------------------------------------
+	Copyright            : (C) 2004 - 2012 by Ion Vasilief
+	Email (use @ for *)  : ion_vasilief*yahoo.fr
+	Description          : Matrix worksheet class
 
  ***************************************************************************/
 
@@ -83,16 +83,16 @@ Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, App
 
 void Matrix::initGlobals()
 {
-    setGeometry(0, 0, 500, 500);
+	setGeometry(0, 0, 500, 500);
 
 	d_workspace = NULL;
-    d_table_view = NULL;
-    imageLabel = NULL;
+	d_table_view = NULL;
+	imageLabel = NULL;
 
-    d_header_view_type = ColumnRow;
+	d_header_view_type = ColumnRow;
 	d_color_map_type = Default;
 	d_color_map = applicationWindow()->d_3D_color_map;
-    d_column_width = 100;
+	d_column_width = 100;
 
 	formula_str = "";
 	txt_format = 'f';
@@ -102,8 +102,8 @@ void Matrix::initGlobals()
 	y_start = 1.0;
 	y_end = 10.0;
 
-    d_stack = new QStackedWidget();
-    d_stack->setFocusPolicy(Qt::StrongFocus);
+	d_stack = new QStackedWidget();
+	d_stack->setFocusPolicy(Qt::StrongFocus);
 	setWidget(d_stack);
 
 	d_undo_stack = new QUndoStack();
@@ -233,7 +233,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	else
 		t << d_color_map.toXmlString();
 
-    if (notTemplate){//save data
+	if (notTemplate && !d_matrix_model->hasCalculatedValues()){//save data
 		t << "<data>\n";
 		double* d_data = d_matrix_model->dataVector();
 		int d_rows = numRows();
@@ -349,7 +349,11 @@ void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplat
 			resetView();
 		}
 	} else {
-		if (*line == "<data>") line++;
+		bool calculatedValues = false;
+		if (*line == "<data>")
+			line++;
+		else
+			calculatedValues = true;
 
 		//read and set table values
 		int cols = numCols();
@@ -370,6 +374,10 @@ void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplat
 			}
 			qApp->processEvents(QEventLoop::ExcludeUserInput);
 		}
+
+		if (calculatedValues && !formula_str.isEmpty())
+			calculate();
+
 		resetView();
 	}
 }
@@ -681,7 +689,7 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
-    	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,
+		d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Calculate, startRow, endRow,
 												startCol, endCol, buffer, tr("Calculate Values")));
 		emit modifiedWindow(this);
 		modifiedData(this);
@@ -697,8 +705,8 @@ bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool 
 
 void Matrix::clearSelection()
 {
-    if (d_view_type == ImageView)
-        return;
+	if (d_view_type == ImageView)
+		return;
 
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	if (!selModel || !selModel->hasSelection())
@@ -711,9 +719,9 @@ void Matrix::clearSelection()
 	int endCol = sel.right();
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
 	if (buffer){
-    	d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Clear, startRow, endRow, startCol, endCol, buffer, tr("Clear Selection")));
-    	emit modifiedWindow(this);
-    	modifiedData(this);
+		d_undo_stack->push(new MatrixUndoCommand(d_matrix_model, Clear, startRow, endRow, startCol, endCol, buffer, tr("Clear Selection")));
+		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->clear(startRow, endRow, startCol, endCol);
 		emit modifiedWindow(this);
@@ -864,10 +872,10 @@ void Matrix::deleteSelectedRows()
 
 	double *buffer = d_matrix_model->dataCopy(startRow, startRow + count - 1, 0, numCols() - 1);
 	if (buffer){
-    	d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, buffer, tr("Delete Rows") + " " +
-                      QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
-    	emit modifiedWindow(this);
-    	modifiedData(this);
+		d_undo_stack->push(new MatrixDeleteRowsCommand(d_matrix_model, startRow, count, buffer, tr("Delete Rows") + " " +
+					  QString::number(startRow + 1) + " - " + QString::number(startRow + count)));
+		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->removeRows(startRow, count);
 		d_table_view->reset();
@@ -897,10 +905,10 @@ void Matrix::deleteSelectedColumns()
 
 	double *buffer = d_matrix_model->dataCopy(0, numRows() - 1, startCol, startCol + count - 1);
 	if (buffer){
-    	d_undo_stack->push(new MatrixDeleteColsCommand(d_matrix_model, startCol, count, buffer, tr("Delete Columns") + " " +
-                      QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
-    	emit modifiedWindow(this);
-    	modifiedData(this);
+		d_undo_stack->push(new MatrixDeleteColsCommand(d_matrix_model, startCol, count, buffer, tr("Delete Columns") + " " +
+					  QString::number(startCol + 1) + " - " + QString::number(startCol + count)));
+		emit modifiedWindow(this);
+		modifiedData(this);
 	} else if (ignoreUndo()){
 		d_matrix_model->removeColumns(startCol, count);
 		d_table_view->reset();
@@ -949,11 +957,11 @@ void Matrix::insertRow()
 	if (!index.isValid())
 		return;
 
-    if (!d_matrix_model->canResize(numRows() + 1, numCols()))
-        return;
+	if (!d_matrix_model->canResize(numRows() + 1, numCols()))
+		return;
 
 	d_undo_stack->push(new MatrixInsertRowCommand(d_matrix_model, index.row(), tr("Insert Row") + " " +
-                      QString::number(index.row() + 1)));
+					  QString::number(index.row() + 1)));
 	d_table_view->reset();
 	emit modifiedWindow(this);
 	modifiedData(this);
@@ -969,11 +977,11 @@ void Matrix::insertColumn()
 	if (!index.isValid())
 		return;
 
-    if (!d_matrix_model->canResize(numRows(), numCols() + 1))
-        return;
+	if (!d_matrix_model->canResize(numRows(), numCols() + 1))
+		return;
 
 	d_undo_stack->push(new MatrixInsertColCommand(d_matrix_model, index.column(), tr("Insert Column") + " " +
-                      QString::number(index.column() + 1)));
+					  QString::number(index.column() + 1)));
 	d_table_view->reset();
 	emit modifiedWindow(this);
 	modifiedData(this);
@@ -1520,11 +1528,11 @@ void Matrix::importImage(const QString& fn)
 void Matrix::importImage(const QImage& image)
 {
 	if (image.isNull())
-        return;
+		return;
 
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
-    	d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
+		d_undo_stack->push(new MatrixSetImageCommand(d_matrix_model, image, d_view_type, 0,
 							numRows() - 1, 0, numCols() - 1, buffer, tr("Import Image")));
 		emit modifiedWindow(this);
 		modifiedData(this);
@@ -1632,7 +1640,7 @@ void Matrix::fft(bool inverse)
 	double *buffer = d_matrix_model->dataCopy();
 	if (buffer){
 		QString commandText = inverse ? tr("Inverse FFT") : tr("Forward FFT");
-    	d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1,
+		d_undo_stack->push(new MatrixFftCommand(inverse, d_matrix_model, 0, numRows() - 1,
 							0, numCols() - 1, buffer, commandText));
 		emit modifiedWindow(this);
 		modifiedData(this);
