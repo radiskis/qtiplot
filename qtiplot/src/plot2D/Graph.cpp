@@ -3524,7 +3524,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
 				int xcol = w->colX(j);
 				int ycol = w->colY(j, xcol, masterCurvesLst);
-				if ((style == Histogram && ycol < 0) || (style != Histogram && (xcol < 0 || ycol < 0)))
+				if (!masterCurvesLst.isEmpty() && ((style == Histogram && ycol < 0) || (style != Histogram && (xcol < 0 || ycol < 0))))
 					return false;
 
 				ErrorBarsCurve *er = NULL;
