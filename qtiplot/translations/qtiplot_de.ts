@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name></name>
     <message>
@@ -10161,7 +10161,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Neu</translation>
     </message>
 </context>
 <context>
@@ -12335,7 +12335,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Full dataset name</source>
-        <translation type="unfinished"></translation>
+        <translation>Komplette Bezeichnung des Datensatzes</translation>
     </message>
 </context>
 <context>
@@ -13428,7 +13428,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Standard E&amp;rror</source>
-        <translation type="unfinished"></translation>
+        <translation>Standa&amp;rdfehler</translation>
     </message>
 </context>
 <context>
@@ -15428,15 +15428,15 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Built-in</source>
-        <translation type="unfinished">Eingebaut</translation>
+        <translation>Eingebaut</translation>
     </message>
     <message>
         <source>Fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>Fitmodell</translation>
     </message>
     <message>
         <source>User defined</source>
-        <translation type="unfinished">Benutzerdefiniert</translation>
+        <translation>Benutzerdefiniert</translation>
     </message>
 </context>
 <context>
@@ -18956,7 +18956,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog zum Werte Setzen öffnen</translation>
     </message>
 </context>
 <context>
@@ -19109,75 +19109,75 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingenschaftendialog öffnen</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog zum Werte Setzen öffnen</translation>
     </message>
     <message>
         <source>xy &amp;Mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>xy-&amp;Abbildung</translation>
     </message>
     <message>
         <source>Long Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Langer Name</translation>
     </message>
     <message>
         <source>Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Einheiten</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentare</translation>
     </message>
     <message>
         <source>&amp;x Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;x-Beschriftung</translation>
     </message>
     <message>
         <source>&amp;y Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;y-Beschriftung</translation>
     </message>
     <message>
         <source>&amp;z Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;z-Beschriftung</translation>
     </message>
     <message>
         <source>Set X Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschriftung der x-Achse setzen</translation>
     </message>
     <message>
         <source>Set X Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Einheit der x-Achse setzen</translation>
     </message>
     <message>
         <source>Set X Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar für die x-Achse setzen</translation>
     </message>
     <message>
         <source>Set Y Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschriftung der y-Achse setzen</translation>
     </message>
     <message>
         <source>Set Y Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Einheit der y-Achse setzen</translation>
     </message>
     <message>
         <source>Set Y Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar für die y-Achse setzen</translation>
     </message>
     <message>
         <source>Set Z Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschriftung der z-Achse setzen</translation>
     </message>
     <message>
         <source>Set Z Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Einheit der z-Achse setzen</translation>
     </message>
     <message>
         <source>Set Z Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Kommentar für die z-Achse setzen</translation>
     </message>
 </context>
 <context>
@@ -19260,7 +19260,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften-Dialog öffnen</translation>
     </message>
 </context>
 <context>
@@ -21691,7 +21691,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Sy&amp;nchronize scales</source>
-        <translation type="unfinished"></translation>
+        <translation>Skalierungen sy&amp;nchronisieren</translation>
     </message>
 </context>
 <context>
@@ -22954,7 +22954,7 @@ Regulär veränderte zylindrische Bessel-Funktion der Ordnung N, I_n(x).</transl
     </message>
     <message>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Fenster</translation>
     </message>
 </context>
 <context>
@@ -23635,7 +23635,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigenschaften-Dialog öffnen</translation>
     </message>
 </context>
 <context>
@@ -24810,7 +24810,7 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialog zum Werte Setzen öffnen</translation>
     </message>
 </context>
 <context>

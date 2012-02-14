@@ -1,10 +1,10 @@
 /***************************************************************************
-	File                 : Graph.cpp
-	Project              : QtiPlot
-	--------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2012 by Ion Vasilief
-	Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Graph widget
+File                 : Graph.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Graph widget
 
  ***************************************************************************/
 
@@ -7464,7 +7464,8 @@ void Graph::dropEvent(QDropEvent* event)
 		if (columns.isEmpty())
 			return;
 
-		addCurves(t, columns, app->defaultCurveStyle, app->defaultCurveLineWidth, app->defaultSymbolSize);
+		if (addCurves(t, columns, app->defaultCurveStyle, app->defaultCurveLineWidth, app->defaultSymbolSize))
+			emit modifiedGraph();
 		return;
 	}
 
