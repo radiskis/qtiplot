@@ -4316,7 +4316,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation type="unfinished">A&amp;ctual</translation>
+        <translation type="obsolete">A&amp;ctual</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -8476,6 +8476,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -8701,11 +8705,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation type="unfinished">Fuente</translation>
+        <translation type="obsolete">Fuente</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation type="unfinished">&amp;Fuente del Eje</translation>
+        <translation type="obsolete">&amp;Fuente del Eje</translation>
     </message>
     <message>
         <source>Color</source>
@@ -8737,7 +8741,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation type="unfinished">Mostrar Etiquetas</translation>
+        <translation type="obsolete">Mostrar Etiquetas</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
@@ -9061,6 +9065,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

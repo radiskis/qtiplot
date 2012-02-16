@@ -560,7 +560,7 @@
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Ce graphe</translation>
+        <translation type="obsolete">&amp;Ce graphe</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -4182,6 +4182,10 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
         <source>New</source>
         <translation>Nouveau</translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4430,11 +4434,11 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation>Police</translation>
+        <translation type="obsolete">Police</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>&amp;Police</translation>
+        <translation type="obsolete">&amp;Police</translation>
     </message>
     <message>
         <source>Color</source>
@@ -4466,7 +4470,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Montrer les étiquettes</translation>
+        <translation type="obsolete">Montrer les étiquettes</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
@@ -4740,6 +4744,10 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     <message>
         <source>years</source>
         <translation>années</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

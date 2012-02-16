@@ -536,7 +536,7 @@
     <sect2 id="Python-init">
       <title>The Initialization File</title>
 
-      <para>This file allows you to customize the Python environment, import
+	  <para>The <emphasis>qtiplotrc.py</emphasis> file allows you to customize the Python environment, import
       modules and define functions and classes that will be available in all
       of your projects. The default initialization file shipped with QtiPlot
       imports Python's <link linkend="Python-functions">standard math

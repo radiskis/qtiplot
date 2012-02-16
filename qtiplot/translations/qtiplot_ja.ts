@@ -3123,7 +3123,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation type="unfinished">現在の物のみ(&amp;C)</translation>
+        <translation type="obsolete">現在の物のみ(&amp;C)</translation>
     </message>
     <message>
         <source>&amp;All</source>
@@ -4586,6 +4586,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -4810,14 +4814,6 @@ Autocompletion will not be available!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Axis &amp;Font</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4843,10 +4839,6 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Stand-off</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Labels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5107,6 +5099,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

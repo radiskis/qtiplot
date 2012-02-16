@@ -5790,7 +5790,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Aktuelle</translation>
+        <translation type="obsolete">&amp;Aktuelle</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -10163,6 +10163,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation>Neu</translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -10432,11 +10436,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Schriftart</translation>
+        <translation type="obsolete">Schriftart</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>Achsenschri&amp;ftart</translation>
+        <translation type="obsolete">Achsenschri&amp;ftart</translation>
     </message>
     <message>
         <source>Color</source>
@@ -10468,7 +10472,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Beschriftungen anzeigen</translation>
+        <translation type="obsolete">Beschriftungen anzeigen</translation>
     </message>
     <message>
         <source>Table</source>
@@ -10829,6 +10833,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>years</source>
         <translation>Jahre</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
