@@ -933,27 +933,11 @@ void AxesDialog::updateAxisType(int)
 
 void AxesDialog::showAxis()
 {
-	bool ok = boxShowAxis->isChecked();
-	axisFormatBox->setEnabled(ok);
-	boxShowLabels->setEnabled(ok);
-	labelBox->setEnabled(ok);
-	boxAxisBackbone->setEnabled(ok);
-
-	int axis = mapToQwtAxisId();
-	bool labels = d_graph->axisScaleDraw(axis)->hasComponent(QwtAbstractScaleDraw::Labels);
-
-	boxFormat->setEnabled(labels && ok);
-	boxColName->setEnabled(labels && ok);
-	boxShowFormula->setEnabled(labels && ok);
-	boxFormula->setEnabled(labels && ok);
-	boxAngle->setEnabled(labels && ok);
-	boxPrecision->setEnabled(labels && ok);
-
-	QString formula =  boxFormula->text();
+	QString formula = boxFormula->text();
 	if (!boxShowFormula->isChecked())
 		formula = QString();
 
-	showAxis(axis, boxAxisType->currentIndex(), boxColName->currentText(),ok, boxMajorTicksType->currentIndex(),
+	showAxis(mapToQwtAxisId(), boxAxisType->currentIndex(), boxColName->currentText(), boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(),
 			boxMinorTicksType->currentIndex(), boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(),
 			boxPrecision->value(), boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
 			boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
@@ -1162,18 +1146,18 @@ void AxesDialog::showGridSettings(int axis)
 
 void AxesDialog::stepEnabled()
 {
-	boxStep->setEnabled(btnStep->isChecked ());
-	boxUnit->setEnabled(btnStep->isChecked ());
-	boxMajorValue->setDisabled(btnStep->isChecked ());
-	btnMajor->setChecked(!btnStep->isChecked ());
+	boxStep->setEnabled(btnStep->isChecked());
+	boxUnit->setEnabled(btnStep->isChecked());
+	boxMajorValue->setDisabled(btnStep->isChecked());
+	btnMajor->setChecked(!btnStep->isChecked());
 }
 
 void AxesDialog::stepDisabled()
 {
-	boxStep->setDisabled(btnMajor->isChecked ());
-	boxUnit->setDisabled(btnMajor->isChecked ());
-	boxMajorValue->setEnabled(btnMajor->isChecked ());
-	btnStep->setChecked(!btnMajor->isChecked ());
+	boxStep->setDisabled(btnMajor->isChecked());
+	boxUnit->setDisabled(btnMajor->isChecked());
+	boxMajorValue->setEnabled(btnMajor->isChecked());
+	btnStep->setChecked(!btnMajor->isChecked());
 }
 
 bool AxesDialog::updatePlot(QWidget *page)
@@ -1565,15 +1549,6 @@ void AxesDialog::updateScale()
 
 void AxesDialog::updateTickLabelsList(bool on)
 {
-	boxFormat->setEnabled(on && boxShowAxis->isChecked());
-	boxColName->setEnabled(on && boxShowAxis->isChecked());
-	boxAngle->setEnabled(on);
-	boxPrecision->setEnabled(on);
-
-	int axis = mapToQwtAxisId();
-	if (d_graph->axisScaleDraw(axis)->hasComponent(QwtAbstractScaleDraw::Labels) == on)
-		return;
-
 	QString formatInfo = QString::null;
 	int type = boxAxisType->currentIndex();
 	if (type == ScaleDraw::Day || type == ScaleDraw::Month)
@@ -1587,7 +1562,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 	if (!boxShowFormula->isChecked())
 		formula = QString();
 
-	showAxis(axis, type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
+	showAxis(mapToQwtAxisId(), type, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
 			boxShowLabels->isChecked(), boxAxisColor->color(), boxFormat->currentIndex(), boxPrecision->value(),
 			boxAngle->value(), boxBaseline->value(), formula, boxAxisNumColor->color(),
 			boxTickLabelDistance->value(), boxAxisBackbone->isChecked(), showTicksPolicyBox->currentIndex());
@@ -1641,8 +1616,6 @@ void AxesDialog::setLabelsNumericFormat(int)
 		if (d_graph->axisLabelFormat(axis) == format &&
 			d_graph->axisLabelPrecision(axis) == prec)
 			return;
-
-		boxPrecision->setEnabled(true);
     } else if (type == ScaleDraw::Day || type == ScaleDraw::Month)
 		formatInfo = QString::number(format);
 	else if (type == ScaleDraw::Date || type == ScaleDraw::Time)
@@ -1975,14 +1948,9 @@ void AxesDialog::showAxisSettings(int a)
 	boxShowLabels->setChecked(labelsOn);
 	boxShowLabels->blockSignals(false);
 
-	boxAngle->setEnabled(labelsOn && on);
 	boxAngle->blockSignals(true);
 	boxAngle->setValue(d_graph->labelsRotation(axis));
 	boxAngle->blockSignals(true);
-
-	axisFormatBox->setEnabled(on);
-	boxShowLabels->setEnabled(on);
-	labelBox->setEnabled(on);
 
 	boxAxisColor->blockSignals(true);
 	boxAxisColor->setColor(d_graph->axisColor(axis));
@@ -2031,13 +1999,11 @@ void AxesDialog::showAxisSettings(int a)
 	boxBaseline->setValue(scale->margin());
 	boxBaseline->blockSignals(false);
 
-	boxFormat->setEnabled(labelsOn && on);
 	boxFormat->blockSignals(true);
 	boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 	boxFormat->blockSignals(false);
 
 	if (boxAxisType->currentIndex() == ScaleDraw::Numeric){
-		boxPrecision->setEnabled(labelsOn && on);
 		boxPrecision->blockSignals(true);
 		boxPrecision->setValue(d_graph->axisLabelPrecision(axis));
 		boxPrecision->blockSignals(false);
