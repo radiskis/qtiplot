@@ -2708,7 +2708,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Nynější</translation>
+        <translation type="obsolete">&amp;Nynější</translation>
     </message>
     <message>
         <source>3D Surface</source>
@@ -4159,6 +4159,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4303,7 +4307,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Font</source>
-        <translation>Písmo</translation>
+        <translation type="obsolete">Písmo</translation>
     </message>
     <message>
         <source>From</source>
@@ -4523,7 +4527,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>Písmo &amp;os</translation>
+        <translation type="obsolete">Písmo &amp;os</translation>
     </message>
     <message>
         <source>Linear</source>
@@ -4543,7 +4547,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Ukázat štítky</translation>
+        <translation type="obsolete">Ukázat štítky</translation>
     </message>
     <message>
         <source>This Window</source>
@@ -4720,6 +4724,10 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     <message>
         <source>years</source>
         <translation>roky</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

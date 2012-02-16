@@ -774,7 +774,7 @@
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Текущий</translation>
+        <translation type="obsolete">&amp;Текущий</translation>
     </message>
     <message>
         <source>Curve</source>
@@ -4177,6 +4177,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -4281,7 +4285,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>&amp;Шрифт осей</translation>
+        <translation type="obsolete">&amp;Шрифт осей</translation>
     </message>
     <message>
         <source>Bottom</source>
@@ -4325,7 +4329,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Шрифт</translation>
+        <translation type="obsolete">Шрифт</translation>
     </message>
     <message>
         <source>Format</source>
@@ -4449,7 +4453,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Показать метки</translation>
+        <translation type="obsolete">Показать метки</translation>
     </message>
     <message>
         <source>Stand-off</source>
@@ -4718,6 +4722,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>years</source>
         <translation>годы</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

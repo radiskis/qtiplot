@@ -1383,7 +1383,7 @@ Deseja sobrescrevê-lo?</translation>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Atual</translation>
+        <translation type="obsolete">&amp;Atual</translation>
     </message>
     <message>
         <source>Ctrl+G</source>
@@ -6006,6 +6006,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AsciiTableImportFilter</name>
@@ -6242,11 +6246,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Fonte</translation>
+        <translation type="obsolete">Fonte</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>&amp;Fonte do eixo</translation>
+        <translation type="obsolete">&amp;Fonte do eixo</translation>
     </message>
     <message>
         <source>Color</source>
@@ -6274,7 +6278,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Mostrar rótulos</translation>
+        <translation type="obsolete">Mostrar rótulos</translation>
     </message>
     <message>
         <source>Column</source>
@@ -6623,6 +6627,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>years</source>
         <translation type="unfinished">anos</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

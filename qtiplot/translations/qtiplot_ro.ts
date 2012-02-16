@@ -5119,7 +5119,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Curent</translation>
+        <translation type="obsolete">&amp;Curent</translation>
     </message>
     <message>
         <source>Ctrl+Alt+G</source>
@@ -7659,6 +7659,10 @@ Autocompletion will not be available!</source>
         <source>New</source>
         <translation>Nou</translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -7991,11 +7995,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Font</translation>
+        <translation type="obsolete">Font</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>&amp;Fontul axei</translation>
+        <translation type="obsolete">&amp;Fontul axei</translation>
     </message>
     <message>
         <source>Color</source>
@@ -8043,7 +8047,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Afişază etichete</translation>
+        <translation type="obsolete">Afişază etichete</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
@@ -8236,6 +8240,10 @@ Autocompletion will not be available!</source>
     <message>
         <source>years</source>
         <translation>ani</translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

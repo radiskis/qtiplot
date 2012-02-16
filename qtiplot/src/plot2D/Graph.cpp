@@ -750,8 +750,8 @@ void Graph::changeTicksLength(int minLength, int majLength)
 
 void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table,
 		bool axisOn, int majTicksType, int minTicksType, bool labelsOn,
-		const QColor& c,  int format, int prec, int rotation, int baselineDist,
-		const QString& formula, const QColor& labelsColor, int  spacing, bool backbone,
+		const QColor& c, int format, int prec, int rotation, int baselineDist,
+		const QString& formula, const QColor& labelsColor, int spacing, bool backbone,
 		const ScaleDraw::ShowTicksPolicy& showTicks, const QString& prefix, const QString& suffix)
 {
 	enableAxis(axis, axisOn);

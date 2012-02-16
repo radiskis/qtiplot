@@ -5290,7 +5290,7 @@ Varning: detta kommer att arrangera om befintliga lager!</translation>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Aktuellt</translation>
+        <translation type="obsolete">&amp;Aktuellt</translation>
     </message>
     <message>
         <source>Alt+G</source>
@@ -8738,6 +8738,10 @@ Automatisk komplettering ej tillgängligt!</translation>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ArrowMarker</name>
@@ -8994,11 +8998,11 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Font</source>
-        <translation>Teckensnitt</translation>
+        <translation type="obsolete">Teckensnitt</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>A&amp;xelteckensnitt</translation>
+        <translation type="obsolete">A&amp;xelteckensnitt</translation>
     </message>
     <message>
         <source>Color</source>
@@ -9030,7 +9034,7 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Visa etiketter</translation>
+        <translation type="obsolete">Visa etiketter</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
@@ -9366,6 +9370,10 @@ Automatisk komplettering ej tillgängligt!</translation>
     </message>
     <message>
         <source>years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
