@@ -661,15 +661,15 @@ void AxesDialog::initAxesPage()
 	l->setBuddy(axisFormatApplyToBox);
 
 	QHBoxLayout *hb1 = new QHBoxLayout;
-	hb1->addStretch();
 	hb1->addWidget(l);
 	hb1->addWidget(axisFormatApplyToBox);
+	hb1->addStretch();
 
 	QVBoxLayout *rightLayout = new QVBoxLayout(boxShowAxis);
 	rightLayout->addLayout(topLayout);
 	rightLayout->addLayout(bottomLayout);
-	rightLayout->addStretch();
 	rightLayout->addLayout(hb1);
+	rightLayout->addStretch();
 
 	QHBoxLayout* mainLayout = new QHBoxLayout(axesPage);
 	mainLayout->addWidget(axesTitlesList);
@@ -1978,14 +1978,6 @@ void AxesDialog::showAxisSettings(int a)
 	} else
 		invertTitleBox->hide();
 
-	boxMajorTicksType->blockSignals(true);
-	boxMajorTicksType->setCurrentIndex(d_graph->getMajorTicksType()[axis]);
-	boxMajorTicksType->blockSignals(false);
-
-	boxMinorTicksType->blockSignals(true);
-	boxMinorTicksType->setCurrentIndex(d_graph->getMinorTicksType()[axis]);
-	boxMinorTicksType->blockSignals(false);
-
 	int style = (int)d_graph->axisType(axis);
 	boxAxisType->blockSignals(true);
 	boxAxisType->setCurrentIndex(style);
@@ -2009,22 +2001,19 @@ void AxesDialog::showAxisSettings(int a)
 		boxPrecision->blockSignals(false);
 	}
 
-	QString formula = d_graph->axisFormula(a);
-	if (!formula.isEmpty()){
-		boxShowFormula->setChecked(true);
-		boxFormula->show();
-		boxFormula->setText(formula);
-	} else {
-		boxShowFormula->setChecked(false);
-		boxFormula->clear();
-		boxFormula->hide();
-	}
-
 	ScaleDraw *sd = (ScaleDraw *)d_graph->axisScaleDraw(axis);
 	if (sd){
 		boxAxisBackbone->blockSignals(true);
 		boxAxisBackbone->setChecked(sd->hasComponent(QwtAbstractScaleDraw::Backbone));
 		boxAxisBackbone->blockSignals(false);
+
+		boxMajorTicksType->blockSignals(true);
+		boxMajorTicksType->setCurrentIndex(sd->majorTicksStyle());
+		boxMajorTicksType->blockSignals(false);
+
+		boxMinorTicksType->blockSignals(true);
+		boxMinorTicksType->setCurrentIndex(sd->minorTicksStyle());
+		boxMinorTicksType->blockSignals(false);
 
 		boxTickLabelDistance->blockSignals(true);
 		boxTickLabelDistance->setValue(sd->spacing());
@@ -2036,5 +2025,11 @@ void AxesDialog::showAxisSettings(int a)
 
 		boxPrefix->setText(sd->prefix());
 		boxSuffix->setText(sd->suffix());
+
+		QString formula = sd->formula();
+		bool hasFormula = !formula.isEmpty();
+		boxShowFormula->setChecked(hasFormula);
+		boxFormula->setText(hasFormula ? formula : "");
+		boxFormula->setVisible(hasFormula);
 	}
 }
