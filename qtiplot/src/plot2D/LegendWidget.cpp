@@ -250,13 +250,6 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 
 	if (c->symbol().pen().style() != Qt::NoPen){
 		QwtSymbol symb = c->symbol();
-		int symb_size = symb.size().width();
-		if (symb_size > 15)
-			symb_size = 15;
-		else if (symb_size < 3)
-			symb_size = 3;
-		symb.setSize(symb_size);
-
 		QPen pen = symb.pen();
 		pen.setCosmetic(false);
 		symb.setPen(pen);
