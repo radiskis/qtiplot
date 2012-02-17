@@ -2156,7 +2156,7 @@ Quelques parties de ce fichier peuvent ne pas être affichées comme attendu.</t
     </message>
     <message>
         <source>Reset rotation</source>
-        <translation>MàJ rotation</translation>
+        <translation>Position originale</translation>
     </message>
     <message>
         <source>Fit frame to window</source>
@@ -4184,7 +4184,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+L</translation>
     </message>
 </context>
 <context>
@@ -4747,7 +4747,7 @@ L&apos;autocomplétion ne sera pas disponible !</translation>
     </message>
     <message>
         <source>Show &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer &amp;les étiquettes</translation>
     </message>
 </context>
 <context>
