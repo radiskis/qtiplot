@@ -1017,7 +1017,7 @@
         <location filename="../src/core/ApplicationWindow.cpp" line="13858"/>
         <location filename="../src/core/ApplicationWindow.cpp" line="14897"/>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+L</translation>
     </message>
     <message>
         <location filename="../src/core/ApplicationWindow.cpp" line="15733"/>
@@ -6405,7 +6405,7 @@ Il completamento automatico non sarà disponibile!</translation>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="584"/>
         <source>Show &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Visuali&amp;zza le etichette delle tacche</translation>
     </message>
     <message>
         <location filename="../src/plot2D/dialogs/AxesDialog.cpp" line="590"/>
