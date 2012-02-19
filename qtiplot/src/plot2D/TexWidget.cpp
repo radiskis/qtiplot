@@ -139,8 +139,8 @@ void TexWidget::clone(TexWidget* t)
 	setFramePen(t->framePen());
 	d_formula = t->formula();
 	d_pix = t->pixmap();
+	setCoordinates(t->xValue(), t->yValue(), t->right(), t->bottom());
 	setSize(t->size());
-	setOriginCoord(t->xValue(), t->yValue());
 }
 
 QString TexWidget::saveToString()
