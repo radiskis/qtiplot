@@ -7661,7 +7661,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+L</translation>
     </message>
 </context>
 <context>
@@ -8035,7 +8035,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Axis</source>
-        <translation>Axe</translation>
+        <translation>Axă</translation>
     </message>
     <message>
         <source>Layer</source>
@@ -8243,7 +8243,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Afişază &amp;etichetele</translation>
     </message>
 </context>
 <context>
