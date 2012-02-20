@@ -52,6 +52,8 @@ public:
 	void clone(TexWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 	
+	int margin(){return d_margin;}
+
 	void setBestSize();
 
 private:
