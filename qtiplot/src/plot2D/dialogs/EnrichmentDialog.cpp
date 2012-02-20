@@ -324,9 +324,8 @@ void EnrichmentDialog::initFramePage()
 	gl->addWidget(l3, 2, 0);
 
 	gl->setColumnStretch(1, 1);
-	boxFrameWidth = new DoubleSpinBox();
-	if(d_widget_type == Ellipse){
-		boxFrameWidth->setDecimals(2);
+	boxFrameWidth = new DoubleSpinBox('f');
+	if (d_widget_type == Ellipse){
 		if (d_app)
 			boxFrameWidth->setLocale(d_app->locale());
 		boxFrameWidth->setSingleStep(0.1);
@@ -344,6 +343,7 @@ void EnrichmentDialog::initFramePage()
 	connect(boxFrameWidth, SIGNAL(valueChanged(double)), this, SLOT(frameApplyTo()));
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
+	gl->setColumnStretch(2, 1);
 
 	QVBoxLayout *vl = new QVBoxLayout();
 
@@ -388,12 +388,12 @@ void EnrichmentDialog::initPatternPage()
 	boxTransparency->setWrapping(true);
     boxTransparency->setSpecialValueText(tr("Transparent"));
 	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(patternApplyTo()));
-	gl->addWidget(boxTransparency, 1, 2);
+	gl->addWidget(boxTransparency, 1, 1);
 
 	fillTransparencySlider = new QSlider();
 	fillTransparencySlider->setOrientation(Qt::Horizontal);
 	fillTransparencySlider->setRange(0, 100);
-	gl->addWidget(fillTransparencySlider, 1, 1);
+	gl->addWidget(fillTransparencySlider, 2, 1);
 
 	connect(fillTransparencySlider, SIGNAL(valueChanged(int)), boxTransparency, SLOT(setValue(int)));
 	connect(boxTransparency, SIGNAL(valueChanged(int)), fillTransparencySlider, SLOT(setValue(int)));
@@ -404,24 +404,24 @@ void EnrichmentDialog::initPatternPage()
 
 	patternBox = new PatternBox();
 	connect(patternBox, SIGNAL(activated(int)), this, SLOT(patternApplyTo()));
-	gl->addWidget(patternBox, 2, 1);
+	gl->addWidget(patternBox, 3, 1);
 
 	QLabel *l2 = new QLabel("&" + tr("Pattern"));
 	l2->setBuddy(patternBox);
-	gl->addWidget(l2, 2, 0);
+	gl->addWidget(l2, 3, 0);
 
-	gl->addWidget(new QLabel(tr("Pattern Color")), 3, 0);
+	gl->addWidget(new QLabel(tr("Pattern Color")), 4, 0);
 	patternColorBtn = new ColorButton();
 	connect(patternColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
-	gl->addWidget(patternColorBtn, 3, 1);
+	gl->addWidget(patternColorBtn, 4, 1);
 
 	useFrameColorBox = new QCheckBox(tr("Use &Frame Color"));
 	connect(useFrameColorBox, SIGNAL(toggled(bool)), this, SLOT(patternApplyTo()));
 	connect(useFrameColorBox, SIGNAL(toggled(bool)), patternColorBtn, SLOT(setDisabled(bool)));
-	gl->addWidget(useFrameColorBox, 3, 2);
+	gl->addWidget(useFrameColorBox, 5, 1);
 
-	gl->setColumnStretch(1, 1);
-	gl->setRowStretch(4, 1);
+	gl->setColumnStretch(2, 1);
+	gl->setRowStretch(6, 1);
 
 	QVBoxLayout *vl = new QVBoxLayout();
 	rectangleDefaultBtn = new QPushButton(tr("Set As &Default"));
@@ -1007,10 +1007,23 @@ void EnrichmentDialog::frameApplyTo()
 
 void EnrichmentDialog::setFrameTo(FrameWidget *fw)
 {
+	double lw = boxFrameWidth->value();
+
+	bool resetPixSize = false;
+	TexWidget *tw = qobject_cast<TexWidget*>(fw);
+	if (tw){
+		QSize pixSize = tw->pixmap().size();
+		int margin = (fw->frameStyle() == FrameWidget::Shadow) ? 3*tw->margin() + 2*fw->frameWidth() : 2*(tw->margin() + fw->frameWidth());
+		if (QSize(pixSize.width() + margin, pixSize.height() + margin) == tw->size())
+			resetPixSize = true;
+	}
+
 	fw->setFrameStyle(frameBox->currentIndex());
-	QPen pen = QPen(frameColorBtn->color(), boxFrameWidth->value(),
-				boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
-	fw->setFramePen(pen);
+	fw->setFramePen(QPen(frameColorBtn->color(), lw, boxFrameLineStyle->style(), Qt::SquareCap, Qt::MiterJoin));
+
+	if (tw && resetPixSize)
+		tw->setBestSize();
+
 	fw->repaint();
 }
 
