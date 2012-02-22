@@ -66,21 +66,21 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
     <varlistentry>
       <term>3) A partir de l'erreur type :</term>
       <listitem>
-        <para>Cette commande calcule d'abord l'erreur type des valeurs tracées. Ceci a une This has meaning only if the data are centered around an average value. As with the previous option, a new column will be created in the active table and each row will be filled with the computed standard deviation. The program does not know and cannot compute individual standard deviations at each point. If this is required, you will need to independently compute these values from multiple samples taken at each x or y value.</para>
+        <para>Cette commande calcule d'abord l'erreur type des valeurs tracées. Ceci a une cohérence seulement si les données sont centrées autour d'une valeur moyenne. Comme pour l'option précédente, ujne nouvelle colonne sera créée dans la table active et chaque ligne sera remplie avec l'erreur type calculée. Le programme ne sait pas et ne calcule pas l'erreur type de chaque point. En cas de besoin, vous devrez calculer indépendemment ces valeurs à partir de plusieurs échantillons pris à chaque valeur de x ou y.</para>
       </listitem>
 	</varlistentry>
 	<varlistentry>
-	  <term>4) The standard error of the values:</term>
+	  <term>4) A partir de l'erreur type :</term>
 	  <listitem>
-		<para>This command first calculates the standard error of the plotted data values. A new column will be created in the active table and each row will be filled with the computed standard error.</para>
+		<para>Cette commande calcule en premier l'erreur type des données tracées. Une nouvelle colonne sera créée dans la table active et chaque ligne sera remplie par la valeur calculée de l'erreur type.</para>
 	  </listitem>
     </varlistentry>
   </variablelist>
 
-<para>If you need to display asymmetric error bars you must define two sets of error bars for the same curve: one for the upper limits (with disabled minus side) and one for the lower limits (with disabled plus side).</para>
+<para>Si vous avez  besoin d'afficher des barres d'erreurs asymétriques, vous devez définir deux jeux de barres d'erreurs pour la même courbe : une pour les limites supérieures (sans la partie négative) et une autre pour les limites supérieures (sans la partie positive).</para>
 
   <figure id="fig-add-error-bars-2">
-    <title>Example of a plot with both X and Y Error Bars.</title>
+    <title>Exemple d'un graphe avec des barres d'erreurs en X et en Y.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-error-bars-2.png"/>
@@ -93,11 +93,11 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
 <!--		Add Function				-->
 <!-- ************************************************** -->
 <sect1 id="add-function-dialog">
-  <title>Add Function</title>
-  <para>This dialog box is used to add a function curve to the active plot. The plotted function is built with the common operators *, +, /, -, and ^ (for multiplication, addition, division, subtraction and exponentiation, respectively). A complete set of intrinsic functions are available and these are listed in the <link linkend="sec-muParser">muParser</link> section of the chapter on <emphasis>Mathematical Expressions and Scripting</emphasis>.</para>
-  <para>The first item is the <emphasis>Curve Type</emphasis> and is used to select the form of the generator function. The simplest and most common function definition is the classical Cartesian coordinate definition, y=f(x). This is the default option and is simply named "Function". Just below this is a text pane in which to enter the function definition, The next two parameters are used to select the X-range to be used for the plot. The last parameter sets the number of data points to be computed in the selected X-range. At the very bottom is a "Function Selector" which contains a dropdown list of intrinsic functions and brief description of the function. Clicking on the <emphasis>Add Function</emphasis> button will copy the selected function into the function definition pane. </para>
+  <title>Ajouter une fonction</title>
+  <para>Cette boîte de dialogue est utilisée pour ajouter une fonction au graphe actif. La fonction tracée est consitutée des opérateurs courants *, +, /, - and ^ (pour la multiplication, l'addition, la division , la soustraction et l'exponentielle respectivement). Un jeu complet de fonctions internes est disponible et il est listé dans la section <link linkend="sec-muParser">muParser</link> de ce chapitre dans <emphasis>Expressions et scripts mathématiques</emphasis>.</para>
+  <para>Le premier champ est le <emphasis>Type de courbe</emphasis> qui est utilisé pour choisir la forme de la courbe. La définition la plus simple et la plus classique est la fonction cartésienne y=f(x). C'est la valeur du champ par défaut et elle est appellé simplement "Fonction". En dessous ce champ, vous avez une zone de texte qui vous sert à écrire la fonction. Les deux paramètres suivants sont utilisés pour choisir la gamme en X du tracé. Le dernier paramètre fixe le nombre de points à calculer dans la gamme choisie. Tout en bas, vous avez une liste déroulante "Selection de fonction" pour sélectionner une série de fonctions internes avec un bref descritif de celles-ci. Cliquer sur le boutton  <emphasis>Ajouter</emphasis> copiera la fonction choisie dans le panneau de définition de fonctions.</para>
   <figure id="add-function-dialog-1">
-    <title>The &add-function-cmd; dialog box: Cartesian Coordinates.</title>
+    <title>La boîte de dialogue &add-function-cmd; : coordonnées cartésiennes.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog1.png"/>
@@ -105,31 +105,31 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
     </mediaobject>
   </figure>
 
-  <para>If the function expression contains terms that are recognizable as constants, e.g.: f(x) = a*x + b, &appname; will detect them and display a two column table on the right side of the dialog which contains input spin boxes that simplify setting appropriate values for the detected constants.</para>
+  <para>Si l'expression de la fonction contient des termes qui sont reconnaisables comme constantes, par exemple : f(x) = a*x + b, &appname; les détectera et affichera une table à deux colonnes sur le coté droit qui contient juste deux champs d'entrées simplifiant ainsi le positinnement des constantes avec des valeurs appropriées.</para>
 
   <figure id="add-function-dialog-4">
-	<title>The &add-function-cmd; Dialog Box: Automatic Detection of Constants.</title>
+	<title>La boîte de dialogue &add-function-cmd; : Détection automatique des constantes.</title>
 	<mediaobject>
 	  <imageobject>
 		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
 	  </imageobject>
 	</mediaobject>
-  </figure>linkend=
+  </figure>
 
-  <para>A function can also be defined using a parametric definition by selecting "Parametric plot" as the <emphasis>Curve type</emphasis>. That is, given some variable, <emphasis>m</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(m) and y=g(m).</para>
-  <para>The first parameter is the name of the parametric variable (here <emphasis>m</emphasis>). It is followed by the definitions of the two functions, the range of the parametric variable, and the number of data points.</para>
+  <para>Une fonction peut aussi être définie en utilisant une définition paramétrique en sélectionnnant "Graphe paramétrique" comme la <emphasis>Type de courbe</emphasis>. Ainsi, étant une variable, <emphasis>m</emphasis>, les points de données (x,y) sont calculés en utilisant des fonctions de cette variable, x = f(m) et y = g(m).</para>
+  <para> Le premier paramètre est le nom de la variable paramétrique (ici <emphasis>m</emphasis>). Il est suivi par les définitions des deux fonctions, la gamme de la variable paramétrique et le nombre de points.</para>
   <figure id="add-function-dialog-2">
-    <title>The &add-function-cmd; dialog box: Parametric Coordinates.</title>
+    <title>La boîte de dialogue &add-function-cmd; : Coordonnées paramétriques.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog2.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Finally, a polar definition of the function may be used by selecting "Polar plot" as the <emphasis>Curve type</emphasis>. Given some variable <emphasis>t</emphasis>, then the radius (<emphasis>R</emphasis>) and angle (<emphasis>Theta</emphasis>) are computed using two functions of that variable, R=f(t) and Theta=g(t), in a manner similar to the parametric function case. The (x,y) data points are then computed as x=R*cos(Theta) and y=R*sin(Theta).</para>
-  <para>The first parameter is the name of the parametric variable (here <emphasis>t</emphasis>). It is followed by the definition of the two functions, the range of the parametric variable, and the number of data points. Note that the angle is in radians. <emphasis>pi</emphasis> is an internally defined constant which can be used in any mathematical expression. For example, you can use <emphasis>3*pi</emphasis> to define the parameter range.</para>
+  <para>Enfin, une définition polaire de la fonction peut être utilisée en sélectionnant "Graphe polaire" comme <emphasis>Type de courbe</emphasis>. Étant données que la variable <emphasis>t</emphasis>, le rayon (<emphasis>R</emphasis>) et l'angle (<emphasis>Theta</emphasis>) sont calculées en utilisant deux fonctions de cette variable, R = f(t) et theta = g(t), d'une manière similaire au cas de la fonction paramétrique. Les points (x,y) sont alors calculées par x = R*cos(Theta) et y = R*sin(Theta).</para>
+  <para>Le premier paramètre est le nom de la variable paramétrique (ici <emphasis>t</emphasis>). Il est suivi par la définition des deux fonctions, la gamme de la variable paramétrique et le nombre de points. Remarquez que l'angle est en radians. <emphasis>pi</emphasis> est une conctante défnine en interne et qui peut être utilisée dasn toutes les expressions mathématiques. Par exemple, vous pouvez utiliser <emphasis>3*pi</emphasis> pour définir la gamme du paramètre.</para>
   <figure id="add-function-dialog-3">
-    <title>The &add-function-cmd; dialog box: Polar Coordinates.</title>
+    <title>La boîte de dialogue &add-function-cmd; : Coordonnées polaires.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-function-dialog3.png"/>
@@ -142,10 +142,10 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
 <!--		Add Layer				-->
 <!-- ************************************************** -->
 <sect1 id="add-layer-dialog">
-  <title>Add Layer</title>
-  <para>This dialog is opened when you add a new layer on the active plot. If you select <emphasis>Guess</emphasis>, &appname; will divide the window in two columns and put the new layer on the right. If you choose <emphasis>Top-Left Corner</emphasis>, &appname; will create a new layer with the maximum possible size and locate it on top of existing layers. The new layer contains an empty plotting area. You can subsequently modify the size and position of each layer by selecting it with the layer number buttons  <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> and picking the <emphasis>Layer Geometry</emphasis> command from the context menu.</para>
+  <title>Ajouter une planche</title>
+  <para>Cette boîte de dialogue s'ouvre lorsque vous ajouter une nouvelle planche au graphe actif. Si vous sélectionnez <emphasis>Deviner</emphasis>, &appname; divisera la fenêtre en deux colonnes et disposera la nouvelle planche sur la droite. Si vous choisissez <emphasis>Coin en haut à gauche</emphasis>, &appname; créera une nouvelle planche avec la plus grande taille possible et positionnée au dessus des planches existantes. La nouvelle planche contiendra une zone de tracé vide. Vous pourrez modifier la taille et la position de chaque planche en la sélectionnant par son obutton numéroté <inlinemediaobject><imageobject><imagedata format="PNG" fileref="pics/layer-button.png"/></imageobject></inlinemediaobject> puis en pointant vers la commande <emphasis>Géométrie</emphasis> à partir du menu contextuel.</para>
   <figure id="fig-add-layer-dialog">
-    <title>The &add-layer-cmd; Dialog Box.</title>
+    <title>La boîte de dialogue &add-layer-cmd;.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-layer.png"/>
@@ -158,9 +158,9 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
 <!--		Add / Remove curves			-->
 <!-- ************************************************** -->
 <sect1 id="add-remove-curve-dialog">
-  <title>Add/Remove Curves</title>
-  <para>This dialog is activated by selecting the command <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> from the <link linkend="sec-graph-menu">Graph Menu</link>.</para>
-  <para>The left window shows the columns available from the project's tables that may be used for plotting. If the <emphasis>Show current folder only</emphasis> option is checked, only tables from the active folder of the project will be listed in this window.
+  <title>Ajouter/supprimer des courbes</title>
+  <para>Cette boîte de dialogue est activée en sélectionnant la commande <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> du <link linkend="sec-graph-menu">Menu Graphe</link>.</para>
+  <para>La fenêtre de gauche montre les colonnes disponibles des tables du prijet qui peuvent être utilisée pour le tracé des courbes. Si l'option <emphasis>Montrer le dossier courant seulement</emphasis> est cochée, option is checked, only tables from the active folder of the project will be listed in this window.
   The right window lists the curves already plotted. In the case presented below, there are two tables that the &add-remove-curve-cmd;
   dialog box lists for the selection of columns. You select a <emphasis>Y</emphasis> column to plot using this dialog. &appname; will use the column defined as X in the corresponding table for the <emphasis>X</emphasis> values.</para>
   <figure id="fig-add-remove-curve">
@@ -1236,6 +1236,7 @@ All your changes to the default import parameters will be saved.</para>
 <para>Concerning the character which is used to separate column values, you must bear in mind that there
 is no grouping of separators, so if you use "SPACE", you must use only <emphasis>one</emphasis>
 separator between each column or check the <emphasis>Simplify white spaces</emphasis> option.</para>
+
 
 <para>If your data files have a particular structure, for example if they begin with several lines describing your experiment, you may skip the first n lines of the file. You can also skip all lines starting with a comment character/string. The comment string can be customized using the <emphasis>Ignore lines starting with</emphasis> text edit box.</para>
 
