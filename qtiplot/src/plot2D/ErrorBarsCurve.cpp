@@ -1,12 +1,11 @@
 /***************************************************************************
-    File                 : ErrorBarsCurve.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2010 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Error bars curve
-
- ***************************************************************************/
+File                 : ErrorBarsCurve.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2010 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Error bars curve
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -312,44 +311,17 @@ void ErrorBarsCurve::loadData()
 	else if (!histogram && (xcol < 0 || ycol < 0 || errcol <0))
 		return;
 
-	d_start_row = d_master_curve->startRow();
-	d_end_row = d_master_curve->endRow();
 	int r = abs(d_end_row - d_start_row) + 1;
+	r = qMin(r, d_master_curve->dataSize());
 	QVector<double> X(r), Y(r), err(r);
 	int data_size = 0;
 	QLocale locale = d_table->locale();
-
-	if (histogram){
-		int size = d_master_curve->dataSize();
-		for (int i = d_start_row; i <= d_end_row && data_size < size; i++){
-			QString errval = d_table->text(i, errcol);
-			if (!errval.isEmpty())
-				err[data_size] = locale.toDouble(errval);
-			else
-				err[data_size] = 0.0;
-
-			X[data_size] = d_master_curve->x(data_size);
-			Y[data_size] = d_master_curve->y(data_size);
-
-			data_size++;
-		}
-	} else {
-		for (int i = d_start_row; i <= d_end_row; i++){
-			QString xval = mt->text(i, xcol);
-			QString yval = mt->text(i, ycol);
-			QString errval = d_table->text(i, errcol);
-			if (!xval.isEmpty() && !yval.isEmpty()){
-				X[data_size] = d_master_curve->x(data_size);
-				Y[data_size] = d_master_curve->y(data_size);
-
-				if (!errval.isEmpty())
-					err[data_size] = locale.toDouble(errval);
-				else
-					err[data_size] = 0.0;
-
-				data_size++;
-			}
-		}
+	for (int i = d_start_row; i <= d_end_row && data_size < r; i++){
+		QString errval = d_table->text(i, errcol);
+		err[data_size] = errval.isEmpty() ? 0.0 : locale.toDouble(errval);
+		X[data_size] = d_master_curve->x(data_size);
+		Y[data_size] = d_master_curve->y(data_size);
+		data_size++;
 	}
 
 	if (!data_size)

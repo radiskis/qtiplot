@@ -1984,8 +1984,8 @@ void AxesDialog::showAxisSettings(int a)
 	boxAxisType->blockSignals(false);
 	showAxisFormatOptions(style);
 
-	if (style == 1)
-		boxColName->setCurrentText(d_graph->axisFormatInfo(a));
+	if (style == ScaleDraw::Text)
+		boxColName->setCurrentIndex(boxColName->findText(d_graph->axisFormatInfo(axis)));
 
 	boxBaseline->blockSignals(true);
 	boxBaseline->setValue(scale->margin());

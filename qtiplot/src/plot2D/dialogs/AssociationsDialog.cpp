@@ -1,12 +1,11 @@
 /***************************************************************************
-    File                 : AssociationsDialog.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2006 - 2010 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Plot associations dialog
-
- ***************************************************************************/
+File                 : AssociationsDialog.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Plot associations dialog
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -47,24 +46,24 @@
 #include <QApplication>
 
 AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WFlags fl )
-    : QDialog( parent, fl ), graph(0)
+	: QDialog( parent, fl ), graph(0)
 {
-    setName( "AssociationsDialog" );
-    setWindowTitle( tr( "QtiPlot - Plot Associations" ) );
+	setObjectName("AssociationsDialog");
+	setWindowTitle(tr("QtiPlot - Plot Associations"));
 	setSizeGripEnabled(true);
 	setFocus();
 
 	QVBoxLayout *vl = new QVBoxLayout();
 
 	QHBoxLayout *hbox1 = new QHBoxLayout ();
-    hbox1->addWidget(new QLabel(tr( "Spreadsheet: " )));
+	hbox1->addWidget(new QLabel(tr("Spreadsheet: ")));
 
 	tableCaptionLabel = new QLabel();
     hbox1->addWidget(tableCaptionLabel);
     vl->addLayout(hbox1);
 
 	table = new QTableWidget(3, 5);
-	table->horizontalHeader()->setClickable( false );
+	table->horizontalHeader()->setClickable(false);
 	table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
 	table->verticalHeader()->hide();
 	table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -73,15 +72,15 @@ AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WFlags fl )
     vl->addWidget(table);
 
 	associations = new QListWidget();
-	associations->setSelectionMode ( QListWidget::SingleSelection );
+	associations->setSelectionMode (QListWidget::SingleSelection);
     vl->addWidget(associations);
 
-	btnApply = new QPushButton(tr( "&Update curves" ));
-    btnOK = new QPushButton( tr( "&OK" ) );
-	btnOK->setDefault( true );
-    btnCancel = new QPushButton( tr( "&Cancel" ) );
+	btnApply = new QPushButton(tr("&Update curves"));
+	btnOK = new QPushButton(tr("&OK"));
+	btnOK->setDefault(true);
+	btnCancel = new QPushButton(tr("&Cancel"));
 
-    QHBoxLayout *hbox2 = new QHBoxLayout ();
+	QHBoxLayout *hbox2 = new QHBoxLayout();
 	hbox2->addStretch();
     hbox2->addWidget(btnApply);
     hbox2->addWidget(btnOK);
@@ -109,7 +108,7 @@ void AssociationsDialog::updateCurves()
 	if (!graph)
 		return;
 
-	QApplication::setOverrideCursor(Qt::waitCursor);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	for (int i = 0; i < associations->count(); i++)
 		changePlotAssociation(i, plotAssociation(associations->item(i)->text()));
@@ -120,9 +119,9 @@ void AssociationsDialog::updateCurves()
 
 void AssociationsDialog::changePlotAssociation(int curve, const QStringList& ass)
 {
-	DataCurve *c = (DataCurve *)graph->curve(curve);
+	DataCurve *c = (DataCurve *)graph->dataCurve(curvesIndicesList[curve]);
 	if (!c)
-        return;
+		return;
 
 	if (c->plotAssociation() == ass)
 		return;
@@ -158,7 +157,7 @@ void AssociationsDialog::changePlotAssociation(int curve, const QStringList& ass
 			er->setMasterCurve(master_curve);
 		else
 			er->loadData();
-	} else if (lst.count() == 4) {
+	} else if (lst.count() == 4){
 		VectorCurve *v = (VectorCurve *)c;
 		v->setXColumnName(lst[0].remove("(X)"));
 		v->setTitle(lst[1].remove("(Y)"));
@@ -348,35 +347,43 @@ void AssociationsDialog::updateColumnTypes()
 
 void AssociationsDialog::uncheckCol(int col)
 {
-	for (int i=0; i < table->rowCount(); i++ ){
+	for (int i = 0; i < table->rowCount(); i++){
 		QCheckBox *it = (QCheckBox *)table->cellWidget(i, col);
 		if (it)
 			it->setChecked(false);
-		}
+	}
 }
 
 void AssociationsDialog::setGraph(Graph *g)
 {
-    graph = g;
+	graph = g;
 
-    for (int i=0; i<graph->curveCount(); i++){
-        const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
-        if (!it)
-            continue;
-        if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
-            continue;
+	int index = 0;
+	for (int i = 0; i < graph->curveCount(); i++){
+		const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
+		if (!it)
+			continue;
+		if (it->rtti() != QwtPlotItem::Rtti_PlotCurve){
+			index++;
+			continue;
+		}
 
-        if (((DataCurve *)it)->type() != Graph::Function){
-			QStringList lst = ((DataCurve *)it)->plotAssociation();
-            if (((DataCurve *)it)->table()){
-				QString tableName = ((DataCurve *)it)->table()->objectName();
-				lst.replaceInStrings(tableName + "_", "").replaceInStrings(",", ".");
-				plotAssociationsList << tableName + ": " + lst.join(",");
-            }
-        }
+		if (((PlotCurve *)it)->type() == Graph::Function){
+			index++;
+			continue;
+		}
+
+		QStringList lst = ((DataCurve *)it)->plotAssociation();
+		if (((DataCurve *)it)->table()){
+			QString tableName = ((DataCurve *)it)->table()->objectName();
+			lst.replaceInStrings(tableName + "_", "").replaceInStrings(",", ".");
+			plotAssociationsList << tableName + ": " + lst.join(",");
+			curvesIndicesList << index;
+			index++;
+		}
 	}
-    associations->addItems(plotAssociationsList);
-    associations->setMaximumHeight((plotAssociationsList.count()+1)*associations->visualItemRect(associations->item(0)).height());
+	associations->addItems(plotAssociationsList);
+	associations->setMaximumHeight((plotAssociationsList.count() + 1)*associations->visualItemRect(associations->item(0)).height());
 }
 
 void AssociationsDialog::updatePlotAssociation(int row, int col)
