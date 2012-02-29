@@ -2056,7 +2056,7 @@ public:
 
   void setWaterfallSideLines(bool = true);
   void setWaterfallFillColor(const QColor&);
-  void setWaterfallOffset(int x, int y, bool = true);
+  void setWaterfallOffset(double x, double y, bool = true);
 
 private:
   Graph(const Graph&);
