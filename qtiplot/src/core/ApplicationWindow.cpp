@@ -5018,7 +5018,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 					Graph *ag = plot->activeLayer();
 					if (ag && lst.size() >= 2){
-						ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+						ag->setWaterfallOffset(lst[0].toDouble(), lst[1].toDouble());
 						if (lst.size() >= 3)
 							ag->setWaterfallSideLines(lst[2].toInt());
 					}
@@ -5266,7 +5266,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 						Graph *ag = ml->activeLayer();
 						if (ag && lst.size() >= 2){
-							ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+							ag->setWaterfallOffset(lst[0].toDouble(), lst[1].toDouble());
 							if (lst.size() >= 3)
 								ag->setWaterfallSideLines(lst[2].toInt());
 						}
@@ -13068,7 +13068,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		} else if (s.contains("<waterfall>")){
 			QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 			if (lst.size() >= 2)
-				ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+				ag->setWaterfallOffset(lst[0].toDouble(), lst[1].toDouble());
 			if (lst.size() >= 3)
 				ag->setWaterfallSideLines(lst[2].toInt());
 			ag->updateDataCurves();
@@ -16456,7 +16456,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 						Graph *ag = plot->activeLayer();
 						if (ag && lst.size() >= 2){
-							ag->setWaterfallOffset(lst[0].toInt(), lst[1].toInt());
+							ag->setWaterfallOffset(lst[0].toDouble(), lst[1].toDouble());
 							if (lst.size() >= 3)
 								ag->setWaterfallSideLines(lst[2].toInt());
 						}

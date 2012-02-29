@@ -810,12 +810,12 @@ class Graph: public QwtPlot
 
 		//! \name Waterfall
 		//@{
-		bool isWaterfallPlot(){return d_waterfall_offset_x != 0 || d_waterfall_offset_y != 0;};
-		int waterfallXOffset(){return d_waterfall_offset_x;};
-		int waterfallYOffset(){return d_waterfall_offset_y;};
-		void setWaterfallOffset(int x, int y, bool update = false);
-		void setWaterfallXOffset(int);
-		void setWaterfallYOffset(int);
+		bool isWaterfallPlot(){return d_waterfall_offset_x != 0.0 || d_waterfall_offset_y != 0.0;};
+		double waterfallXOffset(){return d_waterfall_offset_x;};
+		double waterfallYOffset(){return d_waterfall_offset_y;};
+		void setWaterfallOffset(double x, double y, bool update = false);
+		void setWaterfallXOffset(double);
+		void setWaterfallYOffset(double);
 		void setWaterfallSideLines(bool on = true);
 		void setWaterfallFillColor(const QColor&);
 		void updateWaterfallFill(bool on);
@@ -937,7 +937,7 @@ signals:
 		QString d_canvas_bkg_path;
 		QPixmap d_canvas_bkg_pix;
 
-		int d_waterfall_offset_x, d_waterfall_offset_y;
+		double d_waterfall_offset_x, d_waterfall_offset_y;
 		QRectF d_page_rect;
 };
 

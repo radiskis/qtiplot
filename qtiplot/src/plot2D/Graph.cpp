@@ -122,8 +122,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_canvas_bkg_path = QString();
 	d_canvas_bkg_pix = QPixmap();
 
-	d_waterfall_offset_x = 0;
-	d_waterfall_offset_y = 0;
+	d_waterfall_offset_x = 0.0;
+	d_waterfall_offset_y = 0.0;
 
 	d_active_tool = NULL;
 	d_image_profiles_tool = NULL;
@@ -7567,7 +7567,7 @@ bool Graph::mousePressed(QEvent *e)
 	return false;
 }
 
-void Graph::setWaterfallXOffset(int offset)
+void Graph::setWaterfallXOffset(double offset)
 {
 	if (offset == d_waterfall_offset_x)
 		return;
@@ -7577,7 +7577,7 @@ void Graph::setWaterfallXOffset(int offset)
 	emit modifiedGraph();
 }
 
-void Graph::setWaterfallYOffset(int offset)
+void Graph::setWaterfallYOffset(double offset)
 {
 	if (offset == d_waterfall_offset_y)
 		return;
@@ -7587,7 +7587,7 @@ void Graph::setWaterfallYOffset(int offset)
 	emit modifiedGraph();
 }
 
-void Graph::setWaterfallOffset(int x, int y, bool update)
+void Graph::setWaterfallOffset(double x, double y, bool update)
 {
 	d_waterfall_offset_x = x;
 	d_waterfall_offset_y = y;

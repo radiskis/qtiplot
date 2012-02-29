@@ -46,7 +46,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QGroupBox>
-#include <QSpinBox>
+
 #if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
 #endif
@@ -77,6 +77,7 @@
 #include <ScaleEngine.h>
 #include <ImportExportPlugin.h>
 #include <ScreenPickerTool.h>
+#include <DoubleSpinBox.h>
 
 #include <gsl/gsl_vector.h>
 
@@ -1958,20 +1959,22 @@ void MultiLayer::showWaterfallOffsetDialog()
 	QGridLayout *hl1 = new QGridLayout(gb1);
 
 	hl1->addWidget(new QLabel(tr("Total Y Offset (%)")), 0, 0);
-	QSpinBox *yOffsetBox = new QSpinBox();
-	yOffsetBox->setRange(-INT_MAX, INT_MAX);
+	DoubleSpinBox *yOffsetBox = new DoubleSpinBox('f');
+	yOffsetBox->setDecimals(2);
+	yOffsetBox->setRange(-DBL_MAX, DBL_MAX);
 	yOffsetBox->setValue(active_graph->waterfallYOffset());
 	hl1->addWidget(yOffsetBox, 0, 1);
 
 	hl1->addWidget(new QLabel(tr("Total X Offset (%)")), 1, 0);
-	QSpinBox *xOffsetBox = new QSpinBox();
-	xOffsetBox->setRange(-INT_MAX, INT_MAX);
+	DoubleSpinBox *xOffsetBox = new DoubleSpinBox('f');
+	xOffsetBox->setDecimals(2);
+	xOffsetBox->setRange(-DBL_MAX, DBL_MAX);
 	xOffsetBox->setValue(active_graph->waterfallXOffset());
 	hl1->addWidget(xOffsetBox, 1, 1);
 	hl1->setRowStretch(2, 1);
 
-	connect(yOffsetBox, SIGNAL(valueChanged(int)), active_graph, SLOT(setWaterfallYOffset(int)));
-	connect(xOffsetBox, SIGNAL(valueChanged(int)), active_graph, SLOT(setWaterfallXOffset(int)));
+	connect(yOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallYOffset(double)));
+	connect(xOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallXOffset(double)));
 
 	QPushButton *applyBtn = new QPushButton(tr("&Apply"));
 	connect(applyBtn, SIGNAL(clicked()), this, SLOT(updateWaterfalls()));
