@@ -150,25 +150,24 @@ public:
 
 	virtual bool updateData(Table *t, const QString& colName);
 	virtual void loadData();
-	void enableSpeedMode();
 
 	//! Returns the row index in the data source table corresponding to the data point index.
 	int tableRow(int point);
 
 	void remove();
 
-        /**
-		 * \brief A list of data sources for this curve.
-		 *
-		 * Elements must be in either of the following forms:
-		 *  - &lt;id of X column> "(X)," &lt;id of Y column> "(Y)" [ "," &lt;id of error column> ("(xErr)" | "(yErr)") ]
-		 *  - &lt;id of Xstart column> "(X)," &lt;id of Ystart column>"(Y)," &lt;id of Xend column> "(X)," &lt;id of Yend column> "(Y)"\n
-		 *    (denoting start and end coordinates for the #VectXYXY style)
-		 *  - &lt;id of Xstart column> "(X)," &lt;id of Ystart column> "(Y)," &lt;id of angle column> "(A)," &lt;id of magnitude column> "(M)"\n
-		 *    (denoting start coordinates, angle in radians and length for the #VectXYAM style)
-		 *
-		 * Column ids are of the form '&lt;name of table> "_" &lt;name of column>'.
-		 */
+	/**
+	 * \brief A list of data sources for this curve.
+	 *
+	 * Elements must be in either of the following forms:
+	 *  - &lt;id of X column> "(X)," &lt;id of Y column> "(Y)" [ "," &lt;id of error column> ("(xErr)" | "(yErr)") ]
+	 *  - &lt;id of Xstart column> "(X)," &lt;id of Ystart column>"(Y)," &lt;id of Xend column> "(X)," &lt;id of Yend column> "(Y)"\n
+	 *    (denoting start and end coordinates for the #VectXYXY style)
+	 *  - &lt;id of Xstart column> "(X)," &lt;id of Ystart column> "(Y)," &lt;id of angle column> "(A)," &lt;id of magnitude column> "(M)"\n
+	 *    (denoting start coordinates, angle in radians and length for the #VectXYAM style)
+	 *
+	 * Column ids are of the form '&lt;name of table> "_" &lt;name of column>'.
+	 */
 	virtual QStringList plotAssociation();
 	virtual void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 
@@ -195,8 +194,7 @@ public:
 	virtual void updateLabelsPosition();
 
 protected:
-        virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
-
+	virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 	bool validCurveType();
 	virtual void loadLabels();
 
