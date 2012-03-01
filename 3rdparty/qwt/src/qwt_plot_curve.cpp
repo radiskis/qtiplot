@@ -631,13 +631,14 @@ void QwtPlotCurve::draw(QPainter *painter,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
     int from, int to) const
 {
-    if ( !painter || dataSize() <= 0 )
+	const size_t numPoints = dataSize();
+	if ( !painter || numPoints <= 0 )
         return;
 
     if (to < 0)
         to = dataSize() - 1;
 
-    if ( verifyRange(dataSize(), from, to) > 0 )
+	if ( verifyRange(numPoints, from, to) > 0 )
     {
         painter->save();
         painter->setPen(QwtPainter::scaledPen(d_data->pen));
@@ -811,11 +812,8 @@ void QwtPlotCurve::drawLines(QPainter *painter,
         else
         {
             for (int i = from; i <= to; i++)
-            {
-                const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
-                polyline[i - from] = pi;
-            }
-        }
+				polyline[i - from] = QPointF(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
+		}
     }
 
 	if ( d_data->canvasRect.isValid() && d_data->paintAttributes & ClipPolygons )
@@ -1132,7 +1130,7 @@ void QwtPlotCurve::closePolyline(
         pa[sz + 1] = QPointF(xMap.transform(d_data->reference), pa[0].y());
     }
     else
-    {
+	{
 		pa[sz] = QPointF(pa[sz - 1].x(), yMap.transform(d_data->reference));
 		pa[pa.size() - 1] = QPointF(pa[0].x(), yMap.transform(d_data->reference));
     }
@@ -1244,7 +1242,8 @@ int QwtPlotCurve::dataSize() const
 */
 int QwtPlotCurve::closestPoint(const QPoint &pos, double *dist) const
 {
-    if ( plot() == NULL || dataSize() <= 0 )
+	const int numPoints = dataSize();
+	if ( plot() == NULL || numPoints <= 0 )
         return -1;
 
     const QwtScaleMap xMap = plot()->canvasMap(xAxis());
@@ -1253,7 +1252,7 @@ int QwtPlotCurve::closestPoint(const QPoint &pos, double *dist) const
     int index = -1;
     double dmin = 1.0e10;
 
-    for (int i=0; i < dataSize(); i++)
+	for (int i = 0; i < numPoints; i++)
     {
         const double cx = xMap.xTransform(x(i)) - pos.x();
         const double cy = yMap.xTransform(y(i)) - pos.y();

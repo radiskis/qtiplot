@@ -72,6 +72,8 @@ public:
 	//! Returns the number of symbols not to be drawn
 	int skipSymbolsCount(){return d_skip_symbols;};
 
+	QwtDoubleRect boundingRect() const;
+
 protected:
 	virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 	void drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
@@ -81,8 +83,6 @@ protected:
 
 	void drawSticks(QPainter *p,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
-
-	QwtDoubleRect boundingRect() const;
 
 	// Rtti
 	int d_type;

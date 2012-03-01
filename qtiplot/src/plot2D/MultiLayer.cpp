@@ -1953,6 +1953,7 @@ void MultiLayer::showWaterfallOffsetDialog()
 		return;
 
 	QDialog *offsetDialog = new QDialog(this);
+	offsetDialog->setSizeGripEnabled(true);
 	offsetDialog->setWindowTitle(tr("Offset Dialog"));
 
 	QGroupBox *gb1 = new QGroupBox();
@@ -1972,6 +1973,7 @@ void MultiLayer::showWaterfallOffsetDialog()
 	xOffsetBox->setValue(active_graph->waterfallXOffset());
 	hl1->addWidget(xOffsetBox, 1, 1);
 	hl1->setRowStretch(2, 1);
+	hl1->setColumnStretch(1, 1);
 
 	connect(yOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallYOffset(double)));
 	connect(xOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallXOffset(double)));
@@ -2011,6 +2013,7 @@ void MultiLayer::showWaterfallFillDialog()
 		return;
 
 	QDialog *waterfallFillDialog = new QDialog(this);
+	waterfallFillDialog->setSizeGripEnabled(true);
 	waterfallFillDialog->setWindowTitle(tr("Fill Curves"));
 
 	QGroupBox *gb1 = new QGroupBox(tr("Enable Fill"));
@@ -2025,6 +2028,7 @@ void MultiLayer::showWaterfallFillDialog()
 	sideLinesBox->setChecked(active_graph->curve(0)->sideLinesEnabled());
 	hl1->addWidget(sideLinesBox, 1, 0);
 	hl1->setRowStretch(2, 1);
+	hl1->setColumnStretch(2, 1);
 
 	QBrush brush = active_graph->curve(0)->brush();
 	fillColorBox->setColor(brush.style() != Qt::NoBrush ? brush.color() : d_waterfall_fill_color);
