@@ -6535,6 +6535,10 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 		if (c->type() == Graph::ErrorBars)
 			continue;
 
+		QPointF pf = QPointF(invTransform(c->xAxis(), xpos), invTransform(c->yAxis(), ypos));
+		if (!c->boundingRect().contains(pf))
+			continue;
+
 		if (c->type() != Graph::Function){
 			DataCurve *dc = (DataCurve *)c;
 			if (dc->hasLabels() && dc->selectedLabels(p)){

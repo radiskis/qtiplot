@@ -2,7 +2,7 @@
     File                 : DoubleSpinBox.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-    Copyright            : (C) 2007-2008 by Ion Vasilief
+	Copyright            : (C) 2007-2012 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : A Double Spin Box
 

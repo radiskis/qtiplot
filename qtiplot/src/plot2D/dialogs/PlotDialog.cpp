@@ -1,12 +1,11 @@
 /***************************************************************************
-    File                 : PlotDialog.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2006-2011 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Custom curves dialog
-
- ***************************************************************************/
+File                 : PlotDialog.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006-2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Custom curves dialog
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -427,39 +426,37 @@ void PlotDialog::initFontsPage()
 
 void PlotDialog::initLayerPage()
 {
-    layerPage = new QWidget();
+	layerPage = new QWidget();
 
-    QGroupBox * boxBkg = new QGroupBox();
-    QGridLayout * boxBkgLayout = new QGridLayout( boxBkg );
+	QGroupBox * boxBkg = new QGroupBox();
+	QGridLayout * boxBkgLayout = new QGridLayout( boxBkg );
 
-    boxBkgLayout->addWidget( new QLabel(tr( "Background Color" )), 0, 0 );
-    boxBackgroundColor = new ColorButton();
-    boxBkgLayout->addWidget( boxBackgroundColor, 0, 1 );
+	boxBkgLayout->addWidget( new QLabel(tr( "Background Color" )), 0, 0 );
+	boxBackgroundColor = new ColorButton();
+	boxBkgLayout->addWidget( boxBackgroundColor, 0, 1 );
 
-    boxBackgroundTransparency = new QSpinBox();
+	boxBackgroundTransparency = new QSpinBox();
 	boxBackgroundTransparency->setRange(0, 100);
-    boxBackgroundTransparency->setWrapping(true);
+	boxBackgroundTransparency->setWrapping(true);
+	boxBackgroundTransparency->setSpecialValueText(" " + tr("Transparent"));
 	boxBackgroundTransparency->setSuffix(" %");
+	boxBkgLayout->addWidget(boxBackgroundTransparency, 0, 3);
 
 	bkgOpacitySlider = new QSlider();
 	bkgOpacitySlider->setOrientation(Qt::Horizontal);
 	bkgOpacitySlider->setRange(0, 100);
+	boxBkgLayout->addWidget(bkgOpacitySlider, 1, 3);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(bkgOpacitySlider);
 	boxBkgLayout->addWidget(l1, 0, 2 );
 
-	QHBoxLayout* hb = new QHBoxLayout();
-	hb->addWidget(bkgOpacitySlider);
-	hb->addWidget(boxBackgroundTransparency);
-	boxBkgLayout->addLayout(hb, 0, 3 );
+	boxBkgLayout->addWidget( new QLabel(tr("Border Color" )), 2, 0);
+	boxBorderColor = new ColorButton();
+	boxBkgLayout->addWidget( boxBorderColor, 2, 1);
 
-    boxBkgLayout->addWidget( new QLabel(tr("Border Color" )), 2, 0);
-    boxBorderColor = new ColorButton();
-    boxBkgLayout->addWidget( boxBorderColor, 2, 1);
-
-    boxBorderWidth = new QSpinBox();
-    boxBkgLayout->addWidget( boxBorderWidth, 2, 3);
+	boxBorderWidth = new QSpinBox();
+	boxBkgLayout->addWidget( boxBorderWidth, 2, 3);
 
 	QLabel *l2 = new QLabel("&" + tr("Width"));
 	l2->setBuddy(boxBorderWidth);
@@ -487,11 +484,12 @@ void PlotDialog::initLayerPage()
 	boxBkgLayout->addWidget(layerScaleFonts, 6, 0);
 
 	boxBkgLayout->setRowStretch(7, 1);
+	boxBkgLayout->setColumnStretch(4, 1);
 
-    QVBoxLayout *vl = new QVBoxLayout();
+	QVBoxLayout *vl = new QVBoxLayout();
 
-    layerDefaultBtn = new QPushButton(tr("Set As &Default"));
-    connect(layerDefaultBtn, SIGNAL(clicked()), this, SLOT(setLayerDefaultValues()));
+	layerDefaultBtn = new QPushButton(tr("Set As &Default"));
+	connect(layerDefaultBtn, SIGNAL(clicked()), this, SLOT(setLayerDefaultValues()));
 	vl->addWidget(layerDefaultBtn);
 
 	QLabel *l = new QLabel(tr("Apply &to..."));
@@ -499,18 +497,18 @@ void PlotDialog::initLayerPage()
 
 	backgroundApplyToBox = new QComboBox();
 	backgroundApplyToBox->insertItem(tr("Layer"));
-    backgroundApplyToBox->insertItem(tr("Window"));
-    backgroundApplyToBox->insertItem(tr("All Windows"));
+	backgroundApplyToBox->insertItem(tr("Window"));
+	backgroundApplyToBox->insertItem(tr("All Windows"));
 	vl->addWidget(backgroundApplyToBox);
 	vl->addStretch();
 
 	l->setBuddy(backgroundApplyToBox);
 
-    QHBoxLayout * hl = new QHBoxLayout( layerPage );
-    hl->addWidget(boxBkg);
-    hl->addLayout(vl);
+	QHBoxLayout * hl = new QHBoxLayout( layerPage );
+	hl->addWidget(boxBkg);
+	hl->addLayout(vl);
 
-    privateTabWidget->addTab(layerPage, tr("Layer"));
+	privateTabWidget->addTab(layerPage, tr("Layer"));
 
 	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateBackgroundTransparency(int)));
 	connect(boxAntialiasing, SIGNAL(toggled(bool)), this, SLOT(applyLayerFormat()));
@@ -622,7 +620,7 @@ void PlotDialog::initCanvasPage()
 	QGridLayout *gl1 = new QGridLayout(canvasColorBox);
 
 	boxCanvasColor = new ColorButton();
-	gl1->addWidget(boxCanvasColor, 0, 2);
+	gl1->addWidget(boxCanvasColor, 0, 1);
 
 	QLabel *l4 = new QLabel("&" + tr("Color"));
 	l4->setBuddy(boxCanvasColor);
@@ -633,21 +631,18 @@ void PlotDialog::initCanvasPage()
 	boxCanvasTransparency->setWrapping(true);
 	boxCanvasTransparency->setSpecialValueText(" " + tr("Transparent"));
 	boxCanvasTransparency->setSuffix(" %");
+	gl1->addWidget(boxCanvasTransparency, 1, 1);
 
 	canvasOpacitySlider = new QSlider();
 	canvasOpacitySlider->setOrientation(Qt::Horizontal);
 	canvasOpacitySlider->setRange(0, 100);
+	gl1->addWidget(canvasOpacitySlider, 2, 1);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(canvasOpacitySlider);
 	gl1->addWidget(l1, 1, 0);
 
-	QHBoxLayout* hb = new QHBoxLayout();
-	hb->addWidget(canvasOpacitySlider);
-	hb->addWidget(boxCanvasTransparency);
-	gl1->addLayout(hb, 1, 2);
-
-	gl1->setColumnStretch(1, 1);
+	gl1->setColumnStretch(2, 1);
 	gl1->setRowStretch(2, 1);
 
 	canvasImageBox = new QGroupBox();
@@ -694,6 +689,7 @@ void PlotDialog::initCanvasPage()
 	l2->setBuddy(boxFrameWidth);
 	boxFramedLayout->addWidget(l2, 1, 0);
 	boxFramedLayout->setRowStretch(2, 1);
+	boxFramedLayout->setColumnStretch(2, 1);
 
 	QVBoxLayout *vl1 = new QVBoxLayout();
 	vl1->addLayout(hl1);
@@ -769,6 +765,7 @@ void PlotDialog::initLayerGeometryPage()
 	gl1->addWidget(new QLabel(tr("Y= ")), 1, 0);
 	gl1->addWidget(boxY, 1, 1);
 	gl1->setRowStretch(2, 1);
+	gl1->setColumnStretch(1, 1);
 
 	QGroupBox *gb2 = new QGroupBox(tr("Size"));
 	boxLayerWidth = new DoubleSpinBox();
@@ -804,6 +801,7 @@ void PlotDialog::initLayerGeometryPage()
 	l->setBuddy(sizeApplyToBox);
 
 	gl2->setRowStretch(4, 1);
+	gl2->setColumnStretch(1, 1);
 
 	QBoxLayout *bl2 = new QBoxLayout (QBoxLayout::LeftToRight);
 	bl2->addWidget(gb1);
@@ -887,9 +885,9 @@ void PlotDialog::initLayerSpeedPage()
 	boxMaxPoints->setSuffix(" " + tr("data points"));
 	boxMaxPoints->setValue(3000);
 
-    QGridLayout *gl1 = new QGridLayout(speedModeBox);
+	QGridLayout *gl1 = new QGridLayout(speedModeBox);
 	gl1->addWidget(new QLabel(tr("Apply to curves with more than:")), 0, 0);
-    gl1->addWidget(boxMaxPoints, 0, 1);
+	gl1->addWidget(boxMaxPoints, 0, 1);
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = QLocale();
@@ -903,12 +901,13 @@ void PlotDialog::initLayerSpeedPage()
 
 	gl1->addWidget(new QLabel(tr("Tolerance (Douglas-Peucker algorithm)")), 1, 0);
 	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
-    gl1->setRowStretch(2, 1);
+	gl1->setRowStretch(2, 1);
+	gl1->setColumnStretch(1, 1);
 
-    QVBoxLayout * vl = new QVBoxLayout( speedPage );
-    vl->addWidget(speedModeBox);
+	QVBoxLayout * vl = new QVBoxLayout( speedPage );
+	vl->addWidget(speedModeBox);
 
-    privateTabWidget->addTab(speedPage, tr("Speed"));
+	privateTabWidget->addTab(speedPage, tr("Speed"));
 	connect(speedModeBox, SIGNAL(toggled(bool)), this, SLOT(acceptParams()));
 	connect(boxDouglasPeukerTolerance, SIGNAL(valueChanged(double)), this, SLOT(acceptParams()));
 }
