@@ -3661,7 +3661,6 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	updateCurveLayout(c, &cl);
 
 	c->loadData();
-	c->enableSpeedMode();
 
 	int xColType = w->columnType(xcol);
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
@@ -3709,7 +3708,6 @@ DataCurve* Graph::insertCurve(Table* xt, const QString& xColName, Table* yt, con
 	updateCurveLayout(c, &cl);
 
 	c->loadData();
-	c->enableSpeedMode();
 
 	int xColType = xt->columnType(xcol);
 	ScaleDraw *sd = (ScaleDraw *)axisScaleDraw(xAxis);
@@ -5251,8 +5249,6 @@ void Graph::setCurveStyle(int index, int s)
 	}
 
 	c->setStyle((QwtPlotCurve::CurveStyle)s);
-	if (curve_type != Function)
-		((DataCurve *)c)->enableSpeedMode();
 }
 
 BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
@@ -7504,20 +7500,10 @@ void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
-
 		PlotCurve *c = (PlotCurve *)item;
 		if (!c || c->type() == Function)
 			continue;
-
-		if (tolerance == 0.0 || c->dataSize() < d_speed_mode_points){
-			c->setCurveAttribute(QwtPlotCurve::Fitted, false);
-			continue;
-		}
-
-		c->setCurveAttribute(QwtPlotCurve::Fitted);
-
-		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(tolerance);
-		c->setCurveFitter(fitter);
+		((DataCurve *)c)->loadData();
 	}
 	replot();
 }
