@@ -631,34 +631,32 @@ void QwtPlotCurve::draw(QPainter *painter,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
     int from, int to) const
 {
-	const size_t numPoints = dataSize();
-	if ( !painter || numPoints <= 0 )
-        return;
+	if (!painter)
+		return;
 
-    if (to < 0)
-        to = dataSize() - 1;
+	const int numPoints = (int)dataSize();
+	if (to < 0 || to >= numPoints)
+		to = numPoints - 1;
 
-	if ( verifyRange(numPoints, from, to) > 0 )
-    {
-        painter->save();
-        painter->setPen(QwtPainter::scaledPen(d_data->pen));
+	if (verifyRange(numPoints, from, to) > 0){
+		painter->save();
+		painter->setPen(QwtPainter::scaledPen(d_data->pen));
 
-        /*
-          Qt 4.0.0 is slow when drawing lines, but it's even
-          slower when the painter has a brush. So we don't
-          set the brush before we really need it.
-         */
+		/*
+		  Qt 4.0.0 is slow when drawing lines, but it's even
+		  slower when the painter has a brush. So we don't
+		  set the brush before we really need it.
+		 */
 
-        drawCurve(painter, d_data->style, xMap, yMap, from, to);
-        painter->restore();
+		drawCurve(painter, d_data->style, xMap, yMap, from, to);
+		painter->restore();
 
-        if (d_data->symbol->style() != QwtSymbol::NoSymbol)
-        {
-            painter->save();
-            drawSymbols(painter, *d_data->symbol, xMap, yMap, from, to);
-            painter->restore();
-        }
-    }
+		if (d_data->symbol->style() != QwtSymbol::NoSymbol){
+			painter->save();
+			drawSymbols(painter, *d_data->symbol, xMap, yMap, from, to);
+			painter->restore();
+		}
+	}
 }
 
 /*!
@@ -676,6 +674,13 @@ void QwtPlotCurve::drawCurve(QPainter *painter, int style,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
     int from, int to) const
 {
+	const int numPoints = (int)dataSize();
+	if (!painter || numPoints < 1)
+		return;
+
+	if (to < 0 || to >= numPoints)
+		to = numPoints - 1;
+
     switch (style)
     {
         case Lines:
@@ -720,109 +725,92 @@ void QwtPlotCurve::drawCurve(QPainter *painter, int style,
 */
 // modified by Ion Vasilief in order to use floating point coordinates
 void QwtPlotCurve::drawLines(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+	const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+	int from, int to) const
 {
-    int size = to - from + 1;
-    if ( size <= 0 )
-        return;
+	int size = to - from + 1;
+	if ( size <= 0 )
+		return;
 
-    QwtPolygonF polyline;
-    if ( ( d_data->attributes & Fitted ) && d_data->curveFitter )
-    {
-        // Transform x and y values to window coordinates
-        // to avoid a distinction between linear and
-        // logarithmic scales.
+	QwtPolygonF polyline;
+	if ((d_data->attributes & Fitted) && d_data->curveFitter){
+		// Transform x and y values to window coordinates
+		// to avoid a distinction between linear and
+		// logarithmic scales.
 
-        QPolygonF points(size);
-        for (int i = from; i <= to; i++)
-        {
-            QwtDoublePoint &p = points[i];
-            p.setX( xMap.xTransform(x(i)) );
-            p.setY( yMap.xTransform(y(i)) );
-        }
+		QPolygonF points(size);
+		for (int i = from; i <= to; i++){
+			QwtDoublePoint &p = points[i];
+			p.setX( xMap.xTransform(x(i)) );
+			p.setY( yMap.xTransform(y(i)) );
+		}
 
-        points = d_data->curveFitter->fitCurve(points);
-        size = points.size();
+		points = d_data->curveFitter->fitCurve(points);
+		size = points.size();
 
-        if ( size == 0 )
-            return;
+		if (size == 0)
+			return;
 
-        // Round QwtDoublePoints to QPoints
-        // When Qwt support for Qt3 has been dropped (Qwt 6.x)
-        // we will use a doubles for painting and the following
-        // step will be obsolete.
+		// Round QwtDoublePoints to QPoints
+		// When Qwt support for Qt3 has been dropped (Qwt 6.x)
+		// we will use a doubles for painting and the following
+		// step will be obsolete.
 
-        polyline.resize(size);
+		polyline.resize(size);
 
-        const QwtDoublePoint *p = points.data();
-        QPointF *pl = polyline.data();
-        if ( d_data->paintAttributes & PaintFiltered )
-        {
+		const QwtDoublePoint *p = points.data();
+		QPointF *pl = polyline.data();
+		if (d_data->paintAttributes & PaintFiltered){
+			QPointF pp(p[0].x(), p[0].y());
+			pl[0] = pp;
 
-            QPointF pp(p[0].x(), p[0].y());
-            pl[0] = pp;
+			int count = 1;
+			for (int i = 1; i < size; i++){
+				const QPointF pi(p[i].x(), p[i].y());
+				if ( pi != pp ){
+					pl[count++] = pi;
+					pp = pi;
+				}
+			}
+			if ( count != size )
+				polyline.resize(count);
+		} else {
+			for ( int i = 0; i < size; i++ ){
+				pl[i].setX( p[i].x() );
+				pl[i].setY( p[i].y() );
+			}
+		}
+	} else {
+		polyline.resize(size);
+		if ( d_data->paintAttributes & PaintFiltered ){
+			QPointF pp( xMap.xTransform(x(from)), yMap.xTransform(y(from)) );
+			polyline[0] = pp;
 
-            int count = 1;
-            for (int i = 1; i < size; i++)
-            {
-                const QPointF pi(p[i].x(), p[i].y());
-                if ( pi != pp )
-                {
-                    pl[count++] = pi;
-                    pp = pi;
-                }
-            }
-            if ( count != size )
-                polyline.resize(count);
-        }
-        else
-        {
-            for ( int i = 0; i < size; i++ )
-            {
-                pl[i].setX( p[i].x() );
-                pl[i].setY( p[i].y() );
-            }
-        }
-    }
-    else
-    {
-        polyline.resize(size);
+			int count = 1;
+			for (int i = from + 1; i <= to; i++){
+				const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
+				if ( pi != pp ){
+					polyline[count] = pi;
+					count++;
 
-        if ( d_data->paintAttributes & PaintFiltered )
-        {
-            QPointF pp( xMap.xTransform(x(from)), yMap.xTransform(y(from)) );
-            polyline[0] = pp;
-
-            int count = 1;
-            for (int i = from + 1; i <= to; i++)
-            {
-                const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
-                if ( pi != pp )
-                {
-                    polyline[count] = pi;
-                    count++;
-
-                    pp = pi;
-                }
-            }
-            if ( count != size )
-                polyline.resize(count);
-        }
-        else
-        {
-            for (int i = from; i <= to; i++)
+					pp = pi;
+				}
+			}
+			if ( count != size )
+				polyline.resize(count);
+		} else {
+			for (int i = from; i <= to; i++)
 				polyline[i - from] = QPointF(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
 		}
-    }
+	}
 
 	if ( d_data->canvasRect.isValid() && d_data->paintAttributes & ClipPolygons )
 		polyline = QwtClipper::clipPolygonF(d_data->canvasRect, polyline);
 
-    QwtPainter::drawPolyline(painter, polyline);
+	QwtPainter::drawPolyline(painter, polyline);
 
-    if ( d_data->brush.style() != Qt::NoBrush )
-        fillCurve(painter, xMap, yMap, polyline);
+	if ( d_data->brush.style() != Qt::NoBrush )
+		fillCurve(painter, xMap, yMap, polyline);
 }
 
 /*!

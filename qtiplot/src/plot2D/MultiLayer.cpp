@@ -1,12 +1,11 @@
 /***************************************************************************
-	File                 : MultiLayer.cpp
-	Project              : QtiPlot
-	--------------------------------------------------------------------
-	Copyright            : (C) 2006 - 2012 by Ion Vasilief
-	Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : Multi layer widget
-
- ***************************************************************************/
+File                 : MultiLayer.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Multi layer widget
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -321,10 +320,6 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 
 void MultiLayer::setActiveLayer(Graph* g)
 {
-	/*Graph *ag = clickedLayer(g);
-	if (!ag || active_graph == ag)
-		return;*/
-
 	if (!g || active_graph == g)
 		return;
 
@@ -336,7 +331,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 	active_graph->raise();//raise layer on top of the layers stack
 	active_graph->raiseEnrichements();
 
-	for(int i = 0; i < graphsList.count(); i++){
+	for (int i = 0; i < graphsList.count(); i++){
 		Graph *gr = (Graph *)graphsList.at(i);
 		gr->deselect();
 
@@ -504,24 +499,24 @@ bool MultiLayer::removeActiveLayer()
 
 bool MultiLayer::removeLayer(Graph *g)
 {
-    if (!g)
-        return false;
+	if (!g)
+		return false;
 
-    int index = graphsList.indexOf(g);
-    if (index < 0 || index > graphsList.size())
-        return false;
+	int index = graphsList.indexOf(g);
+	if (index < 0 || index > graphsList.size())
+		return false;
 
 	//remove corresponding button
 	LayerButton* btn = buttonsList.at(index);
 	if (btn)
-        btn->close(true);
-    buttonsList.removeAt(index);
+		btn->close(true);
+	buttonsList.removeAt(index);
 
 	int i = 0;
 	foreach(LayerButton* btn, buttonsList){
 		btn->setText(QString::number(++i));//update the texts of the buttons
 		btn->setOn(false);
-    }
+	}
 
 	if (g->zoomOn() || g->activeTool())
 		emit setPointerCursor();
@@ -549,6 +544,26 @@ bool MultiLayer::removeLayer(Graph *g)
 		}
 	}
 	return true;
+}
+
+void MultiLayer::setLayerButtonSpeedMode(Graph *g, bool on)
+{
+	if (!g)
+		return;
+
+	int index = graphsList.indexOf(g);
+	if (index < 0 || index > graphsList.size())
+		return;
+
+	LayerButton* btn = buttonsList.at(index);
+	if (!btn)
+		return;
+
+	QColor color = palette().color(QPalette::Button);
+	QPalette palette = btn->palette();
+	palette.setColor(QPalette::Button, on ? Qt::red : color);
+	btn->setAutoFillBackground(on);
+	btn->setPalette(palette);
 }
 
 void MultiLayer::setGraphGeometry(int x, int y, int w, int h)

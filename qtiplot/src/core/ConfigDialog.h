@@ -311,14 +311,14 @@ private:
 	QCheckBox *boxMinorGrid, *boxMajorGrid;
 	ColorButton *boxColorMinor, *boxColorMajor;
 	PenStyleBox *boxTypeMinor, *boxTypeMajor;
-	DoubleSpinBox *boxWidthMinor, *boxWidthMajor;
+	DoubleSpinBox *boxWidthMinor, *boxWidthMajor, *boxDouglasPeukerTolerance;
 	QComboBox *boxGridYAxis, *boxGridXAxis;
 	QCheckBox *boxAntialiseGrid;
 	QListWidget *axesGridList;
 	QLabel *gridLineColorLbl, *gridLineWidthLbl, *gridLineTypeLbl, *gridAxesLbl;
-	QGroupBox * antialiasingGroupBox;
-	QCheckBox *disableAntialiasingBox, *openLastProjectBox;
-	QSpinBox *curveSizeBox;
+	QGroupBox * antialiasingGroupBox, *speedModeBox;
+	QCheckBox *disableAntialiasingBox, *openLastProjectBox, *applySpeedExportBox;
+	QSpinBox *curveSizeBox, *boxMaxPoints;
 	QPushButton *btnDefaultSettings;
 
 	QLineEdit *sofficePathBox;
@@ -327,7 +327,7 @@ private:
 
 	QLineEdit *javaPathBox;
 	QPushButton *browseJavaBtn;
-	QLabel *javaLabel;
+	QLabel *javaLabel, *toleranceLabel, *maxPointsLabel;
 
 	QLineEdit *jodconverterPathBox;
 	QPushButton *browseJODConverterBtn;

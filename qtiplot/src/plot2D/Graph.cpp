@@ -6788,6 +6788,11 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
 	deselect();
 
+	double speedTol = d_Douglas_Peuker_tolerance;
+	bool speedModeExport = multiLayer() ? multiLayer()->applicationWindow()->speedModeExport() : false;
+	if (speedTol > 0.0 && !speedModeExport)
+		enableDouglasPeukerSpeedMode(0.0, d_speed_mode_points);
+
 	d_is_printing = true;
 
 	printFrame(painter, plotRect);
@@ -7091,6 +7096,9 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 	plotLayout()->activate(this, contentsRect());
 
 	painter->restore();
+
+	if (speedTol > 0.0 && !speedModeExport)
+		enableDouglasPeukerSpeedMode(speedTol, d_speed_mode_points);
 
 	d_is_printing = false;
 }
@@ -7488,14 +7496,19 @@ void Graph::dropEvent(QDropEvent* event)
 		clone->copy(g);
 }
 
-void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints)
+void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool update)
 {
-	if (d_speed_mode_points == maxPoints &&
-		d_Douglas_Peuker_tolerance == tolerance)
+	if (d_speed_mode_points == maxPoints && d_Douglas_Peuker_tolerance == tolerance)
 		return;
 
 	d_speed_mode_points = maxPoints;
 	d_Douglas_Peuker_tolerance = tolerance;
+
+	if (multiLayer())
+		multiLayer()->setLayerButtonSpeedMode(this, d_Douglas_Peuker_tolerance > 0.0);
+
+	if (!update)
+		return;
 
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)

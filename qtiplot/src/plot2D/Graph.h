@@ -231,7 +231,7 @@ class Graph: public QwtPlot
 		static QString texSuperscripts(const QString &);
 #endif
 		void changeCurveIndex(int fromIndex, int toIndex);
-		void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints = 3000);
+		void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints = 3000, bool update = true);
 
 		int speedModeMaxPoints(){return d_speed_mode_points;};
 		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};

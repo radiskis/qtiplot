@@ -123,6 +123,7 @@ public:
 	bool isLayerSelected(Graph*);
 
 	void adjustLayersToCanvasSize();
+	void setLayerButtonSpeedMode(Graph *g, bool on);
 
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);

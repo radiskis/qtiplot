@@ -597,6 +597,10 @@ void ApplicationWindow::setDefaultOptions()
 	tableTextColor = QColor("#000000");
 	tableHeaderColor = QColor("#000000");
 
+	d_Douglas_Peuker_tolerance = 0.0;
+	d_speed_mode_points = 3000;
+	d_speed_mode_export = false;
+
 	d_graph_background_color = Qt::white;
 	d_graph_canvas_color = Qt::white;
 	d_graph_border_color = Qt::black;
@@ -2995,6 +2999,8 @@ void ApplicationWindow::setPreferences(Graph* g)
 		g->setCanvasFrame(canvasFrameWidth, d_canvas_frame_color);
 		for (int i = 0; i < QwtPlot::axisCnt; i++)
 			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
+
+		g->enableDouglasPeukerSpeedMode(d_Douglas_Peuker_tolerance, d_speed_mode_points, false);
 	}
 
 	g->setAxisTitlePolicy(d_graph_axis_labeling);
@@ -5594,6 +5600,9 @@ void ApplicationWindow::readSettings()
 	defaultCurveAlpha = settings.value("/BrushAlpha", defaultCurveAlpha).toInt();
 	d_disable_curve_antialiasing = settings.value("/DisableAntialiasing", d_disable_curve_antialiasing).toBool();
 	d_curve_max_antialising_size = settings.value("/MaxCurveAntialisingSize", d_curve_max_antialising_size).toInt();
+	d_Douglas_Peuker_tolerance = settings.value("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance).toDouble();
+	d_speed_mode_points = settings.value("/MaxPoints", d_speed_mode_points).toInt();
+	d_speed_mode_export = settings.value("/SpeedModeExport", d_speed_mode_export).toBool();
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");
@@ -6089,6 +6098,9 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/BrushAlpha", defaultCurveAlpha);
 	settings.setValue("/DisableAntialiasing", d_disable_curve_antialiasing);
 	settings.setValue("/MaxCurveAntialisingSize", d_curve_max_antialising_size);
+	settings.setValue("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance);
+	settings.setValue("/MaxPoints", d_speed_mode_points);
+	settings.setValue("/SpeedModeExport", d_speed_mode_export);
 	settings.endGroup(); // Curves
 
 	settings.beginGroup("/Ticks");

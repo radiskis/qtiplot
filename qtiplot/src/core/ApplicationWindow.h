@@ -2,7 +2,7 @@
     File                 : ApplicationWindow.h
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2011 by Ion Vasilief,
+	Copyright            : (C) 2004 - 2012 by Ion Vasilief,
 						   (C) 2006 - june 2007 Tilman Hoener zu Siederdissen, Knut Franke
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
     Description          : QtiPlot's main window
@@ -257,6 +257,15 @@ public:
 	//! Write fit output information to Result Log
 	bool writeFitResultsToLog(){return d_write_fit_results_to_log;}
 	void setWriteFitResultsToLog(bool on = true){d_write_fit_results_to_log = on;}
+
+	int speedModeExport(){return d_speed_mode_export;}
+	void setSpeedModeExport(bool on = true){d_speed_mode_export = on;}
+
+	int speedModeMaxPoints(){return d_speed_mode_points;}
+	void setSpeedMaxPoints(int points){d_speed_mode_points = points;}
+
+	double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;}
+	void setDouglasPeukerTolerance(double tolerance){d_Douglas_Peuker_tolerance = tolerance;}
 
 public slots:
 	//! \name Projects and Project Files
@@ -1441,6 +1450,9 @@ private:
 	// Flag telling if table values should be automatically recalculated when values in a column are modified.
 	bool d_auto_update_table_values;
 	int d_matrix_undo_stack_size;
+	double d_Douglas_Peuker_tolerance;
+	int d_speed_mode_points;
+	bool d_speed_mode_export;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);
