@@ -12345,6 +12345,26 @@ Die folgenden Spezialcodes können benutzt werden:
         <source>Full dataset name</source>
         <translation>Komplette Bezeichnung des Datensatzes</translation>
     </message>
+    <message>
+        <source>&amp;Speed Mode, Skip Points if needed</source>
+        <translation type="unfinished">Be&amp;schleunigungsmodus, Datanpunkte auslassen wenn nötig</translation>
+    </message>
+    <message>
+        <source>A&amp;pply to curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished">0 (alle Datenpunkte)</translation>
+    </message>
+    <message>
+        <source>Apply to graphic &amp;export as well</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

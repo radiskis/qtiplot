@@ -549,6 +549,10 @@ void DataCurve::loadData()
 		return;
 	}
 
+	int rows = d_table->numRows();
+	if (d_end_row < 0 || d_end_row >= rows)
+		d_end_row = rows - 1;
+
 	int xColType = d_x_table->columnType(xcol);
 	int yColType = d_table->columnType(ycol);
 	int r = abs(d_end_row - d_start_row) + 1;
@@ -611,6 +615,7 @@ void DataCurve::loadData()
 		remove();
 		return;
 	}
+	data.resize(size);
 
 	if (g->isWaterfallPlot()){
 		int index = g->curveIndex(this);
@@ -651,10 +656,9 @@ void DataCurve::loadData()
 		}
 	}
 
-	QwtPolygonFData dat = QwtPolygonFData(data);
-	setData(dat);
+	setData(data);
 	foreach(ErrorBarsCurve *c, d_error_bars)
-		c->setData(dat);
+		c->setData(data);
 
 	if (xColType == Table::Text)
 		g->setLabelsTextFormat(xAxis, ScaleDraw::Text, d_x_column, xLabels);

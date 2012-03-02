@@ -9603,6 +9603,26 @@ The following special codes can be used:
         <source>Full dataset name</source>
         <translation>Numele complet al setului de date</translation>
     </message>
+    <message>
+        <source>&amp;Speed Mode, Skip Points if needed</source>
+        <translation>Mod &amp;rapid, ignoră puncte dacă e nevoie</translation>
+    </message>
+    <message>
+        <source>A&amp;pply to curves with more than</source>
+        <translation>Aplică &amp;curbelor cu mai mult de</translation>
+    </message>
+    <message>
+        <source>&amp;Tolerance (Douglas-Peucker algorithm)</source>
+        <translation>&amp;Toleranţa pentru algoritmul Douglas Peuker</translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation>0 (afişază toate datele)</translation>
+    </message>
+    <message>
+        <source>Apply to graphic &amp;export as well</source>
+        <translation>Aplică şi la &amp;exportul graficelor</translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

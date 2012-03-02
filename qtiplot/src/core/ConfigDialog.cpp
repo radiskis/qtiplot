@@ -1066,8 +1066,47 @@ void ConfigDialog::initLayerSpeedPage()
 	gl->addWidget(curveSizeBox, 0, 1);
 	gl->setRowStretch(1, 1);
 
-	QHBoxLayout * hl = new QHBoxLayout(plotSpeedPage);
-	hl->addWidget(antialiasingGroupBox);
+	double tolerance = app->getDouglasPeukerTolerance();
+	speedModeBox = new QGroupBox();
+	speedModeBox->setCheckable(true);
+	speedModeBox->setChecked(tolerance > 0);
+
+	boxMaxPoints = new QSpinBox();
+	boxMaxPoints->setMaximum(INT_MAX);
+	boxMaxPoints->setValue(app->speedModeMaxPoints());
+
+	QGridLayout *gl1 = new QGridLayout(speedModeBox);
+
+	maxPointsLabel = new QLabel();
+	gl1->addWidget(maxPointsLabel, 0, 0);
+	gl1->addWidget(boxMaxPoints, 0, 1);
+	maxPointsLabel->setBuddy(boxMaxPoints);
+
+	QLocale locale = QLocale();
+	if (app)
+		locale = app->locale();
+
+	boxDouglasPeukerTolerance = new DoubleSpinBox();
+	boxDouglasPeukerTolerance->setLocale(locale);
+	boxDouglasPeukerTolerance->setMinimum(0.0);
+	boxDouglasPeukerTolerance->setValue(app->getDouglasPeukerTolerance());
+
+	toleranceLabel = new QLabel();
+	toleranceLabel->setBuddy(boxDouglasPeukerTolerance);
+	gl1->addWidget(toleranceLabel, 1, 0);
+	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
+
+	applySpeedExportBox = new QCheckBox();
+	applySpeedExportBox->setChecked(app->speedModeExport());
+	gl1->addWidget(applySpeedExportBox, 2, 0);
+
+	gl1->setRowStretch(3, 1);
+	gl1->setColumnStretch(1, 1);
+
+	QVBoxLayout * vl = new QVBoxLayout(plotSpeedPage);
+	vl->addWidget(antialiasingGroupBox);
+	vl->addWidget(speedModeBox);
+	vl->addStretch();
 }
 
 void ConfigDialog::enableCurveAntialiasingSizeBox(bool on)
@@ -2019,20 +2058,26 @@ void ConfigDialog::languageChange()
 	// calculate a sensible width for the items list
 	// (default QListWidget size is 256 which looks too big)
 	QFontMetrics fm(axesGridList->font());
-	int width = 32,i;
-	for(i=0 ; i<axesGridList->count() ; i++)
-		if( fm.width(axesGridList->item(i)->text()) > width)
+	int width = 32, i;
+	for (i = 0; i < axesGridList->count(); i++)
+		if (fm.width(axesGridList->item(i)->text()) > width)
 			width = fm.width(axesGridList->item(i)->text());
 
-	axesGridList->setMaximumWidth( axesGridList->iconSize().width() + width + 50 );
+	axesGridList->setMaximumWidth(axesGridList->iconSize().width() + width + 50);
 	// resize the list to the maximum width
-	axesGridList->resize(axesGridList->maximumWidth(),axesGridList->height());
+	axesGridList->resize(axesGridList->maximumWidth(), axesGridList->height());
 	axesGridList->setCurrentRow(0);
 
 	//speed page
 	antialiasingGroupBox->setTitle(tr("Antia&liasing"));
 	disableAntialiasingBox->setText(tr("&Disable for curves with more than"));
 	curveSizeBox->setSuffix(" " + tr("data points"));
+	speedModeBox->setTitle(tr("&Speed Mode, Skip Points if needed"));
+	maxPointsLabel->setText(tr("A&pply to curves with more than"));
+	toleranceLabel->setText(tr("&Tolerance (Douglas-Peucker algorithm)"));
+	boxMaxPoints->setSuffix(" " + tr("data points"));
+	boxDouglasPeukerTolerance->setSpecialValueText(tr("0 (all data points)"));
+	applySpeedExportBox->setText(tr("Apply to graphic &export as well"));
 
 	//confirmations page
 	groupBoxConfirm->setTitle(tr("Prompt on closing"));
@@ -2371,7 +2416,7 @@ void ConfigDialog::apply()
 	app->tableHeaderFont = headerFont;
 	app->d_show_table_comments = boxTableComments->isChecked();
 
-    QColorGroup cg;
+	QColorGroup cg;
 	cg.setColor(QColorGroup::Base, buttonBackground->color());
 	cg.setColor(QColorGroup::Text, buttonText->color());
 	QPalette palette(cg, cg, cg);
@@ -2380,11 +2425,11 @@ void ConfigDialog::apply()
 	foreach(MdiSubWindow *w, windows){
 		if (w->inherits("Table")){
 			Table *t = (Table*)w;
-            w->setPalette(palette);
+			w->setPalette(palette);
 			t->setHeaderColor(buttonHeader->color());
-            t->setTextFont(textFont);
-            t->setHeaderFont(headerFont);
-            t->showComments(boxTableComments->isChecked());
+			t->setTextFont(textFont);
+			t->setHeaderFont(headerFont);
+			t->showComments(boxTableComments->isChecked());
 		}
 	}
 
@@ -2472,8 +2517,11 @@ void ConfigDialog::apply()
 	//2D plots page: speed tab
 	app->d_curve_max_antialising_size = curveSizeBox->value();
 	app->d_disable_curve_antialiasing = disableAntialiasingBox->isChecked();
+	app->setSpeedMaxPoints(boxMaxPoints->value());
+	app->setDouglasPeukerTolerance(speedModeBox->isChecked() ? boxDouglasPeukerTolerance->value() : 0.0);
+	app->setSpeedModeExport(applySpeedExportBox->isChecked());
 
-	foreach(MdiSubWindow *w, windows){
+	foreach (MdiSubWindow *w, windows){
 		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 		if (ml){
 			ml->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
@@ -2502,23 +2550,23 @@ void ConfigDialog::apply()
 
 	// general page: numeric format tab
 	app->d_decimal_digits = boxAppPrecision->value();
-    QLocale locale;
-    switch (boxDecimalSeparator->currentIndex()){
-        case 0:
-            locale = QLocale::system();
-        break;
-        case 1:
-            locale = QLocale::c();
-        break;
-        case 2:
-            locale = QLocale(QLocale::German);
-        break;
-        case 3:
-            locale = QLocale(QLocale::French);
-        break;
-    }
-    if (boxThousandsSeparator->isChecked())
-        locale.setNumberOptions(QLocale::OmitGroupSeparator);
+	QLocale locale;
+	switch (boxDecimalSeparator->currentIndex()){
+		case 0:
+			locale = QLocale::system();
+		break;
+		case 1:
+			locale = QLocale::c();
+		break;
+		case 2:
+			locale = QLocale(QLocale::German);
+		break;
+		case 3:
+			locale = QLocale(QLocale::French);
+		break;
+	}
+	if (boxThousandsSeparator->isChecked())
+		locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
     QLocale oldLocale = app->locale();
     app->setLocale(locale);
@@ -2527,34 +2575,34 @@ void ConfigDialog::apply()
 
 	if (generalDialog->currentWidget() == appTabWidget &&
 		appTabWidget->currentWidget() == numericFormatPage){
-    	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        QList<MdiSubWindow *> windows = app->windowsList();
-        foreach(MdiSubWindow *w, windows){
-            w->setLocale(locale);
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		QList<MdiSubWindow *> windows = app->windowsList();
+		foreach(MdiSubWindow *w, windows){
+			w->setLocale(locale);
 
-            if(w->isA("Table"))
-                ((Table *)w)->updateDecimalSeparators(oldLocale);
-            else if(w->isA("Matrix"))
-                ((Matrix *)w)->resetView();
-        }
+			if(w->isA("Table"))
+				((Table *)w)->updateDecimalSeparators(oldLocale);
+			else if(w->isA("Matrix"))
+				((Matrix *)w)->resetView();
+		}
 
 		switch (boxClipboardLocale->currentIndex()){
-        	case 0:
-            	app->setClipboardLocale(QLocale::system());
-        	break;
-        	case 1:
-            	app->setClipboardLocale(QLocale::c());
-        	break;
-        	case 2:
-            	app->setClipboardLocale(QLocale(QLocale::German));
-        	break;
-        	case 3:
-            	app->setClipboardLocale(QLocale(QLocale::French));
-        	break;
-    	}
+			case 0:
+				app->setClipboardLocale(QLocale::system());
+			break;
+			case 1:
+				app->setClipboardLocale(QLocale::c());
+			break;
+			case 2:
+				app->setClipboardLocale(QLocale(QLocale::German));
+			break;
+			case 3:
+				app->setClipboardLocale(QLocale(QLocale::French));
+			break;
+		}
 
-        app->modifiedProject();
-    	QApplication::restoreOverrideCursor();
+		app->modifiedProject();
+		QApplication::restoreOverrideCursor();
 	}
 
 	// general page: file locations tab
