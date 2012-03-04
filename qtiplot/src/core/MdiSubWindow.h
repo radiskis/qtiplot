@@ -1,12 +1,11 @@
 /***************************************************************************
-    File                 : MdiSubWindow.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2006 - 2011 by Ion Vasilief
-	Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : MDI sub window
-
- ***************************************************************************/
+File                 : MdiSubWindow.h
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : MDI sub window
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -101,6 +100,8 @@ public:
 	Status status(){return d_status;};
 	//! Set the window status flag (hidden, normal, minimized or maximized)
 	void setStatus(Status s);
+	//! Return the window previous status flag (hidden, normal, minimized or maximized)
+	Status previousStatus(){return d_prev_status;};
 
 	// TODO:
 	//! Not implemented yet
@@ -141,8 +142,8 @@ public:
 	//! Show window making sure that layers in MultiLayer windows are not resized
 	void restoreWindow();
 
-    //! Returns the size the window had before a change state event to minimized.
-    QSize minRestoreSize(){return d_min_restore_size;};
+	//! Returns the size the window had before a change state event to minimized/maximized.
+	QSize restoreSize(){return d_restore_size;};
 
 	//! Static function used as a workaround for ASCII files having end line char != '\n'.
 	/*
@@ -192,6 +193,8 @@ private:
 	QString d_label;
 	//! The window status
 	Status d_status;
+	//! The window previous status
+	Status d_prev_status;
 	//! The caption policy
 	/**
 	 * \sa setCaptionPolicy(), captionPolicy()
@@ -201,8 +204,8 @@ private:
 	bool d_confirm_close;
 	//! The creation date
 	QString d_birthdate;
-    //! Stores the size the window had before a change state event to minimized.
-	QSize d_min_restore_size;
+	//! Stores the size the window had before a change state event to minimized/maximized.
+	QSize d_restore_size;
 };
 
 #endif

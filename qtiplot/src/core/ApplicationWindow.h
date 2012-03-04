@@ -267,6 +267,9 @@ public:
 	double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;}
 	void setDouglasPeukerTolerance(double tolerance){d_Douglas_Peuker_tolerance = tolerance;}
 
+	bool scale3DPlotFonts(){return d_3D_scale_fonts;}
+	void setScale3DPlotFonts(bool on = true){d_3D_scale_fonts = on;}
+
 public slots:
 	//! \name Projects and Project Files
 	//@{
@@ -1453,6 +1456,7 @@ private:
 	double d_Douglas_Peuker_tolerance;
 	int d_speed_mode_points;
 	bool d_speed_mode_export;
+	bool d_3D_scale_fonts;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);

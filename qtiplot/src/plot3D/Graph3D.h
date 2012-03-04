@@ -132,7 +132,6 @@ public slots:
 	bool eventFilter(QObject *object, QEvent *e);
 	void resizeEvent (QResizeEvent *);
 	void scaleFonts(double factor);
-	void setIgnoreFonts(bool ok){ignoreFonts = ok;};
 	//@}
 
 	//! \name Axes
@@ -416,7 +415,6 @@ private:
 	QVector<int> scaleType;
 	QColor axesCol, labelsCol, titleCol, meshCol, bgCol, numCol, gridCol;
 	int labelsDist, legendMajorTicks;
-	bool ignoreFonts;
 	Qwt3D::StandardColor* col_;
 	//! Transparency
 	double d_alpha;

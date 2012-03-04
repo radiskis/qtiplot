@@ -52,10 +52,11 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 		d_folder(app->currentFolder()),
 		d_label(label),
 		d_status(Normal),
+		d_prev_status(Normal),
 		d_caption_policy(Both),
 		d_confirm_close(true),
 		d_birthdate(QDateTime::currentDateTime ().toString(Qt::LocalDate)),
-		d_min_restore_size(QSize())
+		d_restore_size(QSize())
 {
 	setObjectName(name);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -155,16 +156,20 @@ void MdiSubWindow::changeEvent(QEvent *event)
 	if (!isHidden() && event->type() == QEvent::WindowStateChange){
 		Status oldStatus = d_status;
 		Status newStatus = Normal;
-		if( windowState() & Qt::WindowMinimized ){
-		    if (oldStatus != Minimized)
-                d_min_restore_size = frameSize();
-	    	newStatus = Minimized;
-		} else if ( windowState() & Qt::WindowMaximized )
-	     	newStatus = Maximized;
+		if (windowState() & Qt::WindowMinimized){
+			if (oldStatus != Minimized)
+				d_restore_size = frameSize();
+			newStatus = Minimized;
+		} else if (windowState() & Qt::WindowMaximized){
+			if (oldStatus == Normal)
+				d_restore_size = frameSize();
+			newStatus = Maximized;
+		}
 
 		if (newStatus != oldStatus){
+			d_prev_status = oldStatus;
 			d_status = newStatus;
-    		emit statusChanged (this);
+			emit statusChanged (this);
 		}
 	}
 	QMdiSubWindow::changeEvent(event);

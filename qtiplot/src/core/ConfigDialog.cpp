@@ -545,11 +545,18 @@ void ConfigDialog::initPlots3DPage()
 
 	boxOrthogonal = new QCheckBox();
 	boxOrthogonal->setChecked(app->d_3D_orthogonal);
-	topLayout->addWidget(boxOrthogonal, 3, 1);
+	topLayout->addWidget(boxOrthogonal, 2, 2);
 
 	boxAutoscale3DPlots = new QCheckBox();
 	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
 	topLayout->addWidget(boxAutoscale3DPlots, 3, 0);
+
+	boxScaleFonts3DPlots = new QCheckBox();
+	boxScaleFonts3DPlots->setChecked(app->scale3DPlotFonts());
+	topLayout->addWidget(boxScaleFonts3DPlots, 3, 1);
+
+	topLayout->setColumnStretch(3, 1);
+	topLayout->setRowStretch(4, 1);
 
     colorMapBox = new QGroupBox();
     QHBoxLayout *colorMapLayout = new QHBoxLayout( colorMapBox );
@@ -2298,8 +2305,9 @@ void ConfigDialog::languageChange()
 	boxProjection->addItem(tr( "Projection" ));
 	boxProjection->setCurrentIndex(app->d_3D_projection);
 
-	boxSmoothMesh->setText(tr( "Smoot&h Line" ));
-	boxOrthogonal->setText(tr( "O&rthogonal" ));
+	boxSmoothMesh->setText(tr("Smoot&h Line"));
+	boxOrthogonal->setText(tr("O&rthogonal"));
+	boxScaleFonts3DPlots->setText(tr("Scale &Fonts"));
 	btnLabels->setText( tr( "Lab&els" ) );
 	btnMesh->setText( tr( "&Mesh" ) );
 	btnGrid->setText( tr( "&Grid" ) );
@@ -2671,6 +2679,7 @@ void ConfigDialog::apply()
 	app->d_3D_orthogonal = boxOrthogonal->isChecked();
 	app->d_3D_smooth_mesh = boxSmoothMesh->isChecked();
 	app->d_3D_autoscale = boxAutoscale3DPlots->isChecked();
+	app->setScale3DPlotFonts(boxScaleFonts3DPlots->isChecked());
 	app->setPlot3DOptions();
 
 	app->d_3D_grid_color = btnGrid->color();
@@ -3763,6 +3772,12 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	disableAntialiasingBox->setChecked(app->d_disable_curve_antialiasing);
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 
+	double tolerance = app->getDouglasPeukerTolerance();
+	speedModeBox->setChecked(tolerance > 0);
+	boxDouglasPeukerTolerance->setValue(tolerance);
+	boxMaxPoints->setValue(app->speedModeMaxPoints());
+	applySpeedExportBox->setChecked(app->speedModeExport());
+
 	//layer geometry page
 	keepRatioBox->setChecked(app->d_keep_aspect_ration);
 	updateCanvasSize((FrameWidget::Unit)app->d_layer_geometry_unit);
@@ -3779,6 +3794,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);
 	boxOrthogonal->setChecked(app->d_3D_orthogonal);
 	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
+	boxScaleFonts3DPlots->setChecked(app->scale3DPlotFonts());
 	colorMapEditor = new ColorMapEditor(app->locale());
 	colorMapEditor->setColorMap(app->d_3D_color_map);
 	btnAxes->setColor(app->d_3D_axes_color);

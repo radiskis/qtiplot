@@ -219,7 +219,7 @@ private:
 	ColorButton *boxPeaksColor;
 	QLabel *lblScriptingLanguage, *lblInitWindow;
 	QComboBox *boxScriptingLanguage, *boxInitWindow;
-	QCheckBox *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator;
+	QCheckBox *boxAutoscale3DPlots, *boxTableComments, *boxThousandsSeparator, *boxScaleFonts3DPlots;
 	QCheckBox *boxPromptRenameTables, *boxBackupProject, *boxLabelsEditing, *boxEmptyCellGap;
 	QWidget *fileLocationsPage;
 	QLabel *lblTranslationsPath, *lblHelpPath, *lblUndoStackSize, *lblEndOfLine;
