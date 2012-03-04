@@ -1,13 +1,12 @@
 /***************************************************************************
-	File                 : ApplicationWindow.cpp
-	Project              : QtiPlot
+File                 : ApplicationWindow.cpp
+Project              : QtiPlot
 --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2012 by Ion Vasilief,
-						   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen, Knut Franke
-	Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : QtiPlot's main window
-
- ***************************************************************************/
+Copyright            : (C) 2004 - 2012 by Ion Vasilief,
+					   (C) 2006 - June 2007 Tilman Hoener zu Siederdissen, Knut Franke
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : QtiPlot's main window
+***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -708,6 +707,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_3D_resolution = 1;
 	d_3D_orthogonal = false;
 	d_3D_autoscale = true;
+	d_3D_scale_fonts = true;
 	d_3D_axes_font = QFont(family, pointSize, QFont::Normal, false);
 	d_3D_numbers_font = QFont(family, pointSize);
 	d_3D_title_font = QFont(family, pointSize + 2, QFont::Normal, false);
@@ -3942,12 +3942,12 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	if (d_opening_file)
 		return;
 
-	/*foreach(MdiSubWindow *ow, current_folder->windowsList()){
+	foreach(MdiSubWindow *ow, current_folder->windowsList()){
 		if (ow != window && ow->status() == MdiSubWindow::Maximized){
 			ow->setNormal();
 			break;
 		}
-	}*/
+	}
 
 	Folder *f = window->folder();
 	if (f)
@@ -4848,6 +4848,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->setWindowTitle(tr("QtiPlot") + " - " + fn);
 	app->d_opening_file = true;
 	app->d_workspace->blockSignals(true);
+	bool scale3DFonts = app->scale3DPlotFonts();
+	app->setScale3DPlotFonts(false);
 
 	QFile f(fn);
 	QTextStream t( &f );
@@ -5106,6 +5108,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->restoreApplicationGeometry();
 	app->d_opening_file = false;
 	app->savedProject();
+	app->setScale3DPlotFonts(scale3DFonts);
 	return app;
 }
 
@@ -5685,6 +5688,7 @@ void ApplicationWindow::readSettings()
 	d_3D_resolution = settings.value ("/Resolution", 1).toInt();
 	d_3D_orthogonal = settings.value("/Orthogonal", false).toBool();
 	d_3D_autoscale = settings.value ("/Autoscale", true).toBool();
+	d_3D_scale_fonts = settings.value ("/ScaleFonts", true).toBool();
 
 	QStringList plot3DFonts = settings.value("/Fonts").toStringList();
 	if (plot3DFonts.size() == 12){
@@ -6168,6 +6172,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/Resolution", d_3D_resolution);
 	settings.setValue("/Orthogonal", d_3D_orthogonal);
 	settings.setValue("/Autoscale", d_3D_autoscale);
+	settings.setValue("/ScaleFonts", d_3D_scale_fonts);
 
 	QStringList plot3DFonts;
 	plot3DFonts<<d_3D_title_font.family();
@@ -6659,39 +6664,39 @@ void ApplicationWindow::exportAllGraphs()
 QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 {
 	QString s = "geometry\t";
-    if (w->status() == MdiSubWindow::Maximized){
+	if (w->status() == MdiSubWindow::Maximized){
 		if (w == w->folder()->activeWindow())
 			return s + "maximized\tactive\n";
 		else
 			return s + "maximized\n";
 	}
 
-    s += QString::number(w->x()) + "\t";
-    s += QString::number(w->y()) + "\t";
+	s += QString::number(w->x()) + "\t";
+	s += QString::number(w->y()) + "\t";
 
-    QSize minRestoreSize = w->minRestoreSize();
-    if (w->status() == MdiSubWindow::Hidden &&
-        minRestoreSize.width() > w->width() &&
-        minRestoreSize.height() > w->height()){
-        // the window was minimized and afterwards hidden
-        s += QString::number(minRestoreSize.width()) + "\t";
-        s += QString::number(minRestoreSize.height()) + "\t";
+	QSize restoreSize = w->restoreSize();
+	if (w->status() == MdiSubWindow::Hidden &&
+		restoreSize.width() > w->width() &&
+		restoreSize.height() > w->height()){
+		// the window was minimized and afterwards hidden
+		s += QString::number(restoreSize.width()) + "\t";
+		s += QString::number(restoreSize.height()) + "\t";
 	} else if (w->status() != MdiSubWindow::Minimized){
-        s += QString::number(w->width()) + "\t";
-        s += QString::number(w->height()) + "\t";
-    } else {
-        s += QString::number(minRestoreSize.width()) + "\t";
-        s += QString::number(minRestoreSize.height()) + "\t";
-        s += "minimized\t";
-    }
+		s += QString::number(w->width()) + "\t";
+		s += QString::number(w->height()) + "\t";
+	} else {
+		s += QString::number(restoreSize.width()) + "\t";
+		s += QString::number(restoreSize.height()) + "\t";
+		s += "minimized\t";
+	}
 
-    bool hide = hidden(w);
-    if (w == w->folder()->activeWindow() && !hide)
-        s += "active\n";
-    else if(hide)
-        s += "hidden\n";
-    else
-        s += "\n";
+	bool hide = hidden(w);
+	if (w == w->folder()->activeWindow() && !hide)
+		s += "active\n";
+	else if(hide)
+		s += "hidden\n";
+	else
+		s += "\n";
 	return s;
 }
 
@@ -9378,8 +9383,8 @@ void ApplicationWindow::pasteSelection()
 
 MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 {
-    if (!w) {
-        w = activeWindow();
+	if (!w) {
+		w = activeWindow();
 		if (!w){
 			QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
 				tr("There are no windows available in this folder!"));
@@ -9430,13 +9435,14 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 			if (status == MdiSubWindow::Maximized)
 				nw->showMaximized();
 		} else if (w->isA("Graph3D")){
-            ((Graph3D*)nw)->setIgnoreFonts(true);
 			if (status != MdiSubWindow::Maximized){
+				bool scale3DFonts = d_3D_scale_fonts;
+				d_3D_scale_fonts = false;
 				nw->resize(w->size());
 				nw->showNormal();
+				d_3D_scale_fonts = scale3DFonts;
 			} else
-                nw->showMaximized();
-            ((Graph3D*)nw)->setIgnoreFonts(false);
+				nw->showMaximized();
 		} else {
 			nw->resize(w->size());
 			nw->showNormal();
@@ -9446,6 +9452,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		nw->setCaptionPolicy(w->captionPolicy());
 		//setListViewSize(nw->objectName(), w->sizeToString());
 	}
+
 	QApplication::restoreOverrideCursor();
 	customMenu(nw);
 	return nw;
@@ -17177,17 +17184,11 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		if (active_window_state == MdiSubWindow::Minimized)
 			active_window->showMinimized();//ws->setActiveWindow() makes minimized windows to be shown normally
 		else if (active_window_state == MdiSubWindow::Maximized){
-			if (active_window->isA("Graph3D"))
-				((Graph3D *)active_window)->setIgnoreFonts(true);
-
 			active_window->setMaximized();
 
 			MultiLayer *ml = qobject_cast<MultiLayer *>(active_window);
 			if (ml)
 				ml->adjustLayersToCanvasSize();
-
-			if (active_window->isA("Graph3D"))
-				((Graph3D *)active_window)->setIgnoreFonts(false);
 		}
 	} else
 		d_active_window = (MdiSubWindow *)d_workspace->activeSubWindow();

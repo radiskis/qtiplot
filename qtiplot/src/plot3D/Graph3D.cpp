@@ -172,7 +172,6 @@ void Graph3D::initPlot()
 	animation_redraw_wait = 50;
 	d_timer = new QTimer(this);
 	connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
-	ignoreFonts = false;
 
 	ApplicationWindow *app = applicationWindow();
 
@@ -1830,8 +1829,14 @@ void Graph3D::scaleFonts(double factor)
 
 void Graph3D::resizeEvent(QResizeEvent *e)
 {
-	if (!ignoreFonts && this->isVisible()){
-		double ratio = (double)e->size().height()/(double)e->oldSize().height();
+	if (applicationWindow()->scale3DPlotFonts()){
+		QSize oldSize = e->oldSize();
+		if (isMaximized())
+			oldSize = restoreSize();
+		else if (!oldSize.isValid() && previousStatus() == MdiSubWindow::Maximized && applicationWindow())
+			oldSize = applicationWindow()->workspace()->size();
+
+		double ratio = (double)e->size().height()/(double)oldSize.height();
 		scaleFonts(ratio);
 	}
 	emit resizedWindow(this);
@@ -3332,7 +3337,6 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 	app->setListViewDate(caption, date);
 	plot->setBirthDate(date);
-	plot->setIgnoreFonts(true);
 
 	fList = lst[4].split("\t", QString::SkipEmptyParts);
 	plot->setGrid(fList[1].toInt());
@@ -3399,7 +3403,6 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	}
 
 	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
-	plot->setIgnoreFonts(true);
 
 	QListIterator<QString> line = QListIterator<QString>(lst);
 	if (!line.findNext("<ColorMap>")){
