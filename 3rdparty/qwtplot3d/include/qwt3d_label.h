@@ -15,13 +15,12 @@ namespace Qwt3D
 //! A Qt string or an output device dependent string
 class QWT3D_EXPORT Label : public Drawable 
 {
-		
 public:
-
-  Label();
- 	//! Construct label and initialize with font 
+	Label();
+	//! Construct label and initialize with font
 	Label(const QString & family, int pointSize, int weight = QFont::Normal, bool italic = false);
 	
+	QFont font(){return font_;}
 	//! Sets the labels font
 	void setFont(const QFont&);
 
@@ -43,8 +42,8 @@ public:
 	For unicode labeling (<tt> QChar(0x3c0) </tt> etc.) please look at <a href="http://www.unicode.org/charts/">www.unicode.org</a>.
 	*/
 	void setString(QString const& s);
-        //! the label's string
-        const QString& string() const;
+	//! the label's string
+	const QString& string() const;
 	void draw(double angle = 0.0); //!< Actual drawing
 
 	/**
