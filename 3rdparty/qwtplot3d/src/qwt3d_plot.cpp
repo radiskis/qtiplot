@@ -230,9 +230,8 @@ bool Plot3D::removeDrawable(Drawable* drawable)
  */
 void Plot3D::addTitle(Label* label)
 {
-	if (!label || titlelist_p.contains(label))		return;
-
-	if (title() != label)	setTitle(label);
+	if (!label || titlelist_p.contains(label))
+		return;
 	label->setPlot(this);
 	titlelist_p.push_back(label);
 }
