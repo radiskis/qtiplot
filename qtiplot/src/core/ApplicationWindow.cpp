@@ -10029,7 +10029,8 @@ void ApplicationWindow::fileMenuAboutToShow()
 	if (w){
 		if (w->isA("MultiLayer") || w->isA("Graph3D")){
 			fileMenu->addMenu (exportPlotMenu);
-			exportPlotMenu->addAction(actionExportLayer);
+			if (qobject_cast<MultiLayer*>(w))
+				exportPlotMenu->addAction(actionExportLayer);
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
 		#if QT_VERSION >= 0x040500

@@ -1,14 +1,12 @@
 /***************************************************************************
-    File                 : ImageExportDialog.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2006,2007 by Ion Vasilief, Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
-    Description          : QFileDialog extended with options for image export
-
- ***************************************************************************/
-
-
+File                 : ImageExportDialog.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006 - 2012 by Ion Vasilief
+					   (C) 2006 - June 2007 by Knut Franke
+Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+Description          : QFileDialog extended with options for image export
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -71,8 +69,8 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		list << "PGF";
 
 	QStringList filters;
-	for(int i=0 ; i<list.count() ; i++)
-		filters << "*."+list[i].toLower();
+	for(int i = 0 ; i < list.count(); i++)
+		filters << "*." + list[i].toLower();
 
 	filters.sort();
 	setFilters(filters);
@@ -254,9 +252,13 @@ void ImageExportDialog::initAdvancedOptions()
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
 	keepRatioBox->setChecked(app->d_keep_aspect_ration);
-    size_layout->addWidget(keepRatioBox, 4, 1);
+	size_layout->addWidget(keepRatioBox, 4, 1);
 
 	vert_layout->addWidget(d_custom_size_box);
+
+	d_preview_button = 0;
+	if (!d_window)
+		return;
 
 	QHBoxLayout *hb = new QHBoxLayout;
 	hb->addStretch();
@@ -268,9 +270,6 @@ void ImageExportDialog::initAdvancedOptions()
 	hb->addStretch();
 
 	vert_layout->addLayout(hb);
-
-	if (!d_window)
-		return;
 
 	if (qobject_cast<Graph3D *> (d_window)){
 		resolutionLabel->hide();
@@ -303,7 +302,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 	if (filter.contains("*.svg")){
 		if (qobject_cast<Graph3D *> (d_window)){
 			d_extension_toggle->setEnabled(true);
-			d_preview_button->setVisible(false);
+			if (d_preview_button)
+				d_preview_button->setVisible(false);
 			d_vector_options->show();
 			d_custom_size_box->show();
 			return;
@@ -316,7 +316,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 	if (filter.contains("*.pgf") && qobject_cast<Graph3D *> (d_window)){
 		d_vector_options->show();
-		d_preview_button->setVisible(false);
+		if (d_preview_button)
+			d_preview_button->setVisible(false);
 		return;
 	}
 
@@ -325,7 +326,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		filter.contains("*.ps") || filter.contains("*.pdf") ||
 		filter.contains("*.svg") || filter.contains("*.tex")){
 		d_vector_options->show();
-		d_preview_button->setVisible(!filter.contains("*.tex"));
+		if (d_preview_button)
+			d_preview_button->setVisible(!filter.contains("*.tex"));
 		if (qobject_cast<MultiLayer *> (d_window)){
 			d_custom_size_box->show();
 			d_vector_options->setVisible(!filter.contains("*.svg") && !filter.contains("*.emf"));
@@ -338,7 +340,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 			d_tex_font_sizes->setVisible(texOutput);
 		} else if (qobject_cast<Graph3D *> (d_window)){
 			d_custom_size_box->show();
-			d_preview_button->setVisible(false);
+			if (d_preview_button)
+				d_preview_button->setVisible(false);
 		}
 	} else {
 		d_raster_options->show();
@@ -349,7 +352,8 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 		bool supportsCompression = QImageWriter(filter).supportsOption(QImageIOHandler::CompressionRatio);
 		d_compression->setVisible(supportsCompression);
 		compressionLabel->setVisible(supportsCompression);
-		d_preview_button->setVisible(true);
+		if (d_preview_button)
+			d_preview_button->setVisible(true);
 	}
 }
 
@@ -483,7 +487,7 @@ void ImageExportDialog::preview()
 
 void ImageExportDialog::drawPreview(QPrinter *printer)
 {
-	if (!printer)
+	if (!printer || !d_window)
 		return;
 
 	QSizeF customSize = customExportSize();
