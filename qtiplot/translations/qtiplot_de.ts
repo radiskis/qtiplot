@@ -6138,7 +6138,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Plot ...</source>
-        <translation>&amp;Diagramm ...</translation>
+        <translation>&amp;Diagramm...</translation>
     </message>
     <message>
         <source>&amp;Axes/Grid ...</source>
@@ -6146,7 +6146,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Title ...</source>
-        <translation>&amp;Titel ...</translation>
+        <translation>&amp;Titel...</translation>
     </message>
     <message>
         <source>Column &amp;options ...</source>
@@ -6355,7 +6355,7 @@ Operation aborted!</source>
     </message>
     <message>
         <source>Remove &amp;Bad Data Points...</source>
-        <translation>Datenausreißer &amp;entfernen...</translation>
+        <translation>Ausreißerpunkte &amp;entfernen...</translation>
     </message>
     <message>
         <source>Alt+B</source>
@@ -6467,7 +6467,7 @@ Operation aborted!</source>
     </message>
     <message>
         <source>Fit Exponential Gro&amp;wth ...</source>
-        <translation> Exponentielles &amp;Wachstum fitten...</translation>
+        <translation>Exponentielles &amp;Wachstum fitten...</translation>
     </message>
     <message>
         <source>Column &amp;Options ...</source>
@@ -6715,7 +6715,7 @@ Operation aborted!</source>
     </message>
     <message>
         <source>Save Project As</source>
-        <translation>Projekt speichern als</translation>
+        <translation>Projekt speichern unter</translation>
     </message>
     <message>
         <source>QtiPlot Matrix Template</source>
@@ -7803,7 +7803,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
     </message>
     <message>
         <source>Save Project &amp;As...</source>
-        <translation>Speichere Projekt &amp;als...</translation>
+        <translation>Projekt speichern &amp;unter...</translation>
     </message>
     <message>
         <source>&amp;Show All Windows</source>
@@ -8209,7 +8209,7 @@ Einige Teile der Datei werden eventuell nicht wie erwartet dargestellt.</transla
     </message>
     <message>
         <source>Open Exce&amp;l ...</source>
-        <translation>Exce&amp;l-Datei öffnen ...</translation>
+        <translation>Exce&amp;l-Datei öffnen...</translation>
     </message>
     <message>
         <source>Open Image &amp;File</source>
@@ -8768,7 +8768,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Open ODF Spreadsheet File</source>
-        <translation>Öffne ODF-Tabellenkalkulationsdatei</translation>
+        <translation>ODF-Tabellenkalkulationsdatei öffnen</translation>
     </message>
     <message>
         <source>File %1 contains only %2 sheets!</source>
@@ -8880,7 +8880,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Open ODF Spreads&amp;heet...</source>
-        <translation>Öffne ODF-Tabellen&amp;kalkulation...</translation>
+        <translation>&amp;ODF-Tabellenkalkulationsdatei öffnen...</translation>
     </message>
     <message>
         <source>&amp;Import ASCII...</source>
@@ -8912,7 +8912,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Stack &amp;Bar</source>
-        <translation>Gestabeltes &amp;Balkendiagramm</translation>
+        <translation>Gestapeltes &amp;Balkendiagramm</translation>
     </message>
     <message>
         <source>Stack &amp;Column</source>
@@ -8948,7 +8948,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>&amp;Delete Rows Interval...</source>
-        <translation>&amp;Entferne Spalten im Bereich...</translation>
+        <translation>&amp;Entferne Zeilen im Bereich...</translation>
     </message>
     <message>
         <source>&amp;Image Profiles</source>
@@ -9048,7 +9048,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>&amp;Export Image ...</source>
-        <translation>&amp;Exportiere Abbildung ...</translation>
+        <translation>&amp;Exportiere Abbildung...</translation>
     </message>
     <message>
         <source>&amp;Read Only</source>
@@ -9352,7 +9352,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>&amp;Integrate</source>
-        <translation>&amp;Integriere</translation>
+        <translation>&amp;Integrieren</translation>
     </message>
     <message>
         <source>Integr&amp;ate Function...</source>
@@ -9476,7 +9476,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>Show Line &amp;Numbers</source>
-        <translation>Zeige die Zeile&amp;nnnummern</translation>
+        <translation>Zeile&amp;nnnummern anzeigen</translation>
     </message>
     <message>
         <source>Add E&amp;quation</source>
@@ -9508,7 +9508,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>&amp;Frequency Count ...</source>
-        <translation>&amp;Frequenzzähler ...</translation>
+        <translation>&amp;Frequenzzähler...</translation>
     </message>
     <message>
         <source>Add Equation</source>
@@ -9644,7 +9644,7 @@ Die erste repräsentiert die Signal- und die zweite die Antwortfunktion!</transl
     </message>
     <message>
         <source>QtiPlot was not built with Python scripting support included!</source>
-        <translation>QtiPlot wurde ohne Unterstützung für die Python-Skriptsprache erstellt!</translation>
+        <translation>QtiPlot wurde ohne Unterstützung für die Python-Skriptsprache kompiliert!</translation>
     </message>
     <message>
         <source>Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.</source>
@@ -9773,11 +9773,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Zoom &amp;In/Out and Drag Canvas</source>
-        <translation>&amp;Vergrößern/Verkleinern und verschieben der Zeichenfläche</translation>
+        <translation>&amp;Vergrößern/Verkleinern und Verschieben der Zeichenfläche</translation>
     </message>
     <message>
         <source>Zoom In (Shift++) or Out (-) and Drag Canvas</source>
-        <translation>Vergrößern/Verkleinern (Mausrad) und verschieben der Arbeitsfläche </translation>
+        <translation>Vergrößern/Verkleinern (Mausrad) und Verschieben der Arbeitsfläche </translation>
     </message>
     <message>
         <source>Fit Slop&amp;e</source>
@@ -9953,7 +9953,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Export Exce&amp;l ...</source>
-        <translation>Exce&amp;ldatei exportieren …</translation>
+        <translation>Exce&amp;ldatei exportieren...</translation>
     </message>
     <message>
         <source>Export Excel</source>
@@ -9961,11 +9961,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Front</source>
-        <translation>Schri&amp;ftart</translation>
+        <translation>V&amp;ordergrund</translation>
     </message>
     <message>
         <source>&amp;Back</source>
-        <translation>&amp;Zurück</translation>
+        <translation>H&amp;intergrund</translation>
     </message>
     <message>
         <source>Raise object on top</source>
@@ -9989,11 +9989,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save &amp;Window As...</source>
-        <translation>&amp;Fenster speichern als …</translation>
+        <translation>&amp;Fenster speichern als...</translation>
     </message>
     <message>
         <source>&amp;Baseline...</source>
-        <translation>&amp;Grundlinie …</translation>
+        <translation>&amp;Grundlinie...</translation>
     </message>
     <message>
         <source>Shift+T</source>
@@ -10017,15 +10017,15 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Random &amp;XYZ...</source>
-        <translation>Zufällige &amp;XYZ …</translation>
+        <translation>Zufällige &amp;XYZ...</translation>
     </message>
     <message>
         <source>&amp;Expand...</source>
-        <translation>&amp;Erweitern …</translation>
+        <translation>&amp;Erweitern...</translation>
     </message>
     <message>
         <source>&amp;Shrink...</source>
-        <translation>&amp;Verkleinern …</translation>
+        <translation>&amp;Verkleinern...</translation>
     </message>
     <message>
         <source>S&amp;mooth</source>
@@ -10045,11 +10045,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;One Sample t-Test...</source>
-        <translation>&amp;Einstichproben-t-Test …</translation>
+        <translation>&amp;Einstichproben-t-Test...</translation>
     </message>
     <message>
         <source>&amp;Two Sample t-Test...</source>
-        <translation>&amp;Zweistichproben-t-Test …</translation>
+        <translation>&amp;Zweistichproben-t-Test...</translation>
     </message>
     <message>
         <source>&amp;Normal Random Numbers</source>
@@ -10065,15 +10065,15 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;One-Way ANOVA...</source>
-        <translation>&amp;Einseitige ANOVA …</translation>
+        <translation>&amp;Einseitige ANOVA...</translation>
     </message>
     <message>
         <source>&amp;Two-Way ANOVA...</source>
-        <translation>&amp;Zweiseitige ANOVA …</translation>
+        <translation>&amp;Zweiseitige ANOVA...</translation>
     </message>
     <message>
         <source>Chi-square Test for &amp;Variance...</source>
-        <translation>Chi-Quadrattest für die &amp;Varianz …</translation>
+        <translation>Chi-Quadrattest für die &amp;Varianz...</translation>
     </message>
     <message>
         <source>Save Folder As</source>
@@ -10081,7 +10081,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Save Window As</source>
-        <translation>Fenster speichern als</translation>
+        <translation>Fenster speichern unter</translation>
     </message>
     <message>
         <source>Export Open Document Spreadsheet</source>
@@ -10089,7 +10089,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Export &amp;Open Document Spreadsheet ...</source>
-        <translation>Als &amp;Open Document-Tabellenkalkulationsdatei exportieren …</translation>
+        <translation>Als &amp;Open Document-Tabellenkalkulationsdatei exportieren...</translation>
     </message>
     <message>
         <source>QtiPlot Pro feature</source>
@@ -10117,7 +10117,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>&amp;Database...</source>
-        <translation>&amp;Datenbank …</translation>
+        <translation>&amp;Datenbank...</translation>
     </message>
     <message>
         <source>Align &amp;Top</source>
@@ -10165,7 +10165,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Strg+Umschalt+L</translation>
     </message>
 </context>
 <context>
@@ -10456,7 +10456,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Out</source>
-        <translation>Aussen</translation>
+        <translation>Außen</translation>
     </message>
     <message>
         <source>Both</source>
@@ -10620,7 +10620,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>In &amp; Out</source>
-        <translation>Innen &amp; Aussen</translation>
+        <translation>Innen &amp; Außen</translation>
     </message>
     <message>
         <source>Canvas Color</source>
@@ -10728,7 +10728,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show &amp;backbone</source>
-        <translation>Achsen&amp;linie Zeichnen</translation>
+        <translation>Achsen&amp;linie zeichnen</translation>
     </message>
     <message>
         <source>Set As &amp;Default</source>
@@ -10736,7 +10736,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Apply &amp;to...</source>
-        <translation>Anwen&amp;den auf …</translation>
+        <translation>Anwen&amp;den auf...</translation>
     </message>
     <message>
         <source>Layer</source>
@@ -10836,7 +10836,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Beschriftungen anzeigen</translation>
     </message>
 </context>
 <context>
@@ -11195,7 +11195,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Out</source>
-        <translation>Aussen</translation>
+        <translation>Außen</translation>
     </message>
     <message>
         <source>Both</source>
@@ -11527,7 +11527,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Check for new versions at startup</source>
-        <translation>Beim Starten die Verfügbarkeit einer neuen Version prüfen</translation>
+        <translation>Beim Starten nach Updates suchen</translation>
     </message>
     <message>
         <source>Length</source>
@@ -11543,7 +11543,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>In &amp; Out</source>
-        <translation>Innen &amp; Aussen</translation>
+        <translation>Innen &amp; Außen</translation>
     </message>
     <message>
         <source>Draw axes &amp;backbone</source>
@@ -11571,7 +11571,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Same X as Fitting Data</source>
-        <translation>Gleiche X-Werte wie Fit-Daten</translation>
+        <translation>Dieselben X-Werte wie die gefitteten Daten</translation>
     </message>
     <message>
         <source>Display Peak Curves for Multi-peak Fits</source>
@@ -11771,11 +11771,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Backup project before saving</source>
-        <translation>Sichern &amp;bevor das Projekt gespeichert wird</translation>
+        <translation>Backup anlegen, &amp;bevor das Projekt gespeichert wird</translation>
     </message>
     <message>
         <source>Start New Project</source>
-        <translation>Ein neues Projekt beginnen</translation>
+        <translation>Neues Projekt beginnen mit</translation>
     </message>
     <message>
         <source>Empty</source>
@@ -11851,7 +11851,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>File Locations</source>
-        <translation>Datei Pfade</translation>
+        <translation>Dateipfade</translation>
     </message>
     <message>
         <source>Choose the location of the QtiPlot translations folder!</source>
@@ -11883,7 +11883,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Python Configuration Files</source>
-        <translation>Python Konfigurationsdateien</translation>
+        <translation>Python-Konfigurationsdateien</translation>
     </message>
     <message>
         <source>Endline character</source>
@@ -11923,7 +11923,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Enable autocompletion (Ctrl+U)</source>
-        <translation>Aktivi&amp;ere die Autovervollständigung (Strg+U)</translation>
+        <translation>&amp;Autovervollständigung aktivieren (Strg+U)</translation>
     </message>
     <message>
         <source>Omit &amp;Thousands Separator</source>
@@ -11955,7 +11955,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Display line numbers</source>
-        <translation>Zeige &amp;die Zeilennummern</translation>
+        <translation>&amp;Zeilennummern anzeigen</translation>
     </message>
     <message>
         <source>Axes title space</source>
@@ -12347,23 +12347,23 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Speed Mode, Skip Points if needed</source>
-        <translation type="unfinished">Be&amp;schleunigungsmodus, Datanpunkte auslassen wenn nötig</translation>
+        <translation>Be&amp;schleunigungsmodus, Datenpunkte auslassen wenn nötig</translation>
     </message>
     <message>
         <source>A&amp;pply to curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>An&amp;wenden auf Kurven mit mehr als:</translation>
     </message>
     <message>
         <source>&amp;Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Toleranz (Douglas-Peucker-Algorithmus)</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished">0 (alle Datenpunkte)</translation>
+        <translation>0 (alle Datenpunkte)</translation>
     </message>
     <message>
         <source>Apply to graphic &amp;export as well</source>
-        <translation type="unfinished"></translation>
+        <translation>Auch beim &amp;Export von Grafiken anwenden</translation>
     </message>
 </context>
 <context>
@@ -12641,11 +12641,11 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Darstellungszuordnungen …</translation>
+        <translation>&amp;Darstellungszuordnungen...</translation>
     </message>
     <message>
         <source>&amp;Edit Function...</source>
-        <translation>Funktion b&amp;earbeiten …</translation>
+        <translation>Funktion b&amp;earbeiten...</translation>
     </message>
     <message>
         <source>Close</source>
@@ -12693,7 +12693,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation>Be&amp;reich ändern …</translation>
+        <translation>Be&amp;reich ändern...</translation>
     </message>
     <message>
         <source>&amp;Show Range</source>
@@ -12900,7 +12900,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>&amp;New Menu...</source>
-        <translation>&amp;Neues Menü …</translation>
+        <translation>&amp;Neues Menü...</translation>
     </message>
     <message>
         <source>Menu Bar</source>
@@ -13118,7 +13118,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>TeX &amp;Output</source>
-        <translation>TeX &amp;Ausgabe</translation>
+        <translation>TeX-&amp;Ausgabe</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
@@ -13262,7 +13262,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Apply t&amp;o...</source>
-        <translation>Anwen&amp;den auf …</translation>
+        <translation>Anwen&amp;den auf...</translation>
     </message>
     <message>
         <source>Line</source>
@@ -13270,7 +13270,7 @@ Die folgenden Spezialcodes können benutzt werden:
     </message>
     <message>
         <source>Apply format &amp;to...</source>
-        <translation>Forma&amp;t anwenden auf …</translation>
+        <translation>Forma&amp;t anwenden auf...</translation>
     </message>
     <message>
         <source>MathTran (http://www.mathtran.org/)</source>
@@ -15053,11 +15053,11 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Uniform X Function</source>
-        <translation>&amp;Uniforme X-Werte</translation>
+        <translation>Gleichmäßig &amp;verteilte X-Werte</translation>
     </message>
     <message>
         <source>Same X as Fitting &amp;Data</source>
-        <translation>Die selben X-Werte wie die Fit-&amp;Daten</translation>
+        <translation>Dieselben X-Werte wie die gefitteten &amp;Daten</translation>
     </message>
     <message>
         <source>Parameters &amp;Table</source>
@@ -15133,7 +15133,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Choose plug&amp;ins folder...</source>
-        <translation>Plug&amp;in-Ordner wählen …</translation>
+        <translation>Plug&amp;in-Ordner wählen...</translation>
     </message>
     <message>
         <source>Start Fitting Session</source>
@@ -15157,7 +15157,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Save Fit Model As</source>
-        <translation>Fitmodell speichern als</translation>
+        <translation>Fitmodell speichern unter</translation>
     </message>
     <message>
         <source>Are you sure you want to remove fit model file:
@@ -15171,7 +15171,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>Choose &amp;models folder...</source>
-        <translation>Ordner für Fit&amp;modelle wählen …</translation>
+        <translation>Ordner für Fit&amp;modelle wählen...</translation>
     </message>
     <message>
         <source>Choose the fit models folder</source>
@@ -16103,11 +16103,11 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Properties...</source>
-        <translation>&amp;Eigenschaften …</translation>
+        <translation>&amp;Eigenschaften...</translation>
     </message>
     <message>
         <source>&amp;Rescale to show all</source>
-        <translation>Auf Komplettansicht &amp;reskalierenskalieren</translation>
+        <translation>Auf Komplettansicht &amp;reskalieren</translation>
     </message>
     <message>
         <source>Ctrl+R</source>
@@ -16123,7 +16123,7 @@ die Reihenfolge der Parameter ist wichtig!</translation>
     </message>
     <message>
         <source>&amp;Scale...</source>
-        <translation>&amp;Skala …</translation>
+        <translation>&amp;Skala...</translation>
     </message>
     <message>
         <source>Your data is not valid. You need at least two different points for a histogram!</source>
@@ -17304,7 +17304,7 @@ in der ASCII-Datei unterschiedlich viele Zeilen aufweisen.</translation>
     </message>
     <message>
         <source>Column T&amp;ypes...</source>
-        <translation>Spalten&amp;typen …</translation>
+        <translation>Spalten&amp;typen...</translation>
     </message>
     <message>
         <source>Ignore lines containing</source>
@@ -19422,7 +19422,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Offset Amount...</source>
-        <translation>Größe der Verschiebung …</translation>
+        <translation>Größe der Verschiebung...</translation>
     </message>
     <message>
         <source>Reverse Order</source>
@@ -19430,7 +19430,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Fill Area...</source>
-        <translation>Fläche füllen …</translation>
+        <translation>Fläche füllen...</translation>
     </message>
     <message>
         <source>Offset Dialog</source>
@@ -20646,7 +20646,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;Plot Associations...</source>
-        <translation>&amp;Darstellungszuordnungen …</translation>
+        <translation>&amp;Darstellungszuordnungen...</translation>
     </message>
     <message>
         <source>&amp;Worksheet</source>
@@ -20966,7 +20966,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;Speed Mode, Skip Points if needed</source>
-        <translation>Be&amp;schleunigungsmodus, Datanpunkte auslassen wenn nötig</translation>
+        <translation>Be&amp;schleunigungsmodus, Datenpunkte auslassen wenn nötig</translation>
     </message>
     <message>
         <source>data points</source>
@@ -20974,7 +20974,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Apply to curves with more than:</source>
-        <translation>Anwenden auf Kurven mit mehr als:</translation>
+        <translation>Anwenden auf Kurven mit mehr als</translation>
     </message>
     <message>
         <source>Speed</source>
@@ -21502,7 +21502,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Apply &amp;to...</source>
-        <translation>Anwen&amp;den auf …</translation>
+        <translation>Anwen&amp;den auf...</translation>
     </message>
     <message>
         <source>Window</source>
@@ -21683,7 +21683,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Edit &amp;Range...</source>
-        <translation>&amp;Bereich bearbeiten …</translation>
+        <translation>&amp;Bereich bearbeiten...</translation>
     </message>
     <message>
         <source>Data Drawing Options</source>
@@ -21719,7 +21719,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Sy&amp;nchronize scales</source>
-        <translation>Skalierungen sy&amp;nchronisieren</translation>
+        <translation>Achsenskalierungen sy&amp;nchronisieren</translation>
     </message>
 </context>
 <context>
@@ -21880,7 +21880,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Order (1 - 9, 1 = linear)</source>
-        <translation>Grad (1 - 9, 1 = linear)</translation>
+        <translation>Ordnung (1–9, 1 = linear)</translation>
     </message>
     <message>
         <source>Fit curve # pts</source>
@@ -21888,7 +21888,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Fit curve Xmin</source>
-        <translation>Fitkurve min. X</translation>
+        <translation>Fitkurve minimales X</translation>
     </message>
     <message>
         <source>0</source>
@@ -21896,7 +21896,7 @@ Wollen sie Zellen einfügen?</translation>
     </message>
     <message>
         <source>Fit curve Xmax</source>
-        <translation>Fitkurve max. X</translation>
+        <translation>Fitkurve maximales X</translation>
     </message>
     <message>
         <source>Show Formula on Graph?</source>
@@ -22219,7 +22219,7 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>avg(x,y,...):
   Mean value of all arguments.</source>
-        <translation>avg(x,y,…)
+        <translation>avg(x,y,...)
  Mittelwert aller Elemente.</translation>
     </message>
     <message>
@@ -22397,13 +22397,13 @@ Wollen sie Zellen einfügen?</translation>
     <message>
         <source>min(x,y,...):
  Calculate minimum of all arguments.</source>
-        <translation>min(x,y,…):
+        <translation>min(x,y,...):
  Minumum aller Elemente.</translation>
     </message>
     <message>
         <source>max(x,y,...):
  Calculate maximum of all arguments.</source>
-        <translation>max(x,y,…):
+        <translation>max(x,y,...):
  Maximum aller Elemente.</translation>
     </message>
     <message>
@@ -23287,19 +23287,19 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation>&amp;Importieren …</translation>
+        <translation>&amp;Importieren...</translation>
     </message>
     <message>
         <source>Sa&amp;ve as...</source>
-        <translation>Spe&amp;ichern als …</translation>
+        <translation>Spe&amp;ichern unter ...</translation>
     </message>
     <message>
         <source>&amp;Find...</source>
-        <translation>S&amp;uchen …</translation>
+        <translation>S&amp;uchen...</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
-        <translation>E&amp;rsetzen …</translation>
+        <translation>E&amp;rsetzen...</translation>
     </message>
     <message>
         <source>&amp;Find next</source>
@@ -23311,7 +23311,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Rena&amp;me Tab...</source>
-        <translation>Tab &amp;umbenennen …</translation>
+        <translation>Tab &amp;umbenennen...</translation>
     </message>
     <message>
         <source>A&amp;dd Tab</source>
@@ -23414,7 +23414,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation>Ö&amp;ffnen …</translation>
+        <translation>Ö&amp;ffnen...</translation>
     </message>
     <message>
         <source>&amp;Save</source>
@@ -23422,7 +23422,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation>Speichern &amp;als …</translation>
+        <translation>Speichern &amp;unter...</translation>
     </message>
     <message>
         <source>&amp;Print</source>
@@ -23502,7 +23502,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Find...</source>
-        <translation>Such&amp;en …</translation>
+        <translation>Such&amp;en...</translation>
     </message>
     <message>
         <source>Ctrl+Alt+F</source>
@@ -23526,7 +23526,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>&amp;Replace...</source>
-        <translation>E&amp;rsetzen …</translation>
+        <translation>E&amp;rsetzen...</translation>
     </message>
     <message>
         <source>Show Script &amp;Output Panel</source>
@@ -23534,7 +23534,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Ouput on Next &amp;Line</source>
-        <translation>Ausgabe in nächste &amp;Zeile</translation>
+        <translation>Ausgabe in darauffolgender &amp;Zeile</translation>
     </message>
     <message>
         <source>Show Script Output Panel</source>
@@ -23542,7 +23542,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Print Pre&amp;view...</source>
-        <translation>Druck&amp;vorschau …</translation>
+        <translation>Druck&amp;vorschau...</translation>
     </message>
     <message>
         <source>Script print preview</source>
@@ -24098,7 +24098,7 @@ Wollen Sie sie überschreiben?</translation>
     </message>
     <message>
         <source>Data set %1 must containt at least two valid data points in order to perform this operation!</source>
-        <translation>Datansatz %1 muss mindestens zwei gültige Datenpunkte enthalten, um diese Operation durchführen zu können!</translation>
+        <translation>Datensatz %1 muss mindestens zwei gültige Datenpunkte enthalten, um diese Operation durchführen zu können!</translation>
     </message>
 </context>
 <context>
@@ -24543,7 +24543,7 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>Reading file...</source>
-        <translation>Datei wird gelesen …</translation>
+        <translation>Datei wird gelesen...</translation>
     </message>
     <message>
         <source>Could not write to file: &lt;br&gt;&lt;h4&gt;</source>
@@ -25007,7 +25007,7 @@ Wollen Sie trotzdem die Zellen einfügen?</translation>
     </message>
     <message>
         <source>&amp;Apply to...</source>
-        <translation>&amp;Anwenden auf …</translation>
+        <translation>&amp;Anwenden auf...</translation>
     </message>
     <message>
         <source>Object</source>
