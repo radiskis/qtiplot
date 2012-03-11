@@ -827,10 +827,12 @@ void PlotDialog::initLayerDisplayPage()
 
 	boxMissingData = new QCheckBox(tr("Co&nnect line across missing data"));
 	boxGridPosition = new QCheckBox(tr("&Grid on top of data"));
+	boxClipData = new QCheckBox(tr("Cli&p data to frame when exporting"));
 
 	QVBoxLayout *vl1 = new QVBoxLayout(gb1);
 	vl1->addWidget(boxMissingData);
 	vl1->addWidget(boxGridPosition);
+	vl1->addWidget(boxClipData);
 	vl1->addStretch();
 
 	QGroupBox *gb2 = new QGroupBox(tr("Axes"));
@@ -2871,6 +2873,10 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxGridPosition->setChecked(g->hasGridOnTop());
 	boxGridPosition->blockSignals(false);
 
+	boxClipData->blockSignals(true);
+	boxClipData->setChecked(g->clipDataToFrame());
+	boxClipData->blockSignals(false);
+
 	boxLeftAxis->blockSignals(true);
 	boxLeftAxis->setChecked(g->axisEnabled(QwtPlot::yLeft));
 	boxLeftAxis->blockSignals(false);
@@ -3712,6 +3718,11 @@ bool PlotDialog::acceptParams()
 		g->setGridOnTop(boxGridPosition->isChecked());
 
 		bool notifyChanges = false;
+		if (g->clipDataToFrame() != boxClipData->isChecked()){
+			g->setClipDataToFrame(boxClipData->isChecked());
+			notifyChanges = true;
+		}
+
 		if (g->axisEnabled(QwtPlot::yLeft) != boxLeftAxis->isChecked()){
 			g->enableAxis(QwtPlot::yLeft, boxLeftAxis->isChecked());
 			notifyChanges = true;

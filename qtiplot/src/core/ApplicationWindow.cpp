@@ -12464,6 +12464,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			ag->setGridOnTop(s.remove("<GridOnTop>").remove("</GridOnTop>").toInt(), false);
 		else if (s.startsWith ("<MissingDataGap>") && s.endsWith ("</MissingDataGap>"))
 			ag->showMissingDataGap(s.remove("<MissingDataGap>").remove("</MissingDataGap>").toInt(), false);
+		else if (s.startsWith ("<ClipData>") && s.endsWith ("</ClipData>"))
+			ag->setClipDataToFrame(s.remove("<ClipData>").remove("</ClipData>").toInt());
 		else if (s.contains ("PieCurve")){
 			QStringList curve=s.split("\t");
 			if (!app->renamedTables.isEmpty()){

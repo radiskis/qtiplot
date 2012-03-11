@@ -17572,6 +17572,10 @@ s-ésimo zero positivo x_s da função regular cilíndrica de Bessel de ordem n,
         <source>Sy&amp;nchronize scales</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cli&amp;p data to frame when exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
