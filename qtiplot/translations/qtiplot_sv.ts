@@ -19049,6 +19049,10 @@ Vill du skjuta in celler?</translation>
         <source>Sy&amp;nchronize scales</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cli&amp;p data to frame when exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

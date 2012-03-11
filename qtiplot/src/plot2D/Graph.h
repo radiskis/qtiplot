@@ -5,9 +5,7 @@
 	Copyright            : (C) 2004 - 2012 by Ion Vasilief
 	Email (use @ for *)  : ion_vasilief*yahoo.fr
 	Description          : Graph widget
-
- ***************************************************************************/
-
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -241,6 +239,9 @@ class Graph: public QwtPlot
 
 		bool hasSynchronizedScaleDivisions(){return d_synchronize_scales;};
 		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
+
+		bool clipDataToFrame(){return d_clip_data;}
+		void setClipDataToFrame(bool on){d_clip_data = on;}
 
 		QRectF pageGeometry(){return d_page_rect;}
 		void setPageGeometry(const QRectF& r){d_page_rect = r;}
@@ -901,6 +902,8 @@ signals:
 		bool d_grid_on_top;
 		//! Flag telling if the curves line should be connected across missing data
 		bool d_missing_data_gap;
+		//! Flag telling if the data should be clipped to frame when exporting the plot
+		bool d_clip_data;
 		//! Stores the step the user specified for the four scale. If step = 0.0, the step will be calculated automatically by the Qwt scale engine.
 		QVector<double> d_user_step;
 		//! Arrows/lines on plot

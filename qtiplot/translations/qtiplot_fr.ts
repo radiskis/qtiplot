@@ -12730,6 +12730,10 @@ have the same number of rows.</source>
         <source>Sy&amp;nchronize scales</source>
         <translation>Sy&amp;nchroniser les échelles</translation>
     </message>
+    <message>
+        <source>Cli&amp;p data to frame when exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

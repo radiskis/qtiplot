@@ -21721,6 +21721,10 @@ Wollen sie Zellen einfügen?</translation>
         <source>Sy&amp;nchronize scales</source>
         <translation>Achsenskalierungen sy&amp;nchronisieren</translation>
     </message>
+    <message>
+        <source>Cli&amp;p data to frame when exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>

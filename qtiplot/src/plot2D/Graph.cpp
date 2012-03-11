@@ -147,6 +147,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WFlags f)
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = false;
 	d_missing_data_gap = false;
+	d_clip_data = true;
 	d_page_rect = QRectF();
 
 	setGeometry(x, y, width, height);
@@ -4483,6 +4484,7 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+="<ScaleFonts>" + QString::number(autoScaleFonts) + "</ScaleFonts>\n";
 	s+="<GridOnTop>" + QString::number(d_grid_on_top) + "</GridOnTop>\n";
 	s+="<MissingDataGap>" + QString::number(d_missing_data_gap) + "</MissingDataGap>\n";
+	s+="<ClipData>" + QString::number(d_clip_data) + "</ClipData>\n";
 	s+="Background\t" + paletteBackgroundColor().name() + "\t";
 	s+=QString::number(paletteBackgroundColor().alpha()) + "\n";
 	s+=saveBackgroundImage();
@@ -6199,18 +6201,21 @@ void Graph::printCanvas(QPainter *painter, const QRect &canvasRect,
 {
 	painter->save();
 
-	const QwtPlotCanvas* plotCanvas = canvas();
-	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*plotCanvas->lineWidth());
-
 	QRect fillRect = canvasRect.adjusted(0, 0, -1, -1);
 	QwtPainter::fillRect(painter, fillRect, canvasBackground());
 
-	painter->setClipping(true);
-	painter->setClipRect(fillRect);
-	drawItems(painter, fillRect, map, pfilter);
-    painter->restore();
+	if (d_clip_data){
+		painter->setClipping(true);
+		painter->setClipRect(canvasRect);
+	}
 
-	if(lw > 0){
+	drawItems(painter, canvasRect, map, pfilter);
+
+	painter->restore();
+
+	const QwtPlotCanvas* plotCanvas = canvas();
+	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*plotCanvas->lineWidth());
+	if (lw > 0){
 		painter->save();
 		QColor color = plotCanvas->palette().color(QPalette::Active, QColorGroup::Foreground);
 		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
