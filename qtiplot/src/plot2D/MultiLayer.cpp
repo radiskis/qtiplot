@@ -559,10 +559,14 @@ void MultiLayer::setLayerButtonSpeedMode(Graph *g, bool on)
 	if (!btn)
 		return;
 
-	QColor color = palette().color(QPalette::Button);
 	QPalette palette = btn->palette();
+#ifdef Q_OS_MAC
+	palette.setColor(QPalette::ButtonText, on ? Qt::red : Qt::black);
+#else
+	QColor color = palette.color(QPalette::Button);
 	palette.setColor(QPalette::Button, on ? Qt::red : color);
 	btn->setAutoFillBackground(on);
+#endif
 	btn->setPalette(palette);
 }
 
