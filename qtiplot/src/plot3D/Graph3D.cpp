@@ -1,13 +1,11 @@
 /***************************************************************************
-    File                 : Graph3D.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2004-2010 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : 3D graph widget
-
- ***************************************************************************/
-
+File                 : Graph3D.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : 3D graph widget
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -2907,8 +2905,8 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	d_color_map = colorMap;
 	d_color_map_file = QString::null;
 
-	double zmin = d_active_curve->hull().minVertex.z;
-	double zmax = d_active_curve->hull().maxVertex.z;
+	double zmin, zmax;
+	sp->coordinates()->axes[Z1].limits(zmin, zmax);
 	const QwtDoubleInterval range = colorMap.intensityRange().isValid() ? colorMap.intensityRange() : QwtDoubleInterval(zmin, zmax);
 
 	int size = 255;
