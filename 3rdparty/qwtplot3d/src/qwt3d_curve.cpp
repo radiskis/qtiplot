@@ -187,16 +187,16 @@ void Curve::updateData(bool coord)
 void Curve::queueUpdate()
 {
 	update_displaylists_ = true;
-	if ( plot_p ) {
+	if (plot_p)
 		emit updatePlot();
-	}
 }
 
 void Curve::updateNormals()
 {
 	SaveGlDeleteLists(displaylists_p[NormalObject], 1); 
 
-	if (plotStyle() == NOPLOT && !normals() || !actualData_p)	return;
+	if (plotStyle() == NOPLOT && !normals() || !actualData_p)
+		return;
 
 	displaylists_p[NormalObject] = glGenLists(1);
 	glNewList(displaylists_p[NormalObject], GL_COMPILE);
@@ -211,9 +211,10 @@ void Curve::updateNormals()
 
 void Curve::createData()
 {
-	if (!actualData_p)	return;
+	if (!actualData_p)
+		return;
 
-	switch (shading_) {
+	switch (shading_){
 		case FLAT:
 			glShadeModel(GL_FLAT);
 			break;
@@ -290,7 +291,7 @@ void Curve::createPoints()
 //	Cone d(15,32);
 //	CrossHair d(0.003,0,true,false);
 
-	Dot pt(5,true);
+	Dot pt(5, true);
 	createEnrichment(pt);
 }
 
@@ -320,8 +321,8 @@ bool Curve::degrade(Enrichment* e)
 
 void Curve::clearEnrichments()
 {
-    for (ELIT it = elist_p.begin(); it != elist_p.end(); ++it)
-        this->degrade(*it);
+	for (ELIT it = elist_p.begin(); it != elist_p.end(); ++it)
+		this->degrade(*it);
 }
 
 void Curve::createEnrichments()
@@ -340,33 +341,42 @@ void Curve::createEnrichment(Enrichment& p)
 	p.assign(*this);
 	p.drawBegin();
 
+	int step = resolution();
+
 	VertexEnrichment* ve = (VertexEnrichment*)&p; 
-	if (actualData_p->datatype == Qwt3D::POLYGON) {
-		for (unsigned i = 0; i != actualDataC_->normals.size(); ++i) 
+	if (actualData_p->datatype == Qwt3D::POLYGON){
+		unsigned int size = actualDataC_->nodes.size();
+		for (unsigned i = 0; i < size; i += step)
 			ve->draw(actualDataC_->nodes[i]);
 	} else if (actualData_p->datatype == Qwt3D::GRID) {
-		int step = resolution();
-		for (int i = 0; i <= actualDataG_->columns() - step; i += step) 
-			for (int j = 0; j <= actualDataG_->rows() - step; j += step) 
-				ve->draw(Triple(actualDataG_->vertices[i][j][0],
-								actualDataG_->vertices[i][j][1],
-								actualDataG_->vertices[i][j][2]));
+		unsigned int cols = actualDataG_->columns();
+		unsigned int rows = actualDataG_->rows();
+		for (unsigned int i = 0; i <= cols - step; i += step){
+			for (unsigned int j = 0; j <= rows - step; j += step){
+				double *v = actualDataG_->vertices[i][j];
+				ve->draw(Triple(v[0], v[1], v[2]));
+			}
+		}
 	}
 
-	p.drawEnd(); 
+	p.drawEnd();
 }
 
-void Curve::drawVertex(Triple& vertex, double shift, unsigned int comp)
+void Curve::drawVertex(const Triple& vertex, double shift, unsigned int comp)
 {
-	switch (comp) {
-	case 0:
-		glVertex3d(shift, vertex.y, vertex.z);		break;
-	case 1:
-		glVertex3d(vertex.x, shift, vertex.z);		break;
-	case 2:
-		glVertex3d(vertex.x, vertex.y, shift);		break;
-	default:
-		glVertex3d(vertex.x, vertex.y, vertex.z);		
+	switch (comp){
+		case 0:
+			glVertex3d(shift, vertex.y, vertex.z);
+			break;
+		case 1:
+			glVertex3d(vertex.x, shift, vertex.z);
+			break;
+		case 2:
+			glVertex3d(vertex.x, vertex.y, shift);
+			break;
+		default:
+			glVertex3d(vertex.x, vertex.y, vertex.z);
+			break;
 	}
 }
 
@@ -438,12 +448,12 @@ void Curve::setTitleFont(const QString& family, int pointSize, int weight, bool 
 */
 void Curve::setResolution(int res)
 {
-	if (!actualData_p || actualData_p->datatype == Qwt3D::POLYGON)
-	    return;
+	if (!actualData_p)
+		return;
 
 	if ((resolution_p == res) || res < 1)
-	    return;
-    
+		return;
+
 	resolution_p = res;
 	calculateHull();
 	update_displaylists_ = true;

@@ -84,10 +84,10 @@ void CoordinateSystem::draw()
 	if( style_ == NOCOORD)
 		return;
 
-  if (majorgridlines_ || minorgridlines_)
-    recalculateAxesTics();
-  if (majorgridlines_)
-    drawMajorGridLines();
+	if (majorgridlines_ || minorgridlines_)
+		recalculateAxesTics();
+	if (majorgridlines_)
+		drawMajorGridLines();
 	if (minorgridlines_)
 		drawMinorGridLines();
 	
@@ -104,18 +104,15 @@ void CoordinateSystem::chooseAxes()
 
 	unsigned i;
 	// collect axes viewport coordinates and initialize
-	for (i=0; i!=axes.size(); ++i)
-	{
+	for (i = 0; i != axes.size(); ++i){
 		if (style() != NOCOORD)
 			attach(&axes[i]);
 		
 		beg[i] = World2ViewPort(axes[i].begin());
 		end[i] = World2ViewPort(axes[i].end());
 		src[i] = Tuple(beg[i].x, beg[i].y);
-		src[axes.size()+i] = Tuple(end[i].x, end[i].y);
+		src[axes.size() + i] = Tuple(end[i].x, end[i].y);
 
-		axes[i].setScaling(false);
-		axes[i].setNumbers(false);
 		axes[i].setLabel(false);
 		axes[i].setDecorate(false);
 	}
@@ -134,13 +131,12 @@ void CoordinateSystem::chooseAxes()
 	int	choice_y = -1;
 	int choice_z = -1;
 
-  int other_x = -1;
-  int other_y = -1;
-  int other_z = -1;
+	int other_x = -1;
+	int other_y = -1;
+	int other_z = -1;
 
 	//traverse convex hull
-	for (unsigned k=0; k!=idx.size(); ++k)
-	{
+	for (unsigned k = 0; k != idx.size(); ++k){
 		Triple one, two;
 		
 		if (idx[k] >= axes.size()) // is end point
@@ -155,19 +151,10 @@ void CoordinateSystem::chooseAxes()
 		else
 			two = beg[next];
 		
-		for (i=0; i!=axes.size(); ++i)
-		{			
-			if (
-					(one == beg[i] && two == end[i])
-					||
-					(two == beg[i] && one == end[i])
-				 )
-			{
-				if (i==X1 || i==X2 || i==X3 || i==X4)  // x Achsen
-				{
-					if (rem_x>=0) // schon zweite Achse der konvexen Huelle ?
-					{
-						// untere der beiden x Achsen
+		for (i = 0; i != axes.size(); ++i){
+			if ((one == beg[i] && two == end[i]) || (two == beg[i] && one == end[i])){
+				if (i == X1 || i == X2 || i == X3 || i == X4){
+					if (rem_x >= 0){
 						double y = min(min(end[rem_x].y,end[i].y),min(beg[rem_x].y,beg[i].y));
 						choice_x = (y == beg[i].y || y == end[i].y) ? i : rem_x;
 												
@@ -179,17 +166,10 @@ void CoordinateSystem::chooseAxes()
 						autoDecorateExposedAxis(axes[choice_x], left);
 
 						rem_x = -1;
-					}
-					else
-					{
+					} else
 						rem_x = i;
-					}
-				}
-				else if (i==Y1 || i==Y2 || i==Y3 || i==Y4)
-				{
-					if (rem_y>=0)
-					{
-						// untere der beiden y Achsen
+				} else if (i == Y1 || i == Y2 || i == Y3 || i == Y4) {
+					if (rem_y >= 0){
 						double y = min(min(end[rem_y].y,end[i].y),min(beg[rem_y].y,beg[i].y));
 						choice_y = (y == beg[i].y || y == end[i].y) ? i : rem_y;
 						
@@ -200,16 +180,10 @@ void CoordinateSystem::chooseAxes()
 						autoDecorateExposedAxis(axes[choice_y], left);
 
 						rem_y = -1;
-					}
-					else
-					{
+					} else
 						rem_y = i;
-					}
-				}
-				else if (i==Z1 || i==Z2 || i==Z3 || i==Z4)
-				{
-					if (rem_z>=0)
-					{
+				} else if (i == Z1 || i == Z2 || i == Z3 || i == Z4){
+					if (rem_z >= 0){
 						// hintere der beiden z Achsen
 						double z = max(max(end[rem_z].z,end[i].z),max(beg[rem_z].z,beg[i].z));
 						choice_z = (z == beg[i].z || z == end[i].z) ? i : rem_z;
@@ -218,77 +192,57 @@ void CoordinateSystem::chooseAxes()
 												
 						rem_z = -1;
 
-					}
-					else
-					{
+					} else
 						rem_z = i;
-					}
 				}
 			}
 		} // for axes
 	} // for idx
 
 	// fit z axis in - the onthewall axis if the decorated axes build a continous line, the opposite else 
-	if (choice_x>=0 && choice_y>=0 && choice_z>=0)
-	{
+	if (choice_x >= 0 && choice_y >= 0 && choice_z >= 0){
 		left = (beg[choice_z].x < beg[other_z].x || end[choice_z].x < end[other_z].x) 
 			? true
 			: false;
 		
 
-		if (
-					axes[choice_z].begin() == axes[choice_x].begin() 
+		if (axes[choice_z].begin() == axes[choice_x].begin() 
 			||	axes[choice_z].begin() == axes[choice_x].end()
 			||	axes[choice_z].begin() == axes[choice_y].begin() 
 			||	axes[choice_z].begin() == axes[choice_y].end()
 			||	axes[choice_z].end() == axes[choice_x].begin() 
 			||	axes[choice_z].end() == axes[choice_x].end()
 			||	axes[choice_z].end() == axes[choice_y].begin() 
-			||	axes[choice_z].end() == axes[choice_y].end()
-			
-			)
-		{
+			||	axes[choice_z].end() == axes[choice_y].end())
 			autoDecorateExposedAxis(axes[choice_z], left);
-		}
-
-		else
-		{
+		else {
 			autoDecorateExposedAxis(axes[other_z], !left);
 			choice_z = other_z; // for FRAME
 		}
 	}
 	
-	if (style() == FRAME)
-	{
-		for (i=0; i!=axes.size(); ++i)
-		{
-			if ((int)i!=choice_x && (int)i!=choice_y && (int)i!=choice_z)
+	if (style() == FRAME){
+		for (i = 0; i != axes.size(); ++i){
+			if ((int)i != choice_x && (int)i != choice_y && (int)i != choice_z)
 				detach(&axes[i]);
 		}
 	}
-
 }
 
 
 void CoordinateSystem::autoDecorateExposedAxis(Axis& ax, bool left)
 {
 	Triple diff = World2ViewPort(ax.end()) - World2ViewPort(ax.begin());
-
-	diff = Triple(diff.x,diff.y,0); // projection
-	
+	diff = Triple(diff.x,diff.y, 0); // projection
 	double s = diff.length();
-	
 	if (!s)
 		return;
 
-	ax.setScaling(true);
-	ax.setNumbers(true);
 	ax.setLabel(true);
 	ax.setDecorate(true);
 
 	const double SQRT_2 = 0.7071067;
 	double sina = fabs(diff.y / s);
-
 
 	if (left) // leftmost (compared with antagonist in CV)  axis -> draw decorations on the left side
 	{
@@ -712,22 +666,22 @@ void CoordinateSystem::drawMinorGridLines()
 
 void CoordinateSystem::drawMajorGridLines(Axis& a0, Axis& a1)
 {
-  Triple d = a1.begin()-a0.begin();
-
-  for (unsigned int i=0; i!=a0.majorPositions().size(); ++i)
-	{
-		glVertex3d( a0.majorPositions()[i].x, a0.majorPositions()[i].y, a0.majorPositions()[i].z ); 
-		glVertex3d( a0.majorPositions()[i].x + d.x, a0.majorPositions()[i].y + d.y, a0.majorPositions()[i].z +d.z); 
+	Triple d = a1.begin() - a0.begin();
+	unsigned int majors = a0.majorPositions().size();
+	for (unsigned int i = 0; i != majors; ++i){
+		Triple t = a0.majorPositions()[i];
+		glVertex3d(t.x, t.y, t.z);
+		glVertex3d(t.x + d.x, t.y + d.y, t.z + d.z);
 	}
 }
 
 void CoordinateSystem::drawMinorGridLines(Axis& a0, Axis& a1)
 {
-  Triple d = a1.begin()-a0.begin();
-
-  for (unsigned int i=0; i!=a0.minorPositions().size(); ++i)
-	{
-		glVertex3d( a0.minorPositions()[i].x, a0.minorPositions()[i].y, a0.minorPositions()[i].z ); 
-		glVertex3d( a0.minorPositions()[i].x + d.x, a0.minorPositions()[i].y + d.y, a0.minorPositions()[i].z +d.z); 
+	Triple d = a1.begin()-a0.begin();
+	unsigned int minors = a0.minorPositions().size();
+	for (unsigned int i = 0; i != minors; ++i){
+		Triple t = a0.minorPositions()[i];
+		glVertex3d(t.x, t.y, t.z);
+		glVertex3d(t.x + d.x, t.y + d.y, t.z + d.z);
 	}
 }

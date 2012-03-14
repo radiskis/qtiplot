@@ -26,6 +26,7 @@ public:
 	void detach(Drawable*);
 	void detachAll();
 
+	Qwt3D::RGBA color() const {return color_;}
 	virtual void setColor(double r, double g, double b, double a = 1);	
 	virtual void setColor(Qwt3D::RGBA rgba);	
 	Qwt3D::Triple relativePosition(Qwt3D::Triple rel);
@@ -35,7 +36,7 @@ public:
 
 protected:
 	Plot3D *d_plot;
-	Qwt3D::RGBA color;
+	Qwt3D::RGBA color_;
 	void Enable(GLenum what, GLboolean val);
 	Qwt3D::Triple ViewPort2World(Qwt3D::Triple win, bool* err = 0);
 	Qwt3D::Triple World2ViewPort(Qwt3D::Triple obj, bool* err = 0);

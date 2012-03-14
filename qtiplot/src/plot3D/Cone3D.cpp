@@ -1,13 +1,11 @@
 /***************************************************************************
-    File                 : Cone3D.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : 3D cone class (code from Cone class in QwtPlot3D library with modified destructor)
-                           
- ***************************************************************************/
-
+File                 : Cone3D.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : 3D cone class (code from Cone class in QwtPlot3D library with modified destructor)
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -45,7 +43,7 @@ Cone3D::Cone3D()
 	hat      = gluNewQuadric();
 	disk     = gluNewQuadric();
 
-  configure(0, 3);
+	configure(0, 3);
 }
 
 Cone3D::Cone3D(double rad, unsigned quality)
@@ -53,7 +51,7 @@ Cone3D::Cone3D(double rad, unsigned quality)
 	hat      = gluNewQuadric();
 	disk     = gluNewQuadric();
 
-  configure(rad, quality);
+	configure(rad, quality);
 }
 
 Cone3D::~Cone3D()
@@ -62,10 +60,10 @@ Cone3D::~Cone3D()
 
 void Cone3D::configure(double rad, unsigned quality)
 {
-  plot = 0;
-  radius_ = rad;
-  quality_ = quality;
-  oldstate_ = GL_FALSE;
+	curve_ = 0;
+	radius_ = rad;
+	quality_ = quality;
+	oldstate_ = GL_FALSE;
 
 	gluQuadricDrawStyle(hat,GLU_FILL);
 	gluQuadricNormals(hat,GLU_SMOOTH);
@@ -75,22 +73,24 @@ void Cone3D::configure(double rad, unsigned quality)
 	gluQuadricOrientation(disk,GLU_OUTSIDE);
 }
 
-void Cone3D::draw(Qwt3D::Triple const& pos)
-{  
-	RGBA rgba = (*plot->dataColor())(pos);
-  glColor4d(rgba.r,rgba.g,rgba.b,rgba.a);
+void Cone3D::draw(Qwt3D::Triple const& t)
+{
+	Qwt3D::Triple pos = curve_->plot()->transform(t);
 
-  GLint mode;
+	RGBA rgba = (*curve_->dataColor())(t);
+	glColor4d(rgba.r, rgba.g, rgba.b, rgba.a);
+
+	GLint mode;
 	glGetIntegerv(GL_MATRIX_MODE, &mode);
 	glMatrixMode( GL_MODELVIEW );
-  glPushMatrix();
+	glPushMatrix();
 
-  glTranslatef(pos.x, pos.y, pos.z);
+	glTranslatef(pos.x, pos.y, pos.z);
 
-  gluCylinder(hat, 0.0, radius_, radius_*2, quality_, 1);
-  glTranslatef(0, 0, radius_*2);
+	gluCylinder(hat, 0.0, radius_, radius_*2, quality_, 1);
+	glTranslatef(0, 0, radius_*2);
 	gluDisk(disk, 0.0, radius_, quality_, 1);
 
-  glPopMatrix();
+	glPopMatrix();
 	glMatrixMode(mode);
 }

@@ -27,16 +27,16 @@ public:
     VOXELENRICHMENT
   }; //!< Type of the Enrichment - only VERTEXENRICHMENT's are defined at this moment.
   
-  Enrichment() : plot(0) {}
+  Enrichment() : curve_(0) {}
   virtual ~Enrichment(){}
   virtual Enrichment* clone() const = 0; //!< The derived class should give back a new Derived(something) here
   virtual void drawBegin(){}; //!< Empty per default. Can be overwritten.
   virtual void drawEnd(){}; //!< Empty per default. Can be overwritten.
-  virtual void assign(Curve const& pl) {plot = &pl;} //!< Assign to existent plot;
+  virtual void assign(Curve const& pl) {curve_ = &pl;} //!< Assign to existent plot;
   virtual TYPE type() const = 0; //!< Overwrite 
 
 protected:
-  const Curve* plot;
+  const Curve* curve_;
 };
 
 //! Abstract base class for vertex dependent visible user objects

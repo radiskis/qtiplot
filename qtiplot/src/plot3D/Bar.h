@@ -1,13 +1,11 @@
 /***************************************************************************
-    File                 : Bar.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2006 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : 3D bars (modifed enrichment from QwtPlot3D)
-
- ***************************************************************************/
-
+File                 : Bar.h
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2006 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : 3D bars (modifed enrichment from QwtPlot3D)
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -42,7 +40,6 @@ public:
 
   void configure(double rad, bool lines = true, bool filled = true, bool smooth = true);
   void drawBegin();
-  void drawEnd();
   void draw(Qwt3D::Triple const&);
 
 private:

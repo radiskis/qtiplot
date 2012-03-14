@@ -159,18 +159,17 @@ void ColorLegend::draw()
 	setGeometryInternal();
 
 	saveGLState();
-  	
+
 	Triple one = pe_.minVertex;
 	Triple two = pe_.maxVertex; 
 	
-	double h = (orientation_ == ColorLegend::BottomTop)
-	         ? (two-one).z / colors.size()
-					 : (two-one).x / colors.size(); 
+	unsigned size = colors.size();
+	double h = (orientation_ == ColorLegend::BottomTop) ? (two - one).z/(double)size : (two - one).x/(double)size;
 
 	//glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	GLStateBewarer(GL_POLYGON_OFFSET_FILL,true);
+	GLStateBewarer(GL_POLYGON_OFFSET_FILL, true);
 //	glPolygonOffset(0.0, 0.0);
 
 	glColor4d(0, 0, 0, 1);
@@ -181,44 +180,35 @@ void ColorLegend::draw()
 		glVertex3d(two.x, one.y, one.z);
 	glEnd();
 
+	if (orientation_ == ColorLegend::BottomTop){
+		for (unsigned i = 1; i <= size; ++i){
+			RGBA rgb = colors[i - 1];
+			glColor4d(rgb.r, rgb.g, rgb.b, rgb.a);
+	 		glBegin( GL_POLYGON );
+				glVertex3d(one.x, one.y, one.z + (i - 1)*h);
+				glVertex3d(one.x, one.y, one.z + i*h );
+				glVertex3d(two.x, one.y, one.z + i*h );
+				glVertex3d(two.x, one.y, one.z + (i - 1)*h);
+			glEnd();
+		}
+	} else {
+		for (unsigned i = 1; i <= size; ++i){
+			RGBA rgb = colors[i - 1];
+			glColor4d(rgb.r, rgb.g, rgb.b, rgb.a);
+	 		glBegin( GL_POLYGON );
+				glVertex3d(one.x + (i - 1)*h, one.y, one.z);
+				glVertex3d(one.x + i*h, one.y, one.z);
+				glVertex3d(one.x + i*h, one.y, two.z);
+				glVertex3d(one.x + (i - 1)*h, one.y, two.z);
+			glEnd();
+		}
+	}
 
-	unsigned size = colors.size();
-	RGBA rgb;
-	
-	if (orientation_ == ColorLegend::BottomTop)
-	{
-		for (unsigned i=1; i<=size; ++i) 
-		{
-			rgb = colors[i-1];
-			glColor4d(rgb.r,rgb.g,rgb.b,rgb.a);
-	 		glBegin( GL_POLYGON );
-				glVertex3d( one.x, one.y, one.z+(i-1)*h );
-				glVertex3d( one.x, one.y, one.z+i*h );
-				glVertex3d( two.x, one.y, one.z+i*h );
-				glVertex3d( two.x, one.y, one.z+(i-1)*h );
-			glEnd();
-		}
-	}
-	else
-	{
-		for (unsigned i=1; i<=size; ++i) 
-		{
-			rgb = colors[i-1];
-			glColor4d(rgb.r,rgb.g,rgb.b,rgb.a);
-	 		glBegin( GL_POLYGON );
-				glVertex3d( one.x+(i-1)*h, one.y, one.z );
-				glVertex3d( one.x+i*h, one.y, one.z );
-				glVertex3d( one.x+i*h, one.y, two.z );
-				glVertex3d( one.x+(i-1)*h, one.y, two.z );
-			glEnd();
-		}
-	}
-			
 	restoreGLState();
-	
+
 	if (showaxis_)
 		axis_.draw();
-	
+
 	caption_.draw();
 }
 

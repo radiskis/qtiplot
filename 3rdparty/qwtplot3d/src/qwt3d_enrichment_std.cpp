@@ -14,94 +14,95 @@ using namespace Qwt3D;
 
 CrossHair::CrossHair()
 {
-  configure(0, 1, false, false);
+	configure(0, 1, false, false);
 }
 
 CrossHair::CrossHair(double rad, double linewidth, bool smooth, bool boxed)
 {
-  configure(rad, linewidth, smooth, boxed);
+	configure(rad, linewidth, smooth, boxed);
 }
 
 void CrossHair::configure(double rad, double linewidth, bool smooth, bool boxed)
 {
-  plot = 0;
-  radius_ = rad;
-  linewidth_ = linewidth;
-  smooth_ = smooth;
-  boxed_ = boxed;
+	curve_ = 0;
+	radius_ = rad;
+	linewidth_ = linewidth;
+	smooth_ = smooth;
+	boxed_ = boxed;
 }
 
 void CrossHair::drawBegin()
 {
-  setDeviceLineWidth( linewidth_ );
-  oldstate_ = glIsEnabled(GL_LINE_SMOOTH);
-  if (smooth_)
-    glEnable(GL_LINE_SMOOTH);
-  else
-    glDisable(GL_LINE_SMOOTH);
+	setDeviceLineWidth( linewidth_ );
+	oldstate_ = glIsEnabled(GL_LINE_SMOOTH);
+	if (smooth_)
+		glEnable(GL_LINE_SMOOTH);
+	else
+		glDisable(GL_LINE_SMOOTH);
 	glBegin( GL_LINES );
 }
 
 void CrossHair::drawEnd()
 {
-  glEnd();
+	glEnd();
 
-  if (oldstate_)
-    glEnable(GL_LINE_SMOOTH);
-  else
-    glDisable(GL_LINE_SMOOTH);
+	if (oldstate_)
+		glEnable(GL_LINE_SMOOTH);
+	else
+		glDisable(GL_LINE_SMOOTH);
 }
 
-void CrossHair::draw(Qwt3D::Triple const& pos)
+void CrossHair::draw(Qwt3D::Triple const& t)
 {
-	RGBA rgba = (*plot->dataColor())(pos);
-	glColor4d(rgba.r,rgba.g,rgba.b,rgba.a);
+	Qwt3D::Triple pos = curve_->plot()->transform(t);
 
-  double diag = (plot->hull().maxVertex-plot->hull().minVertex).length() * radius_;
+	RGBA rgba = (*curve_->dataColor())(t);
+	glColor4d(rgba.r, rgba.g, rgba.b, rgba.a);
 
-  glVertex3d( pos.x - diag, pos.y, pos.z); 
-	glVertex3d( pos.x + diag, pos.y, pos.z); 
-	
-  glVertex3d( pos.x, pos.y - diag, pos.z); 
-	glVertex3d( pos.x, pos.y + diag, pos.z); 
-  
-  glVertex3d( pos.x, pos.y, pos.z - diag); 
-	glVertex3d( pos.x, pos.y, pos.z + diag); 
+	double diag = (curve_->hull().maxVertex - curve_->hull().minVertex).length() * radius_;
 
-  // hull
-  
-  if (!boxed_)
-    return;
+	glVertex3d( pos.x - diag, pos.y, pos.z);
+	glVertex3d( pos.x + diag, pos.y, pos.z);
 
-  glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag); 
-	glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag); 
-  glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag); 
-	glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag); 
-  
-  glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag); 
-	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag); 
-  glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag); 
-	glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag); 
+	glVertex3d( pos.x, pos.y - diag, pos.z);
+	glVertex3d( pos.x, pos.y + diag, pos.z);
 
-  glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag); 
-	glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag); 
-  glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag); 
-	glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag); 
-  
-  glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag); 
-	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag); 
-  glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag); 
-	glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag); 
+	glVertex3d( pos.x, pos.y, pos.z - diag);
+	glVertex3d( pos.x, pos.y, pos.z + diag);
 
-  glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag); 
-	glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag); 
-  glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag); 
-	glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag); 
-  
-  glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag); 
-	glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag); 
-  glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag); 
-	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag); 
+	// hull
+	if (!boxed_)
+		return;
+
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag);
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag);
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag);
+
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag);
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag);
+
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag);
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag);
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag);
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag);
+
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag);
+
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z - diag);
+	glVertex3d( pos.x - diag, pos.y - diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z - diag);
+	glVertex3d( pos.x + diag, pos.y - diag, pos.z + diag);
+
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z - diag);
+	glVertex3d( pos.x - diag, pos.y + diag, pos.z + diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z - diag);
+	glVertex3d( pos.x + diag, pos.y + diag, pos.z + diag);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -112,49 +113,51 @@ void CrossHair::draw(Qwt3D::Triple const& pos)
 
 Dot::Dot()
 {
-  configure(1, false);
+	configure(1, false);
 }
 
 Dot::Dot(double pointsize, bool smooth)
 {
-  configure(pointsize, smooth);
+	configure(pointsize, smooth);
 }
 
 void Dot::configure(double pointsize, bool smooth)
 {
-  plot = 0;
-  pointsize_ = pointsize;
-  smooth_ = smooth;
+	curve_ = 0;
+	pointsize_ = pointsize;
+	smooth_ = smooth;
 }
 
 void Dot::drawBegin()
 {
-  setDevicePointSize( pointsize_ );
-  oldstate_ = glIsEnabled(GL_POINT_SMOOTH);
-  if (smooth_)
-    glEnable(GL_POINT_SMOOTH);
-  else
-    glDisable(GL_POINT_SMOOTH);
+	setDevicePointSize( pointsize_ );
+	oldstate_ = glIsEnabled(GL_POINT_SMOOTH);
+	if (smooth_)
+		glEnable(GL_POINT_SMOOTH);
+	else
+		glDisable(GL_POINT_SMOOTH);
 
-  //glPointSize(10);
+	//glPointSize(10);
 	glBegin( GL_POINTS );
 }
 
 void Dot::drawEnd()
 {
-  glEnd();
+	glEnd();
 
-  if (oldstate_)
-    glEnable(GL_POINT_SMOOTH);
-  else
-    glDisable(GL_POINT_SMOOTH);
+	if (oldstate_)
+		glEnable(GL_POINT_SMOOTH);
+	else
+		glDisable(GL_POINT_SMOOTH);
 }
 
 void Dot::draw(Qwt3D::Triple const& pos)
 {
-	RGBA rgba = (*plot->dataColor())(pos);
-  glColor4d(rgba.r,rgba.g,rgba.b,rgba.a);
-  glVertex3d( pos.x, pos.y, pos.z);   
+	RGBA rgba = (*curve_->dataColor())(pos);
+	glColor4d(rgba.r, rgba.g, rgba.b, rgba.a);
+
+	Qwt3D::Triple t = curve_->plot()->transform(pos);
+	glVertex3d(t.x, t.y, t.z);
 }
 
 
@@ -169,7 +172,7 @@ Cone::Cone()
 	hat      = gluNewQuadric();
 	disk     = gluNewQuadric();
 
-  configure(0, 3);
+	configure(0, 3);
 }
 
 Cone::Cone(double rad, unsigned quality)
@@ -177,7 +180,7 @@ Cone::Cone(double rad, unsigned quality)
 	hat      = gluNewQuadric();
 	disk     = gluNewQuadric();
 
-  configure(rad, quality);
+	configure(rad, quality);
 }
 
 Cone::~Cone()
@@ -188,10 +191,10 @@ Cone::~Cone()
 
 void Cone::configure(double rad, unsigned quality)
 {
-  plot = 0;
-  radius_ = rad;
-  quality_ = quality;
-  oldstate_ = GL_FALSE;
+	curve_ = 0;
+	radius_ = rad;
+	quality_ = quality;
+	oldstate_ = GL_FALSE;
 
 	gluQuadricDrawStyle(hat,GLU_FILL);
 	gluQuadricNormals(hat,GLU_SMOOTH);
@@ -203,21 +206,22 @@ void Cone::configure(double rad, unsigned quality)
 
 void Cone::draw(Qwt3D::Triple const& pos)
 {  
-	RGBA rgba = (*plot->dataColor())(pos);
-  glColor4d(rgba.r,rgba.g,rgba.b,rgba.a);
+	RGBA rgba = (*curve_->dataColor())(pos);
+	glColor4d(rgba.r,rgba.g,rgba.b,rgba.a);
 
-  GLint mode;
+	GLint mode;
 	glGetIntegerv(GL_MATRIX_MODE, &mode);
-	glMatrixMode( GL_MODELVIEW );
-  glPushMatrix();
+	glMatrixMode(GL_MODELVIEW );
+	glPushMatrix();
 
-  glTranslatef(pos.x, pos.y, pos.z);
+	Qwt3D::Triple t = curve_->plot()->transform(pos);
+	glTranslatef(t.x, t.y, t.z);
 
-  gluCylinder(hat, 0.0, radius_, radius_*2, quality_, 1);
-  glTranslatef(0, 0, radius_*2);
+	gluCylinder(hat, 0.0, radius_, radius_*2, quality_, 1);
+	glTranslatef(0, 0, radius_*2);
 	gluDisk(disk, 0.0, radius_, quality_, 1);
 
-  glPopMatrix();
+	glPopMatrix();
 	glMatrixMode(mode);
 }
 
@@ -230,10 +234,10 @@ void Cone::draw(Qwt3D::Triple const& pos)
 
 Arrow::Arrow()
 {	
-	hat      = gluNewQuadric();
-	disk     = gluNewQuadric();
+	hat     = gluNewQuadric();
+	disk    = gluNewQuadric();
 	base    = gluNewQuadric();
-	bottom   = gluNewQuadric();
+	bottom  = gluNewQuadric();
 
 	gluQuadricDrawStyle(hat,GLU_FILL);
 	gluQuadricNormals(hat,GLU_SMOOTH);
@@ -268,12 +272,12 @@ Arrow::~Arrow()
 */
 void Arrow::configure(int segs, double relconelength, double relconerad, double relstemrad)
 {
-	plot = 0;
-  segments_ = segs;
-  oldstate_ = GL_FALSE;
+	curve_ = 0;
+	segments_ = segs;
+	oldstate_ = GL_FALSE;
 	rel_cone_length = relconelength;
 	rel_cone_radius = relconerad;
-	rel_stem_radius = relstemrad;	
+	rel_stem_radius = relstemrad;
 }
 
 void Arrow::draw(Qwt3D::Triple const& pos)
@@ -287,33 +291,33 @@ void Arrow::draw(Qwt3D::Triple const& pos)
 	double radius[2];
 	radius[0] = rel_cone_radius * length;
 	radius[1] = rel_stem_radius * length;
-	
+
 	GLint mode;
 	glGetIntegerv(GL_MATRIX_MODE, &mode);
 
 	glMatrixMode( GL_MODELVIEW );
-  glPushMatrix();
+	glPushMatrix();
 
 
 	Triple axis;
 	double phi = calcRotation(axis, FreeVector(beg,end));
-	
+
 	glTranslatef(beg.x, beg.y, beg.z);
-  glRotatef(phi, axis.x, axis.y, axis.z);
+	glRotatef(phi, axis.x, axis.y, axis.z);
 
 	double baseheight = (1-rel_cone_length) * length;
-	
+
 	glTranslatef(0, 0, baseheight);
 
 	gluCylinder(hat, radius[0], 0.0, rel_cone_length * length, segments_,1);
 	gluDisk(disk,radius[1],radius[0], segments_,1);
-	
+
 	glTranslatef(0, 0, -baseheight);
-	
+
 	gluCylinder(base, radius[1],radius[1], baseheight,segments_,1);
 	gluDisk(disk,0,radius[1],segments_,1);
 
-  glPopMatrix();
+	glPopMatrix();
 	glMatrixMode(mode);
 }
 

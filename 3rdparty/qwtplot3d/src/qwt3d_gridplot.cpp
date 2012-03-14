@@ -9,142 +9,133 @@
 using namespace std;
 using namespace Qwt3D;
 
-
-
 void Curve::createDataG()
 {
-  if (facemode_)	createFaceData();
-  if (sidemode_)	createSideData();
-  if (floormode_)	createFloorData();
-  
-  if (plotStyle() == NOPLOT)
+	if (plotStyle() == NOPLOT)
 		return;
 
-	int i, j;
-	RGBA col;
-	int step = resolution();
+	if (facemode_)	createFaceData();
+	if (sidemode_)	createSideData();
+	if (floormode_)	createFloorData();
 
-  if (plotStyle() == Qwt3D::POINTS)
-  {
-    createPoints();
-    return;
-  }
-  else if (plotStyle() == Qwt3D::USER)
-  {
-    if (userplotstyle_p)
-      createEnrichment(*userplotstyle_p);
-    return;
-  }
-    glPushAttrib(GL_POLYGON_BIT|GL_LINE_BIT);
+	if (plotStyle() == Qwt3D::POINTS){
+		createPoints();
+		return;
+	} else if (plotStyle() == Qwt3D::USER && userplotstyle_p){
+		createEnrichment(*userplotstyle_p);
+		return;
+	}
+
+	Qwt3D::GridData *backup = plot_p->transform(actualDataG_);//axis scale transformation
+
+	int i, j, step = resolution();
+
+	glPushAttrib(GL_POLYGON_BIT|GL_LINE_BIT);
 
 	setDeviceLineWidth(meshLineWidth());
-  
-  GLStateBewarer sb(GL_POLYGON_OFFSET_FILL,true);
-	setDevicePolygonOffset(polygonOffset(),1.0);
+
+	GLStateBewarer sb(GL_POLYGON_OFFSET_FILL, true);
+	setDevicePolygonOffset(polygonOffset(), 1.0);
 
 	GLStateBewarer sb2(GL_LINE_SMOOTH, smoothDataMesh());
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-
-  int lastcol =  actualDataG_->columns();
-  int lastrow =  actualDataG_->rows(); 
+	int lastcol = actualDataG_->columns();
+	int lastrow = actualDataG_->rows();
  
-	if (plotStyle() != WIREFRAME)
-	{
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	if (plotStyle() != WIREFRAME){
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		
 		bool hl = (plotStyle() == HIDDENLINE);
-		if (hl)
-		{
-            col = plot_p->backgroundRGBAColor();
+		if (hl){
+			RGBA col = plot_p->backgroundRGBAColor();
 			glColor4d(col.r, col.g, col.b, col.a);
 		}
 
-		for (i = 0; i < lastcol - step; i += step) 
-		{
-		  glBegin(GL_TRIANGLE_STRIP);
-				setColorFromVertexG(i, 0, hl);
-				glNormal3dv(actualDataG_->normals[i][0]);
-				glVertex3dv(actualDataG_->vertices[i][0]);
-					
-				int ni = i + step;
-				setColorFromVertexG(ni, 0, hl);
-				glNormal3dv(actualDataG_->normals[ni][0]);
-				glVertex3dv(actualDataG_->vertices[ni][0]);
+		for (i = 0; i < lastcol - step; i += step){
+			glBegin(GL_TRIANGLE_STRIP);
 
-				for (j = 0; j < lastrow - step; j += step) 
-				{
-					int nj = j + step;
-					setColorFromVertexG(i, nj, hl);
-					glNormal3dv(actualDataG_->normals[i][nj]);
-					glVertex3dv(actualDataG_->vertices[i][nj]);
+			setColorFromVertexG(backup->vertices[i][0], hl);
+			glNormal3dv(actualDataG_->normals[i][0]);
+			glVertex3dv(actualDataG_->vertices[i][0]);
 
-					setColorFromVertexG(ni, nj, hl);
-					glNormal3dv(actualDataG_->normals[ni][nj]);
-					glVertex3dv(actualDataG_->vertices[ni][nj]);
-				}
+			int ni = i + step;
+
+			setColorFromVertexG(backup->vertices[ni][0], hl);
+			glNormal3dv(actualDataG_->normals[ni][0]);
+			glVertex3dv(actualDataG_->vertices[ni][0]);
+
+			for (j = 0; j < lastrow - step; j += step){
+				int nj = j + step;
+
+				setColorFromVertexG(backup->vertices[i][nj], hl);
+				glNormal3dv(actualDataG_->normals[i][nj]);
+				glVertex3dv(actualDataG_->vertices[i][nj]);
+
+				setColorFromVertexG(backup->vertices[ni][nj], hl);
+				glNormal3dv(actualDataG_->normals[ni][nj]);
+				glVertex3dv(actualDataG_->vertices[ni][nj]);
+			}
 			glEnd();
 		}
-  }
+	}
 
-	if (plotStyle() == FILLEDMESH || plotStyle() == WIREFRAME || plotStyle() == HIDDENLINE)
-	{
-		glColor4d(meshColor().r, meshColor().g, meshColor().b, meshColor().a);		
+	if (plotStyle() == FILLEDMESH || plotStyle() == WIREFRAME || plotStyle() == HIDDENLINE){
+		glColor4d(meshColor().r, meshColor().g, meshColor().b, meshColor().a);
 
-		if (step < actualDataG_->columns() && step < actualDataG_->rows())
-		{
+		if (step < lastcol && step < lastrow){
 			glBegin(GL_LINE_LOOP);
-				for (i = 0; i < actualDataG_->columns() - step; i += step) 
-					glVertex3dv(actualDataG_->vertices[i][0]);		
+				for (i = 0; i < lastcol - step; i += step)
+					glVertex3dv(actualDataG_->vertices[i][0]);
 				for (j = 0; j < actualDataG_->rows() - step; j += step) 
-					glVertex3dv(actualDataG_->vertices[i][j]);						
+					glVertex3dv(actualDataG_->vertices[i][j]);
 				for (; i >= 0; i -= step) 
-					glVertex3dv(actualDataG_->vertices[i][j]);			
+					glVertex3dv(actualDataG_->vertices[i][j]);
 				for (; j >= 0; j -= step) 
-					glVertex3dv(actualDataG_->vertices[0][j]);			
+					glVertex3dv(actualDataG_->vertices[0][j]);
 			glEnd();
 		}
 
 		// weaving
-		for (i = step; i < actualDataG_->columns() - step; i += step) 
-		{		
+		for (i = step; i < lastcol - step; i += step){
 			glBegin(GL_LINE_STRIP);
-				for (j = 0; j < actualDataG_->rows(); j += step) 
-					glVertex3dv(actualDataG_->vertices[i][j]);			
+				for (j = 0; j < lastrow; j += step)
+					glVertex3dv(actualDataG_->vertices[i][j]);
 			glEnd();
 		}
-		for (j = step; j < actualDataG_->rows() - step; j += step) 
-		{		
+		for (j = step; j < lastrow - step; j += step){
 			glBegin(GL_LINE_STRIP);
-				for (i = 0; i < actualDataG_->columns(); i += step) 
-					glVertex3dv(actualDataG_->vertices[i][j]);			
+				for (i = 0; i < lastcol; i += step)
+					glVertex3dv(actualDataG_->vertices[i][j]);
 			glEnd();
 		}
 	}
-    glPopAttrib();
+
+	glPopAttrib();
+
+	if (backup != actualDataG_){
+		delete  actualDataG_;
+		actualDataG_ = backup;
+		actualData_p = actualDataG_;
+	}
 }
 
-void Curve::setColorFromVertexG(int ix, int iy, bool skip)
+void Curve::setColorFromVertexG(double *v, bool skip)
 {
 	if (skip)
 		return;
 
-	RGBA col = (*datacolor_p)(
-		actualDataG_->vertices[ix][iy][0],
-		actualDataG_->vertices[ix][iy][1],
-		actualDataG_->vertices[ix][iy][2]);
-		
+	RGBA col = (*datacolor_p)(v[0], v[1], v[2]);
 	glColor4d(col.r, col.g, col.b, col.a);
 }
-
 
 void Curve::createNormalsG()
 {
 	if (!normals() || actualDataG_->empty())
 		return;
 
-  Arrow arrow;
-  arrow.setQuality(normalQuality());
+	Arrow arrow;
+	arrow.setQuality(normalQuality());
 
 	Triple basev, topv, norm;	
 	
@@ -152,12 +143,10 @@ void Curve::createNormalsG()
 
 	double diag = (actualDataG_->hull().maxVertex-actualDataG_->hull().minVertex).length() * normalLength();
 
-  arrow.assign(*this);
-  arrow.drawBegin();
-	for (int i = 0; i <= actualDataG_->columns() - step; i += step) 
-	{
-		for (int j = 0; j <= actualDataG_->rows() - step; j += step) 
-		{
+	arrow.assign(*this);
+	arrow.drawBegin();
+	for (int i = 0; i <= actualDataG_->columns() - step; i += step){
+		for (int j = 0; j <= actualDataG_->rows() - step; j += step){
 			basev = Triple(actualDataG_->vertices[i][j][0],actualDataG_->vertices[i][j][1],actualDataG_->vertices[i][j][2]);
 			topv = Triple(actualDataG_->vertices[i][j][0]+actualDataG_->normals[i][j][0],
 							 actualDataG_->vertices[i][j][1]+actualDataG_->normals[i][j][1],
@@ -167,12 +156,12 @@ void Curve::createNormalsG()
 			norm.normalize();
 			norm	*= diag;
 
-      arrow.setTop(basev+norm);
-      arrow.setColor((*datacolor_p)(basev.x,basev.y,basev.z));
-      arrow.draw(basev);
+			arrow.setTop(basev+norm);
+			arrow.setColor((*datacolor_p)(basev.x,basev.y,basev.z));
+			arrow.draw(basev);
 		}
 	}
-  arrow.drawEnd();
+	arrow.drawEnd();
 }
 
 void Curve::readIn(GridData& gdata, Triple** data, unsigned int columns, unsigned int rows)
@@ -182,10 +171,8 @@ void Curve::readIn(GridData& gdata, Triple** data, unsigned int columns, unsigne
 	ParallelEpiped range(Triple(DBL_MAX,DBL_MAX,DBL_MAX),Triple(-DBL_MAX,-DBL_MAX,-DBL_MAX));
 
 	/* fill out the vertex array for the mesh. */
-	for (unsigned i = 0; i != columns; ++i) 
-	{
-		for (unsigned j = 0; j != rows; ++j) 
-		{
+	for (unsigned i = 0; i != columns; ++i){
+		for (unsigned j = 0; j != rows; ++j){
 			gdata.vertices[i][j][0] = data[i][j].x; 
 			gdata.vertices[i][j][1] = data[i][j].y;
 			gdata.vertices[i][j][2] = data[i][j].z;
@@ -209,11 +196,11 @@ void Curve::readIn(GridData& gdata, Triple** data, unsigned int columns, unsigne
 	emit readInFinished(title()->string());
 }
 
-void Curve::readIn(GridData& gdata, double** data, unsigned int columns, unsigned int rows
-            , double minx, double maxx, double miny, double maxy)
+void Curve::readIn(GridData& gdata, double** data, unsigned int columns, unsigned int rows,
+				   double minx, double maxx, double miny, double maxy)
 {
 	gdata.setPeriodic(false,false);
-	gdata.setSize(columns,rows);
+	gdata.setSize(columns, rows);
 	
 	double dx = (maxx - minx) / (gdata.columns() - 1);
 	double dy = (maxy - miny) / (gdata.rows() - 1);
@@ -222,27 +209,23 @@ void Curve::readIn(GridData& gdata, double** data, unsigned int columns, unsigne
 	double tmax = -DBL_MAX;
 
 	/* fill out the vertex array for the mesh. */
-	for (unsigned i = 0; i != columns; ++i) 
-	{
-		for (unsigned j = 0; j != rows; ++j) 
-		{
+	for (unsigned i = 0; i != columns; ++i){
+		for (unsigned j = 0; j != rows; ++j){
 			gdata.vertices[i][j][0] = minx + i*dx;
 			gdata.vertices[i][j][1] = miny + j*dy;
 			gdata.vertices[i][j][2] = data[i][j];
 
-			if (data[i][j] > tmax)
-				tmax = data[i][j];
-			if (data[i][j] < tmin)
-				tmin = data[i][j];
+			double val = data[i][j];
+			if (val > tmax)
+				tmax = val;
+			if (val < tmin)
+				tmin = val;
  		}
 	}
 
-	ParallelEpiped hull = ParallelEpiped(
-			Triple(gdata.vertices[0][0][0], gdata.vertices[0][0][1], tmin), 
-			Triple(gdata.vertices[gdata.columns()-1][gdata.rows()-1][0], 
-				   gdata.vertices[gdata.columns()-1][gdata.rows()-1][1], 
-				   tmax)
-			);
+	ParallelEpiped hull = ParallelEpiped(Triple(gdata.vertices[0][0][0], gdata.vertices[0][0][1], tmin), 
+										Triple(gdata.vertices[gdata.columns() - 1][gdata.rows() - 1][0],
+											   gdata.vertices[gdata.columns() - 1][gdata.rows() - 1][1], tmax));
 
 	gdata.setHull(hull);
 	emit readInFinished(title()->string());
@@ -383,11 +366,11 @@ bool Curve::loadFromData(double** data, unsigned int columns, unsigned int rows,
 	actualDataC_->clear();
 	actualData_p = actualDataG_;
 
-	actualDataG_->setPeriodic(false,false);
-	actualDataG_->setSize(columns,rows);
+	actualDataG_->setPeriodic(false, false);
+	actualDataG_->setSize(columns, rows);
 
 	if (!titlestr.isEmpty())	setTitle(titlestr);
-	readIn(*actualDataG_,data,columns,rows,minx,maxx,miny,maxy);
+	readIn(*actualDataG_, data, columns, rows, minx, maxx, miny, maxy);
 	calcNormals(*actualDataG_);  
 	
 	updateData();
@@ -397,101 +380,92 @@ bool Curve::loadFromData(double** data, unsigned int columns, unsigned int rows,
 
 void Curve::createFloorDataG()
 {
-	switch (floorStyle())
-	{
-	case FLOORDATA:
-		Data2FloorG();
-		break;
-	case FLOORISO:
-		Isolines2FloorG(dataProjected());
-		if (dataProjected())	createPoints();
-		break;
-	default:
-		break;
+	switch (floorStyle()){
+		case FLOORDATA:
+			Data2FloorG();
+			break;
+		case FLOORISO:
+			Isolines2FloorG(dataProjected());
+			if (dataProjected())
+				createPoints();
+			break;
+		default:
+			break;
 	}
 }
 
 void Curve::createSideDataG()
 {
-	switch (floorStyle())
-	{
-	case FLOORDATA:
-		Data2SideG();
-		break;
-	case FLOORISO:
-		Isolines2SideG(dataProjected());
-		if (dataProjected()) {
-			DataPoints2SideG(dataProjected());
-			createPoints();
-		}
-		break;
-	default:
-		break;
+	switch (floorStyle()){
+		case FLOORDATA:
+			Data2SideG();
+			break;
+		case FLOORISO:
+			Isolines2SideG(dataProjected());
+			if (dataProjected()){
+				DataPoints2SideG(dataProjected());
+				createPoints();
+			}
+			break;
+		default:
+			break;
 	}
 }
 
 void Curve::createFaceDataG()
 {
-	switch (floorStyle())
-	{
-	case FLOORDATA:
-		Data2FrontG();
-		break;
-	case FLOORISO:
-		Isolines2FrontG(dataProjected());
-		if (dataProjected()) {
-			DataPoints2BackG(dataProjected());
-			createPoints();			
-		}
-		break;
-	default:
-		break;
+	switch (floorStyle()){
+		case FLOORDATA:
+			Data2FrontG();
+			break;
+		case FLOORISO:
+			Isolines2FrontG(dataProjected());
+			if (dataProjected()){
+				DataPoints2BackG(dataProjected());
+				createPoints();
+			}
+			break;
+		default:
+			break;
 	}
 }
 
 void Curve::DatamapG(unsigned int comp)
 {
-	if (actualData_p->empty())
+	if (actualDataG_->empty())
 		return;
-	
+
 	int step = resolution();
+	int cols = actualDataG_->columns();
+	int rows = actualDataG_->rows();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_QUADS);
 	
-	Triple tmin = actualData_p->hull().minVertex;
+	Triple tmin = actualDataG_->hull().minVertex;
 	double shift = tmin(comp);
 
-	for (int i = 0; i < actualDataG_->columns() - step; i += step) {
+	for (int i = 0; i < cols - step; i += step){
 		glBegin(GL_TRIANGLE_STRIP);
+			double *vi = actualDataG_->vertices[i][0];
+			setColorFromVertexG(vi);
+			drawVertex(plot_p->transform(vi, comp), shift, comp);
+
 			int ni = i + step;
-			Triple curr(actualDataG_->vertices[i][0][0],
-						actualDataG_->vertices[i][0][1],
-						actualDataG_->vertices[i][0][2]); 
-			Triple next(actualDataG_->vertices[ni][0][0],
-						actualDataG_->vertices[ni][0][1],
-						actualDataG_->vertices[ni][0][2]);
+			double *vni = actualDataG_->vertices[ni][0];
+			setColorFromVertexG(vni);
+			drawVertex(plot_p->transform(vni, comp), shift, comp);
 
-			setColorFromVertexG(i, 0);
-			drawVertex(curr, shift, comp);
-
-			setColorFromVertexG(i+step, 0);
-			drawVertex(next, shift, comp);
-
-			for (int j = 0; j < actualDataG_->rows() - step; j += step) {
+			for (int j = 0; j < rows - step; j += step){
 				int nj = j + step;
-				Triple curr(actualDataG_->vertices[i][nj][0],
-							actualDataG_->vertices[i][nj][1],
-							actualDataG_->vertices[i][nj][2]);
-				Triple next(actualDataG_->vertices[ni][nj][0],
-							actualDataG_->vertices[ni][nj][1],
-							actualDataG_->vertices[ni][nj][2]);
 
-				setColorFromVertexG(i, nj);
-				drawVertex(curr, shift, comp);
+				double *vnj = actualDataG_->vertices[i][nj];
+				setColorFromVertexG(vnj);
+				drawVertex(plot_p->transform(vnj, comp), shift, comp);
 
-				setColorFromVertexG(ni, nj);
-				drawVertex(next, shift, comp);
+				double *vnij = actualDataG_->vertices[ni][nj];
+				setColorFromVertexG(vnij);
+				drawVertex(plot_p->transform(vnij, comp), shift, comp);
 			}
 		glEnd();
 	}
@@ -499,11 +473,11 @@ void Curve::DatamapG(unsigned int comp)
 
 void Curve::IsolinesG(unsigned int comp, bool projected)
 {
-	if (isolines() <= 0 || actualData_p->empty())
+	if (isolines() <= 0 || actualDataG_->empty())
 		return;
 
-	Triple tmax = actualData_p->hull().maxVertex;
-	Triple tmin = actualData_p->hull().minVertex;
+	Triple tmax = actualDataG_->hull().maxVertex;
+	Triple tmin = actualDataG_->hull().minVertex;
 	
 	double delta = tmax(comp) - tmin(comp);
 	double shift = tmin(comp);
@@ -522,40 +496,40 @@ void Curve::IsolinesG(unsigned int comp, bool projected)
 	
 	GLStateBewarer sb2(GL_LINE_SMOOTH, false);
 
-	for (unsigned int k = 0; k != isolines(); ++k) {
-		double val = shift + k * count;		
+	for (unsigned int k = 0; k != isolines(); ++k){
+		double val = shift + k * count;
 
-		for (int i = 0; i < cols-step; i += step) {
-			for (int j = 0; j < rows-step; j += step) {
-				t[0] =  Triple(	actualDataG_->vertices[i][j][0],
-								actualDataG_->vertices[i][j][1],
-								actualDataG_->vertices[i][j][2]);
+		for (int i = 0; i < cols - step; i += step){
+			for (int j = 0; j < rows - step; j += step){
+				double *v = actualDataG_->vertices[i][j];
+				t[0] = plot_p->transform(v, comp);
 
-				col = (*datacolor_p)(t[0].x,t[0].y,t[0].z);
+				col = (*datacolor_p)(v[0], v[1], v[2]);
 				glColor4d(col.r, col.g, col.b, col.a);
 
-				t[1] =  Triple(	actualDataG_->vertices[i+step][j][0],
-								actualDataG_->vertices[i+step][j][1],
-								actualDataG_->vertices[i+step][j][2]);
-				t[2] =  Triple(	actualDataG_->vertices[i+step][j+step][0],
-								actualDataG_->vertices[i+step][j+step][1],
-								actualDataG_->vertices[i+step][j+step][2]);
-				t[3] =  Triple(	actualDataG_->vertices[i][j+step][0],
-								actualDataG_->vertices[i][j+step][1],
-								actualDataG_->vertices[i][j+step][2]);
+				int step_i = i + step, step_j = j + step;
+
+				double *vi = actualDataG_->vertices[step_i][j];
+				t[1] =  plot_p->transform(vi, comp);
+
+				double *vij = actualDataG_->vertices[step_i][step_j];
+				t[2] =  plot_p->transform(vij, comp);
+
+				double *vj = actualDataG_->vertices[i][step_j];
+				t[3] =  plot_p->transform(vj, comp);
 
 				double diff = 0;
 
-				for (int m = 0; m!=4; ++m) {
+				for (int m = 0; m != 4; ++m){
 					int mm = (m+1)%4;
 
 					bool outer = (val >= t[mm](comp) && val <= t[m](comp));
 					bool inner = (val >= t[m](comp) && val <= t[mm](comp));
 
-					if (inner || outer) {
+					if (inner || outer){
 						diff = t[mm](comp) - t[m](comp);
 
-						if (isPracticallyZero(diff)) { // degenerated
+						if (isPracticallyZero(diff)){// degenerated
 							intersection.push_back(t[m]);
 							intersection.push_back(t[mm]);
 							continue;
@@ -568,16 +542,16 @@ void Curve::IsolinesG(unsigned int comp, bool projected)
 						for (unsigned int c = 0; c!=3; ++c)
 							component[c] = (t[m](c) + lambda * (t[mm](c)-t[m](c)));
 
-						switch (comp) {
-						case 0:
-							intersect = Triple(val, component[1], component[2]);
-							break;
-						case 1:
-							intersect = Triple(component[0], val, component[2]);
-							break;
-						case 2:
-							intersect = Triple(component[0], component[1], val);
-							break;
+						switch (comp){
+							case 0:
+								intersect = Triple(val, component[1], component[2]);
+								break;
+							case 1:
+								intersect = Triple(component[0], val, component[2]);
+								break;
+							case 2:
+								intersect = Triple(component[0], component[1], val);
+								break;
 						}
 						intersection.push_back(intersect);
 					}
@@ -590,23 +564,23 @@ void Curve::IsolinesG(unsigned int comp, bool projected)
 
 void Curve::DataPointsG(unsigned int comp, bool projected)
 {
-	if (actualData_p->empty() || actualDataG_->columns() <= 0)
+	if (actualDataG_->empty() || actualDataG_->columns() <= 0)
 		return;
 
 	int cols = 0, rows = 0, step = resolution();
 
-	switch (comp) {
-	case 0:		// iterate through each column
-		cols = actualDataG_->columns();
-		rows = actualDataG_->rows();
-		break;
-	case 1:		// iterate through each row
-		cols = actualDataG_->rows();
-		rows = actualDataG_->columns();
-		break;
+	switch (comp){
+		case 0:		// iterate through each column
+			cols = actualDataG_->columns();
+			rows = actualDataG_->rows();
+			break;
+		case 1:		// iterate through each row
+			cols = actualDataG_->rows();
+			rows = actualDataG_->columns();
+			break;
 	}
 
-	Triple tmax = actualData_p->hull().maxVertex;
+	Triple tmax = actualDataG_->hull().maxVertex;
 	double shift = tmax(comp);
 
 	vector<RGBA>	col;
@@ -619,15 +593,14 @@ void Curve::DataPointsG(unsigned int comp, bool projected)
 
 	GLStateBewarer sb(GL_LINE_SMOOTH, false);
 				
-	for (int outer = 0; outer < cols-step; outer += step) {
-		for (int inner = 0; inner < rows-step; inner += step) {
+	for (int outer = 0; outer < cols-step; outer += step){
+		for (int inner = 0; inner < rows-step; inner += step){
 			int i = comp ? inner : outer;
 			int j = comp ? outer : inner;
 
-			t[inner] =	Triple( actualDataG_->vertices[i][j][0],
-								actualDataG_->vertices[i][j][1],
-								actualDataG_->vertices[i][j][2] );
-			col[inner] = (*datacolor_p)(t[inner].x,t[inner].y,t[inner].z);
+			double *v = actualDataG_->vertices[i][j];
+			t[inner] =	Triple(v[0], v[1], v[2]);
+			col[inner] = (*datacolor_p)(t[inner].x, t[inner].y, t[inner].z);
 
 			projection.push_back(t[inner]);
 		}
@@ -638,7 +611,8 @@ void Curve::DataPointsG(unsigned int comp, bool projected)
 
 double** Curve::getData(int *columns, int *rows)
 {
-	if (!actualDataG_)	return 0;
+	if (!actualDataG_)
+		return 0;
 	
 	*columns = actualDataG_->columns();
 	*rows	 = actualDataG_->rows();
@@ -657,22 +631,21 @@ double** Curve::getData(int *columns, int *rows)
 
 void Curve::deleteData(double** data, int columns)
 {
-	for ( int i = 0; i < columns; i++) 
-	{
+	for (int i = 0; i < columns; i++)
 		delete [] data[i];
-	}
+
 	delete [] data;
 }
 
 void Curve::animateData(double** data)
 {
-	if (!actualDataG_)	return;
+	if (!actualDataG_)
+		return;
 
 	int cols = actualDataG_->columns();
 	int rows = actualDataG_->rows();
-
-	for (int i = 0; i < cols; ++i)  {
-		for (int j = 0; j < rows; ++j) {
+	for (int i = 0; i < cols; ++i){
+		for (int j = 0; j < rows; ++j){
 			actualDataG_->vertices[i][j][2] = data[i][j];
 		}
 	}

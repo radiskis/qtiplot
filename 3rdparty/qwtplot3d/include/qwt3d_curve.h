@@ -178,7 +178,7 @@ protected:
     void createNormals();
     void createPoints();
 
-    void drawVertex(Qwt3D::Triple& vertex, double shift, unsigned int comp = 3);
+	void drawVertex(const Qwt3D::Triple& vertex, double shift, unsigned int comp = 3);
     virtual void drawIntersections(std::vector<Qwt3D::Triple>& intersection, double shift, unsigned int comp,
 								   bool projected, std::vector<RGBA>* colour = 0);
 
@@ -223,7 +223,7 @@ private:
 	void Isolines2SideG(bool projected = false)			{ IsolinesG(0, projected); }
 	void IsolinesG(unsigned int comp, bool projected);
 
-	void setColorFromVertexG(int ix, int iy, bool skip = false);
+	void setColorFromVertexG(double *, bool skip = false);
 
 	void DataPointsG(unsigned int comp, bool projected);
 	void DataPoints2SideG(bool projected = false)		{ DataPointsG(0, projected); }
@@ -247,7 +247,7 @@ private:
 	void Isolines2SideC(bool projected = false)			{ IsolinesC(0, projected); }
 	void IsolinesC(unsigned int comp, bool projected);
 	
-	void setColorFromVertexC(int node, bool skip = false);
+	void setColorFromVertexC(const Triple&, bool skip = false);
 
 	bool					displaylegend_;
     Qwt3D::ColorLegend		legend_;
