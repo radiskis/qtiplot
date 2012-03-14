@@ -131,10 +131,10 @@ void Drawable::draw()
 
 void Drawable::setColor(double r, double g, double b, double a)
 {
-	color = RGBA(r,g,b,a);
+	color_ = RGBA(r,g,b,a);
 }	
 
 void Drawable::setColor(RGBA rgba)
 {
-	color = rgba;
+	color_ = rgba;
 }	

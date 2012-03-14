@@ -44,51 +44,41 @@ void Function::	setMaxZ(double val)
 
 bool Function::create()
 {
-	if ((umesh_p<=2) || (vmesh_p<=2) || !plotwidget_p)
+	if ((umesh_p <= 2) || (vmesh_p <= 2) || !plotwidget_p)
 		return false;
 	
-	/* allocate some space for the mesh */
- 	double** data         = new double* [umesh_p] ;
+	// allocate some space for the mesh
+	double** data = new double* [umesh_p] ;
 
-	unsigned i,j;
-	for ( i = 0; i < umesh_p; i++) 
-	{
-		data[i]         = new double [vmesh_p];
-	}
+	unsigned i, j;
+	for (i = 0; i < umesh_p; i++)
+		data[i] = new double [vmesh_p];
 	
-	/* get the data */
+	// get the data
 
 	double dx = (maxu_p - minu_p) / (umesh_p - 1);
 	double dy = (maxv_p - minv_p) / (vmesh_p - 1);
 	
-	for (i = 0; i < umesh_p; ++i) 
-	{
-		for (j = 0; j < vmesh_p; ++j) 
-		{
-			data[i][j] = operator()(minu_p + i*dx, minv_p + j*dy);
-			
-			if (data[i][j] > range_p.maxVertex.z)
+	for (i = 0; i < umesh_p; ++i){
+		for (j = 0; j < vmesh_p; ++j){
+			double val = operator()(minu_p + i*dx, minv_p + j*dy);
+			if (val > range_p.maxVertex.z)
 				data[i][j] = range_p.maxVertex.z;
-			else if (data[i][j] < range_p.minVertex.z)
+			else if (val < range_p.minVertex.z)
 				data[i][j] = range_p.minVertex.z;
+			else
+				data[i][j] = val;
 		}
 	}
 
 	Q_ASSERT(plotwidget_p);
 	if (!plotwidget_p)
-	{
-		fprintf(stderr,"Function: no valid Plot3D Widget assigned");
-	}
+		fprintf(stderr, "Function: no valid Plot3D Widget assigned");
 	else
-	{
 		(plotwidget_p)->loadFromData(data, umesh_p, vmesh_p, minu_p, maxu_p, minv_p, maxv_p);
-	}
 
-	for ( i = 0; i < umesh_p; i++) 
-	{
+	for (i = 0; i < umesh_p; i++)
 		delete [] data[i];
-	}
-
 	delete [] data;
 
 	return true;

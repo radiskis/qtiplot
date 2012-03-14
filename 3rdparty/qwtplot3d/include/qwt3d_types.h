@@ -404,6 +404,8 @@ public:
 	GridData(unsigned int columns, unsigned int rows);		//!< see setSize()
 	~GridData()							{ clear();}
 
+	GridData* copy();
+
 	int columns() const;
 	int rows() const;
 
@@ -428,6 +430,8 @@ class CellData : public Data
 public:
 	CellData()							{ datatype=Qwt3D::POLYGON; }
 	~CellData()							{ clear(); }
+
+	CellData* copy();
 
 	void clear();						//!< destroy content
 	bool empty() const					{ return cells.empty(); }

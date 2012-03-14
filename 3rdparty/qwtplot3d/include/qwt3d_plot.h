@@ -56,6 +56,11 @@ public:
 	//! Returns true if valid data available, else false
 	bool hasData() const						{ return (!curvelist_p.empty()); }
 
+	Qwt3D::GridData* transform(Qwt3D::GridData*);
+	Qwt3D::CellData* transform(Qwt3D::CellData*);
+	Qwt3D::Triple transform(const Qwt3D::Triple&);
+	Qwt3D::Triple transform(double *, unsigned int);
+
 	void addCurve(Qwt3D::Curve* curve);
 	void addDrawable(Qwt3D::Drawable* drawable);
 	void addTitle(Qwt3D::Label* label);
@@ -63,7 +68,7 @@ public:
 	bool removeCurve(Qwt3D::Curve* curve);
 	bool removeDrawable(Qwt3D::Drawable* drawable);
 	bool removeTitle(Qwt3D::Label* label);
-	
+
 	void createCoordinateSystem();
 	void normaliseScale(Qwt3D::Curve* curve, Qwt3D::Plot3D* parentplot = 0, Qwt3D::ParallelEpiped* curvehull = 0);
 
@@ -173,7 +178,7 @@ private:
 	void childConnect(bool connect);
 	inline void intScale(double& scale)		{ scale = (scale > 10) ? floor(scale + 0.5) : floor(10*scale + 0.5)/10; }
 
-    bool			update_coordinate_sys_;
+	bool			update_coordinate_sys_;
 	Qwt3D::RGBA		meshcolor_;
 	double			meshLineWidth_;
 	Qwt3D::RGBA		bgcolor_;

@@ -1,13 +1,11 @@
 /***************************************************************************
-    File                 : Plot3DDialog.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-    Copyright            : (C) 2004-2007 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Surface plot options dialog
-
- ***************************************************************************/
-
+File                 : Plot3DDialog.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : Surface plot options dialog
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -136,9 +134,10 @@ void Plot3DDialog::initScalesPage()
 	gl1->addWidget(boxTo, 1, 1);
 
 	gl1->addWidget(new QLabel(tr("Type")), 2, 0);
-	boxType=new QComboBox();
-	boxType->addItem(tr("linear"));
-	boxType->addItem(tr("logarithmic"));
+	boxType = new QComboBox();
+	boxType->setIconSize(QSize(27, 16));
+	boxType->addItem(QIcon(":/liniar_scale.png"), tr("linear"));
+	boxType->addItem(QIcon(":/log10.png"), tr("logarithmic"));
 	boxType->setMaximumWidth(150);
 	gl1->addWidget(boxType, 2, 1);
 	gl1->setRowStretch(3, 1);

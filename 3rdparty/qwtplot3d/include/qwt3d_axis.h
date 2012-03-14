@@ -40,7 +40,8 @@ public:
 	void setTicOrientation(double tx, double ty, double tz);					//!< Sets tic orientation
 	void setTicOrientation(const Qwt3D::Triple& val);							//!< Same function as above
 	Qwt3D::Triple ticOrientation() const	{ return orientation_; }			//!< Returns tic orientation
-	void setSymmetricTics( bool b)			{ symtics_ = b; }					//!< Sets two-sided tics (default is false) 
+	bool symmetricTics() const				{ return symtics_; }				//!< Returns true if symetric tics
+	void setSymmetricTics( bool b)			{ symtics_ = b; }					//!< Sets two-sided tics (default is false)
 
 	//! Sets font for axis label
 	void setLabelFont(QString const& family, int pointSize, int weight = QFont::Normal, bool italic = false);
@@ -52,14 +53,20 @@ public:
 
 	void setLabelPosition(const Qwt3D::Triple& pos, Qwt3D::ANCHOR);
 	void setLabelColor(Qwt3D::RGBA col);
+	Qwt3D::RGBA labelColor() const			{ return label_.color(); }			//!< Returns the color of the axis title
 	void setLabel(bool d)					{ drawLabel_ = d; }					//!< Turns label drawing on or off
 	bool label() const						{ return drawLabel_; }				//!< Whether label drawing is on or off
+	int labelGap() const					{ return labelgap_; }				//!< Returns label shift
 	void adjustLabel(int val)				{ labelgap_ = val; }				//!< Shifts label in device coordinates dependent on anchor;
 
 	void setScaling(bool d)					{ drawTics_ = d; }					//!< Turns scale drawing on or off
 	bool scaling() const					{ return drawTics_; }				//!< Returns, if scale drawing is on or off
+
+	Qwt3D::SCALETYPE scaleType(){return scale_type_;}
 	void setScale(Qwt3D::SCALETYPE);
 	void setScale(Scale* item);
+
+	double transform(double x) const {return scale_->transform(x, start_, stop_);}
 
 	void setNumbers(bool d)					{ drawNumbers_ = d; }				//!< Turns number drawing on or off
 	bool numbers() const					{ return drawNumbers_; }			//!< Returns, if number drawing is on or off
@@ -70,6 +77,7 @@ public:
 	void setNumberFont(QFont const&);		//!< Overloaded member, works like the above function
 	QFont const& numberFont() const			{ return numberfont_; }				//!< Returns current numbering font
 	void setNumberAnchor(Qwt3D::ANCHOR a)	{ scaleNumberAnchor_ = a; }			//!< Sets anchor position for numbers
+	int numbersGap() const					{ return numbergap_; }				//!< Returns axis numbers shift
 	void adjustNumbers(int val)				{ numbergap_ = val; }				//!< Shifts axis numbers in device coordinates dependent on anchor;
 
 	void setAutoScale(bool val = true)		{ autoscale_ = val; }				//!< Turns Autoscaling on or off
@@ -105,6 +113,7 @@ private:
 	Qwt3D::Triple drawTic(Qwt3D::Triple nadir, double length);
 	void drawLabel();
 	bool prepTicCalculation(Triple& startpoint);
+	Triple ticPosition(double, const Triple&);
 	
 	Qwt3D::ANCHOR scaleNumberAnchor_;
 	Qwt3D::Label label_;
@@ -133,6 +142,7 @@ private:
 	Qwt3D::qwt3d_ptr<Qwt3D::Scale> scale_;
 
 	bool decorate_;
+	Qwt3D::SCALETYPE scale_type_;
 };
 
 } // ns 

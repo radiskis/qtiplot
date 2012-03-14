@@ -157,7 +157,7 @@ QImage Label::createImage(double angle)
 
 	p.setFont( font_ );
 	p.setPen(Qt::SolidLine);
-	p.setPen(GL2Qt(color.r, color.g, color.b));
+	p.setPen(GL2Qt(color_.r, color_.g, color_.b));
 	p.drawText(0, 0, text_);
 	p.end();
 
@@ -283,7 +283,7 @@ void Label::draw(double angle)
 
 	if (plot()->isExportingVector()){
 		if (devicefonts_)
-			drawDeviceText(QWT3DLOCAL8BIT(text_), fontname(), font_.pointSize(), pos_, color, anchor_, gap_, angle);
+			drawDeviceText(QWT3DLOCAL8BIT(text_), fontname(), font_.pointSize(), pos_, color_, anchor_, gap_, angle);
 		else {
 			QImage tex_ = createImage(angle);
 			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
@@ -292,7 +292,7 @@ void Label::draw(double angle)
 		if (!angle){
 			Triple start = World2ViewPort(beg_);
 			start = ViewPort2World(start + Triple(0, QFontMetrics(font_).descent(), 0));
-			plot()->qglColor(GL2Qt(color.r, color.g, color.b));
+			plot()->qglColor(GL2Qt(color_.r, color_.g, color_.b));
 			plot()->renderText(start.x, start.y, start.z, text_, font_);
 		} else {
 			QImage tex_ = createImage(angle);

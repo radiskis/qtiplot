@@ -22,6 +22,7 @@ void Axis::init()
 {
 	detachAll();
 
+	scale_type_ = LINEARSCALE;
 	scale_ = qwt3d_ptr<Scale>(new LinearScale);
 
 	beg_ = Triple(0.0, 0.0, 0.0);  
@@ -38,14 +39,13 @@ void Axis::init()
 	setColor(0.0, 0.0, 0.0);
 	setLineWidth(1.0);
 	symtics_ = false;
-	drawNumbers_ = false;
-	drawLabel_ = false;
-
-	drawTics_ = false;
+	drawNumbers_ = true;
+	drawLabel_ = true;
+	drawTics_ = true;
 	autoscale_ = true;
 	markerLabel_.clear();
-	numberfont_ = QFont("Courier",12);
-	setLabelFont(QFont("Courier",14));
+	numberfont_ = QFont("Courier", 12);
+	setLabelFont(QFont("Courier", 14));
 
 	numbercolor_ = RGBA(0,0,0,0);
 
@@ -120,7 +120,7 @@ void Axis::draw()
 //	GLStateBewarer sb(GL_LINE_SMOOTH, true);
 //	glBlendFunc(GL_ONE, GL_ZERO);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glColor4d(color.r,color.g,color.b,color.a);		
+	glColor4d(color_.r,color_.g,color_.b,color_.a);
 
 	drawBase();
 
@@ -210,10 +210,10 @@ bool Axis::prepTicCalculation(Triple& startpoint)
 			return false;
 	}
 
-	scale_->setLimits(start_,stop_);
+	scale_->setLimits(start_, stop_);
 	scale_->setMajors(majors());
 	scale_->setMinors(minors());
-	scale_->setMajorLimits(autostart_,autostop_);
+	scale_->setMajorLimits(autostart_, autostop_);
 	scale_->calculate();
 
 	Triple normal = (end_ - beg_);
@@ -229,48 +229,51 @@ bool Axis::prepTicCalculation(Triple& startpoint)
 	return true;
 }
 
+Triple Axis::ticPosition(double val, const Triple& runningpoint)
+{
+	return beg_ + scale_->transformRatio(val) * runningpoint;
+}
+
 void Axis::recalculateTics()
 {
 	Triple runningpoint;
-	if (false==prepTicCalculation(runningpoint))
+	if (false == prepTicCalculation(runningpoint))
 		return;
 
-	unsigned int i;
+	unsigned int majors = scale_->majors_p.size();
+	for (unsigned int i = 0; i != majors; ++i)
+		majorpos_.push_back(ticPosition(scale_->majors_p[i], runningpoint));
 
-	for (i = 0; i != scale_->majors_p.size(); ++i) {
-		double t = (scale_->majors_p[i] - start_) / (stop_-start_);
-		majorpos_.push_back(beg_ + t * runningpoint);
-	}
-	for (i = 0; i != scale_->minors_p.size(); ++i) {
-		double t = (scale_->minors_p[i] - start_) / (stop_-start_);
-		minorpos_.push_back(beg_ + t * runningpoint);
-	}
+	unsigned int minors = scale_->minors_p.size();
+	for (unsigned int i = 0; i != minors; ++i)
+		minorpos_.push_back(ticPosition(scale_->minors_p[i], runningpoint));
 }
 
 void Axis::drawTics()
 {
 	Triple runningpoint;
-	if (!drawTics_ || false==prepTicCalculation(runningpoint))
+	if (false == prepTicCalculation(runningpoint))
 		return;
-  
-	unsigned int i;
+
 	Triple nadir;
-	
-	markerLabel_.resize(scale_->majors_p.size());
+
+	unsigned int majors = scale_->majors_p.size();
+	markerLabel_.resize(majors);
 	setDeviceLineWidth(majLineWidth_);
-	for (i = 0; i != scale_->majors_p.size(); ++i) {
-		double t = (scale_->majors_p[i] - start_) / (stop_-start_);
-		nadir = beg_ + t * runningpoint;
-		majorpos_.push_back(drawTic(nadir, lmaj_));
+	for (unsigned int i = 0; i != majors; ++i){
+		nadir = ticPosition(scale_->majors_p[i], runningpoint);
+		if (drawTics_)
+			majorpos_.push_back(drawTic(nadir, lmaj_));
 		drawTicLabel(nadir + 1.2 * lmaj_ * orientation_, i);
 	}
 
+	if (!drawTics_)
+		return;
+
 	setDeviceLineWidth(minLineWidth_);
-	for (i = 0; i != scale_->minors_p.size(); ++i) {
-		double t = (scale_->minors_p[i] - start_) / (stop_-start_);
-		nadir = beg_ + t * runningpoint;
-		minorpos_.push_back(drawTic(nadir, lmin_));
-	}
+	unsigned int minors = scale_->minors_p.size();
+	for (unsigned int i = 0; i != minors; ++i)
+		minorpos_.push_back(drawTic(ticPosition(scale_->minors_p[i], runningpoint), lmin_));
 }
 
 void Axis::drawTicLabel(Triple pos, int mtic)
@@ -292,7 +295,7 @@ Triple Axis::drawTic(Triple nadir, double length)
 	double ilength = (symtics_) ? -length : 0.0;
 
 	glBegin( GL_LINES );
-	glColor4d(color.r,color.g,color.b,color.a);
+	glColor4d(color_.r,color_.g,color_.b,color_.a);
 	glVertex3d( nadir.x  + ilength * orientation_.x,
 					  nadir.y  + ilength * orientation_.y,
 							nadir.z  + ilength * orientation_.z) ;
@@ -355,7 +358,7 @@ void Axis::setLabelColor(RGBA col)
 */
 void Axis::setScale(Scale* val)
 {
-	scale_ = qwt3d_ptr<Scale>(val); 
+	scale_ = qwt3d_ptr<Scale>(val);
 }
 
 /*!
@@ -366,15 +369,20 @@ void Axis::setScale(Scale* val)
 */
 void Axis::setScale(Qwt3D::SCALETYPE val)
 {
-	switch(val) {
-	case Qwt3D::LINEARSCALE:
-		setScale(new LinearScale);
-		break;
-	case Qwt3D::LOG10SCALE:
-		setScale(new LogScale);
-		setMinors(9);
-		break;
-	default:
-		break;
+	if (scale_type_ == val)
+		return;
+
+	scale_type_ = val;
+
+	switch (val){
+		case Qwt3D::LINEARSCALE:
+			setScale(new LinearScale);
+			break;
+		case Qwt3D::LOG10SCALE:
+			setScale(new LogScale);
+			setMinors(9);
+			break;
+		default:
+			break;
 	}
 }

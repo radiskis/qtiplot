@@ -17,86 +17,88 @@ using namespace Qwt3D;
 
 
 void Curve::createDataC()
-{		
+{
+	if (plotStyle() == NOPLOT)
+		return;
+
+	if (plotStyle() == Qwt3D::POINTS){
+		createPoints();
+		return;
+	} else if (plotStyle() == Qwt3D::USER && userplotstyle_p){
+		createEnrichment(*userplotstyle_p);
+		return;
+	}
+
+	Qwt3D::CellData *backup = plot_p->transform(actualDataC_);//axis scale transformation
+
 	if (facemode_)	createFaceData();
 	if (sidemode_)	createSideData();
 	if (floormode_)	createFloorData();
-  
-  if (plotStyle() == NOPLOT)
-    return;
 
-  if (plotStyle() == Qwt3D::POINTS)
-  {
-    createPoints();
-    return;
-  }
-  else if (plotStyle() == Qwt3D::USER)
-  {
-    if (userplotstyle_p)
-      createEnrichment(*userplotstyle_p);
-    return;
-  }
-
-    glPushAttrib(GL_POLYGON_BIT|GL_LINE_BIT|GL_COLOR_BUFFER_BIT);
+	glPushAttrib(GL_POLYGON_BIT|GL_LINE_BIT|GL_COLOR_BUFFER_BIT);
 	setDeviceLineWidth(meshLineWidth());
-  GLStateBewarer sb(GL_POLYGON_OFFSET_FILL,true);
-	setDevicePolygonOffset(polygonOffset(),1.0);
+	GLStateBewarer sb(GL_POLYGON_OFFSET_FILL,true);
+	setDevicePolygonOffset(polygonOffset(), 1.0);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	int idx = 0;
-	if (plotStyle() != WIREFRAME)
-	{
+
+	unsigned int size = actualDataC_->cells.size();
+	if (plotStyle() != WIREFRAME){
 		glPolygonMode(GL_FRONT_AND_BACK, GL_QUADS);
 
 		bool hl = (plotStyle() == HIDDENLINE);
-		if (hl)
-		{
-            RGBA col = plot_p->backgroundRGBAColor();
+		if (hl){
+			RGBA col = plot_p->backgroundRGBAColor();
 			glColor4d(col.r, col.g, col.b, col.a);
 		}
 		
-		for (unsigned i=0; i!=actualDataC_->cells.size(); ++i)
-		{
+		for (unsigned i = 0; i != size; ++i){
 			glBegin(GL_POLYGON);
-			for (unsigned j=0; j!=actualDataC_->cells[i].size(); ++j)
-			{
-				idx = actualDataC_->cells[i][j];
-				setColorFromVertexC(idx, hl);
-				glVertex3d( actualDataC_->nodes[idx].x, actualDataC_->nodes[idx].y, actualDataC_->nodes[idx].z );
-				glNormal3d( actualDataC_->normals[idx].x, actualDataC_->normals[idx].y, actualDataC_->normals[idx].z );
+			unsigned int sizei = actualDataC_->cells[i].size();
+			for (unsigned j = 0; j != sizei; ++j){
+				int idx = actualDataC_->cells[i][j];
+
+				setColorFromVertexC(backup->nodes[idx], hl);
+
+				Triple t = actualDataC_->nodes[idx];
+				glVertex3d(t.x, t.y, t.z);
+
+				t = actualDataC_->normals[idx];
+				glNormal3d(t.x, t.y, t.z);
 			}
 			glEnd();
 		}
 	}
 
-	if (plotStyle() == FILLEDMESH || plotStyle() == WIREFRAME || plotStyle() == HIDDENLINE)
-	{
+	if (plotStyle() == FILLEDMESH || plotStyle() == WIREFRAME || plotStyle() == HIDDENLINE){
 		glColor4d(meshColor().r, meshColor().g, meshColor().b, meshColor().a);
-		{
-			for (unsigned i=0; i!=actualDataC_->cells.size(); ++i)
-			{
-				glBegin(GL_LINE_LOOP);
-				for (unsigned j=0; j!=actualDataC_->cells[i].size(); ++j)
-				{
-					idx = actualDataC_->cells[i][j];
-					glVertex3d( actualDataC_->nodes[idx].x, actualDataC_->nodes[idx].y, actualDataC_->nodes[idx].z );
-				}
-				glEnd();
+		for (unsigned i = 0; i != size; ++i){
+			glBegin(GL_LINE_LOOP);
+			unsigned int sizei = actualDataC_->cells[i].size();
+			for (unsigned j = 0; j != sizei; ++j){
+				int idx = actualDataC_->cells[i][j];
+				Triple t = actualDataC_->nodes[idx];
+				glVertex3d(t.x, t.y, t.z);
 			}
+			glEnd();
 		}
 	}
     glPopAttrib();
+
+	if (backup != actualDataC_){
+		delete  actualDataC_;
+		actualDataC_ = backup;
+		actualData_p = actualDataC_;
+	}
 }
 
 // ci = cell index
 // cv = vertex index in cell ci
-void Curve::setColorFromVertexC(int node, bool skip)
+void Curve::setColorFromVertexC(const Triple& t, bool skip)
 {
 	if (skip)
 		return;
 
-	RGBA col = (*datacolor_p)(
-		actualDataC_->nodes[node].x, actualDataC_->nodes[node].y, actualDataC_->nodes[node].z);
-		
+	RGBA col = (*datacolor_p)(t.x, t.y, t.z);
 	glColor4d(col.r, col.g, col.b, col.a);
 }
 
@@ -152,16 +154,17 @@ void Curve::DatamapC(unsigned int comp)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	
-	Triple tmin = actualData_p->hull().minVertex;
+	Triple tmin = actualDataC_->hull().minVertex;
 	double shift = tmin(comp);
 
-	for (unsigned i = 0; i!=actualDataC_->cells.size(); ++i) {
+	unsigned int size = actualDataC_->cells.size();
+	for (unsigned i = 0; i != size; ++i) {
 		glBegin(GL_POLYGON);
-			for (unsigned j=0; j!=actualDataC_->cells[i].size(); ++j) {
+		unsigned int sizei = actualDataC_->cells[i].size();
+			for (unsigned j = 0; j != sizei; ++j) {
 				int	idx	= actualDataC_->cells[i][j];
 				Triple curr = actualDataC_->nodes[idx];
-				
-				setColorFromVertexC(idx);
+				setColorFromVertexC(curr);
 				drawVertex(curr, shift, comp);
 			}
 		glEnd();
@@ -170,11 +173,11 @@ void Curve::DatamapC(unsigned int comp)
 
 void Curve::IsolinesC(unsigned comp, bool projected)
 {
-	if (isolines() <= 0 || actualData_p->empty())
+	if (isolines() <= 0 || actualDataC_->empty())
 		return;
 
-	Triple tmax = actualData_p->hull().maxVertex;
-	Triple tmin = actualData_p->hull().minVertex;
+	Triple tmax = actualDataC_->hull().maxVertex;
+	Triple tmin = actualDataC_->hull().minVertex;
 		
 	double delta = tmax(comp) - tmin(comp);
 	double shift = tmin(comp);
@@ -249,32 +252,32 @@ void Curve::IsolinesC(unsigned comp, bool projected)
 
 void Curve::createNormalsC()
 {
-	if (!normals() || actualData_p->empty())
+	if (!normals() || actualDataC_->empty())
 		return;
 
 	if (actualDataC_->nodes.size() != actualDataC_->normals.size())
 		return;
-  Arrow arrow;
-  arrow.setQuality(normalQuality());
+
+	Arrow arrow;
+	arrow.setQuality(normalQuality());
 
 	Triple basev, topv, norm;	
 		
-	double diag = (actualData_p->hull().maxVertex-actualData_p->hull().minVertex).length() * normalLength();
+	double diag = (actualDataC_->hull().maxVertex - actualDataC_->hull().minVertex).length() * normalLength();
 
-  arrow.assign(*this);
-  arrow.drawBegin();
-	for (unsigned i = 0; i != actualDataC_->normals.size(); ++i) 
-	{
+	arrow.assign(*this);
+	arrow.drawBegin();
+	for (unsigned i = 0; i != actualDataC_->normals.size(); ++i){
 		basev = actualDataC_->nodes[i];
 		topv = basev + actualDataC_->normals[i];
 		
-			norm = topv-basev;
-			norm.normalize();
-			norm	*= diag;
+		norm = topv - basev;
+		norm.normalize();
+		norm	*= diag;
 
-      arrow.setTop(basev+norm);
-      arrow.setColor((*datacolor_p)(basev.x,basev.y,basev.z));
-      arrow.draw(basev);
+		arrow.setTop(basev+norm);
+		arrow.setColor((*datacolor_p)(basev.x,basev.y,basev.z));
+		arrow.draw(basev);
 	}
   arrow.drawEnd();
 }
@@ -299,45 +302,40 @@ bool Curve::loadFromData(TripleField const& data, CellField const& poly, QString
 
 //  normals for the moment
 	Triple n, u, v;
-	for ( i = 0; i < poly.size(); ++i) 
-	{
+	for (i = 0; i < poly.size(); ++i){
 		if (poly[i].size() < 3)
-			n = Triple(0,0,0);
-		else
-		{
-			for (unsigned j = 0; j < poly[i].size(); ++j) 
-			{
-				unsigned jj = (j+1) % poly[i].size(); 
-				unsigned pjj = (j) ? j-1 : poly[i].size()-1;
-				u = actualDataC_->nodes[poly[i][jj]]-actualDataC_->nodes[poly[i][j]];		
-				v = actualDataC_->nodes[poly[i][pjj]]-actualDataC_->nodes[poly[i][j]];
+			n = Triple(0, 0, 0);
+		else {
+			for (unsigned j = 0; j < poly[i].size(); ++j){
+				unsigned jj = (j + 1) % poly[i].size();
+				unsigned pjj = (j) ? j - 1 : poly[i].size() - 1;
+				u = actualDataC_->nodes[poly[i][jj]] - actualDataC_->nodes[poly[i][j]];
+				v = actualDataC_->nodes[poly[i][pjj]] - actualDataC_->nodes[poly[i][j]];
 				n = normalizedcross(u,v);
 				actualDataC_->normals[poly[i][j]] += n;
 			}
 		}
 	}
 	for ( i = 0; i != actualDataC_->normals.size(); ++i) 
-	{
 		actualDataC_->normals[i].normalize();
-	}  
 	
 	ParallelEpiped hull(Triple(DBL_MAX,DBL_MAX,DBL_MAX),Triple(-DBL_MAX,-DBL_MAX,-DBL_MAX));
 
-	for (i = 0; i!=data.size(); ++i)
-	{
-		if (data[i].x < hull.minVertex.x)
-			hull.minVertex.x = data[i].x;
-		if (data[i].y < hull.minVertex.y)
-			hull.minVertex.y = data[i].y;
-		if (data[i].z < hull.minVertex.z)
-			hull.minVertex.z = data[i].z;
-		
-		if (data[i].x > hull.maxVertex.x)
-			hull.maxVertex.x = data[i].x;
-		if (data[i].y > hull.maxVertex.y)
-			hull.maxVertex.y = data[i].y;
-		if (data[i].z > hull.maxVertex.z)
-			hull.maxVertex.z = data[i].z;
+	for (i = 0; i != data.size(); ++i){
+		Triple t = data[i];
+		if (t.x < hull.minVertex.x)
+			hull.minVertex.x = t.x;
+		if (t.y < hull.minVertex.y)
+			hull.minVertex.y = t.y;
+		if (t.z < hull.minVertex.z)
+			hull.minVertex.z = t.z;
+
+		if (t.x > hull.maxVertex.x)
+			hull.maxVertex.x = t.x;
+		if (t.y > hull.maxVertex.y)
+			hull.maxVertex.y = t.y;
+		if (t.z > hull.maxVertex.z)
+			hull.maxVertex.z = t.z;
 	}
 
 	actualDataC_->setHull(hull);

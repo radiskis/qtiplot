@@ -66,16 +66,45 @@ namespace {
 
 GridData::GridData()
 {
-  datatype = Qwt3D::GRID;
-  setSize(0,0);
-  setPeriodic(false,false);
+	datatype = Qwt3D::GRID;
+	setSize(0, 0);
+	setPeriodic(false, false);
 }
 
 GridData::GridData(unsigned int columns, unsigned int rows)
 {
-  datatype = Qwt3D::GRID;
-	setSize(columns,rows);
-  setPeriodic(false,false);
+	datatype = Qwt3D::GRID;
+	setSize(columns, rows);
+	setPeriodic(false, false);
+}
+
+GridData *GridData::copy()
+{
+	GridData *d = new GridData(columns(), rows());
+	d->setPeriodic(uperiodic_, vperiodic_);
+
+	unsigned int count = vertices.size();
+	for (unsigned int i = 0; i != count; ++i){
+		unsigned int counti = vertices[i].size();
+		for (unsigned int j = 0; j != counti; ++j){
+			for (int k = 0; k < 3; k++){
+				d->vertices[i][j][k] = vertices[i][j][k];
+			}
+		}
+	}
+
+	count = normals.size();
+	for (unsigned int i = 0; i != count; ++i){
+		unsigned int counti = normals[i].size();
+		for (unsigned int j = 0; j != counti; ++j){
+			for (int k = 0; k < 3; k++){
+				d->normals[i][j][k] = normals[i][j][k];
+			}
+		}
+	}
+
+	d->setHull(hull_p);
+	return d;
 }
 
 int GridData::columns() const 
@@ -91,52 +120,47 @@ int GridData::rows() const
 void GridData::clear()
 {
 	setHull(ParallelEpiped());
-	{
-		for (unsigned i=0; i!=vertices.size(); ++i)
-		{	
-			for (unsigned j=0; j!=vertices[i].size(); ++j)
-			{	
-				delete [] vertices[i][j];	
-			}
-			vertices[i].clear();
+	unsigned int count = vertices.size();
+	for (unsigned i = 0; i != count; ++i){
+		unsigned int counti = vertices[i].size();
+		for (unsigned j = 0; j != counti; ++j){
+			delete [] vertices[i][j];
 		}
+		vertices[i].clear();
 	}
-
 	vertices.clear();
 
-	{
-		for (unsigned i=0; i!=normals.size(); ++i)
-		{	
-			for (unsigned j=0; j!=normals[i].size(); ++j)
-			{	
-				delete [] normals[i][j];	
-			}
-			normals[i].clear();
+	count = normals.size();
+	for (unsigned i = 0; i != count; ++i){
+		unsigned int counti = normals[i].size();
+		for (unsigned j = 0; j != counti; ++j){
+			delete [] normals[i][j];
 		}
+		normals[i].clear();
 	}
-	
 	normals.clear();
 }
 
-
 void GridData::setSize(unsigned int columns, unsigned int rows)
 {
-	this->clear();
+	clear();
+
 	vertices = std::vector<DataRow>(columns);
-	for (unsigned int i=0; i!=vertices.size(); ++i)
-	{
+	unsigned int count = vertices.size();
+	for (unsigned int i = 0; i != count; ++i){
 		vertices[i] = DataRow(rows);
-		for (unsigned int j=0; j!=vertices[i].size(); ++j)
-		{
+		unsigned int counti = vertices[i].size();
+		for (unsigned int j = 0; j != counti; ++j){
 			vertices[i][j] = new GLdouble[3];
 		}
 	}
+
 	normals = std::vector<DataRow>(columns);
-	for (unsigned int i=0; i!=normals.size(); ++i)
-	{
+	count = normals.size();
+	for (unsigned int i = 0; i != count; ++i){
 		normals[i] = DataRow(rows);
-		for (unsigned int j=0; j!=normals[i].size(); ++j)
-		{
+		unsigned int counti = normals[i].size();
+		for (unsigned int j = 0; j != counti; ++j){
 			normals[i][j] = new GLdouble[3];
 		}
 	}
@@ -153,6 +177,29 @@ void CellData::clear()
 	cells.clear();
 	nodes.clear();
 	normals.clear();
+}
+
+CellData *CellData::copy()
+{
+	CellData *d = new CellData();
+	d->datatype = Qwt3D::POLYGON;
+
+	unsigned int size = cells.size(), nsize = nodes.size();
+
+	d->cells = CellField(size);
+	d->nodes = TripleField(nsize);
+	d->normals = TripleField(nsize);
+
+	for (unsigned i = 0; i != size; ++i)
+		d->cells[i] = cells[i];
+
+	for (unsigned i = 0; i != nsize; ++i){
+		d->nodes[i] = nodes[i];
+		d->normals[i] = normals[i];
+	}
+
+	d->setHull(hull_p);
+	return d;
 }
 
 QColor Qwt3D::GL2Qt(GLdouble r, GLdouble g, GLdouble b)

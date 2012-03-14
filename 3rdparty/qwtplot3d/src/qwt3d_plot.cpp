@@ -276,7 +276,7 @@ void Plot3D::childConnect(bool connect)
 /*!
 	Create a coordinate system with generating corners beg and end 
 */
-void Plot3D::createCoordinateSystem( Triple beg, Triple end )
+void Plot3D::createCoordinateSystem(Triple beg, Triple end)
 {
 	if (coordinates_p.first() == Triple(0,0,0) && coordinates_p.second() == Triple(0,0,0)){
 		coordinates_p.setPlot(this);
@@ -410,4 +410,99 @@ void Plot3D::normaliseScale(Curve* curve, Plot3D* parentplot, ParallelEpiped* cu
 
 	DEBUG << "Plot3D: Normalised Scale - scale =" << scale << height
 		  << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << "] zoom" << zoom() << zoomFactor << scale.length();
+}
+
+Qwt3D::GridData* Plot3D::transform(Qwt3D::GridData* data)
+{
+	Qwt3D::Axis xAxis = coordinates_p.axes[X1];
+	Qwt3D::Axis yAxis = coordinates_p.axes[Y1];
+	Qwt3D::Axis zAxis = coordinates_p.axes[Z1];
+	if (xAxis.scaleType() == LINEARSCALE && yAxis.scaleType() == LINEARSCALE && zAxis.scaleType() == LINEARSCALE)
+		return data;
+
+	Qwt3D::GridData *backup = data->copy();
+
+	unsigned int cols = data->columns();
+	unsigned int rows = data->rows();
+	for (unsigned int i = 0; i < cols; i++){
+		for (unsigned int j = 0; j < rows; j++){
+			double *v = data->vertices[i][j];
+			v[0] = xAxis.transform(v[0]);
+			v[1] = yAxis.transform(v[1]);
+			v[2] = zAxis.transform(v[2]);
+		}
+	}
+
+	return backup;
+}
+
+Qwt3D::CellData* Plot3D::transform(Qwt3D::CellData* data)
+{
+	Qwt3D::Axis xAxis = coordinates_p.axes[X1];
+	Qwt3D::Axis yAxis = coordinates_p.axes[Y1];
+	Qwt3D::Axis zAxis = coordinates_p.axes[Z1];
+	if (xAxis.scaleType() == LINEARSCALE && yAxis.scaleType() == LINEARSCALE && zAxis.scaleType() == LINEARSCALE)
+		return data;
+
+	Qwt3D::CellData *backup = data->copy();
+
+	ParallelEpiped hull(Triple(DBL_MAX, DBL_MAX, DBL_MAX), Triple(-DBL_MAX, -DBL_MAX, -DBL_MAX));
+
+	unsigned int size = data->nodes.size();
+	for (unsigned i = 0; i != size; ++i){
+		Triple t = data->nodes[i];
+		double x = xAxis.transform(t.x);
+		double y = yAxis.transform(t.y);
+		double z = zAxis.transform(t.z);
+
+		data->nodes[i] = Triple(x, y, z);
+
+		if (x < hull.minVertex.x)
+			hull.minVertex.x = x;
+		if (y < hull.minVertex.y)
+			hull.minVertex.y = y;
+		if (z < hull.minVertex.z)
+			hull.minVertex.z = z;
+
+		if (x > hull.maxVertex.x)
+			hull.maxVertex.x = x;
+		if (y > hull.maxVertex.y)
+			hull.maxVertex.y = y;
+		if (z > hull.maxVertex.z)
+			hull.maxVertex.z = z;
+	}
+
+	data->setHull(hull);
+	return backup;
+}
+
+Qwt3D::Triple Plot3D::transform(const Qwt3D::Triple& t)
+{
+	Qwt3D::Axis xAxis = coordinates_p.axes[X1];
+	Qwt3D::Axis yAxis = coordinates_p.axes[Y1];
+	Qwt3D::Axis zAxis = coordinates_p.axes[Z1];
+	return Triple(xAxis.transform(t.x), yAxis.transform(t.y), zAxis.transform(t.z));
+}
+
+Qwt3D::Triple Plot3D::transform(double *v, unsigned int comp)
+{
+	if (comp == Z1){
+		Qwt3D::Axis xAxis = coordinates_p.axes[X1];
+		Qwt3D::Axis yAxis = coordinates_p.axes[Y1];
+		return Triple(xAxis.transform(v[0]), yAxis.transform(v[1]), v[2]);
+	}
+
+	if (comp == Y1){
+		Qwt3D::Axis xAxis = coordinates_p.axes[X1];
+		Qwt3D::Axis zAxis = coordinates_p.axes[Z1];
+		return Triple(xAxis.transform(v[0]), v[1], zAxis.transform(v[2]));
+	}
+
+	if (comp == X1){
+		Qwt3D::Axis yAxis = coordinates_p.axes[Y1];
+		Qwt3D::Axis zAxis = coordinates_p.axes[Z1];
+		return Triple(v[0], yAxis.transform(v[1]), zAxis.transform(v[2]));
+	}
+
+	return Qwt3D::Triple(v[0], v[1], v[2]);
 }
