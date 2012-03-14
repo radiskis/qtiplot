@@ -1468,8 +1468,15 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		sp->coordinates()->axes[axis4].setMinors(minorTicks);
 	}
 
-	if (d_active_curve)
-		d_active_curve->updateColorLegend(legendMajorTicks, 2);
+	if (axis == Z1 && d_active_curve){
+		Qwt3D::ColorLegend *legend = d_active_curve->legend();
+		if (legend){
+			legend->setLimits(zMin, zMax);
+			legend->setMajors(majorTicks);
+			legend->setMinors(minorTicks);
+		}
+		setDataColorMap(d_color_map);
+	}
 
 	update();
 	emit modified();
