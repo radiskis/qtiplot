@@ -486,9 +486,10 @@ void Curve::setDataColor(Color* col)
 {
 	Q_ASSERT(datacolor_p);
 	
-	if (col == datacolor_p)		return;
-	
-	datacolor_p->destroy();
+	if (col == datacolor_p)
+		return;
+
+	datacolor_p->clear();
 	datacolor_p = col;
 	update_displaylists_ = true;
 }
@@ -596,9 +597,10 @@ void Curve::showColorLegend(bool show)
 {
 	displaylegend_ = show;
 
-	if (show) {
-		Color* color = const_cast<Color*>(dataColor());
-		if (color)		color->createVector(legend_.colors);
+	if (show){
+		Color* color = dynamic_cast<Color*>(datacolor_p);
+		if (color)
+			color->createVector(legend_.colors);
 	}
 	updateData(false);
 }

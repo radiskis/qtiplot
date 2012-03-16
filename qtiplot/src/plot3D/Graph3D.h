@@ -1,13 +1,11 @@
 /***************************************************************************
-    File                 : Graph3D.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2004-2010 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : 3D graph widget
-
- ***************************************************************************/
-
+File                 : Graph3D.h
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : 3D graph widget
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -80,6 +78,9 @@ public:
 
 	bool printCropmarksEnabled(){return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
+
+	Qwt3D::SHADINGSTYLE shading() const {return d_shading;}//!< Returns shading style
+	void setShading(const Qwt3D::SHADINGSTYLE& shadingStyle);
 
 public slots:
 	void copy(Graph3D* g);
@@ -415,7 +416,7 @@ private:
 	QVector<int> scaleType;
 	QColor axesCol, labelsCol, titleCol, meshCol, bgCol, numCol, gridCol;
 	int labelsDist, legendMajorTicks;
-	Qwt3D::StandardColor* col_;
+
 	//! Transparency
 	double d_alpha;
 
@@ -437,10 +438,31 @@ private:
 	UserFunction *d_func;
 	UserParametricSurface *d_surface;
 	Qwt3D::PLOTSTYLE style_;
+	Qwt3D::SHADINGSTYLE d_shading;
 	PlotType d_table_plot_type;
 	Curve * d_active_curve;
 	ConstFunction *d_const_func;
 	Curve * d_const_curve;
+};
+
+class LinearColor : public Color
+{
+public:
+	LinearColor(Qwt3D::Curve*, const LinearColorMap&, double alpha = 1.0);
+	LinearColor(Qwt3D::Curve*, const Qwt3D::ColorVector&);
+	Qwt3D::RGBA operator()(double x, double y, double z) const;
+
+	void setAlpha(double a);
+	double alpha(){return d_alpha;}
+
+	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec);
+	void clear(){d_colors.clear();}
+
+protected:
+	Qwt3D::Curve *d_curve;
+	LinearColorMap d_color_map;
+	Qwt3D::ColorVector d_colors;
+	double d_alpha;
 };
 
 //! Class for constant z surfaces

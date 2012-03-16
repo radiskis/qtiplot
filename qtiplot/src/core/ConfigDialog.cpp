@@ -535,28 +535,36 @@ void ConfigDialog::initPlots3DPage()
 	topLayout->addWidget(boxProjection, 1, 1);
 	lblFloorStyle->setBuddy(boxProjection);
 
+	boxShading = new QComboBox();
+	boxShading->setCurrentIndex(app->d_3D_shading);
+	topLayout->addWidget(boxShading, 2, 1);
+
+	lblShadingStyle = new QLabel();
+	lblShadingStyle->setBuddy(boxShading);
+	topLayout->addWidget(lblShadingStyle, 2, 0);
+
 	boxShowLegend = new QCheckBox();
 	boxShowLegend->setChecked(app->d_3D_legend);
-	topLayout->addWidget(boxShowLegend, 2, 0);
+	topLayout->addWidget(boxShowLegend, 3, 0);
 
 	boxSmoothMesh = new QCheckBox();
 	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);
-	topLayout->addWidget(boxSmoothMesh, 2, 1);
+	topLayout->addWidget(boxSmoothMesh, 3, 1);
 
 	boxOrthogonal = new QCheckBox();
 	boxOrthogonal->setChecked(app->d_3D_orthogonal);
-	topLayout->addWidget(boxOrthogonal, 2, 2);
+	topLayout->addWidget(boxOrthogonal, 3, 2);
 
 	boxAutoscale3DPlots = new QCheckBox();
 	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
-	topLayout->addWidget(boxAutoscale3DPlots, 3, 0);
+	topLayout->addWidget(boxAutoscale3DPlots, 4, 0);
 
 	boxScaleFonts3DPlots = new QCheckBox();
 	boxScaleFonts3DPlots->setChecked(app->scale3DPlotFonts());
-	topLayout->addWidget(boxScaleFonts3DPlots, 3, 1);
+	topLayout->addWidget(boxScaleFonts3DPlots, 4, 1);
 
 	topLayout->setColumnStretch(3, 1);
-	topLayout->setRowStretch(4, 1);
+	topLayout->setRowStretch(5, 1);
 
     colorMapBox = new QGroupBox();
     QHBoxLayout *colorMapLayout = new QHBoxLayout( colorMapBox );
@@ -2296,14 +2304,21 @@ void ConfigDialog::languageChange()
 
 	//plots 3D
 	lblResolution->setText(tr("&Resolution"));
-	boxResolution->setSpecialValueText( "1 " + tr("(all data shown)") );
+	boxResolution->setSpecialValueText( " 1 " + tr("(all data shown)") );
 	boxShowLegend->setText(tr( "&Show Legend" ));
 	lblFloorStyle->setText(tr( "&Floor style" ));
+	lblShadingStyle->setText(tr("S&hading"));
+
 	boxProjection->clear();
 	boxProjection->addItem(tr( "Empty" ));
 	boxProjection->addItem(tr( "Isolines" ));
 	boxProjection->addItem(tr( "Projection" ));
 	boxProjection->setCurrentIndex(app->d_3D_projection);
+
+	boxShading->clear();
+	boxShading->addItem(tr("Flat"));
+	boxShading->addItem(tr("Smooth"));
+	boxShading->setCurrentIndex(app->d_3D_shading);
 
 	boxSmoothMesh->setText(tr("Smoot&h Line"));
 	boxOrthogonal->setText(tr("O&rthogonal"));
@@ -2672,6 +2687,7 @@ void ConfigDialog::apply()
 	app->d_3D_labels_color = btnLabels->color();
 	app->d_3D_legend = boxShowLegend->isChecked();
 	app->d_3D_projection = boxProjection->currentIndex();
+	app->d_3D_shading = boxShading->currentIndex();
 	app->d_3D_resolution = boxResolution->value();
 	app->d_3D_title_font = d_3D_title_font;
 	app->d_3D_numbers_font = d_3D_numbers_font;
@@ -3789,6 +3805,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 
 	//3D plots page
 	boxResolution->setValue(app->d_3D_resolution);
+	boxShading->setCurrentIndex(app->d_3D_shading);
 	boxProjection->setCurrentIndex(app->d_3D_projection);
 	boxShowLegend->setChecked(app->d_3D_legend);
 	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);

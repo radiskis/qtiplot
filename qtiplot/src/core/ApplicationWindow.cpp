@@ -703,6 +703,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	d_3D_legend = true;
 	d_3D_projection = NOFLOOR;
+	d_3D_shading = Qwt3D::GOURAUD;
 	d_3D_smooth_mesh = true;
 	d_3D_resolution = 1;
 	d_3D_orthogonal = false;
@@ -5684,6 +5685,7 @@ void ApplicationWindow::readSettings()
 	settings.beginGroup("/3DPlots");
 	d_3D_legend = settings.value("/Legend",true).toBool();
 	d_3D_projection = settings.value("/Projection", d_3D_projection).toInt();
+	d_3D_shading = settings.value("/Shading", d_3D_shading).toInt();
 	d_3D_smooth_mesh = settings.value("/Antialiasing", true).toBool();
 	d_3D_resolution = settings.value ("/Resolution", 1).toInt();
 	d_3D_orthogonal = settings.value("/Orthogonal", false).toBool();
@@ -6168,6 +6170,7 @@ void ApplicationWindow::saveSettings()
 	settings.beginGroup("/3DPlots");
 	settings.setValue("/Legend", d_3D_legend);
 	settings.setValue("/Projection", d_3D_projection);
+	settings.setValue("/Shading", d_3D_shading);
 	settings.setValue("/Antialiasing", d_3D_smooth_mesh);
 	settings.setValue("/Resolution", d_3D_resolution);
 	settings.setValue("/Orthogonal", d_3D_orthogonal);

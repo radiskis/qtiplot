@@ -52,6 +52,84 @@ Description          : 3D graph widget
 #include <gsl/gsl_vector.h>
 #include <fstream>
 
+LinearColor::LinearColor(Qwt3D::Curve* curve, const LinearColorMap& colorMap, double alpha): Color(),
+d_curve(curve),
+d_color_map(colorMap),
+d_colors(Qwt3D::ColorVector()),
+d_alpha(alpha)
+{}
+
+LinearColor::LinearColor(Qwt3D::Curve* curve, const Qwt3D::ColorVector& colors): Color(),
+d_curve(curve),
+d_color_map(LinearColorMap()),
+d_colors(colors),
+d_alpha(1.0)
+{}
+
+Qwt3D::RGBA LinearColor::operator()(double, double, double z) const
+{
+	double zmin, zmax;
+	d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+
+	int size = (int)d_colors.size() - 1;
+	if (size >= 0){
+		int index = (int)(size*(z - zmin)/(zmax - zmin));
+		if (index < 0)
+			index = 0;
+		if (index > size)
+			index = size;
+		return d_colors[index];
+	}
+
+	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
+	QRgb color = d_color_map.rgb(range, z);
+	return RGBA(qRed(color)/255., qGreen(color)/255., qBlue(color)/255., d_alpha);
+}
+
+void LinearColor::setAlpha(double a)
+{
+	if (a < 0 || a > 1 || d_alpha == a)
+		return;
+
+	d_alpha = a;
+
+	unsigned int size = d_colors.size();
+	if (size){
+		for (unsigned int i = 0; i < size; ++i){
+			RGBA elem = d_colors[i];
+			elem.a = a;
+			d_colors[i] = elem;
+		}
+	}
+}
+
+Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec)
+{
+	if (d_colors.size() > 0){
+		vec.clear();
+		vec = d_colors;
+		return vec;
+	}
+
+	int size = 255;
+	double dsize = size;
+	double zmin, zmax;
+	d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+	double dz = fabs(zmax - zmin)/dsize;
+
+	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
+
+	Qwt3D::ColorVector cv;
+	for (int i = 0; i < size; i++){
+		QRgb color = d_color_map.rgb(range, zmin + i*dz);
+		cv.push_back(RGBA(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha));
+	}
+
+	vec.clear();
+	vec = cv;
+	return vec;
+}
+
 ConstFunction::ConstFunction(Qwt3D::Curve *pw)
 : Function(pw)
 {}
@@ -196,10 +274,9 @@ void Graph3D::initPlot()
 	titleCol = Qt::black;
 	titleFnt = app->d_3D_title_font;
 
-	col_ = 0;
 	d_color_map_file = QString::null;
 	d_color_map = app->d_3D_color_map;
-
+	d_shading = (Qwt3D::SHADINGSTYLE)app->d_3D_shading;
 	legendOn = app->d_3D_legend;
 	legendMajorTicks = 5;
 
@@ -280,6 +357,17 @@ void Graph3D::initCoord()
 	sp->coordinates()->setAutoScale(false);
 }
 
+void Graph3D::setShading(const Qwt3D::SHADINGSTYLE& shadingStyle)
+{
+	if (d_shading == shadingStyle)
+		return;
+
+	d_shading = shadingStyle;
+
+	if (d_active_curve)
+		d_active_curve->setShading(shadingStyle);
+}
+
 void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	if (d_const_curve){
@@ -320,6 +408,8 @@ Curve* Graph3D::addCurve()
 	d_active_curve = new Curve(sp);
 	sp->addCurve(d_active_curve);
 
+	d_active_curve->setShading(d_shading);
+	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map));
 	d_active_curve->setSmoothMesh(app->d_3D_smooth_mesh);
 	d_active_curve->setDataProjection(false);
 	d_active_curve->setProjection(BASE);
@@ -2912,24 +3002,8 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	d_color_map = colorMap;
 	d_color_map_file = QString::null;
 
-	double zmin, zmax;
-	sp->coordinates()->axes[Z1].limits(zmin, zmax);
-	const QwtDoubleInterval range = colorMap.intensityRange().isValid() ? colorMap.intensityRange() : QwtDoubleInterval(zmin, zmax);
-
-	int size = 255;
-	double dsize = size;
-	double dz = fabs(zmax - zmin)/dsize;
-	Qwt3D::ColorVector cv;
-	for (int i = 0; i < size; i++){
-		QRgb color = colorMap.rgb(range, zmin + i*dz);
-		RGBA rgb(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha);
-		cv.push_back(rgb);
-	}
-
-	col_ = new StandardColor(d_active_curve, size);
-	col_->setColorVector(cv);
-	d_active_curve->setDataColor(col_);
-
+	LinearColor *color = (LinearColor *)d_active_curve->dataColor();
+	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map, color->alpha()));
 	sp->showColorLegend(legendOn);
 }
 
@@ -2951,8 +3025,7 @@ void Graph3D::changeTransparency(double t)
 
 	d_alpha = t;
 
-	Qwt3D::StandardColor* color = (StandardColor*)d_active_curve->dataColor ();
-	color->setAlpha(t);
+	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
 
     sp->showColorLegend(legendOn);
 	sp->updateGL();
@@ -2969,8 +3042,7 @@ void Graph3D::setTransparency(double t)
 
 	d_alpha = t;
 
-	Qwt3D::StandardColor* color = (StandardColor*)d_active_curve->dataColor ();
-	color->setAlpha(t);
+	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
 }
 
 void Graph3D::showWorksheet()
@@ -3029,10 +3101,13 @@ void Graph3D::setDataColorMap(const ColorVector& colors)
 	if (!d_active_curve)
 		return;
 
-	col_ = new StandardColor(d_active_curve);
-	col_->setColorVector(colors);
+	LinearColor *color = (LinearColor *)d_active_curve->dataColor();
+	double alpha = color->alpha();
 
-	sp->setDataColor(col_);
+	color = new LinearColor(d_active_curve, colors);
+	color->setAlpha(alpha);
+
+	sp->setDataColor(color);
 	sp->updateData();
 	sp->showColorLegend(legendOn);
 	sp->updateGL();
