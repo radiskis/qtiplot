@@ -1427,7 +1427,7 @@ public:
 	//! \name user custom values for 3D plots look
 	//@{
 	bool d_3D_smooth_mesh, d_3D_legend, d_3D_orthogonal, d_3D_autoscale;
-	int d_3D_resolution, d_3D_projection;
+	int d_3D_resolution, d_3D_projection, d_3D_shading;
 	QFont d_3D_title_font, d_3D_numbers_font, d_3D_axes_font;
 	LinearColorMap d_3D_color_map;
 	QColor d_3D_mesh_color;

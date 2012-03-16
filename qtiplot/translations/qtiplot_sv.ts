@@ -10805,6 +10805,18 @@ Följande specialkoder kan användas:
         <source>Apply to graphic &amp;export as well</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>S&amp;hading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smooth</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

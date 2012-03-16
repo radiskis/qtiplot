@@ -9623,6 +9623,18 @@ The following special codes can be used:
         <source>Apply to graphic &amp;export as well</source>
         <translation>Aplică şi la &amp;exportul graficelor</translation>
     </message>
+    <message>
+        <source>S&amp;hading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smooth</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>

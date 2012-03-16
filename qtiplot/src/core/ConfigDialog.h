@@ -198,8 +198,8 @@ private:
 	QCheckBox *boxSave, *boxBackbones, *boxShowLegend, *boxSmoothMesh;
 	QCheckBox *boxAutoscaling, *boxMatrices, *boxScaleFonts, *boxResize;
 	QComboBox *boxMajTicks, *boxMinTicks, *boxStyle, *boxCurveStyle, *boxSeparator, *boxLanguage, *boxDecimalSeparator;
-	QComboBox *boxClipboardLocale, *boxProjection;
-	QLabel *lblClipboardSeparator, *lblFloorStyle;
+	QComboBox *boxClipboardLocale, *boxProjection, *boxShading;
+	QLabel *lblClipboardSeparator, *lblFloorStyle, *lblShadingStyle;
 	QSpinBox *boxMinutes, *boxLineWidth, *boxFrameWidth, *boxResolution, *boxMargin, *boxPrecision, *boxAppPrecision;
 	QSpinBox *boxSymbolSize, *boxMinTicksLength, *boxMajTicksLength, *generatePointsBox;
 	DoubleSpinBox *boxCurveLineWidth;
