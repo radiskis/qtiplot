@@ -545,26 +545,26 @@ void ConfigDialog::initPlots3DPage()
 
 	boxShowLegend = new QCheckBox();
 	boxShowLegend->setChecked(app->d_3D_legend);
-	topLayout->addWidget(boxShowLegend, 3, 0);
+	topLayout->addWidget(boxShowLegend, 0, 2);
 
 	boxSmoothMesh = new QCheckBox();
 	boxSmoothMesh->setChecked(app->d_3D_smooth_mesh);
-	topLayout->addWidget(boxSmoothMesh, 3, 1);
+	topLayout->addWidget(boxSmoothMesh, 2, 2);
 
 	boxOrthogonal = new QCheckBox();
 	boxOrthogonal->setChecked(app->d_3D_orthogonal);
-	topLayout->addWidget(boxOrthogonal, 3, 2);
+	topLayout->addWidget(boxOrthogonal, 0, 3);
 
 	boxAutoscale3DPlots = new QCheckBox();
 	boxAutoscale3DPlots->setChecked(app->d_3D_autoscale);
-	topLayout->addWidget(boxAutoscale3DPlots, 4, 0);
+	topLayout->addWidget(boxAutoscale3DPlots, 1, 2);
 
 	boxScaleFonts3DPlots = new QCheckBox();
 	boxScaleFonts3DPlots->setChecked(app->scale3DPlotFonts());
-	topLayout->addWidget(boxScaleFonts3DPlots, 4, 1);
+	topLayout->addWidget(boxScaleFonts3DPlots, 1, 3);
 
-	topLayout->setColumnStretch(3, 1);
-	topLayout->setRowStretch(5, 1);
+	topLayout->setColumnStretch(5, 1);
+	topLayout->setRowStretch(4, 1);
 
     colorMapBox = new QGroupBox();
     QHBoxLayout *colorMapLayout = new QHBoxLayout( colorMapBox );
