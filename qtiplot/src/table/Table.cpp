@@ -1,14 +1,12 @@
 /***************************************************************************
-    File                 : Table.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2004 - 2011 by Ion Vasilief
-						   (C) 2006 - june 2007 by Knut Franke
-    Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
-    Description          : Table worksheet class
-
- ***************************************************************************/
-
+File                 : Table.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2004 - 2012 by Ion Vasilief
+					   (C) 2006 - june 2007 by Knut Franke
+Email (use @ for *)  : ion_vasilief*yahoo.fr, knut.franke*gmx.de
+Description          : Table worksheet class
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -643,11 +641,11 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	if (col < 0 || col >= d_table->numCols())
 		return false;
 
-    if (d_table->isColumnReadOnly(col)){
-        QMessageBox::warning(this, tr("QtiPlot - Error"),
-        tr("Column '%1' is read only!").arg(col_label[col]));
-        return false;
-    }
+	if (d_table->isColumnReadOnly(col)){
+		QMessageBox::warning(this, tr("QtiPlot - Error"),
+		tr("Column '%1' is read only!").arg(col_label[col]));
+		return false;
+	}
 
 	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
 		return muParserCalculate(col, startRow, endRow, notifyChanges);
@@ -708,7 +706,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		for (int i = startRow; i <= endRow; i++){
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
-			if(ret.type() == QVariant::Double)
+			if (ret.type() == QVariant::Double)
 				d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
 			else if(ret.canConvert(QVariant::String))
 				d_table->setText(i, col, ret.toString());
@@ -1623,11 +1621,14 @@ void Table::pasteSelection()
 		}
 	}
 
-	int top, left, firstCol = firstSelectedColumn();
-	Q3TableSelection sel = d_table->selection(0);
-	if (!sel.isEmpty()){// not columns but only cells are selected
-		top = sel.topRow();
-		left = sel.leftCol();
+	int top = 0, left = 0, firstCol = firstSelectedColumn();
+	int selectionIndex = d_table->currentSelection();
+	if (selectionIndex >= 0){
+		Q3TableSelection sel = d_table->selection(selectionIndex);
+		if (!sel.isEmpty()){// not entire columns but only cells are selected
+			top = sel.topRow();
+			left = sel.leftCol();
+		}
 	} else {
 		top = d_table->currentRow();
 		left = d_table->currentColumn();
@@ -1635,12 +1636,17 @@ void Table::pasteSelection()
 			left = firstCol;
 	}
 
-    if (top + rows > d_table->numRows())
-        d_table->setNumRows(top + rows);
-    if (left + cols > d_table->numCols()){
-        addColumns(left + cols - d_table->numCols());
-        setHeaderColType();
-    }
+	if (top < 0)
+		top = 0;
+	if (left < 0)
+		left = 0;
+
+	if (top + rows > d_table->numRows())
+		d_table->setNumRows(top + rows);
+	if (left + cols > d_table->numCols()){
+		addColumns(left + cols - d_table->numCols());
+		setHeaderColType();
+	}
 
 	QStringList lstReadOnly;
 	for (int i = left; i < left + cols; i++){
@@ -1698,15 +1704,15 @@ void Table::pasteSelection()
 			if (d_table->isColumnReadOnly(j))
 				continue;
 
-            int colIndex = j-left;
-            if (colIndex >= cells.count())
-                break;
+			int colIndex = j-left;
+			if (colIndex >= cells.count())
+				break;
 
 			bool numeric = false;
 			double value = clipboardLocale.toDouble(cells[colIndex], &numeric);
 			if (numeric){
-			    int prec;
-                char f;
+				int prec;
+				char f;
 				columnNumericFormat(j, &f, &prec);
 				d_table->setText(row, j, l.toString(value, f, prec));
 			} else
