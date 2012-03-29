@@ -937,3 +937,10 @@ setZComment
 axisScaleDiv
 writeFitResultsToLog
 setWriteFitResultsToLog
+xAxis
+setXAxis
+yAxis
+setYAxis
+setZ
+hasSynchronizedScaleDivisions
+setSynchronizedScaleDivisions

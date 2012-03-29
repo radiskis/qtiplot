@@ -2346,6 +2346,7 @@ adapt to the new data interval. This can be avoided by disabling the autoscaling
 making sure that your scale settings will always be taken into account:
 <programlisting>
 l.enableAutoscaling(False)
+l.setSynchronizedScaleDivisions(False)
 </programlisting>
 
 If you want to rescale the plot layer so that all the data points are visible, you can use the following utility function:
@@ -2594,9 +2595,11 @@ if the curve with the specified index/title is not a PlotCurve or a DataCurve ob
 For example, an analytical function curve is a PlotCurve but not a DataCurve and spectrograms are a
 completely different type of plot items which are neither PlotCurves nor DataCurves.</para>
 
-<para>Use the following function to change the axis attachment of a curve:</para>
+<para>Use the following functions to change the axis attachment of a curve:</para>
 <programlisting>
-l.setCurveAxes(number, x-axis, y-axis)
+l.setCurveAxes(0, Layer.Top, Layer.Right)# modify the first curve in the layer (curve index is 0)
+c.setXAxis(Layer.Bottom)
+c.setYAxis(Layer.Right)#attach curve c to the right Y axis
 </programlisting>
 <para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
 
