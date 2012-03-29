@@ -1525,9 +1525,11 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		} else
 			d_func->setDomain(xMin, xMax, yMin, yMax);
 		d_func->create();
+		changeScales(xMin, xMax, yMin, yMax, zMin, zMax);
 	} else if (d_surface){
 		d_surface->restrictRange(ParallelEpiped(Triple(xMin, yMin, zMin), Triple(xMax, yMax, zMax)));
 		d_surface->create();
+		changeScales(xMin, xMax, yMin, yMax, zMin, zMax);
 	} else
 		setScales(xMin, xMax, yMin, yMax, zMin, zMax, axis);
 
@@ -3201,6 +3203,8 @@ void Graph3D::copy(Graph3D* g)
 		addMatrixData(g->matrix(), g->xStart(), g->xStop(), g->yStart(), g->yStop(),g->zStart(),g->zStop());
 
 
+	changeScales(g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
+
 	pointStyle = g->pointType();
 	style_ = g->plotStyle();
 	if (g->plotStyle() == Qwt3D::USER ){
@@ -3394,7 +3398,6 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			Matrix* m = app->matrix(formula);
 			if (!m)
 				return 0;
-
 			plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
 					fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 		} else if (formula.contains(",")){
@@ -3402,13 +3405,15 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			plot->addParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
 					l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
 		} else {
+			double xs = fList[2].toDouble(), xe = fList[3].toDouble();
+			double ys = fList[4].toDouble(), ye = fList[5].toDouble();
+			double zs = fList[6].toDouble(), ze = fList[7].toDouble();
 			QStringList l = formula.split(";", QString::SkipEmptyParts);
 			if (l.count() == 1)
-				plot->addFunction(formula, fList[2].toDouble(), fList[3].toDouble(),
-					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
+				plot->addFunction(formula, xs, xe, ys, ye, zs, ze);
 			else if (l.count() == 3)
-				plot->addFunction(l[0], fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
-						fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble(), l[1].toInt(), l[2].toInt());
+				plot->addFunction(l[0], xs, xe, ys, ye, zs, ze, l[1].toInt(), l[2].toInt());
+			plot->changeScales(xs, xe, ys, ye, zs, ze);
 		}
 	}
 
