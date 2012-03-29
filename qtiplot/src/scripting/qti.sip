@@ -1277,6 +1277,15 @@ class QwtPlotCurve
 		double minYValue() const;
 		double maxYValue() const;
 
+		double z() const;
+		void setZ(double);
+
+		int xAxis() const;
+		void setXAxis(int);
+
+		int yAxis () const;
+		void setYAxis(int);
+
 		void setPen(const QPen &);
 		const QPen &pen() const;
 
@@ -1289,7 +1298,7 @@ class QwtPlotCurve
 		void setVisible(bool on);
 		bool isVisible();
 
-		void setTitle (const QString &title);
+		void setTitle(const QString &title);
 
 	private:
 		QwtPlotCurve(const QwtPlotCurve&);
@@ -1997,6 +2006,10 @@ public:
 				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0, int minTicksBeforeBreak = 4,
 				int minTicksAfterBreak = 4, bool log10AfterBreak = false, int breakWidth = 4, bool breakDecoration = true);
   void setAutoScale();
+
+  bool hasSynchronizedScaleDivisions();
+  void setSynchronizedScaleDivisions(bool);
+
   void setMargin(int);
   void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
   void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
@@ -2035,7 +2048,7 @@ public:
     void setCurveAxes(int,int,int);
 %MethodCode
 	sipIsErr = 0;
-	if ((a1)>1 || (a1<0) || (a2>1) || (a2<0))
+	if ((a1 > 3) || (a1 < 2) || (a2 > 1) || (a2 < 0))
     {
          sipIsErr=1;
          PyErr_Format(PyExc_ValueError, "Invalid axis attachment!");\
@@ -2049,7 +2062,7 @@ public:
 	{
         QwtPlotItem* pItem;
 		pItem = sipCpp->plotItem(a0);
-		pItem->setAxis(a1 + 2, a2);
+		pItem->setAxis(a1, a2);
 		sipCpp->setAutoScale();
 	}
 %End
