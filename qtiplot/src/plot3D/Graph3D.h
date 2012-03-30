@@ -370,6 +370,7 @@ public slots:
 	//@}
 
 	Table* table(){return d_table;};
+	Matrix* functionMatrix();
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
 
