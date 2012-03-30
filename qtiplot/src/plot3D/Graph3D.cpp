@@ -3047,9 +3047,33 @@ void Graph3D::setTransparency(double t)
 	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
 }
 
+Matrix * Graph3D::functionMatrix()
+{
+	if (!d_func)
+		return 0;
+
+	Matrix *m = applicationWindow()->newMatrix(d_func->rows(), d_func->columns());
+	if (m){
+		QString form = d_func->function();
+		m->setFormula(form);
+		m->setWindowLabel(form);
+		m->setCaptionPolicy(MdiSubWindow::Label);
+		m->setCoordinates(d_func->xMin(), d_func->xMax(), d_func->yMin(), d_func->yMax());
+		m->setViewType(Matrix::ImageView, false);
+		m->setColorMap(d_color_map);
+		m->calculate();
+		m->show();
+	}
+	return m;
+}
+
 void Graph3D::showWorksheet()
 {
-	if (d_table)
+	if (d_func){
+		Matrix *m = functionMatrix();
+		if (m)
+			m->showMaximized();
+	} else if (d_table)
 		d_table->showMaximized();
 	else if (d_matrix)
 		d_matrix->showMaximized();

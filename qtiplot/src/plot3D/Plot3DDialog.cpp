@@ -337,15 +337,15 @@ void Plot3DDialog::initColorsPage()
     btnMesh = new ColorButton();
     QLabel *meshLabel = new QLabel(tr( "&Line" ));
     meshLabel->setBuddy(btnMesh);
-    vl2->addWidget(meshLabel, 1, 0);
-    vl2->addWidget(btnMesh, 1, 1);
+	vl2->addWidget(meshLabel, 1, 0);
+	vl2->addWidget(btnMesh, 1, 1);
 
     btnBackground = new ColorButton();
     QLabel *backgroundLabel = new QLabel(tr( "&Background" ));
     backgroundLabel->setBuddy(btnBackground);
-    vl2->addWidget(backgroundLabel, 2, 0);
-    vl2->addWidget(btnBackground, 2, 1);
-    vl2->setRowStretch(3, 1);
+	vl2->addWidget(backgroundLabel, 2, 0);
+	vl2->addWidget(btnBackground, 2, 1);
+	vl2->setRowStretch(3, 1);
 
     QGroupBox *gb2 = new QGroupBox(tr( "General" ));
     gb2->setLayout(vl2);
@@ -837,11 +837,11 @@ void Plot3DDialog::setPlot(Graph3D *g)
 		if (g->grids() == 0)
 			gridPage->setDisabled(true);
 
-		if (g->userFunction() || g->parametricSurface())
+		if (g->parametricSurface())
 			btnTable->hide();
 		else if (g->table())
             btnTable->setText(tr("&Worksheet"));
-		else if (g->matrix())
+		else if (g->matrix() || g->userFunction())
 			btnTable->setText(tr("&Matrix"));
 
 	boxPrintCropmarks->setChecked(g->printCropmarksEnabled());

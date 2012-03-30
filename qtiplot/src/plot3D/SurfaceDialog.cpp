@@ -344,10 +344,10 @@ void SurfaceDialog::setFunction(Graph3D *g)
 	boxFunction->setText(f->function());
 	boxFuncColumns->setValue(f->columns());
 	boxFuncRows->setValue(f->rows());
-	boxXFrom->setValue(g->xStart());
-	boxXTo->setValue(g->xStop());
-	boxYFrom->setValue(g->yStart());
-	boxYTo->setValue(g->yStop());
+	boxXFrom->setValue(f->xMin());
+	boxXTo->setValue(f->xMax());
+	boxYFrom->setValue(f->yMin());
+	boxYTo->setValue(f->yMax());
 	boxZFrom->setValue(g->zStart());
 	boxZTo->setValue(g->zStop());
 }
