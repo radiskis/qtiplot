@@ -239,10 +239,6 @@
 <!ENTITY view-menu-lnk '<link linkend="sec-view-menu">View menu</link>'>
 <!ENTITY toolbars-cmd "<command>Toolbars...</command>">
   <!ENTITY toolbars-key "<keycode>Ctrl-Shift-T</keycode>">
-<!ENTITY plot-wizard-cmd "<command>Plot Wizard</command>">
-<!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Plot Wizard</command> command</link>'>
-  <!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
-  <!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
 
 <!ENTITY project-explorer-cmd "<command>Project Explorer</command>">
 <!ENTITY project-explorer-lnk '<link linkend="project-explorer-cmd">&project-explorer-cmd;</link>'>
@@ -425,6 +421,10 @@
               menu: Plot
 -->
 <!ENTITY plot-menu-lnk '<link linkend="sec-plot-menu">Plot menu</link>'>
+<!ENTITY plot-wizard-cmd "<command>Plot Wizard</command>">
+<!ENTITY plot-wizard-lnk '<link linkend="plot-wizard-cmd"><command>Plot Wizard</command> command</link>'>
+<!ENTITY plot-wizard-key "<keycode>Ctrl-Alt-W</keycode>">
+<!ENTITY plot-wizard-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/wizard.png"/></imageobject></inlinemediaobject>'>
 <!ENTITY line-cmd "<command>Line</command>">
 <!ENTITY line-lnk '<link linkend="line-cmd"><command>Line</command> command</link>'>
   <!ENTITY line-icon '<inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/lPlot.png"/></imageobject></inlinemediaobject>'>

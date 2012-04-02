@@ -850,7 +850,7 @@ reduced chi-squared value. You can choose to enable this option by checking the
 <!-- ************************************************** -->
 <sect1 id="plot-wizard-dialog">
   <title>Plot Wizard</title>
-  <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-view-menu">View Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
+  <para>This dialog is activated by selecting the command <link linkend="plot-wizard-cmd">&plot-wizard-cmd;</link> from the <link linkend="sec-plot-menu">Plot Menu</link> or with the &plot-wizard-key; key. This command is always active.</para>
   <para>This dialog is used to build a new plot by selecting the columns from the tables available in the current project. First, select the table you want to use from the <emphasis>Worksheet</emphasis> combo box and click on <emphasis>New curve</emphasis> to create the curve. After that, select at least one column for X and one for Y using the &lt;-&gt;X and &lt;-&gt;Y buttons. You can also select columns for Z, X-errors and/or Y-errors using the buttons provided for these options.
   The plot will be created using the default style defined using the '2D Plots -> Curves' tab in the <link linkend="preferences-dialog">Preferences dialog</link>.</para>
   <figure id="fig-plot-wizard">
