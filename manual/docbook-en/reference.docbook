@@ -298,9 +298,6 @@ The active items appearing in a menu depends upon which project window is active
 	<sect2 id="toolbars-cmd"><title>View -> &toolbars-cmd; (&toolbars-key;)</title>
      <para>Opens a pop-up menu allowing you to enable/disable tool bars.</para>
   </sect2>
-	<sect2 id="plot-wizard-cmd"><title>View -> &plot-wizard-cmd; (&plot-wizard-key;)</title>
-     <para>Opens the <link linkend="plot-wizard-dialog">Plot Wizard dialog</link>.</para>
-  </sect2>
 	<sect2 id="project-explorer-cmd"><title>View -> &project-explorer-cmd; (&project-explorer-key;)</title>
      <para>Opens/Closes the <link linkend="project-explorer-dialog">Project Explorer</link> dialog, which gives an overview
 			of the structure of a project and allows the user to perform various operations on the windows (tables and plots)
@@ -476,7 +473,9 @@ The active items appearing in a menu depends upon which project window is active
 	<para>This menu is active only when a table is selected. These commands allow plotting data from the selected table.
 		As a group, all of these commands create a new graph window which contains a single, empty layer. The newly created
 		plot is drawn on this empty layer.</para>
-
+	<sect2 id="plot-wizard-cmd"><title>&plot-wizard-cmd; (&plot-wizard-key;)</title>
+	 <para>Opens the <link linkend="plot-wizard-dialog">Plot Wizard dialog</link>.</para>
+	</sect2>
 	<sect2 id="line-cmd"><title>&line-cmd;</title>
     <para>Plots the selected data columns using "Line" style. The command can also be activated by clicking on the &line-icon; icon of the &table-toolbar-lnk;. Once the plot is created, the drawing style of the data series can be customized with the <link linkend="custom-curves-dialog-lines">Custom curves dialog</link>.</para>
 		<informalfigure id="fig-plot-line"><mediaobject><imageobject>

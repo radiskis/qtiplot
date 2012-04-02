@@ -1386,7 +1386,6 @@ void ApplicationWindow::initMainMenu()
 
 	view->setCheckable(true);
 	view->addAction(actionToolBars);
-	view->addAction(actionShowPlotWizard);
 	view->addAction(actionShowExplorer);
 	view->addAction(actionShowLog);
 	view->addAction(actionShowUndoStack);
@@ -1635,6 +1634,9 @@ void ApplicationWindow::plotDataMenuAboutToShow()
 void ApplicationWindow::plotMenuAboutToShow()
 {
 	plot2DMenu->clear();
+
+	plot2DMenu->addAction(actionShowPlotWizard);
+	plot2DMenu->addSeparator();
 
 	plot2DMenu->addAction(actionPlotL);
 	plot2DMenu->addAction(actionPlotP);
@@ -7481,14 +7483,14 @@ void ApplicationWindow::recalculateTable()
 {
 	MdiSubWindow* w = activeWindow();
 	if (!w)
-            return;
+		return;
 
-        if (qobject_cast<TableStatistics *>(w))
-            ((TableStatistics*)w)->update();
-        else if (qobject_cast<Table *>(w))
-            ((Table*)w)->calculate();
-        else if (qobject_cast<Matrix *>(w))
-            ((Matrix*)w)->calculate();
+	if (qobject_cast<TableStatistics *>(w))
+		((TableStatistics*)w)->update();
+	else if (qobject_cast<Table *>(w))
+		((Table*)w)->calculate();
+	else if (qobject_cast<Matrix *>(w))
+		((Matrix*)w)->calculate();
 }
 
 void ApplicationWindow::sortActiveTable()
