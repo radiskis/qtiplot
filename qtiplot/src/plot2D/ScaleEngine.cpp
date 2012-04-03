@@ -382,9 +382,9 @@ void ScaleEngine::autoScale (int maxNumSteps, double &x1, double &x2, double &st
 
 		if (type() == ScaleTransformation::Log10 || type() == ScaleTransformation::Ln || type() == ScaleTransformation::Log2){
 			if (x1 <= 0.0)
-				x1 = 1e-4;
+				x1 = LOG_MIN;
 			if (x2 <= 0.0)
-				x2 = 1e-3;
+				x2 = LOG_MIN;
 		}
 
 		engine->autoScale(maxNumSteps, x1, x2, stepSize);
