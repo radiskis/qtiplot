@@ -5,9 +5,7 @@ Project              : QtiPlot
 Copyright            : (C) 2004 - 2012 by Ion Vasilief
 Email (use @ for *)  : ion_vasilief*yahoo.fr
 Description          : Graph widget
-
- ***************************************************************************/
-
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -1479,16 +1477,10 @@ void Graph::setScale(int axis, double start, double end, double step,
 			break;
 	}
 	if (limitInterval){
-		QwtDoubleInterval intv = axisBoundingInterval(axis);
-		if (start < end)
-			start = intv.minValue();
-		else
-			end = intv.minValue();
-
-		if (start <= 0.0)
-			start = 1e-4;
-		if (end <= 0.0)
-			end = 1e-3;
+		if (start <= 0)
+			start = LOG_MIN;
+		if (end <= 0)
+			end = LOG_MIN;
 	}
 
 	int max_min_intervals = minorTicks;
