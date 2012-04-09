@@ -154,7 +154,7 @@ std::vector<double> Curve::isocolors(const std::vector<double>& stops, double z1
 	unsigned int size = stops.size();
 	for (unsigned int i = 0;  i < size; i++){
 		double val = stops[i];
-		if (z1 <= val && val < z2)
+		if (z1 < val && val < z2)
 			values.push_back(val);
 	}
 	return values;
@@ -271,8 +271,7 @@ std::vector<TripleField> isocolorCells(const TripleField& t, const std::vector<d
 	}
 
 	std::vector<TripleField> cells;
-	unsigned int intPairs = intersections.size()/2;
-	if (!intPairs)
+	if (intersections.empty())
 		return cells;
 
 	Triple p = intersections[0], pp = intersections[1];
@@ -288,6 +287,7 @@ std::vector<TripleField> isocolorCells(const TripleField& t, const std::vector<d
 	}
 	cells.push_back(firstCell);
 
+	unsigned int intPairs = intersections.size()/2;
 	for (unsigned int i = 1; i < intPairs; i++){
 		TripleField cell;
 		cell.push_back(p);
@@ -375,7 +375,7 @@ void Curve::fillTriangleG(const TripleField& t, double* z, const std::vector<dou
 	double zmin = z[0], zmax = z[2];
 	std::vector<double> colorLevels = isocolors(stops, zmin, zmax);
 	if (colorLevels.empty()){
-		RGBA col = (*datacolor_p)(0, 0, zmin);
+		RGBA col = (*datacolor_p)(0, 0, 0.5*(zmin + zmax));
 		glColor4d(col.r, col.g, col.b, col.a);
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < 3; i++){
@@ -428,8 +428,8 @@ void Curve::mapTriangleG(double *v1, double *v2, double *v3, const std::vector<d
 {
 	double z[] = {v1[2], v2[2], v3[2]};
 	std::sort(z, z + 3);
-	double zmin = z[0];
-	std::vector<double> colorLevels = isocolors(stops, zmin, z[2]);
+	double zmin = z[0], zmax = z[2];
+	std::vector<double> colorLevels = isocolors(stops, zmin, zmax);
 
 	TripleField t;
 	t.push_back(plot_p->transform(v1, comp));
@@ -437,7 +437,7 @@ void Curve::mapTriangleG(double *v1, double *v2, double *v3, const std::vector<d
 	t.push_back(plot_p->transform(v3, comp));
 
 	if (colorLevels.empty()){
-		RGBA col = (*datacolor_p)(0, 0, zmin);
+		RGBA col = (*datacolor_p)(0, 0, 0.5*(zmin + zmax));
 		glColor4d(col.r, col.g, col.b, col.a);
 		glBegin(GL_TRIANGLES);
 		for (int i = 0; i < 3; i++)
