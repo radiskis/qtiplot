@@ -12,61 +12,60 @@ class Curve;
 class QWT3D_EXPORT CrossHair : public VertexEnrichment
 {
 public:
-  CrossHair();
-  CrossHair(double rad, double linewidth, bool smooth, bool boxed);
+	CrossHair();
+	CrossHair(double rad, double linewidth, bool smooth, bool boxed);
 
-  Qwt3D::Enrichment* clone() const {return new CrossHair(*this);}
-  
-  void configure(double rad, double linewidth, bool smooth, bool boxed);
-  void drawBegin();
-  void drawEnd();
-  void draw(Qwt3D::Triple const&);
+	Qwt3D::Enrichment* clone() const {return new CrossHair(*this);}
+
+	void configure(double rad, double linewidth, bool smooth, bool boxed);
+	void drawBegin();
+	void drawEnd();
+	void draw(Qwt3D::Triple const&);
 
 private:
-  bool boxed_, smooth_;
-  double linewidth_, radius_;
-  GLboolean oldstate_;
+	bool boxed_, smooth_;
+	double linewidth_, radius_;
+	GLboolean oldstate_;
 };
 
 //! The Point Style
 class QWT3D_EXPORT Dot : public VertexEnrichment
 {
 public: 
-  Dot();
-  Dot(double pointsize, bool smooth);
+	Dot();
+	Dot(double pointsize, bool smooth);
 
-  Qwt3D::Enrichment* clone() const {return new Dot(*this);}
+	Qwt3D::Enrichment* clone() const {return new Dot(*this);}
 
-  void configure(double pointsize, bool smooth);
-  void drawBegin();
-  void drawEnd();
-  void draw(Qwt3D::Triple const&);
+	void configure(double pointsize, bool smooth);
+	void drawBegin();
+	void drawEnd();
+	void draw(Qwt3D::Triple const&);
 
 private:
-  bool smooth_;
-  double pointsize_;
-  GLboolean oldstate_;
+	bool smooth_;
+	double pointsize_;
+	GLboolean oldstate_;
 };
 
 //! The Cone Style
 class QWT3D_EXPORT Cone : public VertexEnrichment
 {
 public:
-  Cone();
-  Cone(double rad, unsigned quality);
-  ~Cone();
+	Cone();
+	Cone(double rad, unsigned quality);
 
-  Qwt3D::Enrichment* clone() const {return new Cone(*this);}
-  
-  void configure(double rad, unsigned quality);
-  void draw(Qwt3D::Triple const&);
+	Qwt3D::Enrichment* clone() const {return new Cone(*this);}
+
+	void configure(double rad, unsigned quality);
+	void draw(Qwt3D::Triple const&);
 
 private:
 	GLUquadricObj *hat;
 	GLUquadricObj *disk;
-  unsigned quality_;
-  double radius_;
-  GLboolean oldstate_;
+	unsigned quality_;
+	double radius_;
+	GLboolean oldstate_;
 };
 
 //! 3D vector field. 
@@ -82,14 +81,14 @@ public:
 	Arrow();
 	~Arrow();
 
-  Qwt3D::Enrichment* clone() const {return new Arrow(*this);}
+	Qwt3D::Enrichment* clone() const {return new Arrow(*this);}
 
 	void configure(int segs, double relconelength, double relconerad, double relstemrad);
-  void setQuality(int val) {segments_ = val;} //!< Set the number of faces for the arrow
-  void draw(Qwt3D::Triple const&);
+	void setQuality(int val) {segments_ = val;} //!< Set the number of faces for the arrow
+	void draw(Qwt3D::Triple const&);
 
-  void setTop(Qwt3D::Triple t){top_ = t;}
-  void setColor(Qwt3D::RGBA rgba) {rgba_ = rgba;}
+	void setTop(Qwt3D::Triple t){top_ = t;}
+	void setColor(Qwt3D::RGBA rgba) {rgba_ = rgba;}
 
 private:
 
@@ -97,18 +96,38 @@ private:
 	GLUquadricObj *disk;
 	GLUquadricObj *base;
 	GLUquadricObj *bottom;
-  GLboolean oldstate_;
+	GLboolean oldstate_;
 
 	double calcRotation(Qwt3D::Triple& axis, Qwt3D::FreeVector const& vec);
 
 	int segments_;
 	double rel_cone_length;
-	
+
 	double rel_cone_radius;
 	double rel_stem_radius;
 
-  Qwt3D::Triple top_;
-  Qwt3D::RGBA rgba_;
+	Qwt3D::Triple top_;
+	Qwt3D::RGBA rgba_;
+};
+
+class QWT3D_EXPORT Bar : public VertexEnrichment
+{
+public:
+	Bar();
+	Bar(double rad, bool lines = true, bool filled = true, bool smooth = true);
+
+	Qwt3D::Enrichment* clone() const {return new Bar(*this);}
+
+	void configure(double rad, bool lines = true, bool filled = true, bool smooth = true);
+	void drawBegin();
+	void draw(Qwt3D::Triple const&);
+
+private:
+	double radius_;
+	double diag_;
+	bool d_smooth;
+	bool d_draw_lines;
+	bool d_filled_bars;
 };
 
 } // ns

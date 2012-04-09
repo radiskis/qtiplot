@@ -23,6 +23,7 @@ public:
 	virtual Qwt3D::RGBA operator()(Qwt3D::Triple const& t) const {return this->operator()(t.x,t.y,t.z);}
 	//! Should create a color vector usable by ColorLegend. The default implementation returns his argument
 	virtual Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) { return vec; }
+	virtual std::vector<double> colorStops() const {return std::vector<double>();}
 	virtual void clear(){};
 };
 

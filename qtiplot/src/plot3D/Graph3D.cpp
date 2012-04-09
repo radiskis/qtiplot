@@ -25,8 +25,6 @@ Description          : 3D graph widget
  *                                                                         *
  ***************************************************************************/
 #include "Graph3D.h"
-#include "Bar.h"
-#include "Cone3D.h"
 #include <ApplicationWindow.h>
 #include <MyParser.h>
 #include <MatrixModel.h>
@@ -95,12 +93,29 @@ void LinearColor::setAlpha(double a)
 
 	unsigned int size = d_colors.size();
 	if (size){
-		for (unsigned int i = 0; i < size; ++i){
-			RGBA elem = d_colors[i];
-			elem.a = a;
-			d_colors[i] = elem;
-		}
+		for (unsigned int i = 0; i < size; ++i)
+			d_colors[i].a = a;
 	}
+}
+
+std::vector<double> LinearColor::colorStops() const
+{
+	std::vector<double> stops;
+	if (d_colors.size() > 0)
+		return stops;
+
+	const QwtDoubleInterval range = d_color_map.intensityRange();
+	double l = range.width();
+	double zmin = range.minValue();
+	stops.push_back(zmin);
+	QwtArray<double> values = d_color_map.colorStops();
+	for (int i = 0; i < values.size(); i++){
+		double val = zmin + values[i]*l;
+		if (stops.back() != val)
+			stops.push_back(val);
+	}
+
+	return stops;
 }
 
 Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec)
@@ -111,14 +126,13 @@ Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec)
 		return vec;
 	}
 
-	int size = 255;
-	double dsize = size;
 	double zmin, zmax;
 	d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
-	double dz = fabs(zmax - zmin)/dsize;
-
 	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
 
+	int size = 255;
+	double dsize = size;
+	double dz = fabs(zmax - zmin)/dsize;
 	Qwt3D::ColorVector cv;
 	for (int i = 0; i < size; i++){
 		QRgb color = d_color_map.rgb(range, zmin + i*dz);
@@ -406,10 +420,10 @@ Curve* Graph3D::addCurve()
 	ApplicationWindow *app = applicationWindow();
 
 	d_active_curve = new Curve(sp);
+	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map));
 	sp->addCurve(d_active_curve);
 
 	d_active_curve->setShading(d_shading);
-	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map));
 	d_active_curve->setSmoothMesh(app->d_3D_smooth_mesh);
 	d_active_curve->setDataProjection(false);
 	d_active_curve->setProjection(BASE);
@@ -977,7 +991,7 @@ void Graph3D::resetNonEmptyStyle()
 
 			case Cones :
 			{
-				Cone3D cone = Cone3D(conesRad, conesQuality);
+				Cone cone = Cone(conesRad, conesQuality);
 				d_active_curve->setPlotStyle(cone);
 				break;
 			}
@@ -1482,10 +1496,19 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	double left, right;
 	sp->coordinates()->axes[axis].limits(left, right);
 
+	if (type != Qwt3D::LINEARSCALE){
+		if (start <= 0)
+			start = LOG_MIN;
+		if (end <= 0)
+			end = LOG_MIN;
+	}
+
 	if (left == start && right == end &&
 		sp->coordinates()->axes[axis].majors() == majorTicks &&
 		sp->coordinates()->axes[axis].minors() == minorTicks &&
 		scaleType[axis] == type) return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	double xMin, xMax, yMin, yMax, zMin, zMax;
 	int axis1 = X1, axis2 = X2, axis3 = X3, axis4 = X4;
@@ -1571,6 +1594,7 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 	}
 
 	update();
+	QApplication::restoreOverrideCursor();
 	emit modified();
 }
 
@@ -2049,7 +2073,7 @@ void Graph3D::setConeStyle()
 	style_=Qwt3D::USER;
 
 	sp->makeCurrent();
-	Cone3D cone = Cone3D(conesRad, conesQuality);
+	Cone cone = Cone(conesRad, conesQuality);
 	d_active_curve->setPlotStyle(cone);
 	sp->updateGL();
 
@@ -3268,7 +3292,7 @@ void Graph3D::copy(Graph3D* g)
 			case Cones :
 				setConeOptions(g->coneRadius(), g->coneQuality());
 				if (d_active_curve){
-					Cone3D cone = Cone3D(conesRad, conesQuality);
+					Cone cone = Cone(conesRad, conesQuality);
 					d_active_curve->setPlotStyle(cone);
 				}
 				break;

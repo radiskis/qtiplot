@@ -1174,23 +1174,22 @@ bool Plot3DDialog::updatePlot()
 		int axis = axesList2->currentRow();
 		labels[axis] = boxLabel->text();
 
-		switch(axis)
-		{
-		case 0:
-			d_plot->setXAxisLabel(boxLabel->text().remove("\n"));
-			d_plot->setXAxisLabelFont(axisFont(axis));
-			d_plot->setXAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
-		break;
-		case 1:
-			d_plot->setYAxisLabel(boxLabel->text().remove("\n"));
-			d_plot->setYAxisLabelFont(axisFont(axis));
-			d_plot->setYAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
-		break;
-		case 2:
-			d_plot->setZAxisLabel(boxLabel->text().remove("\n"));
-			d_plot->setZAxisLabelFont(axisFont(axis));
-			d_plot->setZAxisTickLength(boxMajorLength->text().toDouble(), boxMinorLength->text().toDouble());
-		break;
+		switch(axis){
+			case 0:
+				d_plot->setXAxisLabel(boxLabel->text().remove("\n"));
+				d_plot->setXAxisLabelFont(axisFont(axis));
+				d_plot->setXAxisTickLength(boxMajorLength->value(), boxMinorLength->value());
+			break;
+			case 1:
+				d_plot->setYAxisLabel(boxLabel->text().remove("\n"));
+				d_plot->setYAxisLabelFont(axisFont(axis));
+				d_plot->setYAxisTickLength(boxMajorLength->value(), boxMinorLength->value());
+			break;
+			case 2:
+				d_plot->setZAxisLabel(boxLabel->text().remove("\n"));
+				d_plot->setZAxisLabelFont(axisFont(axis));
+				d_plot->setZAxisTickLength(boxMajorLength->value(), boxMinorLength->value());
+			break;
 		}
 	} else if (generalDialog->currentPage() == printPage){
 		d_plot->printCropmarks(boxPrintCropmarks->isChecked());

@@ -16,14 +16,13 @@ namespace {
   
   typedef double coordinate_type;
 
-  int ccw(coordinate_type **P, int i, int j, int k) {
-    coordinate_type	a = P[i][0] - P[j][0],
-      b = P[i][1] - P[j][1],
-      c = P[k][0] - P[j][0],
-      d = P[k][1] - P[j][1];
-    return a*d - b*c <= 0;	   /* true if points i, j, k counterclockwise */
-  }
-
+int ccw(coordinate_type **P, int i, int j, int k){
+	coordinate_type	a = P[i][0] - P[j][0],
+	b = P[i][1] - P[j][1],
+	c = P[k][0] - P[j][0],
+	d = P[k][1] - P[j][1];
+	return a*d - b*c <= 0;//true if points i, j, k counterclockwise
+}
 
 #define CMPM(c,A,B) \
   v = (*(coordinate_type**)A)[c] - (*(coordinate_type**)B)[c];\
@@ -219,37 +218,33 @@ RGBA Qwt3D::Qt2GL(QColor col)
 }
 
 
-void Qwt3D::convexhull2d( std::vector<unsigned>& idx, const std::vector<Tuple>& src )
+void Qwt3D::convexhull2d(std::vector<unsigned>& idx, const std::vector<Tuple>& src)
 {
-    idx.clear();
-    if (src.empty())
-        return;
-    if (src.size()==1)
-    {
-        idx.push_back(0);
-        return;
-    }
-    coordinate_type** points = new coordinate_type*[src.size()+1] ;
-    coordinate_type* P = new coordinate_type[src.size()*2];
+	idx.clear();
+	if (src.empty())
+		return;
+	if (src.size() == 1){
+		idx.push_back(0);
+		return;
+	}
+	coordinate_type** points = new coordinate_type*[src.size() + 1];
+	coordinate_type* P = new coordinate_type[src.size()*2];
 
-    int i;
-		for (i=0; i<(int)src.size(); ++i)
-    {
-        points[i] = &P[2*i];
-        points[i][0] = src[i].x;
-        points[i][1] = src[i].y;
-    }
+	for (int i = 0; i < (int)src.size(); ++i){
+		points[i] = &P[2*i];
+		points[i][0] = src[i].x;
+		points[i][1] = src[i].y;
+	}
 
-    coordinate_type* start = points[0];
-    int m = _ch2d( points, src.size() );
-    idx.resize(m);
-    
-		for (i=0; i<m; ++i)
- 		{
-			idx[i] = (points[i] - start)/2;
-		}
-    delete [] points;
-		delete [] P;
+	coordinate_type* start = points[0];
+	int m = _ch2d(points, src.size());
+	idx.resize(m);
+
+	for (int i = 0; i < m; ++i)
+		idx[i] = (points[i] - start)/2;
+
+	delete [] points;
+	delete [] P;
 }
 
 unsigned Qwt3D::tesselationSize(CellField const& t)

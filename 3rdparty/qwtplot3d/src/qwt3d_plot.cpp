@@ -3,27 +3,11 @@
 #pragma warning ( disable : 4786 )
 #endif
 
-#include <QDebug>
-
 #include "qwt3d_plot.h"
 #include "qwt3d_enrichment.h"
 #include "qwt3d_curve.h"
 
 using namespace Qwt3D;
-
-#ifdef QT_NO_DEBUG_STREAM
-	#define DEBUG		QNoDebug()
-#else
-	#define DEBUG		qDebug()
-#endif
-
-//! Non-member '<<' debug stream operator method used for 'Triple' types
-static QDebug operator<<(QDebug dbg, const Triple& t)
-{
-	dbg.nospace() << "Triple(" << t.x << ',' << t.y << ',' << t.z << ')';
-
-	return dbg.space();
-}
 
 /*!
   This should be the first call in your derived classes constructor.
@@ -258,17 +242,13 @@ bool Plot3D::removeTitle(Label* title)
 
 void Plot3D::manageConnect(bool connect, Qwt3D::Curve* curve)
 {
-	DEBUG << "Plot3D:" << (connect ? "Connecting" : "Disconnecting") << "Curve(s)";
-
 	curve ? (connect ? curve->connects() : curve->disconnects()) :
 			childConnect(connect);
 }
 
 void Plot3D::childConnect(bool connect)
 {
-	DEBUG << "Plot3D:" << (connect ? "Connecting" : "Disconnecting") << "All Curves";
-
-	foreach (Curve* curve, curvelist_p) {
+	foreach (Curve* curve, curvelist_p){
 		if (curve)	connect ? curve->connects() : curve->disconnects();
 	}
 }
@@ -376,13 +356,7 @@ void Plot3D::normaliseScale(Curve* curve, Plot3D* parentplot, ParallelEpiped* cu
 		range = Triple(datahull.maxVertex.x - datahull.minVertex.x,
 					   datahull.maxVertex.y - datahull.minVertex.y,
 					   datahull.maxVertex.z - datahull.minVertex.z);
-
-		DEBUG << "Plot3D: Waiting for a valid hull -" << curve
-				 << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << ") range =" << range;
 	} while (!range.length());	// Waiting for a valid hull
-
-	DEBUG << "Plot3D: Existing Scale - scale =" << scale << "range =" << range << curve
-		  << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << zScale() << curvehull;
 
 	scale.z = qMax(range.x/range.z, range.y/range.z);
 
@@ -407,9 +381,6 @@ void Plot3D::normaliseScale(Curve* curve, Plot3D* parentplot, ParallelEpiped* cu
 
 	setZoom(0.9 * zoomFactor * parentplot->zoom());
 	setScale(scale.x, scale.y, scale.z);
-
-	DEBUG << "Plot3D: Normalised Scale - scale =" << scale << height
-		  << "( Min =" << datahull.minVertex << ", Max =" << datahull.maxVertex << "] zoom" << zoom() << zoomFactor << scale.length();
 }
 
 Qwt3D::GridData* Plot3D::transform(Qwt3D::GridData* data)
