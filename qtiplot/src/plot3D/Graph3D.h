@@ -456,6 +456,7 @@ public:
 	void setAlpha(double a);
 	double alpha(){return d_alpha;}
 
+	std::vector<double> colorStops() const;
 	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec);
 	void clear(){d_colors.clear();}
 

@@ -183,12 +183,6 @@ Cone::Cone(double rad, unsigned quality)
 	configure(rad, quality);
 }
 
-Cone::~Cone()
-{
-	gluDeleteQuadric(hat);
-	gluDeleteQuadric(disk);
-}
-
 void Cone::configure(double rad, unsigned quality)
 {
 	curve_ = 0;
@@ -346,4 +340,113 @@ double Arrow::calcRotation(Triple& axis, FreeVector const& vec)
 	double cosphi = dotProduct(first,second);
 	
 	return 180 * acos(cosphi) / Qwt3D::PI;
+}
+
+/////////////////////////////////////////////////////////////////
+//
+//   Bar
+//
+/////////////////////////////////////////////////////////////////
+
+Bar::Bar()
+{
+	configure(0);
+}
+
+Bar::Bar(double rad, bool lines, bool filled, bool smooth)
+{
+	configure(rad, lines, filled, smooth);
+}
+
+void Bar::configure(double rad, bool lines, bool filled, bool smooth)
+{
+	curve_ = 0;
+	radius_ = rad;
+	d_smooth = smooth;
+	d_draw_lines = lines;
+	d_filled_bars = filled;
+}
+
+void Bar::drawBegin()
+{
+	diag_ = (curve_->hull().maxVertex - curve_->hull().minVertex).length() * radius_;
+	glLineWidth(curve_->meshLineWidth());
+	glEnable(GL_POLYGON_OFFSET_FILL);
+	if (d_smooth)
+		glEnable(GL_LINE_SMOOTH);
+	else
+		glDisable(GL_LINE_SMOOTH);
+
+	glPolygonOffset(1, 1);
+}
+
+void Bar::draw(Qwt3D::Triple const& t)
+{
+	Qwt3D::Triple pos = curve_->plot()->transform(t);
+	GLdouble minz = curve_->hull().minVertex.z;
+
+	double xl = pos.x - diag_;
+	double xr = pos.x + diag_;
+	double yl = pos.y - diag_;
+	double yr = pos.y + diag_;
+
+	if (d_filled_bars){
+		RGBA rgbat = (*curve_->dataColor())(t);
+		glColor4d(rgbat.r, rgbat.g, rgbat.b, rgbat.a);
+
+		glBegin(GL_QUADS);
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xl,yr,minz);
+
+		glVertex3d(xl,yl,pos.z);
+		glVertex3d(xr,yl,pos.z);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,pos.z);
+
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yl,pos.z);
+		glVertex3d(xl,yl,pos.z);
+
+		glVertex3d(xl,yr,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,pos.z);
+
+		glVertex3d(xl,yl,minz);
+		glVertex3d(xl,yr,minz);
+		glVertex3d(xl,yr,pos.z);
+		glVertex3d(xl,yl,pos.z);
+
+		glVertex3d(xr,yl,minz);
+		glVertex3d(xr,yr,minz);
+		glVertex3d(xr,yr,pos.z);
+		glVertex3d(xr,yl,pos.z);
+		glEnd();
+	}
+
+	if (!d_draw_lines)
+		return;
+
+	Qwt3D::RGBA meshCol = curve_->meshColor();//using mesh color to draw the lines
+	glColor3d(meshCol.r, meshCol.g, meshCol.b);
+
+	glBegin(GL_LINES);
+		glVertex3d(xl,yl,minz); glVertex3d(xr,yl,minz);
+		glVertex3d(xl,yl,pos.z); glVertex3d(xr,yl,pos.z);
+		glVertex3d(xl,yr,pos.z); glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,minz); glVertex3d(xr,yr,minz);
+
+		glVertex3d(xl,yl,minz); glVertex3d(xl,yr,minz);
+		glVertex3d(xr,yl,minz); glVertex3d(xr,yr,minz);
+		glVertex3d(xr,yl,pos.z); glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yl,pos.z); glVertex3d(xl,yr,pos.z);
+
+		glVertex3d(xl,yl,minz); glVertex3d(xl,yl,pos.z);
+		glVertex3d(xr,yl,minz); glVertex3d(xr,yl,pos.z);
+		glVertex3d(xr,yr,minz); glVertex3d(xr,yr,pos.z);
+		glVertex3d(xl,yr,minz); glVertex3d(xl,yr,pos.z);
+	glEnd();
 }

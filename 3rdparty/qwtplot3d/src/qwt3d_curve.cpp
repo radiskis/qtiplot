@@ -195,7 +195,7 @@ void Curve::updateNormals()
 {
 	SaveGlDeleteLists(displaylists_p[NormalObject], 1); 
 
-	if (plotStyle() == NOPLOT && !normals() || !actualData_p)
+	if (plotStyle() == NOPLOT || !normals() || !actualData_p)
 		return;
 
 	displaylists_p[NormalObject] = glGenLists(1);
@@ -267,15 +267,8 @@ void Curve::createFaceData()
 */
 pair<int,int> Curve::facets() const
 {
-	if (!hasData()) {
-		qDebug() << "Curve: has no data, no facets found!" << this;
-		if (actualData_p)	qDebug() << "Curve: Grid type -" << (actualData_p->datatype == Qwt3D::GRID);
-		if (actualData_p->datatype == Qwt3D::POLYGON)
-			qDebug() << "Curve: Polygon data -" << actualDataC_->cells.size();
-		else if (actualData_p->datatype == Qwt3D::GRID)
-			qDebug() << "Curve: Grid data -" << actualDataG_->columns() << actualDataG_->rows();
+	if (!hasData())
 		return pair<int,int>(0,0);
-	}
 
 	if (actualData_p->datatype == Qwt3D::POLYGON)
 		return pair<int,int>(int(actualDataC_->cells.size()), 1);

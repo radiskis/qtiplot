@@ -364,6 +364,17 @@ struct QWT3D_EXPORT RGBA
 	RGBA(double rr, double gg, double bb, double aa = 1)
 		: r(rr), g(gg), b(bb), a(aa)
 		{}
+
+	bool operator==(RGBA col) const
+	{
+		return (r == col.r && g == col.g && b == col.b && a == col.a);
+	}
+
+	bool operator!=(RGBA col) const
+	{
+		return (r != col.r || g != col.g || b != col.b || a != col.a);
+	}
+
 	double r,g,b,a;
 };
 
@@ -447,21 +458,17 @@ inline Triple normalizedcross(Triple const& u, Triple const& v)
 {
 	Triple n;
 
-  /* compute the cross product (u x v for right-handed [ccw]) */
-  n.x = u.y * v.z - u.z * v.y;
-  n.y = u.z * v.x - u.x * v.z;
-  n.z = u.x * v.y - u.y * v.x;
+	/* compute the cross product (u x v for right-handed [ccw]) */
+	n.x = u.y * v.z - u.z * v.y;
+	n.y = u.z * v.x - u.x * v.z;
+	n.z = u.x * v.y - u.y * v.x;
 
-  /* normalize */
-  double l = n.length();
-  if (l)
-	{
+	/* normalize */
+	double l = n.length();
+	if (l)
 		n /= l;
-	}
 	else
-	{
-		n = Triple(0,0,0);
-	}
+		n = Triple(0, 0, 0);
 	
 	return n;
 }

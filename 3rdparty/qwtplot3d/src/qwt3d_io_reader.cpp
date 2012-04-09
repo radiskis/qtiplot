@@ -200,7 +200,6 @@ bool NativeReader::operator()(Plot3D* plot, QString const& fname)
 
 	Curve* curve = plot->curve();
 	curve->loadFromData(data, xmesh, ymesh, minx, maxx, miny, maxy);
-	qDebug() << "NativeReader: loadFromData - data =" << data << "[ xmesh =" << xmesh << "ymesh =" << ymesh << "maxx =" << maxx << "maxy =" << maxy << "]";
 
 	plot->addCurve(curve);
 	plot->addTitle(curve->title());
