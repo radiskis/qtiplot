@@ -703,7 +703,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	d_3D_legend = true;
 	d_3D_projection = NOFLOOR;
-	d_3D_shading = Qwt3D::GOURAUD;
+	d_3D_shading = Qwt3D::FLAT;
 	d_3D_smooth_mesh = true;
 	d_3D_resolution = 1;
 	d_3D_orthogonal = false;
@@ -712,7 +712,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_3D_axes_font = QFont(family, pointSize, QFont::Normal, false);
 	d_3D_numbers_font = QFont(family, pointSize);
 	d_3D_title_font = QFont(family, pointSize + 2, QFont::Normal, false);
-	d_3D_color_map = LinearColorMap(Qt::blue, Qt::red);
+	d_3D_color_map = LinearColorMap::rainbow();
+	d_3D_color_map.setMode(QwtLinearColorMap::FixedColors);
 	d_3D_mesh_color = Qt::black;
 	d_3D_axes_color = Qt::black;
 	d_3D_numbers_color = Qt::black;
