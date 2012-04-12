@@ -1,13 +1,11 @@
 /***************************************************************************
-	File                 : LinearColorMap.h
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2011 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : A wrapper around QwtLinearColorMap from Qwt
-
- ***************************************************************************/
-
+File                 : LinearColorMap.h
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2011 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : A wrapper around QwtLinearColorMap from Qwt
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -54,11 +52,12 @@ public:
 	//! Get the upper range limit
 	double upperBound(){return d_range.maxValue();}
 
-
 	//! Exports the map to a pseudo-XML string
 	QString toXmlString();
 	//! Used when restoring from project files
 	static LinearColorMap fromXmlStringList(const QStringList& lst);
+
+	static LinearColorMap rainbow();
 
 private:
 	QwtDoubleInterval d_range;

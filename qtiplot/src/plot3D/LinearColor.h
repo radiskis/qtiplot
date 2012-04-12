@@ -1,11 +1,10 @@
 /***************************************************************************
-File                 : globals.h
+File                 : LinearColor.h
 Project              : QtiPlot
 --------------------------------------------------------------------
-Copyright            : (C) 2006 - 2012 by Ion Vasilief
-					   (C) 2006 by Tilman Hoener zu Siederdissen
+Copyright            : (C) 2012 by Ion Vasilief
 Email (use @ for *)  : ion_vasilief*yahoo.fr
-Description          : Definition of global constants
+Description          : Linear Color Map for 3D graph widget
 ***************************************************************************/
 /***************************************************************************
  *                                                                         *
@@ -25,18 +24,33 @@ Description          : Definition of global constants
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-//  Don't forget to change the Doxyfile when changing these!
-//! Major version number
-const int maj_version = 0;
-//! Minor version number (0..9)
-const int min_version = 9;
-//! Patch version number (0..9)
-const int patch_version = 8;
-//! Extra version information string (like "alpha", "-2", etc...)
-const char * extra_version = ".10";
-const char * svn_revision = " svn 2389";//SVN_REVISION;  //SRB: SVN_REVISION set by compiler from QTIPLOT_SVN_REVISION environment variable. (10/1/2010 )
+#ifndef LINEARCOLOR_H
+#define LINEARCOLOR_H
 
-//! Copyright string containing the author names
-const char * copyright_string = "Copyright (C) 2004-2012 Ion Vasilief";
-//! Release date as a string
-const char * release_date = " 2012/04/12";
+#include <LinearColorMap.h>
+#include <qwt3d_curve.h>
+
+using namespace Qwt3D;
+
+class LinearColor : public Color
+{
+public:
+	LinearColor(Qwt3D::Curve*, const LinearColorMap&, double alpha = 1.0);
+	LinearColor(Qwt3D::Curve*, const Qwt3D::ColorVector&);
+	Qwt3D::RGBA operator()(double x, double y, double z) const;
+
+	void setAlpha(double a);
+	double alpha(){return d_alpha;}
+
+	std::vector<double> colorStops() const;
+	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec);
+	void clear(){d_colors.clear();}
+
+protected:
+	Qwt3D::Curve *d_curve;
+	LinearColorMap d_color_map;
+	Qwt3D::ColorVector d_colors;
+	double d_alpha;
+};
+
+#endif // LINEARCOLOR_H

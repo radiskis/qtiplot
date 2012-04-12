@@ -446,27 +446,6 @@ private:
 	Curve * d_const_curve;
 };
 
-class LinearColor : public Color
-{
-public:
-	LinearColor(Qwt3D::Curve*, const LinearColorMap&, double alpha = 1.0);
-	LinearColor(Qwt3D::Curve*, const Qwt3D::ColorVector&);
-	Qwt3D::RGBA operator()(double x, double y, double z) const;
-
-	void setAlpha(double a);
-	double alpha(){return d_alpha;}
-
-	std::vector<double> colorStops() const;
-	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec);
-	void clear(){d_colors.clear();}
-
-protected:
-	Qwt3D::Curve *d_curve;
-	LinearColorMap d_color_map;
-	Qwt3D::ColorVector d_colors;
-	double d_alpha;
-};
-
 //! Class for constant z surfaces
 class ConstFunction : public Function
 {

@@ -1556,7 +1556,7 @@ void Matrix::setDefaultColorMap()
 
 void Matrix::setGrayScale()
 {
-    d_color_map_type = GrayScale;
+	d_color_map_type = GrayScale;
 	d_color_map = LinearColorMap(Qt::black, Qt::white);
 	if (d_view_type == ImageView)
 		displayImage(d_matrix_model->renderImage());
@@ -1565,12 +1565,8 @@ void Matrix::setGrayScale()
 
 void Matrix::setRainbowColorMap()
 {
-    d_color_map_type = Rainbow;
-
-	d_color_map = LinearColorMap(Qt::blue, Qt::red);
-	d_color_map.addColorStop(0.25, Qt::cyan);
-	d_color_map.addColorStop(0.5, Qt::green);
-	d_color_map.addColorStop(0.75, Qt::yellow);
+	d_color_map_type = Rainbow;
+	d_color_map = LinearColorMap::rainbow();
 
 	if (d_view_type == ImageView)
 		displayImage(d_matrix_model->renderImage());

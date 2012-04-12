@@ -1,13 +1,11 @@
 /***************************************************************************
-	File                 : LinearColorMap.cpp
-    Project              : QtiPlot
-    --------------------------------------------------------------------
-	Copyright            : (C) 2011 by Ion Vasilief
-    Email (use @ for *)  : ion_vasilief*yahoo.fr
-	Description          : A wrapper around QwtLinearColorMap from Qwt
-
- ***************************************************************************/
-
+File                 : LinearColorMap.cpp
+Project              : QtiPlot
+--------------------------------------------------------------------
+Copyright            : (C) 2011 by Ion Vasilief
+Email (use @ for *)  : ion_vasilief*yahoo.fr
+Description          : A wrapper around QwtLinearColorMap from Qwt
+***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *  This program is free software; you can redistribute it and/or modify   *
@@ -89,5 +87,15 @@ LinearColorMap LinearColorMap::fromXmlStringList(const QStringList& lst)
 		colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
 	}
 
+	return colorMap;
+}
+
+LinearColorMap LinearColorMap::rainbow()
+{
+	LinearColorMap colorMap = LinearColorMap(Qt::blue, Qt::red);
+	colorMap.addColorStop(0.2, Qt::cyan);
+	colorMap.addColorStop(0.4, Qt::green);
+	colorMap.addColorStop(0.6, Qt::yellow);
+	colorMap.addColorStop(0.8, Qt::red);
 	return colorMap;
 }
