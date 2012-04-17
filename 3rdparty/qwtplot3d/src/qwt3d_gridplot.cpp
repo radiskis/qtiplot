@@ -48,29 +48,8 @@ void Curve::createDataG()
 		std::vector<double> stops = dataColor()->colorStops();
 		for (i = 0; i < lastcol - step; i += step){
 			int ni = i + step;
-			for (j = 0; j < lastrow - step; j += step){
-				int nj = j + step;
-
-				double *v = actualDataG_->vertices[i][j];
-				Triple tij = Triple(v[0], v[1], v[2]);
-				v = actualDataG_->vertices[ni][j];
-				Triple tnij = Triple(v[0], v[1], v[2]);
-				v = actualDataG_->vertices[ni][nj];
-				Triple tninj = Triple(v[0], v[1], v[2]);
-				v = actualDataG_->vertices[i][nj];
-				Triple tinj = Triple(v[0], v[1], v[2]);
-
-				TripleField t1, t2;
-				t1.push_back(tij); t1.push_back(tnij); t1.push_back(tninj);
-				t2.push_back(tij); t2.push_back(tninj); t2.push_back(tinj);
-
-				double zij = backup->vertices[i][j][2], zninj = backup->vertices[ni][nj][2];
-				double z1[] = {zij, backup->vertices[ni][j][2], zninj};
-				double z2[] = {zij, zninj, backup->vertices[i][nj][2]};
-
-				fillTriangleG(t1, z1, stops);
-				fillTriangleG(t2, z2, stops);
-			}
+			for (j = 0; j < lastrow - step; j += step)
+				fillCellG(backup, i, ni, j, j + step, stops);
 		}
 	} else if (plotStyle() != WIREFRAME){
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -369,6 +348,44 @@ void Curve::setPolygonColor(const TripleField& cell, bool search, const std::vec
 	}
 }
 
+void Curve::fillCellG(Qwt3D::GridData *data, int i, int ni, int j, int nj, const std::vector<double>& stops)
+{
+	double *v = actualDataG_->vertices[i][j];
+	Triple tij = Triple(v[0], v[1], v[2]);
+	v = actualDataG_->vertices[ni][j];
+	Triple tnij = Triple(v[0], v[1], v[2]);
+	v = actualDataG_->vertices[ni][nj];
+	Triple tninj = Triple(v[0], v[1], v[2]);
+	v = actualDataG_->vertices[i][nj];
+	Triple tinj = Triple(v[0], v[1], v[2]);
+
+	double zij = data->vertices[i][j][2], zninj = data->vertices[ni][nj][2];
+	double znij = data->vertices[ni][j][2], zinj = data->vertices[i][nj][2];
+	double z[] = {zij, znij, zninj, zinj};
+	std::sort(z, z + 4);
+	double zmin = z[0], zmax = z[3];
+	std::vector<double> colorLevels = isocolors(stops, zmin, zmax);
+	if (colorLevels.empty()){
+		RGBA col = (*datacolor_p)(0, 0, 0.5*(zmin + zmax));
+		glColor4d(col.r, col.g, col.b, col.a);
+		glBegin(GL_QUADS);
+			glVertex3d(tij.x, tij.y, tij.z);
+			glVertex3d(tnij.x, tnij.y, tnij.z);
+			glVertex3d(tninj.x, tninj.y, tninj.z);
+			glVertex3d(tinj.x, tinj.y, tinj.z);
+		glEnd();
+		return;
+	}
+
+	TripleField t1, t2;
+	t1.push_back(tij); t1.push_back(tnij); t1.push_back(tninj);
+	t2.push_back(tij); t2.push_back(tninj); t2.push_back(tinj);
+
+	double z1[] = {zij, znij, zninj}, z2[] = {zij, zninj, zinj};
+	fillTriangleG(t1, z1, stops);
+	fillTriangleG(t2, z2, stops);
+}
+
 void Curve::fillTriangleG(const TripleField& t, double* z, const std::vector<double>& stops)
 {
 	std::sort(z, z + 3);
@@ -422,6 +439,35 @@ void Curve::fillTriangleG(const TripleField& t, double* z, const std::vector<dou
 			glEnd();
 		}
 	}
+}
+
+void Curve::mapCellG(int i, int ni, int j, int nj, const std::vector<double>& stops, int comp, double shift)
+{
+	double *vij = actualDataG_->vertices[i][j], *vninj = actualDataG_->vertices[ni][nj];
+	double *vnij = actualDataG_->vertices[ni][j], *vinj = actualDataG_->vertices[i][nj];
+
+	double z[] = {vij[2], vnij[2], vninj[2], vinj[2]};
+	std::sort(z, z + 4);
+	double zmin = z[0], zmax = z[3];
+	std::vector<double> colorLevels = isocolors(stops, zmin, zmax);
+	if (colorLevels.empty()){
+		RGBA col = (*datacolor_p)(0, 0, 0.5*(zmin + zmax));
+		glColor4d(col.r, col.g, col.b, col.a);
+		glBegin(GL_QUADS);
+			Triple t = plot_p->transform(vij, comp);
+			drawVertex(t, shift, comp);
+			t = plot_p->transform(vnij, comp);
+			drawVertex(t, shift, comp);
+			t = plot_p->transform(vninj, comp);
+			drawVertex(t, shift, comp);
+			t = plot_p->transform(vinj, comp);
+			drawVertex(t, shift, comp);
+		glEnd();
+		return;
+	}
+
+	mapTriangleG(vij, vnij, vninj, stops, comp, shift);
+	mapTriangleG(vij, vninj, vinj, stops, comp, shift);
 }
 
 void Curve::mapTriangleG(double *v1, double *v2, double *v3, const std::vector<double>& stops, int comp, double shift)
@@ -796,12 +842,8 @@ void Curve::DatamapG(unsigned int comp)
 		std::vector<double> stops = dataColor()->colorStops();
 		for (int i = 0; i < cols - step; i += step){
 			int ni = i + step;
-			for (int j = 0; j < rows - step; j += step){
-				int nj = j + step;
-				double *vij = actualDataG_->vertices[i][j], *vninj = actualDataG_->vertices[ni][nj];
-				mapTriangleG(vij, actualDataG_->vertices[ni][j], vninj, stops, comp, shift);
-				mapTriangleG(vij, vninj, actualDataG_->vertices[i][nj], stops, comp, shift);
-			}
+			for (int j = 0; j < rows - step; j += step)
+				mapCellG(i, ni, j, j + step, stops, comp, shift);
 		}
 	} else {
 		for (int i = 0; i < cols - step; i += step){

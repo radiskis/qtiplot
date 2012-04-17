@@ -39,14 +39,14 @@ void StandardColor::setAlpha(double a)
 {
 	if (a < 0 || a > 1)
 		return;
-	
+
 	unsigned int size = colors_.size();
 	for (unsigned int i = 0; i != size; ++i){
 		RGBA elem = colors_[i];
 		elem.a = a;
 		colors_[i] = elem;
-	}	
-}	
+	}
+}
 
 RGBA StandardColor::operator()(double, double, double z) const
 {

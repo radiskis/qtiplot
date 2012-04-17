@@ -60,6 +60,8 @@ public:
 	void setColorMap(const LinearColorMap& map);
 	//! Use this function to initialize the values range.
 	void setRange(double min, double max);
+	//! Use this function to initialize the values range.
+	void setRange(const QwtDoubleInterval& range){setRange(range.maxValue(), range.maxValue());}
 
 signals:
 	void scalingChanged();

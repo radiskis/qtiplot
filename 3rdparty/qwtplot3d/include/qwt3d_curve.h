@@ -226,7 +226,9 @@ private:
 
 	static std::vector<double> isocolors(const std::vector<double>&, double, double);
 	void setPolygonColor(const TripleField&, bool, const std::vector<double>&, const std::vector<double>&);
+	void fillCellG(Qwt3D::GridData *, int, int, int, int, const std::vector<double>&);
 	void fillTriangleG(const TripleField&, double *, const std::vector<double>&);
+	void mapCellG(int, int, int, int, const std::vector<double>&, int, double);
 	void mapTriangleG(double *, double *, double *, const std::vector<double>&, int, double);
 	void fillPolygonG(TripleField cell, int = -1, double = 0);
 

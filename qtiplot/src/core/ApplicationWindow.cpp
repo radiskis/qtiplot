@@ -2546,13 +2546,9 @@ Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, doubl
 		double yl, double yr, double zl, double zr, int columns, int rows)
 {
 	Graph3D *plot = newPlot3D();
-	if(!plot)
+	if (!plot)
 		return 0;
-
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
-	plot->setDataColorMap(d_3D_color_map);
-	plot->update();
-
 	emit modified();
 	return plot;
 }
@@ -2562,13 +2558,9 @@ Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const
 		int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
 	Graph3D *plot = newPlot3D();
-	if(!plot)
+	if (!plot)
 		return 0;
-	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr,
-								columns, rows, uPeriodic, vPeriodic);
-	plot->setDataColorMap(d_3D_color_map);
-	plot->update();
-
+	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, columns, rows, uPeriodic, vPeriodic);
 	emit modified();
 	return plot;
 }
@@ -2606,20 +2598,17 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 	if (zCol < 0)
 		return 0;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
 	Graph3D *plot = newPlot3D();
-	if(!plot)
+	if (!plot)
 		return 0;
 
-	if (type == Graph3D::Ribbon) {
+	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+	if (type == Graph3D::Ribbon){
 		int ycol = table->colIndex(zColName);
 		plot->addRibbon(table, table->colName(table->colX(ycol)), zColName);
 	} else
 		plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
-
-	plot->setDataColorMap(d_3D_color_map);
-	plot->update();
 
 	emit modified();
 	QApplication::restoreOverrideCursor();
@@ -11024,6 +11013,8 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.insertItem(tr("&Export") + "...", this, SLOT(exportGraph()));
 		cm.addAction(actionPrint);
 		cm.insertSeparator();
+		cm.addAction(actionAnimate);
+		cm.insertSeparator();
 		cm.addAction(actionCloseWindow);
 	} else if (qobject_cast<Matrix *>(w)){
 		Matrix *t = (Matrix *)w;
@@ -15490,7 +15481,7 @@ void ApplicationWindow::translateActionsStrings()
 	floornone->setStatusTip( tr( "Empty floor" ) );
 
 	actionAnimate->setText( tr( "Animation" ) );
-	actionAnimate->setMenuText( tr( "Animation" ) );
+	actionAnimate->setMenuText("&" + tr( "Animation" ) );
 	actionAnimate->setToolTip( tr( "Animation" ) );
 	actionAnimate->setStatusTip( tr( "Animation" ) );
 
@@ -15512,21 +15503,20 @@ void ApplicationWindow::translateActionsStrings()
 
 Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 {
-	if (!m) {
+	if (!m){
 		m = (Matrix*)activeWindow(MatrixWindow);
 		if (!m)
 			return 0;
 	}
 
-	QApplication::setOverrideCursor(Qt::WaitCursor);
 	Graph3D *plot = newPlot3D();
-	if(!plot)
+	if (!plot)
 		return 0;
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
-	plot->setDataColorMap(m->colorMap());
-	plot->update();
 
 	custom3DActions(plot);
 	emit modified();

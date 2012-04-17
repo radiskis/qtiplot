@@ -32,24 +32,26 @@ Description          : Linear Color Map for 3D graph widget
 
 using namespace Qwt3D;
 
-class LinearColor : public Color
+class LinearColor : public StandardColor
 {
 public:
-	LinearColor(Qwt3D::Curve*, const LinearColorMap&, double alpha = 1.0);
+	LinearColor(Qwt3D::Curve*, const LinearColorMap&);
 	LinearColor(Qwt3D::Curve*, const Qwt3D::ColorVector&);
 	Qwt3D::RGBA operator()(double x, double y, double z) const;
 
-	void setAlpha(double a);
 	double alpha(){return d_alpha;}
+	void setAlpha(double a);
+	void resetAlpha();
+
+	LinearColorMap* colorMapPointer(){return &d_color_map;}
+	LinearColorMap colorMap(){return d_color_map;}
+	void setColorMap(const LinearColorMap&);
 
 	std::vector<double> colorStops() const;
-	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec);
-	void clear(){d_colors.clear();}
+	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) const;
 
 protected:
-	Qwt3D::Curve *d_curve;
 	LinearColorMap d_color_map;
-	Qwt3D::ColorVector d_colors;
 	double d_alpha;
 };
 

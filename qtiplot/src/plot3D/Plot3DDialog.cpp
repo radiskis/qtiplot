@@ -705,8 +705,10 @@ void Plot3DDialog::setPlot(Graph3D *g)
 
 	d_plot = g;
 
-	d_color_map_editor->setRange(g->zStart(), g->zStop());
-	d_color_map_editor->setColorMap(g->colorMap());
+	LinearColorMap colors = g->colorMap();
+	d_color_map_editor->setRange(colors.intensityRange());
+	d_color_map_editor->setColorMap(colors);
+
 	btnTitleColor->setColor(g->titleColor());
 	btnMesh->setColor(g->meshColor());
 	btnAxes->setColor(g->axesColor());

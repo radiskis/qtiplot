@@ -92,10 +92,14 @@ LinearColorMap LinearColorMap::fromXmlStringList(const QStringList& lst)
 
 LinearColorMap LinearColorMap::rainbow()
 {
-	LinearColorMap colorMap = LinearColorMap(Qt::blue, Qt::red);
-	colorMap.addColorStop(0.2, Qt::cyan);
-	colorMap.addColorStop(0.4, Qt::green);
-	colorMap.addColorStop(0.6, Qt::yellow);
-	colorMap.addColorStop(0.8, Qt::red);
+	LinearColorMap colorMap = LinearColorMap(Qt::black, Qt::white);
+	colorMap.addColorStop(0.0, Qt::blue);
+	colorMap.addColorStop(0.125, QColor(0, 128, 255));
+	colorMap.addColorStop(0.25, Qt::cyan);
+	colorMap.addColorStop(0.375, QColor(0, 255, 128));
+	colorMap.addColorStop(0.5, Qt::green);
+	colorMap.addColorStop(0.625, Qt::yellow);
+	colorMap.addColorStop(0.75, QColor(255, 128, 0));
+	colorMap.addColorStop(0.875, Qt::red);
 	return colorMap;
 }
