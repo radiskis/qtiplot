@@ -35,7 +35,7 @@ Curve::Curve(QWidget* parent)
 
     displaylists_p.resize(DisplayListSize);
     meshLineWidth_ = 1;
-    datacolor_p = new StandardColor(this, 100);
+	datacolor_p = new StandardColor(this, 0);
     setPolygonOffset(0.5);
     setMeshColor(RGBA(0.0,0.0,0.0));
     setMeshLineWidth(1);
@@ -482,7 +482,7 @@ void Curve::setDataColor(Color* col)
 	if (col == datacolor_p)
 		return;
 
-	datacolor_p->clear();
+	datacolor_p->destroy();
 	datacolor_p = col;
 	update_displaylists_ = true;
 }

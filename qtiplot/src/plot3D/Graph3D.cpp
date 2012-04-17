@@ -195,7 +195,6 @@ void Graph3D::initPlot()
 	titleFnt = app->d_3D_title_font;
 
 	d_color_map_file = QString::null;
-	d_color_map = app->d_3D_color_map;
 	d_shading = (Qwt3D::SHADINGSTYLE)app->d_3D_shading;
 	legendOn = app->d_3D_legend;
 	legendMajorTicks = 5;
@@ -326,17 +325,19 @@ Curve* Graph3D::addCurve()
 	ApplicationWindow *app = applicationWindow();
 
 	d_active_curve = new Curve(sp);
-	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map));
 	sp->addCurve(d_active_curve);
 
 	d_active_curve->setShading(d_shading);
+	d_active_curve->setDataColor(new LinearColor(d_active_curve, app->d_3D_color_map));
 	d_active_curve->setSmoothMesh(app->d_3D_smooth_mesh);
 	d_active_curve->setDataProjection(false);
 	d_active_curve->setProjection(BASE);
 	d_active_curve->setProjection(FACE, false);
 	d_active_curve->setProjection(SIDE, false);
 	d_active_curve->setResolution(app->d_3D_resolution);
-	d_active_curve->legend()->axis()->setNumberFont (this->numbersFont());
+	d_active_curve->showColorLegend(legendOn);
+	d_active_curve->legend()->setMajors(5);
+	d_active_curve->legend()->axis()->setNumberFont(numbersFont());
 
 	if (!title.isEmpty() && d_active_curve->title()->string() != title)
 		setTitle(title, titleCol, titleFnt);
@@ -386,16 +387,12 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 	d_func->setMaxZ(zr);
 	d_func->create();
 
-	d_active_curve->legend()->setLimits(zl, zr);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
-	d_active_curve->showColorLegend(legendOn);
-
 	if (d_active_curve->plotStyle() == NOPLOT){
 		d_active_curve->setPlotStyle(FILLED);
-		style_=FILLED;
+		style_ = FILLED;
 		pointStyle = None;
 	}
-  	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
+
 	if (d_autoscale)
 		findBestLayout();
 	update();
@@ -416,15 +413,9 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 	d_surface->setPeriodic(uPeriodic, vPeriodic);
 	d_surface->create();
 
-	double zl, zr;
-	sp->coordinates()->axes[Z1].limits(zl, zr);
-	d_active_curve->showColorLegend(legendOn);
-	d_active_curve->legend()->setLimits(zl, zr);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
-
 	if (d_active_curve->plotStyle() == NOPLOT){
 		d_active_curve->setPlotStyle(FILLED);
-		style_=FILLED;
+		style_ = FILLED;
 		pointStyle = None;
 	}
 	findBestLayout();
@@ -480,9 +471,7 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 	sp->makeCurrent();
 	if (!d_active_curve)
 		d_active_curve = addCurve();
-	d_active_curve->showColorLegend(legendOn);
-	d_active_curve->legend()->setLimits(gsl_vector_min(y), maxy);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
+
 	d_active_curve->loadFromData(data, xmesh, ymesh, gsl_vector_min(x), gsl_vector_max(x), 0, maxz);
 
 	if (empty || d_autoscale)
@@ -553,7 +542,7 @@ void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yCol
 void Graph3D::addMatrixData(Matrix* m)
 {
 	if (!m || d_matrix == m || m->isEmpty())
-		return;
+			return;
 
 	d_table = NULL;
 
@@ -566,7 +555,6 @@ void Graph3D::addMatrixData(Matrix* m)
 
 	int cols = m->numCols();
 	int rows = m->numRows();
-
 	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
 	for (int i = 0; i < cols; i++ ){
 		for (int j = 0; j < rows; j++)
@@ -577,22 +565,19 @@ void Graph3D::addMatrixData(Matrix* m)
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 	d_active_curve->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
-
-	double start, end;
-	sp->coordinates()->axes[Z1].limits (start, end);
-	d_active_curve->showColorLegend(legendOn);
-	d_active_curve->legend()->setLimits(start, end);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
-
 	Matrix::freeMatrixData(data_matrix, cols);
 
+	if (first_time){
+		LinearColorMap map = m->colorMap();
+		setDataColorMap(map);
+		d_active_curve->legend()->setLimits(map.intensityRange().minValue(), map.intensityRange().maxValue());
+	}
 	if (d_autoscale || first_time)
 		findBestLayout();
 	update();
 }
 
-void Graph3D::addMatrixData(Matrix* m, double xl, double xr,
-		double yl, double yr, double zl, double zr)
+void Graph3D::addMatrixData(Matrix* m, double xl, double xr, double yl, double yr, double zl, double zr)
 {
 	if (!m || m->isEmpty())
 		return;
@@ -1489,16 +1474,6 @@ void Graph3D::setScale(int axis, double start, double end, int majorTicks, int m
 		sp->coordinates()->axes[axis4].setMinors(minorTicks);
 	}
 
-	if (axis == Z1 && d_active_curve){
-		Qwt3D::ColorLegend *legend = d_active_curve->legend();
-		if (legend){
-			legend->setLimits(zMin, zMax);
-			legend->setMajors(majorTicks);
-			legend->setMinors(minorTicks);
-		}
-		setDataColorMap(d_color_map);
-	}
-
 	update();
 	QApplication::restoreOverrideCursor();
 	emit modified();
@@ -1521,8 +1496,10 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 		d_active_curve->legend()->setLimits(zl, zr);
     } else if (d_table){
 		QStringList cols = plotAssociation.split(",");
-		if (cols.size() < 3)
+		if (cols.size() < 3){
+			QApplication::restoreOverrideCursor();
 			return;
+		}
 
 		int xCol = d_table->colIndex(cols[0].remove("(X)"));
 		int yCol = d_table->colIndex(cols[1].remove("(Y)"));
@@ -1639,7 +1616,6 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	}
 	Matrix::freeMatrixData(data, cols);
 
-	d_active_curve->legend()->setLimits(zmin, zmax);
 	d_active_curve->legend()->setMajors(legendMajorTicks);
 
 	changeScales(xl, xr, yl, yr, zl, zr);
@@ -2750,8 +2726,10 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << labelsCol.name()+"\t";
 	t << bgCol.name()+"\t";
 	t << gridCol.name()+"\t";
-	t << d_color_map.color1().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
-	t << d_color_map.color2().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
+
+	LinearColorMap map = colorMap();
+	t << map.color1().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
+	t << map.color2().name()+"\t"; // obsolete: saved for compatibility with files older than 0.9.7.3
 	t << QString::number(d_alpha) + "\t" + d_color_map_file + "\n";
 
 	t << "axesLabels\t";
@@ -2821,7 +2799,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "Orthogonal\t" + QString::number(sp->ortho())+"\n";
 	if (d_color_map_file.isEmpty())
-		t << d_color_map.toXmlString();
+		t << map.toXmlString();
 
 	t << "axisType\t" << scaleType[0] << "\t" << scaleType[1] << "\t" << scaleType[2] << "\n";
 
@@ -2926,27 +2904,6 @@ void Graph3D::setOptions(bool legend, int r, int dist)
 	setLabelsDistance(dist);
 }
 
-void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
-{
-	if (!d_active_curve)
-		return;
-
-	d_color_map = colorMap;
-	d_color_map_file = QString::null;
-
-	LinearColor *color = (LinearColor *)d_active_curve->dataColor();
-	d_active_curve->setDataColor(new LinearColor(d_active_curve, d_color_map, color->alpha()));
-	sp->showColorLegend(legendOn);
-}
-
-void Graph3D::setDataColorMap(const ColorVector& colors, const LinearColorMap& colorMap)
-{
-	d_color_map = colorMap;
-	d_color_map_file = QString::null;
-
-	setDataColorMap(colors);
-}
-
 void Graph3D::changeTransparency(double t)
 {
 	if (!d_active_curve)
@@ -2990,7 +2947,7 @@ Matrix * Graph3D::functionMatrix()
 		m->setCaptionPolicy(MdiSubWindow::Label);
 		m->setCoordinates(d_func->xMin(), d_func->xMax(), d_func->yMin(), d_func->yMax());
 		m->setViewType(Matrix::ImageView, false);
-		m->setColorMap(d_color_map);
+		m->setColorMap(colorMap());
 		m->calculate();
 		m->show();
 	}
@@ -3037,6 +2994,33 @@ if (!sp)
    return;
 
 sp->setRotation(int(sp->xRotation() + 1) % 360, int(sp->yRotation() + 1) % 360, int(sp->zRotation() + 1) % 360);
+}
+
+LinearColorMap Graph3D::colorMap()
+{
+	if (!d_active_curve)
+		return LinearColorMap();
+
+	return ((LinearColor*)d_active_curve->dataColor())->colorMap();
+}
+
+LinearColorMap *Graph3D::colorMapPointer()
+{
+	if (!d_active_curve)
+		return 0;
+
+	return ((LinearColor*)d_active_curve->dataColor())->colorMapPointer();
+}
+
+void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
+{
+	if (!d_active_curve)
+		return;
+
+	d_color_map_file = QString::null;
+	((LinearColor *)d_active_curve->dataColor())->setColorMap(colorMap);
+	d_active_curve->legend()->setLimits(colorMap.intensityRange().minValue(), colorMap.intensityRange().maxValue());
+	d_active_curve->showColorLegend(d_active_curve->isColorLegend());
 }
 
 void Graph3D::setDataColorMap(const QString& fileName)
@@ -3100,28 +3084,35 @@ return true;
 
 void Graph3D::findBestLayout()
 {
-  	double start, end;
-  	sp->coordinates()->axes[X1].limits (start, end);
-  	double xScale = 1/fabs(end - start);
+	double start, end;
+	sp->coordinates()->axes[X1].limits (start, end);
+	double xScale = 1/fabs(end - start);
 
-  	sp->coordinates()->axes[Y1].limits (start, end);
-  	double yScale = 1/fabs(end - start);
+	sp->coordinates()->axes[Y1].limits (start, end);
+	double yScale = 1/fabs(end - start);
 
-  	sp->coordinates()->axes[Z1].limits (start, end);
-  	double zScale = 1/fabs(end - start);
+	sp->coordinates()->axes[Z1].limits (start, end);
+	double zScale = 1/fabs(end - start);
 
-  	double d = (sp->hull().maxVertex - sp->hull().minVertex).length();
-  	sp->setScale(xScale, yScale, zScale);
+	LinearColorMap *map = colorMapPointer();
+	if (map && !map->intensityRange().isValid()){
+		map->setIntensityRange(floor(start), ceil(end));
+		d_active_curve->legend()->setLimits(floor(start), ceil(end));
+		d_active_curve->showColorLegend(d_active_curve->isColorLegend());
+	}
 
-  	sp->setZoom(d/sqrt(3.));
+	double d = (sp->hull().maxVertex - sp->hull().minVertex).length();
+	sp->setScale(xScale, yScale, zScale);
+
+	sp->setZoom(d/sqrt(3.));
 
 	sp->setShift(0, 0, 0);
 
-  	double majl = 0.1/yScale;
-  	setAxisTickLength(0, majl, 0.6*majl);
-  	majl = 0.1/xScale;
-  	setAxisTickLength(1, majl, 0.6*majl);
-  	setAxisTickLength(2, majl, 0.6*majl);
+	double majl = 0.1/yScale;
+	setAxisTickLength(0, majl, 0.6*majl);
+	majl = 0.1/xScale;
+	setAxisTickLength(1, majl, 0.6*majl);
+	setAxisTickLength(2, majl, 0.6*majl);
 }
 
 void Graph3D::copy(Graph3D* g)

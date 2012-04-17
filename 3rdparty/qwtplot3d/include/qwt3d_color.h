@@ -22,9 +22,12 @@ public:
 	virtual Qwt3D::RGBA operator()(double x, double y, double z) const = 0; //!< Implement your color model here
 	virtual Qwt3D::RGBA operator()(Qwt3D::Triple const& t) const {return this->operator()(t.x,t.y,t.z);}
 	//! Should create a color vector usable by ColorLegend. The default implementation returns his argument
-	virtual Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) { return vec; }
+	virtual Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) const { return vec; }
 	virtual std::vector<double> colorStops() const {return std::vector<double>();}
-	virtual void clear(){};
+	void destroy(){delete this;};
+
+protected:
+	virtual ~Color(){} //!< Allow heap based objects only
 };
 
 class Curve;
@@ -39,7 +42,7 @@ public:
 	explicit StandardColor(Qwt3D::Curve* data, unsigned size = 100);
 	Qwt3D::RGBA operator()(double x, double y, double z) const; //!< Receives z-dependend color from ColorVector
 	void setColorVector(Qwt3D::ColorVector const& cv);
-	void reset(unsigned size=100); //!< Resets the standard colors; 
+	void reset(unsigned size = 100); //!< Resets the standard colors;
 	void setAlpha(double a); //!< Sets unitary alpha value for all colors
 	/** 
 		\brief Creates color vector
@@ -47,10 +50,10 @@ public:
 		Creates a color vector used by ColorLegend. This is essentially a copy from the internal used vector.
 		\return The vector created
 	*/
-	Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) {vec = colors_; return vec;}
-	void clear(){colors_.clear();}
+	virtual Qwt3D::ColorVector& createVector(Qwt3D::ColorVector& vec) const {vec = colors_; return vec;}
 
 protected:
+	~StandardColor(){colors_.clear();}
 	Qwt3D::ColorVector colors_;
 	Qwt3D::Curve* data_;
 };

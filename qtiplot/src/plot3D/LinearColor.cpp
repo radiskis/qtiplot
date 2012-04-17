@@ -26,33 +26,32 @@ Description          : Linear Color Map for 3D graph widget
  ***************************************************************************/
 #include <LinearColor.h>
 
-LinearColor::LinearColor(Qwt3D::Curve* curve, const LinearColorMap& colorMap, double alpha): Color(),
-d_curve(curve),
+LinearColor::LinearColor(Qwt3D::Curve* curve, const LinearColorMap& colorMap):
+StandardColor(curve, 0),
 d_color_map(colorMap),
-d_colors(Qwt3D::ColorVector()),
-d_alpha(alpha)
-{}
-
-LinearColor::LinearColor(Qwt3D::Curve* curve, const Qwt3D::ColorVector& colors): Color(),
-d_curve(curve),
-d_color_map(LinearColorMap()),
-d_colors(colors),
 d_alpha(1.0)
 {}
+
+LinearColor::LinearColor(Qwt3D::Curve* curve, const Qwt3D::ColorVector& colors):
+StandardColor(curve, 0),
+d_color_map(LinearColorMap())
+{
+	setColorVector(colors);
+}
 
 Qwt3D::RGBA LinearColor::operator()(double, double, double z) const
 {
 	double zmin, zmax;
-	d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+	data_->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
 
-	int size = (int)d_colors.size() - 1;
+	int size = (int)colors_.size() - 1;
 	if (size >= 0){
 		int index = (int)(size*(z - zmin)/(zmax - zmin));
 		if (index < 0)
 			index = 0;
 		if (index > size)
 			index = size;
-		return d_colors[index];
+		return colors_[index];
 	}
 
 	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
@@ -67,23 +66,32 @@ void LinearColor::setAlpha(double a)
 
 	d_alpha = a;
 
-	unsigned int size = d_colors.size();
+	unsigned int size = colors_.size();
 	if (size){
 		for (unsigned int i = 0; i < size; ++i)
-			d_colors[i].a = a;
+			colors_[i].a = a;
+	}
+}
+
+void LinearColor::resetAlpha()
+{
+	unsigned int size = colors_.size();
+	if (size){
+		for (unsigned int i = 0; i < size; ++i)
+			colors_[i].a = d_alpha;
 	}
 }
 
 std::vector<double> LinearColor::colorStops() const
 {
 	std::vector<double> stops;
-	if (d_colors.size() > 0)
+	if (colors_.size() > 0)
 		return stops;
 
 	QwtDoubleInterval range = d_color_map.intensityRange();
 	if (!range.isValid()){
 		double zmin, zmax;
-		d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+		data_->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
 		range = QwtDoubleInterval(zmin, zmax);
 	}
 	double l = range.width();
@@ -99,28 +107,31 @@ std::vector<double> LinearColor::colorStops() const
 	return stops;
 }
 
-Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec)
+Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec) const
 {
-	if (d_colors.size() > 0){
+	if (colors_.size()){
 		vec.clear();
-		vec = d_colors;
+		vec = colors_;
 		return vec;
 	}
 
-	double zmin, zmax;
-	d_curve->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
-	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
-
-	int size = 255;
-	double dsize = size;
-	double dz = fabs(zmax - zmin)/dsize;
-	Qwt3D::ColorVector cv;
-	for (int i = 0; i < size; i++){
-		QRgb color = d_color_map.rgb(range, zmin + i*dz);
-		cv.push_back(RGBA(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha));
-	}
+	const QwtDoubleInterval range = d_color_map.intensityRange();
+	double zmin = range.minValue();
 
 	vec.clear();
-	vec = cv;
+	int size = 255;
+	double dsize = size;
+	double dz = range.width()/dsize;
+	for (int i = 0; i < size; i++){
+		QRgb color = d_color_map.rgb(range, zmin + i*dz);
+		vec.push_back(RGBA(qRed(color)/dsize, qGreen(color)/dsize, qBlue(color)/dsize, d_alpha));
+	}
+
 	return vec;
+}
+
+void LinearColor::setColorMap(const LinearColorMap& colorMap)
+{
+	colors_.clear();
+	d_color_map = colorMap;
 }
