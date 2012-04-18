@@ -485,58 +485,23 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yColName,
 		double xl, double xr, double yl, double yr, double zl, double zr)
 {
-	d_table = table;
-    d_table_plot_type = Ribbon;
+	if (!table)
+		return;
 
-	int r = table->numRows();
 	int xcol = table->colIndex(xColName);
 	int ycol = table->colIndex(yColName);
+	if (xcol < 0 || ycol < 0)
+		return;
 
+	d_table = table;
+	d_table_plot_type = Ribbon;
 	plotAssociation = xColName + "(X)," + yColName + "(Y)";
 
-	int i, j, xmesh = 0, ymesh = 2;
-	double xv, yv;
-
-	for (i = 0; i < r; i++){
-		if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
-			xv=table->cell(i, xcol);
-			if (xv>=xl && xv <= xr)
-				xmesh++;
-		}
-	}
-
-	if (xmesh == 0)
-		xmesh++;
-
-	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
-	for ( j = 0; j < ymesh; j++){
-		int k=0;
-		for ( i = 0; i < r; i++){
-			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
-				xv=table->cell(i,xcol);
-				if (xv>=xl && xv <= xr){
-					yv=table->cell(i,ycol);
-					if (yv > zr)
-						data[k][j] = zr;
-					else if (yv < zl)
-						data[k][j] = zl;
-					else
-						data[k][j] = yv;
-					k++;
-				}
-			}
-		}
-	}
-	sp->makeCurrent();
 	if (!d_active_curve)
 		d_active_curve = addCurve();
-	d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
-	sp->createCoordinateSystem(Triple(xl, yl, zl), Triple(xr, yr, zr));
-	d_active_curve->showColorLegend(legendOn);
-	d_active_curve->legend()->setLimits(zl, zr);
-	d_active_curve->legend()->setMajors(legendMajorTicks);
 
-	Matrix::freeMatrixData(data, xmesh);
+	updateScales(xl, xr, yl, yr, zl, zr, xcol, ycol);
+	d_active_curve->legend()->setLimits(zl, zr);
 }
 
 void Graph3D::addMatrixData(Matrix* m)
@@ -1487,16 +1452,9 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 
 	if (d_matrix)
 		updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
-    else if (d_func){
-        d_func->setDomain(xl, xr, yl, yr);
-        d_func->setMinZ(zl);
-        d_func->setMaxZ(zr);
-        d_func->create ();
-		sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
-		d_active_curve->legend()->setLimits(zl, zr);
-    } else if (d_table){
+	else if (d_table){
 		QStringList cols = plotAssociation.split(",");
-		if (cols.size() < 3){
+		if (cols.size() < 2){
 			QApplication::restoreOverrideCursor();
 			return;
 		}
@@ -1625,14 +1583,13 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl, double zr,
 		int xcol, int ycol)
 {
-	int r=d_table->numRows();
-	int xmesh=0, ymesh=2;
-	double xv, yv;
-
+	int r = d_table->numRows();
+	int xmesh = 0, ymesh = 2;
 	for (int i = 0; i < r; i++){
 		if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty()){
-			xv=d_table->cell(i,xcol);
-			if (xv >= xl && xv <= xr)
+			double xv = d_table->cell(i, xcol);
+			double yv = d_table->cell(i, ycol);
+			if (xv >= xl && xv <= xr && yv >= zl && yv <= zr)
 				xmesh++;
 		}
 	}
@@ -1643,18 +1600,15 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
 
 	for (int j = 0; j < ymesh; j++){
-		int k=0;
+		int k = 0;
 		for (int i = 0; i < r; i++){
-			if (!d_table->text(i,xcol).isEmpty() && !d_table->text(i,ycol).isEmpty()){
-				xv=d_table->cell(i,xcol);
+			if (!d_table->text(i, xcol).isEmpty() && !d_table->text(i, ycol).isEmpty()){
+				double xv = d_table->cell(i, xcol);
 				if (xv >= xl && xv <= xr){
-					yv=d_table->cell(i,ycol);
-					if (yv > zr)
-						data[k][j] = zr;
-					else if (yv < zl)
-						data[k][j] = zl;
-					else
-						data[k][j] = yv;
+					double yv = d_table->cell(i, ycol);
+					if (yv > zr || yv < zl)
+						continue;
+					data[k][j] = yv;
 					k++;
 				}
 			}
@@ -1663,8 +1617,11 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 
 	if (d_active_curve)
 		d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
-	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
+
 	Matrix::freeMatrixData(data, xmesh);
+
+	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
+	changeScales(xl, xr, yl, yr, zl, zr);
 }
 
 void Graph3D::setTicks(const QStringList& options)
@@ -3252,6 +3209,7 @@ void Graph3D::copy(Graph3D* g)
 	setOrthogonal(g->isOrthogonal());
 
 	sp->updateData();
+	resetAxesLabels();
 	animate(g->isAnimated());
 
 	d_scale_on_print = g->scaleOnPrint();
