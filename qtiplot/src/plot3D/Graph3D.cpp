@@ -1102,7 +1102,7 @@ void Graph3D::resetAxesLabels()
 			}
 		} else {
 			QStringList lst = plotAssociation.split(",");
-			if (!lst.isEmpty()){
+			if (lst.size() > 1){
 				s = lst[0].remove("(X)");
 				int pos = s.lastIndexOf("_");
 				if (pos > 0)
