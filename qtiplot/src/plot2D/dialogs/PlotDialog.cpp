@@ -2486,7 +2486,7 @@ void PlotDialog::pickErrorBarsColor()
         return;
 
 	graph->updateErrorBars((ErrorBarsCurve *)item->plotItem(), xBox->isChecked(), widthBox->value(),
-			capBox->currentText().toInt(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
+			capBox->currentText().toDouble(), colorBox->color(), plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 }
 
@@ -4705,7 +4705,7 @@ void PlotDialog::applyErrorBarFormatToCurve(ErrorBarsCurve *err, bool color)
 		col = colorBox->color();
 
 	g->updateErrorBars(err, xBox->isChecked(), widthBox->value(),
-			capBox->currentText().toInt(), col, plusBox->isChecked(), minusBox->isChecked(),
+			capBox->currentText().toDouble(), col, plusBox->isChecked(), minusBox->isChecked(),
 			throughBox->isChecked());
 	err->setSkipSymbolsCount(boxSkipErrorBars->value());
 }

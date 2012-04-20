@@ -1433,8 +1433,8 @@ public:
 
 	double errorValue(int i);
 
-	int capLength();
-	void setCapLength(int t);
+	double capLength();
+	void setCapLength(double t);
 
 	double width();
 	void setWidth(double w);
@@ -1924,10 +1924,10 @@ public:
 %End
 
   ErrorBarsCurve* addErrorBars(const QString&, Table *, const QString&,
-		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+		  int type = 1, double width = 1, double cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
   ErrorBarsCurve* addErrorBars(DataCurve *, Table *, const QString&,
-		  int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+		  int type = 1, double width = 1, double cap = 8, const QColor& color = QColor(Qt::black),
 		  bool through = true, bool minus = true, bool plus = true);
 
   QwtHistogram* histogram(int);
