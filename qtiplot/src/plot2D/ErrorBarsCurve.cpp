@@ -157,7 +157,7 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 			const double yl = yMap.xTransform(yval - error);
 			const double yhl = yi - sh2;
 			const double ylh = yi + sh2;
-			const int cap2 = qRound(d_cap_length*0.5*x_factor);
+			const double cap2 = d_cap_length*0.5*x_factor;
 
 			if (plus){
 				painter->drawLine(QLineF(xi, yhl, xi, yh));
@@ -177,7 +177,7 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 			const double xm = xMap.xTransform(xval - error);
 			const double xpm = xi + sw2;
 			const double xmp = xi - sw2;
-			const int cap2 = qRound(d_cap_length*0.5*y_factor);
+			const double cap2 = d_cap_length*0.5*y_factor;
 
 			if (plus){
 				painter->drawLine(QLineF(xp, yi, xpm, yi));

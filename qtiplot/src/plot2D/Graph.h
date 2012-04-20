@@ -377,18 +377,18 @@ class Graph: public QwtPlot
 		//! \name Error Bars
 		//@{
 		ErrorBarsCurve* addErrorBars(const QString& xColName, const QString& yColName, Table *errTable,
-				const QString& errColName, int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				const QString& errColName, int type = 1, double width = 1, double cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
 		ErrorBarsCurve* addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
-				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				int type = 1, double width = 1, double cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true);
 
 		ErrorBarsCurve* addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
-				int type = 1, double width = 1, int cap = 8, const QColor& color = QColor(Qt::black),
+				int type = 1, double width = 1, double cap = 8, const QColor& color = QColor(Qt::black),
 				bool through = true, bool minus = true, bool plus = true, bool force = false);
 
-		void updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap, const QColor& c, bool plus, bool minus, bool through);
+		void updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, double cap, const QColor& c, bool plus, bool minus, bool through);
 		//! Used when restoring project files
 		void loadErrorBars(QList<ErrorBarsCurve *> errBars, QList<int> mcIndexes);
 

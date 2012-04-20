@@ -3324,7 +3324,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 	c->setBrush(brush);
 }
 
-void Graph::updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap, const QColor& c,
+void Graph::updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, double cap, const QColor& c,
 		bool plus, bool minus, bool through)
 {
 	if (!er)
@@ -3349,7 +3349,7 @@ void Graph::updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, int cap
 }
 
 ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
-		int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus)
+		int type, double width, double cap, const QColor& color, bool through, bool minus, bool plus)
 {
 	foreach(QwtPlotItem *it, d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
@@ -3364,14 +3364,14 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, co
 }
 
 ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yColName,
-		Table *errTable, const QString& errColName, int type, double width, int cap,
+		Table *errTable, const QString& errColName, int type, double width, double cap,
 		const QColor& color, bool through, bool minus, bool plus)
 {
 	return addErrorBars(masterCurve(xColName, yColName), errTable, errColName, type, width, cap, color, through, minus, plus);
 }
 
 ErrorBarsCurve* Graph::addErrorBars(DataCurve *c, Table *errTable, const QString& errColName,
-				int type, double width, int cap, const QColor& color, bool through, bool minus, bool plus, bool force)
+				int type, double width, double cap, const QColor& color, bool through, bool minus, bool plus, bool force)
 {
 	if (!c && !force)
 		return 0;
@@ -7777,6 +7777,11 @@ void ScaledFontsPrintFilter::apply(QwtPlotItem *item) const
 			pen.setWidthF(d_dpi_factor*pen.widthF());
 			c->setPen(pen);
 
+			if (((PlotCurve*)c)->type() == Graph::ErrorBars){
+				ErrorBarsCurve *err = (ErrorBarsCurve*)c;
+				err->setCapLength(err->capLength()*d_dpi_factor);
+			}
+
 			break;
 		}
 		case QwtPlotItem::Rtti_PlotMarker:
@@ -7866,6 +7871,11 @@ void ScaledFontsPrintFilter::reset(QwtPlotItem *item) const
 			pen = c->pen();
 			pen.setWidthF(pen.widthF()/d_dpi_factor);
 			c->setPen(pen);
+
+			if (((PlotCurve*)c)->type() == Graph::ErrorBars){
+				ErrorBarsCurve *err = (ErrorBarsCurve*)c;
+				err->setCapLength(err->capLength()/d_dpi_factor);
+			}
 
 			break;
 		}
