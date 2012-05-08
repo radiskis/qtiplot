@@ -617,53 +617,74 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	int layers = graphsList.size();
 	const QRect rect = d_canvas->geometry();
 
-	gsl_vector *xTopR = gsl_vector_calloc (layers);//ratio between top axis + title and d_canvas height
-	gsl_vector *xBottomR = gsl_vector_calloc (layers); //ratio between bottom axis and d_canvas height
-	gsl_vector *yLeftR = gsl_vector_calloc (layers);
-	gsl_vector *yRightR = gsl_vector_calloc (layers);
-	gsl_vector *maxXTopHeight = gsl_vector_calloc (d_rows);//maximum top axis + title height in a row
-	gsl_vector *maxXBottomHeight = gsl_vector_calloc (d_rows);//maximum bottom axis height in a row
-	gsl_vector *maxYLeftWidth = gsl_vector_calloc (d_cols);//maximum left axis width in a column
-	gsl_vector *maxYRightWidth = gsl_vector_calloc (d_cols);//maximum right axis width in a column
-	gsl_vector *Y = gsl_vector_calloc (d_rows);
-	gsl_vector *X = gsl_vector_calloc (d_cols);
+	double *xTopR = (double *)calloc(layers, sizeof(double));//ratio between top axis + title and d_canvas height
+	double *xBottomR = (double *)calloc(layers, sizeof(double)); //ratio between bottom axis and d_canvas height
+	double *yLeftR = (double *)calloc(layers, sizeof(double));
+	double *yRightR = (double *)calloc(layers, sizeof(double));
+	double *maxXTopHeight = (double *)calloc(d_rows, sizeof(double));//maximum top axis + title height in a row
+	double *maxXBottomHeight = (double *)calloc(d_rows, sizeof(double));//maximum bottom axis height in a row
+	double *maxYLeftWidth = (double *)calloc(d_cols, sizeof(double));//maximum left axis width in a column
+	double *maxYRightWidth = (double *)calloc(d_cols, sizeof(double));//maximum right axis width in a column
+	double *Y = (double *)calloc(d_rows, sizeof(double));
+	double *X = (double *)calloc(d_cols, sizeof(double));
 
-	for (int i=0; i<layers; i++)
-	{//calculate scales/d_canvas dimensions reports for each layer and stores them in the above vectors
+	for (int i = 0; i < layers; i++){
+	//calculate scales/d_canvas dimensions reports for each layer and stores them in the above vectors
 		Graph *g = (Graph *)graphsList.at(i);
 		QwtPlotLayout *plotLayout = g->plotLayout();
 		QRect cRect = plotLayout->canvasRect();
-		double ch = (double) cRect.height();
-		double cw = (double) cRect.width();
+		double ch = (double)cRect.height();
+		double cw = (double)cRect.width();
 
-		QRect tRect=plotLayout->titleRect ();
-		QwtScaleWidget *scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::xTop);
+		QRect tRect = plotLayout->titleRect();
+		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(QwtPlot::xTop);
 
 		int topHeight = 0;
 		if (!tRect.isNull())
 			topHeight += tRect.height() + plotLayout->spacing();
 		if (scale){
-			QRect sRect=plotLayout->scaleRect (QwtPlot::xTop);
-			topHeight += sRect.height();
+			QRect sRect = plotLayout->scaleRect(QwtPlot::xTop);
+			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			bool title = !scale->title().text().isEmpty();
+			bool minTicks = (sd->minorTicksStyle() != ScaleDraw::None) && (sd->minorTicksStyle() != ScaleDraw::In);
+			bool majTicks = (sd->majorTicksStyle() != ScaleDraw::None) && (sd->majorTicksStyle() != ScaleDraw::In);
+			if (labels || title || minTicks || majTicks)
+				topHeight += sRect.height();
 		}
-		gsl_vector_set (xTopR, i, double(topHeight)/ch);
+		xTopR[i] = double(topHeight)/ch;
 
-		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::xBottom);
+		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::xBottom);
 		if (scale){
-			QRect sRect = plotLayout->scaleRect (QwtPlot::xBottom);
-			gsl_vector_set (xBottomR, i, double(sRect.height())/ch);
+			QRect sRect = plotLayout->scaleRect(QwtPlot::xBottom);
+			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			bool noTitle = scale->title().text().isEmpty();
+			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			xBottomR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.height())/ch;
 		}
 
-		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::yLeft);
+		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yLeft);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect (QwtPlot::yLeft);
-			gsl_vector_set (yLeftR, i, double(sRect.width())/cw);
+			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			bool noTitle = scale->title().text().isEmpty();
+			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			yLeftR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.width())/cw;
 		}
 
-		scale=(QwtScaleWidget *) g->axisWidget (QwtPlot::yRight);
+		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yRight);
 		if (scale){
-			QRect sRect = plotLayout->scaleRect (QwtPlot::yRight);
-			gsl_vector_set (yRightR, i, double(sRect.width())/cw);
+			QRect sRect = plotLayout->scaleRect(QwtPlot::yRight);
+			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			bool noTitle = scale->title().text().isEmpty();
+			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			yRightR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.width())/cw;
 		}
 
 		//calculate max scales/d_canvas dimensions ratio for each line and column and stores them to vectors
@@ -673,46 +694,46 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		int col = i % d_cols;
 
-		double aux = gsl_vector_get(xTopR, i);
-		double old_max = gsl_vector_get(maxXTopHeight, row);
+		double aux = xTopR[i];
+		double old_max = maxXTopHeight[row];
 		if (aux >= old_max)
-			gsl_vector_set(maxXTopHeight, row,  aux);
+			maxXTopHeight[row] = aux;
 
-		aux = gsl_vector_get(xBottomR, i) ;
-		if (aux >= gsl_vector_get(maxXBottomHeight, row))
-			gsl_vector_set(maxXBottomHeight, row,  aux);
+		aux = xBottomR[i];
+		if (aux >= maxXBottomHeight[row])
+			maxXBottomHeight[row] = aux;
 
-		aux = gsl_vector_get(yLeftR, i);
-		if (aux >= gsl_vector_get(maxYLeftWidth, col))
-			gsl_vector_set(maxYLeftWidth, col, aux);
+		aux = yLeftR[i];
+		if (aux >= maxYLeftWidth[col])
+			maxYLeftWidth[col] = aux;
 
-		aux = gsl_vector_get(yRightR, i);
-		if (aux >= gsl_vector_get(maxYRightWidth, col))
-			gsl_vector_set(maxYRightWidth, col, aux);
+		aux = yRightR[i];
+		if (aux >= maxYRightWidth[col])
+			maxYRightWidth[col] = aux;
 	}
 
 	double c_heights = 0.0;
 	for (int i = 0; i < d_rows; i++){
-		gsl_vector_set (Y, i, c_heights);
-		c_heights += 1 + gsl_vector_get(maxXTopHeight, i) + gsl_vector_get(maxXBottomHeight, i);
+		Y[i] = c_heights;
+		c_heights += 1 + maxXTopHeight[i] + maxXBottomHeight[i];
 	}
 
 	double c_widths = 0.0;
-	for (int i=0; i<d_cols; i++){
-		gsl_vector_set (X, i, c_widths);
-		c_widths += 1 + gsl_vector_get(maxYLeftWidth, i) + gsl_vector_get(maxYRightWidth, i);
+	for (int i = 0; i < d_cols; i++){
+		X[i] = c_widths;
+		c_widths += 1 + maxYLeftWidth[i] + maxYRightWidth[i];
 	}
 
 	if (!userSize){
-		l_canvas_width = qRound((rect.width()-(d_cols-1)*colsSpace - right_margin - left_margin)/(double)c_widths);
-		l_canvas_height = qRound((rect.height()-(d_rows-1)*rowsSpace - top_margin - bottom_margin)/(double)c_heights);
+		l_canvas_width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/(double)c_widths);
+		l_canvas_height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/(double)c_heights);
 	}
 
 	if (l_canvas_width < 50 || l_canvas_height < 50)
 		return QSize();
 
 	QSize size = QSize(l_canvas_width, l_canvas_height);
-	for (int i=0; i<layers; i++){
+	for (int i = 0; i < layers; i++){
 		int row = i / d_cols;
 		if (row >= d_rows )
 			row = d_rows - 1;
@@ -720,8 +741,8 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		int col = i % d_cols;
 
 		//calculate sizes and positions for layers
-		const int w = int (l_canvas_width*(1 + gsl_vector_get(yLeftR, i) + gsl_vector_get(yRightR, i)));
-		const int h = int (l_canvas_height*(1 + gsl_vector_get(xTopR, i) + gsl_vector_get(xBottomR, i)));
+		const int w = int (l_canvas_width*(1 + yLeftR[i] + yRightR[i]));
+		const int h = int (l_canvas_height*(1 + xTopR[i] + xBottomR[i]));
 
 		int x = left_margin;
 		int y = top_margin;
@@ -774,11 +795,11 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	}
 
 	//free memory
-	gsl_vector_free (maxXTopHeight); gsl_vector_free (maxXBottomHeight);
-	gsl_vector_free (maxYLeftWidth); gsl_vector_free (maxYRightWidth);
-	gsl_vector_free (xTopR); gsl_vector_free (xBottomR);
-	gsl_vector_free (yLeftR); gsl_vector_free (yRightR);
-	gsl_vector_free (X); gsl_vector_free (Y);
+	free(maxXTopHeight); free(maxXBottomHeight);
+	free(maxYLeftWidth); free(maxYRightWidth);
+	free(xTopR); free(xBottomR);
+	free(yLeftR); free(yRightR);
+	free(X); free(Y);
 
 	if (!graphsList.isEmpty()){
 		Graph *g = graphsList[0];
@@ -932,9 +953,6 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 		return false;
 	}
 
-	int fw = width() - d_canvas->width();//frame width
-	int fh = height() - d_canvas->height();//frame height
-
 	if (!userSize){
 		//the d_canvas sizes of all layers become equal only after several
 		//resize iterations, due to the way Qwt handles the plot layout
@@ -955,7 +973,8 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 		d_scale_layers = false;
 
 		QSize size = d_canvas->childrenRect().size();
-		resize(d_canvas->x() + size.width() + left_margin + right_margin + fw, d_canvas->y() + size.height() + fh - bottom_margin);
+		int fh = height() - d_canvas->height();//frame height
+		resize(d_canvas->x() + size.width() + right_margin, d_canvas->y() + size.height() + bottom_margin + fh);
 
 		d_scale_layers = resizeLayers;
 	}
