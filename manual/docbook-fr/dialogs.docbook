@@ -160,11 +160,10 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
 <sect1 id="add-remove-curve-dialog">
   <title>Ajouter/supprimer des courbes</title>
   <para>Cette boîte de dialogue est activée en sélectionnant la commande <link linkend="add-remove-curve-cmd">&add-remove-curve-cmd;</link> du <link linkend="sec-graph-menu">Menu Graphe</link>.</para>
-  <para>La fenêtre de gauche montre les colonnes disponibles des tables du prijet qui peuvent être utilisée pour le tracé des courbes. Si l'option <emphasis>Montrer le dossier courant seulement</emphasis> est cochée, option is checked, only tables from the active folder of the project will be listed in this window.
-  The right window lists the curves already plotted. In the case presented below, there are two tables that the &add-remove-curve-cmd;
-  dialog box lists for the selection of columns. You select a <emphasis>Y</emphasis> column to plot using this dialog. &appname; will use the column defined as X in the corresponding table for the <emphasis>X</emphasis> values.</para>
+  <para>La fenêtre de gauche montre les colonnes disponibles des tables du prijet qui peuvent être utilisée pour le tracé des courbes. Si l'option <emphasis>Montrer le dossier courant seulement</emphasis> est cochée, seules les tables du répertoire actif, seront listées dans cette fenètre.
+  La fenètre de droite liste les courbes déjà tracées. Dans le cas précédent, il y a deux tables que la boite de dialogue &add-remove-curve-cmd; liste la sélection de colonnes. Vous sélecctionnez une colonne <emphasis>Y</emphasis> à tracer en utilisant cette boite de dialogue. &appname; utilisera la colonne définie comme X dans la table correspondante pour les valeurs de <emphasis>X</emphasis>.</para>
   <figure id="fig-add-remove-curve">
-    <title>The &add-remove-curve-cmd; Dialog Box.</title>
+    <title>La boite de dialogue &add-remove-curve-cmd;.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/add-remove-curve.png"/>
@@ -172,32 +171,26 @@ Assurez vous d'avoir fait une sauvegarde au cas où vous en auriez besoin ultér
     </mediaobject>
   </figure>
 
-  <para>In this dialog box, if you select one curve of the plot in the right window,
-  you can change the columns used for X and Y with the <emphasis>Plot Association</emphasis> button.
-  In any case, you can't mix the X values from one table with the Y values from another one.
-  If you want to do this, you have to copy the columns into the same table.</para>
-  <para>If the curve selected is a function, you can modify it by pressing the <emphasis>Edit Function...</emphasis> button.
-  Refer to the <link linkend="add-function-dialog">&add-function-cmd; dialog box</link> for more details on functions editing.</para>
-<para>If the <emphasis>Show Range</emphasis> option is checked, the plot range of all the curves
-not defined as analytical functions will be also displayed in the right window of the dialog.
-The plot range is the interval of points which are visible in a curve. You can show/hide data points from
-a selected curve, without having to delete them, by pressing the <emphasis>Edit Range...</emphasis> button,
-which opens a dialog allowing to edit the plot range.</para>
+  <para>Dans cette boite de dialogue, si vous sélectionnez une courbe du graphe dans la fenètre de droite, vous poubez changer les colonnes utilisées pour X et Y avec le boutton <emphasis>Association de graphe</emphasis>. Dans tous les cas, vous pouvez interchanger les valeurs de X d'une table avec les valeurs en Y d'une autre table. Pour ce faire, vous devez copier les valeurs dans la même table.</para>
+  <para>Si la courbe sélecctionnée est une fonction, vous pouvez la modofier par le boutton <emphasis>Modifier la fonction...</emphasis>.
+  Voyez la boite de dialogue <link linkend="add-function-dialog">&add-function-cmd;</link> pour plus de détails sur la modification des fonctions.</para>
+<para>Si l'option <emphasis>Montrer la gamme</emphasis> est cochée, la gamme de toutes les courbes non définies comme une fonction analytique sera aussi affichée dans la fenètre de droite de la boite de dialogue.
+La gamme de tracée est l'interval des points d'une courbe qui sont visibles. Vous pouvez montrer/cacher les données d'une courbé sélectionée sans avoir besoin de les supprimer, par le boutton <emphasis>Modifier la gamme...</emphasis>, qui ouvre une boite de dialogue permettant de modifier la gamme.</para>
 </sect1>
 
 <!-- ************************************************** -->
 <!--		Arrange Layers				-->
 <!-- ************************************************** -->
 <sect1 id="arrange-layers-dialog">
-  <title>Arrange Layers</title>
-  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu </link>or by entering &arrange-layers-key;.
+  <title>Redisposer les planches</title>
+  Cette boite de dialogue est activée en sélectionnant la commande &arrange-layers-cmd; du menu <link linkend="sec-graph-menu"></link> ou à l'aide des touches &arrange-layers-key;.
 
-<para>This dialog provides for modification of the geometrical arrangement of plot layers which are already present
-in the active graph window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
+<para>Cette boite de dialogue permet des modifications de la disposition géométrique des planches qui sont déjà présentes dans le graphe actif. Vous pouvez ajouter de nouvelles planches ou en supprimer en utilisant le <emphasis>Numéro</emphasis> de controle des planches. En cochant l'option <emphasis>Lier les axes X</emphasis> vous rendez les axes X interdépendant, ce qui implique que si vous modifiez l'abcisse d'un graphe, alors les mêmes limites seront automatiquement appliquées à toutes les autres planche du graphe.</para>
 
-<para>You can specify the number of rows and columns that define a grid of plots. With the default settings, &appname; computes the size of the layers in the grid from the size of the graph window.
-If you check the <emphasis>Layer Canvas Size</emphasis> option, you can set the size of the drawing area for the layers. &appname; will then modify the size of the graph window to accommodate them.
-When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers will be kept unchanged when you manually resize the graph window.</para>
+<para>Vous pouvez spécifier le nombre de lignes et de colonnes qui définissent une grille de graphes. Avec les valeurs par défaut, &appname; calcule la taille des planches sur la grille à partir de la taille de la fenètre du graphe.
+
+Si vous cochez l'option <emphasis>Layer Canvas Size</emphasis>, vous pouvez modifier la taille de la zone de tracée poir les planches. &appname; modifiera alors la taille de la fenètre au mieux.
+quand la case <emphasis>Taille fixe</emphasis> est cochée, la taille des planches sera gardée inchangée lorque vous redimmensioninerez la taille de la fenètre du graphe.</para>
 
 <para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the other hand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
 
