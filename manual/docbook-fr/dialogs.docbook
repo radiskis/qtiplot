@@ -192,9 +192,9 @@ La gamme de tracée est l'interval des points d'une courbe qui sont visibles. Vo
 Si vous cochez l'option <emphasis>Layer Canvas Size</emphasis>, vous pouvez modifier la taille de la zone de tracée poir les planches. &appname; modifiera alors la taille de la fenètre au mieux.
 quand la case <emphasis>Taille fixe</emphasis> est cochée, la taille des planches sera gardée inchangée lorque vous redimmensioninerez la taille de la fenètre du graphe.</para>
 
-<para>The controls in the two group boxes on the right, <emphasis>Alignment</emphasis> and <emphasis>Spacing</emphasis>, are used to set the alignment of the layers in the window and the margins between the layer borders and the graph window limits. The <emphasis>Spacing</emphasis> group includes an <emphasis>Align</emphasis> control with 2 options (<emphasis>Canvases</emphasis> and <emphasis>Layers</emphasis>) that control the meaning of the row and column spacing entries. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the other hand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
+<para>Les contrôles dans les deux groupes de boites sur la droite, <emphasis>Alignement</emphasis> et <emphasis>Espacement</emphasis>, sont utilisés pour fixer l'alignement des planches de la fenètre et les marges entre le bord de la planche et la limite de la fenètre du graphe. Le grope <emphasis>Espacement</emphasis> inclut un co,ntrôle d'<emphasis>Alignement</emphasis> avec deux options (<emphasis>Canvas</emphasis> et <emphasis>Planches</emphasis>) qui contrôle la signification des entrées des colonnes et des lignes. If the <emphasis>Canvases</emphasis> alignment option is chosen, then the spacing fields define the distances between the axes of the layers. On the other hand, if the <emphasis>Layers</emphasis> alignment option is chosen, then the spacing fields define the distances between the borders of the layers.</para>
 
-<para>Finally, it is also possible swap two layers using the <emphasis>Swap Layers</emphasis> controls. Simply select the Source and Destination layers and click the <emphasis>Swap</emphasis> button.</para>
+<para>Finalement, il est aussi possible d'échanger deux planches en utilisant <emphasis>Échangerles planches</emphasis>. Sélectionnez simlpement les planches source et la destination et cliquez sur le bouton <emphasis>Échanger</emphasis>.</para>
   <figure id="fig-define-layer-1">
     <title>The &arrange-layers-cmd; dialog: the Geometry Tab</title>
     <mediaobject>
@@ -204,25 +204,25 @@ quand la case <emphasis>Taille fixe</emphasis> est cochée, la taille des planch
     </mediaobject>
   </figure>
 
-  <para>Once suitable choices have been made, clicking on either the <emphasis>Apply</emphasis> or <emphasis>OK</emphasis> buttons will arrange the layers to obtain the desired alignment of the vertical and horizontal axis.</para>
+  <para>Une fois que les choix ont été, cliquez soit sur <emphasis>Appliquer</emphasis> ou sur <emphasis>OK</emphasis>, ce qui buttons modifera les alignements pour obtenir la disposition voulue des axes verticaux et horizontaux.</para>
   <figure id="fig-define-layer-3">
-    <title>Example of a vertical arrangement for two plots.</title>
+    <title>Exemple d'unz disposition verticale de deux graphes.</title>
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/define-layout-3.png"/>
       </imageobject>
     </mediaobject>
   </figure>
-  <para>Note that if modifications are later made to an aligned plots, then alignment of the different axes may be lost. Simply re-execute &arrange-layers-cmd; to again re-arrange the plot.</para>
+  <para>Attension, si les modificationssont faites utltérieurement à un alignement, alors l'aligneùent des différents axes peut être perdu. Dans ce cas, réexecutez &arrange-layers-cmd; pour remodifier les planches.</para>
 </sect1>
 
 <!-- ************************************************** -->
 <!--		Arrow Dialog				-->
 <!-- ************************************************** -->
 <sect1 id="arrow-dialog">
-  <title>Line Options</title>
-  <para>This dialog allows modification of lines or arrows which have been created with either the <emphasis>&draw-arrow-cmd;</emphasis> command from the <link linkend="sec-graph-menu">Graph Menu</link> or by using &draw-arrow-key;. The dialog can also be opened by double clicking on an arrow or line, or by right clicking a selected arrow or line and then selecting <emphasis>Properties...</emphasis> from the resulting pop-up menu.</para>
-  <para>The <emphasis>Options</emphasis> tab of the dialog allows changing the color, line type, line width, and the presence or absence of arrow heads. Line width is set in pixels. It is possible to define a default style for all new lines by clicking the <emphasis>Set Default</emphasis> button.</para>
+  <title>Options de lignes</title>
+  <para>Cette boite de dialogue permet la modification des lignes et des flĉhes qui ont été crééssoit avec la commande <emphasis>&draw-arrow-cmd;</emphasis> du menu <link linkend="sec-graph-menu"></link> soit en utilisant &draw-arrow-key;. Cette boite de dialogue peut aussi être ouverte en double cliquant sur une flĉhe ou une ligne, ou par un clic droit sur la flĉhe ou la ligne puyis en sélectionnant <emphasis>Propriétés...</emphasis> du menu contextuel qui apparait.</para>
+  <para>L'onglet <emphasis>Options</emphasis> permet de changer la couleur, le type de ligne, la largeur de la ligne et la présecnce ou l'absence de têtes de flĉhes. La largeur de ligne est en pixels. Il est possibble de définir un stymle par féfaut pour toutes les lignes en cliquant sur le bouton<emphasis>Par défaut</emphasis>.</para>
   <figure id="fig-line-options-1">
     <title>The <emphasis>Arrow Options</emphasis> Dialog: First Tab</title>
     <mediaobject>
