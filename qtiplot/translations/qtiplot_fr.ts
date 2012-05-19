@@ -6118,15 +6118,15 @@ Les codes spéciaux suivants peuvent être utilisés :
     </message>
     <message>
         <source>S&amp;hading</source>
-        <translation type="unfinished"></translation>
+        <translation>Om&amp;brage</translation>
     </message>
     <message>
         <source>Flat</source>
-        <translation type="unfinished"></translation>
+        <translation>A plat</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished"></translation>
+        <translation>Lissé</translation>
     </message>
 </context>
 <context>
@@ -12744,7 +12744,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Cli&amp;p data to frame when exporting</source>
-        <translation type="unfinished"></translation>
+        <translation>Attacher les données au cadre lors de l&apos;ex&amp;port</translation>
     </message>
 </context>
 <context>
