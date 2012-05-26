@@ -1168,7 +1168,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no layers available on this plot. Operation aborted!</source>
-        <translation>Δεν υπάρχουν διαθέσιμα επίπεδα σε αυτό το παράθυρο. Η λειτουργία εγκαταλείφθηκε!</translation>
+        <translation type="obsolete">Δεν υπάρχουν διαθέσιμα επίπεδα σε αυτό το παράθυρο. Η λειτουργία εγκαταλείφθηκε!</translation>
     </message>
     <message>
         <source>QtiPlot - Insert image from file</source>
@@ -1176,7 +1176,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>There are no plot layers available in this window.</source>
-        <translation>Δεν υπάρχουν διαθέσιμα επίπεδα διαγραμμάτων σε αυτό το παράθυρο.</translation>
+        <translation type="obsolete">Δεν υπάρχουν διαθέσιμα επίπεδα διαγραμμάτων σε αυτό το παράθυρο.</translation>
     </message>
     <message>
         <source>QtiPlot - Duplicate window error</source>
@@ -1795,7 +1795,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>&amp;Current</source>
-        <translation>&amp;Τρέχον</translation>
+        <translation type="obsolete">&amp;Τρέχον</translation>
     </message>
     <message>
         <source>Ctrl+Alt+G</source>
@@ -4108,6 +4108,14 @@ Autocompletion will not be available!</source>
         <source>Ctrl+Shift+P</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+L</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AssociationsDialog</name>
@@ -4433,11 +4441,11 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Font</source>
-        <translation>Γραμματοσειρά</translation>
+        <translation type="obsolete">Γραμματοσειρά</translation>
     </message>
     <message>
         <source>Axis &amp;Font</source>
-        <translation>&amp;Γραμματοσειρά άξονα</translation>
+        <translation type="obsolete">&amp;Γραμματοσειρά άξονα</translation>
     </message>
     <message>
         <source>Color</source>
@@ -4501,7 +4509,7 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>Show Labels</source>
-        <translation>Προβολή ετικετών</translation>
+        <translation type="obsolete">Προβολή ετικετών</translation>
     </message>
     <message>
         <source>Show &amp;backbone</source>
@@ -4633,6 +4641,10 @@ Autocompletion will not be available!</source>
     </message>
     <message>
         <source>years</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show &amp;Labels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5968,6 +5980,42 @@ The following special codes can be used:
         <source>Locally Installed OpenOffice/LibreOffice</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Full dataset name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Speed Mode, Skip Points if needed</source>
+        <translation type="unfinished">Λειτουργία &amp;ταχύτητας, παράλειψη σημείων εάν χρειάζεται</translation>
+    </message>
+    <message>
+        <source>A&amp;pply to curves with more than</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Tolerance (Douglas-Peucker algorithm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>0 (all data points)</source>
+        <translation type="unfinished">0 (όλα τα σημεία δεδομένων)</translation>
+    </message>
+    <message>
+        <source>Apply to graphic &amp;export as well</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>S&amp;hading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Smooth</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ContourLinesEditor</name>
@@ -6939,6 +6987,10 @@ The following special codes can be used:
         <source>The selected error column is empty!</source>
         <translation type="unfinished">Η επιλεγμένη στήλη σφάλματος είναι κενή!</translation>
     </message>
+    <message>
+        <source>Standard E&amp;rror</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExcelFileConverter</name>
@@ -6948,10 +7000,6 @@ The following special codes can be used:
     </message>
     <message>
         <source>Operation failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Coudn&apos;t start</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -8624,6 +8672,18 @@ The following special codes can be used:
     <message>
         <source>Please, choose a function:</source>
         <translation>Παρακαλώ επιλέξτε συνάρτηση:</translation>
+    </message>
+    <message>
+        <source>Built-in</source>
+        <translation type="unfinished">Ενσωματωμένη</translation>
+    </message>
+    <message>
+        <source>Fit model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User defined</source>
+        <translation type="unfinished">Καθορισμένη από το χρήστη</translation>
     </message>
 </context>
 <context>
@@ -10455,6 +10515,10 @@ have the same number of rows.</source>
         <source>Precision %1 digits</source>
         <translation>Ακρίβεια %1 ψηφία</translation>
     </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MatrixModel</name>
@@ -10554,7 +10618,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Coordinates</source>
-        <translation>Συντεταγμένες</translation>
+        <translation type="obsolete">Συντεταγμένες</translation>
     </message>
     <message>
         <source>X (Columns)</source>
@@ -10587,6 +10651,78 @@ have the same number of rows.</source>
     <message>
         <source>Set Coordinates x[%1 : %2], y[%3 : %4]</source>
         <translation>Ορισμός συντεταγμένων x[%1 : %2], y[%3 : %4]</translation>
+    </message>
+    <message>
+        <source>xy &amp;Mapping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Long Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Comments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;x Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;y Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;z Labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Y Axis Comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set Z Axis Comment</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10634,6 +10770,10 @@ have the same number of rows.</source>
     <message>
         <source>Set New Formula</source>
         <translation>Ορισμός νέου τύπου</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -12437,6 +12577,14 @@ have the same number of rows.</source>
         <source>&amp;Top</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sy&amp;nchronize scales</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cli&amp;p data to frame when exporting</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlotWizard</name>
@@ -13463,6 +13611,10 @@ have the same number of rows.</source>
  Regular modified cylindrical Bessel function of order n, I_n(x).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>New Window</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QtColorPicker</name>
@@ -14032,6 +14184,10 @@ have the same number of rows.</source>
     <message>
         <source>Use built-in muParser (much faster)</source>
         <translation>Χρήση ενσωματωμένου muParser (πολύ ταχύτερος)</translation>
+    </message>
+    <message>
+        <source>Open Properties Dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -15027,6 +15183,10 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>For more information about the supported date/time formats please read the Qt documentation for the QDateTime class!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Set Values Dialog</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

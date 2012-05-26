@@ -4153,11 +4153,11 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Alt+Shift+S</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+S</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nový</translation>
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
@@ -5846,11 +5846,11 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
         <translation>Zobrazovat potvrzovací zp&amp;rávy pro umístění s více vrcholy</translation>
     </message>
     <message>
-        <source>The column separator can be customized. 
+        <source>The column separator can be customized.
 The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+        <translation type="obsolete">Oddělovač sloupců lze uživatelsky nastavit.
 K tomu lze použít následujících zvláštních kódů:
 \t pro znak zarážky (TABULÁTOR)
 \s pro mezeru (MEZERNÍK)</translation>
@@ -6079,6 +6079,13 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Full dataset name</source>
+        <translation>Úplný název databáze</translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. 
+The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7090,7 +7097,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Standard E&amp;rror</source>
-        <translation type="unfinished"></translation>
+        <translation>Obvyklá &amp;chyba</translation>
     </message>
 </context>
 <context>
@@ -7332,7 +7339,7 @@ K tomu lze použít následujících zvláštních kódů:
         <source>The column separator can be customized. The following special codes can be used:
 \t for a TAB character 
 \s for a SPACE</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -8798,15 +8805,15 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Built-in</source>
-        <translation type="unfinished">Vestavěno</translation>
+        <translation>Vestavěno</translation>
     </message>
     <message>
         <source>Fit model</source>
-        <translation type="unfinished"></translation>
+        <translation>Umístit model</translation>
     </message>
     <message>
         <source>User defined</source>
-        <translation type="unfinished">Stanoveno uživatelem</translation>
+        <translation>Stanoveno uživatelem</translation>
     </message>
 </context>
 <context>
@@ -9555,11 +9562,11 @@ a každá posloupnost vnitřních prázdných míst
 jednoduchou mezerou.</translation>
     </message>
     <message>
-        <source>The column separator can be customized. 
+        <source>The column separator can be customized.
 The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+        <translation type="obsolete">Oddělovač sloupců lze uživatelsky nastavit.
 K tomu lze použít následujících zvláštních kódů:
 \t pro znak zarážky (TAB)
 \s pro mezeru (MEZERNÍK)</translation>
@@ -9571,58 +9578,27 @@ K tomu lze použít následujících zvláštních kódů:
 0-9eE.+-</translation>
     </message>
     <message>
-        <source>By checking this option all white spaces will be 
-removed from the beginning and the end of 
-the lines in the ASCII file.</source>
-        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby budou všechny mezery 
-odstraněny ze začátků a konců řádků 
-souboru ASCII.</translation>
-    </message>
-    <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
+        <source>Warning: checking this option leads to column
+overlaping if the columns in the ASCII file don&apos;t
 have the same number of rows.</source>
-        <translation>Varování: zaškrtnutí této volby vede k překrývání 
-sloupců, pokud sloupce v souboru ASCII nemají 
+        <translation type="obsolete">Varování: zaškrtnutí této volby vede k překrývání
+sloupců, pokud sloupce v souboru ASCII nemají
 stejný počet řádků.</translation>
     </message>
     <message>
-        <source>To avoid this problem you should precisely 
-define the column separator using TAB and 
-SPACE characters.</source>
-        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Abyste se vyhnul těmto potížím, měl byste 
-přesně určit oddělovač sloupce pomocí znáků
-pro zarážku (TAB) a mezeru (MEZERNÍK).</translation>
-    </message>
-    <message>
-        <source>By checking this option all white spaces will be 
-removed from the beginning and the end of the 
-lines and each sequence of internal 
-whitespaces (including the TAB character) will 
-be replaced with a single space.</source>
-        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Zaškrtnutím této volby budou všechny mezery 
-odstraněny ze začátků a konců řádků a každá 
-posloupnost vnitřních prázdných míst (včetně 
-znaku zarážky (TAB)) bude nahrazena jednoduchou 
-mezerou.</translation>
-    </message>
-    <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
+        <source>Warning: checking this option leads to column
+overlaping if the columns in the ASCII file don&apos;t
 have the same number of rows.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation>Varování: zaškrtnutí této volby vede k překrývání 
-sloupců, pokud sloupce v souboru ASCII nemají 
+        <translation type="obsolete">Varování: zaškrtnutí této volby vede k překrývání
+sloupců, pokud sloupce v souboru ASCII nemají
 stejný počet řádků.</translation>
     </message>
     <message>
         <source>The column separator can be customized. The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+        <translation type="obsolete">Oddělovač sloupců lze uživatelsky nastavit.
 K tomu lze použít následujících zvláštních kódů:
 \t pro znak zarážky (TAB)
 \s pro mezeru (MEZERNÍK)</translation>
@@ -9634,6 +9610,55 @@ K tomu lze použít následujících zvláštních kódů:
     <message>
         <source>Ignore lines containing</source>
         <translation>Nevšímat si řádků obsahujících</translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. 
+The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By checking this option all white spaces will be 
+removed from the beginning and the end of 
+the lines in the ASCII file.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: checking this option leads to column 
+overlaping if the columns in the ASCII file don&apos;t 
+have the same number of rows.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>To avoid this problem you should precisely 
+define the column separator using TAB and 
+SPACE characters.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By checking this option all white spaces will be 
+removed from the beginning and the end of the 
+lines and each sequence of internal 
+whitespaces (including the TAB character) will 
+be replaced with a single space.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning: checking this option leads to column 
+overlaping if the columns in the ASCII file don&apos;t 
+have the same number of rows.</source>
+        <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The column separator can be customized. The following special codes can be used:
+\t for a TAB character 
+\s for a SPACE</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10686,7 +10711,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog pro nastavení hodnot</translation>
     </message>
 </context>
 <context>
@@ -10839,75 +10864,75 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog pro vlastnosti</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog pro nastavení hodnot</translation>
     </message>
     <message>
         <source>xy &amp;Mapping</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Zobrazení xy</translation>
     </message>
     <message>
         <source>Long Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Dlouhý název</translation>
     </message>
     <message>
         <source>Units</source>
-        <translation type="unfinished"></translation>
+        <translation>Jednotky</translation>
     </message>
     <message>
         <source>Comments</source>
-        <translation type="unfinished"></translation>
+        <translation>Poznámky</translation>
     </message>
     <message>
         <source>&amp;x Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy &amp;x</translation>
     </message>
     <message>
         <source>&amp;y Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy &amp;y</translation>
     </message>
     <message>
         <source>&amp;z Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Popisy &amp;z</translation>
     </message>
     <message>
         <source>Set X Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit popis osy x</translation>
     </message>
     <message>
         <source>Set X Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit jednotku osy x</translation>
     </message>
     <message>
         <source>Set X Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit poznámku osy x</translation>
     </message>
     <message>
         <source>Set Y Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit popis osy y</translation>
     </message>
     <message>
         <source>Set Y Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit jednotku osy y</translation>
     </message>
     <message>
         <source>Set Y Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit poznámku osy y</translation>
     </message>
     <message>
         <source>Set Z Axis Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit popis osy z</translation>
     </message>
     <message>
         <source>Set Z Axis Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit jednotku osy z</translation>
     </message>
     <message>
         <source>Set Z Axis Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit poznámku osy z</translation>
     </message>
 </context>
 <context>
@@ -10958,7 +10983,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog vlastnosti</translation>
     </message>
 </context>
 <context>
@@ -12772,7 +12797,7 @@ K tomu lze použít následujících zvláštních kódů:
     </message>
     <message>
         <source>Sy&amp;nchronize scales</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Seřídit stupnice</translation>
     </message>
     <message>
         <source>Cli&amp;p data to frame when exporting</source>
@@ -13983,7 +14008,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>New Window</source>
-        <translation type="unfinished"></translation>
+        <translation>Nové okno</translation>
     </message>
 </context>
 <context>
@@ -14561,7 +14586,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Open Properties Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog pro vlastnosti</translation>
     </message>
 </context>
 <context>
@@ -14702,12 +14727,12 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Tried to smooth over more points (left+right+1=%1) than given as input (%2).</source>
-        <translation type="unfinished"></translation>
+        <translation>Učiněn pokus o urovnání více bodů (levý+pravý+1=%1), než bylo zadáno jako vstup (%2).</translation>
     </message>
     <message>
         <source>Internal error in Savitzky-Golay algorithm.
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Vnitřní chyba v algoritmu Savitzky-Golay.</translation>
     </message>
 </context>
 <context>
@@ -15581,7 +15606,7 @@ pokud e1 pak e2 jinak e3.</translation>
     </message>
     <message>
         <source>Open Set Values Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít dialog pro nastavení hodnot</translation>
     </message>
 </context>
 <context>
