@@ -2168,7 +2168,7 @@ Jste si jist, že chcete pokračovat?</translation>
     </message>
     <message>
         <source>Custom user interfaces can be created using the QtDesigner application provided by the Qt framework</source>
-        <translation></translation>
+        <translation>Vlastní uživatelská rozhraní lze vytvořit pomocí programu QtDesigner poskytovaného soustavou Qt</translation>
     </message>
     <message>
         <source>Pale&amp;tte</source>
@@ -4161,7 +4161,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Ctrl+Shift+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+Shift+L</translation>
     </message>
 </context>
 <context>
@@ -4727,7 +4727,7 @@ Různé části tohoto souboru se nemusí zobrazovat tak, jak se očekává.</tr
     </message>
     <message>
         <source>Show &amp;Labels</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukázat š&amp;títky</translation>
     </message>
 </context>
 <context>
@@ -6082,43 +6082,46 @@ K tomu lze použít následujících zvláštních kódů:
         <translation>Úplný název databáze</translation>
     </message>
     <message>
-        <source>The column separator can be customized. 
+        <source>The column separator can be customized.
 The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TABULÁTOR)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
     <message>
         <source>&amp;Speed Mode, Skip Points if needed</source>
-        <translation type="unfinished">&amp;Režim zrychlení. Přeskočit body, je-li to potřeba</translation>
+        <translation>&amp;Režim zrychlení. Přeskočit body, je-li to potřeba</translation>
     </message>
     <message>
         <source>A&amp;pply to curves with more than</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Použít na křivky s více než</translation>
     </message>
     <message>
         <source>&amp;Tolerance (Douglas-Peucker algorithm)</source>
-        <translation type="unfinished"></translation>
+        <translation>Povolená od&amp;chylka (algoritmus Douglas Peukerův)</translation>
     </message>
     <message>
         <source>0 (all data points)</source>
-        <translation type="unfinished">0 (všechny datové body)</translation>
+        <translation>0 (všechny datové body)</translation>
     </message>
     <message>
         <source>Apply to graphic &amp;export as well</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít na taktéž na &amp;vyvedení grafiky</translation>
     </message>
     <message>
         <source>S&amp;hading</source>
-        <translation type="unfinished"></translation>
+        <translation>S&amp;tínování</translation>
     </message>
     <message>
         <source>Flat</source>
-        <translation type="unfinished"></translation>
+        <translation>Ploché</translation>
     </message>
     <message>
         <source>Smooth</source>
-        <translation type="unfinished"></translation>
+        <translation>Jemné</translation>
     </message>
 </context>
 <context>
@@ -7337,9 +7340,12 @@ The following special codes can be used:
     </message>
     <message>
         <source>The column separator can be customized. The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TABULÁTOR)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
 </context>
 <context>
@@ -9612,53 +9618,71 @@ K tomu lze použít následujících zvláštních kódů:
         <translation>Nevšímat si řádků obsahujících</translation>
     </message>
     <message>
-        <source>The column separator can be customized. 
+        <source>The column separator can be customized.
 The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TABULÁTOR)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
     <message>
-        <source>By checking this option all white spaces will be 
-removed from the beginning and the end of 
+        <source>By checking this option all white spaces will be
+removed from the beginning and the end of
 the lines in the ASCII file.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zaškrtnutím této volby budou všechny
+mezery odstraněny ze začátků a konců
+řádků v ASCII souboru.</translation>
     </message>
     <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
+        <source>Warning: checking this option leads to column
+overlaping if the columns in the ASCII file don&apos;t
 have the same number of rows.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varování: zaškrtnutí této volby vede k překrývání
+sloupců, pokud sloupce v souboru ASCII nemají
+stejný počet řádků.</translation>
     </message>
     <message>
-        <source>To avoid this problem you should precisely 
-define the column separator using TAB and 
+        <source>To avoid this problem you should precisely
+define the column separator using TAB and
 SPACE characters.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Abyste se vyhnul tomuto problému, měl byste
+přesně určit oddělovač sloupců s pomocí znaků
+pro ZARÁŽKU (TABULÁTOR) a MEZERU.</translation>
     </message>
     <message>
-        <source>By checking this option all white spaces will be 
-removed from the beginning and the end of the 
-lines and each sequence of internal 
-whitespaces (including the TAB character) will 
+        <source>By checking this option all white spaces will be
+removed from the beginning and the end of the
+lines and each sequence of internal
+whitespaces (including the TAB character) will
 be replaced with a single space.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zaškrtnutím této volby, budou všechny mezery
+odstraněny ze začátků a konců řádků a každá
+posloupnost vnitřních prázdných míst (včetně
+znaku pro ZARÁŽKU (TABULÁTOR) bude
+nahrazena jednoduchou mezerou.</translation>
     </message>
     <message>
-        <source>Warning: checking this option leads to column 
-overlaping if the columns in the ASCII file don&apos;t 
+        <source>Warning: checking this option leads to column
+overlaping if the columns in the ASCII file don&apos;t
 have the same number of rows.</source>
         <comment>when translating this check the what&apos;s this functions and tool tips to place the &apos;\n&apos;s correctly</comment>
-        <translation type="unfinished"></translation>
+        <translation>Varování: zaškrtnutí této volby vede k překrývání
+sloupců, pokud sloupce v souboru ASCII nemají
+stejný počet řádků.</translation>
     </message>
     <message>
         <source>The column separator can be customized. The following special codes can be used:
-\t for a TAB character 
+\t for a TAB character
 \s for a SPACE</source>
-        <translation type="unfinished"></translation>
+        <translation>Oddělovač sloupců lze uživatelsky nastavit.
+K tomu lze použít následujících zvláštních kódů:
+\t pro znak zarážky (TABULÁTOR)
+\s pro mezeru (MEZERNÍK)</translation>
     </message>
 </context>
 <context>
@@ -12649,7 +12673,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Tolerance (Douglas-Peucker algorithm)</source>
-        <translation>Dovolená úchylka (algoritmus Douglas-Peucker)</translation>
+        <translation>Povolená odchylka (algoritmus Douglas Peukerův)</translation>
     </message>
     <message>
         <source>Scale &amp;Fonts</source>
@@ -12733,7 +12757,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation>&amp;Rám</translation>
+        <translation>&amp;Rámeček</translation>
     </message>
     <message>
         <source>Canvas</source>
@@ -12801,7 +12825,7 @@ have the same number of rows.</source>
     </message>
     <message>
         <source>Cli&amp;p data to frame when exporting</source>
-        <translation type="unfinished"></translation>
+        <translation>Při&amp;pnout data k rámečku při vyvedení</translation>
     </message>
 </context>
 <context>
