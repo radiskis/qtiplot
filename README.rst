@@ -33,7 +33,6 @@ and install
 If you want to perform ANOVA statistic calculations you must download
 `TAMUANOVA <http://www.stat.tamu.edu/~aredd/tamuanova/>`_.
 
-
 If you need Python scripting support, don't forget to download and install 
 `Python <http://www.python.org/>`_, 
 `SIP <http://www.riverbankcomputing.co.uk/software/sip/download>`_ and 
@@ -57,7 +56,7 @@ To use this service, you need to subscribe to a maintenance contract.
 You can find details about this `QtiPlot download page <http://soft.proindependent.com/download.html>`_.
 
 To install the Debian package, download the file `qtiplot_X.X.X_i386.deb <http://soft.proindependent.com/download.html>`_ and login to your machine as "root" (on Ubuntu, login as a normal user and prepend ``sudo``), then open a terminal and execute the following command:
-  ``dpkg -i qtiplot_X.X.X_i386.deb``
+``dpkg -i qtiplot_X.X.X_i386.deb``
 
 To install the binary package on Mac OS X, download the file `qtiplot-X.X.X.pkg.zip <http://soft.proindependent.com/download.html>`_, unzip it, double-click on the "qtiplot-X.X.X.pkg" file and follow the installation instructions. 
 Some time after each release, you will find these (including notes how to install them) on the
