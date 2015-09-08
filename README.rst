@@ -9,17 +9,17 @@ QtiPlot is distributed under the `GNU General Public License <http://www.gnu.org
 "Free software" is also often called `Open Source, FOSS, or FLOSS <http://en.wikipedia.org/wiki/Alternative_terms_for_free_software>`_.
 
 General requirements
---------------------l
+--------------------
 You need to install the following libraries:
 
-- `Qt (>= 4.5.0) <http://www.trolltech.com/products/qt/index.html>`_,
+- `Qt <http://www.trolltech.com/products/qt/index.html>`_ (>= 4.5.0) ,
 - `GSL <http://sources.redhat.com/gsl/>`_,
-- `muParser (1.32) <http://muparser.sourceforge.net/>`_,
+- `muParser <http://muparser.sourceforge.net/>`_ (1.32),
 - `zlib <http://www.zlib.net/>`_ and
 - `libpng <http://www.libpng.org/pub/png/libpng.html>`_.
 
 You also need to build and install the slightly modified versions of the 
-`Qwt (5.2) <http://qwt.sourceforge.net/index.html>`_ and
+`Qwt <http://qwt.sourceforge.net/index.html>`_ (5.2) and
 `QwtPlot3D <http://qwtplot3d.sourceforge.net/>`_ libraries which are shipped 
 with QtiPlot in the "3rdparty/qwt" and "3rdparty/qwtplot3d" folders respectively.
 
@@ -28,7 +28,7 @@ For the export of 2D plots to TeX, you need to download and install
 
 If you need to convert random grid XYZ datasets to matrices you must download 
 and install
-`ALGLIB (2.6) <http://www.alglib.net/>`_.
+`ALGLIB <http://www.alglib.net/>`_ (2.6).
 
 If you want to perform ANOVA statistic calculations you must download
 `TAMUANOVA <http://www.stat.tamu.edu/~aredd/tamuanova/>`_.
@@ -56,8 +56,8 @@ The QtiPlot team offers GNU/Linux binaries free of charge but without any guaran
 To use this service, you need to subscribe to a maintenance contract. 
 You can find details about this `QtiPlot download page <http://soft.proindependent.com/download.html>`_.
 
-To install the Debian package, download the file `qtiplot_X.X.X_i386.deb <http://soft.proindependent.com/download.html>`_ and login to your machine as "root" (on Ubuntu, login as a normal user and prepend <code>sudo</code>), then open a terminal and execute the following command:
-      ``dpkg -i qtiplot_X.X.X_i386.deb``
+To install the Debian package, download the file `qtiplot_X.X.X_i386.deb <http://soft.proindependent.com/download.html>`_ and login to your machine as "root" (on Ubuntu, login as a normal user and prepend ``sudo``), then open a terminal and execute the following command:
+  ``dpkg -i qtiplot_X.X.X_i386.deb``
 
 To install the binary package on Mac OS X, download the file `qtiplot-X.X.X.pkg.zip <http://soft.proindependent.com/download.html>`_, unzip it, double-click on the "qtiplot-X.X.X.pkg" file and follow the installation instructions. 
 Some time after each release, you will find these (including notes how to install them) on the
