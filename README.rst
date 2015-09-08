@@ -9,9 +9,9 @@ QtiPlot is distributed under the `GNU General Public License <http://www.gnu.org
 "Free software" is also often called `Open Source, FOSS, or FLOSS <http://en.wikipedia.org/wiki/Alternative_terms_for_free_software>`_.
 
 General requirements
---------------------
-
+--------------------l
 You need to install the following libraries:
+
 - `Qt (>= 4.5.0) <http://www.trolltech.com/products/qt/index.html>`_,
 - `GSL <http://sources.redhat.com/gsl/>`_,
 - `muParser (1.32) <http://muparser.sourceforge.net/>`_,
@@ -65,31 +65,34 @@ Some time after each release, you will find these (including notes how to instal
 
 Compiling QtiPlot from source
 -----------------------------
-# Install all the dependencies listed above either from your package manager or 
-  from the sources. If you are using precompiled packages, make sure you also 
-  install the corresponding development packages (*-dev or *-devel). If you want
-  to display the manual from within QtiPlot (you can also view it with your 
-  favorite browser), you also need the Qt Assistant, which sometimes comes in a
-  separate package (qt4-dev-tools for Ubuntu edgy).
-# Open a terminal window.
-# Download the .tar.bz2 archive with QtiPlot's sources (or the .zip archive, which has the same contents):
-  ``wget http://soft.proindependent.com/src/qtiplot-X.X.X.tar.bz2``
-# Unpack the source archive:
-  ``tar -xvjf qtiplot-X.X.X.tar.bz2`` (or ``unzip qtiplot-X.X.X.zip``, respectively)</li>
-# Go to the main directory qtiplot-X.X.X:<br><code>cd qtiplot-X.X.X</code></li>
-# Create a build.conf file. You can use the provided example for this:<br><code>cp build.conf.example build.conf</code></li>
-# Open build.conf in your favorite editor. Near the bottom of the same file, 
-  either comment out the line <code>SCRIPTING_LANGS += Python</code> or make 
-  sure you have the following additional dependencies installed:
-  `Python <http://www.python.org/>`_,
-  `SIP <http://www.riverbankcomputing.co.uk/software/sip/download>`_ and 
-  `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_.
-# Build qtiplot:
-  ``qmake && make``
-# Install QtiPlot on your system (you need root privileges):
-  ``sudo make install``
-  or, alternatively,
-  ``su -c "make install"``
+
+#. Install all the dependencies listed above either from your package manager or 
+   from the sources. If you are using precompiled packages, make sure you also 
+   install the corresponding development packages (*-dev or *-devel). If you want
+   to display the manual from within QtiPlot (you can also view it with your 
+   favorite browser), you also need the Qt Assistant, which sometimes comes in a
+   separate package (qt4-dev-tools for Ubuntu edgy).
+#. Open a terminal window.
+#. Download the .tar.bz2 archive with QtiPlot's sources (or the .zip archive, which has the same contents):
+   ``wget http://soft.proindependent.com/src/qtiplot-X.X.X.tar.bz2``
+#. Unpack the source archive:
+   ``tar -xvjf qtiplot-X.X.X.tar.bz2`` (or ``unzip qtiplot-X.X.X.zip``, respectively)
+#. Go to the main directory qtiplot-X.X.X:
+   ``cd qtiplot-X.X.X``
+#. Create a build.conf file. You can use the provided example for this:
+   ``cp build.conf.example build.conf``
+#. Open build.conf in your favorite editor. Near the bottom of the same file, 
+   either comment out the line ``SCRIPTING_LANGS += Python`` or make 
+   sure you have the following additional dependencies installed:
+   `Python <http://www.python.org/>`_,
+   `SIP <http://www.riverbankcomputing.co.uk/software/sip/download>`_ and 
+   `PyQt4 <http://www.riverbankcomputing.co.uk/software/pyqt/download>`_.
+#. Build qtiplot:
+   ``qmake && make``
+#. Install QtiPlot on your system (you need root privileges):
+   ``sudo make install``
+   or, alternatively,
+   ``su -c "make install"``
 
 Windows
 -------
@@ -100,8 +103,9 @@ Binaries from maintenance contracts
 Ion Vasilief offers supported QtiPlot Windows binaries. In principle QtiPlot should work on any Windows version from 98 to Vista. But don't expect it to run perfectly on older versions than 2000. For platform specific issues of Qt4 based applications see `doc.trolltech.com <http://www.trolltech.com/developer/notes/platforms/index>`_.
 
 To install:
-# Download the `qtiplot-X.X.X.exe <http://soft.proindependent.com/download.html>`_ file.
-# Open a Windows Explorer, double click on 'qtiplot-X.X.X.exe' and follow the installation instructions.
+
+#. Download the `qtiplot-X.X.X.exe <http://soft.proindependent.com/download.html>`_ file.
+#. Open a Windows Explorer, double click on 'qtiplot-X.X.X.exe' and follow the installation instructions.
 
 
 Compiling QtiPlot from source
