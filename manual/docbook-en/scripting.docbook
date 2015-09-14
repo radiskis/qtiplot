@@ -897,7 +897,7 @@ object which you can access via the <varname>self</varname> variable. For exampl
 entering <userinput>self.cell("t",i)</userinput> as a column formula is equivalent to the convenience
 function <userinput>col("t")</userinput>.</para>
 
-Once you have established contact with a MDI window, you can modify some of its properties, like the name, the window label, the geometry, etc..
+<para>Once you have established contact with a MDI window, you can modify some of its properties, like the name, the window label, the geometry, etc..
 For example, here's how to rename a window, change its label and the way they are displayed in the window title bar, the so called caption policy:
 <programlisting>
 t = table("Table1")
@@ -906,46 +906,50 @@ t.setWindowLabel("tutu")
 t.setCaptionPolicy(MDIWindow.Both)
 </programlisting>
 The caption policy can have one of the following values:
-	<orderedlist>
-        <listitem>
-          Name <para>the window caption is determined by the window name</para>
-        </listitem>
-        <listitem>
-          Label<para>the caption is determined by the window label</para>
-        </listitem>
-        <listitem>
-          Both<para>caption = "name - label"</para>
-        </listitem>
-      </orderedlist>
+<variablelist>
+   <varlistentry>
+       <term>Name</term>
+       <listitem><para>the window caption is determined by the window name</para></listitem>
+    </varlistentry>
+    <varlistentry>
+       <term>Label</term>
+       <listitem><para>the caption is determined by the window label</para></listitem>
+    </varlistentry>
+    <varlistentry>
+       <term>Both</term>
+       <listitem><para>caption = "name - label"</para></listitem>
+    </varlistentry>
+ </variablelist>
+ </para>
 
-You can access the name or label of a window by using the <userinput>objectName()</userinput> and <userinput>windowLabel()</userinput> functions.
+<para>You can access the name or label of a window by using the <userinput>objectName()</userinput> and <userinput>windowLabel()</userinput> functions.</para>
 
-Here's how you can access and modify the geometry of a window in the project:
+<para>Here's how you can access and modify the geometry of a window in the project:
 <programlisting>
 t = table("Table1")
 t.setGeometry(10, 10, 800, 600)
 print t.x(), t.y(), t.width(), t.height()
-</programlisting>
+</programlisting></para>
 
-For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
+<para>For a fast editing process, you can create template files from existing tables, matrices or plots. The templates can be used later on in order to create customized windows very easily:
 <programlisting>
 saveAsTemplate(graph("Graph1"), "my_plot.qpt")
 g = openTemplate("my_plot.qpt")
-</programlisting>
+</programlisting></para>
 
-Also, you can easily clone a MDI window:
+<para>Also, you can easily clone a MDI window:
 <programlisting>
 g1 = clone(graph("Graph1"))
-</programlisting>
+</programlisting></para>
 
-If you want to delete a project window, you can use the <userinput>close()</userinput> method.
+<para>If you want to delete a project window, you can use the <userinput>close()</userinput> method.
 You might want to deactivate the confirmation message, first:
 <programlisting>
 w.confirmClose(False)
 w.close()
-</programlisting>
+</programlisting></para>
 
-All QtiPlot subwindows are displayed in a QMdiArea. You can get a pointer to this object
+<para>All QtiPlot subwindows are displayed in a QMdiArea. You can get a pointer to this object
 via the <userinput>workspace()</userinput> method. This can be particularly usefull if you need to customize the
 behavior of the workspace via your scripts. Here follows a small example script that
 pops-up a message displaying the name of the active MDI subwindow each time a new window is activated:
@@ -954,30 +958,30 @@ def showMessage():
 	QtGui.QMessageBox.about(qti.app, "", workspace().activeSubWindow().objectName())
 
 QtCore.QObject.connect(workspace(), QtCore.SIGNAL("subWindowActivated(QMdiSubWindow *)"), showMessage)
-</programlisting>
+</programlisting></para>
 
-It is possible to access the list of all MDI window objects in a QtiPlot project:
+<para>It is possible to access the list of all MDI window objects in a QtiPlot project:
 <programlisting>
 for w in qti.app.windows():
 	print w.objectName()
-</programlisting>
+</programlisting></para>
 
 </sect2>
 
 <sect2 id="Python-Folders">
 <title>Project Folders</title>
-Storing your data tables/matrices and your plots in folders can be very convenient and helpful
+<para>Storing your data tables/matrices and your plots in folders can be very convenient and helpful
 when you're analyzing loads of data files in the same project.
 New objects will always be added to the active folder. You can get a pointer to it via:
 <programlisting>
 f = activeFolder()
-</programlisting>
-The functions table, matrix, graph and note will start searching in the active folder and, failing this,
+</programlisting></para>
+<para>The functions table, matrix, graph and note will start searching in the active folder and, failing this,
 will continue with a depth-first recursive search of the project's root folder, given by:
 <programlisting>
 f = rootFolder()
-</programlisting>
-In order to access subfolders and windows, the following functions are provided:
+</programlisting></para>
+<para>In order to access subfolders and windows, the following functions are provided:
 <programlisting>
 f2 = f.folders()[number]
 f2 = f.folder(name, caseSensitive=True, partialMatch=False)
@@ -990,36 +994,36 @@ for w in lst:
 	print w.objectName()
 </programlisting>
 If you supply True for the recursive argument, a depth-first recursive search of all subfolders will
-be performed and the first match returned.
-<para>New folders can be created using:</para>
+be performed and the first match returned.</para>
+<para>New folders can be created using:
 <programlisting>
 newFolder = addFolder("New Folder", parentFolder = 0)
-</programlisting>
-If the <varname>parentFolder</varname> is not specified, the new folder will be added as a subfolder of the project's
+</programlisting></para>
+<para>If the <varname>parentFolder</varname> is not specified, the new folder will be added as a subfolder of the project's
 root folder. When you create a new folder via a Python script, it doesn't automatically become the active folder
 of the project. You have to set this programatically, using:
 <programlisting>
 changeFolder(newFolder, bool force=False)
-</programlisting>
-Folders can be deleted using:
+</programlisting></para>
+<para>Folders can be deleted using:
 <programlisting>
 deleteFolder(folder)
-</programlisting>
-You can save a folder as a project file, and of course, you can also save the whole project:
+</programlisting></para>
+<para>You can save a folder as a project file, and of course, you can also save the whole project:
 <programlisting>
 saveFolder(folder, "new_file.qti", compress=False)
 saveProjectAs("new_file_2.qti", compress=False)
-</programlisting>
-If <varname>compress</varname> is set to True, the project file will be archived to the .gz format, using zlib.
-<para>Also, you can load a QtiPlot or an Origin project file into a new folder.
+</programlisting></para>
+<para>If <varname>compress</varname> is set to True, the project file will be archived to the .gz format, using zlib.
+Also, you can load a QtiPlot or an Origin project file into a new folder.
 The new folder will have the base name of the project file and will be added as a subfolder
-to the <varname>parentFolder</varname> or to the current folder if no parent folder is specified.</para>
+to the <varname>parentFolder</varname> or to the current folder if no parent folder is specified.
 <programlisting>
 newFolder = appendProject("projectName", parentFolder = 0)
-</programlisting>
-If you don't want to be asked for confirmation when a table/matrix is renamed during this operation,
+</programlisting></para>
+<para>If you don't want to be asked for confirmation when a table/matrix is renamed during this operation,
 or when deleting a folder via a Python script, you must change your preferences
-concerning prompting of warning messages, using the <link linkend="fig-preferences-dialog-2">Preferences dialog ("Confirmations" tab)</link>.
+concerning prompting of warning messages, using the <link linkend="fig-preferences-dialog-2">Preferences dialog ("Confirmations" tab)</link>.</para>
 
 <para>
 Folders store their own log information containing the results
@@ -1036,15 +1040,15 @@ folder.clearLogInfo()
 
 <sect2 id="Python-Tables">
 <title>Working with Tables</title>
-We'll assume that you have assigned some table to the variable
+<para>We'll assume that you have assigned some table to the variable
 <varname>t</varname>. You can access its numeric cell values with
 <programlisting>
 t.cell(col, row)
 # and
 t.setCell(col, row, value)
-</programlisting>
-<para>
-Whenever you have to specify a column, you can use either the
+</programlisting></para>
+
+<para>Whenever you have to specify a column, you can use either the
 column name (as a string) or the consecutive column number (starting
 with 1). Row numbers also start with 1, just as they are displayed.
 In many places there is an alternative API which represents a table
@@ -1052,14 +1056,15 @@ as a Python sequence is provided. Here rows are addressed by Python
 indices or slices which start at 0. These places are marked as such.
 </para>
 
-If you want to work with arbitrary texts or the textual representations
+<para>If you want to work with arbitrary texts or the textual representations
 of numeric values, you can use:
 <programlisting>
 t.text(col, row)
 # and
 t.setText(col, row, string)
-</programlisting>
-An alternative way to get/set the value of a cell is using the format of the column (Text, Numeric, ...).
+</programlisting></para>
+
+<para>An alternative way to get/set the value of a cell is using the format of the column (Text, Numeric, ...).
 Qtiplot handles all the casting under the hood and throws an <varname>TypeError</varname> if this isn't possible.
 Assigning <varname>None</varname> will clear the cell's value.
 The column type Day-of-Week returns/accepts the numbers 1 (monday) to 7 (sunday, for which also 0 is accepted).
@@ -1070,28 +1075,30 @@ The column type Time returns/accepts <varname>datetime.time</varname> objects an
 t.cellData(col, row)
 # and
 t.setCellData(col, row, value)
-</programlisting>
-The number of columns and rows is accessed via:
+</programlisting></para>
+
+<para>The number of columns and rows is accessed via:
 <programlisting>
 t.numRows() # same as len(t)
 t.numCols()
 t.setNumRows(number)
 t.setNumCols(number)
-</programlisting>
+</programlisting></para>
 
-You can add a new column at the end of the table or you can insert new columns before a
+<para>You can add a new column at the end of the table or you can insert new columns before a
 <varname>startColumn</varname> using the functions below:
 <programlisting>
 t.addColumn()
 t.insertColumns(startColumn, count)
-</programlisting>
-Adding an empty row at the end of the table is done with the <varname>addRow()</varname> method.
+</programlisting></para>
+
+<para>Adding an empty row at the end of the table is done with the <varname>addRow()</varname> method.
 It returns the new row number.
 <programlisting>
 newRowIndex = t.addRow()
-</programlisting>
+</programlisting></para>
 
-If you need all the data of a row or column you can use the <varname>rowData()</varname>
+<para>If you need all the data of a row or column you can use the <varname>rowData()</varname>
 and <varname>colData()</varname> methods. This is much faster then iterating manually over the cells.
 Alternatively you can use the <varname>[]</varname> operator in combination with Python indices or slices,
 which start at 0.
@@ -1100,21 +1107,21 @@ valueList = t.colData(col) # col may be a string or a number starting at 1
 rowTuple = t.rowData(row) # row number starting at 1
 rowTuple = t[idx] # row index starts at 0
 rowTupleList = t[slice]
-</programlisting>
+</programlisting></para>
 
-A Table is iterable. The data is returned row wise as tuple.
+<para>A Table is iterable. The data is returned row wise as tuple.
 <programlisting>
 for c1, c2, c3 in t:
   # do stuff, assuming t has three columns
-</programlisting>
+</programlisting></para>
 
-It is possible to assign random or normal random values to a complete column or to a subset of rows in a column:
+<para>It is possible to assign random or normal random values to a complete column or to a subset of rows in a column:
 <programlisting>
 	t.setRandomValues(col, startRow = 1, endRow = -1)
 	t.setNormalRandomValues(col, startRow = 1, endRow = -1, standardDeviation = 1.0)
-</programlisting>
+</programlisting></para>
 
-Assigning values to a complete row or column is also possible.
+<para>Assigning values to a complete row or column is also possible.
 While the new row data has to be a tuple which length must match the column number,
 column data just has to be iteratable. If the iterator stops before the end of the table
 is reached, a <varname>StopIteration</varname> exception is raised.
@@ -1138,19 +1145,19 @@ t.setRowData(2, (23, 5)) # fill the second row
 t[1] = 23, 5 # using a Python index, starting at 0
 # adding a new row and set it's values
 t.appendRowData(rowTuple)
-</programlisting>
+</programlisting></para>
 
-You can set the format of a column to text using:
+<para>You can set the format of a column to text using:
 <programlisting>
 t.setColTextFormat(col)
-</programlisting>
+</programlisting></para>
 
-Or you can adjust the numeric format:
+<para>Or you can adjust the numeric format:
 <programlisting>
 t.setColNumericFormat(col, format, precision, update=True)
 </programlisting>
-were <varname>col</varname> is the number of the column to adjust and <varname>precision</varname> states the number of digits.
-The <varname>format</varname> can be one of the following:
+were <varname>col</varname> is the number of the column to adjust and <varname>precision</varname> states the number of digits.</para>
+<para>The <varname>format</varname> can be one of the following:
 <variablelist spacing="compact">
             <varlistentry>
               <term>Table.Default (0)</term>
@@ -1170,15 +1177,15 @@ The <varname>format</varname> can be one of the following:
                 <para>scientific format</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-In the same way you can set a column hold a date. Here the text of a cell is interpreted using a format string:
+<para>In the same way you can set a column hold a date. Here the text of a cell is interpreted using a format string:
 <programlisting>
 t.setColDateFormat(col, format, update=True)
 t.setColDateFormat("col1", "yyyy-MM-dd HH:mm")
 </programlisting>
-were <varname>col</varname> is the name/number of a column and <varname>format</varname> the format string.
-In this string, the following placeholder are recognized:
+were <varname>col</varname> is the name/number of a column and <varname>format</varname> the format string.</para>
+<para>In this string, the following placeholder are recognized:
 <variablelist spacing="compact">
             <varlistentry>
               <term>d</term>
@@ -1312,20 +1319,20 @@ In this string, the following placeholder are recognized:
                 <para>interpret as an AM/PM time. ap must be either "am" or "pm".</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-Analog you can say that a text column should hold a time only...
+<para>Analog you can say that a text column should hold a time only...
 <programlisting>
 t.setColTimeFormat(col, format, update=True)
 t.setColTimeFormat(1, "HH:mm:ss")
-</programlisting>
+</programlisting></para>
 
-... a month ...
+<para>... a month ...
 <programlisting>
 t.setColMonthFormat(col, format, update=True)
 t.setColMonthFormat(1, "M")
-</programlisting>
-Here the format is the following:
+</programlisting></para>
+<para>Here the format is the following:
 <variablelist spacing="compact">
             <varlistentry>
               <term>M</term>
@@ -1345,9 +1352,9 @@ Here the format is the following:
                 <para>The full name, "January"</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-... or the day of week:
+<para>... or the day of week:
 <programlisting>
 t.setColDayFormat(col, format, update=True)
 t.setColDayFormat(1, "ddd")
@@ -1372,26 +1379,26 @@ Here the format is the following:
                 <para>The full name, "Monday"</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-It is also possible to swap two columns using:
+<para>It is also possible to swap two columns using:
 <programlisting>
 t.swapColumns(column1, column2)
-</programlisting>
+</programlisting></para>
 
-You can delete a column or a range of rows using the functions below:
+<para>You can delete a column or a range of rows using the functions below:
 <programlisting>
 t.removeCol(number)
 t.deleteRows(startRowNumber, endRowNumber)
-</programlisting>
-It is also possible to use Python's <varname>del</varname> statement to remove rows.
+</programlisting></para>
+<para>It is also possible to use Python's <varname>del</varname> statement to remove rows.
 Note that in this case a Python index or slice (instead of row numbers) is used, which start at 0.
 <programlisting>
 del t[5] # deletes row 6
 del t[0:4] # deletes row 1 to 5
-</programlisting>
+</programlisting></para>
 
-Column names can be read and written with:
+<para>Column names can be read and written with:
 <programlisting>
 t.colName(number)
 t.colNames()
@@ -1402,9 +1409,9 @@ If <varname>enumerateRight</varname> is set to True, all the table columns start
 <varname>col</varname> will have their names modified to a combination of the
 <varname>newName</varname> and a numerical increasing index. If this parameter is not specified,
 by default it is set to False.
-The plural forms get/set all headers at once.
+The plural forms get/set all headers at once.</para>
 
-<para>You can change the plot role (abscissae, ordinates, error bars, etc...) of a table column <varname>col</varname> using:</para>
+<para>You can change the plot role (abscissae, ordinates, error bars, etc...) of a table column <varname>col</varname> using:
 <programlisting>
 t.setColumnRole(col, role)
 print t.columnRole(col)
@@ -1447,41 +1454,41 @@ where <varname>role</varname> specifies the desired column role:
                 <para>Table.yErr</para>
               </listitem>
             </varlistentry>
-			<varlistentry>
+            <varlistentry>
               <term>6.</term>
               <listitem>
                 <para>Table.Label</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-<para>You can normalize a single column or all columns in a table:</para>
+<para>You can normalize a single column or all columns in a table:
 <programlisting>
 t.normalize(col)
 t.normalize()
-</programlisting>
-Sort a single or all columns:
+</programlisting></para>
+<para>Sort a single or all columns:
 <programlisting>
 t.sortColumn(col, order = 0)
 t.sort(type = 0, order = 0, leadingColumnName)
-</programlisting>
+</programlisting></para>
 
 <sect3 id = "Python-ImportASCII">
 <title>Import ASCII files</title>
 
-Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
+<para>Import values from <varname>file</varname>, using <varname>sep</varname> as separator char, ignoring
 <varname>ignoreLines</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string.
 <programlisting>
 t.importASCII(file, sep="\t",ignoreLines=0,renameCols=False,stripSpaces=True,simplifySpace=False,
 importComments=False,comment="#",readOnly=False,importAs=Table.Overwrite,locale=QLocale(),endLine=0,maxRows=-1)
-</programlisting>
+</programlisting></para>
 
-As you see from the above list of import options, you have the possibility to set the new columns as read-only.
+<para>As you see from the above list of import options, you have the possibility to set the new columns as read-only.
 This will prevent the imported data from being modified. You have the possibility to remove this protection
 at any time, by using:
 <programlisting>
 t.setReadOnlyColumn(col, False)
-</programlisting>
+</programlisting></para>
 
 <para>The <varname>importAs</varname> flag can have the following values:
 <variablelist spacing="compact">
@@ -1513,10 +1520,10 @@ Possible values are: 0 for line feed (LF), which is the default value,
 lines. Negative values mean that all data lines must be imported.</para>
 
 <para>If the decimal separator of the imported file does not match the currently used conventions, you have to
-adjust them before using the table:</para>
+adjust them before using the table:
 <programlisting>
 t.setDecimalSeparators(country,ignoreGroupSeparator=True)
-</programlisting>
+</programlisting></para>
 <para>Where country can have one of the following values:
 <variablelist spacing="compact">
             <varlistentry>
@@ -1575,75 +1582,79 @@ t = importOdfSpreadsheet(file, sheet)
 <varname>sep</varname> as separator character. The <varname>ColumnLabels</varname> option
 allows you to export or ignore the column labels, <varname>ColumnComments</varname> does the same for the comments
 displayed in the table header and the <varname>SelectionOnly</varname> option makes
-possible to export only the selected cells of the table.</para>
+possible to export only the selected cells of the table.
 <programlisting>
 t.exportASCII(file,sep="\t",ignore=0,ColumnLabels=False,ColumnComments=False,SelectionOnly=False)
-</programlisting>
-Other settings that you can modify are the text displayed as a comment in the header of a column...
+</programlisting></para>
+
+<para>Other settings that you can modify are the text displayed as a comment in the header of a column...
 <programlisting>
 t.setComment(col, newComment)
 </programlisting>
 ... or the expression used to calculate the column values. Please beware that changing the command doesn't automatically
-update the values of the column; you have to call <varname>recalculate</varname> explicitly.
-Calling it with just the column as argument will recalculate every row. Forcing muParser can speed things up.
+update the values of the column; you have to call <varname>recalculate</varname> explicitly.</para>
+
+<para>Calling it with just the column as argument will recalculate every row. Forcing muParser can speed things up.
 <programlisting>
 t.setCommand(col, newExpression)
 t.recalculate(col, startRow=1, endRow=-1, forceMuParser=False, notifyChanges=True)
-</programlisting>
+</programlisting></para>
 </sect3>
 
-You can access the column comments and enable/disable their display via the following functions:
+<sect3 id = "Python-TableOperations">
+<title>Table Operations</title>
+<para>You can access the column comments and enable/disable their display via the following functions:
 <programlisting>
 t.comment(col)
 t.showComments(on = True)
-</programlisting>
+</programlisting></para>
 
-You can also modify the width of a column (in pixels) or hide/show table columns:
+<para>You can also modify the width of a column (in pixels) or hide/show table columns:
 <programlisting>
 t.setColumnWidth(col, width)
 t.hideColumn(col, True)
-</programlisting>
+</programlisting></para>
 
-If one or several table columns are hidden you can make them visible again using:
+<para>If one or several table columns are hidden you can make them visible again using:
 <programlisting>
 t.showAllColumns()
-</programlisting>
+</programlisting></para>
 
-You can ensure the visibility of a cell with:
+<para>You can ensure the visibility of a cell with:
 <programlisting>
 t.scrollToCell(col, row)
-</programlisting>
+</programlisting></para>
 
-After having changed some table values from a script, you will likely want to update dependent Graphs:
+<para>After having changed some table values from a script, you will likely want to update dependent Graphs:
 <programlisting>
 t.notifyChanges()
-</programlisting>
+</programlisting></para>
 
-As a simple example, let's set some column values without using the dialog.
+<para>As a simple example, let's set some column values without using the dialog.
 <programlisting>
 t = table("table1")
 for i in range(1, t.numRows()+1):
 	t.setCell(1, i, i**2)
 t.notifyChanges()
-</programlisting>
-While the above is easy to understand, there is a faster and more pythonic way of doing the same:
+</programlisting></para>
+<para>While the above is easy to understand, there is a faster and more pythonic way of doing the same:
 <programlisting>
 t = table("table1")
 t.setColData(1, [i*i for i in range(len(t))])
 t.notifyChanges()
-</programlisting>
+</programlisting></para>
 
-
-You can check if a column or row of a table is selected by using the following functions:
+<para>You can check if a column or row of a table is selected by using the following functions:
 <programlisting>
 t.isColSelected(col)
 t.isRowSelected(row)
-</programlisting>
+</programlisting></para>
+</sect3>
 
 <sect3 id = "Python-R">
 <title>R interface</title>
 
-If <ulink url="http://rpy.sourceforge.net/rpy2.html">RPy2</ulink> is available,
+<para>If <ulink url="http://rpy.sourceforge.net/rpy2.html">RPy2</ulink> is available,
 the <link linkend="Python-init">default initialization file</link> sets up the
 helper functions <userinput>qti.Table.toRDataFrame</userinput> and
 <userinput>qti.app.newTableFromRDataFrame</userinput> to convert back and forth
@@ -1663,47 +1674,48 @@ print R.mean(df), R.var(df)
 R.source("/some/path/my_func.r")
 new_df = R.my_func(df, foo=bar)
 newTableFromRDataFrame(new_df, "my result table")
-</programlisting>
+</programlisting></para>
 </sect3>
 
 </sect2>
+
 <sect2 id="Python-Matrix">
 <title>Working with Matrices</title>
-Matrix objects have a dual view mode: either as images or as data tables.
+<para>Matrix objects have a dual view mode: either as images or as data tables.
 Assuming that you have assigned some matrix to the variable
 <varname>m</varname>, you can change its display mode via the following function:
 <programlisting>
 m.setViewType(Matrix.TableView)
 m.setViewType(Matrix.ImageView)
-</programlisting>
+</programlisting></para>
 
-If a matrix is viewed as an image, you have the choice to display it
+<para>If a matrix is viewed as an image, you have the choice to display it
 either as gray scale or using a predefined color map:
 <programlisting>
 m.setGrayScale()
 m.setRainbowColorMap()
 m.setDefaultColorMap() # default color map defined via the 3D plots tab of the preferences dialog
-</programlisting>
+</programlisting></para>
 
-You can also define custom color maps:
+<para>You can also define custom color maps:
 <programlisting>
 map = LinearColorMap(QtCore.Qt.yellow, QtCore.Qt.blue)
 map.setMode(LinearColorMap.FixedColors) # default mode is LinearColorMap.ScaledColors
 map.addColorStop(0.2, QtCore.Qt.magenta)
 map.addColorStop(0.7, QtCore.Qt.cyan)
 m.setColorMap(map)
-</programlisting>
+</programlisting></para>
 
-You have direct access to the color map used for a matrix via the following functions:
+<para>You have direct access to the color map used for a matrix via the following functions:
 <programlisting>
 map = m.colorMap()
 col1 = map.color1()
 print col1.green()
 col2 = map.color2()
 print col2.blue()
-</programlisting>
+</programlisting></para>
 
-Accessing cell values is very similar to Table,
+<para>Accessing cell values is very similar to Table,
 but since Matrix doesn't use column logic, row arguments are specified
 before columns and obviously you can't use column name.
 <programlisting>
@@ -1711,53 +1723,53 @@ m.cell(row, col)
 m.setCell(row, col, value)
 m.text(row, col)
 m.setText(row, col, string)
-</programlisting>
+</programlisting></para>
 
-An alternative solution to assign values to a Matrix, would be to define a formula and to calculate the values using this formula, like in the following example:
+<para>An alternative solution to assign values to a Matrix, would be to define a formula and to calculate the values using this formula, like in the following example:
 <programlisting>
 m.setFormula("x*y*sin(x*y)")
 m.calculate()
-</programlisting>
+</programlisting></para>
 
-You can also specify a column/row range in the calculate() function, like this:
+<para>You can also specify a column/row range in the calculate() function, like this:
 <programlisting>
 m.calculate(startRow, endRow, startColumn, endColumn)
-</programlisting>
+</programlisting></para>
 
-Before setting the values in a matrix you might want to define the numeric precision,
+<para>Before setting the values in a matrix you might want to define the numeric precision,
 that is the number of significant digits used for the computations:
 <programlisting>
 m.setNumericPrecision(prec)
-</programlisting>
+</programlisting></para>
 
-You can change the dimensions of a matrix:
+<para>You can change the dimensions of a matrix:
 <programlisting>
 m.setDimensions(rows, columns)
 m.setNumRows(rows)
 m.setNumCols(columns)
-</programlisting>
+</programlisting></para>
 
-Also, like with tables, you can access the number of rows/columns in a matrix:
+<para>Also, like with tables, you can access the number of rows/columns in a matrix:
 <programlisting>
 rows = m.numRows()
 columns = m.numCols()
-</programlisting>
+</programlisting></para>
 
-If QtiPlot has been built with support for <ulink url="http://www.alglib.net/">ALGLIB</ulink>, you can also change the dimensions of a matrix by resampling it, using
+<para>If QtiPlot has been built with support for <ulink url="http://www.alglib.net/">ALGLIB</ulink>, you can also change the dimensions of a matrix by resampling it, using
 bilinear or bicubic interpolation:
 
 <programlisting>
 m.resample(rows, cols)# bilinear interpolation by default
 m.resample(rows, cols, 1) # bicubic interpolation
-</programlisting>
+</programlisting></para>
 
-If ALGLIB is available you can also smooth the matrix data using:
+<para>If ALGLIB is available you can also smooth the matrix data using:
 
 <programlisting>
 m.smooth()
-</programlisting>
+</programlisting></para>
 
-Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.
+<para>Matrix objects allow you to define a system of x/y coordinates that will be used when plotting color/contour maps or 3D height maps.
 You can manipulate these coordinates using the following functions:
 <programlisting>
 xs = m.xStart()
@@ -1765,9 +1777,9 @@ xe = m.xEnd()
 ys = m.yStart()
 ye = m.yEnd()
 m.setCoordinates(xs + 2.5, xe, ys - 1, ye + 1)
-</programlisting>
+</programlisting></para>
 
-You can also define labels, units and comments for the X, Y or Z axis that can be used in plots:
+<para>You can also define labels, units and comments for the X, Y or Z axis that can be used in plots:
 <programlisting>
 m.setXLabel("Width")
 print m.xLabel()
@@ -1789,54 +1801,54 @@ m.setZUnit("a.u.")
 print m.zUnit()
 m.setZComment("Z axis comment")
 print m.zComment()
-</programlisting>
+</programlisting></para>
 
-The horizontal and vertical headers of a matrix can display either the x/y coordinates or
+<para>The horizontal and vertical headers of a matrix can display either the x/y coordinates or
 the column/row indexes:
 <programlisting>
 m.setHeaderViewType(Matrix.ColumnRow)
 m.setHeaderViewType(Matrix.XY)
-</programlisting>
+</programlisting></para>
 
-There are several built-in transformations that you can apply to a matrix object.
+<para>There are several built-in transformations that you can apply to a matrix object.
 You can transpose or invert a matrix and calculate its determinant, provided, of course, that
 the conditions on the matrix dimensions, required by these operations, are matched:
 <programlisting>
 m.transpose()
 m.invert()
 d = m.determinant()
-</programlisting>
+</programlisting></para>
 
-Some other operations, very useful when working with images, like 90 degrees rotations and mirroring,
+<para>Some other operations, very useful when working with images, like 90 degrees rotations and mirroring,
 can also be performed. By default rotations are performed clockwise. For a counterclockwise rotation
 you must set the <varname>clockwise</varname> parameter to <varname>False</varname>.
 <programlisting>
 m.flipVertically()
 m.flipHorizontally()
 m.rotate90(clockwise = True)
-</programlisting>
+</programlisting></para>
 
-Please note that sometimes, after a change in the matrix settings,
+<para>Please note that sometimes, after a change in the matrix settings,
 you need to use the following function in order to update the display:
 <programlisting>
 m.resetView()
-</programlisting>
+</programlisting></para>
 
-If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
+<para>If you need to get data from a table, in order to use it in a matrix (or vice-versa), you can
 avoid time consuming copy/paste operations and speed up the whole process by simply converting
 the table into a matrix:
 <programlisting>
 m = tableToMatrix(table("Table1"))
 t = matrixToTable(m)
-</programlisting>
+</programlisting></para>
 
-For the production of contour plots, you can convert a regular XYZ data table
+<para>For the production of contour plots, you can convert a regular XYZ data table
 ("regular", meaning that cells in the X and Y columns of the table define a regular 2D grid) into a matrix:
 <programlisting>
 m = tableToMatrixRegularXYZ(table("Table1"), "Table1_3")
-</programlisting>
+</programlisting></para>
 
-Also, it's worth knowing that you can easily import image files to matrices, that can be
+<para>Also, it's worth knowing that you can easily import image files to matrices, that can be
 used afterwards for plotting (see the next section for more details about 2D plots):
 <programlisting>
 m1 = importImage("C:/poze/adi/PIC00074.jpg")
@@ -1844,20 +1856,20 @@ m2 = newMatrix()
 m2.importImage("C:/poze/adi/PIC00075.jpg")
 </programlisting>
 The algorithm used to import the image returns a gray value between 0 and 255 from the (r, g, b) triplet
-corresponding to each pixel. The gray value is calculated using the formula: (r * 11 + g * 16 + b * 5)/32
+corresponding to each pixel. The gray value is calculated using the formula: (r * 11 + g * 16 + b * 5)/32</para>
 
-<para>For custom image analysis operations, you can get a copy of the matrix image view, as a QImage object, via:</para>
+<para>For custom image analysis operations, you can get a copy of the matrix image view, as a QImage object, via:
 <programlisting>
 image = m.image()
-</programlisting>
+</programlisting></para>
 
-You can export matrices to all raster image formats supported by Qt or to any of the following vectorial image format:
+<para>You can export matrices to all raster image formats supported by Qt or to any of the following vectorial image format:
 EPS, PS, PDF or SVG using:
 <programlisting>
 m.export(fileName)
-</programlisting>
+</programlisting></para>
 
-This is a shortcut function which uses some default parameters in order to generate the output image.
+<para>This is a shortcut function which uses some default parameters in order to generate the output image.
 If you need more control over the export parameters you must use one of the following functions:
 <programlisting>
 m1.exportRasterImage(fileName, quality = 100, dpi = 0, compression = 0)
@@ -1868,15 +1880,14 @@ where the <varname>quality</varname> parameter influences the size of the output
 The higher this value (maximum is 100), the higher the quality of the image, but the larger the size of the resulting files.
 The <varname>dpi</varname> parameter represents the export resolution in pixels per inch (the default is screen resolution).
 The <varname>compression</varname> parameter can be 0 (no compression) or 1 (LZW) and is only effectif for .tif/.tiff images.
-It is neglected for all other raster image formats.
+It is neglected for all other raster image formats.</para>
 
 <para>You can also import an ASCII data <varname>file</varname>, using <varname>sep</varname> as separator characters, ignoring
 <varname>ignore</varname> lines at the head of the file and all lines starting with a <varname>comment</varname> string:
-</para>
 <programlisting>
 m.importASCII(file, sep="\t", ignore=0, stripSpaces=True, simplifySpace=False, comment="#",
 				importAs=Matrix.Overwrite, locale=QLocale(), endLine=0, maxRows=-1)
-</programlisting>
+</programlisting></para>
 
 <para>The <varname>importAs</varname> flag can have the following values:
 <variablelist spacing="compact">
@@ -1911,10 +1922,10 @@ lines. Negative values mean that all data lines must be imported.</para>
 
 <para>Also, you can export values from a matrix to an ASCII <varname>file</varname>, using
 <varname>sep</varname> as separator characters. The <varname>SelectionOnly</varname> option makes
-possible to export only the selected cells of the matrix.</para>
+possible to export only the selected cells of the matrix.
 <programlisting>
 m.exportASCII(file, sep="\t", SelectionOnly=False)
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id = "Python-Stem-and-Leaf-Plot">
@@ -1954,7 +1965,7 @@ resultsLog().append(stemPlot(table("Table1"), "Table1_2", 1, 2, 15))
 
 <sect2 id = "Python-Plots2D">
 <title>2D Plots</title>
-If you want to create a new Graph window for some data in table Table1, you can use the plot command:
+<para>If you want to create a new Graph window for some data in table Table1, you can use the plot command:
 <programlisting>
 t = table("Table1")
 g = plot(t, column, type)
@@ -1964,117 +1975,93 @@ g = plot(t, column, type)
 	  <variablelist spacing="compact">
             <varlistentry>
               <term>0</term>
-
               <listitem>
                 <para>Layer.Line</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>1</term>
-
               <listitem>
                 <para>Layer.Scatter</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>2</term>
-
               <listitem>
                 <para>Layer.LineSymbols</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>3</term>
-
               <listitem>
                 <para>Layer.VerticalBars</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>4</term>
-
               <listitem>
                 <para>Layer.Area</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>5</term>
-
               <listitem>
                 <para>Layer.Pie</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>6</term>
-
               <listitem>
                 <para>Layer.VerticalDropLines</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>7</term>
-
               <listitem>
                 <para>Layer.Spline</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>8</term>
-
               <listitem>
                 <para>Layer.HorizontalSteps</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>9</term>
-
               <listitem>
                 <para>Layer.Histogram</para>
               </listitem>
             </varlistentry>
-
             <varlistentry>
               <term>10</term>
-
               <listitem>
                 <para>Layer.HorizontalBars</para>
               </listitem>
             </varlistentry>
-
-			 <varlistentry>
+            <varlistentry>
               <term>13</term>
-
               <listitem>
                 <para>Layer.Box</para>
               </listitem>
             </varlistentry>
-
-			<varlistentry>
+            <varlistentry>
               <term>15</term>
 
               <listitem>
                 <para>Layer.VerticalSteps</para>
               </listitem>
             </varlistentry>
-          </variablelist>
+          </variablelist></para>
 
-You can plot more than one column at once by giving a Python tuple (see the <ulink url="http://docs.python.org/tut">Python
+<para>You can plot more than one column at once by giving a Python tuple (see the <ulink url="http://docs.python.org/tut">Python
 Tutorial</ulink>) as an argument:
 <programlisting>
 g1 = plot(table("Table1"), (2,4,7), 2)
 g2 = plot(table("Table1"), ("Table1_2","Table1_3"), Layer.LineSymbols)
-</programlisting>
+</programlisting></para>
 
-All the curves in a plot layer can be customized in terms of color, line width and line style.
+<para>All the curves in a plot layer can be customized in terms of color, line width and line style.
 Here's a short script showing the corresponding functions at work:
 <programlisting>
 t = newTable("test", 30, 4)
@@ -2091,17 +2078,17 @@ for i in range(0, l.numCurves()):
 
 l.setCurveLineStyle(1, QtCore.Qt.DotLine)
 l.setCurveLineStyle(2, QtCore.Qt.DashLine)
-</programlisting>
+</programlisting></para>
 
-You can also create a vector plot by giving four columns in
+<para>You can also create a vector plot by giving four columns in
 a Python tuple as an argument and the plot type as Layer.VectXYXY (11) or Layer.VectXYAM (14),
 depending on how you want to define the end point of your vectors: using (X, Y) coordinates or
 (Angle, Magnitude) coordinates.
 <programlisting>
 g = plot(table("Table1"), (2,3,4,5), Layer.VectXYXY)
-</programlisting>
+</programlisting></para>
 
-If you want to add a curve to an existing Graph window, you have
+<para>If you want to add a curve to an existing Graph window, you have
 to choose the destination layer. Usually,
 <programlisting>
 l = g.activeLayer()
@@ -2109,11 +2096,11 @@ l = g.activeLayer()
 will do the trick, but you can also select a layer by its number:
 <programlisting>
 l = g.layer(num)
-</programlisting>
+</programlisting></para>
 
 <sect3 id="Python-Title">
 <title>The plot title</title>
-<programlisting>
+<para><programlisting>
 l.setTitle("My beautiful plot")
 l.setTitleFont(QtGui.QFont("Arial", 12))
 l.setTitleColor(QtGui.QColor("red"))
@@ -2121,31 +2108,31 @@ l.setTitleAlignment(QtCore.Qt.AlignLeft)
 </programlisting>
 The alignment parameter can be any combination of the Qt alignment flags (see the
 <ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/qt.html#AlignmentFlag-enum">PyQt documentation</ulink>
-for more details).
-<para>If you want you can remove the plot title using:</para>
+for more details).</para>
+<para>If you want you can remove the plot title using:
 <programlisting>
 l.removeTitle()
-</programlisting>
+</programlisting></para>
 
-Here's how you can add greek symbols in the plot title or in any other text in the plot layer: axis labels, legends:
+<para>Here's how you can add greek symbols in the plot title or in any other text in the plot layer: axis labels, legends:
 <programlisting>
 <![CDATA[
 l.setTitle("normal text <font face=\"Symbol\">greek text</font>")
 ]]>
-</programlisting>
+</programlisting></para>
 
-Using the font specifications, you can also change the color of some parts of the title only:
+<para>Using the font specifications, you can also change the color of some parts of the title only:
 <programlisting>
 <![CDATA[
 l=newGraph().activeLayer()
 l.setTitle("<font color = red>red</font> <font color = yellow>yellow</font> <font color = blue>blue</font>")
 ]]>
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Axes">
 <title>Customizing the axes</title>
-Layer axes can be shown/hidden using the following function:
+<para>Layer axes can be shown/hidden using the following function:
 <programlisting>
 l.enableAxis(int axis, on = True)
 </programlisting>
@@ -2175,9 +2162,9 @@ where <varname>axis</varname> can be any integer value between 0 and 3 or the eq
 				<para>Layer.Top</para>
 			  </listitem>
 			</varlistentry>
-		  </variablelist>
+		  </variablelist></para>
 
-If an axis is enabled, you can fully customize it via a Python script.
+<para>If an axis is enabled, you can fully customize it via a Python script.
 For example you can set its title:
 <programlisting>
 l.setAxisTitle(axis, "My axis title")
@@ -2189,17 +2176,17 @@ its color and the font used for the tick labels:
 <programlisting>
 l.setAxisColor(axis, QtGui.QColor("green"))
 l.setAxisFont(axis, QtGui.QFont("Arial", 10))
-</programlisting>
+</programlisting></para>
 
-The tick labels of an axis can be enabled or disabled, you can set their color and their rotation angle:
+<para>The tick labels of an axis can be enabled or disabled, you can set their color and their rotation angle:
 <programlisting>
 l.enableAxisLabels(axis, on = True)
 l.setAxisLabelsColor(axis, QtGui.QColor("black"))
 l.setAxisLabelRotation(axis, angle)
 </programlisting>
 <varname>angle</varname> can be any integer value between -90 and 90 degrees.
-A rotation angle can be set only for horizontal axes (Bottom and Top).
-<para>The numerical format of the labels can be set using:</para>
+A rotation angle can be set only for horizontal axes (Bottom and Top).</para>
+<para>The numerical format of the labels can be set using:
 <programlisting>
 l.setAxisNumericFormat(axis, format, precision = 6, formula)
 </programlisting>
@@ -2231,16 +2218,16 @@ where <varname>format</varname> can have the following values: <variablelist spa
 		  </variablelist>
 <varname>precision</varname> is the number of significant digits and
 <varname>formula</varname> is a mathematical expression that can be used to link opposite scales. It's
-argument must be <varname>x</varname> for horizontal axes and <varname>y</varname> for vertical axes.
-For example, assuming that the bottom axis displays a range of wavelengths in nanometers and that the top
+argument must be <varname>x</varname> for horizontal axes and <varname>y</varname> for vertical axes.</para>
+<para>For example, assuming that the bottom axis displays a range of wavelengths in nanometers and that the top
 axis represents the equivalent energies in eV, with the help of the code below all the wavelengths
 will be automatically converted to electron-volts and the result will be displayed in floating point form
 with two significant digits after the decimal dot sign:
 <programlisting>
 l.setAxisNumericFormat(Layer.Top, 1, 2, "1239.8419/x")
-</programlisting>
+</programlisting></para>
 
-The axis ticks can be customized via the following functions:
+<para>The axis ticks can be customized via the following functions:
 
 <programlisting>
 l.setTicksLength(minLength, majLength)
@@ -2280,7 +2267,7 @@ desired orientation for the major and minor ticks, respectively:
 			</varlistentry>
 		  </variablelist>
 <varname>minLength</varname> specifies the length of the minor ticks, in pixels and
-<varname>majLength</varname> the length of the major ticks.
+<varname>majLength</varname> the length of the major ticks.</para>
 
 <para>You can also customize the scales of the different axes using: <programlisting>
 l.setScale(int axis, double start, double end, double step=0.0, int majorTicks=5, int minorTicks=5, int type=0, bool inverted=False)
@@ -2332,29 +2319,29 @@ where <varname>type</varname> specifies the desired scale type: <variablelist sp
 and <varname>step</varname> defines the size of the interval between the major scale ticks. If not specified (default value is 0.0), the step size is calculated automatically.
 The other flags should be self-explanatory.</para>
 
-<para>It is possible to get information about the scale division of an axis via the following functions:</para>
+<para>It is possible to get information about the scale division of an axis via the following functions:
 <programlisting>
 div = graph("Graph1").activeLayer().axisScaleDiv(Layer.Left)
 print div.lowerBound()
 print div.upperBound()
 print div.range()
-</programlisting>
+</programlisting></para>
 
-Defining a scale range for an axis doesn't automatically disable autoscaling.
+<para>Defining a scale range for an axis doesn't automatically disable autoscaling.
 This means that if a curve is added or removed from the layer, the axes will still automatically
 adapt to the new data interval. This can be avoided by disabling the autoscaling mode, thus
 making sure that your scale settings will always be taken into account:
 <programlisting>
 l.enableAutoscaling(False)
 l.setSynchronizedScaleDivisions(False)
-</programlisting>
+</programlisting></para>
 
-If you want to rescale the plot layer so that all the data points are visible, you can use the following utility function:
+<para>If you want to rescale the plot layer so that all the data points are visible, you can use the following utility function:
 <programlisting>
 l.setAutoScale()
-</programlisting>
+</programlisting></para>
 
-The same <varname>setScale</varname> function above, with a longer list of arguments,
+<para>The same <varname>setScale</varname> function above, with a longer list of arguments,
 can be used to define an axis break region:
 <programlisting>
 l.setScale(axis, start, end, step=0.0, majorTicks=5, minorTicks=5, type=0, inverted=False,
@@ -2365,58 +2352,58 @@ where <varname>left</varname> specifies the left limit of the break region,
 <varname>right</varname> the right limit,
 <varname>breakPosition</varname> is the position of the break expressed as a percentage of the axis length and
 <varname>breakWidth</varname> is the width of the break region in pixels.
-The names of the other parameters should be self-explanatory.
+The names of the other parameters should be self-explanatory.</para>
 
 <para>Finally, you can specify the width of all axes and enable/disable the drawing of their
-backbone line, using:</para>
+backbone line, using:
 <programlisting>
 l.setAxesLinewidth(2)
 l.drawAxesBackbones(True)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Canvas">
 <title>The canvas</title>
-You can display a rectangular frame around the drawing area of the plot (the canvas) and
+<para>You can display a rectangular frame around the drawing area of the plot (the canvas) and
 fill it with a background color or with an image, using:
 <programlisting>
 l.setCanvasFrame(2, QtGui.QColor("red"))
 l.setCanvasColor(QtGui.QColor("lightGrey"))
 l.setCanvasBackgroundImage("C:/qtiplot/qtiplot/qtiplot_logo.png")
-</programlisting>
+</programlisting></para>
 
-The following access methods are available for the canvas background image:
+<para>The following access methods are available for the canvas background image:
 <programlisting>
 pic = l.backgroundPixmap() # QPixmap
 path = l.canvasBackgroundFileName()
-</programlisting>
+</programlisting></para>
 
-Drawing the canvas frame and disabling the axes backbone lines
-is the only possible solution for the issue of axes not touching themselves at their ends.
+<para>Drawing the canvas frame and disabling the axes backbone lines
+is the only possible solution for the issue of axes not touching themselves at their ends.</para>
 </sect3>
 
 <sect3 id="Python-Frame">
 <title>The layer frame</title>
-You can display a rectangular frame around the whole layer and fill it with a background color,
+<para>You can display a rectangular frame around the whole layer and fill it with a background color,
 using:<programlisting>
 l.setFrame(2, QtGui.QColor("blue"))
 l.setBackgroundColor(QtGui.QColor("grey"))
-</programlisting>
-The default spacing between the layer frame and the other layer elements (axes, title) can be changed via:
+</programlisting></para>
+<para>The default spacing between the layer frame and the other layer elements (axes, title) can be changed via:
 <programlisting>
 l.setMargin(10)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Grid-2D">
 <title>Customizing the grid</title>
 
-You can display the grid associated to a layer axis or the whole grid using:<programlisting>
+<para>You can display the grid associated to a layer axis or the whole grid using:<programlisting>
 l.showGrid(axis)
 l.showGrid()
 l.setGridOnTop(on = True, update = True) # draw grid on top of data
-</programlisting>
-This will display the grid with the default color, width and pen style settings.
+</programlisting></para>
+<para>This will display the grid with the default color, width and pen style settings.
 If you need to change these settings, as well as to enable/disable certain grid lines,
 you can use the following functions:<programlisting>
 grid = l.grid()
@@ -2433,32 +2420,32 @@ grid.enableZeroLineY(False)
 grid.setXZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
 grid.setYZeroLinePen(QtGui.QPen(QtCore.Qt.black, 2))
 l.replot()
-</programlisting>
-All the grid functions containing an <varname>X</varname> refer to the vertical grid lines, whereas the <varname>Y</varname> letter indicates the horizontal ones.
-Also, the <varname>Maj</varname> word refers to the main grid lines and <varname>Min</varname> to the secondary grid.
+</programlisting></para>
+<para>All the grid functions containing an <varname>X</varname> refer to the vertical grid lines, whereas the <varname>Y</varname> letter indicates the horizontal ones.
+Also, the <varname>Maj</varname> word refers to the main grid lines and <varname>Min</varname> to the secondary grid.</para>
 </sect3>
 
 <sect3 id="Python-Legends">
 <title>The plot legend</title>
-You can add a new legend to a plot using: <programlisting>
+<para>You can add a new legend to a plot using: <programlisting>
 legend = l.newLegend()
 #or
 legend = l.newLegend("enter your text here")
-</programlisting>
+</programlisting></para>
 
-Plot legends are special text objects which are updated each time you add or remove a curve from the layer.
+<para>Plot legends are special text objects which are updated each time you add or remove a curve from the layer.
 They have a special <varname>auto-update</varname> flag which is enabled by default.
 The following function returns <varname>True</varname> for a legend object:
 <programlisting>
 legend.isAutoUpdateEnabled()
-</programlisting>
+</programlisting></para>
 
-You can disable/enable the auto-update behavior of a legend/text object using:
+<para>You can disable/enable the auto-update behavior of a legend/text object using:
 <programlisting>
 legend.setAutoUpdate(False/True)
-</programlisting>
+</programlisting></para>
 
-You can add common texts like this:
+<para>You can add common texts like this:
 <programlisting>
 text = l.addText(legend)
 text.setOrigin(legend.x(), legend.y()+50)
@@ -2467,14 +2454,14 @@ Please notice that the <varname>addText</varname> function returns a different r
 to the new text object. You can use this new reference later on in order to remove the text:
 <programlisting>
 l.remove(text)
-</programlisting>
+</programlisting></para>
 
-Once you have created a legend/text, it's very easy to customize it.
+<para>Once you have created a legend/text, it's very easy to customize it.
 If you want to modify the text you can use:<programlisting>
 legend.setText("Enter your text here")
-</programlisting>
+</programlisting></para>
 
-All other properties of the legend: rotation angle, text color, background color, frame style, font and position of the top-left corner
+<para>All other properties of the legend: rotation angle, text color, background color, frame style, font and position of the top-left corner
 can be modified via the following functions:<programlisting>
 legend.setAngle(90)
 legend.setTextColor(QtGui.QColor("red"))
@@ -2489,72 +2476,72 @@ legend.setOriginCoord(200.5, 600.32)
 # or set top-left position using pixel coordinates:
 legend.setOrigin(5, 10)
 legend.repaint()
-</programlisting>
+</programlisting></para>
 
-Other frame styles available for legends are: <varname>Legend.Line</varname>, which draws a rectangle around the text
-and <varname>Legend.None</varname> (no frame at all).
+<para>Other frame styles available for legends are: <varname>Legend.Line</varname>, which draws a rectangle around the text
+and <varname>Legend.None</varname> (no frame at all).</para>
 
-There is also a function allowing you to add an automatically built time stamp:
+<para>There is also a function allowing you to add an automatically built time stamp:
 <programlisting>
 timeStamp = l.addTimeStamp()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Antialiasing">
 <title>Antialiasing</title>
-Antialiasing can be enabled/disabled for the drawing of the curves and other layer
+<para>Antialiasing can be enabled/disabled for the drawing of the curves and other layer
 objects, but it is a very resources consuming feature:<programlisting>
 l.setAntialiasing(True, bool update = True)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-ResizingLayers">
 <title>Resizing layers</title>
-A layer can be resized using the methods below, where the first argument is the new width,
+<para>A layer can be resized using the methods below, where the first argument is the new width,
  the second is the new height and sizes are defined in pixels:
  <programlisting>
  l.resize(200, 200);
  l.resize(QSize(w, h))
- </programlisting>
+ </programlisting></para>
 
- If you also need to reposition the layer, you can use the following functions, where the first two arguments
+ <para>If you also need to reposition the layer, you can use the following functions, where the first two arguments
  specify the new position of the top left corner of the canvas:
  <programlisting>
  l.setGeometry(100, 100, 200, 200);
  l.setGeometry(QRect(x, y, w, h));
- </programlisting>
+ </programlisting></para>
 
-The default behavior of 2D plot layers, with respect to the resizing of the graph window
+<para>The default behavior of 2D plot layers, with respect to the resizing of the graph window
 is to adapt the sizes of the fonts used for the various texts, to the new size
 of the plot window. You can override this behavior and keep the size of the fonts unchanged:
 <programlisting>
 l.setAutoscaleFonts(False)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Resizing">
 <title>Resizing the drawing area</title>
- The drawing area of a layer (the canvas) can be resized using the methods below, where the first argument is the new width,
+ <para>The drawing area of a layer (the canvas) can be resized using the methods below, where the first argument is the new width,
  the second is the new height and sizes are defined in pixels:
  <programlisting>
  l.setCanvasSize(200, 200);
  l.setCanvasSize(QSize(w, h))
- </programlisting>
+ </programlisting></para>
 
- If you also need to reposition the canvas, you can use the following functions, where the first two arguments
+ <para>If you also need to reposition the canvas, you can use the following functions, where the first two arguments
  specify the new position of the top left corner of the canvas:
  <programlisting>
  l.setCanvasGeometry(100, 100, 200, 200);
  l.setCanvasGeometry(QRect(x, y, w, h));
- </programlisting>
+ </programlisting></para>
 
-Please keep in mind that the fonts of the layer are not rescaled when you resize the layer canvas using the above methods.
+<para>Please keep in mind that the fonts of the layer are not rescaled when you resize the layer canvas using the above methods.</para>
 </sect3>
 </sect2>
 
 <sect2 id="Python-Curves">
 <title>Working with 2D curves</title>
-You can then add or remove curves to or from this layer:
+<para>You can then add or remove curves to or from this layer:
 <programlisting>
 l.insertCurve(table, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
 l.insertCurve(table, Xcolumn, Ycolumn, type=Layer.Scatter, int startRow = 0, int endRow = -1)# returns a reference to the inserted curve
@@ -2564,32 +2551,32 @@ l.removeCurve(curveName)
 l.removeCurve(curveIndex)
 l.removeCurve(curveReference)
 l.deleteFitCurves()
-</programlisting>
+</programlisting></para>
 
-It is possible to change the order of the curves inserted in a layer using the following functions:
+<para>It is possible to change the order of the curves inserted in a layer using the following functions:
 <programlisting>
 l.changeCurveIndex(int oldIndex, int newIndex)
 l.reverseCurveOrder()
-</programlisting>
+</programlisting></para>
 
-If the table column used to create a plot curve has empty cells,
+<para>If the table column used to create a plot curve has empty cells,
 you can choose whether the curve line is drawn connected across the missing data or not.
 This behavior can be specified using:
 <programlisting>
 l.showMissingDataGap(on = True, replot = True)
-</programlisting>
+</programlisting></para>
 
-Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method below:
+<para>Sometimes, when performing data analysis, one might need the curve title. It is possible to obtain it using the method below:
 <programlisting>
 title = l.curveTitle(curveIndex)
-</programlisting>
+</programlisting></para>
 
-It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown below:
+<para>It is possible to get a reference to a curve on the layer l using it's index or it's title, like shown below:
 <programlisting>
 c = l.curve(curveIndex)
 c = l.curve(curveTitle)
 dc = l.dataCurve(curveIndex)
-</programlisting>
+</programlisting></para>
 <para>Please, keep in mind the fact that the above methods might return an invalid reference
 if the curve with the specified index/title is not a PlotCurve or a DataCurve object, respectively.
 For example, an analytical function curve is a PlotCurve but not a DataCurve and spectrograms are a
@@ -2603,11 +2590,11 @@ c.setYAxis(Layer.Right)#attach curve c to the right Y axis
 </programlisting>
 <para>where number is the curve's number, x-axis is either 0 or 1 (bottom or top) and y-axis is either 0 or 1 (left or right).</para>
 
-In case you need the number of curves on a layer, you can get it with <programlisting>
+<para>In case you need the number of curves on a layer, you can get it with <programlisting>
 l.numCurves()
-</programlisting>
+</programlisting></para>
 
-Once you have added a curve to a 2D plot, you can fully customize it's appearance:
+<para>Once you have added a curve to a 2D plot, you can fully customize it's appearance:
 <programlisting>
 l = newGraph().activeLayer()
 l.setAntialiasing()
@@ -2615,30 +2602,30 @@ c = l.insertCurve(table("Table1"), "Table1_2", Layer.LineSymbols)
 c.setPen(QtGui.QPen(Qt.red, 3))
 c.setBrush(QtGui.QBrush(Qt.darkYellow))
 c.setSymbol(PlotSymbol(PlotSymbol.Hexagon, QtGui.QBrush(Qt.yellow), QtGui.QPen(Qt.blue, 1.5), QtCore.QSize(15, 15)))
-</programlisting>
+</programlisting></para>
 
-It is possible to change the number of symbols to be displayed for a curve using the function below.
+<para>It is possible to change the number of symbols to be displayed for a curve using the function below.
 This option can be very usefull for very large data sets:
 <programlisting>
 c.setSkipSymbolsCount(3)
 print c.skipSymbolsCount()
-</programlisting>
+</programlisting></para>
 
-An alternative way of customizing a curve is by using the functions below:
+<para>An alternative way of customizing a curve is by using the functions below:
 <programlisting>
 l.setCurveLineColor(int curve, int color) # uses the index of the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
 l.setCurveLineStyle(int curve, Qt::PenStyle style)
 l.setCurveLineWidth(int curve, double width)
-</programlisting>
+</programlisting></para>
 
-You can also define a global color policy for the plot layer using the following
+<para>You can also define a global color policy for the plot layer using the following
 convenience functions:
 <programlisting>
 l.setGrayScale()
 l.setIndexedColors() # uses the colors in the default QtiPlot color list: 0 = black, 1 = red, 2 = green, etc...
-</programlisting>
+</programlisting></para>
 
-You can display labels showing the y values for each data point in a DataCurve:
+<para>You can display labels showing the y values for each data point in a DataCurve:
 <programlisting>
 c.setLabelsColumnName("Table1_2")
 c.setLabelsOffset(50, 50)
@@ -2652,21 +2639,21 @@ and, of course, you can disable them using:
 <programlisting>
 c.clearLabels()
 l.replot() # redraw the plot layer object
-</programlisting>
+</programlisting></para>
 
-If you need to change the range of data points displayed in a DataCurve you can use
+<para>If you need to change the range of data points displayed in a DataCurve you can use
 the following methods:
 <programlisting>
 c.setRowRange(int startRow, int endRow)
 c.setFullRange()
-</programlisting>
+</programlisting></para>
 
-Also, you can hide/show a plot curve via:
+<para>Also, you can hide/show a plot curve via:
 <programlisting>
 c.setVisible(bool on)
-</programlisting>
+</programlisting></para>
 
-In case you need to get information about the data stored in the curve,
+<para>In case you need to get information about the data stored in the curve,
 you have at your disposal the functions below:
 <programlisting>
 points = c.dataSize()
@@ -2677,9 +2664,9 @@ print c.minXValue()
 print c.maxXValue()
 print c.minYValue()
 print c.maxYValue()
-</programlisting>
+</programlisting></para>
 
-If a plot curve is selected using the "Data Reader" tool or the "Select Data Range" tool,
+<para>If a plot curve is selected using the "Data Reader" tool or the "Select Data Range" tool,
 you can get the coordinates of the selected data points using the method bellow:
 <programlisting>
 g = graph("Graph1").activeLayer()
@@ -2688,11 +2675,12 @@ print c.x(g.selectionActivePoint())
 print c.y(g.selectionActivePoint())
 print c.tableRow(g.selectionActivePoint()) + 1
 print c.tableRow(g.selectionInactivePoint()) + 1# only useful for "Select Data Range" tool
-</programlisting>
+</programlisting></para>
+
 <sect3 id = "Python-PlotSymbols">
 <title>Curve symbols</title>
 
-Here's how you can customize the plot symbol used for a 2D plot curve <varname>c</varname>:
+<para>Here's how you can customize the plot symbol used for a 2D plot curve <varname>c</varname>:
 <programlisting>
 s = c.symbol()
 s.setSize(QtCore.QSize(7, 7))# or s.setSize(7)
@@ -2700,9 +2688,9 @@ s.setBrush(QtGui.QBrush(Qt.darkYellow))
 s.setPen(QtGui.QPen(Qt.blue, 3))
 s.setStyle(PlotSymbol.Diamond)
 l.replot() # redraw the plot layer object
-</programlisting>
+</programlisting></para>
 
-The symbol styles available in QtiPlot are:
+<para>The symbol styles available in QtiPlot are:
 <variablelist spacing="compact">
 			<varlistentry>
 			  <term>0</term>
@@ -2828,16 +2816,16 @@ The symbol styles available in QtiPlot are:
 				<para>PlotSymbol.Hexagon</para>
 			  </listitem>
 			</varlistentry>
-		  </variablelist>
+		  </variablelist></para>
 
-It is also possible to define a custom image as the plot symbol for a curve:
+<para>It is also possible to define a custom image as the plot symbol for a curve:
 <programlisting>
 g = newGraph().activeLayer()
 c = g.addFunction("cos(x)", 0, 10, 20)
 c.setSymbol(ImageSymbol("qtiplot/manual/html/icons/help.png"))
-</programlisting>
+</programlisting></para>
 
-Here's a short script showing how to draw a custom plot symbol and assign it to a curve:
+<para>Here's a short script showing how to draw a custom plot symbol and assign it to a curve:
 <programlisting>
 pix = QtGui.QPixmap(QtCore.QSize(11, 11))
 pix.fill(Qt.transparent)
@@ -2852,13 +2840,13 @@ p.end()
 g = newGraph().activeLayer()
 c = g.addFunction("sin(x)", 0, 10, 20)
 c.setSymbol(ImageSymbol(pix))
-</programlisting>
+</programlisting></para>
 </sect3>
 </sect2>
 
 <sect2 id = "Python-AnalyticalFunctions">
 <title>2D Analytical Functions</title>
-You can also add analytical function curves to a plot layer:
+<para>You can also add analytical function curves to a plot layer:
 <programlisting>
 f = l.addFunction("x*sin(x)", 0, 3*pi, points = 100)
 f.setTitle("x*sin(x)")
@@ -2867,14 +2855,14 @@ f.setBrush(QtGui.QColor(0, 255, 0, 100))
 
 l.addParametricFunction("cos(m)", "sin(m)", 0, 2*pi, points = 100, variableName = "m")
 l.addPolarFunction("t", "t", 0, 2*pi, points = 100, variableName = "t")
-</programlisting>
+</programlisting></para>
 
-It is possible to get a reference to an analytical function curve on the layer l using it's index, like shown below:
+<para>It is possible to get a reference to an analytical function curve on the layer l using it's index, like shown below:
 <programlisting>
 f = l.functionCurve(curveIndex)
-</programlisting>
+</programlisting></para>
 
-When dealing with analytical function curves, you can customize them using the following methods:
+<para>When dealing with analytical function curves, you can customize them using the following methods:
 <programlisting>
 f.setRange(0, 2*pi)
 f.setVariable("t")
@@ -2885,39 +2873,39 @@ f.loadData(1000, xLog10Scale = False)
 f.setFunctionType(FunctionCurve.Normal)
 f.setFormula("cos(x)")
 f.loadData()
-</programlisting>
+</programlisting></para>
 
-If you need to access the values and names of a function's parameters, you have at your disposal the following methods:
+<para>If you need to access the values and names of a function's parameters, you have at your disposal the following methods:
 <programlisting>
 i = f.parametersCount() # the number of parameters in your function formula
 name = f.parameterName(index) # the name of the parameter of rang index as a QString
 p1 = f.parameterValue(index) # the value of the parameter of rang index as a double
 p2 = f.parameterValue(name) # the value of a parameter using its name string
-</programlisting>
+</programlisting></para>
 
-The abscissae range for which the function is calculated/displayed, can be obtained/modified via the methods below:
+<para>The abscissae range for which the function is calculated/displayed, can be obtained/modified via the methods below:
 <programlisting>
 x1 = f.startRange()
 x2 = f.endRange()
 f.setRange(0.5, 15.2)
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id = "Python-ErrorBars">
 <title>Error Bars</title>
 
-Having a plot layer <emphasis>l</emphasis>, you can add error bars to a data curve <emphasis>c</emphasis>, named <emphasis>curveName</emphasis>, using the following methods:
+<para>Having a plot layer <emphasis>l</emphasis>, you can add error bars to a data curve <emphasis>c</emphasis>, named <emphasis>curveName</emphasis>, using the following methods:
 <programlisting>
 err1 = l.addErrorBars(c, Table *t, QString errColName, int type = 1, double width = 1, int capLength = 8, color = Qt.black, throughSymbol = True, minusSide = True, plusSide = True)
 err2 = l.addErrorBars(curveName, Table *t, QString errColName, int type = 1, double width = 1, int capLength = 8, color = Qt.black, throughSymbol = True, minusSide = True, plusSide = True)
-</programlisting>
+</programlisting></para>
 
-Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
+<para>Each data curve, <emphasis>c</emphasis>, can have attached a list of error bars:
 <programlisting>
 errors = c.errorBarsList()
-</programlisting>
+</programlisting></para>
 
-The properties of an error bar curve can be accesses, via the following methods:
+<para>The properties of an error bar curve can be accesses, via the following methods:
 <programlisting>
 err = c.errorBarsList()[0]
 for i in range(0, err.dataSize()):
@@ -2946,27 +2934,27 @@ err.drawThroughSymbol(True)
 err.drawPlusSide(True)
 err.drawMinusSide(False)
 err.setMasterCurve(c)
-</programlisting>
+</programlisting></para>
 
-You can remove all error bars attached to a curve using:
+<para>You can remove all error bars attached to a curve using:
 <programlisting>
 c.clearErrorBars()
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id = "Python-Spectrograms">
 <title>Image and Contour Line Plots (Spectrograms)</title>
 
-As you have seen in the previous section, it is possible create 2D plots from matrices.
+<para>As you have seen in the previous section, it is possible create 2D plots from matrices.
 Here's how you can do it in practice:
 <programlisting>
 m = importImage("C:/poze/adi/PIC00074.jpg")
 g1 = plot(m, Layer.ColorMap)
 g2 = plot(m, Layer.Contour)
 g3 = plot(m, Layer.GrayScale)
-</programlisting>
+</programlisting></para>
 
-The plot functions above return a reference to the multilayer plot window. If you need a reference to the
+<para>The plot functions above return a reference to the multilayer plot window. If you need a reference to the
 spectrogram object itself, you can get it as shown in the example below:
 <programlisting>
 m = newMatrix("TestMatrix", 1000, 800)
@@ -2975,9 +2963,9 @@ m.calculate()
 g = plot(m, Layer.ColorMap)
 s = g.activeLayer().spectrogram(m)
 s.setColorBarWidth(20)
-</programlisting>
+</programlisting></para>
 
-It is possible to fine tune the plots created from a matrix:
+<para>It is possible to fine tune the plots created from a matrix:
 
 <programlisting>
 m = newMatrix("TestMatrix", 1000, 800)
@@ -2993,9 +2981,9 @@ s.setLabelsFont(QtGui.QFont("Arial", 14))
 s.setLabelsRotation(45)
 s.showColorScale(Layer.Top)
 s.setColorBarWidth(20)
-</programlisting>
+</programlisting></para>
 
-As you have seen earlier, you can set a global pen for the contour lines, using:
+<para>As you have seen earlier, you can set a global pen for the contour lines, using:
 <programlisting>
 s.setDefaultContourPen(QtGui.QPen(Qt.yellow))
 </programlisting>
@@ -3006,9 +2994,9 @@ s.setContourLinePen(index, QPen)
 or you can automatically set pen colors defined by the color map of the spectrogram:
 <programlisting>
 s.setColorMapPen(bool on = True)
-</programlisting>
+</programlisting></para>
 
-You can also use any of the following functions:
+<para>You can also use any of the following functions:
 <programlisting>
 s.setMatrix(Matrix *, bool useFormula = False)
 s.setUseMatrixFormula(bool useFormula = True)# calculate data to be drawn using matrix formula (if any)
@@ -3020,30 +3008,30 @@ s.setCustomColorMap(LinearColorMap map)
 s.showContourLineLabels(bool show = True) # enable/disable contour line labels
 s.setLabelsOffset(int x, int y) # offset values for all labels in % of the text size
 s.updateData()
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id = "Python-Histograms">
 <title>Histograms</title>
 
-As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
+<para>As you have seen in the previous section, it is possible create 2D histograms from matrices or tables.
 The script bellow shows a straightforward way of plotting a histogram from a table column:
 <programlisting>
 h = newGraph().activeLayer().addHistogram(table("Table1"), "Table1_2")
 h.setBinning(5, 1, 30)
 h.loadData()
-</programlisting>
+</programlisting></para>
 
-It is also possible to get a reference to a previously created histogram and to modify it according to your needs:
+<para>It is also possible to get a reference to a previously created histogram and to modify it according to your needs:
 <programlisting>
 g = graph("Graph1").activeLayer()
 h = g.histogram(0)# g is a plot containing one histogram
 h.setBinning(2, 1, 30)
 h.loadData()
 g.replot()
-</programlisting>
+</programlisting></para>
 
-Here's a small script showing how to customize a histogram and how to get access to the
+<para>Here's a small script showing how to customize a histogram and how to get access to the
 statistical information in the histogram (bin positions, counts, mean, standard deviation, etc...):
 <programlisting>
 m = newMatrix("TestHistogram", 1000, 800)
@@ -3063,17 +3051,17 @@ for i in range (0, h.dataSize()):
 # print statistic information:
 print "Standard deviation = ", h.standardDeviation()
 print "Mean = ", h.mean()
-</programlisting>
+</programlisting></para>
 
-You can also enable autobinning (a default number of ten bins will be used):
+<para>You can also enable autobinning (a default number of ten bins will be used):
 <programlisting>
 h.setAutoBinning()
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id = "Python-BoxWhiskersPlos">
 <title>Box and whiskers plots</title>
-The following script shows how to create and customize a box and whiskers plot:
+<para>The following script shows how to create and customize a box and whiskers plot:
 <programlisting>
 g = newGraph().activeLayer()
 g.plotBox(table("Table1"), ["2", "3", "4"])
@@ -3089,22 +3077,22 @@ for i in range (0, g.numCurves()):
 			box.setBoxStyle(BoxCurve.WindBox)
 			box.setBoxWidth(80)
 			box.setWhiskersRange(BoxCurve.SD) # standard deviation
-</programlisting>
+</programlisting></para>
 
-The following functions give access to the statistics information for the data series displayed with a box and whiskers plot:
+<para>The following functions give access to the statistics information for the data series displayed with a box and whiskers plot:
 <programlisting>
 s = box.statistics() # returns information as a string
 m = box.median()
 q = box.quantile(f) # f must be a fraction between 0 and 1
-</programlisting>
+</programlisting></para>
 
-For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+<para>For an exhaustive review of the methods giving access to the properties of a box plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.</para>
 </sect2>
 
 <sect2 id = "Python-PieCurve">
 <title>Pie Plots</title>
-The following script shows how to create and customize a pie plot:
+<para>The following script shows how to create and customize a pie plot:
 <programlisting>
 g = newGraph().activeLayer()
 pie = g.plotPie(table("Table1"), "2")
@@ -3118,15 +3106,15 @@ pie.setBrushStyle(Qt.Dense3Pattern)
 pie.setFirstColor(3)
 pie.setPen(QtGui.QPen(Qt.red, 2))
 pie.setLabelValuesFormat(True)
-</programlisting>
+</programlisting></para>
 
-For an exhaustive review of the methods giving access to the properties of a pie plot, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+<para>For an exhaustive review of the methods giving access to the properties of a pie plot, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.</para>
 </sect2>
 
 <sect2 id = "Python-VectorsCurve">
 <title>Vector Plots</title>
-The following script shows how to create and customize a vector curve:
+<para>The following script shows how to create and customize a vector curve:
 <programlisting>
 g = newGraph().activeLayer()
 v = g.plotVectors(table("Table1"), ["1", "2", "3", "4"], Layer.VectXYAM)
@@ -3135,10 +3123,10 @@ v.fillArrowHead(False)
 v.setHeadAngle(15)
 v.setHeadLength(20)
 v.setPosition(VectorCurve.Middle)
-</programlisting>
+</programlisting></para>
 
-For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.
+<para>For an exhaustive review of the methods giving access to the properties of a vector curve, please consult the
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">QtiPlot/Python API</ulink>.</para>
 </sect2>
 
 <sect2 id="Python-Arrows">
@@ -3170,7 +3158,7 @@ l.remove(arrow1)
 returns a reference to a new arrow object that can be used later on to modify this
 new arrow or to delete it with the <varname>remove</varname> function.</para>
 
-<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example below:</para>
+<para>It is possible to modify the properties of all the lines/arrows in a plot layer, see the short example below:
 <programlisting>
 g = graph("Graph1").activeLayer()
 lst = g.arrowsList()
@@ -3178,7 +3166,7 @@ for i in range (0, g.numArrows()):
 	lst[i].setColor(Qt.green)
 
 g.replot()
-</programlisting>
+</programlisting></para>
 
 </sect2>
 
@@ -3194,7 +3182,7 @@ image.setFrameWidth(3)
 l.replot()
 </programlisting>
 
-The <varname>setCoordinates</varname> function above can be used to set the geometry of the image using
+<para>The <varname>setCoordinates</varname> function above can be used to set the geometry of the image using
 scale coordinates. If you need to specify the image geometry in pixel coordinates, independently of
 the plot axes values, you may use the following functions:
 <programlisting>
@@ -3202,12 +3190,12 @@ image.setOrigin(x, y)
 image.setSize(width, height)
 image.setRect(x, y, width, height)
 l.replot()
-</programlisting>
+</programlisting></para>
 
-You can remove an image using its reference:
+<para>You can remove an image using its reference:
 <programlisting>
 l.remove(image)
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-Rectangles">
@@ -3227,12 +3215,12 @@ r.setBrush(QtGui.QBrush(QtCore.Qt.green, QtCore.Qt.FDiagPattern))
 r1 = l.add(r)
 </programlisting>
 
-You can remove a rectangle using its reference:
+<para>You can remove a rectangle using its reference:
 <programlisting>
 r2 = l.add(r)
 r2.setOrigin(200, 200)
 l.remove(r1)
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-Ellipses">
@@ -3255,17 +3243,17 @@ l.add(e)
 
 <sect2 id="Python-Exporting-2DPlots">
 <title>Exporting plots/layers to different image formats</title>
-Layers and whole Graphs can be printed and exported from within Python.
+<para>Layers and whole Graphs can be printed and exported from within Python.
 The fastest way to export a plot/layer is the following: <programlisting>
 l.export(fileName)
-</programlisting>
+</programlisting></para>
 
-This function uses some default parameters
+<para>This function uses some default parameters
 for the properties of the image. If you need more control over the exported images you can use one
 of the following specialized functions:<programlisting>
 l.exportVector(fileName, dpi = 96, color = True, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)
 l.exportImage(fileName, quality = 100, transparent = False, dpi = 0, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
-l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting>
+l.exportTex(fileName, color = True, escapeStrings = True, fontSizes = True, size = QtCore.QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0)</programlisting></para>
 
 <para>The function <varname>exportVector</varname> can export the plot/layer to the following vector formats:
 .eps, .ps, .pdf.</para>
@@ -3340,7 +3328,7 @@ the TeX document.
 
 <sect2 id="Python-MultiLayer">
       <title>Arranging Layers</title>
-When you are working with many layers in a 2D plot window, setting the layout of these layers manually can
+<para>When you are working with many layers in a 2D plot window, setting the layout of these layers manually can
 be a very tedious task. With the help of a simple Python script you can make this task very easy and
 automatically manage the layout of the plot window.
 For example, here's how you can create a two rows by two columns matrix of layers,
@@ -3349,9 +3337,9 @@ each plot layer having a canvas size (the drawing area) of 400 pixels wide and 3
 g = newGraph("Test", 4, 2, 2)
 g.setLayerCanvasSize(400, 300)
 g.arrangeLayers(False, True)
-</programlisting>
+</programlisting></para>
 
-The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies
+<para>The <varname>arrangeLayers()</varname> function takes two parameters. The first one specifies
 if the layers should be arranged automatically, using a best-layout algorithm, or if the
 numbers of rows and columns is fixed by the user. If the value of the second parameter is
 <varname>True</varname>, the size of the canvas is fixed by the user and the plot window
@@ -3364,32 +3352,32 @@ g.setNumLayers(3)
 g.setRows(1)
 g.setCols(3)
 g.arrangeLayers(False, False)
-</programlisting>
+</programlisting></para>
 
-By default, the space between two neighboring layers as well as the distance between the layers
+<para>By default, the space between two neighboring layers as well as the distance between the layers
 and the borders of the plot window is set to five pixels. You can change the spacing between the
 layers and the margins using the following functions:
 <programlisting>
 g.setSpacing (x, y)
 g.setMargins (left, right, top, bottom)
-</programlisting>
+</programlisting></para>
 
-Another aspect of the layout management is the alignment of the layers. There are three alignment
+<para>Another aspect of the layout management is the alignment of the layers. There are three alignment
 flags that you can use for the horizontal alignment (HCenter, Left, Right) and another three for
 the vertical alignment (VCenter, Top, Bottom) of the layers.
 The following code line aligns the layers with the right edge of the window and centers them vertically in
 the available space:
 <programlisting>
 g.setAlignement(Graph.Right, Graph.VCenter)
-</programlisting>
+</programlisting></para>
 
-The alignment of the layers can be done with respect to the drawing area between the axes (Graph.AlignCanvases) or with respect
+<para>The alignment of the layers can be done with respect to the drawing area between the axes (Graph.AlignCanvases) or with respect
 to the whole layer widget (Graph.AlignLayers) and you can specify the alignment policy to use via the following method:
 <programlisting>
 g.setAlignPolicy(Graph.AlignCanvases)
-</programlisting>
+</programlisting></para>
 
-A very often needed layout is the one with shared layer axes having linked abscissae
+<para>A very often needed layout is the one with shared layer axes having linked abscissae
 (modifying the x scale for one layer will automatically adjust the scales for all plot layers).
 Here's how you can simply create such a 2x2 layers grid, with only a few lines of code:
 <programlisting>
@@ -3399,9 +3387,9 @@ g.setAlignPolicy(Graph.AlignCanvases)
 g.setCommonLayerAxes()
 g.arrangeLayers()
 g.linkXLayerAxes(True)
-</programlisting>
+</programlisting></para>
 
-All the examples above suppose that the layers are arranged on a grid, but of course you can add layers
+<para>All the examples above suppose that the layers are arranged on a grid, but of course you can add layers
 at any position in the plot window. In the examples below the x, y coordinates, in pixels,
 refer to the position of the top-left corner of the layer.
 The origin of the coordinates system coincides with the top-left corner of the plot window, the y
@@ -3415,23 +3403,23 @@ l1 = g.addLayer()
 l2 = g.addLayer(215, 20)
 l3 = g.addLayer(10, 20, 200, 200)
 l4 = g.addLayer(10, 20, 200, 200, True)
-</programlisting>
+</programlisting></para>
 
-You can remove a plot layer using:
+<para>You can remove a plot layer using:
 <programlisting>
 l = g.layer(num)
 g.removeLayer(l)
 g.removeActiveLayer()
-</programlisting>
+</programlisting></para>
 
-As you have already seen, in a plot window the active layer is, by default, the last layer added
+<para>As you have already seen, in a plot window the active layer is, by default, the last layer added
 to the plot, but you can change it programatically:
 <programlisting>
 l = g.layer(num)
 g.setActiveLayer(l)
-</programlisting>
+</programlisting></para>
 
-In case you need to perform a repetitive task on all the layers in a plot window, you need to use a for loop
+<para>In case you need to perform a repetitive task on all the layers in a plot window, you need to use a for loop
 and of course you need to know the number of layers existing on the plot. Here's a small example showing how to
 custom the titles of all the layers in the plot window:
 <programlisting>
@@ -3443,22 +3431,22 @@ for i in range (1, layers+1):
 	l.setTitleColor(QtGui.QColor("red"))
 	l.setTitleFont(QtGui.QFont("Arial", 14, QtGui.QFont.Bold, True))
 	l.setTitleAlignment(QtCore.Qt.AlignLeft)
-</programlisting>
+</programlisting></para>
 
-Finally, sometimes it might be useful to be able to swap two layers. This can be done with the help of the
+<para>Finally, sometimes it might be useful to be able to swap two layers. This can be done with the help of the
 following function:
 <programlisting>
 g.swapLayers(layerNum1, layerNum2)
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-WaterfallPlots">
       <title>Waterfall Plots</title>
 
-The waterfall graph is ideal .  The graph has a pseudo-3D effect, enabling you to see variations in the Z direction.
+<para>The waterfall graph is ideal.  The graph has a pseudo-3D effect, enabling you to see variations in the Z direction.</para>
 
 
-Waterfall plots are ideal for comparing variations between multiple data sets created under similar conditions.
+<para>Waterfall plots are ideal for comparing variations between multiple data sets created under similar conditions.
 A pseudo 3D effect is generated by applying an offset to all the data curves in a 2D plot layer.
 You can create and customize them using the functions below:
 <programlisting>
@@ -3468,29 +3456,33 @@ l.setWaterfallOffset(50, 20)# x/y offsets as % of the layer drawing area width/h
 l.setWaterfallSideLines(True) # draw side lines for all the data curves
 l.setWaterfallFillColor(Qt.lightGray)
 g.reverseWaterfallOrder() # reverse the order of the displayed curves
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-Plots3D">
 <title>3D Plots</title>
 <sect3>
 <title>Creating a 3D plot</title>
-You can plot 3D analytical functions or parametric surfaces.
-For the 3D functions, the only parameters allowed are <varname>x</varname> for the the abscissae values and <varname>y</varname> for the ordinates:
+<para>You can plot 3D analytical functions or parametric surfaces.</para>
+
+<para>For the 3D functions, the only parameters allowed are <varname>x</varname> for the the abscissae values and <varname>y</varname> for the ordinates:
 <programlisting>
 g = plot3D("sin(x*y)", -10.0, 10.0, -10.0, 10.0, -2.0, 2.0)
-</programlisting>
-For the parametric surfaces the only parameters allowed are the latitude and the longitude: <varname>u</varname> and <varname>v</varname>. Here's, for example,
+</programlisting></para>
+
+<para>For the parametric surfaces the only parameters allowed are the latitude and the longitude: <varname>u</varname> and <varname>v</varname>. Here's, for example,
 how you can plot a sphere:
 <programlisting>
 g = plot3D("cos(u)*cos(v)", "sin(u)*cos(v)", "sin(v)", -3.14, 3.14, -2, 2)
-</programlisting>
-You can also create 3D height maps using data from matrices and, of course, you can plot table columns:
+</programlisting></para>
+
+<para>You can also create 3D height maps using data from matrices and, of course, you can plot table columns:
 <programlisting>
 g = plot3D(matrix("Matrix1"), style = 5)
 g = plot3D(table("Table1"), "3", style)
-</programlisting>
-In the case of 3D plots created from matrix data sources the <varname>style</varname> parameter can take
+</programlisting></para>
+
+<para>In the case of 3D plots created from matrix data sources the <varname>style</varname> parameter can take
 any integer value from 1 to 5, with the following signification:
 <variablelist spacing="compact">
             <varlistentry>
@@ -3527,9 +3519,9 @@ any integer value from 1 to 5, with the following signification:
                 <para>Scattered points (the default style)</para>
               </listitem>
             </varlistentry>
-          </variablelist>
+          </variablelist></para>
 
-For 3D plots created from tables the <varname>style</varname> parameter can take
+<para>For 3D plots created from tables the <varname>style</varname> parameter can take
 any integer value from 0 to 3 or the equivalent style values from the following list:
 
 <variablelist spacing="compact">
@@ -3557,9 +3549,9 @@ any integer value from 0 to 3 or the equivalent style values from the following 
                 <para>Graph3D.Ribbon</para>
               </listitem>
             </varlistentry>
-          </variablelist>
+          </variablelist></para>
 
-An alternative method to create a 3D plot is to create an empty plot window and to assign a data source to it.
+<para>An alternative method to create a 3D plot is to create an empty plot window and to assign a data source to it.
 As you have already seen a data source can be an analytical function, a matrix or a table.
 For large data sets you can increase the drawing speed by reducing the number of points
 taken into account. The lower the resolution parameter, the higher the number of points used:
@@ -3573,49 +3565,49 @@ g.setFunction("sin(x*y)", -10.0, 10.0, -10.0, 10.0, -2.0, 2.0)
 g.setData(table("Table1"), "3")
 #or
 g.setMatrix(matrix("Matrix1"))
-</programlisting>
+</programlisting></para>
 
-Once a plot is created, you can modify the scales and set the data range to display, using, for example:
+<para>Once a plot is created, you can modify the scales and set the data range to display, using, for example:
 <programlisting>
 g.setScales(-1.0, 1.0, -10.0, 11.0, -2.0, 3.0)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-View">
 <title>Customizing the view</title>
-When a new 3D plot is created, the scene view parameters are set to default values.
+<para>When a new 3D plot is created, the scene view parameters are set to default values.
 Of course, QtiPlot provides functions to customize each aspect of the view.
 For example, you can set rotation angles, in degrees, around the X, Y and Z axes, respectively, using:
 <programlisting>
 g.setRotation(45, 15, 35)
-</programlisting>
+</programlisting></para>
 
-The following function allows you to shift the plot along the world X, Y and Z axes, respectively:
+<para>The following function allows you to shift the plot along the world X, Y and Z axes, respectively:
 <programlisting>
 g.setShift(3.0, 7.0, -4.0)
-</programlisting>
+</programlisting></para>
 
-You can also zoom in/out the entire plot as a whole, or you can zoom along a particular axis:
+<para>You can also zoom in/out the entire plot as a whole, or you can zoom along a particular axis:
 <programlisting>
 g.setZoom(10)
 g.setScale(0.1, 0.05, 0.3)
-</programlisting>
+</programlisting></para>
 
-Also, you can automatically detect the zoom values that fit best with the size of the plot window:
+<para>Also, you can automatically detect the zoom values that fit best with the size of the plot window:
 <programlisting>
 g.findBestLayout()
-</programlisting>
+</programlisting></para>
 
-You can enable/disable the perspective view mode or animate the view using:
+<para>You can enable/disable the perspective view mode or animate the view using:
 <programlisting>
 g.setOrthogonal(False)
 g.animate(True)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Style">
 <title>Plot Styles</title>
-The style of the 3D plot can be set using the following functions:
+<para>The style of the 3D plot can be set using the following functions:
 <programlisting>
 g.setPolygonStyle()
 g.setFilledMeshStyle()
@@ -3624,16 +3616,16 @@ g.setHiddenLineStyle()
 g.setWireframeStyle()
 g.setAntialiasing(True)
 g.setMeshLineWidth(0.7)
-</programlisting>
+</programlisting></para>
 
-For scatter plots using points you can specify the radius of the points and their shape:
+<para>For scatter plots using points you can specify the radius of the points and their shape:
 circles if <varname>smooth</varname> is True, rectangles otherwise.
 <programlisting>
 g.setDotOptions(10, smooth = True)
 g.setDotStyle()
-</programlisting>
+</programlisting></para>
 
-Other symbols available for scatter plots are: bars
+<para>Other symbols available for scatter plots are: bars
 <programlisting>
 g.setBarRadius(0.01)
 g.setBarLines(False)
@@ -3649,39 +3641,39 @@ and crosses (surrounded by a box frame, if <varname>boxed</varname> is set to Tr
 <programlisting>
 g.setCrossOptions(radius, width, smooth, boxed)
 g.setCrossStyle()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Projection">
 <title>The 2D Projection</title>
-By default the floor projection of the 3D surface plot is disabled. You can enable a full 2D projection
+<para>By default the floor projection of the 3D surface plot is disabled. You can enable a full 2D projection
 or only display the isolines using the following functions:
 <programlisting>
 g.showFloorProjection()
 g.showFloorIsolines()
 g.setEmptyFloor()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Coordinates">
 <title>Customizing the Coordinates System</title>
-The coordinates system around the surface plot can be customized to display all the twelve axes,
+<para>The coordinates system around the surface plot can be customized to display all the twelve axes,
 only three of them or none, respectively, with the help of the following functions:
 <programlisting>
 g.setBoxed()
 g.setFramed()
 g.setNoAxes()
-</programlisting>
+</programlisting></para>
 
-If the axes are enabled, you can set their legends and the distance between the legend and the axes via:
+<para>If the axes are enabled, you can set their legends and the distance between the legend and the axes via:
 <programlisting>
 g.setXAxisLabel("X axis legend")
 g.setYAxisLabel("Y axis legend")
 g.setZAxisLabel("Z axis legend")
 g.setLabelsDistance(30)
-</programlisting>
+</programlisting></para>
 
-It is possible to set the numerical format and precision of the axes using the function below:
+<para>It is possible to set the numerical format and precision of the axes using the function below:
 <programlisting>
 g.setAxisNumericFormat(axis, format, precision)
 </programlisting>
@@ -3713,26 +3705,26 @@ where the first parameter is the index of the axis: 0 for X, 1 for Y and 2 for Z
 </varlistentry>
 </variablelist>
 
-and the last parameter is the precision (the number of significant digits).
+and the last parameter is the precision (the number of significant digits).</para>
 
-The following convenience functions are also provided, where you don't have to specify the index of the axis anymore:
+<para>The following convenience functions are also provided, where you don't have to specify the index of the axis anymore:
 <programlisting>
 g.setXAxisNumericFormat(1, 3)
 g.setYAxisNumericFormat(1, 3)
 g.setZAxisNumericFormat(1, 3)
-</programlisting>
+</programlisting></para>
 
-Also, you can fix the length of the major and minor ticks of an axis:
+<para>Also, you can fix the length of the major and minor ticks of an axis:
 <programlisting>
 g.setXAxisTickLength(2.5, 1.5)
 g.setYAxisTickLength(2.5, 1.5)
 g.setZAxisTickLength(2.5, 1.5)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Grid">
 <title>Grid</title>
-If the coordinate system is displayed, you can also display a grid around the surface plot.
+<para>If the coordinate system is displayed, you can also display a grid around the surface plot.
 Each side of the grid can be shown/hidden:
 <programlisting>
 g.setLeftGrid(True)
@@ -3741,20 +3733,20 @@ g.setCeilGrid()
 g.setFloorGrid()
 g.setFrontGrid()
 g.setBackGrid(False)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Colors">
 <title>Customizing the Plot Colors</title>
-The default color map of the plot is defined using two colors: red for the maximum data values and
+<para>The default color map of the plot is defined using two colors: red for the maximum data values and
 blue for the minimum data values. You can change these default colors:
 
 <programlisting>
 g.setDataColors(QtCore.Qt.black, QtCore.Qt.green)
 g.update()
-</programlisting>
+</programlisting></para>
 
-Of course, you can define more complex color maps, using <emphasis>LinearColorMap</emphasis> objects:
+<para>Of course, you can define more complex color maps, using <emphasis>LinearColorMap</emphasis> objects:
 <programlisting>
 map = LinearColorMap(QtCore.Qt.yellow, QtCore.Qt.blue)
 map.setMode(LinearColorMap.FixedColors) # default mode is LinearColorMap.ScaledColors
@@ -3762,18 +3754,18 @@ map.addColorStop(0.2, QtCore.Qt.magenta)
 map.addColorStop(0.7, QtCore.Qt.cyan)
 g.setDataColorMap(map)
 g.update()
-</programlisting>
+</programlisting></para>
 
-Also, you can use predefined color maps stored in .map files.
+<para>Also, you can use predefined color maps stored in .map files.
 A .map file consists of a of 255 lines, each line defining a color coded as RGB values.
 A set of predefined color map files can be downloaded from QtiPlot web site, in the "Miscellaneous"
 section.
 <programlisting>
 g.setDataColorMap(fileName)
 g.update()
-</programlisting>
+</programlisting></para>
 
-The colors of all the other plot elements can be customized as shown below. Don't forget to
+<para>The colors of all the other plot elements can be customized as shown below. Don't forget to
 update the plot in order to display the new colors:
 <programlisting>
 g.setMeshColor(QtGui.QColor("blue"))
@@ -3785,17 +3777,17 @@ g.setGridColor(QtGui.QColor("grey"))
 g.setDataColors(QtGui.QColor("red"), QtGui.QColor("orange"))
 g.setOpacity(0.75)
 g.update()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-3D-Export">
 <title>Exporting</title>
-In order to export a 3D plot you need to specify a file name containing a valid file format extension:
+<para>In order to export a 3D plot you need to specify a file name containing a valid file format extension:
 <programlisting>
 g.export(fileName)
-</programlisting>
+</programlisting></para>
 
-This function uses some default export options. If you want to customize the exported image, you should use the
+<para>This function uses some default export options. If you want to customize the exported image, you should use the
 following function in order to export to raster image formats:
 <programlisting>
 g.exportImage(fileName, int quality = 100, bool transparent = False, dpi = 0, size = QSizeF(), unit = Frame.Pixel, fontsFactor = 1.0, compression = 0)
@@ -3841,13 +3833,13 @@ and can take one of the following values:
                 <para>Pixel</para>
               </listitem>
             </varlistentry>
-          </variablelist>
+          </variablelist></para>
 
-The <varname>fontsFactor</varname> parameter represents a scaling factor
+<para>The <varname>fontsFactor</varname> parameter represents a scaling factor
 for the font sizes of all texts in the plot (the default is 1.0, meaning no scaling).
 If you set this parameter to 0, the program will automatically try to calculate
 a scale factor. The <varname>compression</varname> parameter can be 0 (no compression) or 1 (LZW) and is only effectif for .tif/.tiff images.
-It is neglected for all other raster image formats.
+It is neglected for all other raster image formats.</para>
 
 <para>
 3D plots can be exported to any of the following vector formats: .eps, .ps, .pdf, .pgf and .svg, using
@@ -3876,9 +3868,9 @@ one of the following values:
                 <para>Text output in additional LaTeX file as an overlay.</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-The <varname>sortMode</varname> parameter is also an integer value and can take one of the following values:
+<para>The <varname>sortMode</varname> parameter is also an integer value and can take one of the following values:
 <variablelist spacing="compact">
             <varlistentry>
               <term>0.</term>
@@ -3898,10 +3890,9 @@ The <varname>sortMode</varname> parameter is also an integer value and can take 
                 <para>BSP sort: best algorithm, but slow.</para>
               </listitem>
             </varlistentry>
-</variablelist>
+</variablelist></para>
 
-The other parameters have the same meaning as for the export of 2D plots.
-</para>
+<para>The other parameters have the same meaning as for the export of 2D plots.</para>
 </sect3>
 </sect2>
 
@@ -3909,52 +3900,52 @@ The other parameters have the same meaning as for the export of 2D plots.
 <title>Data Analysis</title>
 <sect3 id="Python-GeneralFunctions">
 <title>General Functions</title>
-As you will see in the following subsections, the data analysis operations available
+<para>As you will see in the following subsections, the data analysis operations available
 in QtiPlot are: convolution/deconvolution, correlation, differentiation, FFT, filtering,
-smoothing, fitting and numerical integration of data sets.
+smoothing, fitting and numerical integration of data sets.</para>
 
-Generally, you can declare/initialize an analysis operation using one of the following methods,
+<para>Generally, you can declare/initialize an analysis operation using one of the following methods,
 depending on the data source, which can be a 2D plot curve or a table:
 <programlisting>
 op = LogisticFit(graph("Graph1").activeLayer().curve(0), 15.2, 30.9)
 op = FFTFilter(graph("Graph1").activeLayer(), "Table1_2", 1.5, 3.9)
 op = LinearFit(table("Table1"), "colX", "colY", 10, 100)
-</programlisting>
+</programlisting></para>
 
-In the first example the data source is a curve <emphasis>Table1_2</emphasis>, plotted
+<para>In the first example the data source is a curve <emphasis>Table1_2</emphasis>, plotted
 in the active layer of the graph <emphasis>Graph1</emphasis> and the abscissae range is
 chosen between 1.5 and 3.9.
 In the second example the data source is a table <emphasis>Table1</emphasis>.
 The abscissae of the data set are stored in the column called <emphasis>colX</emphasis>
 and the ordinates in the column <emphasis>colY</emphasis>. The data range is
 chosen between the 10th row and the row with the index 100. If you don't specify the row range,
-by default the whole table will be used.
+by default the whole table will be used.</para>
 
-Not all operations support curves as data sources, like for example:
+<para>Not all operations support curves as data sources, like for example:
 convolution/deconvolution and correlation. For these operations only table columns can be used
-as data sources for the moment.
+as data sources for the moment.</para>
 
 <para>Once you have initialized an operation, you can still change its input data via
-the following functions:</para>
+the following functions:
 <programlisting>
 op.setDataFromCurve(graph("Graph2").activeLayer().curve(1), 10.5, 20.1)
 op.setDataFromCurve("Table1_energy", 10.5, 20.1, graph("Graph2").activeLayer())
 op.setDataFromTable(table("Table1"), "colX", "colY", 10, 100)
-</programlisting>
+</programlisting></para>
 
-You don't have to specify a plot layer in the setDataFromCurve() function, if the analysis operation has
+<para>You don't have to specify a plot layer in the setDataFromCurve() function, if the analysis operation has
 already been initialized by specifying a curve on an existing graph and you just want to treat another
-curve from the same plot layer.
+curve from the same plot layer.</para>
 
 <para>Also, when performing analysis tasks via Python scripts, there are several utility functions that
 can be called for all operations. For example you can disable any graphical output from an operation
-or you can redirect the output to the plot layer of your choice: </para>
+or you can redirect the output to the plot layer of your choice: 
 <programlisting>
 op.enableGraphicsDisplay(False)
 op.enableGraphicsDisplay(True, graph("Graph2").activeLayer())
-</programlisting>
+</programlisting></para>
 
-Let's assume that you need to perform a specific operation <varname>op</varname>,
+<para>Let's assume that you need to perform a specific operation <varname>op</varname>,
 which analyzes your data and at the end, displays a result curve.
 For this kind of operations, you can customize the number of points in the resulting curve
 and its color:
@@ -3965,7 +3956,7 @@ op.setColor("green")
 </programlisting>
 Colors can be specified by their names or as integer values, from 0 to 23,
 each integer corresponding to a predefined color: 0 - "black", 1 - "red", 2 - "green", 3 - "blue",
-4 - "cyan", 5 - "magenta", 6 - "yellow", 7 - "darkYellow", 8 - "navy", 9 - "purple", etc ...
+4 - "cyan", 5 - "magenta", 6 - "yellow", 7 - "darkYellow", 8 - "navy", 9 - "purple", etc ...</para>
 
 <para>Most of the time, a new table is also created as a result of a data analysis operation.
 This table stores the data displayed by the result curve and is hidden by default,
@@ -3974,18 +3965,18 @@ but you can interact with it via the following function:
 t = op.resultTable()
 </programlisting></para>
 
-After the initialization of an analysis operation, which consists of setting the data source,
+<para>After the initialization of an analysis operation, which consists of setting the data source,
 the data range and some other properties, like color, number of points, etc..., you can execute
 it via a call to its run() function:
 <programlisting>
 op.run()
 </programlisting>
-For data fitting operations, there's an alias for the run() function which is: fit().
+For data fitting operations, there's an alias for the run() function which is: fit().</para>
 </sect3>
 
 <sect3 id="Python-Correlation">
 <title>Correlation, Convolution/Deconvolution</title>
-Assuming you have a table named "Table1", here's how you can calculate the convolution of two of its columns,
+<para>Assuming you have a table named "Table1", here's how you can calculate the convolution of two of its columns,
 "Table1_B" and "Table1_C":
 <programlisting>
 conv = Convolution(table("Table1"),  "B", "C")
@@ -4000,25 +3991,25 @@ dec.run()
 cor = Correlation(table("Table1"),  "B", "C", 10, 200)
 cor.setColor("green")
 cor.run()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Differentiation">
 <title>Differentiation</title>
-Assuming you have a Graph named "Graph1" containing one curve
+<para>Assuming you have a Graph named "Graph1" containing one curve
 (on its active layer), here's how you can differentiate this curve within a defined x interval,
 [2,10] in this case:
 <programlisting>
 diff = Differentiation(graph("Graph1").activeLayer().curve(0), 2, 10)
 diff.run()
-</programlisting>
-The result of these code sequence would be a new plot window displaying the derivative of the initial curve.
-The numerical derivative is calculated using a five terms formula.
+</programlisting></para>
+<para>The result of these code sequence would be a new plot window displaying the derivative of the initial curve.
+The numerical derivative is calculated using a five terms formula.</para>
 </sect3>
 
 <sect3 id="Python-FFT">
 <title>FFT</title>
-Assuming you have a graph named "Graph1" containing one curve on its active layer and having a
+<para>Assuming you have a graph named "Graph1" containing one curve on its active layer and having a
 periodicity of 0.1 in the time domain,
 a FFT will allow you to extract its characteristic frequencies.
 The results will be stored in a hidden table named "FFT1".
@@ -4029,9 +4020,9 @@ fft.normalizeAmplitudes(False)
 fft.shiftFrequencies(False)
 fft.setSampling(0.1)
 fft.run()
-</programlisting>
+</programlisting></para>
 
-By default the calculated amplitudes are normalized
+<para>By default the calculated amplitudes are normalized
 and the corresponding frequencies are shifted in order to obtain a centered x-scale.
 If we want to recover the initial curve with the help of the inverse transformation, we
 mustn't modify the amplitudes and the frequencies. Also the sampling parameter must be set to
@@ -4045,9 +4036,9 @@ ifft.normalizeAmplitudes(False)
 ifft.shiftFrequencies(False)
 ifft.setSampling(10)
 ifft.run()
-</programlisting>
+</programlisting></para>
 
-You can also perform 2D fast Fourrier transforms on matrices.
+<para>You can also perform 2D fast Fourrier transforms on matrices.
 The FFT routine takes in this case the following parameters:
 <emphasis>rm</emphasis> - specifies the real part input matrix,
 <emphasis>im</emphasis> - specifies the imaginary part input matrix,
@@ -4058,9 +4049,9 @@ otherwise, the DC component will locate at four corners of the result matrix,
 <emphasis>outputPower2Sizes</emphasis> - forces output matrices whose sizes are integer powers of 2 (zero padding is used to initialize the missing cells)
 <programlisting>
 fft = FFT(Matrix *rm, Matrix *im = NULL, bool inverse = False, bool DCShift = True, bool norm = False, bool outputPower2Sizes = True)
-</programlisting>
+</programlisting></para>
 
-Here's how you can perform the 2D FFT of a matrix called "Matrix1",
+<para>Here's how you can perform the 2D FFT of a matrix called "Matrix1",
 and the inverse FFT in order to recover the original image:
 
 <programlisting>
@@ -4081,12 +4072,12 @@ ifft = FFT(rMatrix, iMatrix, True)
 ifft.run()
 ifft.realOutputMatrix().hide()
 ifft.imaginaryOutputMatrix().hide()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Filtering">
 <title>FFT Filters</title>
-In this section, it will be assumed that you have a signal displayed in a graph ("Graph1", on its active layer).
+<para>In this section, it will be assumed that you have a signal displayed in a graph ("Graph1", on its active layer).
 This signal has a power spectrum with high and low frequencies.
 You can filter some of these frequencies according to your needs, using a FFTFilter.
 Here's how you can cut all the frequencies lower than 1 Hz:
@@ -4094,30 +4085,30 @@ Here's how you can cut all the frequencies lower than 1 Hz:
 filter = FFTFilter(graph("Graph1").activeLayer().curve(0), FFTFilter.HighPass)
 filter.setCutoff(1)
 filter.run()
-</programlisting>
+</programlisting></para>
 
-Here's how you can cut all the frequencies lower than 1.5 Hz and higher than 3.5 Hz.
+<para>Here's how you can cut all the frequencies lower than 1.5 Hz and higher than 3.5 Hz.
 In the following example the continuous component of the signal is also removed:
 <programlisting>
 filter.setFilterType(FFTFilter.BandPass)
 filter.enableOffset(False)
 filter.setBand(1.5, 3.5)
 filter.run()
-</programlisting>
+</programlisting></para>
 
-Other types of FFT filters available in QtiPlot are: low pass (<varname>FFTFilter.LowPass</varname>)
-and band block (<varname>FFTFilter.BandBlock</varname>).
+<para>Other types of FFT filters available in QtiPlot are: low pass (<varname>FFTFilter.LowPass</varname>)
+and band block (<varname>FFTFilter.BandBlock</varname>).</para>
 </sect3>
 <sect3 id="Python-Fitting">
 <title>Fitting</title>
-Assuming you have a graph named "Graph1" displaying a curve entitled "Table1_2" on its active layer,
+<para>Assuming you have a graph named "Graph1" displaying a curve entitled "Table1_2" on its active layer,
 a minimal Fit example would be:
 <programlisting>
 f = GaussFit(graph("Graph1").activeLayer().curve(0))
 f.guessInitialValues()
 f.fit()
-</programlisting>
-This creates a new GaussFit object on the curve, lets it guess
+</programlisting></para>
+<para>This creates a new GaussFit object on the curve, lets it guess
 the start parameters and does the fit. The following fit types are
 supported:
 <itemizedlist>
@@ -4176,16 +4167,16 @@ f.load(pluginName)
         range that will be used for the fit, like in <programlisting>
 f = LinearFit(graph("Graph1").activeLayer().curve(0), 2, 7)
 f.fit()
-	  </programlisting>
+	  </programlisting></para>
 
-You can also restrict the search range for any of the fit parameters:
+<para>You can also restrict the search range for any of the fit parameters:
 <programlisting>
 f = NonLinearFit(graph("Graph1").activeLayer().curve(0))
 f.setFormula("a0+a1*x+a2*x*x")
 f.setParameterRange(parameterIndex, start, end)
-</programlisting>
+</programlisting></para>
 
-All the settings of a non-linear fit can be saved to an XML file and restored later one, using this file,
+<para>All the settings of a non-linear fit can be saved to an XML file and restored later one, using this file,
 for a faster editing process. Here's for example how you can save the above fit function:
 <programlisting>
 f.save("/fit_models/poly_fit.txt")
@@ -4195,14 +4186,14 @@ and how you can use this file during another fitting session, later on:
 f = NonLinearFit(graph("Graph1").activeLayer(), "Table1_2")
 f.load("/fit_models/poly_fit.txt")
 f.fit()
-</programlisting>
+</programlisting></para>
 
-If your script relies on a specific numbering of the fit parameters use setParameters() before setting
+<para>If your script relies on a specific numbering of the fit parameters use setParameters() before setting
 the formula and switch of automatic detection of the fit parameters when the fit formula is set:
 <programlisting>
 f.setParameters("a2","a0","a1")
 f.setFormula("a0+a1*x+a2*x*x",0)
-</programlisting>
+</programlisting></para>
         <para>After creating the Fit object and before calling its fit()
         method, you can set a number of parameters that influence the fit:
         <programlisting>
@@ -4224,7 +4215,7 @@ f.scaleErrors(yes = True)
 f.setColor("green")			<lineannotation>change the color of the result fit curve to green (default color is red)</lineannotation>
 	  </programlisting></para>
 
-After you've called fit(), you have a number of possibilities
+<para>After you've called fit(), you have a number of possibilities
 for extracting the results: <programlisting>
 f.results()
 f.errors()
@@ -4233,36 +4224,36 @@ f.dataSize()
 f.numParameters()
 f.parametersTable("params")
 f.covarianceMatrix("cov")
-</programlisting>
+</programlisting></para>
 
-Writing the fit results to log is a time consuming operation and, especially when you need to
+<para>Writing the fit results to log is a time consuming operation and, especially when you need to
 perform a large number of fits, you can disable/enable this functionality using:
 <programlisting>
 setWriteFitResultsToLog(False) # the boolean parameter of this method is True by default
-</programlisting>
+</programlisting></para>
 
-There are a number of statistical functions allowing you to test the goodness of the fit:
+<para>There are a number of statistical functions allowing you to test the goodness of the fit:
 <programlisting>
 f.chiSquare()
 f.rSquare()
 f.adjustedRSquare()
 f.rmse() # Root Mean Squared Error
 f.rss()  # Residual Sum of Squares
-</programlisting>
+</programlisting></para>
 
-Also you can display the confidence and the prediction limits for the fit, using
+<para>Also you can display the confidence and the prediction limits for the fit, using
 a custom confidence level:
 <programlisting>
 f.showPredictionLimits(0.95)
 f.showConfidenceLimits(0.95)
-</programlisting>
+</programlisting></para>
 
-Confidence limits for individual fit parameters can be calculated using:
+<para>Confidence limits for individual fit parameters can be calculated using:
 <programlisting>
 f.lcl(parameterIndex, confidenceLevel)
 f.ucl(parameterIndex, confidenceLevel)
 </programlisting>
-where <varname>parameterIndex</varname> is a value between zero and f.numParameters() - 1.
+where <varname>parameterIndex</varname> is a value between zero and f.numParameters() - 1.</para>
 
 <para>It is important to know that QtiPlot can generate an analytical formula
 for the resulting fit curve or a normal plot curve with data stored in a hidden table.
@@ -4272,39 +4263,39 @@ f.generateFunction(True, points=100)
 </programlisting>
 </para>
 
-If the first parameter of the above function is set to True,
+<para>If the first parameter of the above function is set to True,
 QtiPlot will generate an analytical function curve. If the <varname>points </varname> parameter
 is not specified, by default the function will be estimated over 100 points.
 You can get the analytical formula of the fit curve via a call to resultFormula():
 <programlisting>
 formula = f.resultFormula()
 print(formula)
-</programlisting>
+</programlisting></para>
 
-If the first parameter of generateFunction() is set to False, QtiPlot will create a hidden data
+<para>If the first parameter of generateFunction() is set to False, QtiPlot will create a hidden data
 table containing the same number of points as the data set/curve to be fitted (same abscissae).
 You can interact with this table and extract the data points of the result fit curve using:
 <programlisting>
 t = f.resultTable()
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Integration">
 <title>Integration</title>
-With the same assumptions as above, here's how you can integrate a curve within a given interval:
+<para>With the same assumptions as above, here's how you can integrate a curve within a given interval:
 <programlisting>
 integral = Integration(graph("Graph1").activeLayer().curve(0), 2, 10)
 integral.run()
 result = integral.area()
-</programlisting>
+</programlisting></para>
 
-The script bellow shows how to perform an integration on a data set from a table:
+<para>The script bellow shows how to perform an integration on a data set from a table:
 <programlisting>
 i = Integration(table("Table1"), "Table_1", "Table_2", 3, 20, True)# sorted data range from row 3 to 20
 i.enableGraphicsDisplay(False)
 i.run()
 result = i.area()
-</programlisting>
+</programlisting></para>
 
 <para>As you can see from the above examples, the numerical value of the integral can be obtained
 via the <varname>area()</varname> function.</para>
@@ -4312,33 +4303,33 @@ via the <varname>area()</varname> function.</para>
 
 <sect3 id="Python-Interpolation">
 <title>Interpolation</title>
-The interpolation is used to generate a new data curve with a high number of points
+<para>The interpolation is used to generate a new data curve with a high number of points
 from an existing data set. Here's an example:
 <programlisting>
 interpolation = Interpolation(graph("Graph1").activeLayer().curve(0), 2, 10, Interpolation.Linear)
 interpolation.setOutputPoints(10000)
 interpolation.setColor("green")
 interpolation.run()
-</programlisting>
-The simplest interpolation method is the linear method. There are two other methods available:
+</programlisting></para>
+<para>The simplest interpolation method is the linear method. There are two other methods available:
 <varname>Interpolation.Akima</varname> and <varname>Interpolation.Cubic</varname>.
 You can choose the interpolation method using:
 <programlisting>
 interpolation.setMethod(Interpolation.Akima)
-</programlisting>
+</programlisting></para>
 </sect3>
 
 <sect3 id="Python-Smooth">
 <title>Smoothing</title>
-Assuming you have a graph named "Graph1" with an irregular curve entitled
+<para>Assuming you have a graph named "Graph1" with an irregular curve entitled
 "Table1_2" (on its active layer). You can smooth this curve using a SmoothFilter:
 <programlisting>
 smooth = SmoothFilter(graph("Graph1").activeLayer().curve(0), SmoothFilter.Average)
 smooth.setSmoothPoints(10)
 smooth.run()
-</programlisting>
+</programlisting></para>
 
-The default smoothing method is the mowing window average. Other smoothing methods are the
+<para>The default smoothing method is the mowing window average. Other smoothing methods are the
 <varname>SmoothFilter.FFT</varname>, <varname>SmoothFilter.Lowess</varname> and <varname>SmoothFilter.SavitzkyGolay</varname>. Here's an example
 of how to use the last two methods:
 <programlisting>
@@ -4351,7 +4342,7 @@ smooth.setSmoothPoints(5,5)
 smooth.setMethod(SmoothFilter.SavitzkyGolay)
 smooth.setPolynomOrder(9)
 smooth.run()
-</programlisting>
+</programlisting></para>
 </sect3>
 </sect2>
 
@@ -4369,9 +4360,9 @@ print stats.variance()
 print stats.standardDeviation()
 print stats.standardError()
 </programlisting>
-</sect3>
 
-For all the statistic test below, once you have created a test object, you can use the following methods:
+
+<para>For all the statistic test below, once you have created a test object, you can use the following methods:
 
 <programlisting>
 test.showResultsLog(False) # disable the logging of the results
@@ -4383,7 +4374,8 @@ print test.pValue()
 print test.logInfo()
 
 t = test.resultTable("MyResultTable") # Returns a pointer to the table created to display the results (the table name is optional)
-</programlisting>
+</programlisting></para>
+</sect3>
 
 <sect3 id="Python-tTest">
 <title>Hypothesis Testing - Student's t-Test</title>
@@ -4443,9 +4435,9 @@ print test.logInfo()
 
 <sect3 id="Python-OneWayANOVA">
 <title>One-Way ANOVA</title>
-Please read the
+<para>Please read the
 <ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentation of the TAMUANOVA library</ulink>
- for more details.
+ for more details.</para>
 
 <programlisting>
 test = Anova()
@@ -4468,9 +4460,9 @@ print test.logInfo()
 
 <sect3 id="Python-TwoWayANOVA">
 <title>Two-Way ANOVA</title>
-Please read the
+<para>Please read the
 <ulink url="http://www.stat.tamu.edu/~aredd/tamuanova/tamu_anova.pdf">documentation of the TAMUANOVA library</ulink>
- for more details.
+ for more details.</para>
 
 <programlisting>
 test = Anova(True)
@@ -4503,7 +4495,6 @@ print test.logInfo()
 <title>Working with Notes</title>
 <para>
 The following functions are available when dealing with multi-tab notes:
-</para>
 
 <programlisting>
 setAutoexec(on = True)
@@ -4527,17 +4518,17 @@ renameTab(tabIndex, title)
 
 e = editor(int index)
 e = currentEditor()
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-QtDialogs">
 <title>Using Qt's dialogs and classes</title>
-Let's assume that you have a lot of ASCII data files to analyze.
+<para>Let's assume that you have a lot of ASCII data files to analyze.
 Furthermore, let's suppose that these files were created
 during several series of measurements, each measurement generating a set
 of files identified by a certain string in the file name, like for example: "disper1".
-In order to analyze these files, you need first of all to import them into tables.
-The following code snippet shows how to automate this task using Qt dialogs and convenience classes:
+In order to analyze these files, you need first of all to import them into tables.</para>
+<para>The following code snippet shows how to automate this task using Qt dialogs and convenience classes:
 
 <programlisting>
 # Pop-up a file dialog allowing to chose the working folder:
@@ -4556,27 +4547,27 @@ fileNames = folder.entryList (QtCore.QStringList ("*_" + namePattern[0] + "*.dat
 for i in range (0, lst.count()):
     t = newTable()
     t.importASCII(dirPath + fileNames[i], " ", 0, False, True, True)
-</programlisting>
-For a detailed description of all the dialogs and utility classes provided by Qt/PyQt
+</programlisting></para>
+<para>For a detailed description of all the dialogs and utility classes provided by Qt/PyQt
 please take a look at the
-<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.
+<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">PyQt documentation</ulink>.</para>
 </sect2>
 
 <sect2 id="Python-QtDesigner">
 <title>Using Qt Designer for easy creation of custom user dialogs</title>
-Writing and designing user dialogs can be a very complicated task.
+<para>Writing and designing user dialogs can be a very complicated task.
 The QtDesigner application provided by the Qt framework makes it easy and very pleasant.
 It allows you to design widgets, dialogs or complete main windows using on-screen forms and a simple drag-and-drop interface.
 Qt Designer uses XML .ui files to store designs.
 Once you have finished the design process you can load and use an .ui file in your Python scripts
-with the help of the <varname>uic</varname> module.
+with the help of the <varname>uic</varname> module.</para>
 
 <para>
 As an example, suppose that we have created a test dialog containing an input QDoubleSpinBox called "valueBox"
 and a QPushButton called "okButton". On pressing this button, we would like to create a new table displaying
 the input value in its first cell. We have saved this dialog to a file called "myDialog.ui".
 A minimalistic approach is shown in the small script below:
-</para>
+
 
 <programlisting>
 from PyQt4 import uic
@@ -4588,20 +4579,20 @@ def createTable():
 ui = uic.loadUi("myDialog.ui")
 ui.connect(ui.okButton, QtCore.SIGNAL("clicked()"),  createTable)
 ui.show()
-</programlisting>
+</programlisting></para>
 
-For more details about how to use .ui files in your Python scripts please read the
-<ulink url="http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code">PyQt4 documentation</ulink>.
+<para>For more details about how to use .ui files in your Python scripts please read the
+<ulink url="http://www.riverbankcomputing.co.uk/static/Docs/PyQt4/pyqt4ref.html#using-the-generated-code">PyQt4 documentation</ulink>.</para>
 </sect2>
 
 <sect2 id="Python-AutomationExample">
 <title>Task automation example</title>
-Below you can find a detailed example showing how to completely automatize tasks in QtiPlot.
+<para>Below you can find a detailed example showing how to completely automatize tasks in QtiPlot.
 It can be used in order to verify the accuracy of the curve fitting algorithms in QtiPlot. The data used
 in this example is retrieved from the <ulink url="http://www.itl.nist.gov/div898/strd/">
-Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.
+Statistical Reference Datasets Project of the National Institute of Standards and Technology (NIST)</ulink>.</para>
 
-In order to run this example, you need an internet connection, since the script will try to download all the
+<para>In order to run this example, you need an internet connection, since the script will try to download all the
 <ulink url="http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml">nonlinear regression test files </ulink> from the Statistical Reference Datasets Project.
 
 <programlisting>
@@ -4737,49 +4728,51 @@ newNote("ResultsLog").importASCII(dirPath + "/" + "results.txt")
 saveProjectAs(dirPath + "/" + "StRD_NIST.qti")
 sys.stdout = saveout
 fsock.close()
-</programlisting>
+</programlisting></para>
 </sect2>
 
 <sect2 id="Python-Scope-Changes">
 <title>Scope Changes</title>
 <para>In recent versions the scope rules were changed to match standard Python:
   <itemizedlist>
-    <listitem>The keyword "global" refers to the module, e.g. a particular script window or column script.
+    <listitem><para>The keyword "global" refers to the module, e.g. a particular script window or column script.
     Outside of any function, this is the default namespace, so "global x" has no effect.  Inside a function,
     "global x" refers to <varname>x</varname> in the module namespace.
     Previously, "global" referred to QtiPlot's global variables, and module-level variables were inaccessible
-    from inside a function, unless marked global.</listitem>
-    <listitem>To read and write QtiPlot's global variables, use the new special variable <varname>globals</varname>:<programlisting
+    from inside a function, unless marked global.</para></listitem>
+    <listitem><para>To read and write QtiPlot's global variables, use the new special variable <varname>globals</varname>:<programlisting
       width="40">
 globals.myvar = 5
 print globals.myvar
-      </programlisting><varname>globals</varname> is shared among all modules.</listitem>
+</programlisting><varname>globals</varname> is shared among all modules.</para></listitem>
   </itemizedlist>
-</para><para>If a script has any "global" declaration outside of a function, QtiPlot uses the old scope rules.
+</para>
+<para>If a script has any "global" declaration outside of a function, QtiPlot uses the old scope rules.
 Existing scripts should keep working, but for best results, update your scripts:
   <itemizedlist>
-    <listitem>If a "global" variable <varname>x</varname> is used only within one script, delete any "global x"
-   that is outside of a function.</listitem>
-    <listitem>If a "global" variable needs to be accessed outside the script that defined it, change<programlisting
-      width="40">
+      <listitem><para>If a "global" variable <varname>x</varname> is used only within one script, delete any "global x"
+   that is outside of a function.</para></listitem>
+    <listitem><para>If a "global" variable needs to be accessed outside the script that defined it, change
+            <programlisting width="40">
 global x
 x = 5
-      </programlisting>to<programlisting>
+      </programlisting>to
+  <programlisting>
 globals.x = 5
-   </programlisting>and replace all references to <varname>x</varname> with <varname>globals.x</varname></listitem>
+   </programlisting> and replace all references to <varname>x</varname> with <varname>globals.x</varname></para></listitem>
   </itemizedlist>
 </para>
 </sect2>
 
 <sect2 id="QtiPlot-Python-API">
 <title>QtiPlot/Python API</title>
-The complete QtiPlot/Python API can be consulted
-<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">here</ulink>.
+<para>The complete QtiPlot/Python API can be consulted
+<ulink url="http://soft.proindependent.com/doc/manual-en/Python-API/html/index.html">here</ulink>.</para>
 </sect2>
 
 <sect2 id="PyQt-Class-Reference">
 <title>PyQt Class Reference</title>
-The complete PyQt class reference can be consulted
-<ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">here</ulink>.
+<para>The complete PyQt class reference can be consulted
+    <ulink url="http://www.riverbankcomputing.com/static/Docs/PyQt4/html/classes.html">here</ulink>.</para>
 </sect2>
 </sect1>

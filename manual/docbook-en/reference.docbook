@@ -915,7 +915,7 @@ The active items appearing in a menu depends upon which project window is active
     <para>This command creates a new (hidden) table that contains one column of X-values and one column of integrated Y-values.</para>
 </sect3>
 
-<sect3 id="fft-cmd"><title>&fft-cmd;</title>
+<sect3 id="fft-cmd2"><title>&fft-cmd;</title>
     <para>The &analysis-ptr;&fft-cmd; command computes a direct or inverse Fast Fourier Transform. The parameters used can be set with the <link linkend="fft-dialog">FFT dialog</link>. See the <link linkend="sec-fft">fft section</link> of the <link linkend="analysis">Analysis chapter</link> for more details.</para>
 </sect3>
 
@@ -1324,13 +1324,13 @@ The active items appearing in a menu depends upon which project window is active
     <para>This command opens a <link linkend="set-values-dialog">dialog window</link> which is used to fill in a matrix with the result of a function z=f(i,j) in which i and j stand for the row and column numbers.</para>
 	</sect2>
 
-	<sect2 id="recalculate-cmd"><title>&recalculate-cmd; (&recalculate-key;)</title>
+	<sect2 id="recalculate-cmd2"><title>&recalculate-cmd; (&recalculate-key;)</title>
     <para>This command allows you to recalculate the matrix cell values using a predefined formula. Useful when the formula is changed.</para>
 	</sect2>
 	<sect2 id="rotate90-cmd"><title>&rotate90-cmd; (&rotate90-key;)</title>
     <para>This command performs a clockwise 90 degrees rotation of the active matrix.</para>
 	</sect2>
-	<sect2 id="rotate90-cmd"><title>&rotate-90-cmd; (&rotate-90-key;)</title>
+	<sect2 id="rotate90-cmd2"><title>&rotate-90-cmd; (&rotate-90-key;)</title>
     <para>This command performs a counterclockwise 90 degrees rotation of the active matrix.</para>
 	</sect2>
 	<sect2 id="flipV-cmd"><title>&flipV-cmd; (&flipV-key;)</title>
@@ -1348,7 +1348,7 @@ The active items appearing in a menu depends upon which project window is active
 	<para>Opens the matrix resampling dialog. Shrinking operation is preselected in the dialog.</para>
   </sect2>
 
-  <sect2 id="smooth-cmd"><title>&smooth-cmd;</title>
+  <sect2 id="smooth-cmd2"><title>&smooth-cmd;</title>
 	<para>Matrix smoothing is performed by shrinking and then expanding the matrix using bilinear interpolation.
 If the number of columns or rows is less than 32, the matrix is first expanded so that the row number and the column number are both twice of the original.
 Then the expanded matrix is shrunk to the original size.

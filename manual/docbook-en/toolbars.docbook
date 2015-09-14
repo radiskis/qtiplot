@@ -987,7 +987,7 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
 <table tocentry="1" pgwide="1" frame="sides">
 <title>Column toolbar commands.</title>
 <tgroup cols="4">
-  <colspec colname="icon" colwidth="1*" align="center" valign="middle"/>
+  <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
   <colspec colname="key" colwidth="2*" align="center"/>
   <colspec colname="description" colwidth="10*" align="justify"/>
@@ -1001,144 +1001,144 @@ The <emphasis>File Toolbar</emphasis> provides single-click access to commands f
   </thead>
  <tbody>
   <row>
-   <entry>&set-column-values-icon;</entry>
+   <entry valign="middle">&set-column-values-icon;</entry>
    <entry><link linkend="set-column-values-cmd">Table -> &set-column-values-cmd;</link></entry>
    <entry>&set-column-values-key;</entry>
    <entry>Used for functional assignment of values in selected column.</entry>
   </row>
 
   <row>
-   <entry>&fill-column-with-row-number-icon;</entry>
+   <entry valign="middle">&fill-column-with-row-number-icon;</entry>
    <entry><link linkend="fill-column-with-row-number-cmd">Table -> &fill-column-with-row-number-cmd;</link></entry>
    <entry>&fill-column-with-row-number-key;</entry>
    <entry>Fills each row in the selected column with it's corresponding row number.</entry>
   </row>
 
   <row>
-   <entry>&fill-column-with-random-values-icon;</entry>
+   <entry valign="middle">&fill-column-with-random-values-icon;</entry>
    <entry><link linkend="fill-column-with-random-values-cmd">Table -> &fill-column-with-random-values-cmd;</link></entry>
    <entry>&fill-column-with-random-values-key;</entry>
    <entry>Fills each row in the selected column with a random value.</entry>
   </row>
 
   <row>
-   <entry>&fill-column-with-normal-random-values-icon;</entry>
+   <entry valign="middle">&fill-column-with-normal-random-values-icon;</entry>
    <entry><link linkend="fill-column-with-normal-random-values-cmd">Table -> &fill-column-with-normal-random-values-cmd;</link></entry>
    <entry>&fill-column-with-normal-random-values-key;</entry>
    <entry>Fills each row in the selected column with a normally distributed random value.</entry>
   </row>
 
   <row>
-   <entry>&sort-table-icon;</entry>
+   <entry valign="middle">&sort-table-icon;</entry>
    <entry><link linkend="sort-table-cmd">Analysis -> &sort-table-cmd;</link></entry>
    <entry>&sort-table-key;</entry>
    <entry>Sorts all columns in the selected table into ascending or descending order.</entry>
   </row>
 
   <row>
-   <entry>&statistics-on-columns-icon;</entry>
+   <entry valign="middle">&statistics-on-columns-icon;</entry>
    <entry><link linkend="statistics-on-columns-cmd">Analysis -> &statistics-on-columns-cmd;</link></entry>
    <entry>&statistics-on-columns-key;</entry>
    <entry>Computes statistical parameters on selected columns.</entry>
   </row>
   <row>
-   <entry>&statistics-on-rows-icon;</entry>
+   <entry valign="middle">&statistics-on-rows-icon;</entry>
    <entry><link linkend="statistics-on-rows-cmd">Analysis -> &statistics-on-rows-cmd;</link></entry>
    <entry>&statistics-on-rows-key;</entry>
    <entry>Computes statistical parameters on the selected rows.</entry>
   </row>
  <row>
-   <entry>&set-column-as-x-icon;</entry>
+   <entry valign="middle">&set-column-as-x-icon;</entry>
    <entry><link linkend="set-column-as-x-cmd">Table -> &set-column-as-x-cmd;</link></entry>
    <entry>&set-column-as-x-key;</entry>
    <entry>Define the selected column as abscissae for plotting.</entry>
   </row>
   <row>
-   <entry>&set-column-as-y-icon;</entry>
+   <entry valign="middle">&set-column-as-y-icon;</entry>
    <entry><link linkend="set-column-as-y-cmd">Table -> &set-column-as-y-cmd;</link></entry>
    <entry>&set-column-as-y-key;</entry>
    <entry>Define the selected column as an ordinate for plotting.</entry>
   </row>
   <row>
-   <entry>&set-column-as-z-icon;</entry>
+   <entry valign="middle">&set-column-as-z-icon;</entry>
    <entry><link linkend="set-column-as-z-cmd">Table -> &set-column-as-z-cmd;</link></entry>
    <entry>&set-column-as-z-key;</entry>
    <entry>For 3D plots, Z columns will be used as height values.</entry>
   </row>
   <row>
-   <entry>&set-column-as-y-error-icon;</entry>
+   <entry valign="middle">&set-column-as-y-error-icon;</entry>
    <entry><link linkend="set-column-as-y-error-cmd">Table -> &set-column-as-y-error-cmd;</link></entry>
    <entry>&set-column-as-y-error-key;</entry>
    <entry>Define the selected column for use as error bars for Y-values.</entry>
   </row>
 
   <row>
-   <entry>&set-column-as-label-icon;</entry>
+   <entry valign="middle">&set-column-as-label-icon;</entry>
    <entry><link linkend="set-column-as-label-cmd">Table -> &set-column-as-label-cmd;</link></entry>
    <entry>&set-column-as-label-key;</entry>
    <entry>Define the selected column as containing labels.</entry>
   </row>
 
   <row>
-   <entry>&set-column-as-none-icon;</entry>
+   <entry valign="middle">&set-column-as-none-icon;</entry>
    <entry><link linkend="set-column-as-none-cmd">Table -> &set-column-as-none-cmd;</link></entry>
    <entry>&set-column-as-none-key;</entry>
    <entry>This command removes any plot role from selected columns.</entry>
   </row>
   <row>
-   <entry>&move-column-first-icon;</entry>
+   <entry valign="middle">&move-column-first-icon;</entry>
    <entry><link linkend="move-column-first-cmd">Table -> &move-column-first-cmd;</link></entry>
    <entry>&move-column-first-key;</entry>
    <entry>Moves the selected column to the beginning of the table.</entry>
   </row>
   <row>
-   <entry>&move-column-left-icon;</entry>
+   <entry valign="middle">&move-column-left-icon;</entry>
    <entry><link linkend="move-column-left-cmd">Table -> &move-column-left-cmd;</link></entry>
     <entry>&move-column-left-key;</entry>
   <entry>Moves the selected column to the left.</entry>
   </row>
   <row>
-   <entry>&move-column-right-icon;</entry>
+   <entry valign="middle">&move-column-right-icon;</entry>
    <entry><link linkend="move-column-right-cmd">Table -> &move-column-right-cmd;</link></entry>
    <entry>&move-column-right-key;</entry>
    <entry>Moves the selected column to the right.</entry>
   </row>
    <row>
-   <entry>&move-column-last-icon;</entry>
+   <entry valign="middle">&move-column-last-icon;</entry>
    <entry><link linkend="move-column-last-cmd">Table -> &move-column-last-cmd;</link></entry>
    <entry>&move-column-last-key;</entry>
    <entry>Moves the selected column to the end of the table.</entry>
   </row>
    <row>
-   <entry>&swap-columns-icon;</entry>
+   <entry valign="middle">&swap-columns-icon;</entry>
    <entry><link linkend="swap-columns-cmd">Table -> &swap-columns-cmd;</link></entry>
    <entry>&swap-columns-key;</entry>
    <entry>Swap the selected columns.</entry>
   </row>
 
    <row>
-   <entry>&adjust-column-width-icon;</entry>
+   <entry valign="middle">&adjust-column-width-icon;</entry>
    <entry><link linkend="adjust-column-width-cmd">Table -> &adjust-column-width-cmd;</link></entry>
    <entry>&adjust-column-width-key;</entry>
    <entry>Sets an optimal width on the selected columns.</entry>
   </row>
 
    <row>
-   <entry>&move-row-up-icon;</entry>
+   <entry valign="middle">&move-row-up-icon;</entry>
    <entry><link linkend="move-row-up-cmd">Table -> &move-row-up-cmd;</link></entry>
    <entry>&move-row-up-key;</entry>
    <entry>Moves selected row UP one slot in table.</entry>
   </row>
 
    <row>
-   <entry>&move-row-down-icon;</entry>
+   <entry valign="middle">&move-row-down-icon;</entry>
    <entry><link linkend="move-row-down-cmd">Table -> &move-row-down-cmd;</link></entry>
    <entry>&move-row-down-key;</entry>
    <entry>Moves selected row DOWN one slot in table.</entry>
   </row>
 
   <row>
-   <entry>&add-column-icon;</entry>
+   <entry valign="middle">&add-column-icon;</entry>
    <entry><link linkend="add-column-cmd">Table -> &add-column-cmd;</link></entry>
    <entry>&add-column-key;</entry>
    <entry>Adds a new column to the selected table.</entry>

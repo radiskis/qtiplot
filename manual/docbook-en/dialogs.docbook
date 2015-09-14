@@ -11,12 +11,13 @@
 <!-- ************************************************** -->
 <sect1 id="custom-action-dialog">
   <title>Add Custom Action</title>
+  <para>
   This dialog helps you define new Python script launchers that will be added to menus or tool bars in &appname;.
   You can fully customize script launchers by defining: 1) a textual description
   that will be displayed in the destination menu, (2) an icon, (3) a shortcut key sequence and (4) a tool tip.
   The <emphasis>Tool Tip Text</emphasis>  is a short description that is displayed near the launcher button
   when you hover the mouse over it. You must assign unique shortcut key sequences to your custom launchers.
-
+  </para>
   <figure id="fig-add-custom-action-dialog">
     <title>The &add-custom-action-cmd; dialog box.</title>
     <mediaobject>
@@ -119,7 +120,7 @@ the hard disk. Make sure that you have backed up the file if you will ever need 
 		<imagedata  format="PNG" fileref="pics/add-function-dialog4.png"/>
 	  </imageobject>
 	</mediaobject>
-  </figure>linkend=
+  </figure>
 
   <para>A function can also be defined using a parametric definition by selecting "Parametric plot" as the <emphasis>Curve type</emphasis>. That is, given some variable, <emphasis>m</emphasis>, the (x,y) data points are computed using functions of that variable, x=f(m) and y=g(m).</para>
   <para>The first parameter is the name of the parametric variable (here <emphasis>m</emphasis>). It is followed by the definitions of the two functions, the range of the parametric variable, and the number of data points.</para>
@@ -195,7 +196,7 @@ which opens a dialog allowing to edit the plot range.</para>
 <!-- ************************************************** -->
 <sect1 id="arrange-layers-dialog">
   <title>Arrange Layers</title>
-  This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu </link>or by entering &arrange-layers-key;.
+<para>This dialog is activated by selecting the &arrange-layers-cmd; command from the <link linkend="sec-graph-menu">Graph Menu </link>or by entering &arrange-layers-key;.</para>
 
 <para>This dialog provides for modification of the geometrical arrangement of plot layers which are already present
 in the active graph window. You can add new layers or remove existing ones using the <emphasis>Number</emphasis> of layers control. Checking the <emphasis>Link X axes</emphasis> option makes all the X-axes interdependent, meaning that if you manually set abscissa scale limits on one plot layer, then the same limits will automatically be set on all other layers in the plot window.</para>
@@ -302,8 +303,8 @@ When the <emphasis>Fixed size</emphasis> box is checked, the size of the layers 
     </mediaobject>
   </figure>
 
-The <emphasis>Values </emphasis>tab allows choosing the matrix that is to serve as the data source for the plot.
-It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values </emphasis>box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.
+<para>The <emphasis>Values </emphasis>tab allows choosing the matrix that is to serve as the data source for the plot.
+    It is possible to use a formula defined for the matrix to calculate the plotted Z values by checking the <emphasis>Use matrix formula to calculate values </emphasis>box. This results in higher accuracy, especially when drawing contour lines, but it only works if the formula uses muParser compatible syntax.</para>
 
   <figure id="fig-contour-options-1">
     <title>The Colors Tab.</title>
@@ -410,7 +411,7 @@ from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you
   </figure>
 
 <para>The third tab defines the geometry of the plot layer.</para>
-  <figure id="fig-custom-curves-pie-2">
+  <figure id="fig-custom-curves-pie-4">
     <title>The Plot Details Dialog: Layer geometry.</title>
     <mediaobject>
       <imageobject>
@@ -423,7 +424,7 @@ from the colormap defined in the <emphasis>Colors</emphasis> setting tab. If you
 
 When the speed mode is enabled, filtering of the data is activated only for the curves with more than the specified maximum number of data points.
   </para>
-  <figure id="fig-custom-curves-pie-2">
+  <figure id="fig-custom-curves-pie-5">
     <title>The Plot Details Dialog: Layer Speed Mode.</title>
     <mediaobject>
       <imageobject>
@@ -458,7 +459,7 @@ When the speed mode is enabled, filtering of the data is activated only for the 
   </figure>
 
  <para>The second tab on the right side of the dialog window allows customizing the style of the plot line (color, line style, thickness). The connect button allows changing the style which is used to draw the selected curve (steps, droplines, etc). See the &plot-menu-lnk; to see the different types of plots available.</para>
-  <figure id="fig-custom-curves-line-1">
+  <figure id="fig-custom-curves-line-4">
     <title>The Plot Details Dialog: Line formatting.</title>
     <mediaobject>
       <imageobject>
@@ -782,11 +783,11 @@ the plot residuals. The <emphasis>Conf. Bands</emphasis> and <emphasis>Pred. Ban
 <para>
 After the fit, a series of fit statistics are displayed in the log window allowing evaluation of  the goodness of fit. These values are:
 <orderedlist>
-  	  <listitem>Chi^2/doF </listitem>
-  	  <listitem>R-square</listitem>
-  	  <listitem>Adjusted R-square</listitem>
-  	  <listitem>RMSE (Root Mean Squared Error)</listitem>
-  	  <listitem>RSS (Residual Sum of Squares)</listitem>
+  	  <listitem><para>Chi^2/doF</para></listitem>
+  	  <listitem><para>R-square</para></listitem>
+  	  <listitem><para>Adjusted R-square</para></listitem>
+  	  <listitem><para>RMSE (Root Mean Squared Error)</para></listitem>
+  	  <listitem><para>RSS (Residual Sum of Squares)</para></listitem>
 </orderedlist>
 
 For detailed explanations about the meaning of this statistical values, please visit the following
@@ -969,25 +970,25 @@ Autocompletion can be disabled by unchecking the <emphasis>Enable autocompletion
 
 <sect3 id="general-preferences-file-locations-tab"><title>File Locations Tab</title>
    <para>The <emphasis>File Locations</emphasis> tab allows you to define custom locations for the folders containing the translation files, the manual files and the Python configuration files (<emphasis>qtiplotrc.py</emphasis> and <emphasis>qtiUtil.py</emphasis>) if &appname; was built with Python scripting support. Default folder entries are also provided for the <emphasis>LaTex Compiler</emphasis> and for <emphasis>scripts</emphasis> that are to be loaded at program startup. The <emphasis>LaTex Compiler </emphasis>folder only has meaning if &appname; was compiled with <emphasis>LaTex </emphasis>support.</para>
-  <figure id="fig-preferences-dialog-13">
+  <informalfigure id="fig-preferences-dialog-13">
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/preferences-dialog13.png"/>
       </imageobject>
     </mediaobject>
-  </figure>
+  </informalfigure>
 </sect3>
 
 <sect3 id="general-preferences-internet-connections-tab"><title>Internet Connections Tab</title>
 <para>Settings on the <emphasis>Internet Connection</emphasis> tab are only needed if you connect to the internet
 via a proxy server. If you don't now how to set these options, contact your Network Administrator or other suitably knowledgeable person.</para>
-  <figure id="fig-preferences-dialog-16">
+  <informalfigure id="fig-preferences-dialog-16">
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/preferences-dialog16.png"/>
       </imageobject>
     </mediaobject>
-  </figure>
+  </informalfigure>
  </sect3>
 </sect2>
 
@@ -1005,10 +1006,10 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </figure>
 </sect2>
 
-<sect2 id="2dplot-preferences"><title>2D Plot Preferences</title>
+<sect2 id="_2dplot-preferences"><title>2D Plot Preferences</title>
 <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/config_curves.png"/></imageobject></inlinemediaobject> 2D Plots Icon opens the third page of the preferences dialog. This set of options is used to customize default aspects of <emphasis>2D plots</emphasis>.</para>
 
-<sect3 id="2dplot-preferences-options-tab"><title>Options Tab</title>
+<sect3 id="_2dplot-preferences-options-tab"><title>Options Tab</title>
 <para>The <emphasis>Options </emphasis>tab is used to modify some general options. Most of the changes made to these
   options will be applied only to newly created plots. Changing a few of these options, such as plot axis <emphasis>Autoscaling</emphasis>,
   <emphasis>Antialiasing</emphasis> of curves and the behavior on resize events will affect extant plots.</para>
@@ -1022,7 +1023,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </figure>
  </sect3>
 
- <sect3 id="2dplot-preferences-curves-tab"><title>Curves Tab</title>
+ <sect3 id="_2dplot-preferences-curves-tab"><title>Curves Tab</title>
   <para>The <emphasis>Curves </emphasis>tab contains a large number of controls that define the default style used when creating a new plot. The operation of these controls should be self evident.</para>
   <informalfigure id="fig-preferences-dialog-6">
     <mediaobject>
@@ -1033,7 +1034,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-axes-tab"><title>Axes Tab</title>
+ <sect3 id="_2dplot-preferences-axes-tab"><title>Axes Tab</title>
   <para>The <emphasis>Axes </emphasis>tab allows specification of which plot axes will be displayed in a new layer and the dominant stylistic aspects of the axes.</para>
   <informalfigure id="fig-preferences-dialog-15">
     <mediaobject>
@@ -1044,7 +1045,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-ticks-tab"><title>Ticks Tab</title>
+ <sect3 id="_2dplot-preferences-ticks-tab"><title>Ticks Tab</title>
   <para>The <emphasis>Ticks </emphasis>tab defines the default style for axis ticks drawn on newly created plots.</para>
   <informalfigure id="fig-preferences-dialog-7">
     <mediaobject>
@@ -1055,7 +1056,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-grid-tab"><title>Grid Tab</title>
+ <sect3 id="_2dplot-preferences-grid-tab"><title>Grid Tab</title>
   <para>The <emphasis>Grid</emphasis> tab defines the default aspect of plot layer grids.</para>
   <informalfigure id="fig-preferences-dialog-18">
 	<mediaobject>
@@ -1066,7 +1067,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-geometry-tab"><title>Geometry Tab</title>
+ <sect3 id="_2dplot-preferences-geometry-tab"><title>Geometry Tab</title>
   <para>The <emphasis>Geometry </emphasis>tab defines the default size for the drawing area of a plot layer When the <emphasis>Keep aspect ratio </emphasis>option is checked, changing either the width or height will change proportionally change the other.</para>
   <informalfigure id="fig-preferences-dialog-17">
 	<mediaobject>
@@ -1077,7 +1078,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-speed-tab"><title>Speed Tab</title>
+ <sect3 id="_2dplot-preferences-speed-tab"><title>Speed Tab</title>
   <para>The <emphasis>Speed </emphasis>tab lets the user enable/disable antialiasing when drawing/redrawing 2D plots. Antialiasing is a major source of slow-down when rendering 2D plots. Unchecking the <emphasis>Antialiasing </emphasis>checkbox disables antialiasing for all curves, which probably will only be needed in extreme circumstances. Checking the <emphasis>Disable for curves with more than </emphasis>checkbox will disable antialiasing only for curves having data sets larger than the threshold set with the textbox to the right of the <emphasis>Disable for curves with more than </emphasis>checkbox. Disabling this option is probably not a good idea. The default is for both of these options to be enabled, with a threshold of 1000 data points. Proper setting of these options is essential to keeping the application responsive.</para>
   <informalfigure id="fig-preferences-dialog-19">
 	<mediaobject>
@@ -1088,7 +1089,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-fonts-tab"><title>Fonts Tab</title>
+ <sect3 id="_2dplot-preferences-fonts-tab"><title>Fonts Tab</title>
   <para>The <emphasis>Fonts </emphasis>tab defines the default fonts used when creating new plots. Options are provided for the plot <emphasis>Title</emphasis>, plot <emphasis>Legend</emphasis>, <emphasis>Axes Labels</emphasis>, and <emphasis>Axes Numbers</emphasis>.</para>
   <informalfigure id="fig-preferences-dialog-8">
     <mediaobject>
@@ -1099,7 +1100,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
   </informalfigure>
  </sect3>
 
- <sect3 id="2dplot-preferences-print-tab"><title>Print Tab</title>
+ <sect3 id="_2dplot-preferences-print-tab"><title>Print Tab</title>
    <para>The <emphasis>Print </emphasis> tab allows you to control a few default options that are used when printing 2D plots. If you want layers to be printed with their original dimensions, you must be sure to uncheck the <emphasis>Scale layers to paper size </emphasis>option. Checking the <emphasis>Print Cropmarks</emphasis> option ensures that some visible marks will be drawn around the borders of the plot.</para>
   <informalfigure id="fig-preferences-dialog-12">
     <mediaobject>
@@ -1111,7 +1112,7 @@ via a proxy server. If you don't now how to set these options, contact your Netw
  </sect3>
 </sect2>
 
-<sect2 id="3dplot-preferences"><title>3D Plot Preferences</title>
+<sect2 id="_3dplot-preferences"><title>3D Plot Preferences</title>
 <para>Selecting the <inlinemediaobject><imageobject><imagedata format="PNG" fileref="icons/logo.png"/></imageobject></inlinemediaobject> 3D Plots Icon opens the fourth page of the preferences dialog. This set of options is used to customize default aspects of three dimensional plots. Most of the options are self-explanatory. However, the <emphasis>Resolution </emphasis>option needs clarification. This option is more or less akin to a speed drawing mode, which can be very useful when working with large data sets. Larger values of the <emphasis>Resolution</emphasis> option result in fewer data points being drawn on 3D plots, and therefore a higher drawing speed. When <emphasis>Resolution </emphasis> is set to 1, all data points are drawn.</para>
   <figure id="fig-preferences-dialog-9">
     <title>The preferences dialog: 3D plot options.</title>
@@ -1361,7 +1362,7 @@ which will greatly increase the speed of evaluation!</para>
 
  <sect2 id="surface-plot-options-colors-tab"><title>Colors Tab</title>
   <para>The fifth tab allows modification of the colors used for different elements of the plot.</para>
-  <informalfigure id="fig-surface-plot-options-4">
+  <informalfigure id="fig-surface-plot-options-5">
     <mediaobject>
       <imageobject>
         <imagedata  format="PNG" fileref="pics/surface-plot-options-dialog4.png"/>
@@ -1379,7 +1380,7 @@ color defined as a linear interpolation between the adjacent values in the color
  <sect2 id="surface-plot-options-general-tab"><title>General Tab</title>
 <para>The <emphasis>General</emphasis> tab is used to define some global parameters and the aspect ratio of the plot. The default behavior is to use perspective to compute the 3D plot. If you choose to check the <emphasis>Orthogonal</emphasis> check box, the plot will use a vertical Z axis regardless of the view angle of the plot.</para>
 
-  <figure id="fig-surface-plot-options-5">
+  <figure id="fig-surface-plot-options-6">
 	<title>The general plot options tab.</title>
     <mediaobject>
       <imageobject>
@@ -1392,7 +1393,7 @@ color defined as a linear interpolation between the adjacent values in the color
  <sect2 id="surface-plot-options-print-tab"><title>Print Tab</title>
 <para>The <emphasis>Print</emphasis> tab is used to define some useful print options, like scaling to the printer's paper size or showing cropmarks.</para>
 
-  <figure id="fig-surface-plot-options-5">
+  <figure id="fig-surface-plot-options-7">
 	<title>The 3D plot print options.</title>
 	<mediaobject>
 	  <imageobject>
