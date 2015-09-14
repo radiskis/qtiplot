@@ -20,3 +20,6 @@ pdf-it:
 	dblatex -o qtiplot-manual-it.pdf -c dblatex.conf docbook-it/index.docbook
 pdf-fr:
 	dblatex -o qtiplot-manual-fr.pdf -c dblatex.conf docbook-fr/index.docbook
+
+verify:
+	xmllint -noout --valid docbook-en/index.docbook
