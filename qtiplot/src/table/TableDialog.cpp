@@ -136,7 +136,8 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
     labelFormat = new QLabel(tr( "Format:" ));
  	gl1->addWidget(labelFormat, 2, 0);
 
-    formatBox = new QComboBox(false);
+    formatBox = new QComboBox();
+    formatBox->setEditable(false);
     gl1->addWidget(formatBox, 2, 1);
 
 	labelNumeric = new QLabel(tr( "Precision:" ));

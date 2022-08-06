@@ -958,7 +958,8 @@ void PlotDialog::initPiePage()
 	l4->setBuddy(boxFirstColor);
 	gl2->addWidget(l4, 0, 0);
 
-	boxPiePattern = new PatternBox(false);
+	boxPiePattern = new PatternBox();
+	boxPiePattern->setEditable(false);
 	gl2->addWidget(boxPiePattern, 1, 1);
 	gl2->setRowStretch(2, 1);
 
@@ -1341,7 +1342,8 @@ void PlotDialog::initLinePage()
 	hb->addWidget(boxCurveOpacity);
 	gl2->addLayout(hb, 1, 1);
 
-	boxPattern = new PatternBox(false);
+	boxPattern = new PatternBox();
+	boxPattern->setEditable(false);
 	gl2->addWidget(boxPattern, 2, 1);
 	
 	QLabel *l6 = new QLabel("&" + tr("Pattern"));
@@ -2130,17 +2132,20 @@ void PlotDialog::initVectPage()
     QGridLayout *gl3 = new QGridLayout(GroupBoxVectEnd);
     labelXEnd = new QLabel(tr( "X End" ));
     gl3->addWidget(labelXEnd, 0, 0);
-	xEndBox = new QComboBox(false);
+	xEndBox = new QComboBox();
+	xEndBox->setEditable(false);
     gl3->addWidget(xEndBox, 0, 1);
 
 	labelYEnd = new QLabel(tr( "Y End" ));
     gl3->addWidget(labelYEnd, 1, 0);
-	yEndBox = new  QComboBox( false);
+	yEndBox = new QComboBox();
+	yEndBox->setEditable(false);
     gl3->addWidget(yEndBox, 1, 1);
 
 	labelPosition = new QLabel(tr( "Position" ));
     gl3->addWidget(labelPosition, 2, 0);
-	vectPosBox = new  QComboBox( false);
+	vectPosBox = new  QComboBox();
+	vectPosBox->setEditable(false);
 	vectPosBox->addItem(tr("Tail"));
 	vectPosBox->addItem(tr("Middle"));
 	vectPosBox->addItem(tr("Head"));
