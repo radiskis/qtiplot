@@ -1023,11 +1023,11 @@ void FitDialog::showFitPage()
 	int prec = boxPrecision->value();
     for (int i = 0; i<parameters; i++){
         QTableWidgetItem *it = new QTableWidgetItem(paramList[i]);
-#ifdef Q_CC_MSVC
+    #if defined(Q_CC_MSVC) || defined(__APPLE__)
         it->setFlags(it->flags() & (~Qt::ItemIsEditable));
-#else
+    #else
         it->setFlags(!Qt::ItemIsEditable);
-#endif
+    #endif
         it->setBackground(QBrush(Qt::lightGray));
         it->setForeground(Qt::black);
         QFont font = it->font();
@@ -1053,7 +1053,11 @@ void FitDialog::showFitPage()
         boxParams->setCellWidget(i, 2, sb);
 
         it = new QTableWidgetItem();
-		it->setFlags(!Qt::ItemIsEditable);
+    #if defined(Q_CC_MSVC) || defined(__APPLE__)
+        it->setFlags(it->flags() & (~Qt::ItemIsEditable));
+    #else
+        it->setFlags(!Qt::ItemIsEditable);
+    #endif
 		it->setText("--");
 		boxParams->setItem(i, 5, it);
 	}
@@ -1065,11 +1069,11 @@ void FitDialog::showFitPage()
         boxParams->showColumn(4);
 		for (int i = 0; i<boxParams->rowCount(); i++ ){
             QTableWidgetItem *it = new QTableWidgetItem();
-#ifdef Q_CC_MSVC
+		#if defined(Q_CC_MSVC) || defined(__APPLE__)
             it->setFlags(it->flags() & (~Qt::ItemIsEditable));
-#else
+		#else
             it->setFlags(!Qt::ItemIsEditable);
-#endif
+		#endif
             it->setBackground(QBrush(Qt::lightGray));
             boxParams->setItem(i, 4, it);
 
