@@ -72,12 +72,14 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	hbox1->addWidget(end);
 
 	QGridLayout *gl1 = new QGridLayout();
-	functions = new QComboBox(false);
+	functions = new QComboBox();
+	functions->setEditable(false);
 	functions->addItems(muParserScripting::functionsList(true));
 	gl1->addWidget(functions, 0, 0);
 	btnAddFunction = new QPushButton(tr( "Add function" ));
 	gl1->addWidget(btnAddFunction, 0, 1);
-	boxColumn = new QComboBox(false);
+	boxColumn = new QComboBox();
+	boxColumn->setEditable(false);
 	gl1->addWidget(boxColumn, 1, 0);
 	btnAddCol = new QPushButton(tr( "Add column" ));
 	gl1->addWidget(btnAddCol, 1, 1);
