@@ -69,14 +69,16 @@ multi_layer(NULL)
 	QGridLayout *gl2 = new QGridLayout(gb2);
 	gl2->addWidget(new QLabel(tr("Horizontal")), 0, 0);
 
-	alignHorBox = new QComboBox( false );
+	alignHorBox = new QComboBox();
+	alignHorBox->setEditable(false);
 	alignHorBox->insertItem( tr( "Center" ) );
 	alignHorBox->insertItem( tr( "Left" ) );
 	alignHorBox->insertItem( tr( "Right" ) );
 	gl2->addWidget(alignHorBox, 0, 1);
 
 	gl2->addWidget(new QLabel( tr( "Vertical" )), 1, 0 );
-	alignVertBox = new QComboBox( false );
+	alignVertBox = new QComboBox();
+	alignVertBox->setEditable(false);
 	alignVertBox->insertItem( tr( "Center" ) );
 	alignVertBox->insertItem( tr( "Top" ) );
 	alignVertBox->insertItem( tr( "Bottom" ) );
