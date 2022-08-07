@@ -1,3 +1,5 @@
+**Note**: this is **unofficial** QtiPlot fork with full commit history. Commits after last QtiPlot release (0.9.8.9) licensed under GPL on 2011-11-02 are included up to 2012-05-29 by original author Ion Vasilief. Further commits will be made to improve and 
+
 ============================
 QtiPlot - Installation Notes
 ============================
@@ -12,9 +14,9 @@ General requirements
 --------------------
 You need to install the following libraries:
 
-- `Qt <http://www.trolltech.com/products/qt/index.html>`_ (>= 4.5.0) ,
-- `GSL <http://sources.redhat.com/gsl/>`_,
-- `muParser <http://muparser.sourceforge.net/>`_ (1.32),
+- `Qt <https://www.qt.io/>`_ (>= 4.5.0) ,
+- `GSL (GNU Scientific Library) <https://www.gnu.org/software/gsl/>`_,
+- `muParser <https://beltoforion.de/en/muparser/>`_ (1.32),
 - `zlib <http://www.zlib.net/>`_ and
 - `libpng <http://www.libpng.org/pub/png/libpng.html>`_.
 
@@ -24,7 +26,7 @@ You also need to build and install the slightly modified versions of the
 with QtiPlot in the "3rdparty/qwt" and "3rdparty/qwtplot3d" folders respectively.
 
 For the export of 2D plots to TeX, you need to download and install 
-`QTeXEngine <http://soft.proindependent.com/qtexengine/>`_.
+`QTeXEngine <https://sourceforge.net/projects/qtexengine/>`_.
 
 If you need to convert random grid XYZ datasets to matrices you must download 
 and install
