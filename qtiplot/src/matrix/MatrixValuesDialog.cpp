@@ -72,7 +72,8 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	gl1->setColumnStretch(1, 1);
 	gl1->setColumnStretch(3, 1);
 
-	functions = new QComboBox(false);
+	functions = new QComboBox();
+	functions->setEditable(false);
 	functions->addItems(scriptEnv->mathFunctions());
 	btnAddFunction = new QPushButton(tr( "Add &Function" ));
 	btnAddCell = new QPushButton(tr( "Add Ce&ll" ));
