@@ -1,4 +1,9 @@
-**Note**: this is **unofficial** QtiPlot fork with full commit history. Commits after last QtiPlot release (0.9.8.9) licensed under GPL on 2011-11-02 are included up to 2012-05-29 by original author Ion Vasilief. Further commits will be made to improve and maintain QtiPlot for future use.
+**Note**: this is **unofficial** QtiPlot fork with full commit history. Commits after last QtiPlot release (0.9.8.9) licensed under GPL on 2011-11-02 are included up to 2012-05-29 by original author Ion Vasilief. Further commits may be made to improve and maintain QtiPlot for future use.
+Other forks that are working currently:
+
+- `SciDAVis <https://scidavis.sourceforge.net/>`_
+- `AlphaPlot <https://alphaplot.sourceforge.io/>`_
+- `QtiSAS: SANS framework <https://www.qtisas.com/qtisas>`_
 
 ============================
 QtiPlot - Installation Notes
