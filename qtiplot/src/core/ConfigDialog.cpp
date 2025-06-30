@@ -1444,11 +1444,7 @@ void ConfigDialog::setColorsList(const QList<QColor>& colList, const QStringList
 	colorsList->setRowCount(colors);
 	for (int i = 0; i < colors; i++){
 		QTableWidgetItem *it = new QTableWidgetItem();
-	#if defined(Q_CC_MSVC) || defined(__APPLE__)
 		it->setFlags(it->flags() & (~Qt::ItemIsEditable));
-	#else
-		it->setFlags(!Qt::ItemIsEditable);
-	#endif
 		it->setBackground(QBrush(colList[i]));
 		colorsList->setItem(i, 0, it);
 
