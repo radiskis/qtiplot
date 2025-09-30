@@ -147,14 +147,14 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
     }
     break;
   case Table::Date:
-    if (sipCanConvertToType(item, sipType_QDateTime, 0)) {
+    if (sipCanConvertToType(item, sipFindType("QDateTime"), 0)) {
       int isErr = 0;
-      QDateTime* dateTime = reinterpret_cast<QDateTime*>(sipConvertToType(item, sipType_QDateTime,
+      QDateTime* dateTime = reinterpret_cast<QDateTime*>(sipConvertToType(item, sipFindType("QDateTime"),
                             0/*sipTransferObj*/, 0/*flags*/, 0/*state*/, &isErr));
       if (isErr)
         return 1;
       table->setText(row, col, dateTime->toString(table->columnFormat(col)));
-      delete dateTime;
+      //delete dateTime;
     }
     else {
       if (PyType_Ready(item_type) == 0)
@@ -163,14 +163,14 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
     }
     break;
   case Table::Time:
-    if (sipCanConvertToType(item, sipType_QTime, 0)) {
+    if (sipCanConvertToType(item, sipFindType("QTime"), 0)) {
       int isErr = 0;
-      QTime* time = reinterpret_cast<QTime*>(sipConvertToType(item, sipType_QTime,
+      QTime* time = reinterpret_cast<QTime*>(sipConvertToType(item, sipFindType("QTime"),
                             0/*sipTransferObj*/, 0/*flags*/, 0/*state*/, &isErr));
       if (isErr)
         return 1;
       table->setText(row, col, time->toString(table->columnFormat(col)));
-      delete time;
+      //delete time;
     }
     else {
       if (PyType_Ready(item_type) == 0)
