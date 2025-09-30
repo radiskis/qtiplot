@@ -3317,11 +3317,11 @@ public:
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, *a1, a2, a3))
 %End
-  FFT(QwtPlotCurve *&) /NoDerived/;
+  FFT(QwtPlotCurve *) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0))
 %End
-  FFT(QwtPlotCurve *&, double, double) /NoDerived/;
+  FFT(QwtPlotCurve *, double, double) /NoDerived/;
 %MethodCode
   SIPQTI_APP(new sipFFT(app, a0, a1, a2))
 %End
