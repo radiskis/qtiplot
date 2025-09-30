@@ -71,7 +71,7 @@ private:
 
 	QString d_col_name;
 	int d_nodes;
-	ap::real_2d_array xy;
+	alglib::real_2d_array xy;
 
 	QPushButton* buttonFit;
 	QPushButton* buttonCancel;
