@@ -16044,11 +16044,12 @@ void ApplicationWindow::showDonationDialog()
 	if (hostInfo.error() != QHostInfo::NoError){
 		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(this, tr("QtiPlot - Error"), qtiplotWeb + ": " + hostInfo.errorString());
-		exit(0);
+		QApplication::restoreOverrideCursor();
 	}
-
-	QApplication::restoreOverrideCursor();
-	showDonationsPage();
+	else {
+		QApplication::restoreOverrideCursor();
+		showDonationsPage();
+	}
 }
 
 void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
