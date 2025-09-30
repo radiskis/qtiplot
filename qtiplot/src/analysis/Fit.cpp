@@ -39,6 +39,7 @@
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_cdf.h>
+#include <gsl/gsl_version.h>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -126,10 +127,19 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 			break;
 		}
 	}
-
 	if (status){
+	    // allocate memory and calculate covariance matrix based on residuals
+#if GSL_MAJOR_VERSION == 2
+	    gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
+	    gsl_multifit_fdfsolver_jac(s, J);
+	    gsl_multifit_covar (J, 0.0, covar);
+	    iterations = 0;
+	    // free previousely allocated memory
+	    gsl_matrix_free (J);
+#else
 	    gsl_multifit_covar (s->J, 0.0, covar);
 	    iterations = 0;
+#endif
 	    return s;
 	}
 
@@ -154,10 +164,18 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 
 		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
 	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
-
-	gsl_multifit_covar (s->J, 0.0, covar);
-
+#if GSL_MAJOR_VERSION == 2
+	// allocate memory and calculate covariance matrix based on residuals
+	gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
+	gsl_multifit_fdfsolver_jac(s, J);
+	gsl_multifit_covar (J, 0.0, covar);
 	iterations = iter;
+	// free previousely allocated memory
+	gsl_matrix_free (J);
+#else
+	gsl_multifit_covar (s->J, 0.0, covar);
+	iterations = iter;
+#endif
 	return s;
 }
 
