@@ -41,7 +41,7 @@
 #include <QComboBox>
 #include <QLayout>
 
-#include <idwint.h>
+#include <interpolation.h>
 
 GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent, Qt::WFlags fl )
 	: QDialog( parent, fl ),
@@ -365,26 +365,27 @@ void GriddingDialog::accept()
 	Matrix* m = app->newMatrix(rows, cols);
 	m->setCoordinates(xmin, xmax, ymin, ymax);
 
-	idwinterpolant z;
+	alglib::idwinterpolant z;
+  
 	switch (boxMethod->currentIndex()){
 		case 0:
-			idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+			alglib::idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
 		break;
 		case 1:
-			idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
 		break;
 		case 2:
-			idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
 		break;
 	}
 
-	ap::real_1d_array p;
+	alglib::real_1d_array p;
 	p.setlength(2);
 	for (int i = 0; i < rows; i++){
 		p(1) = ymin + i*ystep;
 		for (int j = 0; j < cols; j++){
 			p(0) = xmin + j*xstep;
-			m->setCell(i, j, idwcalc(z, p));
+			m->setCell(i, j, alglib::idwcalc(z, p));
 		}
 	}
 
@@ -435,20 +436,20 @@ void GriddingDialog::preview()
 	double xstep = fabs(xmax - xmin)/(cols - 1);
 	double ystep = fabs(ymax - ymin)/(rows - 1);
 
-	idwinterpolant z;
+	alglib::idwinterpolant z;
 	switch (boxMethod->currentIndex()){
 		case 0:
-			idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+			alglib::idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
 		break;
 		case 1:
-			idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
 		break;
 		case 2:
-			idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
 		break;
 	}
 
-	ap::real_1d_array p;
+	alglib::real_1d_array p;
 	p.setlength(2);
 
 	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
@@ -456,7 +457,7 @@ void GriddingDialog::preview()
 		p(1) = ymin + i*ystep;
 		for (int j = 0; j < cols; j++){
 			p(0) = xmin + j*xstep;
-			data_matrix[j][i] = idwcalc(z, p);
+			data_matrix[j][i] = alglib::idwcalc(z, p);
 		}
 	}
 

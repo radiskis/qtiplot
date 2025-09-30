@@ -44,7 +44,7 @@
 #include <stdlib.h>
 
 #ifdef HAVE_ALGLIB
-	#include <spline2d.h>
+	#include <interpolation.h>
 #endif
 
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
@@ -1044,7 +1044,7 @@ void MatrixModel::resample(int rows, int cols, int method)
 #ifdef HAVE_ALGLIB
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	ap::real_2d_array oldValues, newValues;
+	alglib::real_2d_array oldValues, newValues;
 	oldValues.setlength(d_rows, d_cols);
 	newValues.setlength(rows, cols);
 
