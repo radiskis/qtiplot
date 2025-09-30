@@ -157,7 +157,8 @@ void Correlation::addResultCurve()
 	d_table->addCol();
 	int n = d_n/2;
 
-    double x_temp[d_n], y_temp[d_n];
+	double *x_temp = new double[d_n];
+	double *y_temp = new double[d_n];
 	for (int i = 0; i<d_n; i++){
 	    double x = i - n;
         x_temp[i] = x;
@@ -192,4 +193,6 @@ void Correlation::addResultCurve()
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();
 	}
+	delete[] x_temp;
+	delete[] y_temp;
 }
