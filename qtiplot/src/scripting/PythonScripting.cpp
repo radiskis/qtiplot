@@ -58,7 +58,7 @@ typedef struct _traceback {
 #include <QMessageBox>
 
 // includes sip.h, which undefines Qt's "slots" macro since SIP 4.6
-#include "sipAPIqti.h"
+#include "sip.h"
 extern "C" void initqti();
 
 const char* PythonScripting::langName = "Python";
@@ -359,10 +359,11 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 	if(!val) return false;
 	PyObject *pyobj=NULL;
 
-	PyGILState_STATE state = PyGILState_Ensure();
+	sipAPIDef sip_API;
 
-	sipWrapperType * klass = sipFindClass(val->className());
-	if (klass) pyobj = sipConvertFromInstance(val, klass, NULL);
+	PyGILState_STATE state = PyGILState_Ensure();
+	const auto klass = sip_API.api_find_class(val->className());
+	if (klass) pyobj = sip_API.api_convert_from_type(val, klass->wt_td, NULL);
 
 	if (pyobj) {
 		if (dict)
