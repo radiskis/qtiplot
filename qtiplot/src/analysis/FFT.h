@@ -52,6 +52,8 @@ public:
 	Matrix *realOutputMatrix(){return d_re_out_matrix;}
 	Matrix *imaginaryOutputMatrix(){return d_im_out_matrix;}
 
+    bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1, bool unused = false);
+
 private:
     void init();
     void output();
@@ -59,8 +61,6 @@ private:
 	void fftCurve();
 	void fftTable();
 	void fftMatrix();
-
-    bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1);
 
     double d_sampling;
     //! Flag telling if an inverse FFT must be performed.

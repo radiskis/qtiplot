@@ -353,7 +353,7 @@ void FFT::outputGraphs()
 	ml->arrangeLayers(false, false);
 }
 
-bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& imagColName, int from, int to)
+bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& imagColName, int from, int to, bool unused)
 {
 	d_init_err = true;
 
