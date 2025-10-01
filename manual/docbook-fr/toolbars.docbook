@@ -987,7 +987,7 @@ La <emphasis>barre d'outils Fichier</emphasis> fournit en un clic, un accès aux
 <table tocentry="1" pgwide="1" frame="sides">
 <title>Les commandes de la barre d'outils Colonnes.</title>
 <tgroup cols="4">
-  <colspec colname="icon" colwidth="1*" align="center" valign="middle"/>
+  <colspec colname="icon" colwidth="1*" align="center"/>
   <colspec colname="command" colwidth="5*" align="left"/>
   <colspec colname="key" colwidth="2*" align="center"/>
   <colspec colname="description" colwidth="10*" align="justify"/>

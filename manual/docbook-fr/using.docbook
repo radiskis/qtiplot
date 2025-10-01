@@ -83,6 +83,7 @@ Vous pouvez aussi ajouter des lignes aux grilles des axes X et Y. Enfin, un doub
 </para>
 
 <para>Il y a plusieurs types de courbes qui peuvent être tracées à partir d'une table. Ils sont présentés dans le &plot-menu-lnk;</para>.
+
 <para>Il est aussi possible d'utiliser jusqu'à quatres axes :</para>
 
 <figure id="fig-two-axes-plot">
