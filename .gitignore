@@ -7,6 +7,8 @@ Makefile
 3rdparty/qwt/src/moc/
 build.conf
 qtiplot/qtiplot.app/
-qtiplot-manual-en.pdf
 tmp/
+manual/html/*.html
+manual/html/*.adp
+manual/*.pdf
 .DS_Store
