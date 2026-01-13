@@ -129,9 +129,9 @@ QString ScaleDraw::labelString(double value) const
 				locale = d_plot->multiLayer()->locale();
 			if ((d_numeric_format == Superscripts)||(d_numeric_format == SuperscriptsGER)){
 				QString txt = locale.toString(transformValue(value), 'e', d_prec);
-				QStringList list = txt.split("e", QString::SkipEmptyParts);
+				QStringList list = txt.split("e", Qt::SkipEmptyParts);
 				if (list.isEmpty())
-					return QString::null;
+					return QString();
 
 				if (list[0].toDouble() == 0.0)
 					return "0";
@@ -282,9 +282,9 @@ QString ScaleDraw::labelString(double value) const
 		{
 			const QwtScaleDiv scDiv = scaleDiv();
 			if (!scDiv.contains (value) || floor(value) < value)
-				return QString::null;
+				return QString();
 
-			QwtValueList ticks = scDiv.ticks (QwtScaleDiv::MajorTick);
+			QList<double> ticks = scDiv.ticks (QwtScaleDiv::MajorTick);
 
 			double break_offset = 0;
 			ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(axis());
@@ -324,7 +324,7 @@ QString ScaleDraw::labelString(double value) const
 			}
 
 			if (ticks.size() < 2)
-				return QString::null;
+				return QString();
 
         	double step = ticks[1] - ticks[0];
         	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);
@@ -338,11 +338,11 @@ QString ScaleDraw::labelString(double value) const
 			if (index >= 0 && index < (int)d_text_labels.count())
 				return d_text_labels[index];
 			else
-				return QString::null;
+				return QString();
 		break;
 		}
 	}
-	return QString::null;
+	return QString();
 }
 
 void ScaleDraw::drawLabel(QPainter *painter, double value) const
@@ -354,7 +354,7 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() > value)
 		return;
 
-	QwtValueList majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
+	QList<double> majTicks = scaleDiv().ticks(QwtScaleDiv::MajorTick);
 	if (majTicks.contains(value)){
 		switch (d_show_ticks_policy){
 			case ShowAll:
@@ -419,7 +419,7 @@ double ScaleDraw::transformValue(double value) const
 			else if (d_formula.contains("y", Qt::CaseInsensitive))
 				parser.DefineVar("y", &value);
 
-			parser.SetExpr(d_formula.lower().ascii());
+			parser.SetExpr(d_formula.lower().toStdWString());
 			lbl = parser.Eval();
         }
         catch(mu::ParserError &){
@@ -519,7 +519,7 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 	}
 
 	QwtScaleDiv scDiv = scaleDiv();
-	QwtValueList majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
+	QList<double> majTicks = scDiv.ticks(QwtScaleDiv::MajorTick);
 	if (majTicks.contains(value)){
 		if (d_majTicks == In || d_majTicks == None)
 			return;
@@ -543,11 +543,11 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 		}
 	}
 
-    QwtValueList medTicks = scDiv.ticks(QwtScaleDiv::MediumTick);
+    QList<double> medTicks = scDiv.ticks(QwtScaleDiv::MediumTick);
     if (medTicks.contains(value) && (d_minTicks == In || d_minTicks == None))
         return;
 
-    QwtValueList minTicks = scDiv.ticks(QwtScaleDiv::MinorTick);
+    QList<double> minTicks = scDiv.ticks(QwtScaleDiv::MinorTick);
     if (minTicks.contains(value) && (d_minTicks == In || d_minTicks == None))
         return;
 
@@ -656,7 +656,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 
 	int majLen = d_plot->majorTickLength();
 	if (d_majTicks >= Both && majLen > 0){
-		const QwtValueList &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
+		const QList<double> &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
 		for (int i = 0; i < (int)ticks.count(); i++){
 			const double v = ticks[i];
 			if (this->scaleDiv().contains(v))
@@ -667,7 +667,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 	int minLen = d_plot->minorTickLength();
 	if (d_minTicks >= Both && minLen > 0){
 		for (int tickType = QwtScaleDiv::MinorTick; tickType < QwtScaleDiv::MajorTick; tickType++){
-			const QwtValueList &ticks = this->scaleDiv().ticks(tickType);
+			const QList<double> &ticks = this->scaleDiv().ticks(tickType);
 			for (int i = 0; i < (int)ticks.count(); i++){
 				const double v = ticks[i];
 				if ( this->scaleDiv().contains(v) )

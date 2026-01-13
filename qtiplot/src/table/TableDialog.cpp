@@ -44,11 +44,11 @@
 #include <QRegExp>
 #include <QDate>
 
-TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WFlags fl )
+TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl),
     d_table(t)
 {
-    setName( "TableDialog" );
+    setObjectName( "TableDialog" );
     setWindowTitle( tr( "QtiPlot - Column options" ) );
     setSizeGripEnabled(true);
 	setAttribute(Qt::WA_DeleteOnClose);

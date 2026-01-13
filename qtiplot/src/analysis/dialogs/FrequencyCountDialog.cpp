@@ -43,7 +43,7 @@
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort_vector.h>
 
-FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::WFlags fl )
+FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ),
     d_source_table(t),
     d_result_table(NULL),
@@ -65,12 +65,11 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::WFlags
         int col = -1;
         int sr = 0;
         int er = t->numRows();
-        int ts = t->table()->currentSelection();
-        if (ts >= 0){
-            Q3TableSelection sel = t->table()->selection(ts);
-            sr = sel.topRow();
-            er = sel.bottomRow() + 1;
-            col = sel.leftCol();
+        Q3TableSelection sel = d_source_table->getSelection();
+        if (!d_source_table->table()->selectedRanges().isEmpty()){
+            sr = sel.topRow;
+            er = sel.bottomRow + 1;
+            col = sel.leftCol;
             d_col_name = t->colName(col);
         }
         int size = 0;

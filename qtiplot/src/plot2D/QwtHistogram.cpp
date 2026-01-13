@@ -71,9 +71,9 @@ void QwtHistogram::copy(QwtHistogram *h)
 	d_end = h->d_end;
 }
 
-QwtDoubleRect QwtHistogram::boundingRect() const
+QRectF QwtHistogram::boundingRect() const
 {
-	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	QRectF rect = QwtPlotCurve::boundingRect();
 	rect.setLeft(rect.left() - x(1));
 	rect.setRight(rect.right() + x(dataSize() - 1));
 	rect.setTop(0);
@@ -133,7 +133,7 @@ void QwtHistogram::loadData()
 			Y[i] = 0;
 			X[i] = 0;
 		}
-		setData(X, Y.data(), 2);
+		setSamples(X, Y.data(), 2);
 		return;
 	}
 
@@ -186,7 +186,7 @@ void QwtHistogram::loadData()
 		gsl_histogram_get_range (h, i, &lower, &upper);
 		X[i] = lower;
 	}
-	setData(X, Y.data(), n);
+	setSamples(X, Y.data(), n);
 
 	d_mean = gsl_histogram_mean(h);
 	d_standard_deviation = gsl_histogram_sigma(h);
@@ -254,7 +254,7 @@ void QwtHistogram::loadDataFromMatrix()
 		X[i] = lower;
 	}
 
-	setData(X, Y, n);
+	setSamples(X, Y, n);
 
 	d_mean = gsl_histogram_mean(h);
 	d_standard_deviation = gsl_histogram_sigma(h);
@@ -294,7 +294,7 @@ void QwtHistogram::loadLabels()
 
 		int x_axis = xAxis();
 		int y_axis = yAxis();
-		m->setAxis(x_axis, y_axis);
+		m->setAxes(x_axis, y_axis);
 
 		QSize size = t.textSize();
 		int dx = int(d_labels_x_offset*0.01*size.height());

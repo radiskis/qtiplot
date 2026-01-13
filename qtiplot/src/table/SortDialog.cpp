@@ -35,7 +35,7 @@
 #include <QLayout>
 #include <QApplication>
 
-SortDialog::SortDialog( QWidget* parent, Qt::WFlags fl )
+SortDialog::SortDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - Sorting Options"));

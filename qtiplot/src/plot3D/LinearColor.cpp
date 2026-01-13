@@ -54,7 +54,7 @@ Qwt3D::RGBA LinearColor::operator()(double, double, double z) const
 		return colors_[index];
 	}
 
-	const QwtDoubleInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtDoubleInterval(zmin, zmax);
+	const QwtInterval range = d_color_map.intensityRange().isValid() ? d_color_map.intensityRange() : QwtInterval(zmin, zmax);
 	QRgb color = d_color_map.rgb(range, z);
 	return RGBA(qRed(color)/255., qGreen(color)/255., qBlue(color)/255., d_alpha);
 }
@@ -88,16 +88,16 @@ std::vector<double> LinearColor::colorStops() const
 	if (colors_.size() > 0)
 		return stops;
 
-	QwtDoubleInterval range = d_color_map.intensityRange();
+	QwtInterval range = d_color_map.intensityRange();
 	if (!range.isValid()){
 		double zmin, zmax;
 		data_->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
-		range = QwtDoubleInterval(zmin, zmax);
+		range = QwtInterval(zmin, zmax);
 	}
 	double l = range.width();
 	double zmin = range.minValue();
 	stops.push_back(zmin);
-	QwtArray<double> values = d_color_map.colorStops();
+	QVector<double> values = d_color_map.colorStops();
 	for (int i = 0; i < values.size(); i++){
 		double val = zmin + values[i]*l;
 		if (stops.back() != val)
@@ -115,7 +115,7 @@ Qwt3D::ColorVector& LinearColor::createVector(Qwt3D::ColorVector& vec) const
 		return vec;
 	}
 
-	const QwtDoubleInterval range = d_color_map.intensityRange();
+	const QwtInterval range = d_color_map.intensityRange();
 	double zmin = range.minValue();
 
 	vec.clear();

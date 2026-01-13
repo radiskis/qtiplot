@@ -52,7 +52,7 @@ class GriddingDialog : public QDialog
     Q_OBJECT
 
 public:
-	GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	~GriddingDialog();
 
 private slots:

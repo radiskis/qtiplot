@@ -40,7 +40,7 @@
 #include <QLabel>
 #include <QComboBox>
 
-FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WFlags fl )
+FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), filter_type(type)
 {
 	setObjectName( "FilterDialog" );
@@ -130,7 +130,7 @@ void FilterDialog::filter()
 		}
 	}
 
-	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(boxName->currentText()), filter_type);
+	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (PlotCurve *)graph->curve(boxName->currentText()), filter_type);
 	if (filter_type == FFTFilter::BandPass){
 		f->setBand(from, to);
 		f->enableOffset(boxOffset->isChecked());

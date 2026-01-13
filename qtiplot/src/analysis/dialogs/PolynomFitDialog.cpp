@@ -43,7 +43,7 @@
 #include <QLabel>
 #include <QComboBox>
 
-PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WFlags fl )
+PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
 {
     setObjectName( "PolynomFitDialog" );
@@ -123,13 +123,13 @@ void PolynomFitDialog::fit()
 		QMessageBox::critical(this, tr("QtiPlot - Warning"),
 				tr("The curve <b> %1 </b> doesn't exist anymore! Operation aborted!").arg(curveName));
 		boxName->clear();
-		boxName->insertStringList(curvesList);
+		boxName->addItems(curvesList);
 		return;
 	}
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-	if (fitter->setDataFromCurve((QwtPlotCurve *)graph->curve(curveName), boxStart->value(), boxEnd->value())){
+	if (fitter->setDataFromCurve((PlotCurve *)graph->curve(curveName), boxStart->value(), boxEnd->value())){
 		fitter->setColor(boxColor->color());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
@@ -158,17 +158,17 @@ void PolynomFitDialog::setGraph(Graph *g)
 void PolynomFitDialog::activateCurve(const QString& s)
 {
 	double start, end;
-	int n_points = graph->range((QwtPlotCurve *)graph->curve(s), &start, &end);
+	int n_points = graph->range((PlotCurve *)graph->curve(s), &start, &end);
 
 	boxStart->setValue(start);
 	boxEnd->setValue(end);
-	boxPoints->setValue(QMAX(n_points, 100));
+	boxPoints->setValue(qMax(n_points, 100));
 }
 
 void PolynomFitDialog::changeDataRange()
 {
 	double start = graph->selectedXStartValue();
 	double end = graph->selectedXEndValue();
-	boxStart->setValue(QMIN(start, end));
-	boxEnd->setValue(QMAX(start, end));
+	boxStart->setValue(qMin(start, end));
+	boxEnd->setValue(qMax(start, end));
 }

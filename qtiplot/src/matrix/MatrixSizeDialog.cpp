@@ -38,7 +38,7 @@
 #include <QMessageBox>
 #include <QLayout>
 
-MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WFlags fl )
+MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
 	d_matrix(m)
 {

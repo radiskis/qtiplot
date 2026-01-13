@@ -60,6 +60,13 @@ public:
 	double yOffset(){return d_y_offset;};
 	void setYOffset(double dy){d_y_offset = dy;};
 
+	enum CurveType {Yfx, Xfy};
+	int curveType(){return d_curve_type;};
+	void setCurveType(int t){d_curve_type = t;};
+
+	double x(int i) const {return sample(i).x();};
+	double y(int i) const {return sample(i).y();};
+
 	bool sideLinesEnabled(){return d_side_lines;};
 	void enableSideLines(bool on){d_side_lines = on;};
 
@@ -72,7 +79,7 @@ public:
 	//! Returns the number of symbols not to be drawn
 	int skipSymbolsCount(){return d_skip_symbols;};
 
-	QwtDoubleRect boundingRect() const;
+	QRectF boundingRect() const;
 
 protected:
 	virtual void drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
@@ -88,6 +95,7 @@ protected:
 	int d_type;
 	// The plot style of the curve
 	int d_plot_style;
+	int d_curve_type;
 	double d_x_offset, d_y_offset;
 	bool d_side_lines;
 	int d_skip_symbols;

@@ -705,7 +705,7 @@ void EnrichmentDialog::apply()
 	else if (textPage && tabWidget->currentPage() == textPage){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
 		if (l)
-			l->setText(textEditBox->text());
+			l->setText(texteditBox->toPlainText());
 
 		textFormatApplyTo();
 		if (d_app)
@@ -1332,7 +1332,7 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 
 void EnrichmentDialog::displayCompileError(QProcess::ProcessError error)
 {
-	QString process = QString::null;
+	QString process = QString();
 	if (compileProcess)
 		process = tr("LaTeX compile process");
 	else if (dvipngProcess)

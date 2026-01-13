@@ -33,14 +33,14 @@
 
 #include <gsl/gsl_fft_halfcomplex.h>
 
-FFTFilter::FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+FFTFilter::FFTFilter(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
 {
 	setDataFromCurve(c);
 	init(m);
 }
 
-FFTFilter::FFTFilter(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+FFTFilter::FFTFilter(ApplicationWindow *parent, PlotCurve *c, double start, double end, int m)
 : Filter(parent, c)
 {
 	setDataFromCurve(c, start, end);

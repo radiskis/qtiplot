@@ -46,7 +46,7 @@
 using std::ifstream;
 using std::string;
 
-MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const QString& name, Qt::WFlags f):
+MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const QString& name, Qt::WindowFlags f):
 		QMdiSubWindow (app, f),
 		d_app(app),
 		d_folder(app->currentFolder()),
@@ -185,7 +185,7 @@ bool MdiSubWindow::eventFilter(QObject *object, QEvent *e)
 	if (e->type() == QEvent::Move && object == widget()){
 		QObjectList lst = children();
 		foreach(QObject *o, lst){
-			if (o->isA("QMenu") && d_app){
+			if (o->inherits("QMenu") && d_app){
 			    d_app->customWindowTitleBarMenu(this, (QMenu *)o);
 				break;
 			}
@@ -279,7 +279,7 @@ QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commen
 
 	QFile f(fname);
  	if(!f.open(QIODevice::ReadOnly))
-  		return QString::null;
+  		return QString();
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	QTextStream t(&f);
@@ -332,7 +332,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 	ifstream f;
  	f.open(fname.toAscii());
  	if(!f)
-  		return QString::null;
+  		return QString();
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -346,7 +346,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 	}
 
 	bool validCommentString = !commentString.isEmpty();
-	string comment = commentString.ascii();
+	string comment = commentString.toStdWString();
 	rows = 0;
 	if (maxRows <= 0){//read all valid lines
 		while(f.good() && !f.eof()){//count the number of valid rows

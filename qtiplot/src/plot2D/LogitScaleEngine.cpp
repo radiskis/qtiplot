@@ -51,7 +51,7 @@ void LogitScaleEngine::autoScale(int,
     if ( x1 > x2 )
         qSwap(x1, x2);
 
-    QwtDoubleInterval interval(0.1, 99.99);
+    QwtInterval interval(0.1, 99.99);
 
     if (interval.width() == 0.0)
         interval = buildInterval(interval.minValue());
@@ -80,7 +80,7 @@ void LogitScaleEngine::autoScale(int,
 QwtScaleDiv LogitScaleEngine::divideScale(double x1, double x2,
     int, int, double stepSize) const
 {
-    QwtDoubleInterval interval = QwtDoubleInterval(x1, x2).normalized();
+    QwtInterval interval = QwtInterval(x1, x2).normalized();
     interval = interval.limited(0.1, 99.99);
 
     if (interval.width() <= 0 )
@@ -92,7 +92,7 @@ QwtScaleDiv LogitScaleEngine::divideScale(double x1, double x2,
 
     QwtScaleDiv scaleDiv;
     if ( stepSize != 0.0 ){
-        QwtValueList ticks[QwtScaleDiv::NTickTypes];
+        QList<double> ticks[QwtScaleDiv::NTickTypes];
 		buildTicks(interval, (int)stepSize, ticks);
         scaleDiv = QwtScaleDiv(interval, ticks);
     }
@@ -104,20 +104,20 @@ QwtScaleDiv LogitScaleEngine::divideScale(double x1, double x2,
 }
 
 void LogitScaleEngine::buildTicks(
-    const QwtDoubleInterval& interval, int stepSize,
-    QwtValueList ticks[QwtScaleDiv::NTickTypes]) const
+    const QwtInterval& interval, int stepSize,
+    QList<double> ticks[QwtScaleDiv::NTickTypes]) const
 {
     ticks[QwtScaleDiv::MajorTick] = buildMajorTicks(interval, stepSize);
-    ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+    ticks[QwtScaleDiv::MinorTick] = QList<double>();
 
     for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
         ticks[i] = strip(ticks[i], interval);
 }
 
-QwtValueList LogitScaleEngine::buildMajorTicks(
-	const QwtDoubleInterval &, int stepSize) const
+QList<double> LogitScaleEngine::buildMajorTicks(
+	const QwtInterval &, int stepSize) const
 {
-	QwtValueList baseTicks;
+	QList<double> baseTicks;
 
 	baseTicks += 0.01;
 	baseTicks += 0.1;
@@ -127,7 +127,7 @@ QwtValueList LogitScaleEngine::buildMajorTicks(
 	baseTicks += 25;
 	baseTicks += 50;
 
-	QwtValueList ticks;
+	QList<double> ticks;
 
 	int size = baseTicks.size();
 	for (int i = 0; i < size; i += stepSize)

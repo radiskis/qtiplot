@@ -48,7 +48,7 @@
 
 #include <gsl/gsl_statistics.h>
 
-ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
+ErrDialog::ErrDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -107,7 +107,7 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WFlags fl )
 	standardErrorBox = new QRadioButton();
 	buttonGroup1->addButton(standardErrorBox);
 	gridLayout->addWidget(standardErrorBox, 3, 0 );
-	gridLayout->setColStretch(1, 1);
+	gridLayout->setColumnStretch(1, 1);
 
 	groupBox3 = new QGroupBox();
 	vbox1->addWidget(groupBox3);

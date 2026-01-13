@@ -31,7 +31,7 @@
 
 #include <Graph.h>
 
-class QAbstractButton;
+class qAbstractButton;
 class QDialogButtonBox;
 class QTableWidget;
 class QStackedWidget;
@@ -54,7 +54,7 @@ class FunctionDialog : public QDialog
     Q_OBJECT
 
 public:
-	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WFlags fl = 0);
+	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WindowFlags fl = 0);
 	~FunctionDialog();
 
     void setCurveToModify(Graph *g, int curve);
@@ -80,7 +80,7 @@ private slots:
 	void showPolarThetaLog();
 	void setActiveEditor(ScriptEdit *edit){d_active_editor = edit;};
 	void guessConstants();
-	void buttonClicked(QAbstractButton *);
+	void buttonClicked(qAbstractButton *);
 	void clearList();
 	void setUserFunctionParameters();
 

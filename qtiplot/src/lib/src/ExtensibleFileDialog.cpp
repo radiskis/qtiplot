@@ -34,7 +34,7 @@
 #include <QUrl>
 #include <QComboBox>
 
-ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::WFlags flags)
+ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::WindowFlags flags)
 	: QFileDialog(parent, flags)
 {
 	d_extension = 0;

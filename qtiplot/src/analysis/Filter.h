@@ -32,9 +32,9 @@
 #include <QObject>
 
 #include <ApplicationWindow.h>
+#include "PlotCurve.h"
 
 class MultiLayer;
-class QwtPlotCurve;
 class Graph;
 class Table;
 class Matrix;
@@ -48,15 +48,15 @@ class Filter : public QObject
         Filter(ApplicationWindow *parent, Table *t = 0, const QString& name = QString());
 		Filter(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
 		Filter(ApplicationWindow *parent, Matrix *m, const QString& name = QString());
-		Filter(ApplicationWindow *parent, QwtPlotCurve *c);
+		Filter(ApplicationWindow *parent, PlotCurve *c);
 		~Filter();
 
 		//! Actually does the job. Should be reimplemented in derived classes.
 		virtual bool run();
 
-        virtual void setDataCurve(QwtPlotCurve *curve, double start, double end);
-        bool setDataFromCurve(QwtPlotCurve *c);
-        bool setDataFromCurve(QwtPlotCurve *c, double from, double to);
+        virtual void setDataCurve(PlotCurve *curve, double start, double end);
+        bool setDataFromCurve(PlotCurve *c);
+        bool setDataFromCurve(PlotCurve *c, double from, double to);
 		bool setDataFromCurve(const QString& curveTitle, Graph *g = 0);
 		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
 
@@ -103,7 +103,7 @@ class Filter : public QObject
 		//! Returns a pointer to the graph where the result curve should be displayed
 		Graph *outputGraph(){return d_output_graph;};
 		//! Returns a pointer to the plot curve created to display the results
-		QwtPlotCurve *resultCurve(){return d_result_curve;};
+		PlotCurve *resultCurve(){return d_result_curve;};
 
         bool error(){return d_init_err;};
 		void setError(bool on = true){d_init_err = on;};
@@ -120,14 +120,14 @@ class Filter : public QObject
 
         //! Sets x and y to the curve points between start and end. Memory will be allocated with new double[].
   	    //! Returns the number of points within range == size of x and y arrays.
-  	    virtual int curveData(QwtPlotCurve *c, double start, double end, double **x, double **y);
+  	    virtual int curveData(PlotCurve *c, double start, double end, double **x, double **y);
         //! Same as curveData, but sorts the points by their x value.
-        virtual int sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y);
+        virtual int sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y);
 
-		int curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd);
+		int curveRange(PlotCurve *c, double start, double end, int *iStart, int *iEnd);
 
         //! Adds the result curve to the target output plot window. Creates a hidden table and frees the input data from memory.
-        QwtPlotCurve* addResultCurve(double *x, double *y);
+        PlotCurve* addResultCurve(double *x, double *y);
 
         //! Performs checks and returns the index of the source data curve if OK, -1 otherwise
         int curveIndex(const QString& curveTitle, Graph *g);
@@ -177,10 +177,10 @@ class Filter : public QObject
 		int d_max_iterations;
 
 		//! The curve to be analysed
-		QwtPlotCurve *d_curve;
+		PlotCurve *d_curve;
 
 		//! The resulting curve
-		QwtPlotCurve *d_result_curve;
+		PlotCurve *d_result_curve;
 
 		//! Precision (number of significant digits) used for the results output
 		int d_prec;

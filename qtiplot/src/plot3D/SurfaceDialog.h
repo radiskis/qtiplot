@@ -47,7 +47,7 @@ class SurfaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    SurfaceDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    SurfaceDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 
 public slots:
 	void setFunction(Graph3D *);

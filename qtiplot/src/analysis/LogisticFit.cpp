@@ -35,14 +35,14 @@ LogisticFit::LogisticFit(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
-LogisticFit::LogisticFit(ApplicationWindow *parent, QwtPlotCurve *c)
+LogisticFit::LogisticFit(ApplicationWindow *parent, PlotCurve *c)
 : Fit(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-LogisticFit::LogisticFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+LogisticFit::LogisticFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Fit(parent, c)
 {
 	init();

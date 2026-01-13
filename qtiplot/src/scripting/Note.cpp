@@ -36,7 +36,7 @@
 #include <QPushButton>
 #include <QInputDialog>
 
-Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
+Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 		 : MdiSubWindow(label, parent, name, f), d_env(env),
 		 d_line_number_enabled(parent->d_note_line_numbers)
 {
@@ -245,10 +245,10 @@ void Note::setTabStopWidth(int length)
 	}
 }
 
-void Note::setName(const QString& name)
+void Note::setObjectName(const QString& name)
 {
 	currentEditor()->setObjectName(name);
-	MdiSubWindow::setName(name);
+	MdiSubWindow::setObjectName(name);
 }
 
 void Note::modifiedNote()

@@ -41,6 +41,7 @@
 #include <QGroupBox>
 #include <QSpinBox>
 #include <QLayout>
+#include <QCloseEvent>
 #include <QPushButton>
 #include <QListWidget>
 #include <QHeaderView>
@@ -74,7 +75,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	if (type == StatisticTest::AnovaTest && twoWay){
 		setWindowTitle(tr("Two Way ANOVA"));
 		selectedSamples->setHeaderLabels (QStringList() << tr("Sample") << tr("Factor A Level") << tr("Factor B Level"));
-		selectedSamples->header()->setResizeMode(QHeaderView::ResizeToContents);
+		selectedSamples->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 		selectedSamples->setUniformRowHeights(true);
 
 		QString levelA = tr("A");
@@ -112,13 +113,13 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 
 	QVBoxLayout* vl1 = new QVBoxLayout();
 	btnAdd = new QPushButton();
-	btnAdd->setPixmap( QPixmap(":/next.png") );
+	btnAdd->setIcon( QIcon(":/next.png") );
 	btnAdd->setFixedWidth (35);
 	btnAdd->setFixedHeight (30);
 	vl1->addWidget(btnAdd);
 
 	btnRemove = new QPushButton();
-	btnRemove->setPixmap( QPixmap(":/prev.png") );
+	btnRemove->setIcon( QIcon(":/prev.png") );
 	btnRemove->setFixedWidth (35);
 	btnRemove->setFixedHeight(30);
 	vl1->addWidget(btnRemove);
@@ -361,7 +362,7 @@ void AnovaDialog::acceptNormalityTest()
 		if (!item)
 			continue;
 
-		QString s = QString::null;
+		QString s = QString();
 		ShapiroWilkTest *sw = new ShapiroWilkTest(app, item->text(0));
 		unsigned int n = sw->dataSize();
 		if (n >= 3 && n <= 5000){

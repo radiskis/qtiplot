@@ -58,7 +58,7 @@ public:
 
 	int levels(){return (int)contourLevels().size();};
 	void setLevelsNumber(int levels);
-	void setContourLevels (const QwtValueList & levels);
+	void setContourLevels (const QList<double> & levels);
 
 	bool hasColorScale();
 	int colorScaleAxis(){return color_axis;};
@@ -80,7 +80,7 @@ public:
 
 	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
 
-	virtual QwtDoubleRect boundingRect() const;
+	virtual QRectF boundingRect() const;
 
 	bool hasLabels(){return d_show_labels;};
 	QList <PlotMarker *> labelsList(){return d_labels_list;};
@@ -124,10 +124,10 @@ public:
     bool setUseMatrixFormula(bool on = true);
 
     void updateData();
-	QwtDoubleInterval range() const;
+	QwtInterval range() const;
 
 protected:
-	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtDoubleRect &rect) const;
+	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &rect) const;
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();
@@ -270,12 +270,12 @@ public:
 		return new MatrixData(d_matrix);
     }
 
-    virtual QwtDoubleInterval range() const
+    virtual QwtInterval range() const
     {
-        return QwtDoubleInterval(min_z, max_z);
+        return QwtInterval(min_z, max_z);
     }
 
-	virtual QSize rasterHint (const QwtDoubleRect &) const
+	virtual QSize rasterHint (const QRectF &) const
 	{
 		return QSize(n_cols, n_rows);
 	}

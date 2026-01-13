@@ -47,7 +47,7 @@
 #include <QLocale>
 #include <QTextStream>
 
-Fit::Fit( ApplicationWindow *parent, QwtPlotCurve *c)
+Fit::Fit( ApplicationWindow *parent, PlotCurve *c)
 : Filter( parent, c)
 {
 	init();
@@ -79,11 +79,11 @@ void Fit::init()
 	d_points = 100;
 	d_max_iterations = 1000;
 	d_curve = 0;
-	d_formula = QString::null;
-	d_result_formula = QString::null;
-	d_explanation = QString::null;
+	d_formula = QString();
+	d_result_formula = QString();
+	d_explanation = QString();
 	d_weighting = NoWeighting;
-	weighting_dataset = QString::null;
+	weighting_dataset = QString();
 	is_non_linear = true;
 	d_results = 0;
 	d_errors = 0;
@@ -262,7 +262,7 @@ bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yCo
 		return false;
 }
 
-void Fit::setDataCurve(QwtPlotCurve *curve, double start, double end)
+void Fit::setDataCurve(PlotCurve *curve, double start, double end)
 {
     Filter::setDataCurve(curve, start, end);
 
@@ -463,7 +463,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 	{
 		case NoWeighting:
 			{
-				weighting_dataset = QString::null;
+				weighting_dataset = QString();
 				for (int i=0; i<d_n; i++)
 					d_w[i] = 1.0;
 			}
@@ -662,7 +662,7 @@ double* Fit::residuals()
 	return d_residuals;
 }
 
-QwtPlotCurve* Fit::showResiduals()
+PlotCurve* Fit::showResiduals()
 {
 	if (!d_residuals){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
@@ -692,12 +692,12 @@ QwtPlotCurve* Fit::showResiduals()
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_residue");
-	c->setData(d_x, d_residuals, d_n);
+	c->setSamples(d_x, d_residuals, d_n);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 1), 1));
 
 	d_output_graph->insertPlotItem(c, Graph::Line);
     d_output_graph->updatePlot();
-	return (QwtPlotCurve*)c;
+	return (PlotCurve*)c;
 }
 
 void Fit::showConfidenceLimits(double confidenceLevel)
@@ -786,12 +786,12 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LCL");
-	c->setData(X, lcl, points);
+	c->setSamples(X, lcl, points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UCL");
-	c->setData(X, ucl, points);
+	c->setSamples(X, ucl, points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
@@ -907,12 +907,12 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LPL");
-	c->setData(X, lcl, points);
+	c->setSamples(X, lcl, points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UPL");
-	c->setData(X, ucl, points);
+	c->setSamples(X, ucl, points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
@@ -1045,11 +1045,11 @@ FunctionCurve * Fit::insertFitFunctionCurve(const QString& name, int penWidth, b
 	QString title = d_output_graph->generateFunctionName(name);
 	FunctionCurve *c = new FunctionCurve(FunctionCurve::Normal, title);
 	c->setPen(QPen(d_curveColor, penWidth));
-	c->setRange(QMIN(d_from, d_to), QMAX(d_from, d_to));
+	c->setRange(qMin(d_from, d_to), qMax(d_from, d_to));
 	c->setFormula(d_formula);
 	if (d_curve){
 		c->setCurveType(d_curve->curveType());
-		c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+		c->setAxes(d_curve->xAxis(), d_curve->yAxis());
 	}
 
 	for (int j = 0; j < d_p; j++)

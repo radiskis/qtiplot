@@ -413,7 +413,7 @@ void PieCurve::loadData()
 	}
 	X.resize(size);
 	d_table_rows.resize(size);
-	setData(X.data(), X.data(), size);
+	setSamples(X.data(), X.data(), size);
 
 	int labels = d_texts_list.size();
 	//If there are no labels (initLabels() wasn't called yet) or if we have enough labels: do nothing!
@@ -482,7 +482,7 @@ void PieCurve::clearLabels()
 
 PieLabel::PieLabel(Graph *plot, PieCurve *pie):LegendWidget(plot),
 	d_pie_curve(pie),
-	d_custom_text(QString::null)
+	d_custom_text(QString())
 {
 	setBackgroundColor(QColor(255, 255, 255, 0));
 	setFrameStyle(0);
@@ -499,7 +499,7 @@ QString PieLabel::customText()
 
 void PieLabel::closeEvent(QCloseEvent* e)
 {
-    setText(QString::null);
+    setText(QString());
     hide();
 	e->ignore();
 }
@@ -510,7 +510,7 @@ QString PieLabel::saveToString()
 		return LegendWidget::saveToString();
 
 	if (text().isEmpty())
-		return QString::null;
+		return QString();
 
 	QString s = "<PieText>\n";
 	s += "<index>" + QString::number(d_pie_curve->labelsList().indexOf(this)) + "</index>\n";

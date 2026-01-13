@@ -67,7 +67,7 @@ Description          : Axes preferences dialog
 #define M_PI	3.141592653589793238462643
 #endif
 
-AxesDialog::AxesDialog( QWidget* parent, Qt::WFlags fl )
+AxesDialog::AxesDialog( QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
 {
     setWindowTitle( tr( "QtiPlot - General Plot Options" ) );
@@ -776,13 +776,13 @@ void AxesDialog::initFramePage()
 void AxesDialog::changeMinorTicksLength (int minLength)
 {
 	applyCanvasFormat();
-	boxMajorTicksLength->setMinValue(minLength);
+	boxMajorTicksLength->setMinimum(minLength);
 }
 
 void AxesDialog::changeMajorTicksLength (int majLength)
 {
 	applyCanvasFormat();
-	boxMinorTicksLength->setMaxValue(majLength);
+	boxMinorTicksLength->setMaximum(majLength);
 }
 
 void AxesDialog::showAxisFormatOptions(int format)
@@ -1018,7 +1018,7 @@ void AxesDialog::updateGrid()
 
             QList<MdiSubWindow *> windows = app->windowsList();
             foreach(MdiSubWindow *w, windows){
-                if (w->isA("MultiLayer")){
+                if (w->inherits("MultiLayer")){
                     QList<Graph *> layers = ((MultiLayer*)w)->layersList();
                     foreach(Graph *g, layers){
                         if (g->isPiePlot())
@@ -1055,7 +1055,7 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 
 	grid->enableZeroLineX(boxXLine->isChecked());
 	grid->enableZeroLineY(boxYLine->isChecked());
-	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
+	grid->setAxes(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
 	grid->setRenderHint(QwtPlotItem::RenderAntialiased, boxAntialiseGrid->isChecked());
 }
 
@@ -1110,7 +1110,7 @@ void AxesDialog::showGridSettings(int axis)
     	boxWidthMajor->setValue(majPenY.widthF());
 
 		QPen minPenY = grd->minPenY();
-    	boxTypeMinor->setCurrentItem(minPenY.style() - 1);
+    	box->setCurrentIndex(minPenY.style() - 1);
     	boxColorMinor->setColor(minPenY.color());
     	boxWidthMinor->setValue(minPenY.widthF());
 	}
@@ -1248,7 +1248,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 		int axis = mapToQwtAxisId();
 		int format = boxAxisType->currentIndex();
 
-		QString formatInfo = QString::null;
+		QString formatInfo = QString();
 		if (format == ScaleDraw::Numeric){
 			if (boxShowFormula->isChecked()){
 				QString formula = boxFormula->text().lower();
@@ -1259,10 +1259,10 @@ bool AxesDialog::updatePlot(QWidget *page)
 						parser.DefineVar("x", &value);
 					else if (formula.contains("y"))
 						parser.DefineVar("y", &value);
-					parser.SetExpr(formula.ascii());
+					parser.SetExpr(formula.toStdWString());
 					parser.Eval();
 				} catch(mu::ParserError &e) {
-					QMessageBox::critical(this, tr("QtiPlot - Formula input error"), QString::fromStdString(e.GetMsg())+"\n"+
+					QMessageBox::critical(this, tr("QtiPlot - Formula input error"), QString::fromStdWString(e.GetMsg())+"\n"+
 							tr("Valid variables are 'x' for Top/Bottom axes and 'y' for Left/Right axes!"));
 					boxFormula->setFocus();
 					return false;
@@ -1315,8 +1315,8 @@ void AxesDialog::setGraph(Graph *g)
 
 	d_graph = g;
 
-	boxTableName->insertStringList(app->tableNames());
-	boxColName->insertStringList(app->columnsList(Table::All));
+	boxTableName->addItems(app->tableNames());
+	boxColName->addItems(app->columnsList(Table::All));
 
 	showAxisSettings(0);
 	showGridSettings(axesGridList->currentRow());
@@ -1392,8 +1392,8 @@ void AxesDialog::updateScale()
 
     int a = mapToQwtAxis(axis);
     const QwtScaleDiv *scDiv = d_graph->axisScaleDiv(a);
-    double start = QMIN(scDiv->lowerBound(), scDiv->upperBound());
-    double end = QMAX(scDiv->lowerBound(), scDiv->upperBound());
+    double start = qMin(scDiv->lowerBound(), scDiv->upperBound());
+    double end = qMax(scDiv->lowerBound(), scDiv->upperBound());
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
@@ -1517,7 +1517,7 @@ void AxesDialog::updateScale()
     boxLog10AfterBreak->setChecked(sc_engine->log10ScaleAfterBreak());
     boxBreakDecoration->setChecked(sc_engine->hasBreakDecoration());
 
-	QwtValueList lst = scDiv->ticks (QwtScaleDiv::MajorTick);
+	QList<double> lst = scDiv->ticks (QwtScaleDiv::MajorTick);
 	boxMajorValue->setValue(lst.count());
 
 	if (d_graph->axisStep(a) != 0.0){
@@ -1549,7 +1549,7 @@ void AxesDialog::updateScale()
 
 void AxesDialog::updateTickLabelsList(bool on)
 {
-	QString formatInfo = QString::null;
+	QString formatInfo = QString();
 	int type = boxAxisType->currentIndex();
 	if (type == ScaleDraw::Day || type == ScaleDraw::Month)
 		formatInfo = QString::number(boxFormat->currentIndex());
@@ -1611,7 +1611,7 @@ void AxesDialog::setLabelsNumericFormat(int)
 	int prec = boxPrecision->value();
 	int format = boxFormat->currentIndex();
 
-	QString formatInfo = QString::null;
+	QString formatInfo = QString();
 	if (type == ScaleDraw::Numeric){
 		if (d_graph->axisLabelFormat(axis) == format &&
 			d_graph->axisLabelPrecision(axis) == prec)

@@ -216,7 +216,7 @@ void RangeSelectorTool::emitStatusText()
 
 void RangeSelectorTool::switchActiveMarker()
 {
-	QwtDoublePoint tmp = d_active_marker.value();
+	QPointF tmp = d_active_marker.value();
 	d_active_marker.setValue(d_inactive_marker.value());
 	d_inactive_marker.setValue(tmp);
 	int tmp2 = d_active_point;
@@ -335,8 +335,8 @@ void RangeSelectorTool::copySelectedCurve()
     if (!d_selected_curve)
         return;
 
-	int start_point = QMIN(d_active_point, d_inactive_point);
-	int end_point = QMAX(d_active_point, d_inactive_point);
+	int start_point = qMin(d_active_point, d_inactive_point);
+	int end_point = qMax(d_active_point, d_inactive_point);
 	QLocale locale = d_graph->multiLayer()->locale();
 	ApplicationWindow *app = d_graph->multiLayer()->applicationWindow();
 	int prec = 15;
@@ -377,8 +377,8 @@ void RangeSelectorTool::copyMultipleSelection()
 	if (d_selection_dialog)
 		d_selection_dialog->hide();
 
-	int start_point = QMIN(d_active_point, d_inactive_point);
-	int end_point = QMAX(d_active_point, d_inactive_point);
+	int start_point = qMin(d_active_point, d_inactive_point);
+	int end_point = qMax(d_active_point, d_inactive_point);
 	QLocale locale = d_graph->multiLayer()->locale();
 	QString text;
 	QList <PlotCurve*> cvs;
@@ -409,9 +409,9 @@ void RangeSelectorTool::clearMultipleSelection()
 	if (d_selection_dialog)
 		d_selection_dialog->hide();
 
-	int start_point = QMIN(d_active_point, d_inactive_point);
+	int start_point = qMin(d_active_point, d_inactive_point);
 	int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
-	int end_point = QMAX(d_active_point, d_inactive_point);
+	int end_point = qMax(d_active_point, d_inactive_point);
 	int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
 
 	for (int j = 0; j < d_selection_lst.count(); j++){
@@ -534,9 +534,9 @@ void RangeSelectorTool::clearSelectedCurve()
 			return;
    		}
 
-        int start_point = QMIN(d_active_point, d_inactive_point);
+        int start_point = qMin(d_active_point, d_inactive_point);
         int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
-        int end_point = QMAX(d_active_point, d_inactive_point);
+        int end_point = qMax(d_active_point, d_inactive_point);
         int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
         int col = t->colIndex(d_selected_curve->title().text());
         bool ok_update = (end_point - start_point + 1) < d_selected_curve->dataSize() ? true : false;
@@ -585,9 +585,9 @@ void RangeSelectorTool::pasteSelection()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QTextStream ts( &text, QIODevice::ReadOnly );
-    int start_point = QMIN(d_active_point, d_inactive_point);
+    int start_point = qMin(d_active_point, d_inactive_point);
     int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
-    int end_point = QMAX(d_active_point, d_inactive_point);
+    int end_point = qMax(d_active_point, d_inactive_point);
     int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
     int col = t->colIndex(d_selected_curve->title().text());
 
@@ -630,8 +630,8 @@ void RangeSelectorTool::setCurveRange()
         return;
 
     if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
-        ((DataCurve*)d_selected_curve)->setRowRange(QMIN(d_active_point, d_inactive_point),
-                                    QMAX(d_active_point, d_inactive_point));
+        ((DataCurve*)d_selected_curve)->setRowRange(qMin(d_active_point, d_inactive_point),
+                                    qMax(d_active_point, d_inactive_point));
         d_graph->updatePlot();
         d_graph->notifyChanges();
     }

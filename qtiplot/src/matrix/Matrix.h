@@ -31,7 +31,7 @@
 
 #include <QHeaderView>
 #include <QTableView>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QMessageBox>
 
 #include "MatrixModel.h"
@@ -40,7 +40,7 @@
 #include <Script.h>
 #include <LinearColorMap.h>
 
-#include <qwt_double_rect.h>
+#include <qrect.h>
 
 #include <math.h>
 
@@ -50,11 +50,7 @@
 
 #include <cmath>
 
-#ifndef Q_OS_LINUX
-	#ifndef isnan
-		inline bool isnan(double x){return x != x;}
-	#endif
-#endif
+
 
 class QLabel;
 class QStackedWidget;
@@ -80,8 +76,8 @@ public:
 	 * \param name window name
 	 * \param f window flags
 	 */
-	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
-	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
+	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
 	~Matrix();
 
 	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise,
@@ -304,7 +300,7 @@ public slots:
 	double dy(){return fabs(y_end - y_start)/(double)(numRows() - 1);};
 
 	//! Returns the bounding rect of the matrix coordinates
-	QwtDoubleRect boundingRect();
+	QRectF boundingRect();
 	//! Set the X and Y coordinate intervals
 	void setCoordinates(double xs, double xe, double ys, double ye);
 
@@ -314,7 +310,7 @@ public slots:
 	bool isEmpty();
 
 	//! Min and max values of the color map.
-	QwtDoubleInterval colorRange();
+	QwtInterval colorRange();
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);

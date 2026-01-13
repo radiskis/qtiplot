@@ -56,7 +56,7 @@ class SubtractLineTool : public QObject, public PlotToolInterface
 		 */
 		void statusText(const QString&);
 	protected slots:
-		void selectPoint(const QwtDoublePoint &pos);
+		void selectPoint(const QPointF &pos);
 
 	private:
 		void finalize();

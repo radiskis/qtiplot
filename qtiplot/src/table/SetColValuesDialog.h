@@ -53,7 +53,7 @@ class SetColValuesDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
+    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	void setTable(Table* w);
 	void setCompleter(QCompleter *);
 

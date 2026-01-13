@@ -309,9 +309,9 @@ QPoint ArrowMarker::startPoint() const
                 plot()->transform(yAxis(), d_rect.top()));
 }
 
-QwtDoublePoint ArrowMarker::startPointCoord()
+QPointF ArrowMarker::startPointCoord()
 {
-	return QwtDoublePoint(d_rect.left(), d_rect.top());
+	return QPointF(d_rect.left(), d_rect.top());
 }
 
 void ArrowMarker::setStartPoint(double x, double y)
@@ -353,9 +353,9 @@ plot()->updateLayout();
 d_end = QPoint(plot()->transform(xAxis(), x), plot()->transform(yAxis(), y));
 }
 
-QwtDoublePoint ArrowMarker::endPointCoord()
+QPointF ArrowMarker::endPointCoord()
 {
-return QwtDoublePoint(d_rect.right(), d_rect.bottom());
+return QPointF(d_rect.right(), d_rect.bottom());
 }
 
 void ArrowMarker::setBoundingRect(double xs, double ys, double xe, double ye)
@@ -377,7 +377,7 @@ d_start = QPoint(plot()->transform(xAxis(), xs), plot()->transform(yAxis(), ys))
 d_end = QPoint(plot()->transform(xAxis(), xe), plot()->transform(yAxis(), ye));
 }
 
-QwtDoubleRect ArrowMarker::boundingRect() const
+QRectF ArrowMarker::boundingRect() const
 {
 	const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
 	const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
@@ -387,7 +387,7 @@ QwtDoubleRect ArrowMarker::boundingRect() const
 	const int x1 = xMap.transform(d_rect.right());
 	const int y1 = yMap.transform(d_rect.bottom());
 
-	return QwtDoubleRect(
+	return QRectF(
 			x0<x1 ? d_rect.left() : d_rect.right(),
 			y0<y1 ? d_rect.top() : d_rect.bottom(),
 			qAbs(d_rect.left() - d_rect.right()),
@@ -547,8 +547,8 @@ void ArrowMarker::displayInfo(bool clear)
 
 	ApplicationWindow *app = ml->applicationWindow();
 	if (clear){
-		app->displayInfo(QString::null);
-		g->setToolTip(QString::null);
+		app->displayInfo(QString());
+		g->setToolTip(QString());
 		return;
 	}
 

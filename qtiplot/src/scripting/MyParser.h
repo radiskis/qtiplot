@@ -52,6 +52,15 @@ public:
 	void setLocale(const QLocale& locale);
 	static QLocale getLocale();
 
+	void DefineVar(const string_type& name, double* var) { Parser::DefineVar(name, var); }
+	void DefineVar(const char* name, double* var) { Parser::DefineVar(QString(name).toStdWString(), var); }
+
+	void DefineConst(const string_type& name, double val) { Parser::DefineConst(name, val); }
+	void DefineConst(const char* name, double val) { Parser::DefineConst(QString(name).toStdWString(), val); }
+
+	void SetExpr(const string_type& expr) { Parser::SetExpr(expr); }
+	void SetExpr(const char* expr) { Parser::SetExpr(QString(expr).toStdWString()); }
+
 	const static QStringList functionsList();
 	const static QStringList functionNamesList();
 	static QString explainFunction(int index);

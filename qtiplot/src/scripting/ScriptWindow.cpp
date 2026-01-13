@@ -50,7 +50,7 @@ d_app(app)
 {
 	initMenu();
 
-	fileName = QString::null;
+	fileName = QString();
 
 	te = new ScriptEdit(env, this, name());
 	te->setContext(this);
@@ -337,7 +337,7 @@ void ScriptWindow::languageChange()
 
 void ScriptWindow::newScript()
 {
-	fileName = QString::null;
+	fileName = QString();
 	te->clear();
 	setWindowTitle(tr("QtiPlot - Script Window") + " - " + tr("untitled"));
 }

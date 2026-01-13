@@ -66,7 +66,7 @@ d_tex_output(false)
 	setAttribute(Qt::WA_DeleteOnClose);
 	setObjectName(tr("Legend"));
 
-	d_text = new QwtText(QString::null);
+	d_text = new QwtText(QString());
 	d_text->setFont(QFont("Arial", 12, QFont::Normal, false));
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);
 	d_text->setBackgroundBrush(QBrush(Qt::NoBrush));
@@ -88,7 +88,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 
 	const int symbolLineLength = line_length + symbolsMaxWidth();
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(&p, symbolLineLength, d_frame_pen.width(), width, height, textWidth, textHeight);
+	QVector<long> heights = itemsHeight(&p, symbolLineLength, d_frame_pen.width(), width, height, textWidth, textHeight);
     resize(width, height);
 
 	drawFrame(&p, rect());
@@ -124,7 +124,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	const int dfy = qRound(d_frame_pen.width()*yfactor);
 	const int symbolLineLength = int((line_length + symbolsMaxWidth())*xfactor);
 	int width, height, textWidth, textHeight;
-	QwtArray<long> heights = itemsHeight(painter, symbolLineLength, dfy, width, height, textWidth, textHeight);
+	QVector<long> heights = itemsHeight(painter, symbolLineLength, dfy, width, height, textWidth, textHeight);
 
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
@@ -260,7 +260,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	p->restore();
 }
 
-void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> height, int symbolLineLength)
+void LegendWidget::drawText(QPainter *p, const QRect& rect, QVector<long> height, int symbolLineLength)
 {
 	p->save();
 	if (d_plot->antialiasing())
@@ -287,7 +287,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 
 	int l = symbolLineLength;
 	QString text = d_text->text();
-	QStringList titles = text.split("\n", QString::KeepEmptyParts);
+	QStringList titles = text.split("\n", Qt::KeepEmptyParts);
 
 	for (int i = 0; i < titles.count(); i++){
 		int w = left_margin + d_frame_pen.width();
@@ -392,13 +392,13 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QwtArray<long> heigh
 	p->restore();
 }
 
-QwtArray<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int frameWidth, int &width, int &height,
+QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int frameWidth, int &width, int &height,
 							 int &textWidth, int &textHeight)
 {
 	QString text = d_text->text();
-	QStringList titles = text.split("\n", QString::KeepEmptyParts);
+	QStringList titles = text.split("\n", Qt::KeepEmptyParts);
 	int n = (int)titles.count();
-	QwtArray<long> heights(n);
+	QVector<long> heights(n);
 
 	width = 0;
 	height = 0;
@@ -525,7 +525,7 @@ int LegendWidget::symbolsMaxWidth()
 
 	int maxL = 0;
 	QString text = d_text->text();
-	QStringList titles = text.split("\n", QString::KeepEmptyParts);
+	QStringList titles = text.split("\n", Qt::KeepEmptyParts);
 	for (int i=0; i<(int)titles.count(); i++){
 		QString s = titles[i];
 		while (s.contains("\\l(",Qt::CaseInsensitive)){

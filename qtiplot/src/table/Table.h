@@ -29,8 +29,9 @@
 #ifndef TABLE_H
 #define TABLE_H
 
-#include <q3table.h>
-#include <q3header.h>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QItemSelection>
 #include <QVarLengthArray>
 #include <QLocale>
 
@@ -38,14 +39,106 @@
 #include <ScriptingEnv.h>
 #include <Script.h>
 
-class MyTable : public Q3Table
+class MyTable : public QTableWidget
 {
 public:
     MyTable(QWidget * parent = 0, const char * name = 0);
     MyTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
 
+    int numRows() const { return rowCount(); }
+    int numCols() const { return columnCount(); }
+    void setNumRows(int r) { setRowCount(r); }
+    void setNumCols(int c) { setColumnCount(c); }
+
+    QString text(int r, int c) const {
+        QTableWidgetItem *it = item(r, c);
+        return it ? it->text() : QString();
+    }
+    void setText(int r, int c, const QString &t) {
+        QTableWidgetItem *it = item(r, c);
+        if (!it) {
+            it = new QTableWidgetItem(t);
+            if (isColumnReadOnly(c)) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
+            setItem(r, c, it);
+        } else {
+            it->setText(t);
+        }
+    }
+
+    bool isColumnReadOnly(int col) const {
+        return d_readOnlyCols.contains(col);
+    }
+
+    void setColumnReadOnly(int col, bool ro) {
+        if (ro) {
+            if (!d_readOnlyCols.contains(col)) d_readOnlyCols.append(col);
+        } else {
+            d_readOnlyCols.removeAll(col);
+        }
+        for(int i=0; i<rowCount(); ++i) {
+            QTableWidgetItem *it = item(i, col);
+            if(it) {
+                if (ro) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
+                else    it->setFlags(it->flags() | Qt::ItemIsEditable);
+            }
+        }
+    }
+
+    void setPaletteBackgroundColor(const QColor &c) {
+        QPalette p = palette();
+        p.setColor(QPalette::Base, c);
+        setPalette(p);
+    }
+
+    void setPaletteForegroundColor(const QColor &c) {
+        QPalette p = palette();
+        p.setColor(QPalette::Text, c);
+        setPalette(p);
+    }
+    
+    void setLeftMargin(int m) {
+        verticalHeader()->setFixedWidth(m);
+    }
+
+    void setColumnWidth(int col, int w) {
+        QTableWidget::setColumnWidth(col, w);
+    }
+    
+    int columnWidth(int col) const {
+        return QTableWidget::columnWidth(col);
+    }
+
+    void adjustColumn(int col) { resizeColumnToContents(col); }
+
+    bool isRowSelected(int row, bool full = false) {
+        QList<QTableWidgetSelectionRange> ranges = selectedRanges();
+        for(int i=0; i<ranges.count(); ++i)
+             if (ranges[i].topRow() <= row && ranges[i].bottomRow() >= row) return true;
+        return false;
+    }
+    
+    bool isColumnSelected(int col, bool full = false) {
+        QList<QTableWidgetSelectionRange> ranges = selectedRanges();
+        for(int i=0; i<ranges.count(); ++i)
+             if (ranges[i].leftColumn() <= col && ranges[i].rightColumn() >= col) return true;
+        return false;
+    }
+
+    void ensureCellVisible(int row, int col) { scrollToItem(item(row, col)); }
+    
+    void setCurrentCell(int r, int c) { setCurrentItem(item(r, c)); }
+
 private:
-    void activateNextCell();
+    QList<int> d_readOnlyCols;
+};
+
+struct Q3TableSelection {
+    int topRow, leftCol, bottomRow, rightCol;
+    Q3TableSelection(int t=0, int l=0, int b=0, int r=0) : topRow(t), leftCol(l), bottomRow(b), rightCol(r) {}
+    void init(int t, int l) { topRow=t; leftCol=l; bottomRow=t; rightCol=l; }
+    bool isEmpty() const { return topRow < 0 || leftCol < 0; }
+    int numRows() const { return bottomRow - topRow + 1; }
+    int numCols() const { return rightCol - leftCol + 1; }
 };
 
 /*!\brief MDI window providing a spreadsheet table with column logic.
@@ -68,7 +161,7 @@ public:
 		Overwrite //!< replace content of table with the imported file
 	};
 
-	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
 
 	Q3TableSelection getSelection();
 
@@ -141,7 +234,7 @@ public slots:
 	//@{
 	bool eventFilter(QObject *object, QEvent *e);
 	void customEvent( QEvent* e);
-	//@}v
+	//@}
 
 	//! \name Column Operations
 	//@{
@@ -158,6 +251,8 @@ public slots:
 	void showAllColumns();
 	void hideColumn(int col, bool = true);
 	bool isColumnHidden(int col){return d_table->isColumnHidden(col);};
+    // QTableWidget doesn't have currentColumn(), it has currentColumn() (same name)
+    // Q3Table::currentColumn() -> QTableWidget::currentColumn().
 	//@}
 
 	//! \name Sorting

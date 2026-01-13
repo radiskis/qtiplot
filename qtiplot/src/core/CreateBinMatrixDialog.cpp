@@ -39,7 +39,7 @@
 
 #include <gsl/gsl_histogram2d.h>
 
-CreateBinMatrixDialog::CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent,  Qt::WFlags fl )
+CreateBinMatrixDialog::CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent,  Qt::WindowFlags fl )
 : QDialog( parent, fl ), d_table(t),
 d_start_row(startRow),
 d_end_row(endRow)

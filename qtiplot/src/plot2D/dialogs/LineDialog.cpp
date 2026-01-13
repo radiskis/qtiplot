@@ -47,7 +47,7 @@
 #include <QComboBox>
 #include <QTabWidget>
 
-LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WFlags fl )
+LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     setWindowTitle( tr( "QtiPlot - Line options" ) );
@@ -258,7 +258,7 @@ void LineDialog::initGeometryTab()
 void LineDialog::displayCoordinates(int unit)
 {
 	if (unit == ScaleCoordinates){
-		QwtDoublePoint sp = lm->startPointCoord();
+		QPointF sp = lm->startPointCoord();
 		xStartBox->setValue(sp.x());
 		xStartBox->show();
 		xStartPixelBox->hide();
@@ -266,7 +266,7 @@ void LineDialog::displayCoordinates(int unit)
 		yStartBox->show();
 		yStartPixelBox->hide();
 
-		QwtDoublePoint ep = lm->endPointCoord();
+		QPointF ep = lm->endPointCoord();
 		xEndBox->setValue(ep.x());
 		xEndBox->show();
 		xEndPixelBox->hide();

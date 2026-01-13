@@ -34,14 +34,14 @@
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
 
-Interpolation::Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+Interpolation::Interpolation(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
 {
 	init(m);
 	setDataFromCurve(c);
 }
 
-Interpolation::Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+Interpolation::Interpolation(ApplicationWindow *parent, PlotCurve *c, double start, double end, int m)
 : Filter(parent, c)
 {
 	init(m);
@@ -193,7 +193,7 @@ void Interpolation::calculateOutputData(double *x, double *y)
 	gsl_interp_accel_free (acc);
 }
 
-int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
+int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y)
 {
 	if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
 		return 0;
@@ -209,7 +209,7 @@ int Interpolation::sortedCurveData(QwtPlotCurve *c, double start, double end, do
 		memoryErrorMessage();
 	}
 
-	if (c->curveType() == QwtPlotCurve::Yfx){
+	if (c->curveType() == PlotCurve::Yfx){
 		for (int i = 0; i < n; i++){
 			xtemp[i] = c->x(i);
 			ytemp[i] = c->y(i);

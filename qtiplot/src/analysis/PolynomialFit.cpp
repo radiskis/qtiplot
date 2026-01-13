@@ -40,14 +40,14 @@ PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, int order, boo
 	init();
 }
 
-PolynomialFit::PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, int order, bool legend)
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, PlotCurve *c, int order, bool legend)
 : Fit(parent, c), d_order(order), show_legend(legend)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-PolynomialFit::PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int order, bool legend)
+PolynomialFit::PolynomialFit(ApplicationWindow *parent, PlotCurve *c, double start, double end, int order, bool legend)
 : Fit(parent, c), d_order(order), show_legend(legend)
 {
 	init();
@@ -102,7 +102,7 @@ void PolynomialFit::setOrder(int order)
 
 QString PolynomialFit::generateFormula(int order)
 {
-	QString formula = QString::null;
+	QString formula = QString();
 	for (int i = 0; i < order+1; i++){
 		QString par = "a" + QString::number(i);
 		formula += par;
@@ -228,14 +228,14 @@ QString PolynomialFit::legendInfo()
  *
  *****************************************************************************/
 
-LinearFit::LinearFit(ApplicationWindow *parent, QwtPlotCurve *c)
+LinearFit::LinearFit(ApplicationWindow *parent, PlotCurve *c)
 : Fit(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-LinearFit::LinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+LinearFit::LinearFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Fit(parent, c)
 {
 	init();

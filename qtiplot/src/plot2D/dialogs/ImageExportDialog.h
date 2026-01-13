@@ -34,7 +34,7 @@
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 
 class QLabel;
 class QStackedWidget;
@@ -95,7 +95,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Graph *g = 0, Qt::WFlags flags = 0 );
+	ImageExportDialog(MdiSubWindow *window, QWidget * parent = 0, bool extended = true, Graph *g = 0, Qt::WindowFlags flags = 0 );
 	//! For vector formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int vectorResolution() const { return d_vector_resolution->value(); };
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).

@@ -151,5 +151,5 @@ const QString muParserScripting::explainFunction(const QString &name)
 			return s;
 		}
 	}
-	return QString::null;
+	return QString();
 }

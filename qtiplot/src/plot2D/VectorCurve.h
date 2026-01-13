@@ -48,7 +48,7 @@ public:
 
 	void copy(const VectorCurve *vc);
 
-	QwtDoubleRect boundingRect() const;
+	QRectF boundingRect() const;
 
 	QString vectorEndXAColName(){return d_end_x_a;};
 	QString vectorEndYMColName(){return d_end_y_m;};
@@ -85,7 +85,7 @@ public:
 	void setVectorPen(const QPen& pen){d_pen = pen;};
 
 private:
-	void setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y);
+	void setVectorEnd(const QVector<double>&x, const QVector<double>&y);
 
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
@@ -102,7 +102,7 @@ protected:
 	int d_style, d_headLength, d_headAngle, d_position;
 	QString d_end_x_a;
 	QString d_end_y_m;
-	QwtArrayData *vectorEnd;
+	QVectorData *vectorEnd;
 };
 
 #endif

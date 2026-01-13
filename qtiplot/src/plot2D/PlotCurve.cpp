@@ -51,6 +51,7 @@
 PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
 d_type(0),
 d_plot_style(0),
+d_curve_type(Yfx),
 d_x_offset(0.0),
 d_y_offset(0.0),
 d_side_lines(false),
@@ -61,9 +62,9 @@ d_skip_symbols(1)
 	setCurveAttribute(QwtPlotCurve::Fitted, false);
 }
 
-QwtDoubleRect PlotCurve::boundingRect() const
+QRectF PlotCurve::boundingRect() const
 {
-	QwtDoubleRect r = QwtPlotCurve::boundingRect();
+	QRectF r = QwtPlotCurve::boundingRect();
 
 	double percent = 0.01;
 
@@ -263,7 +264,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 		else if (s.contains("<yAxis>"))
 			setYAxis(s.remove("<yAxis>").remove("</yAxis>").toInt());
 		else if (s.contains("<CurveType>"))
-			setCurveType((QwtPlotCurve::CurveType)s.remove("<CurveType>").remove("</CurveType>").toInt());
+			setCurveType((PlotCurve::CurveType)s.remove("<CurveType>").remove("</CurveType>").toInt());
 		else if (s.contains("<Visible>"))
 			setVisible(s.remove("<Visible>").remove("</Visible>").toInt());
 	}
@@ -478,7 +479,7 @@ void DataCurve::updateColumnNames(const QString& oldName, const QString& newName
 {
 	if (updateTableName){
 		QString s = title().text();
-		QStringList lst = s.split("_", QString::SkipEmptyParts);
+		QStringList lst = s.split("_", Qt::SkipEmptyParts);
 		if (lst.size() < 2)
 			return;
 
@@ -486,7 +487,7 @@ void DataCurve::updateColumnNames(const QString& oldName, const QString& newName
 			setTitle(newName + "_" + lst[1]);
 
 		if (!d_x_column.isEmpty()){
-			lst = d_x_column.split("_", QString::SkipEmptyParts);
+			lst = d_x_column.split("_", Qt::SkipEmptyParts);
 			if (lst[0] == oldName)
 				d_x_column = newName + "_" + lst[1];
 		}
@@ -823,7 +824,7 @@ void DataCurve::loadLabels()
 
         int x_axis = xAxis();
         int y_axis = yAxis();
-		m->setAxis(x_axis, y_axis);
+		m->setAxes(x_axis, y_axis);
 
 		QSize size = t.textSize();
         int dx = int(d_labels_x_offset*0.01*size.height());
@@ -1016,7 +1017,7 @@ QString DataCurve::saveToString()
 	if (!validCurveType())
 		return QString();
 
-	QString s = QString::null;
+	QString s = QString();
 	if (d_skip_symbols > 1)
 		s += "<SkipPoints>" + QString::number(d_skip_symbols) + "</SkipPoints>\n";
 

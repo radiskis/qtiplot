@@ -34,10 +34,10 @@
 #include <QLabel>
 #include <QPushButton>
 
-ColorMapPreviewDialog::ColorMapPreviewDialog(QWidget *parent, Qt::WFlags flags)
+ColorMapPreviewDialog::ColorMapPreviewDialog(QWidget *parent, Qt::WindowFlags flags)
 	: ExtensibleFileDialog(parent, flags)
 {
-	setCaption(tr("QtiPlot - Color Map Preview Dialog"));
+	setWindowTitle(tr("QtiPlot - Color Map Preview Dialog"));
 	setFileMode(ExistingFile);
 	QStringList filters;
 	filters << tr("Colormap files") + " (*.map *.MAP)" << tr("All files") + " (*)";

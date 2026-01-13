@@ -139,21 +139,21 @@ void TextEditor::closeEvent(QCloseEvent *e)
 		QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
 		s = d_initial_text;
 
-	if (d_target->isA("LegendWidget")){
+	if (d_target->inherits("LegendWidget")){
 		((LegendWidget*)d_target)->setText(s);
         d_target->show();
 		d_graph->setActiveText(NULL);
-	} else if (d_target->isA("PieLabel")){
+	} else if (d_target->inherits("PieLabel")){
 		((PieLabel*)d_target)->setCustomText(s);
         d_target->show();
 		d_graph->setActiveText(NULL);
-	} else if (d_target->isA("QwtTextLabel")){
+	} else if (d_target->inherits("QwtTextLabel")){
 		QwtText title = d_graph->title();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);
 		d_graph->setTitle(title);
-	} else if (d_target->isA("QwtScaleWidget")){
+	} else if (d_target->inherits("QwtScaleWidget")){
 		if(s.isEmpty())
 			s = " ";
 

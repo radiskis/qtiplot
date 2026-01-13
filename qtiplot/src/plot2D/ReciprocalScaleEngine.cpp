@@ -48,7 +48,7 @@ QwtScaleTransformation *ReciprocalScaleEngine::transformation() const
 void ReciprocalScaleEngine::autoScale(int maxNumSteps,
     double &x1, double &x2, double &stepSize) const
 {
-    QwtDoubleInterval interval(x1, x2);
+    QwtInterval interval(x1, x2);
     interval = interval.normalized();
 
     interval.setMinValue(interval.minValue() - lowerMargin());
@@ -93,7 +93,7 @@ void ReciprocalScaleEngine::autoScale(int maxNumSteps,
 QwtScaleDiv ReciprocalScaleEngine::divideScale(double x1, double x2,
     int maxMajSteps, int maxMinSteps, double stepSize) const
 {
-    QwtDoubleInterval interval = QwtDoubleInterval(x1, x2).normalized();
+    QwtInterval interval = QwtInterval(x1, x2).normalized();
     if (interval.width() <= 0 )
         return QwtScaleDiv();
 
@@ -110,7 +110,7 @@ QwtScaleDiv ReciprocalScaleEngine::divideScale(double x1, double x2,
 
     if ( stepSize != 0.0 )
     {
-        QwtValueList ticks[QwtScaleDiv::NTickTypes];
+        QList<double> ticks[QwtScaleDiv::NTickTypes];
         buildTicks(interval, stepSize, maxMinSteps, ticks);
 
         scaleDiv = QwtScaleDiv(interval, ticks);
@@ -123,10 +123,10 @@ QwtScaleDiv ReciprocalScaleEngine::divideScale(double x1, double x2,
 }
 
 void ReciprocalScaleEngine::buildTicks(
-    const QwtDoubleInterval& interval, double stepSize, int maxMinSteps,
-    QwtValueList ticks[QwtScaleDiv::NTickTypes]) const
+    const QwtInterval& interval, double stepSize, int maxMinSteps,
+    QList<double> ticks[QwtScaleDiv::NTickTypes]) const
 {
-    const QwtDoubleInterval boundingInterval =
+    const QwtInterval boundingInterval =
         align(interval, stepSize);
 
     ticks[QwtScaleDiv::MajorTick] =
@@ -153,14 +153,14 @@ void ReciprocalScaleEngine::buildTicks(
     }
 }
 
-QwtValueList ReciprocalScaleEngine::buildMajorTicks(
-    const QwtDoubleInterval &interval, double stepSize) const
+QList<double> ReciprocalScaleEngine::buildMajorTicks(
+    const QwtInterval &interval, double stepSize) const
 {
     int numTicks = qRound(interval.width() / stepSize) + 1;
     if ( numTicks > 10000 )
         numTicks = 10000;
 
-    QwtValueList ticks;
+    QList<double> ticks;
 
     ticks += interval.minValue();
     for (int i = 1; i < numTicks - 1; i++)
@@ -171,10 +171,10 @@ QwtValueList ReciprocalScaleEngine::buildMajorTicks(
 }
 
 void ReciprocalScaleEngine::buildMinorTicks(
-    const QwtValueList& majorTicks,
+    const QList<double>& majorTicks,
     int maxMinSteps, double stepSize,
-    QwtValueList &minorTicks,
-    QwtValueList &mediumTicks) const
+    QList<double> &minorTicks,
+    QList<double> &mediumTicks) const
 {
     double minStep = divideInterval(stepSize, maxMinSteps);
     if (minStep == 0.0)
@@ -227,15 +227,15 @@ void ReciprocalScaleEngine::buildMinorTicks(
 
   \return Aligned interval
 */
-QwtDoubleInterval ReciprocalScaleEngine::align(
-    const QwtDoubleInterval &interval, double stepSize) const
+QwtInterval ReciprocalScaleEngine::align(
+    const QwtInterval &interval, double stepSize) const
 {
     const double x1 =
         QwtScaleArithmetic::floorEps(interval.minValue(), stepSize);
     const double x2 =
         QwtScaleArithmetic::ceilEps(interval.maxValue(), stepSize);
 
-    return QwtDoubleInterval(x1, x2);
+    return QwtInterval(x1, x2);
 }
 
 //! Create a clone of the transformation

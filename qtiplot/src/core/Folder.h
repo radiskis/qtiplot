@@ -31,8 +31,8 @@
 
 #include <QObject>
 #include <QEvent>
-#include <q3listview.h>
-#include <q3iconview.h>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 #include "MdiSubWindow.h"
 
@@ -47,7 +47,6 @@ class QDragEnterEvent;
 class QDragMoveEvent;
 class QDragLeaveEvent;
 class QDropEvent;
-class Q3DragObject;
 
 //! Folder for the project explorer
 class Folder : public QObject
@@ -140,10 +139,13 @@ protected:
  *
  *****************************************************************************/
 //! Windows list item class
-class WindowListItem : public Q3ListViewItem
+class WindowListItem : public QTreeWidgetItem
 {
 public:
-    WindowListItem( Q3ListView *parent, MdiSubWindow *w );
+    WindowListItem( QTreeWidget *parent, MdiSubWindow *w );
+    
+    enum {RTTI = 1002};
+    virtual int rtti() const {return (int)RTTI;};
 
     MdiSubWindow *window() { return myWindow; };
 
@@ -157,10 +159,10 @@ protected:
  *
  *****************************************************************************/
 //! Folders list item class
-class FolderListItem : public Q3ListViewItem
+class FolderListItem : public QTreeWidgetItem
 {
 public:
-    FolderListItem( Q3ListView *parent, Folder *f );
+    FolderListItem( QTreeWidget *parent, Folder *f );
     FolderListItem( FolderListItem *parent, Folder *f );
 
 	enum {RTTI = 1001};
@@ -187,7 +189,7 @@ protected:
  *
  *****************************************************************************/
 //! Folder list view class
-class FolderListView : public Q3ListView
+class FolderListView : public QTreeWidget
 {
     Q_OBJECT
 
@@ -198,23 +200,27 @@ public slots:
 	void adjustColumns();
 
 protected slots:
-	void expandedItem(Q3ListViewItem *item);
+	void expandedItem(QTreeWidgetItem *item);
+    void onItemChanged(QTreeWidgetItem *item, int col);
 
 protected:
-	void startDrag();
+	void startDrag(Qt::DropActions supportedActions);
 
-    void contentsDropEvent( QDropEvent *e );
-    void contentsMouseMoveEvent( QMouseEvent *e );
-    void contentsMousePressEvent( QMouseEvent *e );
-	void contentsMouseDoubleClickEvent( QMouseEvent* e );
+    void dropEvent( QDropEvent *e );
+    void mouseMoveEvent( QMouseEvent *e );
+    void mousePressEvent( QMouseEvent *e );
+	void mouseDoubleClickEvent( QMouseEvent* e );
+    void contextMenuEvent( QContextMenuEvent *e );
 	void keyPressEvent ( QKeyEvent * e );
-    void contentsMouseReleaseEvent( QMouseEvent *){mousePressed = false;};
+    void mouseReleaseEvent( QMouseEvent *){mousePressed = false;};
 	void enterEvent(QEvent *){mousePressed = false;};
 
 signals:
-	void dragItems(QList<Q3ListViewItem *> items);
-	void dropItems(Q3ListViewItem *dest);
-	void renameItem(Q3ListViewItem *item);
+	void dragItems(QList<QTreeWidgetItem *> items);
+	void dropItems(QTreeWidgetItem *dest);
+	void renameItem(QTreeWidgetItem *item);
+    void itemRenamed(QTreeWidgetItem *item, int col, const QString &text);
+    void contextMenuRequested(QTreeWidgetItem *item, const QPoint &pos, int col);
 	void addFolderItem();
 	void deleteSelection();
 

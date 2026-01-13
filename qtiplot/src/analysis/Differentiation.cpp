@@ -38,14 +38,14 @@ Differentiation::Differentiation(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
-Differentiation::Differentiation(ApplicationWindow *parent, QwtPlotCurve *c)
+Differentiation::Differentiation(ApplicationWindow *parent, PlotCurve *c)
 : Filter(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-Differentiation::Differentiation(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+Differentiation::Differentiation(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Filter(parent, c)
 {
 	init();

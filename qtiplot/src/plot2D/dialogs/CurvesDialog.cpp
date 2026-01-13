@@ -52,10 +52,10 @@
 #include <QKeySequence>
 #include <QMenu>
 
-CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
+CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
 {
-	setName( "CurvesDialog" );
+	setObjectName( "CurvesDialog" );
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle( tr( "QtiPlot - Add/Remove curves" ) );
 	setSizeGripEnabled(true);
@@ -118,7 +118,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 	available->setColumnCount(1);
 	available->header()->hide();
     available->setIndentation(15);
-	available->setSelectionMode (QAbstractItemView::ExtendedSelection);
+	available->setSelectionMode (qAbstractItemView::ExtendedSelection);
     gl->addWidget(available, 1, 0);
 
     QVBoxLayout* vl1 = new QVBoxLayout();
@@ -137,7 +137,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WFlags fl )
 
     gl->addLayout(vl1, 1, 1);
 	contents = new QListWidget();
-	contents->setSelectionMode (QAbstractItemView::ExtendedSelection);
+	contents->setSelectionMode (qAbstractItemView::ExtendedSelection);
     gl->addWidget(contents, 1, 2);
 
     QVBoxLayout* vl2 = new QVBoxLayout();
@@ -314,25 +314,25 @@ void CurvesDialog::init()
 
         int style = app->defaultCurveStyle;
         if (style == Graph::Line)
-            boxStyle->setCurrentItem(0);
+            box->setCurrentIndex(0);
         else if (style == Graph::Scatter)
-            boxStyle->setCurrentItem(1);
+            box->setCurrentIndex(1);
         else if (style == Graph::LineSymbols)
-            boxStyle->setCurrentItem(2);
+            box->setCurrentIndex(2);
         else if (style == Graph::VerticalDropLines)
-            boxStyle->setCurrentItem(3);
+            box->setCurrentIndex(3);
         else if (style == Graph::Spline)
-            boxStyle->setCurrentItem(4);
+            box->setCurrentIndex(4);
         else if (style == Graph::VerticalSteps)
-            boxStyle->setCurrentItem(5);
+            box->setCurrentIndex(5);
         else if (style == Graph::HorizontalSteps)
-            boxStyle->setCurrentItem(6);
+            box->setCurrentIndex(6);
         else if (style == Graph::Area)
-            boxStyle->setCurrentItem(7);
+            box->setCurrentIndex(7);
         else if (style == Graph::VerticalBars)
-            boxStyle->setCurrentItem(8);
+            box->setCurrentIndex(8);
         else if (style == Graph::HorizontalBars)
-            boxStyle->setCurrentItem(9);
+            box->setCurrentIndex(9);
     }
 
 	if (!available->topLevelItemCount())
@@ -443,7 +443,7 @@ bool CurvesDialog::addCurveFromMatrix(Matrix *m)
 	}
 
 	if (it)
-		it->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
+		it->setAxes(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 
 	return true;
 }
@@ -465,7 +465,7 @@ bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QSt
 	if (!c)
 		return false;
 
-	c->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
+	c->setAxes(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 
 	CurveLayout cl = Graph::initCurveLayout();
 	int cIndex, sIndex;

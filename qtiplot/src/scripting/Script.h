@@ -72,7 +72,7 @@ class Script : public QObject
     //! Set the context in which the code is to be executed.
     virtual void setContext(QObject *context) { Context = context; compiled = notCompiled; }
     //! Like QObject::setName, but with unicode support.
-    void setName(const QString &name) { Name = name; compiled = notCompiled; }
+    void setObjectName(const QString &name) { Name = name; compiled = notCompiled; }
     //! Set whether errors / exceptions are to be emitted or silently ignored
     void setEmitErrors(bool yes) { EmitErrors = yes; }
     ScriptingEnv *scriptingEnv(){return Env;};

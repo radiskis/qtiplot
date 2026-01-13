@@ -51,7 +51,7 @@ class ExtractDataDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-	ExtractDataDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	ExtractDataDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	void setTable(Table* w);
 	void setCompleter(QCompleter *);
 

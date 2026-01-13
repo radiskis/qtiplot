@@ -37,7 +37,7 @@
 #include <QTextCodec>
 #include <QFontDatabase>
 
-SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WFlags fl )
+SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
 {
     setAttribute(Qt::WA_DeleteOnClose);

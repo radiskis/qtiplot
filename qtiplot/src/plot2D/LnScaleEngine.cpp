@@ -51,7 +51,7 @@ void LnScaleEngine::autoScale(int maxNumSteps,
     if ( x1 > x2 )
         qSwap(x1, x2);
 
-    QwtDoubleInterval interval(x1 / exp(lowerMargin()),
+    QwtInterval interval(x1 / exp(lowerMargin()),
         x2 * exp(upperMargin()) );
 
     double logRef = 1.0;
@@ -99,7 +99,7 @@ void LnScaleEngine::autoScale(int maxNumSteps,
 QwtScaleDiv LnScaleEngine::divideScale(double x1, double x2,
     int maxMajSteps, int maxMinSteps, double stepSize) const
 {
-    QwtDoubleInterval interval = QwtDoubleInterval(x1, x2).normalized();
+    QwtInterval interval = QwtInterval(x1, x2).normalized();
     interval = interval.limited(LOG_MIN, LOG_MAX);
 
     if (interval.width() <= 0 )
@@ -126,7 +126,7 @@ QwtScaleDiv LnScaleEngine::divideScale(double x1, double x2,
 
     QwtScaleDiv scaleDiv;
     if ( stepSize != 0.0 ){
-        QwtValueList ticks[QwtScaleDiv::NTickTypes];
+        QList<double> ticks[QwtScaleDiv::NTickTypes];
 		buildTicks(interval, stepSize, maxMinSteps, ticks);
         scaleDiv = QwtScaleDiv(interval, ticks);
     }
@@ -138,10 +138,10 @@ QwtScaleDiv LnScaleEngine::divideScale(double x1, double x2,
 }
 
 void LnScaleEngine::buildTicks(
-    const QwtDoubleInterval& interval, double stepSize, int maxMinSteps,
-    QwtValueList ticks[QwtScaleDiv::NTickTypes]) const
+    const QwtInterval& interval, double stepSize, int maxMinSteps,
+    QList<double> ticks[QwtScaleDiv::NTickTypes]) const
 {
-    const QwtDoubleInterval boundingInterval = align(interval, stepSize);
+    const QwtInterval boundingInterval = align(interval, stepSize);
 
     ticks[QwtScaleDiv::MajorTick] = buildMajorTicks(boundingInterval, stepSize);
     if ( maxMinSteps > 0 )
@@ -151,8 +151,8 @@ void LnScaleEngine::buildTicks(
         ticks[i] = strip(ticks[i], interval);
 }
 
-QwtValueList LnScaleEngine::buildMajorTicks(
-    const QwtDoubleInterval &interval, double stepSize) const
+QList<double> LnScaleEngine::buildMajorTicks(
+    const QwtInterval &interval, double stepSize) const
 {
     double width = ln(interval).width();
 
@@ -164,7 +164,7 @@ QwtValueList LnScaleEngine::buildMajorTicks(
     const double lxmax = log(interval.maxValue());
     const double lstep = (lxmax - lxmin) / double(numTicks - 1);
 
-    QwtValueList ticks;
+    QList<double> ticks;
 
     ticks += interval.minValue();
 
@@ -176,15 +176,15 @@ QwtValueList LnScaleEngine::buildMajorTicks(
     return ticks;
 }
 
-QwtValueList LnScaleEngine::buildMinorTicks(const QwtValueList &majorTicks,
+QList<double> LnScaleEngine::buildMinorTicks(const QList<double> &majorTicks,
     int maxMinSteps, double) const
 {
 	if ( maxMinSteps < 1 )
-		return QwtValueList();
+		return QList<double>();
 
 	int majTicks = (int)majorTicks.count();
     if (majTicks > 1){
-        QwtValueList minorTicks;
+        QList<double> minorTicks;
 		for (int i = 0; i < majTicks - 1; i++){
 			const double v = majorTicks[i];
             const double dv = fabs(majorTicks[i + 1] - majorTicks[i])/double(maxMinSteps - 1);
@@ -193,7 +193,7 @@ QwtValueList LnScaleEngine::buildMinorTicks(const QwtValueList &majorTicks,
         }
         return minorTicks;
     }
-    return QwtValueList();
+    return QList<double>();
 }
 
 /*!
@@ -207,24 +207,24 @@ QwtValueList LnScaleEngine::buildMinorTicks(const QwtValueList &majorTicks,
 
   \return Aligned interval
 */
-QwtDoubleInterval LnScaleEngine::align(
-    const QwtDoubleInterval &interval, double stepSize) const
+QwtInterval LnScaleEngine::align(
+    const QwtInterval &interval, double stepSize) const
 {
-    const QwtDoubleInterval intv = ln(interval);
+    const QwtInterval intv = ln(interval);
 
     const double x1 = QwtScaleArithmetic::floorEps(intv.minValue(), stepSize);
     const double x2 = QwtScaleArithmetic::ceilEps(intv.maxValue(), stepSize);
 
-    return QwtDoubleInterval(exp(x1), exp(x2));
+    return QwtInterval(exp(x1), exp(x2));
 }
 
 /*!
   Return the interval [log(interval.minValue(), log(interval.maxValue]
 */
 
-QwtDoubleInterval LnScaleEngine::ln(
-    const QwtDoubleInterval &interval) const
+QwtInterval LnScaleEngine::ln(
+    const QwtInterval &interval) const
 {
-    return QwtDoubleInterval(::log(interval.minValue()),
+    return QwtInterval(::log(interval.minValue()),
             ::log(interval.maxValue()));
 }

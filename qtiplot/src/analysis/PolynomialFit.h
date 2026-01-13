@@ -36,8 +36,8 @@ class PolynomialFit : public Fit
 	Q_OBJECT
 
 	public:
-		PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, int order = 2, bool legend = false);
-		PolynomialFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int order = 2, bool legend = false);
+		PolynomialFit(ApplicationWindow *parent, PlotCurve *c, int order = 2, bool legend = false);
+		PolynomialFit(ApplicationWindow *parent, PlotCurve *c, double start, double end, int order = 2, bool legend = false);
 		PolynomialFit(ApplicationWindow *parent, Graph *g = 0, int order = 2, bool legend = false);
 		PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, int order = 2, bool legend = false);
 		PolynomialFit(ApplicationWindow *parent, Graph *g, QString& curveTitle, double start, double end, int order = 2, bool legend = false);
@@ -68,8 +68,8 @@ class LinearFit : public Fit
 
 	public:
 		LinearFit(ApplicationWindow *parent, Graph *g = 0);
-		LinearFit(ApplicationWindow *parent, QwtPlotCurve *c);
-		LinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
+		LinearFit(ApplicationWindow *parent, PlotCurve *c);
+		LinearFit(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 		LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		LinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		LinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);

@@ -37,6 +37,7 @@
 #include <QGroupBox>
 #include <QComboBox>
 #include <QLayout>
+#include <QCloseEvent>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QLabel>

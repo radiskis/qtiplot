@@ -34,10 +34,10 @@
 #include <QLabel>
 #include <QPushButton>
 
-OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WFlags flags)
+OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WindowFlags flags)
 	: ExtensibleFileDialog(parent, extended, flags)
 {
-	setCaption(tr("QtiPlot - Open Project"));
+	setWindowTitle(tr("QtiPlot - Open Project"));
 	setFileMode(ExistingFile);
 	QStringList filters;
 	filters << tr("QtiPlot project") + " (*.qti)"

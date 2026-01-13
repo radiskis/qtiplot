@@ -44,10 +44,10 @@
 #include <QCheckBox>
 #endif
 
-MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::WFlags fl )
+MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl ), scripted(env)
 {
-    setName( "MatrixValuesDialog" );
+    setObjectName( "MatrixValuesDialog" );
 	setWindowTitle( tr( "QtiPlot - Set Matrix Values" ) );
 	setSizeGripEnabled(true);
     setAttribute(Qt::WA_DeleteOnClose);

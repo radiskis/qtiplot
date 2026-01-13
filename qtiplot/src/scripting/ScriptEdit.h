@@ -31,6 +31,7 @@
 
 #include "ScriptingEnv.h"
 #include "Script.h"
+#include <QTextBlock>
 
 #include <QMenu>
 #include <QTextEdit>
@@ -74,8 +75,8 @@ class ScriptEdit: public QTextEdit, public scripted
     void print(QPrinter*);
     void exportPDF(const QString& fileName);
   	QString save();
-    QString exportASCII(const QString &file=QString::null);
-    QString importASCII(const QString &file=QString::null);
+    QString exportASCII(const QString &file=QString());
+    QString importASCII(const QString &file=QString());
     void insertFunction(const QString &);
     void insertFunction(QAction * action);
     void setContext(QObject *context) { myScript->setContext(context); }
@@ -151,7 +152,7 @@ struct ParenthesisInfo
     int position;
 };
 
-//! Help class used for parentheses matching (code taken from Qt Quarterly Issue 31 · Q3 2009)
+//! Help class used for parentheses matching (code taken from Qt Quarterly Issue 31 Â· Q3 2009)
 class TextBlockData : public QTextBlockUserData
 {
 public:

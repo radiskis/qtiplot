@@ -74,7 +74,7 @@
 #include <QTableWidget>
 #include <QColorDialog>
 
-ConfigDialog::ConfigDialog( QWidget* parent, Qt::WFlags fl )
+ConfigDialog::ConfigDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -715,8 +715,8 @@ void ConfigDialog::initAppPage()
 	topBoxLayout->addWidget( lblScriptingLanguage, 3, 0 );
 	boxScriptingLanguage = new QComboBox();
 	QStringList llist = ScriptingLangManager::languages();
-	boxScriptingLanguage->insertStringList(llist);
-	boxScriptingLanguage->setCurrentItem(llist.indexOf(app->defaultScriptingLang));
+	boxScriptingLanguage->addItems(llist);
+	box->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
 
     lblUndoStackSize = new QLabel();
@@ -1309,19 +1309,19 @@ void ConfigDialog::initCurvesPage()
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->setSpacing(0);
 	hl2->addStretch();
-	btnNewColor = new QPushButton(QIcon(":/plus.png"), QString::null);
+	btnNewColor = new QPushButton(QIcon(":/plus.png"), QString());
 	connect(btnNewColor, SIGNAL(clicked()), this, SLOT(newColor()));
 	hl2->addWidget(btnNewColor);
 
-	btnRemoveColor = new QPushButton(QIcon(":/delete.png"), QString::null);
+	btnRemoveColor = new QPushButton(QIcon(":/delete.png"), QString());
 	connect(btnRemoveColor, SIGNAL(clicked()), this, SLOT(removeColor()));
 	hl2->addWidget(btnRemoveColor);
 
-	btnColorUp = new QPushButton(QIcon(":/arrow_up.png"), QString::null);
+	btnColorUp = new QPushButton(QIcon(":/arrow_up.png"), QString());
 	connect(btnColorUp, SIGNAL(clicked()), this, SLOT(moveColor()));
 	hl2->addWidget(btnColorUp);
 
-	btnColorDown = new QPushButton(QIcon(":/arrow_down.png"), QString::null);
+	btnColorDown = new QPushButton(QIcon(":/arrow_down.png"), QString());
 	connect(btnColorDown, SIGNAL(clicked()), this, SLOT(moveColorDown()));
 	hl2->addWidget(btnColorDown);
 
@@ -1353,10 +1353,10 @@ void ConfigDialog::initCurvesPage()
 	QVBoxLayout *vl2 = new QVBoxLayout(groupIndexedSymbols);
 	vl2->addWidget(symbolsList);
 
-	btnSymbolUp = new QPushButton(QIcon(":/arrow_up.png"), QString::null);
+	btnSymbolUp = new QPushButton(QIcon(":/arrow_up.png"), QString());
 	connect(btnSymbolUp, SIGNAL(clicked()), this, SLOT(moveSymbol()));
 
-	btnSymbolDown = new QPushButton(QIcon(":/arrow_down.png"), QString::null);
+	btnSymbolDown = new QPushButton(QIcon(":/arrow_down.png"), QString());
 	connect(btnSymbolDown, SIGNAL(clicked()), this, SLOT(moveSymbolDown()));
 
 	btnLoadDefaultSymbols = new QPushButton();
@@ -2282,25 +2282,25 @@ void ConfigDialog::languageChange()
 
 	int style = app->defaultCurveStyle;
 	if (style == Graph::Line)
-		boxCurveStyle->setCurrentItem(0);
+		box->setCurrentIndex(0);
 	else if (style == Graph::Scatter)
-		boxCurveStyle->setCurrentItem(1);
+		box->setCurrentIndex(1);
 	else if (style == Graph::LineSymbols)
-		boxCurveStyle->setCurrentItem(2);
+		box->setCurrentIndex(2);
 	else if (style == Graph::VerticalDropLines)
-		boxCurveStyle->setCurrentItem(3);
+		box->setCurrentIndex(3);
 	else if (style == Graph::Spline)
-		boxCurveStyle->setCurrentItem(4);
+		box->setCurrentIndex(4);
 	else if (style == Graph::VerticalSteps)
-		boxCurveStyle->setCurrentItem(5);
+		box->setCurrentIndex(5);
 	else if (style == Graph::HorizontalSteps)
-		boxCurveStyle->setCurrentItem(6);
+		box->setCurrentIndex(6);
 	else if (style == Graph::Area)
-		boxCurveStyle->setCurrentItem(7);
+		box->setCurrentIndex(7);
 	else if (style == Graph::VerticalBars)
-		boxCurveStyle->setCurrentItem(8);
+		box->setCurrentIndex(8);
 	else if (style == Graph::HorizontalBars)
-		boxCurveStyle->setCurrentItem(9);
+		box->setCurrentIndex(9);
 
 	//plots 3D
 	lblResolution->setText(tr("&Resolution"));
@@ -2603,9 +2603,9 @@ void ConfigDialog::apply()
 		foreach(MdiSubWindow *w, windows){
 			w->setLocale(locale);
 
-			if(w->isA("Table"))
+			if(w->inherits("Table"))
 				((Table *)w)->updateDecimalSeparators(oldLocale);
-			else if(w->isA("Matrix"))
+			else if(w->inherits("Matrix"))
 				((Matrix *)w)->resetView();
 		}
 
@@ -3170,7 +3170,7 @@ QNetworkProxy ConfigDialog::setApplicationCustomProxy()
 	if (proxyGroupBox->isChecked())
 		proxy.setHostName(proxyHostLine->text());
 	else
-		proxy.setHostName(QString::null);
+		proxy.setHostName(QString());
 
 	proxy.setPort(proxyPortBox->value());
 	proxy.setUser(proxyUserNameLine->text());
@@ -3531,7 +3531,7 @@ void ConfigDialog::showGridOptions(int axis)
 		boxWidthMajor->setValue(majPenY.widthF());
 
 		QPen minPenY = grd->minPenY();
-		boxTypeMinor->setCurrentItem(minPenY.style() - 1);
+		box->setCurrentIndex(minPenY.style() - 1);
 		boxColorMinor->setColor(minPenY.color());
 		boxWidthMinor->setValue(minPenY.widthF());
 	}
@@ -3604,7 +3604,7 @@ void ConfigDialog::updateGrid()
 		grid->setMinPenY(QPen(boxColorMinor->color(), boxWidthMinor->value(), boxTypeMinor->style()));
 	}
 
-	grid->setAxis(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
+	grid->setAxes(boxGridXAxis->currentIndex() + 2, boxGridYAxis->currentIndex());
 	grid->setRenderHint(QwtPlotItem::RenderAntialiased, boxAntialiseGrid->isChecked());
 }
 
@@ -3651,8 +3651,8 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 
 	QStringList llist = ScriptingLangManager::languages();
 	boxScriptingLanguage->clear();
-	boxScriptingLanguage->insertStringList(llist);
-	boxScriptingLanguage->setCurrentItem(llist.indexOf(app->defaultScriptingLang));
+	boxScriptingLanguage->addItems(llist);
+	box->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
 
 	undoStackSizeBox->setValue(app->matrixUndoStackSize());
 	boxEndLine->setCurrentIndex((int)app->d_eol);

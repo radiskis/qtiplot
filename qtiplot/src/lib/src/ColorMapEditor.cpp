@@ -49,7 +49,7 @@ ColorMapEditor::ColorMapEditor(const QLocale& locale, int precision, QWidget* pa
 {
 	table = new QTableWidget();
 	table->setColumnCount(2);
-	table->setSelectionMode(QAbstractItemView::SingleSelection);
+	table->setSelectionMode(qAbstractItemView::SingleSelection);
 	table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	table->verticalHeader()->hide();
 	table->horizontalHeader()->setClickable(false);
@@ -96,7 +96,7 @@ void ColorMapEditor::updateColorMap()
 	QColor c_min = QColor(table->item(0, 1)->text());
 	QColor c_max = QColor(table->item(rows - 1, 1)->text());
 	LinearColorMap map(c_min, c_max);
-	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
+	QwtInterval range = QwtInterval(min_val, max_val);
 	for (int i = 1; i < rows - 1; i++){
 		double val = (((DoubleSpinBox*)table->cellWidget(i, 0))->value() - min_val)/range.width();
 		map.addColorStop (val, QColor(table->item(i, 1)->text()));
@@ -114,7 +114,7 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 
 	color_map = map;
 
-	QwtArray <double> colors = map.colorStops();
+	QVector <double> colors = map.colorStops();
 	if (colors[1] != 0){
 		color_map.addColorStop(0.0, map.color1());
 		colors = color_map.colorStops();
@@ -129,7 +129,7 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 		max_val = map.intensityRange().maxValue();
 	}
 
-	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
+	QwtInterval range = QwtInterval(min_val, max_val);
 	double width = range.width();
 	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *sb = new DoubleSpinBox();
@@ -224,10 +224,10 @@ void ColorMapEditor::insertLevel()
 		previous_value = sb->value();
 
 	double val = 0.5*(current_value + previous_value);
-	QwtDoubleInterval range = QwtDoubleInterval(min_val, max_val);
+	QwtInterval range = QwtInterval(min_val, max_val);
 	double mapped_val = (val - min_val)/range.width();
 
-	QColor c = QColor(color_map.rgb(QwtDoubleInterval(0, 1), mapped_val));
+	QColor c = QColor(color_map.rgb(QwtInterval(0, 1), mapped_val));
 
 	table->blockSignals(true);
 	table->insertRow(row);

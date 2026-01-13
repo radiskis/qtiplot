@@ -37,11 +37,11 @@ Description          : QFileDialog extended with options for image export
 #include <QGroupBox>
 #include <QPushButton>
 #include <QGridLayout>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QPrintPreviewDialog>
 #include <QLabel>
 
-ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Graph *g, Qt::WFlags flags)
+ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Graph *g, Qt::WindowFlags flags)
 	: ExtensibleFileDialog( parent, extended, flags ), d_window(window), d_layer(g)
 {
 	setWindowTitle( tr( "QtiPlot - Choose a filename to save under" ) );

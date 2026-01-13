@@ -40,7 +40,7 @@ class Graph;
 class Table;
 class PlotCurve;
 class BaselineTool;
-class QwtPlotCurve;
+class PlotCurve;
 
 //! Subtract baseline dialog
 class BaselineDialog : public QDialog
@@ -48,7 +48,7 @@ class BaselineDialog : public QDialog
 	Q_OBJECT
 
 public:
-	BaselineDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	BaselineDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	void setGraph(Graph *g);
 
 private slots:

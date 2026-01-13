@@ -46,7 +46,7 @@ class IntDialog : public QDialog
     Q_OBJECT
 
 public:
-    IntDialog(QWidget* parent = 0, Graph *g = 0, Qt::WFlags fl = 0 );
+    IntDialog(QWidget* parent = 0, Graph *g = 0, Qt::WindowFlags fl = 0 );
 
 private slots:
 	void accept();

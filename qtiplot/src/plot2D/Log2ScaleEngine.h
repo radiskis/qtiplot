@@ -46,21 +46,21 @@ public:
     virtual QwtScaleTransformation *transformation() const;
 
 protected:
-    QwtDoubleInterval log2(const QwtDoubleInterval&) const;
+    QwtInterval log2(const QwtInterval&) const;
 
 private:
-    QwtDoubleInterval align(const QwtDoubleInterval&,
+    QwtInterval align(const QwtInterval&,
         double stepSize) const;
 
     void buildTicks(
-        const QwtDoubleInterval &, double stepSize, int maxMinSteps,
-        QwtValueList ticks[QwtScaleDiv::NTickTypes]) const;
+        const QwtInterval &, double stepSize, int maxMinSteps,
+        QList<double> ticks[QwtScaleDiv::NTickTypes]) const;
 
-    QwtValueList buildMinorTicks(const QwtValueList& majorTicks,
+    QList<double> buildMinorTicks(const QList<double>& majorTicks,
         int maxMinMark, double step) const;
 
-    QwtValueList buildMajorTicks(
-        const QwtDoubleInterval &interval, double stepSize) const;
+    QList<double> buildMajorTicks(
+        const QwtInterval &interval, double stepSize) const;
 };
 
 #endif

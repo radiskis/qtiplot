@@ -61,7 +61,7 @@
 #include <QDialogButtonBox>
 #include <QDir>
 
-FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WFlags fl )
+FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WindowFlags fl )
 : QDialog( parent, fl ), d_app(parent), d_active_editor(0), d_stand_alone(standAlone)
 {
 	QLocale locale = QLocale();
@@ -343,7 +343,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	if (standAlone){
 		buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 		buttonBox->setCenterButtons(true);
-		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+		connect(buttonBox, SIGNAL(clicked(qAbstractButton *)), this, SLOT(buttonClicked(qAbstractButton *)));
 		vbox1->addWidget(buttonBox);
 
 		setSizeGripEnabled(true);
@@ -358,7 +358,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	graph = 0;
 }
 
-void FunctionDialog::buttonClicked(QAbstractButton *btn)
+void FunctionDialog::buttonClicked(qAbstractButton *btn)
 {
 	switch(buttonBox->buttonRole(btn)){
 		case QDialogButtonBox::AcceptRole:
@@ -511,7 +511,7 @@ bool FunctionDialog::acceptFunction()
 		x = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxFunction->setFocus();
 		return false;
 	}
@@ -573,7 +573,7 @@ bool FunctionDialog::acceptParametric()
 		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxXFunction->setFocus();
 		return false;
 	}
@@ -595,7 +595,7 @@ bool FunctionDialog::acceptParametric()
 		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxYFunction->setFocus();
 		return false;
 	}
@@ -656,7 +656,7 @@ bool FunctionDialog::acceptPolar()
 		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxPolarRadius->setFocus();
 		return false;
 	}
@@ -677,7 +677,7 @@ bool FunctionDialog::acceptPolar()
 		parameter = end;
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxPolarTheta->setFocus();
 		return false;
 	}

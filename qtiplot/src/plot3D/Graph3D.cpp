@@ -33,7 +33,7 @@ Description          : 3D graph widget
 #include <QApplication>
 #include <QMessageBox>
 #include <QFileDialog>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QClipboard>
 #include <QPixmap>
 #include <QBitmap>
@@ -76,10 +76,10 @@ double UserFunction::operator()(double x, double y)
 	try {
 		parser.DefineVar("x", &x);
 		parser.DefineVar("y", &y);
-		parser.SetExpr((const std::string)formula.ascii());
+		parser.SetExpr((const std::string)formula.toStdWString());
 		result = parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
 	}
 	return result;
 }
@@ -133,20 +133,20 @@ Triple UserParametricSurface::operator()(double u, double v)
 		parser.DefineVar("u", &u);
 		parser.DefineVar("v", &v);
 
-		parser.SetExpr((const std::string)d_x_formula.ascii());
+		parser.SetExpr((const std::string)d_x_formula.toStdWString());
 		x = parser.Eval();
-		parser.SetExpr((const std::string)d_y_formula.ascii());
+		parser.SetExpr((const std::string)d_y_formula.toStdWString());
 		y = parser.Eval();
-		parser.SetExpr((const std::string)d_z_formula.ascii());
+		parser.SetExpr((const std::string)d_z_formula.toStdWString());
 		z = parser.Eval();
 	}
 	catch(mu::ParserError &e){
-		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
 	}
 	return Triple(x, y, z);
 }
 
-Graph3D::Graph3D(const QString& label, ApplicationWindow* parent, const char* name, Qt::WFlags f)
+Graph3D::Graph3D(const QString& label, ApplicationWindow* parent, const char* name, Qt::WindowFlags f)
 : MdiSubWindow(label, parent, name, f)
 {
 	initPlot();
@@ -190,11 +190,11 @@ void Graph3D::initPlot()
 
 	d_autoscale = app->d_3D_autoscale;
 
-	title = QString::null;
+	title = QString();
 	titleCol = Qt::black;
 	titleFnt = app->d_3D_title_font;
 
-	d_color_map_file = QString::null;
+	d_color_map_file = QString();
 	d_shading = (Qwt3D::SHADINGSTYLE)app->d_3D_shading;
 	legendOn = app->d_3D_legend;
 	legendMajorTicks = 5;
@@ -2974,7 +2974,7 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	if (!d_active_curve)
 		return;
 
-	d_color_map_file = QString::null;
+	d_color_map_file = QString();
 	((LinearColor *)d_active_curve->dataColor())->setColorMap(colorMap);
 	d_active_curve->legend()->setLimits(colorMap.intensityRange().minValue(), colorMap.intensityRange().maxValue());
 	d_active_curve->showColorLegend(d_active_curve->isColorLegend());
@@ -3304,14 +3304,14 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
 					fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 		} else if (formula.contains(",")){
-			QStringList l = formula.split(",", QString::SkipEmptyParts);
+			QStringList l = formula.split(",", Qt::SkipEmptyParts);
 			plot->addParametricSurface(l[0], l[1], l[2], l[3].toDouble(), l[4].toDouble(),
 					l[5].toDouble(), l[6].toDouble(), l[7].toInt(), l[8].toInt(), l[9].toInt(), l[10].toInt());
 		} else {
 			double xs = fList[2].toDouble(), xe = fList[3].toDouble();
 			double ys = fList[4].toDouble(), ye = fList[5].toDouble();
 			double zs = fList[6].toDouble(), ze = fList[7].toDouble();
-			QStringList l = formula.split(";", QString::SkipEmptyParts);
+			QStringList l = formula.split(";", Qt::SkipEmptyParts);
 			if (l.count() == 1)
 				plot->addFunction(formula, xs, xe, ys, ye, zs, ze);
 			else if (l.count() == 3)
@@ -3326,12 +3326,12 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	app->setListViewDate(caption, date);
 	plot->setBirthDate(date);
 
-	fList = lst[4].split("\t", QString::SkipEmptyParts);
+	fList = lst[4].split("\t", Qt::SkipEmptyParts);
 	plot->setGrid(fList[1].toInt());
 
 	plot->setTitle(lst[5].split("\t"));
 
-	QStringList colors = lst[6].split("\t", QString::SkipEmptyParts);
+	QStringList colors = lst[6].split("\t", Qt::SkipEmptyParts);
 	plot->setMeshColor(QColor(colors[1]));
 	plot->setAxesColor(QColor(colors[2]));
 	plot->setNumbersColor(QColor(colors[3]));
@@ -3347,38 +3347,38 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			plot->setDataColors(QColor(colors[7]), QColor(colors[8]));
 	}
 
-	fList = lst[7].split("\t", QString::SkipEmptyParts);
+	fList = lst[7].split("\t", Qt::SkipEmptyParts);
 	fList.pop_front();
 	plot->setAxesLabels(fList);
 
-	plot->setTicks(lst[8].split("\t", QString::SkipEmptyParts));
-	plot->setTickLengths(lst[9].split("\t", QString::SkipEmptyParts));
-	plot->setOptions(lst[10].split("\t", QString::SkipEmptyParts));
+	plot->setTicks(lst[8].split("\t", Qt::SkipEmptyParts));
+	plot->setTickLengths(lst[9].split("\t", Qt::SkipEmptyParts));
+	plot->setOptions(lst[10].split("\t", Qt::SkipEmptyParts));
 
-	QStringList fLst = lst[11].split("\t", QString::SkipEmptyParts);
+	QStringList fLst = lst[11].split("\t", Qt::SkipEmptyParts);
 	plot->setNumbersFont(QFont(fLst[1], fLst[2].toInt(), fLst[3].toInt(), fLst[4].toInt()));
 
-	plot->setXAxisLabelFont(lst[12].split("\t", QString::SkipEmptyParts));
-	plot->setYAxisLabelFont(lst[13].split("\t", QString::SkipEmptyParts));
-	plot->setZAxisLabelFont(lst[14].split("\t", QString::SkipEmptyParts));
+	plot->setXAxisLabelFont(lst[12].split("\t", Qt::SkipEmptyParts));
+	plot->setYAxisLabelFont(lst[13].split("\t", Qt::SkipEmptyParts));
+	plot->setZAxisLabelFont(lst[14].split("\t", Qt::SkipEmptyParts));
 
-	fList=lst[15].split("\t", QString::SkipEmptyParts);
+	fList=lst[15].split("\t", Qt::SkipEmptyParts);
 	plot->setRotation(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
 
-	fList=lst[16].split("\t", QString::SkipEmptyParts);
+	fList=lst[16].split("\t", Qt::SkipEmptyParts);
 	plot->setZoom(fList[1].toDouble());
 
-	fList=lst[17].split("\t", QString::SkipEmptyParts);
+	fList=lst[17].split("\t", Qt::SkipEmptyParts);
 	plot->setScale(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
 
-	fList=lst[18].split("\t", QString::SkipEmptyParts);
+	fList=lst[18].split("\t", Qt::SkipEmptyParts);
 	plot->setShift(fList[1].toDouble(),fList[2].toDouble(),fList[3].toDouble());
 
-	fList=lst[19].split("\t", QString::SkipEmptyParts);
+	fList=lst[19].split("\t", Qt::SkipEmptyParts);
 	plot->setMeshLineWidth(fList[1].toDouble());
 
 	if (fileVersion > 71){
-		fList = lst[20].split("\t"); // using QString::SkipEmptyParts here causes a crash for empty window labels
+		fList = lst[20].split("\t"); // using Qt::SkipEmptyParts here causes a crash for empty window labels
 		if (fList.size() >= 3){
 			plot->setWindowLabel(fList[1]);
 			plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
@@ -3386,11 +3386,11 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	}
 
 	if (fileVersion >= 88){
-		fList=lst[21].split("\t", QString::SkipEmptyParts);
+		fList=lst[21].split("\t", Qt::SkipEmptyParts);
 		plot->setOrthogonal(fList[1].toInt());
 	}
 
-	plot->setStyle(lst[3].split("\t", QString::SkipEmptyParts));
+	plot->setStyle(lst[3].split("\t", Qt::SkipEmptyParts));
 
 	QListIterator<QString> line = QListIterator<QString>(lst);
 	if (!line.findNext("<ColorMap>")){
@@ -3409,7 +3409,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 	s = line.next();
 
-	fList = s.split("\t", QString::SkipEmptyParts);
+	fList = s.split("\t", Qt::SkipEmptyParts);
 	if (fList.size() == 4 && fList[0] == "axisType"){
 		fList.removeFirst();
 		for (int i = 0; i < 3; i++)
@@ -3424,7 +3424,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			s = line.next().stripWhiteSpace();
 
 			if (s.contains("<Major>")){
-				fList = s.remove("<Major>").remove("</Major>").split("\t", QString::SkipEmptyParts);
+				fList = s.remove("<Major>").remove("</Major>").split("\t", Qt::SkipEmptyParts);
 				if (fList.size() == 4){
 					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
 					for (int i = 0; i < 12; i++)
@@ -3436,7 +3436,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 				s = line.next().stripWhiteSpace();
 
 			if (s.contains("<Minor>")){
-				fList = s.remove("<Minor>").remove("</Minor>").split("\t", QString::SkipEmptyParts);
+				fList = s.remove("<Minor>").remove("</Minor>").split("\t", Qt::SkipEmptyParts);
 				if (fList.size() == 4){
 					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
 					for (int i = 0; i < 12; i++)

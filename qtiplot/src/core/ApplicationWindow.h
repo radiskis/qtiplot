@@ -31,8 +31,8 @@
 #define APPLICATION_H
 
 #include <QMainWindow>
-#include <q3listview.h>
-#include <QHttp>
+// #include <q3listview.h>
+// #include <QHttp>
 #include <QFile>
 #include <QSplitter>
 #include <QDesktopServices>
@@ -55,7 +55,7 @@
 #ifdef QAXSERVER
 #include <ActiveQt/QAxBindable>
 #include <ActiveQt/QAxFactory>
-#include <qt_windows.h>
+// #include <qt_windows.h>
 #endif
 
 class QPixmap;
@@ -77,7 +77,9 @@ class QLocale;
 class QMdiArea;
 class QUndoView;
 class QCompleter;
+class QCompleter;
 class QFileInfo;
+class QTreeWidgetItem;
 
 class Matrix;
 class Table;
@@ -437,7 +439,7 @@ public slots:
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
 	Matrix* tableToMatrix(Table* t);
-	Matrix* tableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString::null);
+	Matrix* tableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString());
 #ifdef HAVE_ALGLIB
 	void convertTableToMatrixRandomXYZ();
 	void expandMatrix();
@@ -456,7 +458,7 @@ public slots:
 	void rotateMatrixMinus90();
 	void viewMatrixImage();
 	void viewMatrixTable();
-	void exportMatrix(const QString& exportFilter = QString::null);
+	void exportMatrix(const QString& exportFilter = QString());
 	void setMatrixDefaultScale();
 	void setMatrixGrayScale();
 	void setMatrixRainbowScale();
@@ -504,14 +506,14 @@ public slots:
 	void connectTable(Table* w);
 	void initTable(Table* w, const QString& caption);
 	void customTable(Table* w);
-	Table* importOdfSpreadsheet(const QString& = QString::null, int sheet = -1);
-	Table* importExcel(const QString& = QString::null, int sheet = -1);
+	Table* importOdfSpreadsheet(const QString& = QString(), int sheet = -1);
+	Table* importExcel(const QString& = QString(), int sheet = -1);
 	void exportExcel();
 	void exportOds();
 
-	Table* importDatabase(const QString& = QString::null, int sheet = -1);
+	Table* importDatabase(const QString& = QString(), int sheet = -1);
 	Table* importWaveFile();
-	void importASCII(const QString& fileName = QString::null);
+	void importASCII(const QString& fileName = QString());
 	void importASCII(const QStringList& files, int import_mode, const QString& local_column_separator, int local_ignored_lines, bool local_rename_columns,
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
 		QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar,
@@ -521,7 +523,7 @@ public slots:
 	//! recalculate selected cells of current table
 	void recalculateTable();
 
-	TableStatistics *newTableStatistics(Table *base, int type, QList<int>, int start = 0, int end = -1, const QString &caption = QString::null);
+	TableStatistics *newTableStatistics(Table *base, int type, QList<int>, int start = 0, int end = -1, const QString &caption = QString());
 	//@}
 
 	//! \name Graphs
@@ -574,7 +576,7 @@ public slots:
 	//! \name Export and Print
 	//@{
 	void exportLayer();
-	void exportGraph(const QString& exportFilter = QString::null);
+	void exportGraph(const QString& exportFilter = QString());
 	void exportAllGraphs();
 #if QT_VERSION >= 0x040500
 	void exportPresentationODF();
@@ -598,12 +600,12 @@ public slots:
 	void renameWindow();
 
 	//!  Called when the user presses F2 and an item is selected in lv.
-	void renameWindow(Q3ListViewItem *item, int, const QString &s);
+	void renameWindow(QTreeWidgetItem *item, int, const QString &s);
 
 	//!  Checks weather the new window name is valid and modifies the name.
 	bool setWindowName(MdiSubWindow *w, const QString &text);
 
-	void maximizeWindow(Q3ListViewItem * lbi = 0);
+	void maximizeWindow(QTreeWidgetItem * lbi = 0);
 	void maximizeWindow(MdiSubWindow *w);
 	void minimizeWindow(MdiSubWindow *w = 0);
 
@@ -817,7 +819,7 @@ public slots:
 	void showCurvePlotDialog();
 	void showCurveWorksheet();
     void showCurveWorksheet(Graph *g, int curveIndex);
-	void showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p, int);
+	void showWindowPopupMenu(QTreeWidgetItem *it, const QPoint &p, int);
 
 	//! Connected to the context menu signal from lv; it's called when there are several items selected in the list
 	void showListViewSelectionMenu(const QPoint &p);
@@ -933,7 +935,7 @@ public slots:
 	void custom3DGrids(int grids);
 	//@}
 
-	void updateRecentProjectsList(const QString& fn = QString::null);
+	void updateRecentProjectsList(const QString& fn = QString());
 
 	//!  connected to the done(bool) signal of the http object
 	void receivedVersionFile(bool error);
@@ -1022,9 +1024,9 @@ public slots:
 	bool changeFolder(Folder *newFolder, bool force = false);
 
 	//! Changes the current folder when the user changes the current item in the QListView "folders"
-	void folderItemChanged(Q3ListViewItem *it);
+	void folderItemChanged(QTreeWidgetItem *it);
 	//! Changes the current folder when the user double-clicks on a folder item in the QListView "lv"
-	void folderItemDoubleClicked(Q3ListViewItem *it);
+	void folderItemDoubleClicked(QTreeWidgetItem *it);
 
 	//!  creates and opens the context menu of a folder list view item
 	/**
@@ -1033,19 +1035,19 @@ public slots:
 	 * \param fromFolders: true means that the user clicked right mouse buttom on an item from QListView "folders"
 	 *					   false means that the user clicked right mouse buttom on an item from QListView "lv"
 	 */
-	void showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p, bool fromFolders);
+	void showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p, bool fromFolders);
 
 	//!  connected to the SIGNAL contextMenuRequested from the list views
-	void showFolderPopupMenu(Q3ListViewItem *it, const QPoint &p, int);
+	void showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p, int);
 
 	//!  starts renaming the selected folder by creating a built-in text editor
 	void startRenameFolder();
 
 	//!  starts renaming the selected folder by creating a built-in text editor
-	void startRenameFolder(Q3ListViewItem *item);
+	void startRenameFolder(QTreeWidgetItem *item);
 
 	//!  checks weather the new folder name is valid and modifies the name
-	void renameFolder(Q3ListViewItem *it, int col, const QString &text);
+	void renameFolder(QTreeWidgetItem *it, int col, const QString &text);
 
 	//!  forces showing all windows in the current folder and subfolders, depending on the user's viewing policy
 	void showAllFolderWindows();
@@ -1090,10 +1092,10 @@ public slots:
 			  bool caseSensitive, bool partialMatch, bool subfolders);
 
 	//!  initializes the list of items dragged by the user
-	void dragFolderItems(QList<Q3ListViewItem *> items){draggedItems = items;};
+	void dragFolderItems(QList<QTreeWidgetItem *> items){draggedItems = items;};
 
 	//!  Drop the objects in the list draggedItems to the folder of the destination item
-	void dropFolderItems(Q3ListViewItem *dest);
+	void dropFolderItems(QTreeWidgetItem *dest);
 
 	//!  moves a folder item to another
 	/**
@@ -1150,7 +1152,7 @@ private:
 	void translateActionsStrings();
 	//@}
 	virtual QMenu * createPopupMenu(){return NULL;};
-	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString::null);
+	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString());
 	QMessageBox::StandardButton showSaveProjectMessage();
 	QString getSaveProjectName(const QString& fileName, bool *compress = 0, int scope = 0);
 	void goToParentFolder();
@@ -1462,10 +1464,10 @@ private:
 	int convertOldToNewColorIndex(int cindex);
 
 	//! Stores the pointers to the dragged items from the FolderListViews objects
-	QList<Q3ListViewItem *> draggedItems;
+	QList<QTreeWidgetItem *> draggedItems;
 
 	//! Used when checking for new versions
-	QHttp *http;
+	// QHttp *http;
 	//! Used when checking for new versions
 	QBuffer version_buffer;
 

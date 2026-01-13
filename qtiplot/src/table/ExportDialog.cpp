@@ -39,7 +39,7 @@
 #include <QComboBox>
 #include <QGroupBox>
 
-ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WFlags flags)
+ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WindowFlags flags)
 : ExtensibleFileDialog( parent, extended, flags ), d_window(window)
 {
 	setWindowTitle( tr( "QtiPlot - Export ASCII" ) );

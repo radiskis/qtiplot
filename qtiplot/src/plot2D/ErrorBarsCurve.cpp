@@ -232,13 +232,13 @@ void ErrorBarsCurve::setColor(const QColor& c)
   	setPen(p);
 }
 
-QwtDoubleRect ErrorBarsCurve::boundingRect() const
+QRectF ErrorBarsCurve::boundingRect() const
 {
-	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	QRectF rect = QwtPlotCurve::boundingRect();
 
 	int size = dataSize();
 
-	QwtArray <double> X(size), Y(size), min(size), max(size);
+	QVector <double> X(size), Y(size), min(size), max(size);
 	for (int i = 0; i < size; i++){
 		double xv = x(i), yv = y(i), errv = err[i];
 		X[i] = xv;
@@ -252,22 +252,22 @@ QwtDoubleRect ErrorBarsCurve::boundingRect() const
 		}
 	}
 
-	QwtArrayData *erMin, *erMax;
+	QVectorData *erMin, *erMax;
 	if (type == Vertical){
-		erMin = new QwtArrayData(X, min);
-		erMax = new QwtArrayData(X, max);
+		erMin = new QVectorData(X, min);
+		erMax = new QVectorData(X, max);
 	} else {
-		erMin = new QwtArrayData(min, Y);
-		erMax = new QwtArrayData(max, Y);
+		erMin = new QVectorData(min, Y);
+		erMax = new QVectorData(max, Y);
 	}
 
-	QwtDoubleRect minrect = erMin->boundingRect();
-	QwtDoubleRect maxrect = erMax->boundingRect();
+	QRectF minrect = erMin->boundingRect();
+	QRectF maxrect = erMax->boundingRect();
 
-	rect.setTop(QMIN(minrect.top(), maxrect.top()));
-	rect.setBottom(QMAX(minrect.bottom(), maxrect.bottom()));
-	rect.setLeft(QMIN(minrect.left(), maxrect.left()));
-	rect.setRight(QMAX(minrect.right(), maxrect.right()));
+	rect.setTop(qMin(minrect.top(), maxrect.top()));
+	rect.setBottom(qMax(minrect.bottom(), maxrect.bottom()));
+	rect.setLeft(qMin(minrect.left(), maxrect.left()));
+	rect.setRight(qMax(minrect.right(), maxrect.right()));
 
 	delete erMin;
 	delete erMax;
@@ -331,7 +331,7 @@ void ErrorBarsCurve::loadData()
 	Y.resize(data_size);
 	err.resize(data_size);
 
-	setData(X.data(), Y.data(), data_size);
+	setSamples(X.data(), Y.data(), data_size);
 	setErrors(err);
 }
 

@@ -52,10 +52,12 @@ Description          : Table worksheet class
 #endif
 #include <QTextTable>
 
-#include <q3paintdevicemetrics.h>
-#include <q3dragobject.h>
-#include <Q3TableSelection>
-#include <Q3MemArray>
+#include <QTextTable>
+//#include <q3paintdevicemetrics.h>
+//#include <q3dragobject.h>
+//#include <Q3TableSelection>
+//#include <Q3MemArray>
+// Q3 headers removed.
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_sort.h>
@@ -64,7 +66,7 @@ Description          : Table worksheet class
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 
-Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
+Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 : MdiSubWindow(label,parent,name,f), scripted(env)
 {
 	init(r,c);
@@ -78,13 +80,23 @@ void Table::init(int rows, int cols)
 	d_numeric_precision = 13;
 
 	d_table = new MyTable(rows, cols, this, "table");
-	d_table->setSelectionMode (Q3Table::Single);
-	d_table->setRowMovingEnabled(true);
-	d_table->setColumnMovingEnabled(true);
-	d_table->setCurrentCell(-1, -1);
+	d_table->setSelectionMode (qAbstractItemView::ExtendedSelection); // Q3Table::Single allowed ranges, Extended? Or Single?
+    // Q3Table::Single meant "Single selection of cells or ranges"? NO.
+    // Q3Table documentation says "Single: When the user selects an item, any already-selected item becomes unselected." (Single item).
+    // But QtiPlot seems to support ranges (extractData, etc).
+    // Let's assume ExtendedSelection to allow ranges (blocks).
+    // Or ContiguousSelection?
+    // "Multi" in Q3 meant multiple ranges. "Single" meant one range? check Q3 docs.
+    // Q3Table::Single: "The user can select one range of cells."
+    // So qAbstractItemView::ContiguousSelection or ExtendedSelection.
+    // Defaulting to ExtendedSelection for flexibility.
+    
+    d_table->verticalHeader()->setSectionsMovable(true);
+	d_table->horizontalHeader()->setSectionsMovable(true);
+	d_table->setCurrentCell(0, 0);
 
-	connect(d_table->verticalHeader(), SIGNAL(indexChange(int, int, int)), this, SLOT(notifyChanges()));
-	connect(d_table->horizontalHeader(), SIGNAL(indexChange(int, int, int)), this, SLOT(moveColumn(int, int, int)));
+	connect(d_table->verticalHeader(), SIGNAL(sectionMoved(int, int, int)), this, SLOT(notifyChanges()));
+	connect(d_table->horizontalHeader(), SIGNAL(sectionMoved(int, int, int)), this, SLOT(moveColumn(int, int, int)));
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
@@ -98,11 +110,11 @@ void Table::init(int rows, int cols)
 		col_plot_type << Y;
 	}
 
-	Q3Header* head=(Q3Header*)d_table->horizontalHeader();
+	QHeaderView* head= d_table->horizontalHeader();
 	head->setMouseTracking(true);
-	head->setResizeEnabled(true);
+	head->setSectionResizeMode(QHeaderView::Interactive);
 	head->installEventFilter(this);
-	connect(head, SIGNAL(sizeChange(int, int, int)), this, SLOT(colWidthModified(int, int, int)));
+	connect(head, SIGNAL(sectionResized(int, int, int)), this, SLOT(colWidthModified(int, int, int)));
 
 	col_plot_type[0] = X;
 	setHeaderColType();
@@ -111,7 +123,7 @@ void Table::init(int rows, int cols)
 	int h = 11*(d_table->verticalHeader())->sectionSize(0);
 	setGeometry(50, 50, w + 45, h);
 
-	d_table->verticalHeader()->setResizeEnabled(false);
+	d_table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	d_table->verticalHeader()->installEventFilter(this);
 
 	setWidget(d_table);
@@ -122,7 +134,7 @@ void Table::init(int rows, int cols)
 	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_A), this);
 	connect(accelAll, SIGNAL(activated()), this, SLOT(selectAllTable()));
 
-	connect(d_table, SIGNAL(valueChanged(int, int)), this, SLOT(cellEdited(int, int)));
+	connect(d_table, SIGNAL(cellChanged(int, int)), this, SLOT(cellEdited(int, int)));
 
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
@@ -197,12 +209,12 @@ void Table::print(QPrinter *printer)
     if (!p.begin(printer))
         return; // paint on printer
 
-	Q3PaintDeviceMetrics metrics( p.device() );
-	int dpiy = metrics.logicalDpiY();
+	QPaintDevice *dev = p.device();
+	int dpiy = dev->logicalDpiY();
 	const int margin = (int) ( (1/2.54)*dpiy ); // 2 cm margins
 
-	Q3Header *hHeader = d_table->horizontalHeader();
-	Q3Header *vHeader = d_table->verticalHeader();
+	QHeaderView *hHeader = d_table->horizontalHeader();
+	QHeaderView *vHeader = d_table->verticalHeader();
 
 	int rows=d_table->numRows();
 	int cols=d_table->numCols();
@@ -212,7 +224,8 @@ void Table::print(QPrinter *printer)
 
 	// print header
 	p.setFont(hHeader->font());
-	QRect br=p.boundingRect(br,Qt::AlignCenter,	hHeader->label(0));
+	QString label = d_table->model()->headerData(0, Qt::Horizontal).toString();
+	QRect br=p.boundingRect(QRect(0,0,0,0),Qt::AlignCenter, label); // Initial rect
 	p.drawLine(right,height,right,height+br.height());
 	QRect tr(br);
 
@@ -222,11 +235,12 @@ void Table::print(QPrinter *printer)
 		tr.setTopLeft(QPoint(right,height));
 		tr.setWidth(w);
 		tr.setHeight(br.height());
-		p.drawText(tr,Qt::AlignCenter,hHeader->label(i),-1);
+		QString headLabel = d_table->model()->headerData(i, Qt::Horizontal).toString();
+		p.drawText(tr,Qt::AlignCenter,headLabel,-1);
 		right+=w;
 		p.drawLine(right,height,right,height+tr.height());
 
-		if (right >= metrics.width()-2*margin )
+		if (right >= dev->width()-2*margin )
 			break;
 	}
 	p.drawLine(margin + vertHeaderWidth, height, right-1, height);//first horizontal line
@@ -237,7 +251,7 @@ void Table::print(QPrinter *printer)
 	for (i=0;i<rows;i++)
 	{
 		right = margin;
-		QString text = vHeader->label(i)+"\t";
+		QString text = d_table->model()->headerData(i, Qt::Vertical).toString()+"\t";
 		tr = p.boundingRect(tr,Qt::AlignCenter,text);
 		p.drawLine(right,height,right,height+tr.height());
 
@@ -260,13 +274,13 @@ void Table::print(QPrinter *printer)
 			right+=w;
 			p.drawLine(right,height,right,height+tr.height());
 
-			if (right >= metrics.width()-2*margin )
+			if (right >= dev->width()-2*margin )
 				break;
 		}
 		height+=br.height();
 		p.drawLine(margin, height, right - 1, height);
 
-		if (height >= metrics.height() - margin )
+		if (height >= dev->height() - margin )
 		{
 			printer->newPage();
 			height=margin;
@@ -275,6 +289,7 @@ void Table::print(QPrinter *printer)
 	}
 	p.end();
 }
+
 
 void Table::print(const QString& fileName)
 {
@@ -424,7 +439,7 @@ void Table::setColPlotDesignation(int col, PlotDesignation pd)
 
 void Table::columnNumericFormat(int col, int *f, int *precision)
 {
-	QStringList format = col_format[col].split("/", QString::KeepEmptyParts);
+	QStringList format = col_format[col].split("/", Qt::KeepEmptyParts);
 	if (format.count() == 2){
 		*f = format[0].toInt();
 		*precision = format[1].toInt();
@@ -438,7 +453,7 @@ void Table::columnNumericFormat(int col, int *f, int *precision)
 
 void Table::columnNumericFormat(int col, char *f, int *precision)
 {
-	QStringList format = col_format[col].split("/", QString::KeepEmptyParts);
+	QStringList format = col_format[col].split("/", Qt::KeepEmptyParts);
 	if (format.count() == 2){
 		switch(format[0].toInt()){
 			case 0:
@@ -484,7 +499,7 @@ void Table::setColWidths(const QStringList& widths)
 
 void Table::setColumnTypes(const QStringList& ctl)
 {
-	int n = QMIN((int)ctl.count(), numCols());
+	int n = qMin((int)ctl.count(), numCols());
 	for (int i=0; i<n; i++){
 		QStringList l = ctl[i].split(";");
 		colTypes[i] = l[0].toInt();
@@ -500,7 +515,7 @@ void Table::clearCommands()
 {
 	int count = (int)commands.size();
 	for (int i = 0; i < count; i++)
-		commands[i] = QString::null;
+		commands[i] = QString();
 }
 
 void Table::setCommands(const QStringList& com)
@@ -973,7 +988,7 @@ int Table::firstXCol()
 QString Table::colLabel(int col)
 {
 	if (col < 0 || col >= d_table->numCols())
-		return QString::null;
+		return QString();
 
 	return col_label[col];
 }
@@ -981,7 +996,7 @@ QString Table::colLabel(int col)
 QString Table::comment(int col)
 {
 	if (col < 0 || col >= d_table->numCols())
-		return QString::null;
+		return QString();
 
 	return comments[col];
 }
@@ -1412,8 +1427,8 @@ void Table::deleteRows(int startRow, int endRow)
 		}
 	}
 
-    int start = QMIN(startRow, endRow);
-    int end = QMAX(startRow, endRow);
+    int start = qMin(startRow, endRow);
+    int end = qMax(startRow, endRow);
 
     start--;
     end--;
@@ -1574,7 +1589,7 @@ void Table::pasteSelection()
 	if (rows < 1)
 		return;
 
-	QStringList firstLine = linesList[0].split("\t", QString::SkipEmptyParts);
+	QStringList firstLine = linesList[0].split("\t", Qt::SkipEmptyParts);
 	int cols = firstLine.count();
 	for (int i = 1; i < rows; i++){
 		int aux = linesList[i].split("\t").count();
@@ -1600,7 +1615,7 @@ void Table::pasteSelection()
 				msgBox.addButton(tr("&Values"), QMessageBox::AcceptRole);
 				QPushButton *namesButton = msgBox.addButton(tr("Column &Names"), QMessageBox::AcceptRole);
 				msgBox.setDefaultButton(namesButton);
-				QAbstractButton *commentsButton = msgBox.addButton(tr("&Comments"), QMessageBox::AcceptRole);
+				qAbstractButton *commentsButton = msgBox.addButton(tr("&Comments"), QMessageBox::AcceptRole);
 				msgBox.addButton(QMessageBox::Cancel);
 
 				if (msgBox.exec() == QMessageBox::Cancel)
@@ -2837,7 +2852,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	if (renameCols && !allNumbers){//use first line to set the table header
 		for (int i = 0; i<cols; i++){
 			int aux = i + startCol;
-			col_label[aux] = QString::null;
+			col_label[aux] = QString();
 			if (!importComments)
 				comments[aux] = line[i];
 			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
@@ -2858,7 +2873,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
-		line = s.split(sep, QString::KeepEmptyParts);
+		line = s.split(sep, Qt::KeepEmptyParts);
 		for (int i=0; i<line.size(); i++){
 			int aux = startCol + i;
 			if (aux < comments.size())
@@ -3348,8 +3363,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 
 			if (me->modifiers() == Qt::ShiftModifier){
 				int col = hheader->sectionAt (me->pos().x() + hheader->offset());
-				int start = QMIN(col, selectedCol);
-				int end = QMAX(col, selectedCol);
+				int start = qMin(col, selectedCol);
+				int end = qMax(col, selectedCol);
 				for (int i = start; i <= end; i++)
 					d_table->selectColumn(i);
 				return true;
@@ -3635,7 +3650,7 @@ void Table::clear()
 	for (int i=0; i<d_table->numCols(); i++)
 	{
 		for (int j=0; j<d_table->numRows(); j++)
-			d_table->setText(j, i, QString::null);
+			d_table->setText(j, i, QString());
 
 		emit modifiedData(this, colName(i));
 	}
@@ -3996,23 +4011,53 @@ double Table::maxColumnValue(int col, int startRow, int endRow)
  *****************************************************************************/
 
 MyTable::MyTable(QWidget * parent, const char * name)
-:Q3Table(parent, name)
-{}
+:QTableWidget(parent)
+{ setObjectName(name); }
 
 MyTable::MyTable(int numRows, int numCols, QWidget * parent, const char * name)
-:Q3Table(numRows, numCols, parent, name)
-{}
+:QTableWidget(numRows, numCols, parent)
+{ setObjectName(name); }
 
 void MyTable::activateNextCell()
 {
 	int row = currentRow();
 	int col = currentColumn();
 
-	clearSelection (true);
+	clearSelection(); // qAbstractItemView::clearSelection
 
     if(row+1 >= numRows())
         setNumRows(row + 11);
 
 	setCurrentCell (row + 1, col);
-    selectCells(row+1, col, row+1, col);
+    // selectCells(row+1, col, row+1, col); // Q3Table
+    QTableWidgetSelectionRange range(row+1, col, row+1, col);
+    setRangeSelected(range, true);
+}
+
+Q3TableSelection Table::getSelection()
+{
+    Q3TableSelection sel;
+    // d_table is MyTable/QTableWidget
+    QList<QTableWidgetSelectionRange> ranges = d_table->selectedRanges();
+    if (ranges.isEmpty()) {
+        sel.init(d_table->currentRow(), d_table->currentColumn());
+        if (sel.topRow < 0) sel.init(0,0);
+        return sel;
+    }
+
+    int top = ranges[0].topRow();
+    int bottom = ranges[0].bottomRow();
+    int left = ranges[0].leftColumn();
+    int right = ranges[0].rightColumn();
+
+    for (int i=1; i<ranges.count(); ++i) {
+        top = qMin(top, ranges[i].topRow());
+        bottom = qMax(bottom, ranges[i].bottomRow());
+        left = qMin(left, ranges[i].leftColumn());
+        right = qMax(right, ranges[i].rightColumn());
+    }
+    sel.init(top, left);
+    sel.bottomRow = bottom;
+    sel.rightCol = right;
+    return sel;
 }

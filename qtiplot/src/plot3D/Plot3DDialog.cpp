@@ -53,10 +53,10 @@ Description          : Surface plot options dialog
 
 #include <qwt3d_color.h>
 
-Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WFlags fl )
+Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
-    setName( "Plot3DDialog" );
+    setObjectName( "Plot3DDialog" );
 	setWindowTitle( tr( "QtiPlot - Surface Plot Options" ) );
 	setSizeGripEnabled(true);
 

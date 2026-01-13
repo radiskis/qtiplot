@@ -56,7 +56,7 @@ class Fit : public Filter
 		enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset, Direct};
         enum FitType{BuiltIn = 0, Plugin = 1, User = 2};
 
-		Fit(ApplicationWindow *parent, QwtPlotCurve *c);
+		Fit(ApplicationWindow *parent, PlotCurve *c);
 		Fit(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
 		Fit(ApplicationWindow *parent, Table *t, const QString& name = QString());
 		~Fit();
@@ -66,9 +66,9 @@ class Fit : public Filter
         virtual bool run(){fit(); return true;};
 
 		//! Sets the data set to be used for weighting
-		bool setWeightingData(WeightingMethod w, const QString& colName = QString::null);
+		bool setWeightingData(WeightingMethod w, const QString& colName = QString());
 
-		void setDataCurve(QwtPlotCurve *curve, double start, double end);
+		void setDataCurve(PlotCurve *curve, double start, double end);
 		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool sort = false);
 
 		QString resultFormula(){return d_result_formula;};
@@ -102,7 +102,7 @@ class Fit : public Filter
 		double* residuals();
 
 		//! Plot residuals and display data values in a column
-		QwtPlotCurve* showResiduals();
+		PlotCurve* showResiduals();
 
 		void showPredictionLimits(double confidenceLevel);
 		void showConfidenceLimits(double confidenceLevel);

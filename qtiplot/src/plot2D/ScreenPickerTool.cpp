@@ -68,7 +68,7 @@ void ScreenPickerTool::append(const QPoint &point)
 	append(invTransform(point));
 }
 
-void ScreenPickerTool::append(const QwtDoublePoint &pos)
+void ScreenPickerTool::append(const QPointF &pos)
 {
 	double x0 = d_selection_marker.xValue();//old position
 	double y0 = d_selection_marker.yValue();
@@ -126,7 +126,7 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 					case Qt::Key_Enter:
 					case Qt::Key_Return:
 					{
-                        QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
+                        QPointF pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
 						append(pos);
 						emit selected(pos);
 						return true;
@@ -158,7 +158,7 @@ void DrawPointTool::setDataCurve(DataCurve *c)
 	d_table = c->table();
 }
 
-void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
+void DrawPointTool::appendPoint(const QPointF &pos)
 {
 	if (!d_app)
 		return;
@@ -189,7 +189,7 @@ void DrawPointTool::appendPoint(const QwtDoublePoint &pos)
 		d_table->setCell(rows, 1, pos.y());
 
 		d_curve = new DataCurve(d_table, d_table->colName(0), d_table->colName(1));
-		d_curve->setAxis(QwtPlot::xBottom, QwtPlot::yLeft);
+		d_curve->setAxes(QwtPlot::xBottom, QwtPlot::yLeft);
 		d_curve->setPen(QPen(Qt::black, d_app->defaultCurveLineWidth));
 		d_curve->setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(Qt::black),
 						  QPen(Qt::black, d_app->defaultCurveLineWidth),
@@ -214,7 +214,7 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
 					case Qt::Key_Enter:
 					case Qt::Key_Return:
 					{
-                        QwtDoublePoint pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
+                        QPointF pos = invTransform(canvas()->mapFromGlobal(QCursor::pos()));
                         d_selection_marker.setValue(pos);
                         if (d_selection_marker.plot() == NULL)
                             d_selection_marker.attach(d_graph);
@@ -271,7 +271,7 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 			zLabel->setMinimumWidth(80);
 			zLabel->setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
-			append(QwtDoublePoint(xVal, yVal));
+			append(QPointF(xVal, yVal));
 
 			connect(averageBox, SIGNAL(valueChanged(int)), this, SLOT(updateCursorWidth(int)));
 			connect(horSpinBox, SIGNAL(valueChanged(double)), this, SLOT(updateCursorPosition()));
@@ -328,7 +328,7 @@ void ImageProfilesTool::connectPlotLayers()
 	if (gVert){
 		DataCurve *c = gVert->insertCurve(d_ver_table, d_ver_table->colName(1), d_ver_table->colName(0), Graph::Line);
 		if (c){
-			c->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+			c->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
 			c->setCurveType(QwtPlotCurve::Xfy);
 		}
 	}
@@ -336,7 +336,7 @@ void ImageProfilesTool::connectPlotLayers()
 
 void ImageProfilesTool::updateCursorPosition()
 {
-	append(QwtDoublePoint(horSpinBox->value(), vertSpinBox->value()));
+	append(QPointF(horSpinBox->value(), vertSpinBox->value()));
 
 	if (d_graph)
 		d_graph->replot();
@@ -366,7 +366,7 @@ void ImageProfilesTool::updateCursorWidth(int width)
 	setCursorWidth(width);
 	if (d_graph)
 		d_graph->replot();
-	append(QwtDoublePoint(horSpinBox->value(), vertSpinBox->value()));
+	append(QPointF(horSpinBox->value(), vertSpinBox->value()));
 }
 
 void ImageProfilesTool::modifiedMatrix(Matrix *m)
@@ -392,15 +392,15 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 	}
 
 	if (d_graph){
-		d_graph->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+		d_graph->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
 					0.0, 5, 5, Graph::Linear, true);
-		d_graph->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+		d_graph->setScale(QwtPlot::xTop, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
 		d_graph->replot();
 
 		MultiLayer *plot = d_graph->multiLayer();
 		Graph *gHor = plot->layer(2);
 		if (gHor){
-			gHor->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+			gHor->setScale(QwtPlot::xBottom, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
 			gHor->setScale(QwtPlot::yLeft, mmin, mmax);
 			gHor->replot();
 		}
@@ -408,13 +408,13 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 		Graph *gVert = plot->layer(3);
 		if (gVert){
 			gVert->setScale(QwtPlot::xTop, mmin, mmax);
-			gVert->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+			gVert->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
 					0.0, 5, 5, Graph::Linear, true);
 			gVert->replot();
 		}
 	}
 
-	append(QwtDoublePoint(d_selection_marker.xValue(), d_selection_marker.yValue()));
+	append(QPointF(d_selection_marker.xValue(), d_selection_marker.yValue()));
 }
 
 ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
@@ -422,8 +422,8 @@ ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 	if (!d_matrix || !d_app)
 		return 0;
 
-	Table *hTable = d_app->newHiddenTable(QString::null, QString::null, d_matrix->numCols(), 2);
-	Table *vTable = d_app->newHiddenTable(QString::null, QString::null, d_matrix->numRows(), 2);
+	Table *hTable = d_app->newHiddenTable(QString(), QString(), d_matrix->numCols(), 2);
+	Table *vTable = d_app->newHiddenTable(QString(), QString(), d_matrix->numRows(), 2);
 
 	ImageProfilesTool *tool = new ImageProfilesTool(d_app, g, d_matrix, hTable, vTable);
 	tool->setAveragePixels(averageBox->value());
@@ -437,11 +437,11 @@ ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 			gVert->removeCurve(0);
 	}
 	tool->connectPlotLayers();
-	tool->append(QwtDoublePoint(xValue(), yValue()));
+	tool->append(QPointF(xValue(), yValue()));
 	return tool;
 }
 
-void ImageProfilesTool::append(const QwtDoublePoint &pos)
+void ImageProfilesTool::append(const QPointF &pos)
 {
 	ScreenPickerTool::append(pos);
 

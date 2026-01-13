@@ -41,14 +41,14 @@ NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
-NonLinearFit::NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c)
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, PlotCurve *c)
 : Fit(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-NonLinearFit::NonLinearFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+NonLinearFit::NonLinearFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Fit(parent, c)
 {
 	init();
@@ -80,7 +80,7 @@ void NonLinearFit::init()
 {
     if (objectName().isEmpty())
         setObjectName(tr("NonLinear"));
-	d_formula = QString::null;
+	d_formula = QString();
 	d_f = user_f;
 	d_df = user_df;
 	d_fdf = user_fdf;
@@ -117,20 +117,20 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 		parser.DefineVar("x", &xvar);
 		for (int k = 0; k < (int)d_p; k++){
 			param[k] = gsl_vector_get(d_param_init, k);
-			parser.DefineVar(d_param_names[k].ascii(), &param[k]);
+			parser.DefineVar(d_param_names[k].toStdWString(), &param[k]);
 		}
 
 		QMapIterator<QString, double> i(d_constants);
  		while (i.hasNext()) {
      		i.next();
-			parser.DefineConst(i.key().ascii(), i.value());
+			parser.DefineConst(i.key().toStdWString(), i.value());
  		}
 
-		parser.SetExpr(s.ascii());
+		parser.SetExpr(s.toStdWString());
 		parser.Eval() ;
 		delete[] param;
 	} catch(mu::ParserError &e){
-		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		d_init_err = true;
 		return false;
 	}
@@ -171,17 +171,17 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 {
 	MyParser parser;
 	for (int i=0; i<d_p; i++)
-		parser.DefineVar(d_param_names[i].ascii(), &d_results[i]);
+		parser.DefineVar(d_param_names[i].toStdWString(), &d_results[i]);
 
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
-		parser.DefineConst(i.key().ascii(), i.value());
+		parser.DefineConst(i.key().toStdWString(), i.value());
  	}
 
 	double x;
 	parser.DefineVar("x", &x);
-	parser.SetExpr(d_formula.ascii());
+	parser.SetExpr(d_formula.toStdWString());
 
 	if (d_gen_function){
 		double X0 = d_x[0];
@@ -204,16 +204,16 @@ double NonLinearFit::eval(double *par, double x)
 {
 	MyParser parser;
 	for (int i=0; i<d_p; i++)
-		parser.DefineVar(d_param_names[i].ascii(), &par[i]);
+		parser.DefineVar(d_param_names[i].toStdWString(), &par[i]);
 
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
      	i.next();
-		parser.DefineConst(i.key().ascii(), i.value());
+		parser.DefineConst(i.key().toStdWString(), i.value());
  	}
 
 	parser.DefineVar("x", &x);
-	parser.SetExpr(d_formula.ascii());
+	parser.SetExpr(d_formula.toStdWString());
     return parser.EvalRemoveSingularity(&x, false);
 }
 
@@ -285,14 +285,14 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 
 		QLocale locale = QLocale();
 
-		const char *formula = text.toAscii().data();
-		int length = text.toAscii().length();
+		std::wstring formula = text.toStdWString();
 		reader.SetFormula (formula);
 		reader.IgnoreUndefVar(true);
 		int pos = 0;
+		int length = (int)formula.length();
 		while(pos < length){
 			ParserToken<value_type, string_type> token = reader.ReadNextToken();
-			QString str = QString(token.GetAsString().c_str());
+			QString str = QString::fromStdWString(token.GetAsString());
 
 			bool isNumber;
 			locale.toDouble(str, &isNumber);
@@ -319,7 +319,7 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 	} catch(mu::ParserError &e) {
 		if (error){
 			*error = true;
-			*errMsg = e.GetMsg();
+			*errMsg = QString::fromStdWString(e.GetMsg()).toStdString();
 		}
 		return parList;
 	}
@@ -333,18 +333,18 @@ bool NonLinearFit::removeDataSingularities()
 	MyParser parser;
 	for (int i = 0; i < d_p; i++){
 		double param = gsl_vector_get(d_param_init, i);
-		parser.DefineVar(d_param_names[i].ascii(), &param);
+		parser.DefineVar(d_param_names[i].toStdWString(), &param);
 	}
 
 	QMapIterator<QString, double> it(d_constants);
  	while (it.hasNext()) {
      	it.next();
-		parser.DefineConst(it.key().ascii(), it.value());
+		parser.DefineConst(it.key().toStdWString(), it.value());
  	}
 
 	double xvar;
-	parser.DefineVar("x", &xvar);
-	parser.SetExpr(d_formula.ascii());
+	parser.DefineVar(L"x", &xvar);
+	parser.SetExpr(d_formula.toStdWString());
 
 	bool confirm = true;
 	for (int i = 0; i < d_n; i++){

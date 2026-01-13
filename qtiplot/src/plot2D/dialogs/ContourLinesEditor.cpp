@@ -52,7 +52,7 @@ ContourLinesEditor::ContourLinesEditor(const QLocale& locale, int precision, QWi
 	table = new QTableWidget();
 	table->setColumnCount(2);
 	table->hideColumn(1);
-	table->setSelectionMode(QAbstractItemView::SingleSelection);
+	table->setSelectionMode(qAbstractItemView::SingleSelection);
 	table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 	table->horizontalHeader()->setClickable( false );
 	table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
@@ -93,7 +93,7 @@ void ContourLinesEditor::updateContourLevels()
 		return;
 
 	int rows = table->rowCount();
-	QwtValueList levels;
+	QList<double> levels;
 	for (int i = 0; i < rows; i++)
 		levels << ((DoubleSpinBox*)table->cellWidget(i, 0))->value();
 
@@ -123,13 +123,13 @@ void ContourLinesEditor::updateContents()
 	if (!d_spectrogram)
 		return;
 
-	QwtValueList levels = d_spectrogram->contourLevels ();
+	QList<double> levels = d_spectrogram->contourLevels ();
 
 	int rows = (int)levels.size();
 	table->setRowCount(rows);
 	table->blockSignals(true);
 
-	QwtDoubleInterval range = d_spectrogram->data().range();
+	QwtInterval range = d_spectrogram->data().range();
 	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(d_locale);
@@ -173,7 +173,7 @@ void ContourLinesEditor::insertLevel()
 	if (!sb)
 		return;
 
-	QwtDoubleInterval range = d_spectrogram->data().range();
+	QwtInterval range = d_spectrogram->data().range();
 	double current_value = sb->value();
 	double previous_value = range.minValue ();
 	sb = (DoubleSpinBox*)table->cellWidget(row - 1, 0);

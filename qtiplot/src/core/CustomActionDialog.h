@@ -51,7 +51,7 @@ public:
 	 * \param parent parent widget (must be the application window!=
 	 * \param fl window flags
 	 */
-    CustomActionDialog( QWidget* parent, Qt::WFlags fl = 0 );
+    CustomActionDialog( QWidget* parent, Qt::WindowFlags fl = 0 );
 
 private slots:
 	void chooseIcon();

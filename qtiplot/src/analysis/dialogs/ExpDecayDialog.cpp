@@ -38,15 +38,16 @@
 
 #include <QMessageBox>
 #include <QLayout>
+#include <QCloseEvent>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QLabel>
 #include <QComboBox>
 
-ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WFlags fl )
+ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl ), slopes(type)
 {
-    setName( "ExpDecayDialog" );
+    setObjectName( "ExpDecayDialog" );
 	setWindowTitle(tr("QtiPlot - Verify initial guesses"));
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -185,7 +186,7 @@ void ExpDecayDialog::activateCurve(const QString& s)
 
 	double start, end;
 	graph->range(c, &start, &end);
-	boxStart->setValue(QMIN(start, end));
+	boxStart->setValue(qMin(start, end));
 	boxYOffset->setValue(c->minYValue());
 	if (slopes < 2)
         boxAmplitude->setValue(c->maxYValue() - c->minYValue());
@@ -196,7 +197,7 @@ void ExpDecayDialog::changeDataRange()
 {
 	double start = graph->selectedXStartValue();
 	double end = graph->selectedXEndValue();
-	boxStart->setValue(QMIN(start, end));
+	boxStart->setValue(qMin(start, end));
 }
 
 void ExpDecayDialog::fit()

@@ -29,7 +29,7 @@
 
 #include <QList>
 #include <QPointer>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QVector>
 #include <QEvent>
 #include <QMap>
@@ -48,8 +48,48 @@
 #include <FrameWidget.h>
 #include <Grid.h>
 #include <float.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
 
 class QwtPlotPanner;
+class QwtPlotMagnifier;
+
+class QwtPlotPrintFilter
+{
+public:
+	enum Options { PrintMargin = 1, PrintTitle = 2, PrintLegend = 4, PrintFrameWithScales = 8, PrintAll = 15 };
+	QwtPlotPrintFilter(){d_options = PrintAll;};
+	virtual ~QwtPlotPrintFilter(){};
+
+	int options() const {return d_options;};
+	void setOptions(int opts){d_options = opts;};
+
+	virtual void apply(QwtPlot *) const {};
+	virtual void reset(QwtPlot *) const {};
+
+	enum Item { Title, AxisTitle, AxisScale, Legend, Curve, CurveSymbol, Marker };
+
+private:
+	int d_options;
+};
+
+class ScaledFontsPrintFilter: public QwtPlotPrintFilter
+{
+public:
+	ScaledFontsPrintFilter(double factor, double scaleFactor = 1.0)
+		: QwtPlotPrintFilter(), d_factor(factor), d_dpi_factor(scaleFactor) {};
+
+	virtual QFont font(const QFont &f, Item) const {return f;};
+
+	double scaleFontsFactor() const {return d_factor;}
+	double scaleFactor() const {return d_dpi_factor;}
+
+private:
+	double d_factor;
+	double d_dpi_factor;
+};
 class QwtPlotMagnifier;
 class QwtPlotCurve;
 class QwtPlotZoomer;
@@ -126,7 +166,7 @@ class Graph: public QwtPlot
 	Q_OBJECT
 
 	public:
-		Graph (int x = 0, int y = 0, int width = 500, int height = 400, QWidget* parent=0, Qt::WFlags f=0);
+		Graph (int x = 0, int y = 0, int width = 500, int height = 400, QWidget* parent=0, Qt::WindowFlags f=0);
 		~Graph();
 
 		enum Axis{Left, Right, Bottom, Top};
@@ -428,7 +468,7 @@ class Graph: public QwtPlot
 
 		//! \name Zoom
 		//@{
-		void zoomed (const QwtDoubleRect &);
+		void zoomed (const QRectF &);
 		void zoom(bool on);
 		void zoomOut();
 		bool zoomOn();
@@ -583,7 +623,7 @@ class Graph: public QwtPlot
 				int majTicksType, int minTicksType, bool labelsOn, const QColor& c, int format,
 				int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor,
 				int spacing = 4, bool backbone = true, const ScaleDraw::ShowTicksPolicy& showTicks = ScaleDraw::ShowAll,
-				const QString& prefix = QString::null, const QString& suffix = QString::null);
+				const QString& prefix = QString(), const QString& suffix = QString());
 
 		void enableAxis(int axis, bool on = true);
 		void enableAxisLabels(int axis, bool on = true);
@@ -699,7 +739,7 @@ class Graph: public QwtPlot
 		//@{
 		void modifyFunctionCurve(int curve, int type, const QStringList &formulas, const QString &var,
 			double start, double end, int points, const QMap<QString, double>& constants);
-		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString::null);
+		FunctionCurve* addFunction(const QStringList &formulas, double start, double end, int points = 100, const QString &var = "x", int type = 0, const QString& title = QString());
 		//! Used when reading from a project file with version < 0.9.5.
 		FunctionCurve* insertFunctionCurve(const QString& formula, int points, int fileVersion);
 
@@ -862,18 +902,18 @@ signals:
 		QString parseAxisTitle(int axis);
 		QList<FrameWidget*> stackingOrderEnrichmentsList() const;
 		//! Finds bounding interval of the plot data.
-		QwtDoubleInterval axisBoundingInterval(int axis);
+		QwtInterval axisBoundingInterval(int axis);
 		void deselectCurves();
 
 		void dropEvent(QDropEvent*);
 		void dragEnterEvent(QDragEnterEvent*);
 		void showEvent (QShowEvent * event);
     	void printFrame(QPainter *painter, const QRect &rect) const;
-		void printCanvas(QPainter *painter, const QRect &canvasRect,
+		void printCanvas(QPainter *painter, const QRectF &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 		virtual void printScale (QPainter *, int axisId, int startDist, int endDist,
 			int baseDist, const QRect &) const;
-		virtual void drawItems (QPainter *painter, const QRect &rect,
+		virtual void drawItems (QPainter *painter, const QRectF &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 
 		void drawInwardTicks(QPainter *painter, const QRect &rect,
@@ -944,20 +984,4 @@ signals:
 		QRectF d_page_rect;
 };
 
-class ScaledFontsPrintFilter: public QwtPlotPrintFilter
-{
-public:
-	ScaledFontsPrintFilter(double factor, double scaleFactor = 1.0);
-
-	virtual QFont font(const QFont &, Item) const;
-	virtual void apply(QwtPlotItem *) const;
-	virtual void reset(QwtPlotItem *) const;
-
-	double scaleFontsFactor(){return d_factor;}
-	double scaleFactor(){return d_dpi_factor;}
-
-private:
-	double d_factor;
-	double d_dpi_factor;
-};
 #endif // GRAPH_H

@@ -36,8 +36,8 @@ class ExponentialFit : public Fit
 	Q_OBJECT
 
 	public:
-		ExponentialFit(ApplicationWindow *parent, QwtPlotCurve *c, bool expGrowth = false);
-		ExponentialFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, bool expGrowth = false);
+		ExponentialFit(ApplicationWindow *parent, PlotCurve *c, bool expGrowth = false);
+		ExponentialFit(ApplicationWindow *parent, PlotCurve *c, double start, double end, bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Graph *g = 0,  bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, bool expGrowth = false);
 		ExponentialFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle,
@@ -60,8 +60,8 @@ class TwoExpFit : public Fit
 	Q_OBJECT
 
 	public:
-	    TwoExpFit(ApplicationWindow *parent, QwtPlotCurve *c);
-	    TwoExpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
+	    TwoExpFit(ApplicationWindow *parent, PlotCurve *c);
+	    TwoExpFit(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 		TwoExpFit(ApplicationWindow *parent, Graph *g = 0);
 		TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		TwoExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
@@ -79,8 +79,8 @@ class ThreeExpFit : public Fit
 	Q_OBJECT
 
 	public:
-		ThreeExpFit(ApplicationWindow *parent, QwtPlotCurve *c);
-	    ThreeExpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
+		ThreeExpFit(ApplicationWindow *parent, PlotCurve *c);
+	    ThreeExpFit(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g = 0);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		ThreeExpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);

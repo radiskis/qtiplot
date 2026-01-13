@@ -47,13 +47,13 @@
 #include <QHeaderView>
 #include <QInputDialog>
 
-ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WFlags flags )
+ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WindowFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
 {
 	setWindowTitle(tr("QtiPlot - Import ASCII File(s)"));
 	setFileMode( QFileDialog::ExistingFiles );
 
-	d_current_path = QString::null;
+	d_current_path = QString();
 
 	initAdvancedOptions();
 	setNewWindowsOnly(new_windows_only);
@@ -301,7 +301,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 				d_preview_stack->addWidget(d_preview_table);
 				connect(d_preview_table, SIGNAL(modifiedColumnType()), this, SLOT(preview()));
 				enableTableOptions(true);
-			} else if (w->isA("Matrix")){
+			} else if (w->inherits("Matrix")){
 				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
 				d_preview_stack->addWidget(d_preview_matrix);
 				enableTableOptions(false);
@@ -682,7 +682,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	if (renameCols && !allNumbers){//use first line to set the table header
 		for (int i = 0; i<cols; i++){
 			int aux = i + startCol;
-			col_label[aux] = QString::null;
+			col_label[aux] = QString();
 			if (!importComments)
 				comments[aux] = line[i];
 			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
@@ -704,7 +704,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			s = s.simplifyWhiteSpace();
 		else if (stripSpaces)
 			s = s.stripWhiteSpace();
-		line = s.split(sep, QString::KeepEmptyParts);
+		line = s.split(sep, Qt::KeepEmptyParts);
 		for (int i=0; i<line.size(); i++){
 			int aux = startCol + i;
 			if (aux < comments.size())
@@ -773,7 +773,7 @@ void PreviewTable::resetHeader()
 {
 	int cols = numCols();
 	for (int i = 0; i < cols; i++){
-		comments[i] = QString::null;
+		comments[i] = QString();
 		col_label[i] = QString::number(i+1);
 	}
 
@@ -794,7 +794,7 @@ void PreviewTable::clear()
 {
 	for (int i=0; i<numCols(); i++){
 		for (int j=0; j<numRows(); j++)
-			setText(j, i, QString::null);
+			setText(j, i, QString());
 	}
 }
 
@@ -1033,8 +1033,8 @@ PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    setSelectionMode(QAbstractItemView::NoSelection);
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setSelectionMode(qAbstractItemView::NoSelection);
+    setEditTriggers(qAbstractItemView::NoEditTriggers);
     setFocusPolicy(Qt::NoFocus);
 
     QPalette pal = palette();

@@ -39,8 +39,8 @@ public:
 	enum Integrand{DataSet, AnalyticalFunction};
 
 	Integration(ApplicationWindow *parent, Graph *g = 0);
-	Integration(ApplicationWindow *parent, QwtPlotCurve *c);
-	Integration(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
+	Integration(ApplicationWindow *parent, PlotCurve *c);
+	Integration(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 	Integration(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, bool sort = false);

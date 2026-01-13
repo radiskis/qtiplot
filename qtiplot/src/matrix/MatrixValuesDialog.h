@@ -52,7 +52,7 @@ class MatrixValuesDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WFlags fl = 0 );
+    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	void setMatrix(Matrix *m);
     void setCompleter(QCompleter *);
 

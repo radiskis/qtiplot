@@ -132,7 +132,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImportASCIIDialog(bool new_windows_only, QWidget * parent = 0, bool extended = true, Qt::WFlags flags = 0 );
+	ImportASCIIDialog(bool new_windows_only, QWidget * parent = 0, bool extended = true, Qt::WindowFlags flags = 0 );
 
 	//! Return the selected import mode
 	/**

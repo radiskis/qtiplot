@@ -47,10 +47,10 @@
 #include <QApplication>
 #include <QInputDialog>
 
-SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WFlags fl )
+SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
-	setName( "SurfaceDialog" );
+	setObjectName( "SurfaceDialog" );
 	setWindowTitle(tr("QtiPlot - Define surface plot"));
     setSizeGripEnabled( true );
 
@@ -372,10 +372,10 @@ void SurfaceDialog::acceptParametricSurface()
     int list_size = 15;
 	QString x_formula = boxX->text().simplified();
 	try {
-		parser.SetExpr(x_formula.ascii());
+		parser.SetExpr(x_formula.toStdWString());
 		parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - X Formula Error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(app, tr("QtiPlot - X Formula Error"), QString::fromStdWString(e.GetMsg()));
 		boxX->setFocus();
 		return;
 	}
@@ -387,10 +387,10 @@ void SurfaceDialog::acceptParametricSurface()
 
 	QString y_formula = boxY->text().simplified();
 	try {
-		parser.SetExpr(y_formula.ascii());
+		parser.SetExpr(y_formula.toStdWString());
 		parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - Y Formula Error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(app, tr("QtiPlot - Y Formula Error"), QString::fromStdWString(e.GetMsg()));
 		boxY->setFocus();
 		return;
 	}
@@ -402,10 +402,10 @@ void SurfaceDialog::acceptParametricSurface()
 
 	QString z_formula = boxZ->text().simplified();
 	try {
-		parser.SetExpr(z_formula.ascii());
+		parser.SetExpr(z_formula.toStdWString());
 		parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - Z Formula Error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(app, tr("QtiPlot - Z Formula Error"), QString::fromStdWString(e.GetMsg()));
 		boxZ->setFocus();
 		return;
 	}
@@ -458,14 +458,14 @@ void SurfaceDialog::acceptFunction()
 		double x,y;
 		parser.DefineVar("x", &x);
 		parser.DefineVar("y", &y);
-		parser.SetExpr(formula.ascii());
+		parser.SetExpr(formula.toStdWString());
 
 		x = fromX; y = fromY;
 		parser.Eval();
 		x = toX; y = toY;
 		parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(app, tr("QtiPlot - Input function error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(app, tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		boxFunction->setFocus();
 		error = true;
 	}

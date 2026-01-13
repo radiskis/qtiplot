@@ -43,11 +43,11 @@ public:
 
 	void copy(const ErrorBarsCurve *e);
 
-	QwtDoubleRect boundingRect() const;
+	QRectF boundingRect() const;
 
 	double errorValue(int i);
-	QwtArray<double> errors(){return err;};
-	void setErrors(const QwtArray<double>&data){err=data;};
+	QVector<double> errors(){return err;};
+	void setErrors(const QVector<double>&data){err=data;};
 
 	double capLength(){return d_cap_length;};
 	void setCapLength(double t){d_cap_length = t;};
@@ -95,7 +95,7 @@ private:
 	void init();
 
     //! Stores the error bar values
-    QwtArray<double> err;
+    QVector<double> err;
 
 	//! Orientation of the bars: Horizontal or Vertical
 	int type;

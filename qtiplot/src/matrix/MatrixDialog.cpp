@@ -38,7 +38,7 @@
 #include <QGroupBox>
 #include <QSpinBox>
 
-MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
+MatrixDialog::MatrixDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ),
     d_matrix(0)
 {
@@ -72,7 +72,7 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WFlags fl )
 	boxPrecision->setRange(0, 13);
 	boxPrecision->setEnabled( false );
 	topLayout->addWidget( boxPrecision, 2, 2 );
-	topLayout->setColStretch(3, 1);
+	topLayout->setColumnStretch(3, 1);
 
 	bottomLayout->addStretch();
 

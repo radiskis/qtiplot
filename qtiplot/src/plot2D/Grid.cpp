@@ -115,7 +115,7 @@ void Grid::draw(QPainter *painter,
 
 void Grid::drawLines(QPainter *painter, const QRect &rect,
 		Qt::Orientation orientation, const QwtScaleMap &map,
-		const QwtValueList &values) const
+		const QList<double> &values) const
 {
 	if (values.isEmpty())
 		return;
@@ -221,7 +221,7 @@ void Grid::enableZeroLineX(bool enable)
 		mrkX = new QwtPlotMarker();
 		d_plot->insertMarker(mrkX);
 		mrkX->setRenderHint(QwtPlotItem::RenderAntialiased, false);
-		mrkX->setAxis(xAxis(), yAxis());
+		mrkX->setAxes(xAxis(), yAxis());
 		mrkX->setLineStyle(QwtPlotMarker::VLine);
 		mrkX->setValue(0.0, 0.0);
 
@@ -249,7 +249,7 @@ void Grid::enableZeroLineY(bool enable)
 		mrkY = new QwtPlotMarker();
 		d_plot->insertMarker(mrkY);
 		mrkY->setRenderHint(QwtPlotItem::RenderAntialiased, false);
-		mrkY->setAxis(xAxis(), yAxis());
+		mrkY->setAxes(xAxis(), yAxis());
 		mrkY->setLineStyle(QwtPlotMarker::HLine);
 		mrkY->setValue(0.0, 0.0);
 

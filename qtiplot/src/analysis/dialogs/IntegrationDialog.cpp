@@ -39,8 +39,9 @@
 #include <QComboBox>
 #include <QSpinBox>
 #include <QLayout>
+#include <QCloseEvent>
 
-IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
+IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
 	d_table(0)
 {
@@ -100,7 +101,7 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WFlags fl )
 	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
 }
 
-IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WFlags fl )
+IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
 	d_graph(0)
 {
@@ -187,7 +188,7 @@ void IntegrationDialog::integrateCurve()
 
 	Integration *i = new Integration((ApplicationWindow *)parent());
 	i->setSortData(boxSortData->isChecked());
-	if (i->setDataFromCurve((QwtPlotCurve *)d_graph->curve(curveName), from, to)){
+	if (i->setDataFromCurve((PlotCurve *)d_graph->curve(curveName), from, to)){
 		i->enableGraphicsDisplay(boxShowPlot->isChecked());
 		i->run();
 	}
@@ -216,7 +217,7 @@ void IntegrationDialog::activateCurve(const QString& s)
 	if (!d_graph)
 		return;
 
-	QwtPlotCurve *c = (QwtPlotCurve *)d_graph->curve(s);
+	PlotCurve *c = (PlotCurve *)d_graph->curve(s);
 	if (!c)
 		return;
 
@@ -226,8 +227,8 @@ void IntegrationDialog::activateCurve(const QString& s)
 
 	double start, end;
 	d_graph->range(c, &start, &end);
-	boxStart->setValue(QMIN(start, end));
-	boxEnd->setValue(QMAX(start, end));
+	boxStart->setValue(qMin(start, end));
+	boxEnd->setValue(qMax(start, end));
 }
 
 void IntegrationDialog::changeDataRange()
@@ -241,8 +242,8 @@ void IntegrationDialog::changeDataRange()
 
 	double start = d_graph->selectedXStartValue();
 	double end = d_graph->selectedXEndValue();
-	boxStart->setValue(QMIN(start, end));
-	boxEnd->setValue(QMAX(start, end));
+	boxStart->setValue(qMin(start, end));
+	boxEnd->setValue(qMax(start, end));
 }
 
 void IntegrationDialog::setTable(Table *t)
@@ -255,10 +256,13 @@ void IntegrationDialog::setTable(Table *t)
 	if (t->selectedYColumns().size() < 2)
 		boxShowTable->hide();
 
-	Q3TableSelection sel = t->getSelection();
+	Q3TableSelection sel = d_table->getSelection();
+
+	int startRow = sel.topRow;
+	int endRow = sel.bottomRow;
 	if (!sel.isEmpty()){
-		boxStartRow->setValue(sel.topRow() + 1);
-		boxEndRow->setValue(sel.bottomRow() + 1);
+		boxStartRow->setValue(startRow + 1);
+		boxEndRow->setValue(endRow + 1);
 	} else {
 		boxStartRow->setValue(1);
 		boxEndRow->setValue(t->numRows());

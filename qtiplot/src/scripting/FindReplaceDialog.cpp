@@ -40,7 +40,7 @@
 #include <QGroupBox>
 #include <QMessageBox>
 
-FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* parent, Qt::WFlags fl )
+FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), d_editor(editor)
 {
 	setWindowTitle (tr("QtiPlot") + " - " + tr("Find"));

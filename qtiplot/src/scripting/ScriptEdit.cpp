@@ -36,13 +36,13 @@
 #include <QAction>
 #include <QMenu>
 #include <QPrintDialog>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QTextStream>
 #include <QApplication>
 #include <QCompleter>
-#include <QAbstractItemView>
+#include <qAbstractItemView>
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QShortcut>
@@ -50,7 +50,7 @@
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
   : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), d_highlighter(0),
-  d_file_name(QString::null), d_search_string(QString::null), d_output_widget(NULL)
+  d_file_name(QString()), d_search_string(QString()), d_output_widget(NULL)
 {
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
@@ -418,7 +418,7 @@ void ScriptEdit::execute()
 	int startLineNumber = lineNumber(codeCursor.selectionStart());
 	fname = fname.arg(startLineNumber);
 
-	myScript->setName(fname);
+	myScript->setObjectName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
 	printCursor.setPosition(codeCursor.selectionEnd(), QTextCursor::MoveAnchor);
 	printCursor.movePosition(QTextCursor::EndOfLine, QTextCursor::MoveAnchor);
@@ -434,7 +434,7 @@ void ScriptEdit::executeAll()
 
 	QString fname = "<%1>";
 	fname = fname.arg(name());
-	myScript->setName(fname);
+	myScript->setObjectName(fname);
 	myScript->setCode(text());
 	myScript->exec();
 
@@ -456,7 +456,7 @@ void ScriptEdit::evaluate()
 	int startLineNumber = lineNumber(codeCursor.selectionStart());
 	fname = fname.arg(startLineNumber);
 
-	myScript->setName(fname);
+	myScript->setObjectName(fname);
 	myScript->setCode(codeCursor.selectedText().replace(QChar::ParagraphSeparator,"\n"));
 	QVariant res = myScript->eval();
 
@@ -519,12 +519,12 @@ QString ScriptEdit::importASCII(const QString &filename)
 		f = ApplicationWindow::getFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter, 0, false);
 	else
 		f = filename;
-	if (f.isEmpty()) return QString::null;
+	if (f.isEmpty()) return QString();
 
 	QFile file(f);
 	if (!file.open(IO_ReadOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - Error Opening File"), tr("Could not open file \"%1\" for reading.").arg(f));
-		return QString::null;
+		return QString();
 	}
 
 	setFileName(f);
@@ -582,7 +582,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 		if (!f.open(IO_WriteOnly)){
 			QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
 						tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
-			return QString::null;
+			return QString();
 		}
 
 		QTextStream t( &f );

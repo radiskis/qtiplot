@@ -49,7 +49,7 @@ public:
 
     //! Constructs a new scale draw which is a clone of sd.
     ScaleDraw(Graph *plot, ScaleDraw *sd);
-	ScaleDraw(Graph *plot, const QString& formula = QString::null);
+	ScaleDraw(Graph *plot, const QString& formula = QString());
 	ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
 	Graph *plot(){return d_plot;};

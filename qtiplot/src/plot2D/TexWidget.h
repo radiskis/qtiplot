@@ -37,7 +37,7 @@ class TexWidget: public FrameWidget
 	Q_OBJECT
 
 public:
-    TexWidget(Graph *, const QString& s = QString::null, const QPixmap& pix = QPixmap());
+    TexWidget(Graph *, const QString& s = QString(), const QPixmap& pix = QPixmap());
 
 	//! Return the pixmap to be drawn.
 	QPixmap pixmap() const {return d_pix;};

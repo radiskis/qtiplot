@@ -45,7 +45,7 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   variables.setAutoDelete(true);
   rvariables.setAutoDelete(true);
 
-  if (Context->isA("Table")) {
+  if (Context->inherits("Table")) {
 	  parser.DefineFun("col", mu_col, false);
 	  parser.DefineFun("cell", mu_tableCell);
 	  parser.DefineFun("tablecol", mu_tablecol, false);
@@ -53,12 +53,12 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	  parser.DefineFun("SUM", mu_sum, false);
 	  parser.DefineFun("MIN", mu_min, false);
 	  parser.DefineFun("MAX", mu_max, false);
-  } else if (Context->isA("Matrix"))
+  } else if (Context->inherits("Matrix"))
 	  parser.DefineFun("cell", mu_cell);
 
 	parser.addGSLConstants();
 	rparser = parser;
-	if (Context->inherits("Table") || Context->isA("Matrix")){
+	if (Context->inherits("Table") || Context->inherits("Matrix")){
 		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
 		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
@@ -73,8 +73,8 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 
 double muParserScript::col(const QString &arg)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("col() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("col() works only on tables!").toStdWString());
 	QStringList items;
 	QString item = "";
 
@@ -103,13 +103,13 @@ double muParserScript::col(const QString &arg)
 		col = table->colNames().indexOf(items[0].mid(1,items[0].length()-2));
 		if (col<0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
-					arg(items[0]).arg(Context->name()).ascii());
+					arg(items[0]).arg(Context->name()).toStdWString());
 	} else
 		col = items[0].toInt() - 1; //use column index
 
 	if (items.count() == 2)
 	{
-		local_parser.SetExpr(items[1].ascii());
+		local_parser.SetExpr(items[1].toStdWString());
 		row = qRound(local_parser.Eval()) - 1;
 	} else if (variables["i"])
 		row = (int) *(variables["i"]) - 1;
@@ -118,10 +118,10 @@ double muParserScript::col(const QString &arg)
 	rvariables.clear();
 	if (row < 0 || row >= table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row+1).arg(Context->name()).ascii());
+				arg(row+1).arg(Context->name()).toStdWString());
 	if (col < 0 || col >= table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col+1).arg(Context->name()).ascii());
+				arg(col+1).arg(Context->name()).toStdWString());
 	if (table->text(row, col).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -130,8 +130,8 @@ double muParserScript::col(const QString &arg)
 
 double muParserScript::tablecol(const QString &arg)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("tablecol() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("tablecol() works only on tables!").toStdWString());
 	QStringList items;
 	QString item = "";
 	for (int i=0; i < arg.size(); i++) {
@@ -155,21 +155,21 @@ double muParserScript::tablecol(const QString &arg)
 	int col, row;
 	Parser local_parser(rparser);
 	if (items.count() != 2)
-		throw Parser::exception_type(tr("tablecol: wrong number of arguments (need 2, got %1)").arg(items.count()).ascii());
+		throw Parser::exception_type(tr("tablecol: wrong number of arguments (need 2, got %1)").arg(items.count()).toStdWString());
 	if (!items[0].startsWith("\"") || !items[0].endsWith("\""))
-		throw Parser::exception_type(tr("tablecol: first argument must be a string (table name)").ascii());
+		throw Parser::exception_type(tr("tablecol: first argument must be a string (table name)").toStdWString());
 	Table *target_table = scriptingEnv()->application()->table(items[0].mid(1, items[0].length()-2));
 	if (!target_table)
-		throw Parser::exception_type(tr("Couldn't find a table named %1.").arg(items[0]).ascii());
+		throw Parser::exception_type(tr("Couldn't find a table named %1.").arg(items[0]).toStdWString());
 
 	QString arg2 = items[1].trimmed();
 	if (arg2.startsWith("\"") && arg2.endsWith("\"")){
 		col = target_table->colIndex(arg2.mid(1, arg2.length() - 2));
 		if (col < 0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
-					arg(arg2).arg(target_table->name()).ascii());
+					arg(arg2).arg(target_table->name()).toStdWString());
 	} else {
-		local_parser.SetExpr(arg2.ascii());
+		local_parser.SetExpr(arg2.toStdWString());
 		col = qRound(local_parser.Eval()) - 1;
 	}
 	if (variables["i"])
@@ -179,10 +179,10 @@ double muParserScript::tablecol(const QString &arg)
 	rvariables.clear();
 	if (row < 0 || row >= target_table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row+1).arg(target_table->name()).ascii());
+				arg(row+1).arg(target_table->name()).toStdWString());
 	if (col < 0 || col >= target_table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col+1).arg(target_table->name()).ascii());
+				arg(col+1).arg(target_table->name()).toStdWString());
 	if (target_table->text(row,col).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -191,15 +191,15 @@ double muParserScript::tablecol(const QString &arg)
 
 double muParserScript::cell(int row, int col)
 {
-	if (!Context->isA("Matrix"))
-		throw Parser::exception_type(tr("cell() works only on tables and matrices!").ascii());
+	if (!Context->inherits("Matrix"))
+		throw Parser::exception_type(tr("cell() works only on tables and matrices!").toStdWString());
 	Matrix *matrix = (Matrix*) Context;
 	if (row < 1 || row > matrix->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in matrix %2!").
-				arg(row).arg(Context->name()).ascii());
+				arg(row).arg(Context->name()).toStdWString());
 	if (col < 1 || col > matrix->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in matrix %2!").
-				arg(col).arg(Context->name()).ascii());
+				arg(col).arg(Context->name()).toStdWString());
 	if (matrix->text(row - 1,col - 1).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -208,15 +208,15 @@ double muParserScript::cell(int row, int col)
 
 double muParserScript::tableCell(int col, int row)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("cell() works only on tables and matrices!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("cell() works only on tables and matrices!").toStdWString());
 	Table *table = (Table*) Context;
 	if (row < 1 || row > table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row).arg(Context->name()).ascii());
+				arg(row).arg(Context->name()).toStdWString());
 	if (col < 1 || col > table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col).arg(Context->name()).ascii());
+				arg(col).arg(Context->name()).toStdWString());
 	if (table->text(row-1,col-1).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -227,7 +227,7 @@ double *muParserScript::addVariable(const char *name)
 {
 	double *valptr = new double;
 	if (!valptr)
-		throw Parser::exception_type(tr("Out of memory").ascii());
+		throw Parser::exception_type(tr("Out of memory").toStdWString());
 	*valptr = 0;
 	variables.insert(name, valptr);
 	rparser.DefineVar(name, valptr);
@@ -238,7 +238,7 @@ double *muParserScript::addVariableR(const char *name)
 {
 	double *valptr = new double;
 	if (!valptr)
-		throw Parser::exception_type(tr("Out of memory").ascii());
+		throw Parser::exception_type(tr("Out of memory").toStdWString());
 	*valptr = 0;
 	rvariables.insert(name, valptr);
 	return valptr;
@@ -393,7 +393,7 @@ bool muParserScript::compile(bool)
 
 	if (muCode.size() == 1){
 	    current = this;
-        parser.SetExpr(muCode[0].ascii());
+        parser.SetExpr(muCode[0].toStdWString());
 
         try {
 			parser.Eval();
@@ -480,13 +480,13 @@ bool muParserScript::exec()
 
 double muParserScript::sum(const QString &arg, int start, int end)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("SUM() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("SUM() works only on tables!").toStdWString());
 
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
 
 	rvariables.clear();
 	return table->sum(col, start, end);
@@ -494,13 +494,13 @@ double muParserScript::sum(const QString &arg, int start, int end)
 
 double muParserScript::avg(const QString &arg, int start, int end)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("AVG() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("AVG() works only on tables!").toStdWString());
 
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
 
 	rvariables.clear();
 	return table->avg(col, start, end);
@@ -508,13 +508,13 @@ double muParserScript::avg(const QString &arg, int start, int end)
 
 double muParserScript::min(const QString &arg, int start, int end)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("MIN() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("MIN() works only on tables!").toStdWString());
 
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
 
 	rvariables.clear();
 	return table->minColumnValue(col, start, end);
@@ -522,13 +522,13 @@ double muParserScript::min(const QString &arg, int start, int end)
 
 double muParserScript::max(const QString &arg, int start, int end)
 {
-	if (!Context->isA("Table"))
-		throw Parser::exception_type(tr("MAX() works only on tables!").ascii());
+	if (!Context->inherits("Table"))
+		throw Parser::exception_type(tr("MAX() works only on tables!").toStdWString());
 
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).ascii());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
 
 	rvariables.clear();
 	return table->maxColumnValue(col, start, end);

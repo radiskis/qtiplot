@@ -518,7 +518,7 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
     double *sigma = ((struct FitData *)params)->sigma;
 
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
-	const char *function = fitter->formula().ascii();
+	std::wstring function = fitter->formula().toStdWString();
 	QStringList parNames = fitter->parameterNames();
 
 	MyParser parser;
@@ -528,13 +528,13 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
         parser.DefineVar("x", &xvar);
         for (int i = 0; i < p; i++) {
             parameters[i] = gsl_vector_get(x,i);
-            parser.DefineVar(parNames[i].ascii(), &parameters[i]);
+            parser.DefineVar(parNames[i].toStdWString(), &parameters[i]);
         }
 
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
-			parser.DefineConst(i.key().ascii(), i.value());
+			parser.DefineConst(i.key().toStdWString(), i.value());
  		}
 
         parser.SetExpr(function);
@@ -549,7 +549,7 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
          }
         delete[] parameters;
     } catch (mu::ParserError &e) {
-        QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdString(e.GetMsg()));
+        QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
         return GSL_EINVAL;
     }
     return GSL_SUCCESS;
@@ -563,7 +563,7 @@ double user_d(const gsl_vector * x, void *params) {
     double *sigma = ((struct FitData *)params)->sigma;
 
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
-	const char *function = fitter->formula().ascii();
+	std::wstring function = fitter->formula().toStdWString();
 	QStringList parNames = fitter->parameterNames();
 
     double val=0;
@@ -574,13 +574,13 @@ double user_d(const gsl_vector * x, void *params) {
         parser.DefineVar("x", &xvar);
         for (int i=0; i < p; i++) {
             parameters[i]=gsl_vector_get(x,i);
-            parser.DefineVar(parNames[i].ascii(), &parameters[i]);
+            parser.DefineVar(parNames[i].toStdWString(), &parameters[i]);
         }
 
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
-			parser.DefineConst(i.key().ascii(), i.value());
+			parser.DefineConst(i.key().toStdWString(), i.value());
  		}
 
         parser.SetExpr(function);
@@ -596,7 +596,7 @@ double user_d(const gsl_vector * x, void *params) {
         }
         delete[] parameters;
     } catch (mu::ParserError &e) {
-        QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdString(e.GetMsg()));
+        QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdWString(e.GetMsg()));
         return GSL_EINVAL;
     }
     return val;
@@ -609,7 +609,7 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
     double *sigma = ((struct FitData *)params)->sigma;
 
 	NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
-	const char *function = fitter->formula().ascii();
+	std::wstring function = fitter->formula().toStdWString();
 	QStringList parNames = fitter->parameterNames();
 
 	try {
@@ -619,13 +619,13 @@ int user_df(const gsl_vector *x, void *params, gsl_matrix *J) {
         parser.DefineVar("x", &xvar);
         for (int k=0; k<p; k++) {
             param[k] = gsl_vector_get(x,k);
-            parser.DefineVar(parNames[k].ascii(), &param[k]);
+            parser.DefineVar(parNames[k].toStdWString(), &param[k]);
         }
 
 		QMapIterator<QString, double> i(fitter->constants());
  		while (i.hasNext()){
      		i.next();
-			parser.DefineConst(i.key().ascii(), i.value());
+			parser.DefineConst(i.key().toStdWString(), i.value());
  		}
 
         parser.SetExpr(function);

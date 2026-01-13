@@ -44,7 +44,7 @@
 #include <QComboBox>
 #include <QLayout>
 
-SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl )
+SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), smooth_method(method)
 {
 	setObjectName( "SmoothCurveDialog" );
@@ -113,7 +113,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WFlags fl 
 		gl1->addWidget(boxColor, 2, 1);
 		gl1->setRowStretch(3, 1);
 	}
-	gl1->setColStretch(1, 1);
+	gl1->setColumnStretch(1, 1);
 
 	btnSmooth = new QPushButton(tr( "&Smooth" ));
 	btnSmooth->setDefault(true);
@@ -166,6 +166,6 @@ void SmoothCurveDialog::activateCurve(const QString& s)
 		if (!c || c->rtti() != QwtPlotItem::Rtti_PlotCurve)
 			return;
 
-		boxPointsLeft->setMaxValue(c->dataSize()/2);
+		boxPointsLeft->setMaximum(c->dataSize()/2);
 	}
 }

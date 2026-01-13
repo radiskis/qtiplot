@@ -103,7 +103,7 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 	int py = y1;
 
 	int n = (dxabs >= dyabs) ? dxabs : dyabs;
-	Table *t = d_app->newTable(n, 4, QString::null, QString::null);
+	Table *t = d_app->newTable(n, 4, QString(), QString());
 	t->setHeader(QStringList() << tr("pixel") << tr("x") << tr("y") << tr("intensity"));
 
 	if (dxabs >= dyabs){ //the line is more horizontal than vertical

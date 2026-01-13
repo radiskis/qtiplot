@@ -29,6 +29,8 @@ Description          : A wrapper around QwtLinearColorMap from Qwt
 #define LINEAR_COLOR_MAP_H
 
 #include <qwt_color_map.h>
+#include <qwt_interval.h>
+#include <QList>
 
 //! A customized QwtLinearColorMap.
 /**
@@ -41,12 +43,16 @@ public:
 	LinearColorMap();
 	//! Constructor.
 	LinearColorMap(const QColor &from, const QColor &to);
+	//! Copy constructor.
+	LinearColorMap(const LinearColorMap& other);
+	//! Assignment operator.
+	LinearColorMap& operator=(const LinearColorMap& other);
 	//! Set the intensity range
-	void setIntensityRange(const QwtDoubleInterval& range){d_range = range;}
+	void setIntensityRange(const QwtInterval& range){d_range = range;}
 	//! Set the intensity range
-	void setIntensityRange(double vmin, double vmax){d_range = QwtDoubleInterval(vmin, vmax);}
+	void setIntensityRange(double vmin, double vmax){d_range = QwtInterval(vmin, vmax);}
 	//! Get the intensity range
-	QwtDoubleInterval intensityRange() const;
+	QwtInterval intensityRange() const;
 	//! Get the lower range limit
 	double lowerBound(){return d_range.minValue();}
 	//! Get the upper range limit
@@ -60,7 +66,7 @@ public:
 	static LinearColorMap rainbow();
 
 private:
-	QwtDoubleInterval d_range;
+	QwtInterval d_range;
 };
 
 #endif

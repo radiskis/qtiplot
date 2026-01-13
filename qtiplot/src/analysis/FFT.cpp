@@ -46,14 +46,14 @@ FFT::FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const 
     setDataFromTable(t, realColName, imagColName, from, to);
 }
 
-FFT::FFT(ApplicationWindow *parent, QwtPlotCurve *c)
+FFT::FFT(ApplicationWindow *parent, PlotCurve *c)
 : Filter(parent, c)
 {
 	init();
     setDataFromCurve(c);
 }
 
-FFT::FFT(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+FFT::FFT(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Filter(parent, c)
 {
 	init();
@@ -294,7 +294,7 @@ void FFT::outputGraphs()
 
 	MultiLayer *ml = d_output_graph->multiLayer();
 
-	d_output_graph->setTitle(QString::null);
+	d_output_graph->setTitle(QString());
 	d_output_graph->setYAxisTitle(tr("Angle (deg)"));
 	d_output_graph->enableAxis(QwtPlot::xTop, true);
 	d_output_graph->enableAxis(QwtPlot::yRight, true);
@@ -322,7 +322,7 @@ void FFT::outputGraphs()
 	d_output_graph->updatePlot();
 
 	Graph *g = ml->addLayer(0, 0, 0, 0, true);
-	g->setTitle(QString::null);
+	g->setTitle(QString());
 	if (!d_inverse)
 		g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
 	else
@@ -338,7 +338,7 @@ void FFT::outputGraphs()
 	c->setPen(QPen(d_curveColor, 1));
 	g->updatePlot();
 
-	double rb = g->axisScaleDiv(QwtPlot::xBottom)->upperBound();
+	double rb = g->axisScaleDiv(QwtPlot::xBottom).upperBound();
 	d_output_graph->setAxisScale(QwtPlot::xBottom, 0, rb);
 	d_output_graph->setAxisScale(QwtPlot::xTop, 0, rb);
 	g->setAxisScale(QwtPlot::xBottom, 0, rb);

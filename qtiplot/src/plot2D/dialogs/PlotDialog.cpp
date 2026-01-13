@@ -81,11 +81,11 @@ Description          : Custom curves dialog
 
 #include <qwt_plot_canvas.h>
 
-PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WFlags fl )
+PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WindowFlags fl )
 : QDialog(parent, fl),
   d_ml(0)
 {
-    setName( "PlotDialog" );
+    setObjectName( "PlotDialog" );
 	setWindowTitle( tr( "QtiPlot - Plot details" ) );
 	setModal(true);
 	setSizeGripEnabled(true);
@@ -1661,7 +1661,7 @@ void PlotDialog::initPercentilePage()
     QGridLayout *gl2 = new QGridLayout(gb2);
 
 	boxPercSize = new QSpinBox();
-	boxPercSize->setMinValue( 1 );
+	boxPercSize->setMinimum( 1 );
     gl2->addWidget(boxPercSize, 0, 1);
 
 	QLabel *l1 = new QLabel("&" + tr( "Size" ));
@@ -2919,7 +2919,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 
 void PlotDialog::updateContourLevelsDisplay(Spectrogram *sp)
 {
-	QwtValueList levels = sp->contourLevels();
+	QList<double> levels = sp->contourLevels();
 	levelsBox->setValue(levels.size());
 	if (levels.size() >= 1)
 		firstContourLineBox->setValue(levels[0]);
@@ -3385,8 +3385,8 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
 
 void PlotDialog::updateEndPointColumns(const QString& text)
 {
-	QStringList cols = text.split(", ", QString::SkipEmptyParts);
-	QStringList aux = cols[0].split(": ", QString::SkipEmptyParts);
+	QStringList cols = text.split(", ", Qt::SkipEmptyParts);
+	QStringList aux = cols[0].split(": ", Qt::SkipEmptyParts);
 	QString table = aux[0];
 	QStringList list;
 	foreach(QString s, columnNames){
@@ -3395,11 +3395,11 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 	}
 
 	xEndBox->clear();
-	xEndBox->insertStringList(list);
+	xEndBox->addItems(list);
 	xEndBox->setCurrentText(table + "_" + cols[2].remove("(X)").remove("(A)"));
 
 	yEndBox->clear();
-	yEndBox->insertStringList(list);
+	yEndBox->addItems(list);
 	yEndBox->setCurrentText(table + "_" + cols[3].remove("(Y)").remove("(M)"));
 }
 
@@ -3768,7 +3768,7 @@ bool PlotDialog::acceptParams()
         return false;
 
 	if (privateTabWidget->currentPage() == axesPage){
-		plotItem->setAxis(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
+		plotItem->setAxes(boxXAxis->currentIndex() + 2, boxYAxis->currentIndex());
 		if (graph->isAutoscalingEnabled())
 			graph->setAutoScale();
 		graph->updateAxesTitles();
@@ -3936,9 +3936,9 @@ bool PlotDialog::acceptParams()
 			DataCurve *c = (DataCurve *)plotItem;
 
 			QString text = item->text(0);
-			QStringList t = text.split(": ", QString::SkipEmptyParts);
+			QStringList t = text.split(": ", Qt::SkipEmptyParts);
 			QString table = t[0];
-			QStringList cols = t[1].split(",", QString::SkipEmptyParts);
+			QStringList cols = t[1].split(",", Qt::SkipEmptyParts);
 
 			if (c->type() != Graph::Box){
 				bool specialCurve = (c->type() == Graph::Histogram);
@@ -4516,7 +4516,7 @@ void PlotDialog::setEquidistantLevels()
 	if (!sp || sp->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 		return;
 
-	QwtValueList levels;
+	QList<double> levels;
 	double firstVal = firstContourLineBox->value();
 	for (int i = 0; i < levelsBox->value(); i++)
 		levels << firstVal + i*contourLinesDistanceBox->value();

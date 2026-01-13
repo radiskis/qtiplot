@@ -49,13 +49,13 @@
 #include <QInputDialog>
 #include <QMenuBar>
 
-CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WFlags fl)
+CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
 {
     setWindowTitle(tr("QtiPlot") + " - " + tr("Add Custom Action"));
 
     itemsList = new QListWidget();
-    itemsList->setSelectionMode(QAbstractItemView::SingleSelection);
+    itemsList->setSelectionMode(qAbstractItemView::SingleSelection);
 	itemsList->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
 	itemsList->setSpacing(2);
 
@@ -540,7 +540,7 @@ void CustomActionDialog::setCurrentAction(int row)
 	if (!w)
 		return;
 
-	if (w->isA("QToolBar")){
+	if (w->inherits("QToolBar")){
     	int index = toolBarBox->findText(((QToolBar*)w)->windowTitle());
     	if (index >= 0){
         	toolBarBox->setCurrentIndex(index);

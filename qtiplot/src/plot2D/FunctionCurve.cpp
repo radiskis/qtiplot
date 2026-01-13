@@ -104,7 +104,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	int logScale = 0;
 	QwtPlotCurve::CurveStyle lineStyle = QwtPlotCurve::NoCurve;
 	QStringList formulas;
-	QString var, title = QString::null;
+	QString var, title = QString();
 	double start = 0.0, end = 0.0;
 	QMap<QString, double> constants;
 	QStringList::const_iterator line;
@@ -200,13 +200,13 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 		MyParser parser;
 		double x = d_from;
 		try {
-			parser.DefineVar(d_variable.ascii(), &x);
+			parser.DefineVar(d_variable.toStdWString(), &x);
 			QMapIterator<QString, double> i(d_constants);
 			while (i.hasNext()){
 				i.next();
-				parser.DefineConst(i.key().ascii(), i.value());
+				parser.DefineConst(i.key().toStdWString(), i.value());
 			}
-			parser.SetExpr(d_formulas[0].ascii());
+			parser.SetExpr(d_formulas[0].toStdWString());
 
 			int lastButOne = points - 1;
 			try {
@@ -299,14 +299,14 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 			QMapIterator<QString, double> i(d_constants);
 			while (i.hasNext()){
 				i.next();
-				xparser.DefineConst(i.key().ascii(), i.value());
-				yparser.DefineConst(i.key().ascii(), i.value());
+				xparser.DefineConst(i.key().toStdWString(), i.value());
+				yparser.DefineConst(i.key().toStdWString(), i.value());
 			}
 
-			xparser.DefineVar(d_variable.ascii(), &par);
-			yparser.DefineVar(d_variable.ascii(), &par);
-			xparser.SetExpr(aux[0].ascii());
-			yparser.SetExpr(aux[1].ascii());
+			xparser.DefineVar(d_variable.toStdWString(), &par);
+			yparser.DefineVar(d_variable.toStdWString(), &par);
+			xparser.SetExpr(aux[0].toStdWString());
+			yparser.SetExpr(aux[1].toStdWString());
 			par = d_from;
 			for (int i = 0; i<points; i++ ){
 				X[i] = xparser.Eval();
@@ -317,9 +317,9 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 	}
 
 	if (curveType() == QwtPlotCurve::Yfx)
-		setData(X, Y, points);
+		setSamples(X, Y, points);
 	else
-		setData(Y, X, points);
+		setSamples(Y, X, points);
 	free(X); free(Y);
 	return true;
 }

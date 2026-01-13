@@ -37,8 +37,8 @@ Q_OBJECT
 
 public:
     FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 1, int to = -1);
-	FFT(ApplicationWindow *parent, QwtPlotCurve *c);
-	FFT(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end);
+	FFT(ApplicationWindow *parent, PlotCurve *c);
+	FFT(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 	FFT(ApplicationWindow *parent, Matrix *re, Matrix *im = NULL, bool inverse = false, bool shift = true, bool norm = false, bool outputPower2Sizes = true);

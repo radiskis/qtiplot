@@ -159,7 +159,7 @@ using namespace std;
 #include <QSettings>
 #include <QApplication>
 #include <QMessageBox>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QActionGroup>
 #include <QAction>
 #include <QToolBar>
@@ -239,25 +239,24 @@ void ApplicationWindow::init(bool factorySettings)
 
 	actionSaveProject = NULL;
 	folders = new FolderListView(this);
-	folders->header()->setClickEnabled( false );
-	folders->addColumn( tr("Folder") );
+	folders->setHeaderLabels( QStringList() << tr("Folder") );
 	folders->setRootIsDecorated( true );
-	folders->setResizeMode(Q3ListView::LastColumn);
+    folders->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	folders->header()->hide();
-	folders->setSelectionMode(Q3ListView::Single);
+	folders->setSelectionMode(qAbstractItemView::SingleSelection);
 
-	connect(folders, SIGNAL(currentChanged(Q3ListViewItem *)),
-			this, SLOT(folderItemChanged(Q3ListViewItem *)));
-	connect(folders, SIGNAL(itemRenamed(Q3ListViewItem *, int, const QString &)),
-			this, SLOT(renameFolder(Q3ListViewItem *, int, const QString &)));
-	connect(folders, SIGNAL(contextMenuRequested(Q3ListViewItem *, const QPoint &, int)),
-			this, SLOT(showFolderPopupMenu(Q3ListViewItem *, const QPoint &, int)));
-	connect(folders, SIGNAL(dragItems(QList<Q3ListViewItem *>)),
-			this, SLOT(dragFolderItems(QList<Q3ListViewItem *>)));
-	connect(folders, SIGNAL(dropItems(Q3ListViewItem *)),
-			this, SLOT(dropFolderItems(Q3ListViewItem *)));
-	connect(folders, SIGNAL(renameItem(Q3ListViewItem *)),
-			this, SLOT(startRenameFolder(Q3ListViewItem *)));
+	connect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
+			this, SLOT(folderItemChanged(QTreeWidgetItem *)));
+	connect(folders, SIGNAL(itemRenamed(QTreeWidgetItem *, int, const QString &)),
+			this, SLOT(renameFolder(QTreeWidgetItem *, int, const QString &)));
+	connect(folders, SIGNAL(contextMenuRequested(QTreeWidgetItem *, const QPoint &, int)),
+			this, SLOT(showFolderPopupMenu(QTreeWidgetItem *, const QPoint &, int)));
+	connect(folders, SIGNAL(dragItems(QList<QTreeWidgetItem *>)),
+			this, SLOT(dragFolderItems(QList<QTreeWidgetItem *>)));
+	connect(folders, SIGNAL(dropItems(QTreeWidgetItem *)),
+			this, SLOT(dropFolderItems(QTreeWidgetItem *)));
+	connect(folders, SIGNAL(renameItem(QTreeWidgetItem *)),
+			this, SLOT(startRenameFolder(QTreeWidgetItem *)));
 	connect(folders, SIGNAL(addFolderItem()), this, SLOT(addFolder()));
 	connect(folders, SIGNAL(deleteSelection()), this, SLOT(deleteSelectedItems()));
 
@@ -267,16 +266,13 @@ void ApplicationWindow::init(bool factorySettings)
 	fli->setOpen( true );
 
 	lv = new FolderListView();
-	lv->addColumn (tr("Name"));
-	lv->addColumn (tr("Type"));
-	lv->addColumn (tr("View"));
-	//lv->addColumn (tr("Size"));
-	lv->addColumn (tr("Created"));
-	lv->addColumn (tr("Label"));
-	lv->setResizeMode(Q3ListView::LastColumn);
+    QStringList lvHeaders;
+	lvHeaders << tr("Name") << tr("Type") << tr("View") << tr("Created") << tr("Label");
+    lv->setHeaderLabels(lvHeaders);
+
+	lv->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	lv->setMinimumHeight(80);
-	lv->setSelectionMode(Q3ListView::Extended);
-	lv->setDefaultRenameAction (Q3ListView::Accept);
+	lv->setSelectionMode(qAbstractItemView::ExtendedSelection);
 
 	explorerSplitter = new QSplitter(Qt::Horizontal, explorerWindow);
 	explorerSplitter->addWidget(folders);
@@ -348,7 +344,8 @@ void ApplicationWindow::init(bool factorySettings)
 	insertTranslatedStrings();
 	disableToolbars();
 
-	assistant = new QAssistantClient( QString(), this );
+	assistant = 0;
+	// new QAssistantClient( QString(), this );
 
 	connect(tablesDepend, SIGNAL(activated(int)), this, SLOT(showTable(int)));
 
@@ -357,20 +354,20 @@ void ApplicationWindow::init(bool factorySettings)
 
 	connect(this, SIGNAL(modified()),this, SLOT(modifiedProject()));
         connect(d_workspace, SIGNAL(subWindowActivated(QMdiSubWindow *)), this, SLOT(windowActivated(QMdiSubWindow*)));
-        connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(maximizeWindow(Q3ListViewItem *)));
-        connect(lv, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(folderItemDoubleClicked(Q3ListViewItem *)));
-	connect(lv, SIGNAL(contextMenuRequested(Q3ListViewItem *, const QPoint &, int)),
-			this, SLOT(showWindowPopupMenu(Q3ListViewItem *, const QPoint &, int)));
-	connect(lv, SIGNAL(dragItems(QList<Q3ListViewItem *>)),
-			this, SLOT(dragFolderItems(QList<Q3ListViewItem *>)));
-	connect(lv, SIGNAL(dropItems(Q3ListViewItem *)),
-			this, SLOT(dropFolderItems(Q3ListViewItem *)));
-	connect(lv, SIGNAL(renameItem(Q3ListViewItem *)),
-			this, SLOT(startRenameFolder(Q3ListViewItem *)));
+        connect(lv, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(maximizeWindow(QTreeWidgetItem *)));
+        connect(lv, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(folderItemDoubleClicked(QTreeWidgetItem *)));
+	connect(lv, SIGNAL(contextMenuRequested(QTreeWidgetItem *, const QPoint &, int)),
+			this, SLOT(showWindowPopupMenu(QTreeWidgetItem *, const QPoint &, int)));
+	connect(lv, SIGNAL(dragItems(QList<QTreeWidgetItem *>)),
+			this, SLOT(dragFolderItems(QList<QTreeWidgetItem *>)));
+	connect(lv, SIGNAL(dropItems(QTreeWidgetItem *)),
+			this, SLOT(dropFolderItems(QTreeWidgetItem *)));
+	connect(lv, SIGNAL(renameItem(QTreeWidgetItem *)),
+			this, SLOT(startRenameFolder(QTreeWidgetItem *)));
 	connect(lv, SIGNAL(addFolderItem()), this, SLOT(addFolder()));
 	connect(lv, SIGNAL(deleteSelection()), this, SLOT(deleteSelectedItems()));
-	connect(lv, SIGNAL(itemRenamed(Q3ListViewItem *, int, const QString &)),
-			this, SLOT(renameWindow(Q3ListViewItem *, int, const QString &)));
+	connect(lv, SIGNAL(itemRenamed(QTreeWidgetItem *, int, const QString &)),
+			this, SLOT(renameWindow(QTreeWidgetItem *, int, const QString &)));
 
 	connect(scriptEnv, SIGNAL(error(const QString&,const QString&,int)),
 			this, SLOT(scriptError(const QString&,const QString&,int)));
@@ -468,7 +465,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	d_latex_compiler = MathTran;
 	d_mdi_windows_area = true;
-	d_open_project_filter = QString::null;//tr("QtiPlot project") + " (*.qti)";
+	d_open_project_filter = QString();//tr("QtiPlot project") + " (*.qti)";
 
 	d_comment_highlight_color = Qt::red;
 	d_class_highlight_color = Qt::darkMagenta;
@@ -566,12 +563,12 @@ void ApplicationWindow::setDefaultOptions()
 #endif
 
 	d_startup_scripts_folder = aux + "/scripts";
-	fitModelsPath = QString::null;
+	fitModelsPath = QString();
 	templatesDir = aux;
 	asciiDirPath = aux;
 	imagesDirPath = aux;
 	scriptsDirPath = aux;
-	customActionsDirPath = QString::null;
+	customActionsDirPath = QString();
 
 	appFont = QFont();
     d_notes_font = appFont;
@@ -1757,7 +1754,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 		else
 			actionShowExportASCIIDialog->setEnabled(false);
 
-		if (w->isA("MultiLayer")) {
+		if (w->inherits("MultiLayer")) {
 			actionAddFunctionCurve->setEnabled(true);
 			actionShowCurvesDialog->setEnabled(true);
 			actionAddFormula->setEnabled(true);
@@ -1776,7 +1773,7 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
             format->insertSeparator();
             format->addAction(actionShowGridDialog);
 			format->addAction(actionShowTitleDialog);
-		} else if (w->isA("Graph3D")) {
+		} else if (w->inherits("Graph3D")) {
 			disableActions();
 
 			actionPrint->setEnabled(true);
@@ -2113,7 +2110,7 @@ void ApplicationWindow::plotPie()
 	QStringList s = table->selectedColumns();
 	if (s.count()>0){
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::Pie, sel.topRow, sel.bottomRow);
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
 }
@@ -2164,7 +2161,7 @@ void ApplicationWindow::plotVectXYXY()
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4) {
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow, sel.bottomRow);
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
@@ -2180,7 +2177,7 @@ void ApplicationWindow::plotVectXYAM()
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4){
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow, sel.bottomRow);
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
@@ -2235,11 +2232,11 @@ void ApplicationWindow::updateTableNames(const QString& oldName, const QString& 
 {
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach (MdiSubWindow *w, windows) {
-		if (w->isA("MultiLayer")) {
+		if (w->inherits("MultiLayer")) {
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
 				g->updateCurveNames(oldName, newName);
-		} else if (w->isA("Graph3D")) {
+		} else if (w->inherits("Graph3D")) {
 			QString name = ((Graph3D*)w)->formula();
 			if (name.contains(oldName, true)) {
 				name.replace(oldName,newName);
@@ -2253,11 +2250,11 @@ void ApplicationWindow::updateColNames(const QString& oldName, const QString& ne
 {
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach (MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
+		if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
 				g->updateCurveNames(oldName, newName, false);
-		} else if (w->isA("Graph3D")){
+		} else if (w->inherits("Graph3D")){
 			QString name = ((Graph3D*)w)->formula();
 			if (name.contains(oldName)){
 				name.replace(oldName,newName);
@@ -2271,7 +2268,7 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 {
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Graph3D"))
+		if (w->inherits("Graph3D"))
 		{
 			QString s = ((Graph3D*)w)->formula();
 			if (s.contains(oldName))
@@ -2280,13 +2277,13 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 				((Graph3D*)w)->setPlotAssociation(s);
 			}
 		}
-		else if (w->isA("MultiLayer"))
+		else if (w->inherits("MultiLayer"))
 		{
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				for (int i=0; i<g->curveCount(); i++){
 					QwtPlotItem *sp = (QwtPlotItem *)g->plotItem(i);
-					if (sp && sp->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && sp->title().text() == oldName)
+					if (sp && sp->type() == QwtPlotItem::Rtti_PlotSpectrogram && sp->title().text() == oldName)
 						sp->setTitle(newName);
 				}
 			}
@@ -2303,15 +2300,15 @@ void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
+		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->clearData();
-		else if (w->isA("MultiLayer")){
+		else if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				foreach (QwtPlotItem *it, curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->matrix() == m){
+					if (it->type() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->matrix() == m){
 						g->removeCurve(it);
 						update = true;
 					} else if (((PlotCurve *)it)->type() == Graph::Histogram && ((QwtHistogram *)it)->matrix() == m){
@@ -2336,15 +2333,15 @@ void ApplicationWindow::updateMatrixPlots(Matrix *m)
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Graph3D") && ((Graph3D*)w)->matrix() == m)
+		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
 			((Graph3D*)w)->updateMatrixData(m);
-		else if (w->isA("MultiLayer")){
+		else if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				foreach (QwtPlotItem *it, curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+					if (it->type() == QwtPlotItem::Rtti_PlotSpectrogram){
 						Spectrogram *sp = (Spectrogram *)it;
 						if (sp->matrix() == m){
 							sp->updateData();
@@ -2386,7 +2383,7 @@ void ApplicationWindow::updateMatrixPlotLabels(Matrix *m)
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				foreach (QwtPlotItem *it, curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+					if (it->type() == QwtPlotItem::Rtti_PlotSpectrogram){
 						Spectrogram *sp = (Spectrogram *)it;
 						if (sp->matrix() == m){
 							g->updateAxesTitles();
@@ -2583,7 +2580,7 @@ Graph3D* ApplicationWindow::newPlot3D(const QString& title)
 
 	Graph3D *plot = new Graph3D("", this, 0);
 	plot->setWindowTitle(label);
-	plot->setName(label);
+	plot->setObjectName(label);
 
 	initPlot3D(plot);
 
@@ -2884,7 +2881,7 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	g->enableAxis(QwtPlot::xTop, false);
 	g->enableAxis(QwtPlot::yRight, false);
 	g->setCanvasFrame(0);
-	g->setTitle(QString::null);
+	g->setTitle(QString());
 	g->setMargin(0);
 	g->setFrame(0);
 	g->addCurves(t, list, Graph::Line);
@@ -2906,7 +2903,7 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 		label = generateUniqueName(tr("Graph"));
 
 	g->setWindowTitle(label);
-	g->setName(label);
+	g->setObjectName(label);
 	g->setIcon(QPixmap(":/graph.png"));
 	g->setScaleLayersOnPrint(d_scale_plots_on_print);
 	g->printCropmarks(d_print_cropmarks);
@@ -3078,7 +3075,7 @@ Table* ApplicationWindow::newHiddenTable(const QString& name, const QString& lab
 	Table* w = new Table(scriptEnv, r, c, label, this, 0);
 
 	if (!text.isEmpty()) {
-		QStringList rows = text.split("\n", QString::SkipEmptyParts);
+		QStringList rows = text.split("\n", Qt::SkipEmptyParts);
 		QStringList list = rows[0].split("\t");
 		w->setHeader(list);
 
@@ -3110,7 +3107,7 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 	connectTable(w);
 	customTable(w);
 
-	w->setName(name);
+	w->setObjectName(name);
 	w->setIcon(QPixmap(":/worksheet.png") );
 	addListViewItem(w);
 }
@@ -3149,7 +3146,7 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	while(name.isEmpty() || alreadyUsedName(name))
 		name = generateUniqueName(tr("Notes"));
 
-	m->setName(name);
+	m->setObjectName(name);
 	m->setIcon(QPixmap(":/note.png"));
 	m->askOnCloseEvent(confirmCloseNotes);
 
@@ -3475,7 +3472,7 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	while(alreadyUsedName(name)){name = generateUniqueName(tr("Matrix"));}
 
 	m->setWindowTitle(name);
-	m->setName(name);
+	m->setObjectName(name);
 	m->setIcon( QPixmap(":/matrix.png") );
 	m->askOnCloseEvent(confirmCloseMatrix);
 	m->setNumericPrecision(d_decimal_digits);
@@ -3509,7 +3506,7 @@ void ApplicationWindow::showBinMatrixDialog()
 		return;
 
 	Q3TableSelection sel = t->getSelection();
-	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow() - sel.bottomRow()) < 2){
+	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow - sel.bottomRow) < 2){
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("You must select a single Y column that has an associated X column!"));
 		return;
@@ -3524,7 +3521,7 @@ void ApplicationWindow::showBinMatrixDialog()
 		return;
 	}
 
-	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow(), sel.bottomRow(), this);
+	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow, sel.bottomRow, this);
 	cbmd->exec();
 }
 
@@ -3575,13 +3572,13 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 	QStringList selection = t->selectedColumns();
 	Q3TableSelection sel = t->getSelection();
 	if (selection.size() != 1 || t->colPlotDesignation(t->colIndex(selection[0])) != Table::Z ||
-		fabs(sel.topRow() - sel.bottomRow()) < 2){
+		fabs(sel.topRow - sel.bottomRow) < 2){
 		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
 		return;
 	}
 
-	int startRow = sel.topRow();
-	int endRow = sel.bottomRow();
+	int startRow = sel.topRow;
+	int endRow = sel.bottomRow;
 	int zcol = t->colIndex(selection[0]);
 	if (zcol < 0 || zcol >= t->numCols())
 		return;
@@ -3662,13 +3659,13 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 		Q3TableSelection sel = t->getSelection();
 		if (t->selectedColumns().size() != 1 ||
 			t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
-			fabs(sel.topRow() - sel.bottomRow()) < 2){
+			fabs(sel.topRow - sel.bottomRow) < 2){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
 			return 0;
 		}
 		zcol = t->colIndex(t->selectedColumns()[0]);
-		startRow = sel.topRow();
-		endRow = sel.bottomRow();
+		startRow = sel.topRow;
+		endRow = sel.bottomRow;
 	} else
 		zcol = t->colIndex(colName);
 
@@ -3780,7 +3777,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 		}
 	}
 
-	m->setCoordinates(QMIN(xstart, xend), QMAX(xstart, xend), QMIN(ystart, yend), QMAX(ystart, yend));
+	m->setCoordinates(qMin(xstart, xend), qMax(xstart, xend), qMin(ystart, yend), qMax(ystart, yend));
 
 	QApplication::restoreOverrideCursor();
 	return m;
@@ -3870,7 +3867,7 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-			if (w->isA("Matrix") && w->objectName() == caption)
+			if (w->inherits("Matrix") && w->objectName() == caption)
 				return (Matrix*)w;
 		}
 		f = f->folderBelow();
@@ -3979,11 +3976,11 @@ void ApplicationWindow::removeCurves(const QString& name)
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
+		if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
                 g->removeCurves(name);
-		} else if (w->isA("Graph3D")){
+		} else if (w->inherits("Graph3D")){
 			if ( (((Graph3D*)w)->formula()).contains(name) )
 				((Graph3D*)w)->clearData();
 		}
@@ -3997,11 +3994,11 @@ void ApplicationWindow::updateCurves(Table *t, const QString& name)
 {
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
+		if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers)
                 g->updateCurvesData(t, name);
-		} else if (w->isA("Graph3D")){
+		} else if (w->inherits("Graph3D")){
 			Graph3D* g = (Graph3D*)w;
 			if ((g->formula()).contains(name))
 				g->updateData(t);
@@ -4080,7 +4077,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 	if (confirmCloseMatrix != askMatrices){
 		confirmCloseMatrix = askMatrices;
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("Matrix"))
+			if (w->inherits("Matrix"))
 				w->askOnCloseEvent(confirmCloseMatrix);
 		}
 	}
@@ -4088,7 +4085,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 	if (confirmClosePlot2D != askPlots2D){
 		confirmClosePlot2D=askPlots2D;
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("MultiLayer"))
+			if (w->inherits("MultiLayer"))
 				w->askOnCloseEvent(confirmClosePlot2D);
 		}
 	}
@@ -4096,7 +4093,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 	if (confirmClosePlot3D != askPlots3D){
 		confirmClosePlot3D=askPlots3D;
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("Graph3D"))
+			if (w->inherits("Graph3D"))
 				w->askOnCloseEvent(confirmClosePlot3D);
 		}
 	}
@@ -4104,7 +4101,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 	if (confirmCloseNotes != askNotes){
 		confirmCloseNotes = askNotes;
 		foreach(MdiSubWindow *w, windows){
-			if (w->isA("Note"))
+			if (w->inherits("Note"))
 				w->askOnCloseEvent(confirmCloseNotes);
 		}
 	}
@@ -4199,7 +4196,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 {
 	QString fn = fileName;
 	if (fn.isEmpty()){
-		fn = getFileName(this, tr("Open ODF Spreadsheet File"), QString::null, "*.ods", 0, false);
+		fn = getFileName(this, tr("Open ODF Spreadsheet File"), QString(), "*.ods", 0, false);
 		if (fn.isEmpty())
 			return NULL;
 	}
@@ -4270,7 +4267,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 		if (d_excel_import_method == LocalOpenOffice)
 			filter = tr("Excel files") + " (*.xls *.xlsx)";
 
-		fn = getFileName(this, tr("Open Excel File"), QString::null, filter, 0, false);
+		fn = getFileName(this, tr("Open Excel File"), QString(), filter, 0, false);
 		if (fn.isEmpty())
 			return NULL;
 	}
@@ -4309,7 +4306,7 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 	#endif
 		filters << tr("SQLite 3") + " (*.db)";
 
-		fn = getFileName(this, tr("Open Database"), QString::null, filters.join(";"), 0, false);
+		fn = getFileName(this, tr("Open Database"), QString(), filters.join(";"), 0, false);
 		if (fn.isEmpty())
 			return 0;
 	}
@@ -4323,7 +4320,7 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 
 Table * ApplicationWindow::importWaveFile()
 {
-	QString fn = getFileName(this, tr("Open File"), QString::null, "*.wav", 0, false);
+	QString fn = getFileName(this, tr("Open File"), QString(), "*.wav", 0, false);
 	if (fn.isEmpty())
 		return NULL;
 
@@ -4558,7 +4555,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					}
 					t->notifyChanges();
 					emit modifiedProject(t);
-				} else if (w->isA("Matrix")){
+				} else if (w->inherits("Matrix")){
 					Matrix *m = (Matrix *)w;
 					for (int i=0; i<files.size(); i++){
 						m->importASCII(files[i], local_column_separator, local_ignored_lines,
@@ -4583,7 +4580,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 									local_comment_string, import_read_only, Table::Overwrite, local_separators, endLineChar, -1,
 									colTypes, colFormats);
 					t->notifyChanges();
-				} else if (w->isA("Matrix")){
+				} else if (w->inherits("Matrix")){
 				    Matrix *m = (Matrix *)w;
 					m->importASCII(files[0], local_column_separator, local_ignored_lines,
                           local_strip_spaces, local_simplify_spaces, local_comment_string,
@@ -4735,7 +4732,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 
 	QString fname = fn;
 	if (fn.endsWith(".qti.gz", Qt::CaseInsensitive)){//decompress using zlib
-		file_uncompress((char *)fname.ascii());
+		file_uncompress((char *)fname.toStdWString());
 		fname = fname.left(fname.size() - 3);
 	}
 
@@ -4745,7 +4742,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 	QString s = t.readLine();
 	f.close();
 
-    QStringList lst = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
+    QStringList lst = s.split(QRegExp("\\s"), Qt::SkipEmptyParts);
 	bool qtiProject = (lst.count() < 2 || lst[0] != "QtiPlot") ? false : true;
 	if (!qtiProject){
 		if (QFile::exists(fname + "~")){
@@ -4762,7 +4759,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 		return plotFile(fn);
 	}
 
-    QStringList vl = lst[1].split(".", QString::SkipEmptyParts);
+    QStringList vl = lst[1].split(".", Qt::SkipEmptyParts);
     d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
 
 	ApplicationWindow* app = openProject(fname, factorySettings, newProject);
@@ -4857,7 +4854,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 		t.readLine();
 
 	QString s = t.readLine();
-	QStringList list=s.split("\t", QString::SkipEmptyParts);
+	QStringList list=s.split("\t", Qt::SkipEmptyParts);
 	if (list[0] == "<scripting-lang>"){
 		if (!app->setScriptingLanguage(list[1]))
 			QMessageBox::warning(app, tr("QtiPlot - File opening error"),
@@ -4867,7 +4864,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					.arg(fn).arg(list[1]).arg(scriptEnv->name()));
 
 		s = t.readLine();
-		list=s.split("\t", QString::SkipEmptyParts);
+		list=s.split("\t", Qt::SkipEmptyParts);
 	}
 	int aux=0,widgets=list[1].toInt();
 
@@ -4886,7 +4883,7 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	app->blockSignals (true);
 
 	//rename project folder item
-	FolderListItem *item = (FolderListItem *)app->folders->firstChild();
+	FolderListItem *item = (FolderListItem *)app->folders->topLevelItem(0);
 	item->setText(0, fi.baseName());
 	item->folder()->setObjectName(fi.baseName());
 
@@ -4999,16 +4996,16 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 					plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
 			}
 			if (d_file_version > 83){
-				QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
+				QStringList lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 				if (lst.size() >= 5)
 					plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-				lst=t.readLine().split("\t", QString::SkipEmptyParts);
+				lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 				if (lst.size() >= 3)
 					plot->setSpacing(lst[1].toInt(),lst[2].toInt());
-				lst=t.readLine().split("\t", QString::SkipEmptyParts);
+				lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 				if (lst.size() >= 3)
 					plot->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
-				lst=t.readLine().split("\t", QString::SkipEmptyParts);
+				lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 				if (lst.size() >= 3)
 					plot->setAlignement(lst[1].toInt(),lst[2].toInt());
 			}
@@ -5109,7 +5106,7 @@ void ApplicationWindow::executeNotes()
 {
 	QList<MdiSubWindow *> lst = projectFolder()->windowsList();
 	foreach(MdiSubWindow *widget, lst)
-		if (widget->isA("Note") && ((Note*)widget)->autoexec())
+		if (widget->inherits("Note") && ((Note*)widget)->autoexec())
 			((Note*)widget)->executeAll();
 }
 
@@ -5126,7 +5123,7 @@ void ApplicationWindow::scriptPrint(const QString &text)
 #ifdef SCRIPTING_CONSOLE
 	if(!text.stripWhiteSpace().isEmpty()) console->append(text);
 #else
-	printf(text.ascii());
+	printf(text.toStdWString());
 #endif
 }
 
@@ -5217,7 +5214,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 	QTextStream t(&f);
 	t.setEncoding(QTextStream::UnicodeUTF8);
 	f.open(QIODevice::ReadOnly);
-	QStringList l=t.readLine().split(QRegExp("\\s"), QString::SkipEmptyParts);
+	QStringList l=t.readLine().split(QRegExp("\\s"), Qt::SkipEmptyParts);
 	QString fileType=l[0];
 	if (fileType != "QtiPlot"){
 		QMessageBox::critical(this,tr("QtiPlot - File opening error"),
@@ -5225,7 +5222,7 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 		return 0;
 	}
 
-	QStringList vl = l[1].split(".", QString::SkipEmptyParts);
+	QStringList vl = l[1].split(".", Qt::SkipEmptyParts);
 	d_file_version = 100*(vl[0]).toInt()+10*(vl[1]).toInt()+(vl[2]).toInt();
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -5253,13 +5250,13 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				restoreWindowGeometry(w, geometry);
 				if (d_file_version > 83){
-					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					QStringList lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					ml->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					ml->setSpacing(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					ml->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					ml->setAlignement(lst[1].toInt(),lst[2].toInt());
 				}
 				while (!t.atEnd()){//open layers
@@ -5342,7 +5339,7 @@ void ApplicationWindow::readSettings()
     //(only needed on Windows due to a Qt bug?)
 #ifdef Q_OS_WIN
 	if (!recentProjects.isEmpty() && recentProjects[0].contains("^e"))
-		recentProjects = recentProjects[0].split("^e", QString::SkipEmptyParts);
+		recentProjects = recentProjects[0].split("^e", Qt::SkipEmptyParts);
 	else if (recentProjects.count() == 1){
 		QString s = recentProjects[0];
 		if (s.remove(QRegExp("\\s")).isEmpty())
@@ -6196,7 +6193,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/ColorMapMode", d_3D_color_map.mode());
 	QList<QVariant> stop_values;
 	QStringList stop_colors;
-	QwtArray <double> colors = d_3D_color_map.colorStops();
+	QVector <double> colors = d_3D_color_map.colorStops();
 	int stops = (int)colors.size() - 1;
 	for (int i = 1; i < stops; i++){
 		stop_values << QVariant(colors[i]);
@@ -6560,7 +6557,7 @@ void ApplicationWindow::exportAllGraphs()
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")) {
+		if (w->inherits("MultiLayer")) {
 			plot3D = 0;
 			plot2D = (MultiLayer *)w;
 			if (plot2D->isEmpty()) {
@@ -6571,7 +6568,7 @@ void ApplicationWindow::exportAllGraphs()
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				continue;
 			}
-		} else if (w->isA("Graph3D")) {
+		} else if (w->inherits("Graph3D")) {
 			plot2D = 0;
 			plot3D = (Graph3D *)w;
 		} else
@@ -6740,7 +6737,7 @@ void ApplicationWindow::restoreWindowGeometry(MdiSubWindow *w, const QString s)
 
 Folder* ApplicationWindow::projectFolder()
 {
-	return ((FolderListItem *)folders->firstChild())->folder();
+	return ((FolderListItem *)folders->topLevelItem(0))->folder();
 }
 
 bool ApplicationWindow::saveProject(bool compress)
@@ -6866,7 +6863,7 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 			updateRecentProjectsList(projectname);
 
 			QString baseName = QFileInfo(fn).baseName();
-			FolderListItem *item = (FolderListItem *)folders->firstChild();
+			FolderListItem *item = (FolderListItem *)folders->topLevelItem(0);
 			item->setText(0, baseName);
 			item->folder()->setObjectName(baseName);
 		}
@@ -7068,13 +7065,13 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 	QString fn = fileName;
 	if (fn.isEmpty()){
 		QString filter;
-		if (w->isA("Matrix"))
+		if (w->inherits("Matrix"))
 			filter = tr("QtiPlot Matrix Template")+" (*.qmt)";
-		else if (w->isA("MultiLayer"))
+		else if (w->inherits("MultiLayer"))
 			filter = tr("QtiPlot 2D Graph Template")+" (*.qpt)";
 		else if (w->inherits("Table"))
 			filter = tr("QtiPlot Table Template")+" (*.qtt)";
-		else if (w->isA("Graph3D"))
+		else if (w->inherits("Graph3D"))
 			filter = tr("QtiPlot 3D Surface Template")+" (*.qst)";
 
 		QString selectedFilter;
@@ -7172,10 +7169,10 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 
 	if (w->inherits("Table"))
 		updateTableNames(name, newName);
-	else if (w->isA("Matrix"))
+	else if (w->inherits("Matrix"))
 		changeMatrixName(name, newName);
 
-	w->setName(newName);
+	w->setObjectName(newName);
 	renameListViewItem(name, newName);
 	updateCompleter(name, false, newName);
 	emit modified();
@@ -7285,14 +7282,14 @@ void ApplicationWindow::showTitleDialog()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer")){
+	if (w->inherits("MultiLayer")){
 		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if (g){
 			TextDialog* td= new TextDialog(TextDialog::LayerTitle, this,0);
 			td->setGraph(g);
 			td->exec();
 		}
-	} else if (w->isA("Graph3D")) {
+	} else if (w->inherits("Graph3D")) {
 		Plot3DDialog* pd = (Plot3DDialog*)showPlot3dDialog();
 		if (pd)
 			pd->showTitleTab();
@@ -7344,7 +7341,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 	bool success = true;
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->inherits("Table") || w->isA("Matrix")){
+		if (w->inherits("Table") || w->inherits("Matrix")){
 			QString fileName = dir + "/" + w->objectName() + filter;
 			QFile f(fileName);
 			if (f.exists(fileName) && confirmOverwrite){
@@ -7356,7 +7353,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 					case 0:
 						if (w->inherits("Table"))
 							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->isA("Matrix"))
+						else if (w->inherits("Matrix"))
 							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 						break;
 
@@ -7364,7 +7361,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 						confirmOverwrite = false;
 						if (w->inherits("Table"))
 							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->isA("Matrix"))
+						else if (w->inherits("Matrix"))
 							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 						break;
 
@@ -7374,7 +7371,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 				}
 			} else if (w->inherits("Table"))
 				success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-			  else if (w->isA("Matrix"))
+			  else if (w->inherits("Matrix"))
 				success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 
 			if (!success)
@@ -7603,7 +7600,7 @@ void ApplicationWindow::showColStatistics()
 			targets << i;
 
 	Q3TableSelection select = t->getSelection();
-	newTableStatistics(t, TableStatistics::column, targets, select.topRow(), select.bottomRow())->showNormal();
+	newTableStatistics(t, TableStatistics::column, targets, select.topRow, select.bottomRow)->showNormal();
 }
 
 void ApplicationWindow::showRowStatistics()
@@ -7618,7 +7615,7 @@ void ApplicationWindow::showRowStatistics()
 			targets << i;
 
 	Q3TableSelection select = t->getSelection();
-	newTableStatistics(t, TableStatistics::row, targets, select.leftCol(), select.rightCol())->showNormal();
+	newTableStatistics(t, TableStatistics::row, targets, select.leftCol, select.rightCol)->showNormal();
 }
 
 void ApplicationWindow::showColMenu(int c)
@@ -7973,7 +7970,7 @@ void ApplicationWindow::zoomRectanglePlot()
 	}
 
 	Q3TableSelection sel = t->getSelection();
-    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow, sel.bottomRow);
     if (ml){
         Graph *ag = ml->activeLayer();
         ag->setTitle("");
@@ -8031,7 +8028,7 @@ void ApplicationWindow::plotDoubleYAxis()
 	}
 
 	Q3TableSelection sel = t->getSelection();
-	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow, sel.bottomRow);
 	if (ml){
 		Graph *g = ml->activeLayer();
 		g->enableAxis(QwtPlot::yRight);
@@ -8097,9 +8094,9 @@ void ApplicationWindow::showGeneralPlotDialog()
 	if (!plot)
 		return;
 
-	if (plot->isA("MultiLayer") && ((MultiLayer*)plot)->numLayers())
+	if (plot->inherits("MultiLayer") && ((MultiLayer*)plot)->numLayers())
 		showPlotDialog();
-	else if (plot->isA("Graph3D")){
+	else if (plot->inherits("Graph3D")){
 	    QDialog* gd = showScaleDialog();
 		((Plot3DDialog*)gd)->showGeneralTab();
 	}
@@ -8112,9 +8109,9 @@ void ApplicationWindow::showAxisDialog()
 		return;
 
 	QDialog* gd = showScaleDialog();
-	if (gd && plot->isA("MultiLayer") && ((MultiLayer*)plot)->numLayers())
+	if (gd && plot->inherits("MultiLayer") && ((MultiLayer*)plot)->numLayers())
 		((AxesDialog*)gd)->showAxesPage();
-	else if (gd && plot->isA("Graph3D"))
+	else if (gd && plot->inherits("Graph3D"))
 		((Plot3DDialog*)gd)->showAxisTab();
 }
 
@@ -8131,7 +8128,7 @@ QDialog* ApplicationWindow::showScaleDialog()
 	if (!w)
 		return 0;
 
-	if (w->isA("MultiLayer")){
+	if (w->inherits("MultiLayer")){
 		if (((MultiLayer*)w)->isEmpty())
 			return 0;
 
@@ -8145,7 +8142,7 @@ QDialog* ApplicationWindow::showScaleDialog()
         ad->setGraph(g);
         ad->exec();
         return ad;
-	} else if (w->isA("Graph3D"))
+	} else if (w->inherits("Graph3D"))
 		return showPlot3dDialog();
 
 	return 0;
@@ -8240,7 +8237,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 	actionHideCurve->setData(curveIndex);
 
 	int type = ((PlotCurve *)cv)->type();
-	bool spectrogram = (cv->rtti() == QwtPlotItem::Rtti_PlotSpectrogram) ? true : false;
+	bool spectrogram = (cv->type() == QwtPlotItem::Rtti_PlotSpectrogram) ? true : false;
     if (g->visibleCurves() > 1 && (type == Graph::Function || spectrogram)){
         curveMenu.addAction(actionHideOtherCurves);
         actionHideOtherCurves->setData(curveIndex);
@@ -8256,7 +8253,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 	curveMenu.insertSeparator();
 
 	if (g->rangeSelectorsEnabled() || (g->activeTool() &&
-		g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker))
+		g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker))
 		curveMenu.addAction(actionCopySelection);
 	if (spectrogram){
 		curveMenu.insertSeparator();
@@ -8264,10 +8261,10 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 		actionSetMatrixValues->setData(curveIndex);
 	} else if (type != Graph::Function && type != Graph::ErrorBars){
 		if (g->rangeSelectorsEnabled() || (g->activeTool() &&
-			g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)){
+			g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)){
 			curveMenu.addAction(actionCutSelection);
 			curveMenu.addAction(actionPasteSelection);
-			if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker){
+			if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker){
 				DataPickerTool *dpt = (DataPickerTool *)g->activeTool();
 				if (dpt){
 					QAction *act = new QAction(tr("Paste Selection as Te&xt"), this);
@@ -8379,7 +8376,7 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 	if (!it)
 		return;
 
-	if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
+	if (it->type() == QwtPlotItem::Rtti_PlotSpectrogram){
 		Spectrogram *sp = (Spectrogram *)it;
 		if (sp->matrix())
 			sp->matrix()->showMaximized();
@@ -8387,7 +8384,7 @@ void ApplicationWindow::showCurveWorksheet(Graph *g, int curveIndex)
 		g->createTable((PlotCurve *)it);
     else {
 		showTable(((DataCurve *)it)->table(), it->title().text());
-		if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+		if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)
             ((DataPickerTool *)g->activeTool())->selectTableRow();
     }
 }
@@ -8598,7 +8595,7 @@ void ApplicationWindow::print()
 	if (!w)
 		return;
 
-    if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+    if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
@@ -8613,7 +8610,7 @@ void ApplicationWindow::printPreview()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
+	if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
 		QMessageBox::warning(this,tr("QtiPlot - Warning"),
 				tr("<h4>There are no plot layers available in this window.</h4>"));
 		return;
@@ -8716,7 +8713,7 @@ void ApplicationWindow::showFitDialog()
 		return;
 
 	MultiLayer* plot = 0;
-	if(w->isA("MultiLayer"))
+	if(w->inherits("MultiLayer"))
 		plot = (MultiLayer*)w;
 	else if(w->inherits("Table")){
 		QStringList columnsLst = ((Table *)w)->drawableColumnSelection();
@@ -9185,9 +9182,9 @@ void ApplicationWindow::clearSelection()
 
 	if (m->inherits("Table"))
 		((Table*)m)->clearSelection();
-	else if (m->isA("Matrix"))
+	else if (m->inherits("Matrix"))
 		((Matrix*)m)->clearSelection();
-	else if (m->isA("MultiLayer")){
+	else if (m->inherits("MultiLayer")){
 		Graph* g = ((MultiLayer*)m)->activeLayer();
 		if (!g)
 			return;
@@ -9200,7 +9197,7 @@ void ApplicationWindow::clearSelection()
 
 		if (g->rangeSelectorsEnabled())
 			g->rangeSelectorTool()->clearSelection();
-		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+		else if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)
 			((DataPickerTool *)g->activeTool())->removePoint();
         else if (g->titleSelected())
 			g->clearTitle();
@@ -9210,15 +9207,15 @@ void ApplicationWindow::clearSelection()
 				axis->setTitle(" ");
 		} else if (g->selectedCurveLabels()){
 			QwtPlotItem *i = g->selectedCurveLabels();
-			if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			if(i->type() == QwtPlotItem::Rtti_PlotSpectrogram)
 				((Spectrogram *)i)->showContourLineLabels(false);
-			else if(i->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)i)->type() != Graph::Function)
+			else if(i->type() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)i)->type() != Graph::Function)
 				((DataCurve *)i)->clearLabels();
 			g->replot();
 		} else
 			g->removeMarker();
 	}
-	else if (m->isA("Note"))
+	else if (m->inherits("Note"))
 		((Note*)m)->currentEditor()->textCursor().removeSelectedText();
 	emit modified();
 }
@@ -9239,9 +9236,9 @@ void ApplicationWindow::copySelection()
 
 	if (m->inherits("Table"))
 		((Table*)m)->copySelection();
-	else if (m->isA("Matrix"))
+	else if (m->inherits("Matrix"))
 		((Matrix*)m)->copySelection();
-	else if (m->isA("MultiLayer")){
+	else if (m->inherits("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot || plot->numLayers() == 0)
 			return;
@@ -9252,13 +9249,13 @@ void ApplicationWindow::copySelection()
 
 		if (g->rangeSelectorsEnabled())
 			g->rangeSelectorTool()->copySelection();
-		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+		else if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)
 			((DataPickerTool *)g->activeTool())->copySelection();
 		else if (g->markerSelected())
 			copyMarker();
 		else
 			copyActiveLayer();
-	} else if (m->isA("Note"))
+	} else if (m->inherits("Note"))
 		((Note*)m)->currentEditor()->copy();
 }
 
@@ -9270,9 +9267,9 @@ void ApplicationWindow::cutSelection()
 
 	if (m->inherits("Table"))
 		((Table*)m)->cutSelection();
-	else if (m->isA("Matrix"))
+	else if (m->inherits("Matrix"))
 		((Matrix*)m)->cutSelection();
-	else if(m->isA("MultiLayer")){
+	else if(m->inherits("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot || plot->numLayers() == 0)
 			return;
@@ -9283,13 +9280,13 @@ void ApplicationWindow::cutSelection()
 
 		if (g->rangeSelectorsEnabled())
 			g->rangeSelectorTool()->cutSelection();
-		else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+		else if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)
 			((DataPickerTool *)g->activeTool())->cutSelection();
 		else {
             copyMarker();
             g->removeMarker();
         }
-	} else if (m->isA("Note"))
+	} else if (m->inherits("Note"))
 		((Note*)m)->currentEditor()->cut();
 
 	emit modified();
@@ -9322,11 +9319,11 @@ void ApplicationWindow::pasteSelection()
 
 	if (m->inherits("Table"))
 		((Table*)m)->pasteSelection();
-	else if (m->isA("Matrix"))
+	else if (m->inherits("Matrix"))
 		((Matrix*)m)->pasteSelection();
-	else if (m->isA("Note"))
+	else if (m->inherits("Note"))
 		((Note*)m)->currentEditor()->paste();
-	else if (m->isA("MultiLayer")){
+	else if (m->inherits("MultiLayer")){
 		MultiLayer* plot = (MultiLayer*)m;
 		if (!plot)
 			return;
@@ -9352,7 +9349,7 @@ void ApplicationWindow::pasteSelection()
 
 			if (g->rangeSelectorsEnabled())
 				g->rangeSelectorTool()->pasteSelection();
-            else if (g->activeTool() && g->activeTool()->rtti() == PlotToolInterface::Rtti_DataPicker)
+            else if (g->activeTool() && g->activeTool()->type() == PlotToolInterface::Rtti_DataPicker)
 				((DataPickerTool *)g->activeTool())->pasteSelection();
             else if (d_enrichement_copy){
 				FrameWidget *t = g->add(d_enrichement_copy);
@@ -9391,7 +9388,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 	MdiSubWindow::Status status = w->status();
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (w->isA("MultiLayer")){
+	if (w->inherits("MultiLayer")){
 		MultiLayer *g = (MultiLayer *)w;
 		nw = multilayerPlot(generateUniqueName(tr("Graph")), 0, g->getRows(), g->getCols());
 		((MultiLayer *)nw)->copy(g);
@@ -9400,7 +9397,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		QString caption = generateUniqueName(tr("Table"));
     	nw = newTable(caption, t->numRows(), t->numCols());
     	((Table *)nw)->copy(t);
-	} else if (w->isA("Graph3D")){
+	} else if (w->inherits("Graph3D")){
 		Graph3D *g = (Graph3D *)w;
 		if (!g->hasData()){
         	QApplication::restoreOverrideCursor();
@@ -9414,10 +9411,10 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
             nw->hide();
 		((Graph3D *)nw)->copy(g);
 		customToolBars(nw);
-	} else if (w->isA("Matrix")){
+	} else if (w->inherits("Matrix")){
 		nw = newMatrix(((Matrix *)w)->numRows(), ((Matrix *)w)->numCols());
     	((Matrix *)nw)->copy((Matrix *)w);
-	} else if (w->isA("Note")){
+	} else if (w->inherits("Note")){
 		nw = newNote();
 		if (nw){
 			((Note*)nw)->setText(((Note*)w)->text());
@@ -9426,10 +9423,10 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 	}
 
 	if (nw){
-		if (w->isA("MultiLayer")){
+		if (w->inherits("MultiLayer")){
 			if (status == MdiSubWindow::Maximized)
 				nw->showMaximized();
-		} else if (w->isA("Graph3D")){
+		} else if (w->inherits("Graph3D")){
 			if (status != MdiSubWindow::Maximized){
 				bool scale3DFonts = d_3D_scale_fonts;
 				d_3D_scale_fonts = false;
@@ -9583,7 +9580,7 @@ void ApplicationWindow::maximizeWindow(Q3ListViewItem * lbi)
 	if (!lbi)
 		lbi = lv->currentItem();
 
-	if (!lbi || lbi->rtti() == FolderListItem::RTTI)
+	if (!lbi || lbi->type() == FolderListItem::RTTI)
 		return;
 
 	maximizeWindow(((WindowListItem*)lbi)->window());
@@ -9646,12 +9643,12 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 		Table* m = (Table*)w;
 		for (int i = 0; i < m->numCols(); i++)
 			removeCurves(m->colName(i));
-	} else if (w->isA("MultiLayer")){
+	} else if (w->inherits("MultiLayer")){
 		MultiLayer *ml = (MultiLayer*)w;
 		Graph *g = ml->activeLayer();
 		if (g)
 			btnPointer->setChecked(true);
-	} else if (w->isA("Matrix"))
+	} else if (w->inherits("Matrix"))
 		remove3DMatrixPlots((Matrix*)w);
 
 	if (hiddenWindows->contains(w))
@@ -9685,7 +9682,7 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 		customToolBars(0);
 	} else if (show_windows_policy == SubFolders && !(current_folder->children()).isEmpty()){
 		FolderListItem *fi = current_folder->folderListItem();
-		FolderListItem *item = (FolderListItem *)fi->firstChild();
+		FolderListItem *item = (FolderListItem *)fi->topLevelItem(0);
 		int initial_depth = item->depth();
 		bool emptyFolder = true;
 		while (item && item->depth() >= initial_depth){
@@ -9788,7 +9785,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
     if (!w)
         return;
 
-	if (w->isA("MultiLayer")){
+	if (w->inherits("MultiLayer")){
         QMenu *translateMenu = analysisMenu->addMenu (tr("&Translate"));
         translateMenu->addAction(actionTranslateVert);
         translateMenu->addAction(actionTranslateHor);
@@ -9845,7 +9842,7 @@ void ApplicationWindow::analysisMenuAboutToShow()
         multiPeakMenu->addAction(actionMultiPeakLorentz);
         analysisMenu->insertSeparator();
         analysisMenu->addAction(actionShowFitDialog);
-	} else if (w->isA("Matrix")){
+	} else if (w->inherits("Matrix")){
 		actionIntegrate->setMenuText(tr("&Integrate"));
         analysisMenu->addAction(actionIntegrate);
         analysisMenu->insertSeparator();
@@ -10022,7 +10019,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 
 	MdiSubWindow *w = activeWindow();
 	if (w){
-		if (w->isA("MultiLayer") || w->isA("Graph3D")){
+		if (w->inherits("MultiLayer") || w->inherits("Graph3D")){
 			fileMenu->addMenu (exportPlotMenu);
 			if (qobject_cast<MultiLayer*>(w))
 				exportPlotMenu->addAction(actionExportLayer);
@@ -10031,13 +10028,13 @@ void ApplicationWindow::fileMenuAboutToShow()
 		#if QT_VERSION >= 0x040500
 			exportPlotMenu->addAction(actionPresentationODF);
 		#endif
-		} else if (w->inherits("Table") || w->isA("Matrix")){
+		} else if (w->inherits("Table") || w->inherits("Matrix")){
 			QMenu *exportMenu = fileMenu->addMenu(tr("Export"));
 			exportMenu->addAction(actionShowExportASCIIDialog);
 			exportMenu->addAction(actionExportExcel);
 			exportMenu->addAction(actionExportOds);
 			exportMenu->addAction(actionExportPDF);
-			if (w->isA("Matrix"))
+			if (w->inherits("Matrix"))
 				exportMenu->addAction(actionExportMatrix);
 		}
 	}
@@ -10357,7 +10354,7 @@ void ApplicationWindow::savedProject()
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-			if (w->isA("Matrix"))
+			if (w->inherits("Matrix"))
 				((Matrix *)w)->undoStack()->setClean();
 		}
 		f = f->folderBelow();
@@ -10611,7 +10608,7 @@ void ApplicationWindow::customEvent(QEvent *e)
 
 void ApplicationWindow::deleteSelectedItems()
 {
-	if (folders->hasFocus() && folders->currentItem() != folders->firstChild())
+	if (folders->hasFocus() && folders->currentItem() != folders->topLevelItem(0))
 	{//we never allow the user to delete the project folder item
 		deleteFolder();
 		return;
@@ -10619,11 +10616,9 @@ void ApplicationWindow::deleteSelectedItems()
 
 	QList<Folder *> folderList;
 	QList<MdiSubWindow *> windowList;
-	for (Q3ListViewItem *item = lv->firstChild(); item; item = item->nextSibling()){
-		if (!item->isSelected())
-			continue;
-
-		if (item->rtti() == FolderListItem::RTTI)
+	QList<QTreeWidgetItem *> selected = lv->selectedItems();
+    foreach(QTreeWidgetItem *item, selected){
+		if (item->type() == FolderListItem::RTTI)
 			folderList << ((FolderListItem *)item)->folder();
 		else
 			windowList << ((WindowListItem *)item)->window();
@@ -10678,7 +10673,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 	Q3ListViewItem *item;
 	int selected = 0;
-	for (item = lv->firstChild(); item; item = item->nextSibling()){
+	for (item = lv->topLevelItem(0); item; item = item->nextSibling()){
 		if (item->isSelected())
 			selected++;
 
@@ -10688,7 +10683,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 		}
 	}
 
-	if (it->rtti() == FolderListItem::RTTI){
+	if (it->type() == FolderListItem::RTTI){
 		current_folder = ((FolderListItem *)it)->folder();
 		showFolderPopupMenu(it, p, false);
 		return;
@@ -10723,7 +10718,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 				cm.insertItem(tr("D&epending Graphs"),&plots);
 			}
-		} else if (w->isA("Matrix")){
+		} else if (w->inherits("Matrix")){
 			QStringList graphs = depending3DPlots((Matrix*)w);
 			if (int(graphs.count())>0){
 				cm.insertSeparator();
@@ -10732,7 +10727,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 				cm.insertItem(tr("D&epending 3D Graphs"),&plots);
 			}
-		} else if (w->isA("MultiLayer")) {
+		} else if (w->inherits("MultiLayer")) {
 			tablesDepend->clear();
 			QStringList tbls = multilayerDependencies(w);
 			int n = int(tbls.count());
@@ -10743,7 +10738,7 @@ void ApplicationWindow::showWindowPopupMenu(Q3ListViewItem *it, const QPoint &p,
 
 				cm.insertItem(tr("D&epends on"), tablesDepend);
 			}
-		} else if (w->isA("Graph3D")){
+		} else if (w->inherits("Graph3D")){
 			cm.insertSeparator();
 			Graph3D *sp = qobject_cast<Graph3D*>(w);
 			Matrix *m = sp->matrix();
@@ -10800,7 +10795,7 @@ QStringList ApplicationWindow::depending3DPlots(Matrix *m)
 	QStringList plots;
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Graph3D") && ((Graph3D *)w)->matrix() == m)
+		if (w->inherits("Graph3D") && ((Graph3D *)w)->matrix() == m)
 			plots << w->objectName();
 	}
 	return plots;
@@ -10812,7 +10807,7 @@ QStringList ApplicationWindow::dependingPlots(const QString& name)
 
 	QList<MdiSubWindow *> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("MultiLayer")){
+		if (w->inherits("MultiLayer")){
 			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
 			foreach(Graph *g, layers){
 				QStringList onPlot = g->curveNamesList();
@@ -10820,7 +10815,7 @@ QStringList ApplicationWindow::dependingPlots(const QString& name)
 				if (int(onPlot.count()) && plots.contains(w->objectName())<=0)
 					plots << w->objectName();
 			}
-		}else if (w->isA("Graph3D")){
+		}else if (w->inherits("Graph3D")){
 			if ((((Graph3D*)w)->formula()).contains(name,TRUE) && plots.contains(w->objectName())<=0)
 				plots << w->objectName();
 		}
@@ -10837,7 +10832,7 @@ QStringList ApplicationWindow::multilayerDependencies(QWidget *w)
 		QStringList onPlot = ag->curveNamesList();
 		for (int j=0; j<onPlot.count(); j++)
 		{
-			QStringList tl = onPlot[j].split("_", QString::SkipEmptyParts);
+			QStringList tl = onPlot[j].split("_", Qt::SkipEmptyParts);
 			if (tables.contains(tl[0])<=0)
 				tables << tl[0];
 		}
@@ -10986,7 +10981,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(tr("&Properties..."), this, SLOT(showGeneralPlotDialog()));
 		cm.addSeparator();
 		cm.addAction(actionCloseWindow);
-	} else if (w->isA("Graph3D")){
+	} else if (w->inherits("Graph3D")){
 		Graph3D *g = (Graph3D*)w;
 		if (!g->hasData()){
 			cm.insertItem(tr("3D &Plot"), &plot3D);
@@ -11091,19 +11086,19 @@ void ApplicationWindow::customWindowTitleBarMenu(MdiSubWindow *w, QMenu *menu)
 	menu->addAction(actionRename);
 	menu->addSeparator();
 
-	if (w->inherits("Table") || w->isA("Matrix")){
+	if (w->inherits("Table") || w->inherits("Matrix")){
 		menu->addAction(actionLoad);
 		QMenu *exportMenu = menu->addMenu(tr("Export"));
 		exportMenu->addAction(actionShowExportASCIIDialog);
 		exportMenu->addAction(actionExportExcel);
 		exportMenu->addAction(actionExportOds);
 		exportMenu->addAction(actionExportPDF);
-		if (w->isA("Matrix"))
+		if (w->inherits("Matrix"))
 			exportMenu->addAction(actionExportMatrix);
 		menu->addSeparator();
 	}
 
-	if (w->isA("Note"))
+	if (w->inherits("Note"))
 		menu->addAction(actionSaveNote);
 	else
 		menu->addAction(actionSaveTemplate);
@@ -11647,7 +11642,7 @@ void ApplicationWindow::pickFloorStyle( QAction* action )
 
 void ApplicationWindow::custom3DActions(QMdiSubWindow *w)
 {
-	if (w && w->isA("Graph3D"))
+	if (w && w->inherits("Graph3D"))
 	{
 		Graph3D* plot = (Graph3D*)w;
 		actionAnimate->setOn(plot->isAnimated());
@@ -12162,7 +12157,7 @@ void ApplicationWindow::deleteLayer()
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
 {
-	QStringList lst = flist[0].split("\t", QString::SkipEmptyParts);
+	QStringList lst = flist[0].split("\t", Qt::SkipEmptyParts);
 	QString caption = lst[0];
 	Note* w = app->newNote(caption);
 	if (lst.count() == 2){
@@ -12397,7 +12392,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				ag->enableAxis(i, fList[i].toInt());
 		}
 		else if (s.contains ("AxesBaseline")){
-			QStringList fList = s.split("\t", QString::SkipEmptyParts);
+			QStringList fList = s.split("\t", Qt::SkipEmptyParts);
 			fList.pop_front();
 			for (int i=0; i<(int)fList.count(); i++)
 				ag->setAxisMargin(i, fList[i].toInt());
@@ -12503,7 +12498,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						curve[6].toInt(), first_color, startRow, endRow, visible);
 			}
 		} else if (s.left(6) == "curve\t"){
-			QStringList curve = s.split("\t", QString::SkipEmptyParts);
+			QStringList curve = s.split("\t", Qt::SkipEmptyParts);
 			if (!app->renamedTables.isEmpty()){
 				QString caption = (curve[2]).left((curve[2]).lastIndexOf("_"));
 				if (app->renamedTables.contains(caption))
@@ -12550,8 +12545,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			if (xt && w && xt != w){
 				c = (PlotCurve *)ag->insertCurve(xt, curve[1], w, curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				ag->updateCurveLayout(c, &cl);
-				if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
-					c->setAxis(curve[size - 5].toInt(), curve[size - 4].toInt());
+				if (c && c->type() == QwtPlotItem::Rtti_PlotCurve){
+					c->setAxes(curve[size - 5].toInt(), curve[size - 4].toInt());
 					c->setVisible(curve.last().toInt());
 				}
 			} else if (w){
@@ -12612,11 +12607,11 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				}
 				ag->updateCurveLayout(c, &cl);
 				if (d_file_version >= 88){
-					if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
+					if (c && c->type() == QwtPlotItem::Rtti_PlotCurve){
 						if (d_file_version < 90)
-							c->setAxis(curve[size - 2].toInt(), curve[size - 1].toInt());
+							c->setAxes(curve[size - 2].toInt(), curve[size - 1].toInt());
 						else {
-							c->setAxis(curve[size - 5].toInt(), curve[size - 4].toInt());
+							c->setAxes(curve[size - 5].toInt(), curve[size - 4].toInt());
 							c->setVisible(curve.last().toInt());
 						}
 					}
@@ -12689,7 +12684,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				QwtPlotCurve *c = ag->curve(curveID);
 				if (c){
                     if(current_index + 1 < curve.size())
-                        c->setAxis(curve[current_index].toInt(), curve[current_index+1].toInt());
+                        c->setAxes(curve[current_index].toInt(), curve[current_index+1].toInt());
 					if (d_file_version >= 90 && current_index+2 < curve.size())
 						c->setVisible(curve.last().toInt());
                     else
@@ -12787,17 +12782,17 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 		}
 		else if (s.contains ("AxesTitleColors")){
-			QStringList colors = s.split("\t", QString::SkipEmptyParts);
+			QStringList colors = s.split("\t", Qt::SkipEmptyParts);
 			colors.pop_front();
 			for (int i=0; i<int(colors.count()); i++)
 				ag->setAxisTitleColor(i, colors[i]);
 		}else if (s.contains ("AxesTitleAlignment")){
-			QStringList align=s.split("\t", QString::SkipEmptyParts);
+			QStringList align=s.split("\t", Qt::SkipEmptyParts);
 			align.pop_front();
 			for (int i=0; i<(int)align.count(); i++)
 				ag->setAxisTitleAlignment(i, align[i].toInt());
 		} else if (s.contains ("AxesTitleDistance")){
-			QStringList align = s.split("\t", QString::SkipEmptyParts);
+			QStringList align = s.split("\t", Qt::SkipEmptyParts);
 			align.pop_front();
 			for (int i = 0; i < align.count(); i++)
 				ag->setAxisTitleDistance(i, align[i].toInt());
@@ -12806,7 +12801,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			if (scale)
 				scale->setLayoutFlag(QwtScaleWidget::TitleInverted, true);
 		} else if (s.contains ("InvertedTitle")){
-			QStringList invertTitles = s.split("\t", QString::SkipEmptyParts);
+			QStringList invertTitles = s.split("\t", Qt::SkipEmptyParts);
 			invertTitles.pop_front();
 			for (int i = 0; i < invertTitles.count(); i++){
 				QwtScaleWidget *scale = ag->axisWidget(i);
@@ -13036,7 +13031,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		} else if (s.contains("AxisType")) {
 			QStringList fList = s.split("\t");
 			for (int i = 0; i < 4; i++){
-				QStringList lst = fList[i+1].split(";", QString::SkipEmptyParts);
+				QStringList lst = fList[i+1].split(";", Qt::SkipEmptyParts);
 				int format = lst[0].toInt();
 				if (format == ScaleDraw::Numeric)
 					continue;
@@ -13082,7 +13077,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				if (lst.size() == 3)
 					ipt->setAveragePixels(lst[2].toInt());
 				if (lst.size() >= 2)
-					ipt->append(QwtDoublePoint(lst[0].toDouble(), lst[1].toDouble()));
+					ipt->append(QPointF(lst[0].toDouble(), lst[1].toDouble()));
 			}
 		} else if (s.contains("<waterfall>")){
 			QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
@@ -13229,13 +13224,13 @@ void ApplicationWindow::integrate()
 	if (!w)
 		return;
 
-	if (w->isA("MultiLayer")){
+	if (w->inherits("MultiLayer")){
 		Graph* g = ((MultiLayer *)w)->activeLayer();
 		if (!g)
 			return;
 		IntegrationDialog *id = new IntegrationDialog(g, this);
 		id->show();
-	} else if (w->isA("Matrix")){
+	} else if (w->inherits("Matrix")){
 		if (!((Matrix *)w)->isEmpty()){
 			QDateTime dt = QDateTime::currentDateTime ();
 			QString info = dt.toString(Qt::LocalDate);
@@ -13251,7 +13246,7 @@ void ApplicationWindow::integrate()
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		Q3TableSelection sel = t->getSelection();
-		if (!cols || sel.topRow() == sel.bottomRow()){
+		if (!cols || sel.topRow == sel.bottomRow){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("Please select a 'Y' column first!"));
 			return;
@@ -13543,10 +13538,10 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
     foreach(Graph *g, layers){
     	PlotToolInterface *active_tool = g->activeTool();
     	if (active_tool){
-			if (active_tool->rtti() == PlotToolInterface::Rtti_PlotTool){
+			if (active_tool->type() == PlotToolInterface::Rtti_PlotTool){
 				btnPicker->setChecked(true);
 				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DataPicker){
+			} else if (active_tool->type() == PlotToolInterface::Rtti_DataPicker){
 				switch(((DataPickerTool *)active_tool)->mode()){
 					case DataPickerTool::Display:
 						btnCursor->setChecked(true);
@@ -13562,10 +13557,10 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 					break;
 				}
 				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DrawDataPoints){
+			} else if (active_tool->type() == PlotToolInterface::Rtti_DrawDataPoints){
 				actionDrawPoints->setChecked(true);
 				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_AddWidgetTool){
+			} else if (active_tool->type() == PlotToolInterface::Rtti_AddWidgetTool){
 				switch(((AddWidgetTool *)active_tool)->widgetType()){
 					case AddWidgetTool::Text:
 						actionAddText->setChecked(true);
@@ -15574,17 +15569,17 @@ MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 	if (!s)
 		return 0;
 
-	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+	s->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
 	plot->enableAxis(QwtPlot::xTop, true);
-	plot->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
-	plot->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	plot->setScale(QwtPlot::xTop, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
+	plot->setScale(QwtPlot::xBottom, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
 	plot->enableAxis(QwtPlot::xBottom, false);
 	plot->enableAxis(QwtPlot::yRight, false);
-	plot->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+	plot->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
 					0.0, 5, 5, Graph::Linear, true);
-	plot->setAxisTitle(QwtPlot::yLeft, QString::null);
-	plot->setAxisTitle(QwtPlot::xTop, QString::null);
-	plot->setTitle(QString::null);
+	plot->setAxisTitle(QwtPlot::yLeft, QString());
+	plot->setAxisTitle(QwtPlot::xTop, QString());
+	plot->setTitle(QString());
 
 	g->arrangeLayers(false, true);
 
@@ -15632,8 +15627,8 @@ MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
     g->resize(650, 600);
     g->plotProfiles(m);
 
-	Table *horTable = newHiddenTable(tr("Horizontal"), QString::null, m->numCols(), 2);
-    Table *verTable = newHiddenTable(tr("Vertical"), QString::null, m->numRows(), 2);
+	Table *horTable = newHiddenTable(tr("Horizontal"), QString(), m->numCols(), 2);
+    Table *verTable = newHiddenTable(tr("Vertical"), QString(), m->numRows(), 2);
 
 	Graph *sg = g->layer(1);
 	if (sg){
@@ -16248,7 +16243,7 @@ QStringList ApplicationWindow::matrixNames()
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-			if (w->isA("Matrix"))
+			if (w->inherits("Matrix"))
 				names << w->objectName();
 		}
 		f = f->folderBelow();
@@ -16276,7 +16271,7 @@ bool ApplicationWindow::projectHas2DPlots()
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-			if (w->isA("MultiLayer"))
+			if (w->inherits("MultiLayer"))
 				return true;
 		}
 		f = f->folderBelow();
@@ -16325,7 +16320,7 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 
 	QString fname = fn;
 	if (fn.contains(".qti.gz")){//decompress using zlib
-		file_uncompress((char *)fname.ascii());
+		file_uncompress((char *)fname.toStdWString());
 		fname.remove(".gz");
 	}
 
@@ -16370,9 +16365,9 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		f.open(QIODevice::ReadOnly);
 
 		QString s = t.readLine();
-		lst = s.split(QRegExp("\\s"), QString::SkipEmptyParts);
+		lst = s.split(QRegExp("\\s"), Qt::SkipEmptyParts);
 		QString version = lst[1];
-		lst = version.split(".", QString::SkipEmptyParts);
+		lst = version.split(".", Qt::SkipEmptyParts);
 		d_file_version =100*(lst[0]).toInt()+10*(lst[1]).toInt()+(lst[2]).toInt();
 
 		t.readLine();
@@ -16459,13 +16454,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 				}
 
 				if (d_file_version > 83){
-					QStringList lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					QStringList lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					plot->setSpacing(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					plot->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", QString::SkipEmptyParts);
+					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
 					plot->setAlignement(lst[1].toInt(),lst[2].toInt());
 				}
 
@@ -16765,25 +16760,25 @@ void ApplicationWindow::startRenameFolder()
 	if (!fi)
 		return;
 
-	disconnect(folders, SIGNAL(currentChanged(Q3ListViewItem *)), this, SLOT(folderItemChanged(Q3ListViewItem *)));
-	fi->setRenameEnabled (0, true);
-	fi->startRename (0);
+	disconnect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(folderItemChanged(QTreeWidgetItem *)));
+	fi->setFlags(fi->flags() | Qt::ItemIsEditable);
+	folders->editItem(fi, 0);
 }
 
 void ApplicationWindow::startRenameFolder(Q3ListViewItem *item)
 {
-	if (!item || item == folders->firstChild())
+	if (!item || item == folders->topLevelItem(0))
 		return;
 
-	if (item->listView() == lv && item->rtti() == FolderListItem::RTTI) {
-        disconnect(folders, SIGNAL(currentChanged(Q3ListViewItem *)), this, SLOT(folderItemChanged(Q3ListViewItem *)));
+	if (item->treeWidget() == lv && item->type() == FolderListItem::RTTI) {
+        disconnect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)), this, SLOT(folderItemChanged(QTreeWidgetItem *)));
 		current_folder = ((FolderListItem *)item)->folder();
 		FolderListItem *it = current_folder->folderListItem();
-		it->setRenameEnabled (0, true);
-		it->startRename (0);
+		it->setFlags(it->flags() | Qt::ItemIsEditable);
+		folders->editItem(it, 0);
 	} else {
-		item->setRenameEnabled (0, true);
-		item->startRename (0);
+		item->setFlags(item->flags() | Qt::ItemIsEditable);
+		lv->editItem(item, 0);
 	}
 }
 
@@ -16800,7 +16795,7 @@ void ApplicationWindow::renameFolder(Q3ListViewItem *it, int col, const QString 
 
 	while(text.isEmpty()){
 		QMessageBox::critical(this,tr("QtiPlot - Error"), tr("Please enter a valid name!"));
-		it->setRenameEnabled (0, false);
+		it->setFlags(it->flags() & ~Qt::ItemIsEditable); // disable edit? or just let it close
 		it->setText(0, ((FolderListItem*)it)->folder()->objectName());
 		return;
 	}
@@ -16837,7 +16832,7 @@ void ApplicationWindow::showAllFolderWindows()
 		return;
 
 	FolderListItem *fi = current_folder->folderListItem();
-	FolderListItem *item = (FolderListItem *)fi->firstChild();
+	FolderListItem *item = (FolderListItem *)fi->topLevelItem(0);
 	int initial_depth = item->depth();
 	while (item && item->depth() >= initial_depth){//show/hide windows in all subfolders
 		lst = ((Folder *)item->folder())->windowsList();
@@ -16864,7 +16859,7 @@ void ApplicationWindow::hideAllFolderWindows()
 
 	if (show_windows_policy == SubFolders){
 		FolderListItem *fi = current_folder->folderListItem();
-		FolderListItem *item = (FolderListItem *)fi->firstChild();
+		FolderListItem *item = (FolderListItem *)fi->topLevelItem(0);
 		int initial_depth = item->depth();
 		while (item && item->depth() >= initial_depth){
 			lst = item->folder()->windowsList();
@@ -16942,7 +16937,7 @@ void ApplicationWindow::addFolder()
 
 	QStringList lst = current_folder->subfolders();
 	QString name =  tr("New Folder");
-	lst = lst.grep( name );
+	lst = lst.filter( name );
 	if (!lst.isEmpty())
 		name += " ("+ QString::number(lst.size()+1)+")";
 
@@ -16967,7 +16962,7 @@ Folder* ApplicationWindow::addFolder(QString name, Folder* parent)
 	}
 
     QStringList lst = parent->subfolders();
-    lst = lst.grep( name );
+    lst = lst.filter( name );
     if (!lst.isEmpty())
         name += " ("+ QString::number(lst.size()+1)+")";
 
@@ -17054,7 +17049,7 @@ void ApplicationWindow::deleteFolder()
 
 void ApplicationWindow::folderItemDoubleClicked(Q3ListViewItem *it)
 {
-	if (!it || it->rtti() != FolderListItem::RTTI)
+	if (!it || it->type() != FolderListItem::RTTI)
 		return;
 
 	FolderListItem *item = ((FolderListItem *)it)->folder()->folderListItem();
@@ -17211,11 +17206,12 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 void ApplicationWindow::desactivateFolders()
 {
-	FolderListItem *item = (FolderListItem *)folders->firstChild();
-	while (item){
-		item->setActive(false);
-		item = (FolderListItem *)item->itemBelow();
-	}
+    QTreeWidgetItemIterator it(folders);
+    while (*it) {
+        if ((*it)->type() == FolderListItem::RTTI)
+            ((FolderListItem *)(*it))->setActive(false);
+        ++it;
+    }
 }
 
 void ApplicationWindow::addListViewItem(MdiSubWindow *w)
@@ -17224,7 +17220,7 @@ void ApplicationWindow::addListViewItem(MdiSubWindow *w)
 		return;
 
 	WindowListItem* it = new WindowListItem(lv, w);
-	if (w->isA("Matrix")){
+	if (w->inherits("Matrix")){
 		it->setPixmap(0, QPixmap(":/matrix.png"));
 		it->setText(1, tr("Matrix"));
 	}
@@ -17232,15 +17228,15 @@ void ApplicationWindow::addListViewItem(MdiSubWindow *w)
 		it->setPixmap(0, QPixmap(":/worksheet.png"));
 		it->setText(1, tr("Table"));
 	}
-	else if (w->isA("Note")){
+	else if (w->inherits("Note")){
 		it->setPixmap(0, QPixmap(":/note.png"));
 		it->setText(1, tr("Note"));
 	}
-	else if (w->isA("MultiLayer")){
+	else if (w->inherits("MultiLayer")){
 		it->setPixmap(0, QPixmap(":/graph.png"));
 		it->setText(1, tr("Graph"));
 	}
-	else if (w->isA("Graph3D")){
+	else if (w->inherits("Graph3D")){
 		it->setPixmap(0, QPixmap(":/trajectory.png"));
 		it->setText(1, tr("3D Graph"));
 	}
@@ -17269,19 +17265,19 @@ void ApplicationWindow::windowProperties()
 
 	s += tr("Label") + ": " + ((MdiSubWindow *)w)->windowLabel() + "\n\n";
 
-	if (w->isA("Matrix")){
+	if (w->inherits("Matrix")){
 		mbox->setIconPixmap(QPixmap(":/matrix.png"));
 		s +=  tr("Type") + ": " + tr("Matrix") + "\n\n";
 	}else if (w->inherits("Table")){
 		mbox->setIconPixmap(QPixmap(":/worksheet.png"));
 		s +=  tr("Type") + ": " + tr("Table") + "\n\n";
-	}else if (w->isA("Note")){
+	}else if (w->inherits("Note")){
 		mbox->setIconPixmap(QPixmap(":/note.png"));
 		s +=  tr("Type") + ": " + tr("Note") + "\n\n";
-	}else if (w->isA("MultiLayer")){
+	}else if (w->inherits("MultiLayer")){
 		mbox->setIconPixmap(QPixmap(":/graph.png"));
 		s +=  tr("Type") + ": " + tr("Graph") + "\n\n";
-	}else if (w->isA("Graph3D")){
+	}else if (w->inherits("Graph3D")){
 		mbox->setIconPixmap(QPixmap(":/trajectory.png"));
 		s +=  tr("Type") + ": " + tr("3D Graph") + "\n\n";
 	}
@@ -17316,7 +17312,7 @@ void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
 		}
 
 		if (subfolders){
-			FolderListItem *item = (FolderListItem *)folders->currentItem()->firstChild();
+			FolderListItem *item = (FolderListItem *)folders->currentItem()->topLevelItem(0);
 			while (item){
 				Folder *f = item->folder();
 				MdiSubWindow *w = f->findWindow(s,windowNames,labels,caseSensitive,partialMatch);
@@ -17338,7 +17334,7 @@ void ApplicationWindow::find(const QString& s, bool windowNames, bool labels,
 		}
 
 		if (subfolders){
-			FolderListItem *item = (FolderListItem *)folders->currentItem()->firstChild();
+			FolderListItem *item = (FolderListItem *)folders->currentItem()->topLevelItem(0);
 			while (item){
 				Folder *f = item->folder()->findSubfolder(s, caseSensitive, partialMatch);
 				if (f){
@@ -17366,7 +17362,7 @@ void ApplicationWindow::dropFolderItems(Q3ListViewItem *dest)
 	QStringList subfolders = dest_f->subfolders();
 
 	foreach(it, draggedItems){
-		if (it->rtti() == FolderListItem::RTTI){
+		if (it->type() == FolderListItem::RTTI){
 			Folder *f = ((FolderListItem *)it)->folder();
 			FolderListItem *src = f->folderListItem();
 			if (dest_f == f){
@@ -17504,7 +17500,7 @@ void ApplicationWindow::searchForUpdates()
 
 void ApplicationWindow::initSearchForUpdates()
 {
-	version_buffer.open(IO_WriteOnly);
+	/*version_buffer.open(IO_WriteOnly);
 	http = new QHttp(this);
 	connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
 
@@ -17513,49 +17509,12 @@ void ApplicationWindow::initSearchForUpdates()
 		http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
 
 	http->setHost("soft.proindependent.com");
-	http->get("/version.txt", &version_buffer);
+	http->get("/version.txt", &version_buffer);*/
+    QMessageBox::information(this, tr("QtiPlot - Updates"), tr("Update checking is disabled in this version."));
 }
 
-void ApplicationWindow::receivedVersionFile(bool error)
+void ApplicationWindow::receivedVersionFile(bool)
 {
-	if (error){
-		QMessageBox::warning(this, tr("QtiPlot - HTTP get version file"),
-				tr("Error while fetching version file with HTTP: %1.").arg(http->errorString()));
-		return;
-	}
-
-	version_buffer.close();
-	if (version_buffer.open(IO_ReadOnly)){
-		QTextStream t( &version_buffer );
-		t.setEncoding(QTextStream::UnicodeUTF8);
-		QString version = t.readLine();
-		version_buffer.close();
-
-		QString currentVersion = QString::number(maj_version) + "." + QString::number(min_version) + "." +
-								 QString::number(patch_version) + QString(extra_version) + QString(svn_revision);
-
-		if (currentVersion != version){
-			if(QMessageBox::question(this, tr("QtiPlot - Updates Available"),
-						tr("There is a newer version of QtiPlot (%1) available for download. Would you like to download it?").arg(version),
-						QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape) == QMessageBox::Yes){
-			#ifdef Q_OS_WIN
-				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/login_exe.html"));
-			#endif
-			#ifdef Q_OS_MAC
-				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/login_mac.html"));
-			#endif
-			#ifdef Q_WS_X11
-				QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/download.html"));
-			#endif
-			}
-		} else if (!autoSearchUpdatesRequest){
-			QMessageBox::information(this, tr("QtiPlot - No Updates Available"),
-					tr("No updates available. Your current version %1 is the last version available!").arg(version));
-		}
-		autoSearchUpdatesRequest = false;
-	}
-	http->abort();
-	delete http;
 }
 
 /*!
@@ -17616,13 +17575,13 @@ void ApplicationWindow::goToRow()
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
-	if (!w->inherits("Table") && !w->isA("Matrix"))
+	if (!w->inherits("Table") && !w->inherits("Matrix"))
 		return;
 
 	int rows = 0;
 	if (w->inherits("Table"))
 		rows = ((Table *)w)->numRows();
-	else if (w->isA("Matrix"))
+	else if (w->inherits("Matrix"))
 		rows = ((Matrix *)w)->numRows();
 
 	bool ok;
@@ -17633,7 +17592,7 @@ void ApplicationWindow::goToRow()
 
 	if (w->inherits("Table"))
 		((Table *)w)->goToRow(row);
-	else if (w->isA("Matrix"))
+	else if (w->inherits("Matrix"))
 		((Matrix *)w)->goToRow(row);
 }
 
@@ -17642,13 +17601,13 @@ void ApplicationWindow::goToColumn()
 	MdiSubWindow *w = activeWindow();
 	if (!w)
 		return;
-	if (!w->inherits("Table") && !w->isA("Matrix"))
+	if (!w->inherits("Table") && !w->inherits("Matrix"))
 		return;
 
 	int columns = 0;
 	if (w->inherits("Table"))
 		columns = ((Table *)w)->numCols();
-	else if (w->isA("Matrix"))
+	else if (w->inherits("Matrix"))
 		columns = ((Matrix *)w)->numCols();
 
 	bool ok;
@@ -17659,7 +17618,7 @@ void ApplicationWindow::goToColumn()
 
 	if (w->inherits("Table"))
 		((Table *)w)->goToColumn(col);
-	else if (w->isA("Matrix"))
+	else if (w->inherits("Matrix"))
 		((Matrix *)w)->goToColumn(col);
 }
 
@@ -17860,8 +17819,8 @@ MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
             return 0;
 
         Q3TableSelection sel = table->getSelection();
-        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
-    } else if (w->isA("Matrix")){
+        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow, sel.bottomRow);
+    } else if (w->inherits("Matrix")){
         Matrix *m = static_cast<Matrix *>(w);
         return plotHistogram(m);
     }
@@ -17891,16 +17850,10 @@ bool ApplicationWindow::validFor3DPlot(Table *table)
 
 void ApplicationWindow::hideSelectedWindows()
 {
-	Q3ListViewItem *item;
-	QList<Q3ListViewItem *> lst;
-	for (item = lv->firstChild(); item; item = item->nextSibling()){
-		if (item->isSelected())
-			lst.append(item);
-	}
-
+    QList<QTreeWidgetItem *> lst = lv->selectedItems();
 	folders->blockSignals(true);
-	foreach(item, lst){
-		if (item->rtti() != FolderListItem::RTTI)
+	foreach(QTreeWidgetItem *item, lst){
+		if (item->type() != FolderListItem::RTTI)
 			hideWindow(((WindowListItem *)item)->window());
 	}
 	folders->blockSignals(false);
@@ -17908,16 +17861,11 @@ void ApplicationWindow::hideSelectedWindows()
 
 void ApplicationWindow::showSelectedWindows()
 {
-	Q3ListViewItem *item;
-	QList<Q3ListViewItem *> lst;
-	for (item = lv->firstChild(); item; item = item->nextSibling()){
-		if (item->isSelected())
-			lst.append(item);
-	}
+    QList<QTreeWidgetItem *> lst = lv->selectedItems();
 
 	folders->blockSignals(true);
-	foreach(item, lst){
-		if (item->rtti() != FolderListItem::RTTI)
+	foreach(QTreeWidgetItem *item, lst){
+		if (item->type() != FolderListItem::RTTI)
 			activateWindow(((WindowListItem *)item)->window());
 	}
 	folders->blockSignals(false);
@@ -18005,7 +17953,7 @@ void ApplicationWindow::scriptsDirPathChanged(const QString& path)
 
 	QList<MdiSubWindow*> windows = windowsList();
 	foreach(MdiSubWindow *w, windows){
-		if (w->isA("Note"))
+		if (w->inherits("Note"))
 			((Note*)w)->setDirPath(path);
 	}
 }
@@ -18082,7 +18030,7 @@ void ApplicationWindow::showToolBarsMenu()
 
 	if (action->text() == plotMatrixBar->windowTitle()){
 		d_matrix_tool_bar = action->isChecked();
-		plotMatrixBar->setEnabled(w && w->isA("Matrix"));
+		plotMatrixBar->setEnabled(w && w->inherits("Matrix"));
 	} else if (action->text() == tableTools->windowTitle()){
 		d_table_tool_bar = action->isChecked();
 		tableTools->setEnabled(w && w->inherits("Table"));
@@ -18091,10 +18039,10 @@ void ApplicationWindow::showToolBarsMenu()
 		columnTools->setEnabled(w && w->inherits("Table"));
 	} else if (action->text() == plotTools->windowTitle()){
 		d_plot_tool_bar = action->isChecked();
-		plotTools->setEnabled(w && w->isA("MultiLayer"));
+		plotTools->setEnabled(w && w->inherits("MultiLayer"));
 	} else if (action->text() == plot3DTools->windowTitle()){
 		d_plot3D_tool_bar = action->isChecked();
-		plot3DTools->setEnabled(w && w->isA("Graph3D"));
+		plot3DTools->setEnabled(w && w->inherits("Graph3D"));
 	} else if (action->text() == fileTools->windowTitle()){
 		d_file_tool_bar = action->isChecked();
 	} else if (action->text() == editTools->windowTitle()){
@@ -18567,7 +18515,7 @@ QList<QMenu *> ApplicationWindow::menusList()
 	QList<QMenu *> lst;
 	QObjectList children = this->children();
 	foreach (QObject *w, children){
-        if (w->isA("QMenu"))
+        if (w->inherits("QMenu"))
             lst << (QMenu *)w;
     }
 	return lst;
@@ -18578,7 +18526,7 @@ QList<QToolBar *> ApplicationWindow::toolBarsList()
 	QList<QToolBar *> lst;
 	QObjectList children = this->children();
 	foreach (QObject *w, children){
-        if (w->isA("QToolBar"))
+        if (w->inherits("QToolBar"))
             lst << (QToolBar *)w;
     }
 	return lst;
@@ -18608,7 +18556,7 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-		    if (w->isA("Matrix")){
+		    if (w->inherits("Matrix")){
 				QUndoStack *stack = ((Matrix *)w)->undoStack();
 				if (!stack->count())// undo limit can only be changed for empty stacks
                 	stack->setUndoLimit(size);
@@ -18742,7 +18690,7 @@ void ApplicationWindow::enableCompletion(bool on)
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		foreach(MdiSubWindow *w, folderWindows){
-			if(w->isA("Note")){
+			if(w->inherits("Note")){
                 if (d_completion)
                     ((Note *)w)->currentEditor()->setCompleter(d_completer);
                 else
@@ -18760,12 +18708,11 @@ void ApplicationWindow::showFrequencyCountDialog()
 		return;
 
     int validRows = 0;
-    int ts = t->table()->currentSelection();
-    if (ts >= 0){
-        Q3TableSelection sel = t->table()->selection(ts);
+    Q3TableSelection sel = t->getSelection();
+    if (!t->table()->selectedRanges().isEmpty()){
         if (sel.numRows() > 1 && sel.numCols() == 1){
-            int col = sel.leftCol();
-            for (int i = sel.topRow(); i <= sel.bottomRow(); i++){
+            int col = sel.leftCol;
+            for (int i = sel.topRow; i <= sel.bottomRow; i++){
                 if (!t->text(i, col).isEmpty())
                    validRows++;
                 if (validRows > 1){
@@ -18799,9 +18746,9 @@ Note * ApplicationWindow::newStemPlot()
 	ScriptEdit* editor = n->currentEditor();
 	QStringList lst = t->selectedColumns();
 	if (lst.isEmpty()){
-		Q3TableSelection sel = t->table()->selection(ts);
-		for (int i = sel.leftCol(); i <= sel.rightCol(); i++)
-			editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
+		Q3TableSelection sel = t->getSelection();
+		for (int i = sel.leftCol; i <= sel.rightCol; i++)
+			editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow + 1, sel.bottomRow + 1) + "\n");
 	} else {
 		for (int i = 0; i < lst.count(); i++)
 			editor->insertPlainText(stemPlot(t, lst[i], 1001) + "\n");

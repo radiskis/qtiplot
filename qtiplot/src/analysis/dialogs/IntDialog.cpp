@@ -45,11 +45,11 @@
 #include <QLayout>
 #include <QInputDialog>
 
-IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WFlags fl )
+IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
     : QDialog( parent, fl),
 	d_graph(g)
 {
-	setName( "IntegrationDialog" );
+	setObjectName( "IntegrationDialog" );
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("QtiPlot - Integration Options"));
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));
@@ -144,7 +144,7 @@ void IntDialog::accept()
 	if (!app)
 		return;
 
-	QString function = boxFunction->text().simplified();
+	QString function = boxFunction->toPlainText().simplified();
 	if (!validInput(function))
 		return;
 
@@ -169,13 +169,13 @@ bool IntDialog::validInput(const QString& function)
 	double x = end;
 
 	MyParser parser;
-	parser.DefineVar(boxVariable->text().ascii(), &x);
-	parser.SetExpr(function.ascii());
+	parser.DefineVar(boxVariable->text().toStdWString(), &x);
+	parser.SetExpr(function.toStdWString());
 
 	try {
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QMessageBox::critical(this, tr("QtiPlot - Input error"), QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(this, tr("QtiPlot - Input error"), QString::fromStdWString(e.GetMsg()));
 		return false;
 	}
 

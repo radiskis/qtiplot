@@ -46,7 +46,7 @@
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false),
-d_window_name(QString::null)
+d_window_name(QString())
 {
 	if (load(fn, false)){
 		QSize picSize = d_pix.size();
@@ -66,7 +66,7 @@ d_window_name(QString::null)
 
 ImageWidget::ImageWidget(Graph *plot, const QImage& image):FrameWidget(plot),
 d_save_xpm(true),
-d_window_name(QString::null)
+d_window_name(QString())
 {
 	d_pix = QPixmap::fromImage(image);
 

@@ -44,6 +44,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QLayout>
+#include <QCloseEvent>
 
 #include <qwt_symbol.h>
 
@@ -51,7 +52,7 @@
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
 
-BaselineDialog::BaselineDialog( QWidget* parent, Qt::WFlags fl )
+BaselineDialog::BaselineDialog( QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
 	d_baseline(NULL),
 	d_table(NULL),
@@ -197,7 +198,7 @@ void BaselineDialog::modifyBaseline()
 		d_baseline->setPen(pen);
 	}
 
-	d_baseline->setSymbol(QwtSymbol(QwtSymbol::Rect, QBrush(Qt::black), d_baseline->pen(), QSize(7, 7)));
+	d_baseline->setSymbol(new QwtSymbol(QwtSymbol::Rect, QBrush(Qt::black), d_baseline->pen(), QSize(7, 7)));
 
 	d_picker_tool = new BaselineTool(d_baseline, graph, (ApplicationWindow *)parent());
 	graph->setActiveTool(d_picker_tool);
@@ -232,8 +233,8 @@ void BaselineDialog::createBaseline()
 		d_baseline = graph->dataCurve(graph->curveCount() - 1);
 		d_table = ((DataCurve *)d_baseline)->table();
 	} else if (btnEquation->isChecked()){
-		double start = graph->axisScaleDiv(QwtPlot::xBottom)->lowerBound();
-		double end = graph->axisScaleDiv(QwtPlot::xBottom)->upperBound();
+		double start = graph->axisScaleDiv(QwtPlot::xBottom).lowerBound();
+		double end = graph->axisScaleDiv(QwtPlot::xBottom).upperBound();
 		DataCurve *c = graph->dataCurve(boxInputName->currentText());
 		if (c){
 			start = c->minXValue();

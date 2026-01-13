@@ -52,7 +52,7 @@ void ProbabilityScaleEngine::autoScale(int,
     if ( x1 > x2 )
         qSwap(x1, x2);
 
-    QwtDoubleInterval interval(1e-4, 99.999);
+    QwtInterval interval(1e-4, 99.999);
 
     if (interval.width() == 0.0)
         interval = buildInterval(interval.minValue());
@@ -81,7 +81,7 @@ void ProbabilityScaleEngine::autoScale(int,
 QwtScaleDiv ProbabilityScaleEngine::divideScale(double x1, double x2,
     int, int, double stepSize) const
 {
-    QwtDoubleInterval interval = QwtDoubleInterval(x1, x2).normalized();
+    QwtInterval interval = QwtInterval(x1, x2).normalized();
     interval = interval.limited(1e-4, 99.999);
 
     if (interval.width() <= 0 )
@@ -93,7 +93,7 @@ QwtScaleDiv ProbabilityScaleEngine::divideScale(double x1, double x2,
 
     QwtScaleDiv scaleDiv;
     if ( stepSize != 0.0 ){
-        QwtValueList ticks[QwtScaleDiv::NTickTypes];
+        QList<double> ticks[QwtScaleDiv::NTickTypes];
 		buildTicks(interval, (int)stepSize, ticks);
         scaleDiv = QwtScaleDiv(interval, ticks);
     }
@@ -105,20 +105,20 @@ QwtScaleDiv ProbabilityScaleEngine::divideScale(double x1, double x2,
 }
 
 void ProbabilityScaleEngine::buildTicks(
-    const QwtDoubleInterval& interval, int stepSize,
-    QwtValueList ticks[QwtScaleDiv::NTickTypes]) const
+    const QwtInterval& interval, int stepSize,
+    QList<double> ticks[QwtScaleDiv::NTickTypes]) const
 {
     ticks[QwtScaleDiv::MajorTick] = buildMajorTicks(interval, stepSize);
-    ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+    ticks[QwtScaleDiv::MinorTick] = QList<double>();
 
     for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
         ticks[i] = strip(ticks[i], interval);
 }
 
-QwtValueList ProbabilityScaleEngine::buildMajorTicks(
-    const QwtDoubleInterval &interval, int stepSize) const
+QList<double> ProbabilityScaleEngine::buildMajorTicks(
+    const QwtInterval &interval, int stepSize) const
 {
-	QwtValueList baseTicks;
+	QList<double> baseTicks;
 
 	baseTicks += 1e-4;
 	baseTicks += 1e-3;
@@ -131,7 +131,7 @@ QwtValueList ProbabilityScaleEngine::buildMajorTicks(
 	for (int i = 1; i <= 5; i++)
 		baseTicks += i*10;
 
-	QwtValueList ticks;
+	QList<double> ticks;
 
 	int size = baseTicks.size();
 	for (int i = 0; i < size; i += stepSize)

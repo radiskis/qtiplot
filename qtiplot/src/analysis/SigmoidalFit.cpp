@@ -29,14 +29,14 @@
 #include "SigmoidalFit.h"
 #include "fit_gsl.h"
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *c)
+SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, PlotCurve *c)
 : Fit(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+SigmoidalFit::SigmoidalFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Fit(parent, c)
 {
 	init();

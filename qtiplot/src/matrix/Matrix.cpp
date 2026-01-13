@@ -47,7 +47,7 @@
 #include <QVarLengthArray>
 #include <QClipboard>
 #include <QShortcut>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QPrintDialog>
 #include <QPainter>
 #include <QLocale>
@@ -69,13 +69,13 @@
 
 #include <gsl/gsl_linalg.h>
 
-Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
+Matrix::Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initTable(r, c);
 }
 
-Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WFlags f)
+Matrix::Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 : MdiSubWindow(label, parent, name, f), scripted(env)
 {
 	initImage(image);
@@ -119,8 +119,8 @@ void Matrix::initTable(int rows, int cols)
     initTableView();
 
 	// resize the table
-	setGeometry(50, 50, QMIN(_Matrix_initial_columns_, cols)*d_table_view->horizontalHeader()->sectionSize(0) + 55,
-                (QMIN(_Matrix_initial_rows_,rows)+1)*d_table_view->verticalHeader()->sectionSize(0));
+	setGeometry(50, 50, qMin(_Matrix_initial_columns_, cols)*d_table_view->horizontalHeader()->sectionSize(0) + 55,
+                (qMin(_Matrix_initial_rows_,rows)+1)*d_table_view->verticalHeader()->sectionSize(0));
 }
 
 void Matrix::initImage(const QImage& image)
@@ -134,7 +134,7 @@ void Matrix::initImage(const QImage& image)
 	int w = image.width();
 	int h = image.height();
 	if (w <= 500 && h <= 400){
-		int size = QMAX(w, h);
+		int size = qMax(w, h);
         imageLabel->resize(size, size);
     } else
 		imageLabel->resize(500, 500);
@@ -1271,14 +1271,14 @@ void Matrix::range(double *min, double *max)
 	*max = d_max;
 }
 
-QwtDoubleInterval Matrix::colorRange()
+QwtInterval Matrix::colorRange()
 {
 	if (d_color_map.intensityRange().isValid())
 		return d_color_map.intensityRange();
 
 	double minValue = 0.0, maxValue = 0.0;
 	range(&minValue, &maxValue);
-	return QwtDoubleInterval(minValue, maxValue);
+	return QwtInterval(minValue, maxValue);
 }
 
 double** Matrix::allocateMatrixData(int rows, int columns, bool init)
@@ -1337,7 +1337,7 @@ void Matrix::goToRow(int row)
     if (d_view_type == ImageView)
         d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
 	d_table_view->selectRow(row - 1);
-	d_table_view->scrollTo(d_matrix_model->index(row - 1, 0), QAbstractItemView::PositionAtTop);
+	d_table_view->scrollTo(d_matrix_model->index(row - 1, 0), qAbstractItemView::PositionAtTop);
 }
 
 void Matrix::goToColumn(int col)
@@ -1348,7 +1348,7 @@ void Matrix::goToColumn(int col)
     if (d_view_type == ImageView)
         d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
 	d_table_view->selectColumn(col - 1);
-	d_table_view->scrollTo(d_matrix_model->index(0, col - 1), QAbstractItemView::PositionAtCenter);
+	d_table_view->scrollTo(d_matrix_model->index(0, col - 1), qAbstractItemView::PositionAtCenter);
 }
 
 void Matrix::moveCell(const QModelIndex& index)
@@ -1461,9 +1461,9 @@ void Matrix::initTableView()
 {
     d_table_view = new QTableView();
     d_table_view->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
-    d_table_view->setSelectionMode(QAbstractItemView::ContiguousSelection);// only one contiguous selection supported
+    d_table_view->setSelectionMode(qAbstractItemView::ContiguousSelection);// only one contiguous selection supported
     d_table_view->setModel(d_matrix_model);
-    d_table_view->setEditTriggers(QAbstractItemView::DoubleClicked);
+    d_table_view->setEditTriggers(qAbstractItemView::DoubleClicked);
     d_table_view->setFocusPolicy(Qt::StrongFocus);
     d_table_view->setFocus();
 
@@ -1620,14 +1620,14 @@ void Matrix::setHeaderViewType(HeaderViewType type)
 	emit modifiedWindow(this);
 }
 
-QwtDoubleRect Matrix::boundingRect()
+QRectF Matrix::boundingRect()
 {
     int rows = numRows();
     int cols = numCols();
     double dx = fabs(x_end - x_start)/(double)(cols - 1);
     double dy = fabs(y_end - y_start)/(double)(rows - 1);
 
-    return QwtDoubleRect(QMIN(x_start, x_end) - 0.5*dx, QMIN(y_start, y_end) - 0.5*dy,
+    return QRectF(qMin(x_start, x_end) - 0.5*dx, qMin(y_start, y_end) - 0.5*dy,
 						 fabs(x_end - x_start) + dx, fabs(y_end - y_start) + dy).normalized();
 }
 

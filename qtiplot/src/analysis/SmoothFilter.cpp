@@ -38,14 +38,14 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_poly.h>
 
-SmoothFilter::SmoothFilter(ApplicationWindow *parent, QwtPlotCurve *c, int m)
+SmoothFilter::SmoothFilter(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
 {
 	setDataFromCurve(c);
 	init(m);
 }
 
-SmoothFilter::SmoothFilter(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m)
+SmoothFilter::SmoothFilter(ApplicationWindow *parent, PlotCurve *c, double start, double end, int m)
 : Filter(parent, c)
 {
 	setDataFromCurve(c, start, end);

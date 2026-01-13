@@ -33,6 +33,7 @@
 #include <FrameWidget.h>
 #include <QPushButton>
 #include <QLayout>
+#include <QtPrintSupport/QPrinter>
 #include <QPointer>
 
 class QTextDocument;
@@ -66,7 +67,7 @@ class MultiLayer: public MdiSubWindow
 	Q_OBJECT
 
 public:
-    MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WFlags f=0);
+    MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f=0);
 	~MultiLayer();
 
 	QList<Graph *> layersList(){return graphsList;};
@@ -291,7 +292,7 @@ class LayerButton: public QPushButton
 	Q_OBJECT
 
 public:
-    LayerButton (const QString& text = QString::null, QWidget* parent = 0);
+    LayerButton (const QString& text = QString(), QWidget* parent = 0);
 	static int btnSize(){return 20;};
 
 protected:

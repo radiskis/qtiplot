@@ -32,6 +32,7 @@
 #include "PlotCurve.h"
 #include <qwt_plot.h>
 #include <qwt_symbol.h>
+#include <qwt_series_data.h>
 
 //! Box curve
 class BoxCurve: public DataCurve
@@ -45,7 +46,7 @@ public:
 
 	void copy(BoxCurve *b);
 
-	virtual QwtDoubleRect boundingRect() const;
+	virtual QRectF boundingRect() const;
 
 	QwtSymbol::Style minStyle(){return min_style;};
 	void setMinStyle(QwtSymbol::Style s){min_style = s;};
@@ -125,24 +126,22 @@ private:
 };
 
 
-//! Single array data (extension to QwtData)
-class QwtSingleArrayData: public QwtData
+//! Single array data (extension to QwtSeriesData)
+class QwtSingleArrayData: public QwtSeriesData<QPointF>
 {
 public:
-    QwtSingleArrayData(const double x, QwtArray<double> y, size_t)
+    QwtSingleArrayData(const double x, const QVector<double>& y, size_t)
 	{
 		d_y = y;
 		d_x = x;
 	};
 
-    virtual QwtData *copy() const{return new QwtSingleArrayData(d_x, d_y, size());};
-
-    virtual size_t size() const{return d_y.size();};
-    virtual double x(size_t) const{return d_x;};
-    virtual double y(size_t i) const{return d_y[int(i)];};
+    virtual size_t size() const {return d_y.size();};
+    virtual QPointF sample(size_t i) const {return QPointF(d_x, d_y[int(i)]);};
+    virtual QRectF boundingRect() const {return qwtBoundingRect(*this);};
 
 private:
-    QwtArray<double> d_y;
+    QVector<double> d_y;
 	double d_x;
 };
 

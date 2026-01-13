@@ -44,7 +44,7 @@ MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile prof
 	init(peaks);
 }
 
-MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, QwtPlotCurve *c, PeakProfile profile, int peaks)
+MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, PlotCurve *c, PeakProfile profile, int peaks)
 : Fit(parent, c), d_profile(profile)
 {
 	init(peaks);
@@ -238,7 +238,7 @@ void MultiPeakFit::insertPeakFunctionCurve(int peak)
 	}
 	if (d_curve){
 		c->setCurveType(d_curve->curveType());
-		c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+		c->setAxes(d_curve->xAxis(), d_curve->yAxis());
 	}
 	c->loadData(d_points);
 
@@ -345,17 +345,17 @@ void MultiPeakFit::generateFitCurve()
 			DataCurve *c = new DataCurve(d_result_table, tableName + "_1", label);
 			if (d_curve){
 				c->setCurveType(d_curve->curveType());
-				c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+				c->setAxes(d_curve->xAxis(), d_curve->yAxis());
 			}
 			if (d_peaks > 1)
 				c->setPen(QPen(d_curveColor, 2));
 			else
 				c->setPen(QPen(d_curveColor, 1));
 
-			if (c->curveType() == QwtPlotCurve::Xfy)
-				c->setData(Y, X, d_points);
+			if (c->curveType() == PlotCurve::Xfy)
+				c->setSamples(Y, X, d_points);
 			else
-				c->setData(X, Y, d_points);
+				c->setSamples(X, Y, d_points);
 
 			d_output_graph->insertPlotItem(c, Graph::Line);
 			d_output_graph->addFitCurve(c);
@@ -371,13 +371,13 @@ void MultiPeakFit::generateFitCurve()
 
 					if (d_curve){
 						c->setCurveType(d_curve->curveType());
-						c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+						c->setAxes(d_curve->xAxis(), d_curve->yAxis());
 					}
 
-					if (c->curveType() == QwtPlotCurve::Xfy)
-						c->setData(Y, X, d_points);
+					if (c->curveType() == PlotCurve::Xfy)
+						c->setSamples(Y, X, d_points);
 					else
-						c->setData(X, Y, d_points);
+						c->setSamples(X, Y, d_points);
 
 					d_output_graph->insertPlotItem(c, Graph::Line);
 					d_output_graph->addFitCurve(c);
@@ -449,14 +449,14 @@ void MultiPeakFit::setPeakCurvesColor(int colorIndex)
  *
  *****************************************************************************/
 
-LorentzFit::LorentzFit(ApplicationWindow *parent, QwtPlotCurve *c)
+LorentzFit::LorentzFit(ApplicationWindow *parent, PlotCurve *c)
 : MultiPeakFit(parent, c, MultiPeakFit::Lorentz, 1)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-LorentzFit::LorentzFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+LorentzFit::LorentzFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : MultiPeakFit(parent, c, MultiPeakFit::Lorentz, 1)
 {
 	init();
@@ -503,14 +503,14 @@ void LorentzFit::init()
  *
  *****************************************************************************/
 
-GaussFit::GaussFit(ApplicationWindow *parent, QwtPlotCurve *c)
+GaussFit::GaussFit(ApplicationWindow *parent, PlotCurve *c)
 : MultiPeakFit(parent, c, MultiPeakFit::Gauss, 1)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-GaussFit::GaussFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+GaussFit::GaussFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : MultiPeakFit(parent, c, MultiPeakFit::Gauss, 1)
 {
 	init();
@@ -557,14 +557,14 @@ void GaussFit::init()
  *
  *****************************************************************************/
 
-GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *c)
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, PlotCurve *c)
 : Fit(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+GaussAmpFit::GaussAmpFit(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Fit(parent, c)
 {
 	init();

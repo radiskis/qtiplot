@@ -184,9 +184,9 @@ double QwtBarCurve::stackOffset(int i, QList <QwtBarCurve *> stack) const
 	return stackOffset;
 }
 
-QwtDoubleRect QwtBarCurve::boundingRect() const
+QRectF QwtBarCurve::boundingRect() const
 {
-	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	QRectF rect = QwtPlotCurve::boundingRect();
 
 	double n = (double)dataSize();
 

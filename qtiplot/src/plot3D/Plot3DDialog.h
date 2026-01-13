@@ -58,7 +58,7 @@ class Plot3DDialog : public QDialog
     Q_OBJECT
 
 public:
-    Plot3DDialog( QWidget* parent, Qt::WFlags fl = 0 );
+    Plot3DDialog( QWidget* parent, Qt::WindowFlags fl = 0 );
 	void setPlot(Graph3D *);
 
 	void showTitleTab();

@@ -44,7 +44,7 @@ class SubtractDataDialog : public QDialog
 	Q_OBJECT
 
 public:
-	SubtractDataDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+	SubtractDataDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 	void setGraph(Graph *g);
 
 private slots:

@@ -31,7 +31,7 @@
 
 #include "Filter.h"
 
-class QwtPlotCurve;
+class PlotCurve;
 class Interpolation : public Filter
 {
 Q_OBJECT
@@ -39,8 +39,8 @@ Q_OBJECT
 public:
 	enum InterpolationMethod{Linear, Cubic, Akima};
 
-	Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, int m = 0);
-	Interpolation(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end, int m = 0);
+	Interpolation(ApplicationWindow *parent, PlotCurve *c, int m = 0);
+	Interpolation(ApplicationWindow *parent, PlotCurve *c, double start, double end, int m = 0);
 	Interpolation(ApplicationWindow *parent, Graph *g, const QString& curveTitle, int m = 0);
 	Interpolation(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end, int m = 0);
 	Interpolation(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int start = 0, int end = -1, int m = 0);
@@ -51,7 +51,7 @@ public:
 private:
     void init(int m);
     void calculateOutputData(double *x, double *y);
-    int sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y);
+    int sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y);
 
     //! the interpolation method
     int d_method;

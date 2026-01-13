@@ -46,9 +46,10 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QLayout>
+#include <QCloseEvent>
 #include <QApplication>
 
-FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WFlags fl )
+FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
 {
 	setWindowTitle(tr("QtiPlot - FFT Options"));
@@ -203,7 +204,7 @@ void FFTDialog::setGraph(Graph *g)
 		return;
 
 	graph = g;
-	boxName->insertStringList(g->analysableCurvesList());
+	boxName->addItems(g->analysableCurvesList());
 	activateDataSet(boxName->currentText());
 }
 
@@ -234,13 +235,13 @@ void FFTDialog::setTable(Table *t)
 
 	d_table = t;
 	QStringList l = t->columnsList();
-	boxName->insertStringList (l);
-	boxReal->insertStringList (l);
-	boxImaginary->insertStringList (l);
+	boxName->addItems(l);
+	boxReal->addItems(l);
+	boxImaginary->addItems(l);
 
 	int xcol = t->firstXCol();
 	if (xcol >= 0){
-		boxName->setCurrentItem(xcol);
+		boxName->setCurrentIndex(xcol);
 		boxSampling->setValue(d_table->cell(1, xcol) - d_table->cell(0, xcol));
 	}
 
@@ -250,11 +251,11 @@ void FFTDialog::setTable(Table *t)
 		boxReal->setCurrentText(QString());
 		boxImaginary->setCurrentText(QString());
 	} else if (selected == 1) {
-		boxReal->setCurrentItem(t->colIndex(l[0]));
+		boxReal->setCurrentIndex(t->colIndex(l[0]));
 		boxImaginary->setCurrentText(QString());
 	} else {
-		boxReal->setCurrentItem(t->colIndex(l[0]));
-		boxImaginary->setCurrentItem(t->colIndex(l[1]));
+		boxReal->setCurrentIndex(t->colIndex(l[0]));
+		boxImaginary->setCurrentIndex(t->colIndex(l[1]));
 	}
 };
 

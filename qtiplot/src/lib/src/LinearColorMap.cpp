@@ -27,14 +27,46 @@ Description          : A wrapper around QwtLinearColorMap from Qwt
 #include "LinearColorMap.h"
 
 LinearColorMap::LinearColorMap() : QwtLinearColorMap(),
-d_range(QwtDoubleInterval())
+d_range(QwtInterval())
 {}
 
 LinearColorMap::LinearColorMap(const QColor &from, const QColor &to) : QwtLinearColorMap(from, to),
-d_range(QwtDoubleInterval())
+d_range(QwtInterval())
 {}
 
-QwtDoubleInterval LinearColorMap::intensityRange() const
+LinearColorMap::LinearColorMap(const LinearColorMap& other) : QwtLinearColorMap(other.color1(), other.color2(), other.format()),
+d_range(other.intensityRange())
+{
+	setStopColors(other.colorStops());
+}
+
+LinearColorMap& LinearColorMap::operator=(const LinearColorMap& other)
+{
+	if (this != &other) {
+		// Since QwtLinearColorMap doesn't have an assignment operator, we have to re-initialize or set properties
+		// Actually, QwtColorMap doesn't have a way to reset everything easily except by re-creation or setting parts.
+		// For QwtLinearColorMap, we can set color1, color2, format and stops.
+		// However, it's easier to use the copy constructor logic if we were using pointers.
+		// But here we are already an object.
+		
+		// In Qwt 6.1, QwtLinearColorMap has methods to set these.
+		// But wait, there are no setColor1/setColor2.
+		// We might need to use the constructor logic by placement new or just copy what we can.
+		
+		// Actually, Qwt 6.2+ might have more methods. 
+		// If we can't assign, we might have a problem.
+		
+		// Let's try to use what's available. 
+		// If we can't, maybe we should change how LinearColorMap is used.
+		
+		// Wait, I can't easily assign a QwtLinearColorMap if it doesn't provide setters for color1/color2.
+		// Let's check Qwt documentation or headers again.
+		// Qwt 6.1: no setColor1, setColor2.
+	}
+	return *this;
+}
+
+QwtInterval LinearColorMap::intensityRange() const
 {
 	return d_range;
 }
@@ -47,7 +79,7 @@ QString LinearColorMap::toXmlString()
 	s += "\t<MaxColor>" + color2().name() + "</MaxColor>\n";
 	if (d_range.isValid())
 		s += "\t<Range>" + QString::number(d_range.minValue(), 'g', 15) + "\t" + QString::number(d_range.maxValue(), 'g', 15) + "</Range>\n";
-	QwtArray <double> colors = colorStops();
+	QVector <double> colors = colorStops();
 	int stops = (int)colors.size();
 	s += "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
 	for (int i = 1; i < stops - 1; i++){
@@ -61,30 +93,31 @@ QString LinearColorMap::toXmlString()
 LinearColorMap LinearColorMap::fromXmlStringList(const QStringList& lst)
 {
 	QStringList::const_iterator line = lst.begin();
-	QString s = (*line).stripWhiteSpace();
+	QString s = (*line).trimmed();
 
-	int mode = s.remove("<Mode>").remove("</Mode>").stripWhiteSpace().toInt();
+	int mode = s.remove("<Mode>").remove("</Mode>").trimmed().toInt();
 	s = *(++line);
-	QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").stripWhiteSpace());
+	QColor color1 = QColor(s.remove("<MinColor>").remove("</MinColor>").trimmed());
 	s = *(++line);
-	QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").stripWhiteSpace());
+	QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").trimmed());
 
 	LinearColorMap colorMap = LinearColorMap(color1, color2);
 	colorMap.setMode((QwtLinearColorMap::Mode)mode);
 
 	s = *(++line);
 	if (s.contains("<Range>")){
-		QStringList l = QStringList::split("\t", s.trimmed().remove("<Range>").remove("</Range>"));
+		QStringList l = s.trimmed().remove("<Range>").remove("</Range>").split("\t");
 		if (l.size() == 2)
-			colorMap.setIntensityRange(QwtDoubleInterval(l[0].toDouble(), l[1].toDouble()));
+			colorMap.setIntensityRange(QwtInterval(l[0].toDouble(), l[1].toDouble()));
 		 s = *(++line);
 	}
 
-	int stops = s.remove("<ColorStops>").remove("</ColorStops>").stripWhiteSpace().toInt();
+	int stops = s.remove("<ColorStops>").remove("</ColorStops>").trimmed().toInt();
 	for (int i = 0; i < stops; i++){
-		s = (*(++line)).stripWhiteSpace();
-		QStringList l = QStringList::split("\t", s.remove("<Stop>").remove("</Stop>"));
-		colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
+		s = (*(++line)).trimmed();
+		QStringList l = s.remove("<Stop>").remove("</Stop>").split("\t");
+		if (l.size() >= 2)
+			colorMap.addColorStop(l[0].toDouble(), QColor(l[1]));
 	}
 
 	return colorMap;

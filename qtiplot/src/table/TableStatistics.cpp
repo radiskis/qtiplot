@@ -111,15 +111,15 @@ void TableStatistics::setBase(Table *t)
 			setText(i, 0, QString::number(d_targets[i]+1));
 
 		if (d_base){
-			setName(d_base_name + "-" + tr("RowStats"));
+			setObjectName(d_base_name + "-" + tr("RowStats"));
 			setWindowLabel(tr("Row Statistics of %1").arg(d_base_name));
-			update(d_base, QString::null);
+			update(d_base, QString());
 		}
 	} else if (d_type == column){
 		if (d_end < 0)
 			d_end = d_base->numRows() - 1;
 
-		setName(d_base_name + "-" + tr("ColStats"));
+		setObjectName(d_base_name + "-" + tr("ColStats"));
 		setWindowLabel(tr("Column Statistics of %1").arg(d_base_name));
 		for (int i = 0; i < d_targets.size(); i++){
 			setText(i, 0, d_base->colLabel(d_targets[i]));
@@ -205,7 +205,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 
 			if (!m){//clear row statistics
 				for (j = 1; j < numCols(); j++)
-					setText(r, j, QString::null);
+					setText(r, j, QString());
 			}
 
 			if (m > 0){
@@ -289,7 +289,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 
 				if (!m){//clear col statistics
 					for (j = 1; j<numCols(); j++)
-						setText(c, j, QString::null);
+						setText(c, j, QString());
 					return;
 				}
 

@@ -33,7 +33,7 @@
 
 #include <QPointer>
 
-#include <qwt_double_rect.h>
+#include <qrect.h>
 #include <qwt_plot_marker.h>
 #include <qwt_plot_picker.h>
 
@@ -60,10 +60,10 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 	public:
 		RangeSelectorTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
 		virtual ~RangeSelectorTool();
-		double minXValue() const { return QMIN(d_active_marker.xValue(), d_inactive_marker.xValue()); }
-		double maxXValue() const { return QMAX(d_active_marker.xValue(), d_inactive_marker.xValue()); }
-		double minYValue() const { return QMIN(d_active_marker.yValue(), d_inactive_marker.yValue()); }
-		double maxYValue() const { return QMAX(d_active_marker.yValue(), d_inactive_marker.yValue()); }
+		double minXValue() const { return qMin(d_active_marker.xValue(), d_inactive_marker.xValue()); }
+		double maxXValue() const { return qMax(d_active_marker.xValue(), d_inactive_marker.xValue()); }
+		double minYValue() const { return qMin(d_active_marker.yValue(), d_inactive_marker.yValue()); }
+		double maxYValue() const { return qMax(d_active_marker.yValue(), d_inactive_marker.yValue()); }
 		int dataSize() const { return qAbs(d_active_point - d_inactive_point); }
 		int activePoint(){return d_active_point;}
 		int inactivePoint(){return d_inactive_point;}

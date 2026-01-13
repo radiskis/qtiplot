@@ -32,7 +32,7 @@
 #include <QDialog>
 
 class Matrix;
-class QAbstractButton;
+class qAbstractButton;
 class QDialogButtonBox;
 class QSpinBox;
 class QComboBox;
@@ -49,12 +49,12 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = 0, Qt::WFlags fl = 0 );
+	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
 
 private slots:
 	//! Apply changes
 	void apply();
-	void buttonClicked(QAbstractButton *);
+	void buttonClicked(qAbstractButton *);
 	void updateDimensionsInfo();
 
 private:

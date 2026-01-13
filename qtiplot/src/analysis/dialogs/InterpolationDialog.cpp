@@ -41,7 +41,7 @@
 #include <QComboBox>
 #include <QLayout>
 
-InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
+InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     setObjectName( "InterpolationDialog" );
@@ -58,9 +58,9 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WFlags fl )
 
 	gl1->addWidget(new QLabel(tr("Spline")), 1, 0);
 	boxMethod = new QComboBox();
-	boxMethod->insertItem(tr("Linear"));
-    boxMethod->insertItem(tr("Cubic"));
-    boxMethod->insertItem(tr("Non-rounded Akima"));
+	boxMethod->addItem(tr("Linear"));
+    boxMethod->addItem(tr("Cubic"));
+    boxMethod->addItem(tr("Non-rounded Akima"));
 	gl1->addWidget(boxMethod, 1, 1);
 
 	gl1->addWidget(new QLabel(tr("Points")), 2, 0);
@@ -130,7 +130,7 @@ void InterpolationDialog::interpolate()
 		return;
 	}
 
-	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (QwtPlotCurve *)graph->curve(curveName), from, to, boxMethod->currentIndex());
+	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (PlotCurve *)graph->curve(curveName), from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
 	i->setColor(boxColor->color());
 	i->run();
@@ -156,7 +156,7 @@ void InterpolationDialog::setGraph(Graph *g)
 
 void InterpolationDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = (QwtPlotCurve *)graph->curve(s);
+	PlotCurve *c = (PlotCurve *)graph->curve(s);
 	if (!c)
 		return;
 
@@ -166,8 +166,8 @@ void InterpolationDialog::activateCurve(const QString& s)
 
 	double start, end;
 	graph->range(c, &start, &end);
-	boxStart->setValue(QMIN(start, end));
-	boxEnd->setValue(QMAX(start, end));
+	boxStart->setValue(qMin(start, end));
+	boxEnd->setValue(qMax(start, end));
 }
 
 void InterpolationDialog::changeDataRange()
@@ -178,6 +178,6 @@ void InterpolationDialog::changeDataRange()
 
 	double start = graph->selectedXStartValue();
 	double end = graph->selectedXEndValue();
-	boxStart->setValue(QMIN(start, end));
-	boxEnd->setValue(QMAX(start, end));
+	boxStart->setValue(qMin(start, end));
+	boxEnd->setValue(qMax(start, end));
 }

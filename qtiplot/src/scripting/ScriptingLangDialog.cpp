@@ -35,10 +35,10 @@
 #include <QLayout>
 #include <QMessageBox>
 
-ScriptingLangDialog::ScriptingLangDialog(ScriptingEnv *env, ApplicationWindow *parent, Qt::WFlags fl )
+ScriptingLangDialog::ScriptingLangDialog(ScriptingEnv *env, ApplicationWindow *parent, Qt::WindowFlags fl )
 : QDialog(parent, fl), scripted(env)
 {
-	setCaption(tr("QtiPlot - Select scripting language"));
+	setWindowTitle(tr("QtiPlot - Select scripting language"));
 
 	langList = new QListWidget(this);
 

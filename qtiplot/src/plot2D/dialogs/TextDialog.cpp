@@ -50,7 +50,7 @@
 
 #include <qwt_scale_widget.h>
 
-TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WFlags fl)
+TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WindowFlags fl)
 	: QDialog( parent, fl)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

@@ -46,11 +46,11 @@ class Note: public MdiSubWindow
 
 public:
 
-	Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WFlags f=0);
+	Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
 	~Note(){};
 
 	void init(ScriptingEnv *env);
-	void setName(const QString& name);
+	void setObjectName(const QString& name);
 	void setTabStopWidth(int length);
 	int indexOf(ScriptEdit* editor);
 	ScriptEdit* editor(int index);
@@ -67,13 +67,13 @@ public slots:
 	void modifiedNote();
 
 	// ScriptEdit methods
-        QString text() { if(currentEditor()) return currentEditor()->text(); return QString::null;};
+        QString text() { if(currentEditor()) return currentEditor()->toPlainText(); return QString();};
         void setText(const QString &s) { if(currentEditor()) currentEditor()->setText(s); };
         void print() { if(currentEditor()) currentEditor()->print(); };
         void print(QPrinter *printer) { if(currentEditor()) currentEditor()->print(printer); };
         void exportPDF(const QString& fileName){if(currentEditor()) currentEditor()->exportPDF(fileName);};
-        QString exportASCII(const QString &file=QString::null) { if(currentEditor()) return currentEditor()->exportASCII(file); return QString::null;};
-        QString importASCII(const QString &file=QString::null){ if(currentEditor()) return currentEditor()->importASCII(file); return QString::null;};
+        QString exportASCII(const QString &file=QString()) { if(currentEditor()) return currentEditor()->exportASCII(file); return QString();};
+        QString importASCII(const QString &file=QString()){ if(currentEditor()) return currentEditor()->importASCII(file); return QString();};
         void execute() { if(currentEditor()) currentEditor()->execute(); };
         void executeAll() { if(currentEditor()) currentEditor()->executeAll(); };
         void evaluate() { if(currentEditor()) currentEditor()->evaluate(); };

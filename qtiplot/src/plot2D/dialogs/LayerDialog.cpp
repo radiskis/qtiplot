@@ -41,11 +41,11 @@
 #include <QFont>
 #include <QMessageBox>
 
-LayerDialog::LayerDialog( QWidget* parent, bool okMode, Qt::WFlags fl )
+LayerDialog::LayerDialog( QWidget* parent, bool okMode, Qt::WindowFlags fl )
 : QDialog(parent, fl),
 multi_layer(NULL)
 {
-	setName("LayerDialog");
+	setObjectName("LayerDialog");
 	setWindowTitle(tr( "QtiPlot - Arrange Layers" ));
 	setAttribute(Qt::WA_DeleteOnClose);
 

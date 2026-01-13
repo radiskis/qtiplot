@@ -43,7 +43,7 @@
 
 #include <interpolation.h>
 
-GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent, Qt::WFlags fl )
+GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
 	d_table(t),
 	d_col_name(colName),
@@ -162,8 +162,8 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	gl4->addWidget(new QLabel(tr("Plot Type")), 0, 0);
 
 	boxPlotStyle = new QComboBox();
-	boxPlotStyle->insertItem(tr("Wireframe"));
-	boxPlotStyle->insertItem(tr("Hidden Line"));
+	boxPlotStyle->addItem(tr("Wireframe"));
+	boxPlotStyle->addItem(tr("Hidden Line"));
 	gl4->addWidget(boxPlotStyle, 0, 1);
 
 	showPlotBox = new QCheckBox(tr("Crea&te Plot"));
@@ -255,8 +255,8 @@ void GriddingDialog::loadDataFromTable()
 	QLocale locale = app->locale();
 	Q3TableSelection sel = d_table->getSelection();
 
-	int startRow = sel.topRow();
-	int endRow = sel.bottomRow();
+	int startRow = sel.topRow;
+	int endRow = sel.bottomRow;
 	int zcol = d_table->colIndex(d_col_name);
 	if (zcol < 0 || zcol >= d_table->numCols())
 		return;

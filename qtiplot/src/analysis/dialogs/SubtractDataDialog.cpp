@@ -47,7 +47,7 @@
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
 
-SubtractDataDialog::SubtractDataDialog( QWidget* parent, Qt::WFlags fl )
+SubtractDataDialog::SubtractDataDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
 	setObjectName( "SubtractDataDialog" );

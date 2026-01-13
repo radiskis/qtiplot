@@ -32,7 +32,7 @@
 #include "MultiLayer.h"
 
 #include <qwt_painter.h>
-#include <qwt_double_rect.h>
+#include <qrect.h>
 #include <QPainter>
 #include <stdio.h>
 
@@ -67,7 +67,7 @@ void VectorCurve::copy(const VectorCurve *vc)
 	d_headAngle = vc->d_headAngle;
 	d_position = vc->d_position;
 	d_pen = vc->d_pen;
-	vectorEnd = (QwtArrayData *)vc->vectorEnd->copy();
+	vectorEnd = (QVectorData *)vc->vectorEnd->copy();
 }
 
 void VectorCurve::draw(QPainter *painter,
@@ -189,9 +189,9 @@ void VectorCurve::setVectorEnd(const QString& xColName, const QString& yColName)
 	loadData();
 }
 
-void VectorCurve::setVectorEnd(const QwtArray<double>&x, const QwtArray<double>&y)
+void VectorCurve::setVectorEnd(const QVector<double>&x, const QVector<double>&y)
 {
-	vectorEnd = new QwtArrayData(x, y);
+	vectorEnd = new QVectorData(x, y);
 }
 
 double VectorCurve::width()
@@ -233,46 +233,46 @@ void VectorCurve::fillArrowHead(bool fill)
 		filledArrow = fill;
 }
 
-QwtDoubleRect VectorCurve::boundingRect() const
+QRectF VectorCurve::boundingRect() const
 {
-	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	QRectF rect = QwtPlotCurve::boundingRect();
 	if (!vectorEnd)
 		return rect;
 
-	QwtDoubleRect vrect = vectorEnd->boundingRect();
+	QRectF vrect = vectorEnd->boundingRect();
 
 	if (d_style == XYXY){
-		rect.setTop(QMIN((double)rect.top(), (double)vrect.top()));
-		rect.setBottom(QMAX((double)rect.bottom(), (double)vrect.bottom()));
-		rect.setLeft(QMIN((double)rect.left(), (double)vrect.left()));
-		rect.setRight(QMAX((double)rect.right(), (double)vrect.right()));
+		rect.setTop(qMin((double)rect.top(), (double)vrect.top()));
+		rect.setBottom(qMax((double)rect.bottom(), (double)vrect.bottom()));
+		rect.setLeft(qMin((double)rect.left(), (double)vrect.left()));
+		rect.setRight(qMax((double)rect.right(), (double)vrect.right()));
 	} else {
 		const double angle = vectorEnd->x(0);
 		double mag = vectorEnd->y(0);
 		switch(d_position)
 			{
 			case Tail:
-				rect.setTop(QMIN((double)rect.top(), (double)(rect.top()+mag*sin(angle))));
-				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom()+mag*sin(angle))));
-				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left()+mag*cos(angle))));
-				rect.setRight(QMAX((double)rect.right(), (double)(rect.right()+mag*cos(angle))));
+				rect.setTop(qMin((double)rect.top(), (double)(rect.top()+mag*sin(angle))));
+				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom()+mag*sin(angle))));
+				rect.setLeft(qMin((double)rect.left(), (double)(rect.left()+mag*cos(angle))));
+				rect.setRight(qMax((double)rect.right(), (double)(rect.right()+mag*cos(angle))));
 			break;
 
 			case Middle:
 				{
 				mag *= 0.5;
-				rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - fabs(mag*sin(angle)))));
-				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() + fabs(mag*sin(angle)))));
-				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - fabs(mag*cos(angle)))));
-				rect.setRight(QMAX((double)rect.right(), (double)(rect.right() + fabs(mag*cos(angle)))));
+				rect.setTop(qMin((double)rect.top(), (double)(rect.top() - fabs(mag*sin(angle)))));
+				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom() + fabs(mag*sin(angle)))));
+				rect.setLeft(qMin((double)rect.left(), (double)(rect.left() - fabs(mag*cos(angle)))));
+				rect.setRight(qMax((double)rect.right(), (double)(rect.right() + fabs(mag*cos(angle)))));
 				}
 			break;
 
 			case Head:
-				rect.setTop(QMIN((double)rect.top(), (double)(rect.top() - mag*sin(angle))));
-				rect.setBottom(QMAX((double)rect.bottom(), (double)(rect.bottom() - mag*sin(angle))));
-				rect.setLeft(QMIN((double)rect.left(), (double)(rect.left() - mag*cos(angle))));
-				rect.setRight(QMAX((double)rect.right(), (double)(rect.right() - mag*cos(angle))));
+				rect.setTop(qMin((double)rect.top(), (double)(rect.top() - mag*sin(angle))));
+				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom() - mag*sin(angle))));
+				rect.setLeft(qMin((double)rect.left(), (double)(rect.left() - mag*cos(angle))));
+				rect.setRight(qMax((double)rect.right(), (double)(rect.right() - mag*cos(angle))));
 			break;
 			}
 		}
@@ -283,19 +283,19 @@ void VectorCurve::updateColumnNames(const QString& oldName, const QString& newNa
 {
     if (updateTableName){
         QString s = title().text();
-        QStringList lst = s.split("_", QString::SkipEmptyParts);
+        QStringList lst = s.split("_", Qt::SkipEmptyParts);
         if (lst[0] == oldName)
             setTitle(newName + "_" + lst[1]);
 
-        lst = d_x_column.split("_", QString::SkipEmptyParts);
+        lst = d_x_column.split("_", Qt::SkipEmptyParts);
         if (lst[0] == oldName)
             d_x_column = newName + "_" + lst[1];
 
-		lst = d_end_x_a.split("_", QString::SkipEmptyParts);
+		lst = d_end_x_a.split("_", Qt::SkipEmptyParts);
         if (lst[0] == oldName)
             d_end_x_a = newName + "_" + lst[1];
 
-		lst = d_end_y_m.split("_", QString::SkipEmptyParts);
+		lst = d_end_y_m.split("_", Qt::SkipEmptyParts);
         if (lst[0] == oldName)
             d_end_y_m = newName + "_" + lst[1];
     } else {
@@ -374,9 +374,9 @@ void VectorCurve::loadData()
 		return;
 
 	X.resize(size); Y.resize(size); X2.resize(size); Y2.resize(size);
-	setData(X.data(), Y.data(), size);
+	setSamples(X.data(), Y.data(), size);
 	foreach(ErrorBarsCurve *c, d_error_bars)
-		c->setData(X.data(), Y.data(), size);
+		c->setSamples(X.data(), Y.data(), size);
 	setVectorEnd(X2, Y2);
 }
 

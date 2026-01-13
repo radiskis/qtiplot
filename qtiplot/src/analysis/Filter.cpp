@@ -43,7 +43,7 @@
 
 #include <gsl/gsl_sort.h>
 
-Filter::Filter(ApplicationWindow *parent, QwtPlotCurve *c)
+Filter::Filter(ApplicationWindow *parent, PlotCurve *c)
 : QObject(parent)
 {
 	init();
@@ -96,7 +96,7 @@ void Filter::init()
 	d_output_graph = 0;
 	d_graphics_display = true;
 	d_update_output_graph = true;
-	d_y_col_name = QString::null;
+	d_y_col_name = QString();
 	d_matrix = NULL;
 }
 
@@ -110,7 +110,7 @@ void Filter::setInterval(double from, double to)
 	setDataFromCurve (d_curve->title().text(), from, to);
 }
 
-void Filter::setDataCurve(QwtPlotCurve *curve, double start, double end)
+void Filter::setDataCurve(PlotCurve *curve, double start, double end)
 {
 	if (!curve)
 		return;
@@ -163,7 +163,7 @@ int Filter::curveIndex(const QString& curveTitle, Graph *g)
 	return d_graph->curveIndex(curveTitle);
 }
 
-bool Filter::setDataFromCurve(QwtPlotCurve *c)
+bool Filter::setDataFromCurve(PlotCurve *c)
 {
 	if (!c || !c->plot()){
 		d_init_err = true;
@@ -182,7 +182,7 @@ bool Filter::setDataFromCurve(QwtPlotCurve *c)
 	return true;
 }
 
-bool Filter::setDataFromCurve(QwtPlotCurve *c, double from, double to)
+bool Filter::setDataFromCurve(PlotCurve *c, double from, double to)
 {
 	if (!c || !c->plot()){
 		d_init_err = true;
@@ -313,7 +313,7 @@ void Filter::output()
 	free(y);
 }
 
-int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
+int Filter::sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y)
 {
 	if (!c)
 		return 0;
@@ -338,7 +338,7 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 	double *ytemp = new double[n];
 
 	int j = 0;
-	if (c->curveType() == QwtPlotCurve::Yfx){
+	if (c->curveType() == PlotCurve::Yfx){
 		for (int i = i_start; i <= i_end; i++){
 			xtemp[j] = c->x(i);
 			ytemp[j++] = c->y(i);
@@ -364,7 +364,7 @@ int Filter::sortedCurveData(QwtPlotCurve *c, double start, double end, double **
 	return n;
 }
 
-int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, double **y)
+int Filter::curveData(PlotCurve *c, double start, double end, double **x, double **y)
 {
     if (!c)
         return 0;
@@ -386,7 +386,7 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 	}
 
 	int j = 0;
-	if (c->curveType() == QwtPlotCurve::Yfx){
+	if (c->curveType() == PlotCurve::Yfx){
 		for (int i = i_start; i <= i_end; i++){
 			(*x)[j] = c->x(i);
 			(*y)[j++] = c->y(i);
@@ -400,7 +400,7 @@ int Filter::curveData(QwtPlotCurve *c, double start, double end, double **x, dou
 	return n;
 }
 
-int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, int *iEnd)
+int Filter::curveRange(PlotCurve *c, double start, double end, int *iStart, int *iEnd)
 {
     if (!c)
         return 0;
@@ -436,13 +436,13 @@ int Filter::curveRange(QwtPlotCurve *c, double start, double end, int *iStart, i
 		}
 	}
 
-	*iStart = QMIN(i_start, i_end);
-	*iEnd = QMAX(i_start, i_end);
+	*iStart = qMin(i_start, i_end);
+	*iEnd = qMax(i_start, i_end);
     n = abs(i_end - i_start) + 1;
     return n;
 }
 
-QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
+PlotCurve* Filter::addResultCurve(double *x, double *y)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	QLocale locale = app->locale();
@@ -467,12 +467,12 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 		c = new DataCurve(d_result_table, tableName + "_1", tableName + "_2");
 		if (d_curve){
 			c->setCurveType(d_curve->curveType());
-			c->setAxis(d_curve->xAxis(), d_curve->yAxis());
+			c->setAxes(d_curve->xAxis(), d_curve->yAxis());
 		}
-		if (c->curveType() == QwtPlotCurve::Yfx)
-			c->setData(x, y, d_points);
+		if (c->curveType() == PlotCurve::Yfx)
+			c->setSamples(x, y, d_points);
 		else
-			c->setData(y, x, d_points);
+			c->setSamples(y, x, d_points);
 		c->setPen(QPen(d_curveColor, 1));
 
 		if (!d_output_graph)
@@ -484,7 +484,7 @@ QwtPlotCurve* Filter::addResultCurve(double *x, double *y)
 
 		d_result_curve = c;
 	}
-	return (QwtPlotCurve*)c;
+	return (PlotCurve*)c;
 }
 
 void Filter::enableGraphicsDisplay(bool on, Graph *g)
@@ -532,8 +532,8 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	if (endRow < 0 || endRow >= t->numRows())
 		endRow = t->numRows() - 1;
 
-    int from = QMIN(startRow, endRow);
-    int to = QMAX(startRow, endRow);
+    int from = qMin(startRow, endRow);
+    int to = qMax(startRow, endRow);
 
 	int r = abs(to - from) + 1;
     QVector<double> X(r), Y(r);

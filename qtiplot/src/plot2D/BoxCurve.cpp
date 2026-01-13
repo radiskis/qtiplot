@@ -340,9 +340,9 @@ void BoxCurve::setWhiskersRange(int type, double coeff)
 	updateLabels();
 }
 
-QwtDoubleRect BoxCurve::boundingRect() const
+QRectF BoxCurve::boundingRect() const
 {
-	QwtDoubleRect rect = QwtPlotCurve::boundingRect();
+	QRectF rect = QwtPlotCurve::boundingRect();
 
 	double dy=0.2*(rect.bottom()-rect.top());
 	rect.setTop(rect.top()-dy);
@@ -371,7 +371,7 @@ void BoxCurve::loadData()
 	if (size>0){
 		Y.resize(size);
 		gsl_sort (Y.data(), 1, size);
-        setData(QwtSingleArrayData(this->x(0), Y, size));
+        setSamples(QwtSingleArrayData(this->x(0), Y, size));
 		if (d_show_labels)
 			loadLabels();
 	} else
@@ -634,7 +634,7 @@ void BoxCurve::createLabel(double val)
 
 	int x_axis = xAxis();
 	int y_axis = yAxis();
-	m->setAxis(x_axis, y_axis);
+	m->setAxes(x_axis, y_axis);
 
 	const double px_min = d_plot->transform(x_axis, x(0) - 0.4);
 	const double px_max = d_plot->transform(x_axis, x(0) + 0.4);

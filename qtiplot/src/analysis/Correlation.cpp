@@ -74,8 +74,8 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	if (endRow < 0 || endRow >= t->numRows())
 		endRow = t->numRows() - 1;
 
-    int from = QMIN(startRow, endRow);
-    int to = QMAX(startRow, endRow);
+    int from = qMin(startRow, endRow);
+    int to = qMax(startRow, endRow);
 
 	int rows = abs(to - from) + 1;
 	d_n = 16; // tmp number of points
@@ -174,7 +174,7 @@ void Correlation::addResultCurve()
 		d_table->setText(i, cols2, locale.toString(y, 'g', app->d_decimal_digits));
 	}
 
-	QStringList l = d_table->colNames().grep(tr("Lag"));
+	QStringList l = d_table->colNames().filter(tr("Lag"));
 	QString id = QString::number((int)l.size()+1);
 	QString label = objectName() + id;
 
@@ -188,7 +188,7 @@ void Correlation::addResultCurve()
 			createOutputGraph();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
-		c->setData(x_temp, y_temp, d_n);
+		c->setSamples(x_temp, y_temp, d_n);
 		c->setPen(QPen(d_curveColor, 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();

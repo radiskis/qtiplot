@@ -59,11 +59,12 @@ contains(CONFIG, CustomInstall){
 	win32: manual.path = $$INSTALLBASE/manual
 	win32: documentation.path = $$INSTALLBASE/doc
 
-	DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\"
-	DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\"
+	DEFINES       += TRANSLATIONS_PATH="\\\"$$replace(translations.path," ","\ ")\\\""
+	DEFINES       += MANUAL_PATH="\\\"$$replace(manual.path," ","\ ")\\\""
 	}
 
-QT            += opengl qt3support network svg xml
+QT            += opengl network svg xml widgets printsupport
+# greaterThan(QT_MAJOR_VERSION, 4): QT += openglwidgets
 contains(CONFIG, StaticBuild){
 	QTPLUGIN += qjpeg qgif qtiff qmng qsvg
 	DEFINES += QTIPLOT_STATIC_BUILD
@@ -161,7 +162,7 @@ contains(SCRIPTING_LANGS, Python) {
 
   	unix: pythonconfig.path = /usr/local/qtiplot
   	win32: pythonconfig.path = $$INSTALLBASE
-  	DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\"
+  	DEFINES += PYTHON_CONFIG_PATH="\\\"$$replace(pythonconfig.path," ","\ ")\\\""
   }
 
   unix {

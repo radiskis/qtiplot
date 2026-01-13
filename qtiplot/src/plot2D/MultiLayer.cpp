@@ -27,7 +27,7 @@ Description          : Multi layer widget
  ***************************************************************************/
 #include <QVector>
 #include <QWidgetList>
-#include <QPrinter>
+#include <QtPrintSupport/QPrinter>
 #include <QPrintDialog>
 #include <QApplication>
 #include <QMessageBox>
@@ -107,7 +107,7 @@ void LayerButton::mouseDoubleClickEvent ( QMouseEvent * )
 }
 
 MultiLayer::MultiLayer(ApplicationWindow* parent, int layers, int rows, int cols,
-			const QString& label, const char* name, Qt::WFlags f)
+			const QString& label, const char* name, Qt::WindowFlags f)
 : MdiSubWindow(label, parent, name, f),
 active_graph(NULL),
 d_cols(cols),
@@ -830,7 +830,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::yRight);
 				if (scale){
-					aux->setAxisTitleString(QwtPlot::yRight, QString::null);
+					aux->setAxisTitleString(QwtPlot::yRight, QString());
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::yRight);
 					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -844,7 +844,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (aux){
 				QwtScaleWidget *scale = aux->axisWidget(QwtPlot::xBottom);
 				if (scale){
-					aux->setAxisTitleString(QwtPlot::xBottom, QString::null);
+					aux->setAxisTitleString(QwtPlot::xBottom, QString());
 					QwtScaleDraw *sd = aux->axisScaleDraw(QwtPlot::xBottom);
 					if (sd)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -862,7 +862,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		g->setCanvasBackground(c);
 
 		if (horizontalAxis && row && !g->title().text().isEmpty())
-			g->setTitle(QString::null);
+			g->setTitle(QString());
 
 		if (verticalAxis && !col && (row != d_rows - 1)){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
@@ -876,7 +876,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		if (verticalAxis && col){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
 			if (scale){
-				g->setAxisTitleString(QwtPlot::yLeft, QString::null);
+				g->setAxisTitleString(QwtPlot::yLeft, QString());
 				QwtScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
 				if (sd)
 					sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -896,7 +896,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
 			if (scale){
 				if (row)
-					g->setAxisTitleString(QwtPlot::xTop, QString::null);
+					g->setAxisTitleString(QwtPlot::xTop, QString());
 
 				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
 				if (sd){
@@ -1413,7 +1413,7 @@ void MultiLayer::print()
 	QPrintDialog printDialog(&printer, applicationWindow());
 	if (printDialog.exec() == QDialog::Accepted){
 	#ifdef Q_OS_LINUX
-		if (printDialog.enabledOptions() & QAbstractPrintDialog::PrintToFile){
+		if (printDialog.enabledOptions() & qAbstractPrintDialog::PrintToFile){
 			QString fn = printer.outputFileName();
 			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
 				printer.setOutputFileName(fn + ".ps");
@@ -2139,17 +2139,17 @@ void MultiLayer::plotProfiles(Matrix* m)
 	if (!s)
 		return;
 
-	s->setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+	s->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
 	g->enableAxis(QwtPlot::xTop, true);
-	g->setScale(QwtPlot::xTop, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
-	g->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	g->setScale(QwtPlot::xTop, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
+	g->setScale(QwtPlot::xBottom, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
 	g->enableAxis(QwtPlot::xBottom, false);
 	g->enableAxis(QwtPlot::yRight, false);
-	g->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+	g->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
 					0.0, 5, 5, Graph::Linear, true);
-	g->setAxisTitle(QwtPlot::yLeft, QString::null);
-	g->setAxisTitle(QwtPlot::xTop, QString::null);
-	g->setTitle(QString::null);
+	g->setAxisTitle(QwtPlot::yLeft, QString());
+	g->setAxisTitle(QwtPlot::xTop, QString());
+	g->setTitle(QString());
 	g->enableAutoscaling(false);
 	g->setCanvasGeometry(QRect(60, 160, 380, 380));
 
@@ -2157,14 +2157,14 @@ void MultiLayer::plotProfiles(Matrix* m)
 
 	g->enableAxis(QwtPlot::xTop, false);
 	g->enableAxis(QwtPlot::xBottom, true);
-	g->setScale(QwtPlot::xBottom, QMIN(m->xStart(), m->xEnd()), QMAX(m->xStart(), m->xEnd()));
+	g->setScale(QwtPlot::xBottom, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
 	g->enableAxisLabels(QwtPlot::xBottom, false);
 
 	g->enableAxis(QwtPlot::yRight, false);
 	g->setScale(QwtPlot::yLeft, mmin, mmax);
-	g->setAxisTitle(QwtPlot::yLeft, QString::null);
-	g->setAxisTitle(QwtPlot::xBottom, QString::null);
-	g->setTitle(QString::null);
+	g->setAxisTitle(QwtPlot::yLeft, QString());
+	g->setAxisTitle(QwtPlot::xBottom, QString());
+	g->setTitle(QString());
 	g->enableAutoscaling(false);
 	g->setCanvasGeometry(QRect(60, 10, 380, 100));
 
@@ -2176,12 +2176,12 @@ void MultiLayer::plotProfiles(Matrix* m)
 	g->setScale(QwtPlot::xBottom, mmin, mmax);
 	g->enableAxis(QwtPlot::xBottom, false);
 	g->enableAxis(QwtPlot::yRight, false);
-	g->setScale(QwtPlot::yLeft, QMIN(m->yStart(), m->yEnd()), QMAX(m->yStart(), m->yEnd()),
+	g->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
 					0.0, 5, 5, Graph::Linear, true);
 
-	g->setAxisTitle(QwtPlot::yLeft, QString::null);
-	g->setAxisTitle(QwtPlot::xTop, QString::null);
-	g->setTitle(QString::null);
+	g->setAxisTitle(QwtPlot::yLeft, QString());
+	g->setAxisTitle(QwtPlot::xTop, QString());
+	g->setTitle(QString());
 	g->enableAutoscaling(false);
 	g->setCanvasGeometry(QRect(500, 160, 110, 380));
 

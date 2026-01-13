@@ -51,7 +51,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param fl window flags
 	 */
-    ExportDialog(MdiSubWindow *window = NULL, QWidget* parent = 0, bool extended = true, Qt::WFlags fl = 0 );
+    ExportDialog(MdiSubWindow *window = NULL, QWidget* parent = 0, bool extended = true, Qt::WindowFlags fl = 0 );
 
 private:
 	//! Pointer to the window to be exported.

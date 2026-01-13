@@ -29,6 +29,7 @@ Description          : MDI sub window
 #define MdiSubWindow_H
 
 #include <QMdiSubWindow>
+#include <QtPrintSupport/QPrinter>
 
 class QEvent;
 class QCloseEvent;
@@ -61,7 +62,7 @@ public:
 	 * \param f window flags
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WFlags f = 0);
+	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = 0);
 
 	//! Possible window captions.
 	enum CaptionPolicy{
@@ -82,7 +83,7 @@ public:
 	//! Return the window name
 	QString name(){return objectName();};
 	//! Set the window name
-	void setName(const QString& s){setObjectName(s); updateCaption();};
+	void setObjectName(const QString& s){setObjectName(s); updateCaption();};
 
 	//! Return the caption policy
 	CaptionPolicy captionPolicy(){return d_caption_policy;};

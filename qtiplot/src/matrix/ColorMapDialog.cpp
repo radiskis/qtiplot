@@ -34,7 +34,7 @@
 #include <QPushButton>
 #include <QLayout>
 
-ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WFlags fl)
+ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WindowFlags fl)
 	: QDialog(parent, fl)
 {
 	setObjectName( "ColorMapDialog" );

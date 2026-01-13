@@ -48,6 +48,7 @@
 #include <QHeaderView>
 #include <QLineEdit>
 #include <QLayout>
+#include <QCloseEvent>
 #include <QSpinBox>
 #include <QPushButton>
 #include <QLabel>
@@ -208,17 +209,17 @@ void FitDialog::initFitPage()
 
     QVBoxLayout *vb = new QVBoxLayout();
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
-	btnSaveGuesses->setPixmap(QPixmap(":/filesave.png"));
+	btnSaveGuesses->setIcon(QIcon(":/filesave.png"));
     connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
     vb->addWidget(btnSaveGuesses);
 
     btnLoadGuesses = new QPushButton(tr("Re&load" ));
-	btnLoadGuesses->setPixmap(QPixmap(":/reload.png"));
+	btnLoadGuesses->setIcon(QIcon(":/reload.png"));
     connect(btnLoadGuesses, SIGNAL(clicked()), this, SLOT(loadInitialGuesses()));
     vb->addWidget(btnLoadGuesses);
 
 	btnGuess = new QPushButton(tr( "&Guess" ));
-	btnGuess->setPixmap(QPixmap(":/help.png"));
+	btnGuess->setIcon(QIcon(":/help.png"));
     connect(btnGuess, SIGNAL(clicked()), this, SLOT(guessInitialValues()));
     vb->addWidget(btnGuess);
 
@@ -235,17 +236,17 @@ void FitDialog::initFitPage()
 
 	boxParams = new QTableWidget();
     boxParams->setColumnCount(6);
-    boxParams->horizontalHeader()->setClickable(false);
-    boxParams->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
-	boxParams->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
-    boxParams->horizontalHeader()->setResizeMode (2, QHeaderView::Stretch);
-    boxParams->horizontalHeader()->setResizeMode (3, QHeaderView::Stretch);
-	boxParams->horizontalHeader()->setResizeMode (4, QHeaderView::ResizeToContents);
-	boxParams->horizontalHeader()->setResizeMode (5, QHeaderView::Stretch);
+    	boxParams->horizontalHeader()->setSectionsClickable(false);
+	boxParams->horizontalHeader()->setSectionResizeMode (0, QHeaderView::ResizeToContents);
+	boxParams->horizontalHeader()->setSectionResizeMode (1, QHeaderView::Stretch);
+	boxParams->horizontalHeader()->setSectionResizeMode (2, QHeaderView::Stretch);
+	boxParams->horizontalHeader()->setSectionResizeMode (3, QHeaderView::Stretch);
+	boxParams->horizontalHeader()->setSectionResizeMode (4, QHeaderView::ResizeToContents);
+	boxParams->horizontalHeader()->setSectionResizeMode (5, QHeaderView::Stretch);
 
     QStringList header = QStringList() << tr("Parameter") << tr("From") << tr("Value") << tr("To") << tr("Constant") << tr("Error");
     boxParams->setHorizontalHeaderLabels(header);
-    boxParams->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    boxParams->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     boxParams->verticalHeader()->hide();
     boxParams->hideColumn(1);
     boxParams->hideColumn(3);
@@ -288,14 +289,14 @@ void FitDialog::initFitPage()
 	hbox3->addStretch();
 	btnDeleteFitCurves = new QPushButton(tr( "&Delete Fit Curves" ));
     hbox3->addWidget(btnDeleteFitCurves);
-	btnDeleteFitCurves->setPixmap(QPixmap(":/close.png"));
+	btnDeleteFitCurves->setIcon(QIcon(":/close.png"));
 
 	buttonCancel1 = new QPushButton(tr( "&Close" ));
-	buttonCancel1->setPixmap(QPixmap(":/delete.png"));
+	buttonCancel1->setIcon(QIcon(":/delete.png"));
 	hbox3->addWidget(buttonCancel1);
 
     buttonOk = new QPushButton(tr( "&Fit" ) );
-	buttonOk->setPixmap(QPixmap(":/play.png"));
+	buttonOk->setIcon(QIcon(":/play.png"));
 	buttonOk->setDefault( true );
     hbox3->addWidget(buttonOk);
 
@@ -449,7 +450,7 @@ void FitDialog::initEditPage()
     hbox1->addWidget(polynomOrderLabel);
 
 	polynomOrderBox = new QSpinBox();
-    polynomOrderBox->setMinValue(1);
+    	polynomOrderBox->setMinimum(1);
 	polynomOrderBox->setValue(1);
 	polynomOrderBox->hide();
 	connect(polynomOrderBox, SIGNAL(valueChanged(int)), this, SLOT(setNumPeaks(int)));
@@ -465,14 +466,14 @@ void FitDialog::initEditPage()
 	boxName = new QLineEdit(tr("user1"));
     gl2->addWidget(boxName, 0, 1);
 	btnAddFunc = new QPushButton(tr( "&Save" ));
-	btnAddFunc->setPixmap(QPixmap(":/filesave.png"));
+	btnAddFunc->setIcon(QIcon(":/filesave.png"));
     gl2->addWidget(btnAddFunc, 0, 2);
     gl2->addWidget(new QLabel(tr("Parameters")), 1, 0);
 	boxParam = new QLabel();
 	boxParam->setFrameStyle(QFrame::Box | QFrame::Sunken);
     gl2->addWidget(boxParam, 1, 1);
 	btnDelFunc = new QPushButton( tr( "&Remove" ));
-	btnDelFunc->setPixmap(QPixmap(":/close.png"));
+	btnDelFunc->setIcon(QIcon(":/close.png"));
     gl2->addWidget(btnDelFunc, 1, 2);
 
     QGroupBox *gb = new QGroupBox();
@@ -497,7 +498,7 @@ void FitDialog::initEditPage()
     vbox1->addWidget(buttonClear);
 	vbox1->addStretch();
 	buttonCancel2 = new QPushButton(tr("&Close"));
-	buttonCancel2->setPixmap(QPixmap(":/delete.png"));
+	buttonCancel2->setIcon(QIcon(":/delete.png"));
     vbox1->addWidget(buttonCancel2);
 
 	QVBoxLayout *vb = new QVBoxLayout();
@@ -673,7 +674,7 @@ void FitDialog::initAdvancedPage()
     QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addStretch();
 	buttonCancel3 = new QPushButton(tr( "&Close" ));
-	buttonCancel3->setPixmap(QPixmap(":/delete.png"));
+	buttonCancel3->setIcon(QIcon(":/delete.png"));
     hbox1->addWidget(buttonCancel3);
 	btnApply = new QPushButton(tr( "&Apply" ));
 	btnApply->setEnabled(false);
@@ -773,8 +774,8 @@ void FitDialog::applyChanges()
 	app->setWriteFitResultsToLog(logBox->isChecked());
 	app->fitPoints = generatePointsBox->value();
 	app->generateUniformFitPoints = generatePointsBtn->isChecked();
-	if (d_current_fit && !d_current_fit->isA("PolynomialFit") &&
-		!d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
+	if (d_current_fit && !d_current_fit->inherits("PolynomialFit") &&
+		!d_current_fit->inherits("LinearFit") && !d_current_fit->inherits("LinearSlopeFit"))
 		app->fit_scale_errors = scaleErrorsBox->isChecked();
 	app->saveSettings();
 	btnApply->setEnabled(false);
@@ -847,21 +848,21 @@ void FitDialog::setGraph(Graph *g)
 
 void FitDialog::activateCurve(const QString& s)
 {
-	QwtPlotCurve *c = d_graph->curve(s);
+	PlotCurve *c = d_graph->curve(s);
 	if (!c)
 		return;
 
 	double start, end;
 	d_graph->range(c, &start, &end);
-    boxFrom->setValue(QMIN(start, end));
-    boxTo->setValue(QMAX(start, end));
+    boxFrom->setValue(qMin(start, end));
+    boxTo->setValue(qMax(start, end));
 	//Set the same color as the data curve chosen for fit (Feature Request #4031)
 	boxColor->setColor(c->pen().color());
 };
 
 void FitDialog::saveUserFunction()
 {
-	if (editBox->text().isEmpty()){
+	if (editBox->toPlainText().isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
 		return;
@@ -880,7 +881,7 @@ void FitDialog::saveUserFunction()
 		return;
 	}
 
-	if (editBox->text().contains(boxName->text())){
+	if (editBox->toPlainText().contains(boxName->text())){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"),
 				tr("You can't define functions recursively!"));
 		editBox->setFocus();
@@ -889,7 +890,7 @@ void FitDialog::saveUserFunction()
 
 	QString name = boxName->text();
     QStringList lst = userFunctionNames();
-	QString formula = parseFormula(editBox->text().simplified().remove(QRegExp("\\s")));
+	QString formula = parseFormula(editBox->toPlainText().simplified().remove(QRegExp("\\s")));
 	if (lst.contains(name)){
 		int index = lst.indexOf(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
@@ -958,7 +959,7 @@ void FitDialog::removeUserFunction()
             d_user_functions.removeAt(index);
 		}
 
-        lst.remove(name);
+        		lst.removeAll(name);
 		funcBox->clear();
 		funcBox->addItems(lst);
 		funcBox->setCurrentRow(0);
@@ -970,7 +971,7 @@ void FitDialog::removeUserFunction()
 
 void FitDialog::showFitPage()
 {
-	QString formula = editBox->text().simplified().remove(QRegExp("\\s"));
+	QString formula = editBox->toPlainText().simplified().remove(QRegExp("\\s"));
 	if (formula.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
@@ -988,8 +989,8 @@ void FitDialog::showFitPage()
 		return;
 
     if (d_current_fit->type() == Fit::BuiltIn &&
-		(d_current_fit->isA("PolynomialFit") || d_current_fit->isA("LinearFit")
-		|| d_current_fit->isA("LinearSlopeFit"))){
+		(d_current_fit->inherits("PolynomialFit") || d_current_fit->inherits("LinearFit")
+		|| d_current_fit->inherits("LinearSlopeFit"))){
 		btnParamRange->setChecked(false);
 		btnParamRange->setEnabled(false);
 		showParameterRange(false);
@@ -1086,8 +1087,8 @@ void FitDialog::showEditPage()
 void FitDialog::showAdvancedPage()
 {
 	tw->setCurrentWidget (advancedPage);
-	if (d_current_fit && (d_current_fit->isA("PolynomialFit") ||
-		d_current_fit->isA("LinearFit") || d_current_fit->isA("LinearSlopeFit"))){
+	if (d_current_fit && (d_current_fit->inherits("PolynomialFit") ||
+		d_current_fit->inherits("LinearFit") || d_current_fit->inherits("LinearSlopeFit"))){
 		scaleErrorsBox->setChecked(false);
 		scaleErrorsBox->setEnabled(false);
 	} else {
@@ -1114,7 +1115,7 @@ void FitDialog::setFunction(bool ok)
 
 	if (ok){
 		boxName->setText(funcBox->currentItem()->text());
-		editBox->setText(explainBox->text());
+		editBox->setText(explainBox->toPlainText());
 		boxParam->setText(d_current_fit->parameterNames().join(", "));
 	}
 }
@@ -1229,7 +1230,7 @@ void FitDialog::loadPlugins()
 	    if (QLibrary::isLibrary (file)){
             QLibrary lib(path + file);
             PluginFit *fit = new PluginFit(app, d_graph);
-            fit->load(lib.library());
+            fit->load(path + file);
             d_plugins << fit;
             names << fit->objectName();
             fit->setFileName(modelsDirPath + fit->objectName() + ".fit");
@@ -1320,16 +1321,16 @@ void FitDialog::showExpression(int function)
 
 void FitDialog::addFunction()
 {
-	QString f = explainBox->text();
+	QString f = explainBox->toPlainText();
 	if (categoryBox->currentRow() == 2){//basic parser function
-		f = f.left(f.find("(", 0)+1);
-		if (editBox->hasSelectedText()){
-			QString markedText=editBox->selectedText();
-			editBox->insert(f+markedText+")");
+		f = f.left(f.indexOf("(", 0)+1);
+		if (editBox->textCursor().hasSelection()){
+			QString markedText=editBox->textCursor().selectedText();
+			editBox->insertPlainText(f+markedText+")");
 		} else
-			editBox->insert(f+")");
+			editBox->insertPlainText(f+")");
 	}else
-		editBox->insert(f);
+		editBox->insertPlainText(f);
 
 	editBox->setFocus();
 }
@@ -1337,7 +1338,7 @@ void FitDialog::addFunction()
 void FitDialog::addFunctionName()
 {
 	if (funcBox->count() > 0){
-		editBox->insert(funcBox->currentItem()->text());
+		editBox->insertPlainText(funcBox->currentItem()->text());
 		editBox->setFocus();
 	}
 }
@@ -1386,7 +1387,7 @@ void FitDialog::accept()
 	if (!paramsInit || !paramRangeLeft || !paramRangeRight)
 		return;
 
-	QString formula = boxFunction->text();
+	QString formula = boxFunction->toPlainText();
 	NonLinearFit *nlf = qobject_cast<NonLinearFit *>(d_current_fit);
 	if (nlf)
 		nlf->removeConstants();
@@ -1400,14 +1401,14 @@ void FitDialog::accept()
 					paramRangeLeft[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 1))->value();
 					paramRangeRight[j] = ((RangeLimitBox*)boxParams->cellWidget(j, 3))->value();
 					paramsInit[j] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
-					parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[j]);
+					parser.DefineVar(boxParams->item(i, 0)->text().toStdWString(), &paramsInit[j]);
 					parameters << boxParams->item(i, 0)->text();
 					j++;
 				} else {
 					double val = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
 					QString constName = boxParams->item(i, 0)->text();
 					nlf->setConstant(constName, val);
-					parser.DefineConst(constName.ascii(), val);
+					parser.DefineConst(constName.toStdWString(), val);
 				}
 			}
 		} else {
@@ -1415,17 +1416,17 @@ void FitDialog::accept()
 				paramRangeLeft[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 1))->value();
 				paramRangeRight[i] = ((RangeLimitBox*)boxParams->cellWidget(i, 3))->value();
 				paramsInit[i] = ((DoubleSpinBox*)boxParams->cellWidget(i, 2))->value();
-				parser.DefineVar(boxParams->item(i, 0)->text().ascii(), &paramsInit[i]);
+				parser.DefineVar(boxParams->item(i, 0)->text().toStdWString(), &paramsInit[i]);
 				parameters << boxParams->item(i, 0)->text();
 			}
 		}
 
-		parser.SetExpr(formula.ascii());
+		parser.SetExpr(formula.toStdWString());
 		double x = start;
 		parser.DefineVar("x", &x);
 		parser.Eval();
 	} catch(mu::ParserError &e) {
-		QString errorMsg = boxFunction->text() + " = " + formula + "\n" + QString::fromStdString(e.GetMsg()) + "\n" +
+		QString errorMsg = boxFunction->toPlainText() + " = " + formula + "\n" + QString::fromStdWString(e.GetMsg()) + "\n" +
 			tr("Please verify that you have initialized all the parameters!");
 
 		QMessageBox::critical(app, tr("QtiPlot - Input function error"), errorMsg);
@@ -1459,7 +1460,7 @@ void FitDialog::accept()
 		d_current_fit->setColor(boxColor->color());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
 		d_current_fit->setMaximumIterations(boxPoints->value());
-		if (!d_current_fit->isA("PolynomialFit") && !d_current_fit->isA("LinearFit") && !d_current_fit->isA("LinearSlopeFit"))
+		if (!d_current_fit->inherits("PolynomialFit") && !d_current_fit->inherits("LinearFit") && !d_current_fit->inherits("LinearSlopeFit"))
 			d_current_fit->scaleErrors(scaleErrorsBox->isChecked());
 		d_current_fit->fit();
 		d_result_curves << d_current_fit->resultCurve();
@@ -1518,8 +1519,8 @@ void FitDialog::changeDataRange()
 	double start = d_graph->selectedXStartValue();
 	double end = d_graph->selectedXEndValue();
 
-	boxFrom->setValue(QMIN(start, end));
-	boxTo->setValue(QMAX(start, end));
+	boxFrom->setValue(qMin(start, end));
+	boxTo->setValue(qMax(start, end));
 }
 
 void FitDialog::setSrcTables(QList<MdiSubWindow*> tables)
@@ -1535,7 +1536,7 @@ void FitDialog::setSrcTables(QList<MdiSubWindow*> tables)
 	foreach(MdiSubWindow *w, srcTables)
 		tableNamesBox->addItem(w->objectName());
 
-	tableNamesBox->setCurrentIndex(tableNamesBox->findText(boxCurve->currentText().split("_", QString::SkipEmptyParts)[0]));
+	tableNamesBox->setCurrentIndex(tableNamesBox->findText(boxCurve->currentText().split("_", Qt::SkipEmptyParts)[0]));
 	selectSrcTable(tableNamesBox->currentIndex());
 }
 
@@ -1582,7 +1583,7 @@ void FitDialog::enableApplyChanges(int)
 
 void FitDialog::deleteFitCurves()
 {
-	foreach(QwtPlotCurve *c, d_result_curves){
+	foreach(PlotCurve *c, d_result_curves){
 		if (((PlotCurve *)c)->type() != Graph::Function){
 			Table *t = ((DataCurve *)c)->table();
 			if (t){
@@ -1947,7 +1948,7 @@ void FitDialog::guessParameters()
 	if (boxUseBuiltIn->isChecked())
 		return;
 
-	QString text = editBox->text().remove(QRegExp("\\s")).remove(".");
+	QString text = editBox->toPlainText().remove(QRegExp("\\s")).remove(".");
 	if (text.isEmpty()){
 		boxParam->clear();
 		return;

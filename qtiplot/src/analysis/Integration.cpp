@@ -65,14 +65,14 @@ Integration::Integration(ApplicationWindow *parent, Graph *g)
 	init();
 }
 
-Integration::Integration(ApplicationWindow *parent, QwtPlotCurve *c)
+Integration::Integration(ApplicationWindow *parent, PlotCurve *c)
 : Filter(parent, c)
 {
 	init();
 	setDataFromCurve(c);
 }
 
-Integration::Integration(ApplicationWindow *parent, QwtPlotCurve *c, double start, double end)
+Integration::Integration(ApplicationWindow *parent, PlotCurve *c, double start, double end)
 : Filter(parent, c)
 {
 	init();
@@ -139,14 +139,14 @@ double evalFunction(double x, void *params)
 	QString formula = ((Integration *)params)->formula();
 
 	MyParser parser;
-	parser.DefineVar(var.ascii(), &x);
-	parser.SetExpr(formula.ascii());
+	parser.DefineVar(var.toStdWString(), &x);
+	parser.SetExpr(formula.toStdWString());
 
 	try {
 		result = parser.Eval();
 	} catch (mu::ParserError &e){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(0, "QtiPlot - Input error", QString::fromStdString(e.GetMsg()));
+		QMessageBox::critical(0, "QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
 		((Integration *)params)->setError();
 	}
 

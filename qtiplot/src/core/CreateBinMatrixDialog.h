@@ -42,7 +42,7 @@ class CreateBinMatrixDialog : public QDialog
     Q_OBJECT
 
 public:
-    CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent = 0, Qt::WFlags fl = 0);
+    CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent = 0, Qt::WindowFlags fl = 0);
 
 public slots:
 	void accept();

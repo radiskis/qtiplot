@@ -48,7 +48,7 @@
 #endif
 
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
-	: QAbstractTableModel(parent),
+	: qAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent)
 {
 	init();
@@ -70,7 +70,7 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 }
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
-     : QAbstractTableModel(parent),
+     : qAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent)
 {
 	init();
@@ -263,7 +263,7 @@ double MatrixModel::y(int row) const
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
 	if (!d_matrix || d_matrix->headerViewType() == Matrix::ColumnRow)
-		return QAbstractItemModel::headerData(section, orientation, role);
+		return qAbstractItemModel::headerData(section, orientation, role);
 
 	QLocale locale = d_locale;
 	int prec = d_num_precision;
@@ -293,7 +293,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 				return QVariant(locale.toString(start - section*dy, fmt, prec));
 		}
 	}
-	return QAbstractItemModel::headerData(section, orientation, role);
+	return qAbstractItemModel::headerData(section, orientation, role);
 }
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
@@ -315,7 +315,7 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 }
 
-bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int role)
+bool MatrixModel::setSamples(const QModelIndex & index, const QVariant & value, int role)
 {
 	if (!index.isValid())
 		return false;
@@ -474,7 +474,7 @@ QImage MatrixModel::renderImage()
 	QImage image(QSize(d_cols, d_rows), QImage::Format_RGB32);
 	LinearColorMap color_map = d_matrix->colorMap();
 
-	const QwtDoubleInterval intensityRange = d_matrix->colorRange();
+	const QwtInterval intensityRange = d_matrix->colorRange();
 	for ( int i = 0; i < d_rows; i++ ){
 		QRgb *line = (QRgb *)image.scanLine(i);
 		for ( int j = 0; j < d_cols; j++){

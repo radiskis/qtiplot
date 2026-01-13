@@ -144,7 +144,7 @@ void Convolution::addResultCurve()
 		d_table->setText(i, cols2, locale.toString(d_x[i], 'g', app->d_decimal_digits));
 	}
 
-	QStringList l = d_table->colNames().grep(tr("Index"));
+	QStringList l = d_table->colNames().filter(tr("Index"));
 	QString id = QString::number((int)l.size()+1);
 	QString label = objectName() + id;
 
@@ -158,7 +158,7 @@ void Convolution::addResultCurve()
 			createOutputGraph();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
-		c->setData(x_temp, d_x, d_n);
+		c->setSamples(x_temp, d_x, d_n);
 		c->setPen(QPen(d_curveColor, 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();
