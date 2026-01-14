@@ -31,22 +31,23 @@
 
 #include <qwt_scale_engine.h>
 #include <qwt_scale_map.h>
+#include <qwt_transform.h>
 #include <float.h>
 
 class ScaleEngine;
 
-class ScaleTransformation: public QwtScaleTransformation
+class ScaleTransformation: public QwtTransform
 {
 public:
 	enum Type{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
 
-	ScaleTransformation(const ScaleEngine *engine):QwtScaleTransformation(Other), d_engine(engine){};
-	virtual double xForm(double x, double, double, double p1, double p2) const;
-	virtual double invXForm(double x, double s1, double s2, double p1, double p2) const;
-	QwtScaleTransformation* copy() const;
+	ScaleTransformation(const ScaleEngine *engine);
+	virtual double transform(double x) const;
+	virtual double invTransform(double x) const;
+	QwtTransform* copy() const;
 
 protected:
-	QwtScaleTransformation* newScaleTransformation() const;
+	QwtTransform* newScaleTransformation() const;
     //! The scale engine that generates the transformation
 	const ScaleEngine* d_engine;
 };
@@ -56,7 +57,7 @@ class ScaleEngine: public QwtScaleEngine
 public:
 	ScaleEngine(ScaleTransformation::Type type = ScaleTransformation::Linear,
 				double left_break = -DBL_MAX, double right_break = DBL_MAX);
-	QwtScaleTransformation* transformation() const;
+	QwtTransform* transformation() const;
 	virtual QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
 		int maxMinSteps, double stepSize = 0.0) const;
 	virtual void autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const;

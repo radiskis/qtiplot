@@ -128,6 +128,10 @@ public:
     
     void setCurrentCell(int r, int c) { setCurrentItem(item(r, c)); }
 
+    int currentSelection() {
+        return selectedRanges().count() > 0 ? 0 : -1;
+    }
+
 private:
     QList<int> d_readOnlyCols;
 };

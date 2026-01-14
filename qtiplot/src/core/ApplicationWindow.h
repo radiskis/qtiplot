@@ -660,7 +660,7 @@ public slots:
 	void updateCurves(Table *t, const QString& name);
 
 	void showTable(Table *, const QString& curve);
-	void showTable(int i);
+	void showTable(QAction*);
 
 	void addColToTable();
 	void cutSelection();
@@ -679,7 +679,7 @@ public slots:
 	TableStatistics* openTableStatistics(const QStringList &flist);
 	Graph* openGraph(ApplicationWindow* app, MultiLayer *plot, const QStringList &list);
 
-	void openRecentProject(int index);
+	void openRecentProject(QAction *action);
 	//@}
 
 	//! \name Table Tools
@@ -1183,6 +1183,8 @@ private slots:
 	void tableMenuAboutToShow();
 	void windowsMenuAboutToShow();
 	void windowsMenuActivated( int id );
+	void foldersMenuTriggered( QAction *a );
+	void windowsMenuTriggered( QAction *a );
 
 	//! \name Font Format Functions
 	//@{
@@ -1398,7 +1400,8 @@ public:
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
 	QString configFilePath, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
-	int ignoredLines, savingTimerId, recentMenuID;
+	int ignoredLines, savingTimerId;
+	QAction *recentMenuAction;
 	bool renameColumns, strip_spaces, simplify_spaces;
 	QStringList recentProjects;
 	bool saved;

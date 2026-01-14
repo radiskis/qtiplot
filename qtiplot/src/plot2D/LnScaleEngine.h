@@ -43,7 +43,7 @@ public:
         int numMajorSteps, int numMinorSteps,
         double stepSize = 0.0) const;
 
-    virtual QwtScaleTransformation *transformation() const;
+    virtual QwtTransform *transformation() const;
 
 protected:
     QwtInterval ln(const QwtInterval&) const;

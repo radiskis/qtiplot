@@ -31,6 +31,12 @@
 
 #include <QApplication>
 #include <QDateTime>
+#include <QContextMenuEvent>
+#include <QDrag>
+#include <QMimeData>
+#include <QDropEvent>
+#include <QKeyEvent>
+#include <QMouseEvent>
 
 Folder::Folder( Folder *parent, const QString &name )
     : QObject(parent), d_log_info(QString()), d_active_window(0)
@@ -135,26 +141,26 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 	foreach(w,lstWindows){
 		if (windowNames){
 			QString name = w->objectName();
-			if (partialMatch && name.contains(s, caseSensitive))
+			if (partialMatch && name.contains(s, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
 				return w;
 			else if (caseSensitive && name == s)
 				return w;
 			else {
 				QString text = s;
-				if (name == text.lower())
+				if (name == text.toLower())
 					return w;
 			}
 		}
 
 		if (labels){
 			QString label = w->windowLabel();
-			if (partialMatch && label.contains(s, caseSensitive))
+			if (partialMatch && label.contains(s, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
 				return w;
 			else if (caseSensitive && label == s)
 				return w;
 			else {
 				QString text = s;
-				if (label == text.lower())
+				if (label == text.toLower())
 					return w;
 			}
 		}
@@ -297,7 +303,6 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
     setDragEnabled(true);
 
 	if (parent){
-	if (parent){
 		connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
 		connect(this, SIGNAL(itemExpanded(QTreeWidgetItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
 		connect(this, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(expandedItem(QTreeWidgetItem *)));
@@ -382,7 +387,7 @@ void FolderListView::dropEvent( QDropEvent *e )
 
 void FolderListView::keyPressEvent ( QKeyEvent * e )
 {
-	if (state() == qAbstractItemView::EditingState){ // isRenaming equivalent
+	if (state() == QAbstractItemView::EditingState){ // isRenaming equivalent
 		e->ignore();
 		return;
 	}
@@ -418,7 +423,7 @@ void FolderListView::keyPressEvent ( QKeyEvent * e )
 
 void FolderListView::mouseDoubleClickEvent( QMouseEvent* e )
 {
-	if (state() == qAbstractItemView::EditingState)
+	if (state() == QAbstractItemView::EditingState)
 		{
 		e->ignore();
 		return;

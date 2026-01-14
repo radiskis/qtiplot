@@ -42,8 +42,8 @@ using namespace mu;
 muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *context, const QString &name)
   : Script(env, code, context, name)
 {
-  variables.setAutoDelete(true);
-  rvariables.setAutoDelete(true);
+  //variables.setAutoDelete(true);
+  //rvariables.setAutoDelete(true);
 
   if (Context->inherits("Table")) {
 	  parser.DefineFun("col", mu_col, false);
@@ -68,7 +68,17 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	} else {
 		parser.SetVarFactory(mu_addVariable);
 		rparser.SetVarFactory(mu_addVariableR);
+		parser.SetVarFactory(mu_addVariable);
+		rparser.SetVarFactory(mu_addVariableR);
 	}
+}
+
+muParserScript::~muParserScript()
+{
+    qDeleteAll(variables);
+    variables.clear();
+    qDeleteAll(rvariables);
+    rvariables.clear();
 }
 
 double muParserScript::col(const QString &arg)
@@ -111,8 +121,8 @@ double muParserScript::col(const QString &arg)
 	{
 		local_parser.SetExpr(items[1].toStdWString());
 		row = qRound(local_parser.Eval()) - 1;
-	} else if (variables["i"])
-		row = (int) *(variables["i"]) - 1;
+	} else if (variables.value("i"))
+		row = (int) *(variables.value("i")) - 1;
 	else
 		return 0;
 	rvariables.clear();
@@ -172,8 +182,8 @@ double muParserScript::tablecol(const QString &arg)
 		local_parser.SetExpr(arg2.toStdWString());
 		col = qRound(local_parser.Eval()) - 1;
 	}
-	if (variables["i"])
-		row = (int) *(variables["i"]) - 1;
+	if (variables.value("i"))
+		row = (int) *(variables.value("i")) - 1;
 	else
 		row = -1;
 	rvariables.clear();
@@ -246,7 +256,7 @@ double *muParserScript::addVariableR(const char *name)
 
 double* muParserScript::defineVariable(const char *name, double val)
 {
-  double *valptr = variables[name];
+  double *valptr = variables.value(name);
   if (!valptr)
   {
     valptr = new double;
@@ -271,7 +281,7 @@ double* muParserScript::defineVariable(const char *name, double val)
 
 bool muParserScript::setDouble(double val, const char *name)
 {
-  double *valptr = variables[name];
+  double *valptr = variables.value(name);
   if (!valptr)
   {
     valptr = new double;

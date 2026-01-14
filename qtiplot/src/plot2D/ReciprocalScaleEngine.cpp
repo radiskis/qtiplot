@@ -32,9 +32,9 @@
 /*!
   Return a dummy transformation
 */
-QwtScaleTransformation *ReciprocalScaleEngine::transformation() const
+QwtTransform *ReciprocalScaleEngine::transformation() const
 {
-    return new QwtScaleTransformation(QwtScaleTransformation::Other);
+    return new ReciprocalScaleTransformation((const ScaleEngine *)this);
 }
 
 /*!
@@ -239,20 +239,18 @@ QwtInterval ReciprocalScaleEngine::align(
 }
 
 //! Create a clone of the transformation
-QwtScaleTransformation *ReciprocalScaleTransformation::copy() const
+QwtTransform *ReciprocalScaleTransformation::copy() const
 {
 	return new ReciprocalScaleTransformation(d_engine);
 }
 
-double ReciprocalScaleTransformation::xForm(
-    double s, double s1, double s2, double p1, double p2) const
+double ReciprocalScaleTransformation::transform(double s) const
 {
-	return p1 + (p2 - p1) * s2 * (s1 - s)/(s * (s1 - s2));
+	return 1.0/s;
 }
 
-double ReciprocalScaleTransformation::invXForm(double p, double p1, double p2,
-    double s1, double s2) const
+double ReciprocalScaleTransformation::invTransform(double p) const
 {
-	return s1*s2*(p2 - p1)/(s2*(p2 - p) + s1*(p - p1));
+	return 1.0/p;
 }
 

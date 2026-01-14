@@ -44,15 +44,35 @@ class QLabel;
 class Matrix;
 class MatrixModel;
 
-#include <q3table.h>
-#include <q3header.h>
+//#include <q3table.h>
+//#include <q3header.h>
+#include <QTableWidget>
+#include <QHeaderView>
 
-class PreviewTable : public Q3Table
+class PreviewTable : public QTableWidget
 {
 	Q_OBJECT
 
 public:
     PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
+
+    int numRows() const { return rowCount(); }
+    int numCols() const { return columnCount(); }
+    void setNumRows(int r) { setRowCount(r); }
+    void setNumCols(int c) { setColumnCount(c); }
+
+    QString text(int r, int c) const {
+        QTableWidgetItem *it = item(r, c);
+        return it ? it->text() : QString();
+    }
+    void setText(int r, int c, const QString &t) {
+        QTableWidgetItem *it = item(r, c);
+        if (!it) {
+            it = new QTableWidgetItem(t);
+            setItem(r, c, it);
+        } else
+            it->setText(t);
+    }
 
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
 		bool stripSpaces, bool simplifySpaces, bool importComments, const QString& commentString,
@@ -77,6 +97,7 @@ private slots:
 	void nextColumn();
 	void updateColumn(int sc);
 	bool eventFilter(QObject *object, QEvent *e);
+    void onHeaderClicked(int col);
 
 private:
 	void addColumns(int c);

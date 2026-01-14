@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "GriddingDialog.h"
+
 #include <ApplicationWindow.h>
 #include <Table.h>
 #include <Matrix.h>
@@ -40,8 +41,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QLayout>
-
-#include <interpolation.h>
+#include "../../../3rdparty/alglib/src/interpolation.h"
 
 GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
@@ -365,19 +365,22 @@ void GriddingDialog::accept()
 	Matrix* m = app->newMatrix(rows, cols);
 	m->setCoordinates(xmin, xmax, ymin, ymax);
 
-	alglib::idwinterpolant z;
+	alglib::idwmodel z;
+	alglib::idwreport rep;
+	alglib::idwbuilder builder;
   
+	alglib::idwbuildercreate(2, 1, builder);
+	alglib::idwbuildersetpoints(builder, xy, d_nodes);
 	switch (boxMethod->currentIndex()){
 		case 0:
-			alglib::idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+			alglib::idwbuildersetalgotextbookmodshepard(builder, boxRadius->value());
 		break;
 		case 1:
-			alglib::idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
-		break;
 		case 2:
-			alglib::idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildersetalgomstab(builder, boxRadius->value() > 0 ? boxRadius->value() : 2.0);
 		break;
 	}
+	alglib::idwfit(builder, z, rep);
 
 	alglib::real_1d_array p;
 	p.setlength(2);
@@ -385,7 +388,7 @@ void GriddingDialog::accept()
 		p(1) = ymin + i*ystep;
 		for (int j = 0; j < cols; j++){
 			p(0) = xmin + j*xstep;
-			m->setCell(i, j, alglib::idwcalc(z, p));
+			m->setCell(i, j, alglib::idwcalc2(z, p(0), p(1)));
 		}
 	}
 
@@ -436,18 +439,21 @@ void GriddingDialog::preview()
 	double xstep = fabs(xmax - xmin)/(cols - 1);
 	double ystep = fabs(ymax - ymin)/(rows - 1);
 
-	alglib::idwinterpolant z;
+	alglib::idwmodel z;
+	alglib::idwreport rep;
+	alglib::idwbuilder builder;
+	alglib::idwbuildercreate(2, 1, builder);
+	alglib::idwbuildersetpoints(builder, xy, d_nodes);
 	switch (boxMethod->currentIndex()){
 		case 0:
-			alglib::idwbuildmodifiedshepardr(xy, d_nodes, 2, boxRadius->value(), z);
+			alglib::idwbuildersetalgotextbookmodshepard(builder, boxRadius->value());
 		break;
 		case 1:
-			alglib::idwbuildmodifiedshepard(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
-		break;
 		case 2:
-			alglib::idwbuildnoisy(xy, d_nodes, 2, boxModel->currentIndex() + 1, boxNQ->value(), boxNW->value(), z);
+			alglib::idwbuildersetalgomstab(builder, boxRadius->value() > 0 ? boxRadius->value() : 2.0);
 		break;
 	}
+	alglib::idwfit(builder, z, rep);
 
 	alglib::real_1d_array p;
 	p.setlength(2);
@@ -457,7 +463,7 @@ void GriddingDialog::preview()
 		p(1) = ymin + i*ystep;
 		for (int j = 0; j < cols; j++){
 			p(0) = xmin + j*xstep;
-			data_matrix[j][i] = alglib::idwcalc(z, p);
+			data_matrix[j][i] = alglib::idwcalc2(z, p(0), p(1));
 		}
 	}
 

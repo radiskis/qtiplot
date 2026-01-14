@@ -36,7 +36,8 @@
 #include <MyParser.h>
 #include "math.h"
 #include <gsl/gsl_sf.h>
-#include <q3asciidict.h>
+//#include <q3asciidict.h>
+#include <QMap>
 
 //! TODO
 class muParserScript: public Script
@@ -45,6 +46,7 @@ class muParserScript: public Script
 
   public:
     muParserScript(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>");
+    ~muParserScript();
 
   public slots:
     bool compile(bool asFunction=true);
@@ -83,7 +85,7 @@ class muParserScript: public Script
     static QString compileColArg(const QString& in);
 
     MyParser parser, rparser;
-    Q3AsciiDict<double> variables, rvariables;
+    QMap<QString, double*> variables, rvariables;
     QStringList muCode;
 
   public:

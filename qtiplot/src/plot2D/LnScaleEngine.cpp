@@ -32,9 +32,14 @@
 /*!
     Return a dummy transformation
 */
-QwtScaleTransformation *LnScaleEngine::transformation() const
+#include <qwt_transform.h>
+
+/*!
+    Return a dummy transformation
+*/
+QwtTransform *LnScaleEngine::transformation() const
 {
-    return new QwtScaleTransformation(QwtScaleTransformation::Other);
+    return new QwtLogTransform();
 }
 
 /*!

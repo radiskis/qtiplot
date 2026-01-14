@@ -32,9 +32,9 @@
 /*!
   Return a dummy transformation
 */
-QwtScaleTransformation *LogitScaleEngine::transformation() const
+QwtTransform *LogitScaleEngine::transformation() const
 {
-    return new QwtScaleTransformation(QwtScaleTransformation::Other);
+    return new LogitScaleTransformation((const ScaleEngine *)this);
 }
 
 /*!
@@ -141,21 +141,19 @@ QList<double> LogitScaleEngine::buildMajorTicks(
 }
 
 //! Create a clone of the transformation
-QwtScaleTransformation *LogitScaleTransformation::copy() const
+QwtTransform *LogitScaleTransformation::copy() const
 {
 	return new LogitScaleTransformation(d_engine);
 }
 
-double LogitScaleTransformation::xForm(
-    double s, double s1, double s2, double p1, double p2) const
+double LogitScaleTransformation::transform(double s) const
 {
-	return p1 + (p2 - p1) * (func(s) - func(s1))/(func(s2) - func(s1));
+	return func(s);
 }
 
-double LogitScaleTransformation::invXForm(double p, double p1, double p2,
-    double s1, double s2) const
+double LogitScaleTransformation::invTransform(double p) const
 {
-	return invFunc(func(s1) + (p - p1)/(p2 - p1)*(func(s2) - func(s1)));
+	return invFunc(p);
 }
 
 double LogitScaleTransformation::func(double x) const

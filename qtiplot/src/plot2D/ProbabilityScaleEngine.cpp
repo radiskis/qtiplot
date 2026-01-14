@@ -33,9 +33,9 @@
 /*!
   Return a dummy transformation
 */
-QwtScaleTransformation *ProbabilityScaleEngine::transformation() const
+QwtTransform *ProbabilityScaleEngine::transformation() const
 {
-    return new QwtScaleTransformation(QwtScaleTransformation::Other);
+    return new ProbabilityScaleTransformation((const ScaleEngine *)this);
 }
 
 /*!
@@ -145,21 +145,19 @@ QList<double> ProbabilityScaleEngine::buildMajorTicks(
 }
 
 //! Create a clone of the transformation
-QwtScaleTransformation *ProbabilityScaleTransformation::copy() const
+QwtTransform *ProbabilityScaleTransformation::copy() const
 {
 	return new ProbabilityScaleTransformation(d_engine);
 }
 
-double ProbabilityScaleTransformation::xForm(
-    double s, double s1, double s2, double p1, double p2) const
+double ProbabilityScaleTransformation::transform(double s) const
 {
-	return p1 + (p2 - p1) * (func(s) - func(s1))/(func(s2) - func(s1));
+	return func(s);
 }
 
-double ProbabilityScaleTransformation::invXForm(double p, double p1, double p2,
-    double s1, double s2) const
+double ProbabilityScaleTransformation::invTransform(double p) const
 {
-	return invFunc(func(s1) + (p - p1)/(p2 - p1)*(func(s2) - func(s1)));
+	return invFunc(p);
 }
 
 double ProbabilityScaleTransformation::func(double x) const

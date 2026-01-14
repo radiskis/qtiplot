@@ -55,7 +55,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
     setWindowTitle(tr("QtiPlot") + " - " + tr("Add Custom Action"));
 
     itemsList = new QListWidget();
-    itemsList->setSelectionMode(qAbstractItemView::SingleSelection);
+    itemsList->setSelectionMode(QAbstractItemView::SingleSelection);
 	itemsList->setSizePolicy(QSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred));
 	itemsList->setSpacing(2);
 

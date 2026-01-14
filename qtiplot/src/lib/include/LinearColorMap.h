@@ -57,6 +57,8 @@ public:
 	double lowerBound(){return d_range.minValue();}
 	//! Get the upper range limit
 	double upperBound(){return d_range.maxValue();}
+	//! Get the color at a stop index
+	QColor color(int index) const;
 
 	//! Exports the map to a pseudo-XML string
 	QString toXmlString();

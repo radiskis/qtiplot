@@ -179,6 +179,31 @@ public:
 	 */
 	bool isChildOf(FolderListItem *src);
 
+    // Compatibility methods for Q3ListViewItem usage
+    bool isOpen() const { return isExpanded(); }
+    void setOpen(bool o) { setExpanded(o); }
+
+    int depth() const {
+        int d = 0;
+        QTreeWidgetItem *p = parent();
+        while (p){
+            d++;
+            p = p->parent();
+        }
+        return d;
+    }
+
+    QTreeWidgetItem *itemBelow() const {
+        if (!treeWidget()) return nullptr;
+        return treeWidget()->itemBelow(this);
+    }
+
+    QTreeWidgetItem *topLevelItem() const {
+        QTreeWidgetItem *p = const_cast<FolderListItem*>(this);
+        while (p->parent()) p = p->parent();
+        return p;
+    }
+
 protected:
     Folder *myFolder;
 };
@@ -198,6 +223,16 @@ public:
 
 public slots:
 	void adjustColumns();
+	void setColumnText(int col, const QString& text) {
+		if (headerItem()) headerItem()->setText(col, text);
+	}
+	QTreeWidgetItem *findItem(const QString &text, int col, int policy = Qt::MatchExactly) const {
+		QList<QTreeWidgetItem*> items = findItems(text, static_cast<Qt::MatchFlags>(policy) | Qt::MatchRecursive, col);
+		if (!items.isEmpty()) return items.first();
+		return nullptr;
+	}
+
+    bool isRenaming() const { return state() == EditingState; }
 
 protected slots:
 	void expandedItem(QTreeWidgetItem *item);

@@ -174,7 +174,7 @@ class MatrixData: public QwtRasterData
 {
 public:
     MatrixData(Matrix *m, bool useMatrixFormula = false):
-        QwtRasterData(m->boundingRect()),
+        QwtRasterData(),
 		d_matrix(m)
     {
 		n_rows = d_matrix->numRows();
@@ -273,6 +273,17 @@ public:
     virtual QwtInterval range() const
     {
         return QwtInterval(min_z, max_z);
+    }
+
+	virtual QwtInterval interval(Qt::Axis axis) const
+    {
+        if (axis == Qt::XAxis)
+            return QwtInterval(x_start, x_start + (n_cols-1)*dx);
+        if (axis == Qt::YAxis)
+            return QwtInterval(y_start, y_start + (n_rows-1)*dy);
+        if (axis == Qt::ZAxis)
+            return QwtInterval(min_z, max_z);
+        return QwtInterval();
     }
 
 	virtual QSize rasterHint (const QRectF &) const

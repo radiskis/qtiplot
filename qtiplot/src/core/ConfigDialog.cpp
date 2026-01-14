@@ -716,7 +716,7 @@ void ConfigDialog::initAppPage()
 	boxScriptingLanguage = new QComboBox();
 	QStringList llist = ScriptingLangManager::languages();
 	boxScriptingLanguage->addItems(llist);
-	box->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
+	boxScriptingLanguage->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
 	topBoxLayout->addWidget( boxScriptingLanguage, 3, 1 );
 
     lblUndoStackSize = new QLabel();
@@ -1294,10 +1294,10 @@ void ConfigDialog::initCurvesPage()
 
 	colorsList = new QTableWidget();
 	colorsList->setColumnCount(2);
-	colorsList->horizontalHeader()->setClickable(false);
-	colorsList->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
-	colorsList->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
-	colorsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	colorsList->horizontalHeader()->setSectionsClickable(false);
+	colorsList->horizontalHeader()->setSectionResizeMode (0, QHeaderView::ResizeToContents);
+	colorsList->horizontalHeader()->setSectionResizeMode (1, QHeaderView::Stretch);
+	colorsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	connect(colorsList, SIGNAL(cellClicked(int, int)), this, SLOT(showColorDialog(int, int)));
 	connect(colorsList, SIGNAL(cellChanged(int, int)), this, SLOT(changeColorName(int, int)));
@@ -1338,9 +1338,9 @@ void ConfigDialog::initCurvesPage()
 
 	symbolsList = new QTableWidget();
 	symbolsList->setColumnCount(1);
-	symbolsList->horizontalHeader()->setClickable(false);
-	symbolsList->horizontalHeader()->setResizeMode (0, QHeaderView::Stretch);
-	symbolsList->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	symbolsList->horizontalHeader()->setSectionsClickable(false);
+	symbolsList->horizontalHeader()->setSectionResizeMode (0, QHeaderView::Stretch);
+	symbolsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	d_indexed_symbols = app->indexedSymbols();
 	setSymbolsList(d_indexed_symbols);
@@ -2002,11 +2002,11 @@ void ConfigDialog::languageChange()
 
 	unitBoxLabel->setText(tr("Unit"));
 	unitBox->clear();
-	unitBox->insertItem(tr("inch"));
-	unitBox->insertItem(tr("mm"));
-	unitBox->insertItem(tr("cm"));
-	unitBox->insertItem(tr("point"));
-	unitBox->insertItem(tr("pixel"));
+	unitBox->addItem(tr("inch"));
+	unitBox->addItem(tr("mm"));
+	unitBox->addItem(tr("cm"));
+	unitBox->addItem(tr("point"));
+	unitBox->addItem(tr("pixel"));
 	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
 
 	canvasWidthLabel->setText(tr("Canvas Width"));
@@ -2057,12 +2057,12 @@ void ConfigDialog::languageChange()
 	gridLineTypeLbl->setText(tr( "Line Type" ));
 
 	boxGridXAxis->clear();
-	boxGridXAxis->insertItem(tr("Bottom"));
-	boxGridXAxis->insertItem(tr("Top"));
+	boxGridXAxis->addItem(tr("Bottom"));
+	boxGridXAxis->addItem(tr("Top"));
 
 	boxGridYAxis->clear();
-	boxGridYAxis->insertItem(tr("Left"));
-	boxGridYAxis->insertItem(tr("Right"));
+	boxGridYAxis->addItem(tr("Left"));
+	boxGridYAxis->addItem(tr("Right"));
 
 	QPixmap image2(":/vertical_grid.png");
 	QPixmap image3(":/horizontal_grid.png");
@@ -2282,25 +2282,25 @@ void ConfigDialog::languageChange()
 
 	int style = app->defaultCurveStyle;
 	if (style == Graph::Line)
-		box->setCurrentIndex(0);
+		boxCurveStyle->setCurrentIndex(0);
 	else if (style == Graph::Scatter)
-		box->setCurrentIndex(1);
+		boxCurveStyle->setCurrentIndex(1);
 	else if (style == Graph::LineSymbols)
-		box->setCurrentIndex(2);
+		boxCurveStyle->setCurrentIndex(2);
 	else if (style == Graph::VerticalDropLines)
-		box->setCurrentIndex(3);
+		boxCurveStyle->setCurrentIndex(3);
 	else if (style == Graph::Spline)
-		box->setCurrentIndex(4);
+		boxCurveStyle->setCurrentIndex(4);
 	else if (style == Graph::VerticalSteps)
-		box->setCurrentIndex(5);
+		boxCurveStyle->setCurrentIndex(5);
 	else if (style == Graph::HorizontalSteps)
-		box->setCurrentIndex(6);
+		boxCurveStyle->setCurrentIndex(6);
 	else if (style == Graph::Area)
-		box->setCurrentIndex(7);
+		boxCurveStyle->setCurrentIndex(7);
 	else if (style == Graph::VerticalBars)
-		box->setCurrentIndex(8);
+		boxCurveStyle->setCurrentIndex(8);
 	else if (style == Graph::HorizontalBars)
-		box->setCurrentIndex(9);
+		boxCurveStyle->setCurrentIndex(9);
 
 	//plots 3D
 	lblResolution->setText(tr("&Resolution"));
@@ -2417,7 +2417,7 @@ void ConfigDialog::apply()
 
 	// tables page
 	QString sep = boxSeparator->currentText();
-	sep.replace(tr("TAB"), "\t", false);
+	sep.replace(tr("TAB"), "\t", Qt::CaseInsensitive);
 	sep.replace("\\t", "\t");
 	sep.replace(tr("SPACE"), " ");
 	sep.replace("\\s", " ");
@@ -2439,10 +2439,9 @@ void ConfigDialog::apply()
 	app->tableHeaderFont = headerFont;
 	app->d_show_table_comments = boxTableComments->isChecked();
 
-	QColorGroup cg;
-	cg.setColor(QColorGroup::Base, buttonBackground->color());
-	cg.setColor(QColorGroup::Text, buttonText->color());
-	QPalette palette(cg, cg, cg);
+	QPalette palette;
+	palette.setColor(QPalette::Base, buttonBackground->color());
+	palette.setColor(QPalette::Text, buttonText->color());
 
 	QList<MdiSubWindow *> windows = app->windowsList();
 	foreach(MdiSubWindow *w, windows){
@@ -2527,8 +2526,8 @@ void ConfigDialog::apply()
 	// 2D plots page: ticks tab
 	app->majTicksLength = boxMajTicksLength->value();
 	app->minTicksLength = boxMinTicksLength->value();
-	app->majTicksStyle = boxMajTicks->currentItem();
-	app->minTicksStyle = boxMinTicks->currentItem();
+	app->majTicksStyle = boxMajTicks->currentIndex();
+	app->minTicksStyle = boxMinTicks->currentIndex();
 	// 2D plots page: fonts tab
 	app->plotAxesFont=axesFont;
 	app->plotNumbersFont=numbersFont;
@@ -2726,7 +2725,7 @@ void ConfigDialog::apply()
 int ConfigDialog::curveStyle()
 {
 	int style = 0;
-	switch (boxCurveStyle->currentItem())
+	switch (boxCurveStyle->currentIndex())
 	{
 		case 0:
 			style = Graph::Line;
@@ -3531,7 +3530,7 @@ void ConfigDialog::showGridOptions(int axis)
 		boxWidthMajor->setValue(majPenY.widthF());
 
 		QPen minPenY = grd->minPenY();
-		box->setCurrentIndex(minPenY.style() - 1);
+		boxTypeMinor->setCurrentIndex(minPenY.style() - 1);
 		boxColorMinor->setColor(minPenY.color());
 		boxWidthMinor->setValue(minPenY.widthF());
 	}
@@ -3652,7 +3651,7 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	QStringList llist = ScriptingLangManager::languages();
 	boxScriptingLanguage->clear();
 	boxScriptingLanguage->addItems(llist);
-	box->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
+	boxScriptingLanguage->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
 
 	undoStackSizeBox->setValue(app->matrixUndoStackSize());
 	boxEndLine->setCurrentIndex((int)app->d_eol);

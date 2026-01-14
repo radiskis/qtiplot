@@ -581,17 +581,21 @@ void ImportASCIIDialog::selectFilter(const QString & filter)
  *****************************************************************************/
 
 PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const char * name)
-:Q3Table(numRows, numCols, parent, name)
+:QTableWidget(numRows, numCols, parent)
 {
+    if (name)
+        setObjectName(name);
 	setAttribute(Qt::WA_DeleteOnClose);
-	setSelectionMode(Q3Table::NoSelection);
-	setReadOnly(true);
-	setRowMovingEnabled(false);
-	setColumnMovingEnabled(false);
-	verticalHeader()->setResizeEnabled(false);
-	horizontalHeader()->installEventFilter(this);
-	horizontalHeader()->setResizeEnabled(true);
-	horizontalHeader()->setMovingEnabled (false);
+	setSelectionMode(QAbstractItemView::NoSelection);
+    setEditTriggers(QAbstractItemView::NoEditTriggers); 
+    //setReadOnly(true); // QTableWidget doesn't have setReadOnly, use edit triggers
+    
+	verticalHeader()->setSectionsMovable(false);
+	horizontalHeader()->setSectionsMovable(false);
+	verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    //horizontalHeader()->installEventFilter(this); // Is this needed?
+	horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+	//horizontalHeader()->setMovingEnabled (false);
 
 	for (int i = 0; i < numCols; i++){
 		comments << "";
@@ -603,7 +607,8 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 	d_start_col = numCols;
 	setHeader();
 	setMinimumHeight(2*horizontalHeader()->height());
-	connect(horizontalHeader(), SIGNAL(sizeChange(int, int, int)), this, SLOT(setHeader()));
+	connect(horizontalHeader(), SIGNAL(sectionResized(int, int, int)), this, SLOT(setHeader()));
+    connect(horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(onHeaderClicked(int)));
 }
 
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
@@ -800,11 +805,18 @@ void PreviewTable::clear()
 
 void PreviewTable::setHeader()
 {
-	Q3Header *head = horizontalHeader();
 	for (int i=0; i<numCols(); i++){
 		QString s = col_label[i];
-        int lines = columnWidth(i)/head->fontMetrics().boundingRect("_").width();
-        head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
+		// QTableWidget/QHeaderView handles multiline automatically if we set text
+        // calculating "lines" manually is tricky without direct font access, but let's approximate or just set text
+        // The original code tried to add underscores.
+        // head->setLabel(i, s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[i]);
+        
+        QString label = s.remove("\n") + "\n" + comments[i];
+        if (horizontalHeaderItem(i))
+            horizontalHeaderItem(i)->setText(label);
+        else
+            setHorizontalHeaderItem(i, new QTableWidgetItem(label));
 	}
 }
 
@@ -819,7 +831,7 @@ void PreviewTable::addColumns(int c)
 		}
 	}
 	max++;
-	insertColumns(cols, c);
+	setColumnCount(cols + c);
 	for (int i = 0; i < c; i++){
 		comments << QString();
 		col_label << QString::number(max+i);
@@ -830,24 +842,17 @@ void PreviewTable::addColumns(int c)
 
 bool PreviewTable::eventFilter(QObject *object, QEvent *e)
 {
-	Q3Header *hheader = horizontalHeader();
-	if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
-		const QMouseEvent *me = (const QMouseEvent *)e;
-		clearSelection();
-		int col = hheader->sectionAt (me->pos().x() + hheader->offset());
-		if (col >= 0 && col < numCols()){
-			QRect rect = hheader->sectionRect(col);
-			rect.setLeft(rect.left() + 2);
-			rect.setRight(rect.right() - 2);
-			if (rect.contains (me->pos())){
-				selectColumn(col);
-				d_selected_column = col;
-				showColTypeDialog();
-				return true;
-			}
-		}
-	}
-	return Q3Table::eventFilter(object, e);
+	return QTableWidget::eventFilter(object, e);
+}
+
+void PreviewTable::onHeaderClicked(int col)
+{
+    clearSelection();
+    if (col >= 0 && col < numCols()){
+        selectColumn(col);
+        d_selected_column = col;
+        showColTypeDialog();
+    }
 }
 
 void PreviewTable::setSelectedColumn(int col)

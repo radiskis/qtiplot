@@ -34,19 +34,45 @@
 #include "LogitScaleEngine.h"
 #include <limits.h>
 
-QwtScaleTransformation* ScaleEngine::transformation() const
+QwtTransform* ScaleEngine::transformation() const
 {
 	return new ScaleTransformation(this);
 }
 
-double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, double s2) const
+double ScaleTransformation::invTransform(double p) const
 {
-	if (!d_engine->hasBreak()){
-		QwtScaleTransformation *tr = newScaleTransformation();
-		double res = tr->invXForm(p, p1, p2, s1, s2);
-		delete tr;
-		return res;
+	/*
+	// Axis break logic commented out for Qwt 6 porting stability
+	if (d_engine->hasBreak()){
+		// ... (Break logic implementation requires QwtScaleMap context which is not available in invTransform(p))
+		// For now, ignore break logic in transformation.
 	}
+	*/
+
+	ScaleTransformation::Type d_type = d_engine->type();
+    
+    // Delegation for complex types
+    if (d_type == ScaleTransformation::Reciprocal || 
+        d_type == ScaleTransformation::Probability || 
+        d_type == ScaleTransformation::Logit) {
+        QwtTransform *tr = newScaleTransformation();
+        double res = tr->invTransform(p);
+        delete tr;
+        return res;
+    }
+
+    // Basic types
+	if (d_type == ScaleTransformation::Linear)
+        return p;
+    else if (d_type == ScaleTransformation::Log10)
+        return pow(10.0, p);
+    else if (d_type == ScaleTransformation::Ln)
+        return exp(p);
+    else if (d_type == ScaleTransformation::Log2)
+        return pow(2.0, p);
+
+	return p; 
+}
 
     const int d_break_space = d_engine->breakWidth();
 	const double lb = d_engine->axisBreakLeft();
@@ -101,100 +127,55 @@ double ScaleTransformation::invXForm(double p, double p1, double p2, double s1, 
 	return DBL_MAX; // something invalid
 }
 
-double ScaleTransformation::xForm(double s, double s1, double s2, double p1, double p2) const
+double ScaleTransformation::transform(double s) const
 {
-	double maxScreenCoord = 1e4;
-	if ((d_engine->type() != ScaleTransformation::Linear) && s <= 0.0){
-		if (p1 < p2){
-			if (d_engine->testAttribute(QwtScaleEngine::Inverted))
-				return maxScreenCoord;
-			return -DBL_MAX;
-		}
-
-		if (d_engine->testAttribute(QwtScaleEngine::Inverted))
-			return -DBL_MAX;
-
-		return maxScreenCoord;
+	/* // Axis break logic disabled
+	if (d_engine->hasBreak()){
+        // ...
 	}
+    */
+    
+    if (s <= 0.0 && d_engine->type() != ScaleTransformation::Linear)
+        return -DBL_MAX; // Or some handling for log(<=0)
 
-	if (!d_engine->hasBreak()){
-		QwtScaleTransformation *tr = newScaleTransformation();
-		double res = tr->xForm(s, s1, s2, p1, p2);
-		delete tr;
-		return res;
-	}
-
-    const int d_break_space = d_engine->breakWidth();
-	const double lb = d_engine->axisBreakLeft();
-    const double rb = d_engine->axisBreakRight();
-	const double pm = p1 + (p2 - p1)*(double)d_engine->breakPosition()/100.0;
-	double pml, pmr;
-	if (p2 > p1){
-		pml = pm - d_break_space;
-		pmr = pm + d_break_space;
-	} else {
-		pml = pm + d_break_space;
-		pmr = pm - d_break_space;
-	}
-
-	if (s > lb && s < rb)
-		return pm;
-
-	bool invertedScale = d_engine->testAttribute(QwtScaleEngine::Inverted);
 	ScaleTransformation::Type d_type = d_engine->type();
 
-	if (invertedScale){
-		if (s <= lb){
-			if (d_type == ScaleTransformation::Linear)
-				return pmr + (lb - s)/(lb - s2)*(p2 - pmr);
-			else if (d_type == ScaleTransformation::Log10 ||
-					 d_type == ScaleTransformation::Ln ||
-					 d_type == ScaleTransformation::Log2){
-				return pmr + log(lb/s)/log(lb/s2)*(p2 - pmr);
-			}
-		}
-
-		if (s >= rb){
-			if (d_engine->log10ScaleAfterBreak())
-				return p1 + log(s1/s)/log(s1/rb)*(pml - p1);
-			else
-				return p1 + (s1 - s)/(s1 - rb)*(pml - p1);
-		}
-
-	}
-
-    if (s <= lb){
-        if (d_type == ScaleTransformation::Linear)
-            return p1 + (s - s1)/(lb - s1)*(pml - p1);
-        else if (d_type == ScaleTransformation::Log10 ||
-				 d_type == ScaleTransformation::Ln ||
-				 d_type == ScaleTransformation::Log2)
-            return p1 + log(s/s1)/log(lb/s1)*(pml - p1);
+    // Delegation for complex types
+    if (d_type == ScaleTransformation::Reciprocal || 
+        d_type == ScaleTransformation::Probability || 
+        d_type == ScaleTransformation::Logit) {
+        QwtTransform *tr = newScaleTransformation();
+        double res = tr->transform(s);
+        delete tr;
+        return res;
     }
 
-	if (s >= rb){
-	    if (d_engine->log10ScaleAfterBreak())
-            return pmr + log(s/rb)/log(s2/rb)*(p2 - pmr);
-	    else
-            return pmr + (s - rb)/(s2 - rb)*(p2 - pmr);
-	}
+	if (d_type == ScaleTransformation::Linear)
+        return s;
+    else if (d_type == ScaleTransformation::Log10)
+        return log10(s);
+    else if (d_type == ScaleTransformation::Ln)
+        return log(s);
+    else if (d_type == ScaleTransformation::Log2)
+        return log(s)/log(2.0);
 
-	return DBL_MAX; // something invalid
+	return s;
 }
 
-QwtScaleTransformation *ScaleTransformation::copy() const
+QwtTransform *ScaleTransformation::copy() const
 {
     return new ScaleTransformation(d_engine);
 }
 
-QwtScaleTransformation* ScaleTransformation::newScaleTransformation() const
+QwtTransform* ScaleTransformation::newScaleTransformation() const
 {
-	QwtScaleTransformation *transform = NULL;
+	QwtTransform *transform = NULL;
 	switch (d_engine->type()){
 		case ScaleTransformation::Log2:
 		case ScaleTransformation::Ln:
 		case ScaleTransformation::Log10:
-			transform = new QwtScaleTransformation(QwtScaleTransformation::Log10);
+			// transform = new QwtScaleTransformation(QwtScaleTransformation::Log10); // Old
+            transform = new QwtLogTransform(); // Generic Qwt log transform
 		break;
 
 		case ScaleTransformation::Reciprocal:
@@ -211,7 +192,8 @@ QwtScaleTransformation* ScaleTransformation::newScaleTransformation() const
 
 		case ScaleTransformation::Linear:
 		default:
-			transform = new QwtScaleTransformation (QwtScaleTransformation::Linear);
+			// transform = new QwtScaleTransformation (QwtScaleTransformation::Linear); // Old
+            transform = new QwtNullTransform(); // Linear
 	}
 	return transform;
 }

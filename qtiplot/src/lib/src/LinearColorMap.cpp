@@ -71,6 +71,17 @@ QwtInterval LinearColorMap::intensityRange() const
 	return d_range;
 }
 
+QColor LinearColorMap::color(int index) const
+{
+	QVector<double> stops = colorStops();
+	if (index <= 0)
+		return color1();
+	if (index >= (int)stops.size() - 1)
+		return color2();
+
+	return QwtColorMap::color(QwtInterval(0, 1), stops[index]);
+}
+
 QString LinearColorMap::toXmlString()
 {
 	QString s = "<ColorMap>\n";
