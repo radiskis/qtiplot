@@ -39,6 +39,8 @@
 
 #include <QLayout>
 #include <QApplication>
+#include <QKeyEvent>
+#include <qwt_picker_machine.h>
 
 ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
 	: QwtPlotPicker(graph->canvas()),
@@ -48,7 +50,7 @@ ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, c
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
 	d_selection_marker.setLinePen(QPen(Qt::red, 1));
 	setTrackerMode(QwtPicker::AlwaysOn);
-	setSelectionFlags(QwtPicker::PointSelection | QwtPicker::ClickSelection);
+	setStateMachine(new QwtPickerClickPointMachine());
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	if (status_target)
@@ -191,7 +193,7 @@ void DrawPointTool::appendPoint(const QPointF &pos)
 		d_curve = new DataCurve(d_table, d_table->colName(0), d_table->colName(1));
 		d_curve->setAxes(QwtPlot::xBottom, QwtPlot::yLeft);
 		d_curve->setPen(QPen(Qt::black, d_app->defaultCurveLineWidth));
-		d_curve->setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(Qt::black),
+		d_curve->setSymbol(new QwtSymbol(QwtSymbol::Ellipse, QBrush(Qt::black),
 						  QPen(Qt::black, d_app->defaultCurveLineWidth),
 						  QSize(d_app->defaultSymbolSize, d_app->defaultSymbolSize)));
 		d_graph->insertPlotItem(d_curve, Graph::LineSymbols);
@@ -242,7 +244,7 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 	d_ver_table(verTable),
 	d_box(NULL)
 {
-	d_selection_marker.setAxis(QwtPlot::xTop, QwtPlot::yLeft);
+	d_selection_marker.setAxes(QwtPlot::xTop, QwtPlot::yLeft);
 
 	if (d_matrix){
 		double xVal = 0.5*(m->xStart() + m->xEnd());
@@ -329,7 +331,7 @@ void ImageProfilesTool::connectPlotLayers()
 		DataCurve *c = gVert->insertCurve(d_ver_table, d_ver_table->colName(1), d_ver_table->colName(0), Graph::Line);
 		if (c){
 			c->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
-			c->setCurveType(QwtPlotCurve::Xfy);
+			c->setOrientation(Qt::Horizontal);
 		}
 	}
 }
@@ -460,7 +462,7 @@ void ImageProfilesTool::append(const QPointF &pos)
 		gVert->enableAutoscaling(false);
 		QwtPlotCurve *c = gVert->curve(0);
 		if (c)
-			c->setCurveType(QwtPlotCurve::Xfy);
+			c->setOrientation(Qt::Horizontal);
 	}
 
 	double x = pos.x();

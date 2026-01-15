@@ -72,9 +72,10 @@ void ErrorBarsCurve::copy(const ErrorBarsCurve *e)
 	err = e->err;
 }
 
-void ErrorBarsCurve::draw(QPainter *painter,
-		const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void ErrorBarsCurve::drawSeries(QPainter *painter,
+		const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
+    Q_UNUSED(canvasRect);
 	if ( !painter || dataSize() <= 0 )
 		return;
 
@@ -85,8 +86,7 @@ void ErrorBarsCurve::draw(QPainter *painter,
 	QPen p = pen();
 	p.setCapStyle(Qt::FlatCap);
 	p.setJoinStyle(Qt::MiterJoin);
-	if ((double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX() != 1.0)
-		p = QwtPainter::scaledPen(p);
+
 	painter->setPen(p);
 	drawErrorBars(painter, xMap, yMap, from, to);
 	painter->restore();
@@ -112,10 +112,10 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
 		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
 	} else {
-		const QwtSymbol symbol = d_master_curve->symbol();
-		if (symbol.style() != QwtSymbol::NoSymbol){
-			sh2 = int(0.5*y_factor*symbol.size().height());
-			sw2 = int(0.5*x_factor*symbol.size().width());
+		const QwtSymbol *symbol = d_master_curve->symbol();
+		if (symbol && symbol->style() != QwtSymbol::NoSymbol){
+			sh2 = int(0.5*y_factor*symbol->size().height());
+			sw2 = int(0.5*x_factor*symbol->size().width());
 		}
 	}
 	bool addStackOffset = !stack.isEmpty();
@@ -142,8 +142,8 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		const double xval = x(i) + xStackOffset;
 		const double yval = y(i) + yStackOffset;
 
-		const double xi = xMap.xTransform(xval + d_xOffset);
-		const double yi = yMap.xTransform(yval + d_yOffset);
+		const double xi = xMap.transform(xval + d_xOffset);
+		const double yi = yMap.transform(yval + d_yOffset);
 
 		double error = err[i];
 		if (error == 0.0)
@@ -153,8 +153,8 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 			if (d_master_curve->type() != Graph::VerticalBars && yval < 0)
 				error *= -1.0;
 
-			const double yh = yMap.xTransform(yval + error);
-			const double yl = yMap.xTransform(yval - error);
+			const double yh = yMap.transform(yval + error);
+			const double yl = yMap.transform(yval - error);
 			const double yhl = yi - sh2;
 			const double ylh = yi + sh2;
 			const double cap2 = d_cap_length*0.5*x_factor;
@@ -173,8 +173,8 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 			if (d_master_curve->type() != Graph::HorizontalBars && xval < 0)
 				error *= -1.0;
 
-			const double xp = xMap.xTransform(xval + error);
-			const double xm = xMap.xTransform(xval - error);
+			const double xp = xMap.transform(xval + error);
+			const double xm = xMap.transform(xval - error);
 			const double xpm = xi + sw2;
 			const double xmp = xi - sw2;
 			const double cap2 = d_cap_length*0.5*y_factor;
@@ -238,39 +238,16 @@ QRectF ErrorBarsCurve::boundingRect() const
 
 	int size = dataSize();
 
-	QVector <double> X(size), Y(size), min(size), max(size);
 	for (int i = 0; i < size; i++){
 		double xv = x(i), yv = y(i), errv = err[i];
-		X[i] = xv;
-		Y[i] = yv;
 		if (type == Vertical){
-			min[i] = yv - errv;
-			max[i] = yv + errv;
+			rect.setTop(qMin(rect.top(), yv - errv));
+			rect.setBottom(qMax(rect.bottom(), yv + errv));
 		} else {
-			min[i] = xv - errv;
-			max[i] = xv + errv;
+			rect.setLeft(qMin(rect.left(), xv - errv));
+			rect.setRight(qMax(rect.right(), xv + errv));
 		}
 	}
-
-	QVectorData *erMin, *erMax;
-	if (type == Vertical){
-		erMin = new QVectorData(X, min);
-		erMax = new QVectorData(X, max);
-	} else {
-		erMin = new QVectorData(min, Y);
-		erMax = new QVectorData(max, Y);
-	}
-
-	QRectF minrect = erMin->boundingRect();
-	QRectF maxrect = erMax->boundingRect();
-
-	rect.setTop(qMin(minrect.top(), maxrect.top()));
-	rect.setBottom(qMax(minrect.bottom(), maxrect.bottom()));
-	rect.setLeft(qMin(minrect.left(), maxrect.left()));
-	rect.setRight(qMax(minrect.right(), maxrect.right()));
-
-	delete erMin;
-	delete erMax;
 
 	return rect;
 }
@@ -281,7 +258,7 @@ void ErrorBarsCurve::setMasterCurve(DataCurve *c)
 		return;
 
 	d_master_curve = c;
-	setAxis(c->xAxis(), c->yAxis());
+	setAxes(c->xAxis(), c->yAxis());
 	d_start_row = c->startRow();
 	d_end_row = c->endRow();
 	c->addErrorBars(this);
@@ -312,7 +289,7 @@ void ErrorBarsCurve::loadData()
 		return;
 
 	int r = abs(d_end_row - d_start_row) + 1;
-	r = qMin(r, d_master_curve->dataSize());
+	r = qMin(r, (int)d_master_curve->dataSize());
 	QVector<double> X(r), Y(r), err(r);
 	int data_size = 0;
 	QLocale locale = d_table->locale();

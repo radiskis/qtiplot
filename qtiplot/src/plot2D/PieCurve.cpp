@@ -40,6 +40,8 @@
 
 #include <qwt_plot_canvas.h>
 #include <qwt_painter.h>
+#include <qwt_scale_map.h>
+#include <QCloseEvent>
 
 PieCurve::PieCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
@@ -111,7 +113,7 @@ void PieCurve::draw(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMa
 
 void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const
 {
-	QwtPlotCanvas* canvas = plot()->canvas();
+	QWidget* canvas = plot()->canvas();
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
 
 	// calculate resolution factors
@@ -139,7 +141,7 @@ void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtSca
 
     painter->save();
 
-    painter->setPen(QwtPainter::scaledPen(pen()));
+    painter->setPen(pen());
     painter->setBrush(QBrush(color(0), QwtPlotCurve::brush().style()));
 
     QPointF start(x_center + ray_x, y_center);
@@ -196,7 +198,7 @@ void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtSca
 
 void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
 {
-	QwtPlotCanvas* canvas = plot()->canvas();
+	QWidget* canvas = plot()->canvas();
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
 
 	// calculate resolution factors
@@ -258,7 +260,7 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 		const double q = yi/sum;
 		const int value = (int)(q*5760);
 
-		painter->setPen(QwtPainter::scaledPen(pen()));
+		painter->setPen(pen());
 		painter->setBrush(QBrush(color(i), QwtPlotCurve::brush().style()));
 
 		double deg = q*360;

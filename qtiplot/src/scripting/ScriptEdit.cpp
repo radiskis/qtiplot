@@ -540,7 +540,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 	ts.setEncoding(QTextStream::UnicodeUTF8);
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    qApp->processEvents(QEventLoop::ExcludeUserInput);
+    qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 
     blockSignals(true);
     insertPlainText(ts.readAll());

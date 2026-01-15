@@ -28,6 +28,47 @@
  ***************************************************************************/
 
 #include "ReciprocalScaleEngine.h"
+#include <qwt_interval.h>
+#include <qwt_transform.h>
+#include <qwt_math.h>
+#include <qmath.h>
+#include <cmath>
+#include <algorithm>
+#include <limits>
+
+static double qwtReciprocal(double value)
+{
+    if (value == 0.0)
+        return std::numeric_limits<double>::max(); // Or some other appropriate handling for 1/0
+    return 1.0 / value;
+}
+
+static double qwtReciprocalInverse(double value)
+{
+    if (value == std::numeric_limits<double>::max()) // Or other handling for 1/0
+        return 0.0;
+    return 1.0 / value;
+}
+
+static double floorEps(double value, double stepSize)
+{
+    if (stepSize == 0.0) return value;
+    return std::floor(value / stepSize + 1.0e-9) * stepSize;
+}
+
+static double ceilEps(double value, double stepSize)
+{
+    if (stepSize == 0.0) return value;
+    return std::ceil(value / stepSize - 1.0e-9) * stepSize;
+}
+
+static int compareEps(double v1, double v2, double intervalSize)
+{
+    const double eps = std::abs(1.0e-9 * intervalSize);
+    if (v1 < v2 - eps) return -1;
+    if (v1 > v2 + eps) return 1;
+    return 0;
+}
 
 /*!
   Return a dummy transformation
@@ -63,7 +104,7 @@ void ReciprocalScaleEngine::autoScale(int maxNumSteps,
     if (interval.width() == 0.0)
         interval = buildInterval(interval.minValue());
 
-    stepSize = divideInterval(interval.width(), qwtMax(maxNumSteps, 1));
+    stepSize = divideInterval(interval.width(), qMax(maxNumSteps, 1));
 
     if ( !testAttribute(QwtScaleEngine::Floating) )
         interval = align(interval, stepSize);
@@ -97,7 +138,7 @@ QwtScaleDiv ReciprocalScaleEngine::divideScale(double x1, double x2,
     if (interval.width() <= 0 )
         return QwtScaleDiv();
 
-    stepSize = qwtAbs(stepSize);
+    stepSize = qAbs(stepSize);
     if ( stepSize == 0.0 )
     {
         if ( maxMajSteps < 1 )
@@ -147,7 +188,7 @@ void ReciprocalScaleEngine::buildTicks(
 
         for ( int j = 0; j < (int)ticks[i].count(); j++ )
         {
-            if ( QwtScaleArithmetic::compareEps(ticks[i][j], 0.0, stepSize) == 0 )
+            if ( compareEps(ticks[i][j], 0.0, stepSize) == 0 )
                 ticks[i][j] = 0.0;
         }
     }
@@ -181,11 +222,11 @@ void ReciprocalScaleEngine::buildMinorTicks(
         return;
 
     // # ticks per interval
-    int numTicks = (int)::ceil(qwtAbs(stepSize / minStep)) - 1;
+    int numTicks = (int)::ceil(qAbs(stepSize / minStep)) - 1;
 
     // Do the minor steps fit into the interval?
-    if ( QwtScaleArithmetic::compareEps((numTicks +  1) * qwtAbs(minStep),
-        qwtAbs(stepSize), stepSize) > 0)
+    if ( compareEps((numTicks +  1) * qAbs(minStep),
+        qAbs(stepSize), stepSize) > 0)
     {
         numTicks = 1;
         minStep = stepSize * 0.5;
@@ -205,7 +246,7 @@ void ReciprocalScaleEngine::buildMinorTicks(
             val += minStep;
 
             double alignedValue = val;
-            if (QwtScaleArithmetic::compareEps(val, 0.0, stepSize) == 0)
+            if (compareEps(val, 0.0, stepSize) == 0)
                 alignedValue = 0.0;
 
             if ( k == medIndex )
@@ -230,10 +271,8 @@ void ReciprocalScaleEngine::buildMinorTicks(
 QwtInterval ReciprocalScaleEngine::align(
     const QwtInterval &interval, double stepSize) const
 {
-    const double x1 =
-        QwtScaleArithmetic::floorEps(interval.minValue(), stepSize);
-    const double x2 =
-        QwtScaleArithmetic::ceilEps(interval.maxValue(), stepSize);
+    const double x1 = floorEps(interval.minValue(), stepSize);
+    const double x2 = ceilEps(interval.maxValue(), stepSize);
 
     return QwtInterval(x1, x2);
 }

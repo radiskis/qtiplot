@@ -361,13 +361,13 @@ void AxesDialog::initGridPage()
 	rightLayout->addWidget( new QLabel(tr( "Axes" )), 4, 0 );
 
 	boxGridXAxis = new QComboBox();
-	boxGridXAxis->insertItem(tr("Bottom"));
-	boxGridXAxis->insertItem(tr("Top"));
+	boxGridXAxis->addItem(tr("Bottom"));
+	boxGridXAxis->addItem(tr("Top"));
 	rightLayout->addWidget( boxGridXAxis, 4, 1);
 
 	boxGridYAxis = new QComboBox();
-	boxGridYAxis->insertItem(tr("Left"));
-	boxGridYAxis->insertItem(tr("Right"));
+	boxGridYAxis->addItem(tr("Left"));
+	boxGridYAxis->addItem(tr("Right"));
 	rightLayout->addWidget(boxGridYAxis, 4, 2);
 
 	rightLayout->addWidget( new QLabel(tr( "Additional lines" )), 5, 0);
@@ -381,9 +381,9 @@ void AxesDialog::initGridPage()
 
 	rightLayout->addWidget( new QLabel(tr( "Apply To" )), 6, 0);
 	boxApplyGridFormat = new QComboBox();
-	boxApplyGridFormat->insertItem(tr("This Layer"));
-	boxApplyGridFormat->insertItem(tr("This Window"));
-	boxApplyGridFormat->insertItem(tr("All Windows"));
+	boxApplyGridFormat->addItem(tr("This Layer"));
+	boxApplyGridFormat->addItem(tr("This Window"));
+	boxApplyGridFormat->addItem(tr("All Windows"));
 	rightLayout->addWidget(boxApplyGridFormat, 6, 1);
 
 	boxAntialiseGrid = new QCheckBox(tr("An&tialised"));
@@ -477,7 +477,7 @@ void AxesDialog::initAxesPage()
 	QVBoxLayout *labelBoxLayout = new QVBoxLayout(labelBox);
 
 	boxTitle = new QTextEdit();
-	boxTitle->setTextFormat(Qt::PlainText);
+//	boxTitle->setTextFormat(Qt::PlainText);
 	QFontMetrics metrics(this->font());
 	boxTitle->setMaximumHeight(3*metrics.height());
 	labelBoxLayout->addWidget(boxTitle);
@@ -643,7 +643,7 @@ void AxesDialog::initAxesPage()
 	rightBoxLayout->addWidget(boxShowFormula, 8, 0);
 
 	boxFormula = new QTextEdit();
-	boxFormula->setTextFormat(Qt::PlainText);
+//	boxFormula->setTextFormat(Qt::PlainText);
 	boxFormula->setMaximumHeight(3*metrics.height());
 	boxFormula->hide();
 	rightBoxLayout->addWidget(boxFormula, 8, 1);
@@ -652,10 +652,10 @@ void AxesDialog::initAxesPage()
 	bottomLayout->addWidget(boxShowLabels);
 
 	axisFormatApplyToBox = new QComboBox();
-	axisFormatApplyToBox->insertItem(tr("Axis"));
-	axisFormatApplyToBox->insertItem(tr("Layer"));
-	axisFormatApplyToBox->insertItem(tr("Window"));
-	axisFormatApplyToBox->insertItem(tr("All Windows"));
+	axisFormatApplyToBox->addItem(tr("Axis"));
+	axisFormatApplyToBox->addItem(tr("Layer"));
+	axisFormatApplyToBox->addItem(tr("Window"));
+	axisFormatApplyToBox->addItem(tr("All Windows"));
 
 	QLabel *l = new QLabel(tr("Apply &to"));
 	l->setBuddy(axisFormatApplyToBox);
@@ -749,9 +749,9 @@ void AxesDialog::initFramePage()
 	vl->addWidget(l);
 
 	canvasFrameApplyToBox = new QComboBox();
-	canvasFrameApplyToBox->insertItem(tr("Layer"));
-    canvasFrameApplyToBox->insertItem(tr("Window"));
-    canvasFrameApplyToBox->insertItem(tr("All Windows"));
+	canvasFrameApplyToBox->addItem(tr("Layer"));
+    canvasFrameApplyToBox->addItem(tr("Window"));
+    canvasFrameApplyToBox->addItem(tr("All Windows"));
 	vl->addWidget(canvasFrameApplyToBox);
 	vl->addStretch();
 
@@ -807,12 +807,12 @@ void AxesDialog::showAxisFormatOptions(int format)
 		case 0:
 			label2->show();
 			boxFormat->show();
-			boxFormat->insertItem(tr( "Automatic" ) );
-			boxFormat->insertItem(tr( "Decimal: 10000.0" ) );
-			boxFormat->insertItem(tr( "Scientific: 1e4" ) );
-			boxFormat->insertItem(tr( "Scientific: 1x10^4" ) );
-			boxFormat->insertItem(tr( "Engineering: 10k" ) );
-			boxFormat->insertItem(tr( "Scientific: 1·10^4" ) );
+			boxFormat->addItem(tr( "Automatic" ) );
+			boxFormat->addItem(tr( "Decimal: 10000.0" ) );
+			boxFormat->addItem(tr( "Scientific: 1e4" ) );
+			boxFormat->addItem(tr( "Scientific: 1x10^4" ) );
+			boxFormat->addItem(tr( "Engineering: 10k" ) );
+			boxFormat->addItem(tr( "Scientific: 1·10^4" ) );
 			boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 
 			label3->show();
@@ -833,9 +833,9 @@ void AxesDialog::showAxisFormatOptions(int format)
             int day = (QDate::currentDate()).dayOfWeek();
             label2->show();
             boxFormat->show();
-            boxFormat->insertItem(QDate::shortDayName(day));
-            boxFormat->insertItem(QDate::longDayName(day));
-            boxFormat->insertItem((QDate::shortDayName(day)).left(1));
+            boxFormat->addItem(QDate::shortDayName(day));
+            boxFormat->addItem(QDate::longDayName(day));
+            boxFormat->addItem((QDate::shortDayName(day)).left(1));
             boxFormat->setCurrentIndex((d_graph->axisFormatInfo(axis)).toInt());
         }
         break;
@@ -845,9 +845,9 @@ void AxesDialog::showAxisFormatOptions(int format)
             int month = (QDate::currentDate()).month();
             label2->show();
             boxFormat->show();
-            boxFormat->insertItem(QDate::shortMonthName(month));
-            boxFormat->insertItem(QDate::longMonthName(month));
-            boxFormat->insertItem((QDate::shortMonthName(month)).left(1));
+            boxFormat->addItem(QDate::shortMonthName(month));
+            boxFormat->addItem(QDate::longMonthName(month));
+            boxFormat->addItem((QDate::shortMonthName(month)).left(1));
             boxFormat->setCurrentIndex((d_graph->axisFormatInfo(axis)).toInt());
         }
         break;
@@ -861,27 +861,27 @@ void AxesDialog::showAxisFormatOptions(int format)
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
 				QString formatInfo = scaleDraw->formatString();
-				boxFormat->insertItem(formatInfo);
+				boxFormat->addItem(formatInfo);
 				boxFormat->setCurrentText(formatInfo);
 			}
 
-			boxFormat->insertItem("h");
-			boxFormat->insertItem("h ap");
-			boxFormat->insertItem("h AP");
-			boxFormat->insertItem("M");
-			boxFormat->insertItem("S");
-			boxFormat->insertItem("h:mm");
-			boxFormat->insertItem("h:mm ap");
-			boxFormat->insertItem("hh:mm");
-			boxFormat->insertItem("h:mm:ss");
-			boxFormat->insertItem("h:mm:ss.zzz");
-			boxFormat->insertItem("m");
-			boxFormat->insertItem("mm");
-			boxFormat->insertItem("mm:ss");
-			boxFormat->insertItem("mm:ss.zzz");
-			boxFormat->insertItem("hmm");
-			boxFormat->insertItem("hmmss");
-			boxFormat->insertItem("hhmmss");
+			boxFormat->addItem("h");
+			boxFormat->addItem("h ap");
+			boxFormat->addItem("h AP");
+			boxFormat->addItem("M");
+			boxFormat->addItem("S");
+			boxFormat->addItem("h:mm");
+			boxFormat->addItem("h:mm ap");
+			boxFormat->addItem("hh:mm");
+			boxFormat->addItem("h:mm:ss");
+			boxFormat->addItem("h:mm:ss.zzz");
+			boxFormat->addItem("m");
+			boxFormat->addItem("mm");
+			boxFormat->addItem("mm:ss");
+			boxFormat->addItem("mm:ss.zzz");
+			boxFormat->addItem("hmm");
+			boxFormat->addItem("hmmss");
+			boxFormat->addItem("hhmmss");
         }
         break;
 
@@ -894,23 +894,23 @@ void AxesDialog::showAxisFormatOptions(int format)
 			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
 				QString formatInfo = scaleDraw->formatString();
-				boxFormat->insertItem(formatInfo);
+				boxFormat->addItem(formatInfo);
 				boxFormat->setCurrentText(formatInfo);
 			}
-			boxFormat->insertItem("yyyy-MM-dd hh:mm:ss");
-			boxFormat->insertItem("yyyy/MM/dd hh:mm:ss");
-			boxFormat->insertItem("yyyy.MM.dd hh:mm:ss");
-			boxFormat->insertItem("dd-MM-yyyy hh:mm:ss");
-			boxFormat->insertItem("dd/MM/yyyy hh:mm:ss");
-			boxFormat->insertItem("dd.MM.yyyy hh:mm:ss");
+			boxFormat->addItem("yyyy-MM-dd hh:mm:ss");
+			boxFormat->addItem("yyyy/MM/dd hh:mm:ss");
+			boxFormat->addItem("yyyy.MM.dd hh:mm:ss");
+			boxFormat->addItem("dd-MM-yyyy hh:mm:ss");
+			boxFormat->addItem("dd/MM/yyyy hh:mm:ss");
+			boxFormat->addItem("dd.MM.yyyy hh:mm:ss");
 
-			boxFormat->insertItem("yyyy-MM-dd");
-			boxFormat->insertItem("yyyy/MM/dd");
-			boxFormat->insertItem("yyyy.MM.dd");
-			boxFormat->insertItem("dd-MM-yyyy");
-			boxFormat->insertItem("dd/MM/yyyy");
-			boxFormat->insertItem("dd.MM.yyyy");
-			boxFormat->insertItem("ddd MMMM d yy");
+			boxFormat->addItem("yyyy-MM-dd");
+			boxFormat->addItem("yyyy/MM/dd");
+			boxFormat->addItem("yyyy.MM.dd");
+			boxFormat->addItem("dd-MM-yyyy");
+			boxFormat->addItem("dd/MM/yyyy");
+			boxFormat->addItem("dd.MM.yyyy");
+			boxFormat->addItem("ddd MMMM d yy");
         }
         break;
 
@@ -933,7 +933,7 @@ void AxesDialog::updateAxisType(int)
 
 void AxesDialog::showAxis()
 {
-	QString formula = boxFormula->text();
+	QString formula = boxFormula->toPlainText();
 	if (!boxShowFormula->isChecked())
 		formula = QString();
 
@@ -1110,7 +1110,7 @@ void AxesDialog::showGridSettings(int axis)
     	boxWidthMajor->setValue(majPenY.widthF());
 
 		QPen minPenY = grd->minPenY();
-    	box->setCurrentIndex(minPenY.style() - 1);
+    	boxTypeMinor->setCurrentIndex(minPenY.style() - 1);
     	boxColorMinor->setColor(minPenY.color());
     	boxWidthMinor->setValue(minPenY.widthF());
 	}
@@ -1251,7 +1251,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 		QString formatInfo = QString();
 		if (format == ScaleDraw::Numeric){
 			if (boxShowFormula->isChecked()){
-				QString formula = boxFormula->text().lower();
+				QString formula = boxFormula->toPlainText().toLower();
 				try {
 					double value = 1.0;
 					MyParser parser;
@@ -1277,12 +1277,12 @@ bool AxesDialog::updatePlot(QWidget *page)
           else
             formatInfo = boxColName->currentText();
 
-		if (d_graph->axisTitleString(axis) != boxTitle->text())
-			d_graph->setAxisTitle(axis, boxTitle->text());
+		if (d_graph->axisTitleString(axis) != boxTitle->toPlainText())
+			d_graph->setAxisTitle(axis, boxTitle->toPlainText());
 
 		d_graph->setAxisTitleDistance(axis, boxLabelsDistance->value());
 
-		QString formula = boxFormula->text();
+		QString formula = boxFormula->toPlainText();
 		if (!boxShowFormula->isChecked())
 			formula = QString();
 		showAxis(axis, format, formatInfo, boxShowAxis->isChecked(), boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),
@@ -1391,9 +1391,9 @@ void AxesDialog::updateScale()
     boxUnit->clear();
 
     int a = mapToQwtAxis(axis);
-    const QwtScaleDiv *scDiv = d_graph->axisScaleDiv(a);
-    double start = qMin(scDiv->lowerBound(), scDiv->upperBound());
-    double end = qMax(scDiv->lowerBound(), scDiv->upperBound());
+    const QwtScaleDiv &scDiv = d_graph->axisScaleDiv(a);
+    double start = qMin(scDiv.lowerBound(), scDiv.upperBound());
+    double end = qMax(scDiv.lowerBound(), scDiv.upperBound());
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
@@ -1410,12 +1410,12 @@ void AxesDialog::updateScale()
 		boxEndDateTime->setDateTime(Table::dateTime(end));
 
 		boxUnit->show();
-		boxUnit->insertItem(tr("min."));
-		boxUnit->insertItem(tr("hours"));
-		boxUnit->insertItem(tr("days"));
-		boxUnit->insertItem(tr("weeks"));
-		boxUnit->insertItem(tr("months"));
-		boxUnit->insertItem(tr("years"));
+		boxUnit->addItem(tr("min."));
+		boxUnit->addItem(tr("hours"));
+		boxUnit->addItem(tr("days"));
+		boxUnit->addItem(tr("weeks"));
+		boxUnit->addItem(tr("months"));
+		boxUnit->addItem(tr("years"));
 
 		double step = d_graph->axisStep(a);
 		if (step < 1.0/24.0){
@@ -1454,10 +1454,10 @@ void AxesDialog::updateScale()
 		boxEndDateTime->setDateTime(Table::dateTime(end));
 
 		boxUnit->show();
-		boxUnit->insertItem(tr("millisec."));
-		boxUnit->insertItem(tr("sec."));
-		boxUnit->insertItem(tr("min."));
-		boxUnit->insertItem(tr("hours"));
+		boxUnit->addItem(tr("millisec."));
+		boxUnit->addItem(tr("sec."));
+		boxUnit->addItem(tr("min."));
+		boxUnit->addItem(tr("hours"));
 
 		double step = d_graph->axisStep(a);
 		boxStep->setValue(step);
@@ -1486,7 +1486,7 @@ void AxesDialog::updateScale()
         boxStep->setSingleStep(0.1);
 	}
 
-    double range = fabs(scDiv->range());
+    double range = fabs(scDiv.range());
     ScaleEngine *sc_engine = (ScaleEngine *)d_graph->axisScaleEngine(a);
     if (sc_engine->axisBreakLeft() > -DBL_MAX)
         boxBreakStart->setValue(sc_engine->axisBreakLeft());
@@ -1517,7 +1517,7 @@ void AxesDialog::updateScale()
     boxLog10AfterBreak->setChecked(sc_engine->log10ScaleAfterBreak());
     boxBreakDecoration->setChecked(sc_engine->hasBreakDecoration());
 
-	QList<double> lst = scDiv->ticks (QwtScaleDiv::MajorTick);
+	QList<double> lst = scDiv.ticks (QwtScaleDiv::MajorTick);
 	boxMajorValue->setValue(lst.count());
 
 	if (d_graph->axisStep(a) != 0.0){
@@ -1558,7 +1558,7 @@ void AxesDialog::updateTickLabelsList(bool on)
 	else
 		formatInfo = boxColName->currentText();
 
-	QString formula = boxFormula->text();
+	QString formula = boxFormula->toPlainText();
 	if (!boxShowFormula->isChecked())
 		formula = QString();
 
@@ -1586,9 +1586,9 @@ void AxesDialog::setCurrentScale(int axisPos)
 			axis = 2;
 		break;
 		}
-	if (generalDialog->currentPage()==(QWidget*)scalesPage)
+	if (generalDialog->currentWidget()==(QWidget*)scalesPage)
 		axesList->setCurrentRow(axis);
-	else if (generalDialog->currentPage()==(QWidget*)axesPage)
+	else if (generalDialog->currentWidget()==(QWidget*)axesPage)
 		axesTitlesList->setCurrentRow(axis);
 }
 
@@ -1623,7 +1623,7 @@ void AxesDialog::setLabelsNumericFormat(int)
 	else
 		formatInfo = boxColName->currentText();
 
-	QString formula =  boxFormula->text();
+	QString formula =  boxFormula->toPlainText();
 	if (!boxShowFormula->isChecked())
 		formula = QString();
 
@@ -1649,7 +1649,7 @@ void AxesDialog::showAxisFormula(int axis)
 
 void AxesDialog::showGeneralPage()
 {
-	generalDialog->showPage (frame);
+	generalDialog->setCurrentWidget(frame);
 }
 
 void AxesDialog::showFormulaBox()
@@ -1870,10 +1870,10 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 
 		axis->setMargin(boxBaseline->value());
 		QPalette pal = axis->palette();
-		if (pal.color(QPalette::Active, QColorGroup::Foreground) != boxAxisColor->color())
-			pal.setColor(QColorGroup::Foreground, boxAxisColor->color());
-		if (pal.color(QPalette::Active, QColorGroup::Text) != boxAxisNumColor->color())
-			pal.setColor(QColorGroup::Text, boxAxisNumColor->color());
+		if (pal.color(QPalette::Active, QPalette::WindowText) != boxAxisColor->color())
+			pal.setColor(QPalette::WindowText, boxAxisColor->color());
+		if (pal.color(QPalette::Active, QPalette::Text) != boxAxisNumColor->color())
+			pal.setColor(QPalette::Text, boxAxisNumColor->color());
 		axis->setPalette(pal);
 
 		g->setAxisTicksLength(i, boxMajorTicksType->currentIndex(), boxMinorTicksType->currentIndex(),

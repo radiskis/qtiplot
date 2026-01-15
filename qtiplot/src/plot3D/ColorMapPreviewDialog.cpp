@@ -41,7 +41,7 @@ ColorMapPreviewDialog::ColorMapPreviewDialog(QWidget *parent, Qt::WindowFlags fl
 	setFileMode(ExistingFile);
 	QStringList filters;
 	filters << tr("Colormap files") + " (*.map *.MAP)" << tr("All files") + " (*)";
-	setFilters(filters);
+	setNameFilters(filters);
 
 	setExtentionToggleButtonText(tr("<< &Preview"));
 	setExtended(true);
@@ -81,8 +81,7 @@ void ColorMapPreviewDialog::updatePreview(const QString& fileName)
 	}
 		
 	int height = 40;
-	QPixmap pix;
-	pix.resize(cv.size(), height);
+	QPixmap pix(cv.size(), height);
 	QPainter p(&pix);
 	for (unsigned i = 0; i != cv.size(); ++i){
 		RGBA rgb = cv[i];

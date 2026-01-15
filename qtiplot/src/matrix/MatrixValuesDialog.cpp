@@ -176,7 +176,7 @@ void MatrixValuesDialog::customEvent(QEvent *e)
 
 bool MatrixValuesDialog::apply()
 {
-	QString formula = commands->text();
+	QString formula = commands->toPlainText();
 	QString oldFormula = matrix->formula();
 
 	matrix->setFormula(formula);
@@ -230,11 +230,11 @@ void MatrixValuesDialog::insertExplain(int index)
 {
 #ifdef SCRIPTING_PYTHON
 	if (boxMuParser && boxMuParser->isChecked())
-		explain->setText(muParserScripting::explainFunction(functions->text(index)));
+		explain->setText(muParserScripting::explainFunction(functions->itemText(index)));
 	else
 		explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
 #else
-	explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+	explain->setText(scriptEnv->mathFunctionDoc(functions->itemText(index)));
 #endif
 }
 
@@ -245,7 +245,7 @@ void MatrixValuesDialog::insertFunction()
 
 void MatrixValuesDialog::addCell()
 {
-	commands->insert("cell(i, j)");
+	commands->insertPlainText("cell(i, j)");
 }
 
 void MatrixValuesDialog::setCompleter(QCompleter *completer)

@@ -39,6 +39,7 @@
 class QAction;
 class QMenu;
 class QCompleter;
+class QPrinter;
 
 class SyntaxHighlighter;
 

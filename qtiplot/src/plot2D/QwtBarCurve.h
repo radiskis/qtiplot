@@ -62,8 +62,8 @@ public:
 	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
 
 private:
-	virtual void draw(QPainter *painter,const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
+	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
 
 protected:
 	int bar_offset;

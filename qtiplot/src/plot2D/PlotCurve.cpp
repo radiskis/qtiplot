@@ -47,6 +47,9 @@
 #include <qwt_painter.h>
 #include <qwt_curve_fitter.h>
 #include <qwt_plot_canvas.h>
+#include <qwt_scale_map.h>
+#include <qwt_weeding_curve_fitter.h>
+#include <qwt_scale_map.h>
 
 PlotCurve::PlotCurve(const QString& name): QwtPlotCurve(name),
 d_type(0),
@@ -57,7 +60,7 @@ d_y_offset(0.0),
 d_side_lines(false),
 d_skip_symbols(1)
 {
-    setPaintAttribute(PaintFiltered);
+    setPaintAttribute(FilterPoints);
     setPaintAttribute(ClipPolygons);
 	setCurveAttribute(QwtPlotCurve::Fitted, false);
 }
@@ -99,10 +102,11 @@ QRectF PlotCurve::boundingRect() const
 
 QString PlotCurve::saveCurveSymbolImage()
 {
-	if (symbol().style() != QwtSymbol::Image)
+	const QwtSymbol *sym = symbol();
+	if (!sym || sym->style() != QwtSymbol::Pixmap)
 		return QString();
 
-	ImageSymbol *is = (ImageSymbol *)(&symbol());
+	ImageSymbol *is = (ImageSymbol *)(sym);
 	if (!is)
 		return QString();
 
@@ -150,26 +154,25 @@ QString PlotCurve::saveCurveLayout()
 		s += "</Brush>\n";
 	}
 
-	const QwtSymbol symbol = this->symbol();
-	if (symbol.style() != QwtSymbol::NoSymbol){
+	const QwtSymbol *sym = this->symbol();
+	if (sym && sym->style() != QwtSymbol::NoSymbol){
 		s += "<Symbol>\n";
-		s += "\t<Style>" + QString::number(SymbolBox::symbolIndex(symbol.style())) + "</Style>\n";
-		s += "\t<Size>" + QString::number(symbol.size().width()) + "</Size>\n";
+		s += "\t<Style>" + QString::number(SymbolBox::symbolIndex(sym->style())) + "</Style>\n";
+		s += "\t<Size>" + QString::number(sym->size().width()) + "</Size>\n";
 
 		s += "\t<SymbolPen>\n";
-		s += "\t\t<Color>" + symbol.pen().color().name() + "</Color>\n";
-		if (symbol.pen().color().alpha() != 255)
-			s += "\t<Alpha>" + QString::number(symbol.pen().color().alpha()) + "</Alpha>\n";
-		s += "\t\t<Width>" + QString::number(symbol.pen().widthF()) + "</Width>\n";
+		s += "\t\t<Color>" + sym->pen().color().name() + "</Color>\n";
+		if (sym->pen().color().alpha() != 255)
+			s += "\t<Alpha>" + QString::number(sym->pen().color().alpha()) + "</Alpha>\n";
+		s += "\t\t<Width>" + QString::number(sym->pen().widthF()) + "</Width>\n";
 		s += "\t</SymbolPen>\n";
 
-		brush = this->brush();
-		if (brush.style() != Qt::NoBrush){
+		if (sym->brush().style() != Qt::NoBrush){
 			s += "\t<SymbolBrush>\n";
-			s += "\t\t<Color>" + symbol.brush().color().name() + "</Color>\n";
-			if (symbol.brush().color().alpha() != 255)
-				s += "\t<Alpha>" + QString::number(symbol.brush().color().alpha()) + "</Alpha>\n";
-			s += "\t\t<Style>" + QString::number(PatternBox::patternIndex(symbol.brush().style())) + "</Style>\n";
+			s += "\t\t<Color>" + sym->brush().color().name() + "</Color>\n";
+			if (sym->brush().color().alpha() != 255)
+				s += "\t<Alpha>" + QString::number(sym->brush().color().alpha()) + "</Alpha>\n";
+			s += "\t\t<Style>" + QString::number(PatternBox::patternIndex(sym->brush().style())) + "</Style>\n";
 			s += "\t</SymbolBrush>\n";
 		}
 		s += "</Symbol>\n";
@@ -185,12 +188,12 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 {
 	QStringList::const_iterator line = lst.begin();
 	for (line = lst.begin(); line != lst.end(); line++){
-        QString s = (*line).stripWhiteSpace();
+        QString s = (*line).trimmed();
         if (s == "<Pen>"){
 			QPen pen;
 			pen.setCosmetic(true);
 			while(s != "</Pen>"){
-				s = (*(++line)).stripWhiteSpace();
+				s = (*(++line)).trimmed();
 				if (s.contains("<Color>"))
 					pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
 				else if (s.contains("<Alpha>")){
@@ -206,7 +209,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 		} else if (s == "<Brush>"){
 			QBrush brush;
 			while(s != "</Brush>"){
-				s = (*(++line)).stripWhiteSpace();
+				s = (*(++line)).trimmed();
 				if (s.contains("<Color>"))
 					brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
 				else if (s.contains("<Alpha>")){
@@ -218,17 +221,17 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 			}
 			setBrush(brush);
 		} else if (s == "<Symbol>"){
-			QwtSymbol symbol;
+			QwtSymbol *symbol = new QwtSymbol();
 			while(s != "</Symbol>"){
-				s = (*(++line)).stripWhiteSpace();
+				s = (*(++line)).trimmed();
 				if (s.contains("<Style>"))
-					symbol.setStyle(SymbolBox::style(s.remove("<Style>").remove("</Style>").toInt()));
+					symbol->setStyle(SymbolBox::style(s.remove("<Style>").remove("</Style>").toInt()));
 				else if (s.contains("<Size>"))
-					symbol.setSize((QwtSymbol::Style)s.remove("<Size>").remove("</Size>").toInt());
+					symbol->setSize(s.remove("<Size>").remove("</Size>").toInt());
 				else if (s == "<SymbolPen>"){
 					QPen pen;
 					while(s != "</SymbolPen>"){
-						s = (*(++line)).stripWhiteSpace();
+						s = (*(++line)).trimmed();
 						if (s.contains("<Color>"))
 							pen.setColor(QColor(s.remove("<Color>").remove("</Color>")));
 						else if (s.contains("<Alpha>")){
@@ -241,11 +244,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 							pen.setWidthF(s.remove("<Width>").remove("</Width>").toDouble());
 					}
 					pen.setCosmetic(true);
-					symbol.setPen(pen);
+					symbol->setPen(pen);
 				} else if (s == "<SymbolBrush>"){
 					QBrush brush;
 					while(s != "</SymbolBrush>"){
-						s = (*(++line)).stripWhiteSpace();
+						s = (*(++line)).trimmed();
 						if (s.contains("<Color>"))
 							brush.setColor(QColor(s.remove("<Color>").remove("</Color>")));
 						else if (s.contains("<Alpha>")){
@@ -255,10 +258,10 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 						} else if (s.contains("<Style>"))
 							brush.setStyle(PatternBox::brushStyle(s.remove("<Style>").remove("</Style>").toInt()));
 					}
-					symbol.setBrush(brush);
+					symbol->setBrush(brush);
 				}
-				setSymbol(symbol);
 			}
+			setSymbol(symbol);
 		} else if (s.contains("<xAxis>"))
 			setXAxis(s.remove("<xAxis>").remove("</xAxis>").toInt());
 		else if (s.contains("<yAxis>"))
@@ -270,11 +273,11 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 	}
 }
 
-void PlotCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void PlotCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
 	if(d_side_lines)
 		drawSideLines(p, xMap, yMap, from, to);
-	QwtPlotCurve::drawCurve(p, style, xMap, yMap, from, to);
+	QwtPlotCurve::drawSeries(p, xMap, yMap, canvasRect, from, to);
 }
 
 /*!
@@ -288,10 +291,10 @@ void PlotCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const
 
   \sa draw(), drawCurve(), drawDots()
 */
-void PlotCurve::drawSticks(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void PlotCurve::drawSticks(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
 	if (d_skip_symbols < 2){
-		QwtPlotCurve::drawSticks(painter, xMap, yMap, from, to);
+		QwtPlotCurve::drawSticks(painter, xMap, yMap, canvasRect, from, to);
 		return;
 	}
 
@@ -334,28 +337,22 @@ void PlotCurve::setSkipSymbolsCount(int count)
   \sa setSymbol(), draw(), drawCurve()
 */
 void PlotCurve::drawSymbols(QPainter *painter, const QwtSymbol &symbol,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
+    const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect,
     int from, int to) const
 {
 	if (d_skip_symbols < 2){
-		QwtPlotCurve::drawSymbols(painter, symbol, xMap, yMap, from, to);
+		QwtPlotCurve::drawSymbols(painter, symbol, xMap, yMap, canvasRect, from, to);
 		return;
 	}
 
     painter->setBrush(symbol.brush());
-    painter->setPen(QwtPainter::scaledPen(symbol.pen()));
-
-    const QwtMetricsMap &metricsMap = QwtPainter::metricsMap();
-
-    QRect rect;
-    rect.setSize(metricsMap.screenToLayout(symbol.size()));
+    painter->setPen(symbol.pen());
 
 	for (int i = from; i <= to; i += d_skip_symbols){
-		const int xi = xMap.transform(x(i));
-		const int yi = yMap.transform(y(i));
+		const double xi = xMap.transform(x(i));
+		const double yi = yMap.transform(y(i));
 
-		rect.moveCenter(QPoint(xi, yi));
-		symbol.draw(painter, rect);
+		symbol.drawSymbol(painter, QPointF(xi, yi));
 	}
 }
 
@@ -374,11 +371,11 @@ void PlotCurve::drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtSca
 	p->setPen(pen);
 
 	double lw = 0.5*pen.widthF();
-	const double xl = xMap.xTransform(x(from)) - lw;
-	const double xr = xMap.xTransform(x(to)) + lw;
-	const double yl = yMap.xTransform(y(from)) - lw;
-	const double yr = yMap.xTransform(y(to)) - lw;
-	const double base = yMap.xTransform(baseline());
+	const double xl = xMap.transform(x(from)) - lw;
+	const double xr = xMap.transform(x(to)) + lw;
+	const double yl = yMap.transform(y(from)) - lw;
+	const double yr = yMap.transform(y(to)) - lw;
+	const double base = yMap.transform(baseline());
 
 	p->drawLine(QPointF(xl, yl), QPointF(xl, base));
 	p->drawLine(QPointF(xr, yr), QPointF(xr, base));
@@ -521,20 +518,20 @@ void DataCurve::setDataSource(Table *yt, int ycol, Table *xt, int xcol)
 	loadData();
 }
 
-void DataCurve::drawCurve(QPainter *p, int style, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void DataCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
 	Graph *g = (Graph *)plot();
 	if (!g)
 		return;
 
 	if (d_data_ranges.empty() || !g->isMissingDataGapEnabled())
-		return PlotCurve::drawCurve(p, style, xMap, yMap, from, to);
+		return PlotCurve::drawSeries(p, xMap, yMap, canvasRect, from, to);
 
 	if(d_side_lines)
 		drawSideLines(p, xMap, yMap, from, to);
 
 	for (unsigned int i = 0; i < d_data_ranges.size(); i++)
-		QwtPlotCurve::drawCurve(p, style, xMap, yMap, d_data_ranges[i].from, d_data_ranges[i].to);
+		QwtPlotCurve::drawSeries(p, xMap, yMap, canvasRect, d_data_ranges[i].from, d_data_ranges[i].to);
 }
 
 void DataCurve::loadData()
@@ -657,9 +654,9 @@ void DataCurve::loadData()
 		}
 	}
 
-	setData(data);
+	setSamples(data);
 	foreach(ErrorBarsCurve *c, d_error_bars)
-		c->setData(data);
+		c->setSamples(data);
 
 	if (xColType == Table::Text)
 		g->setLabelsTextFormat(xAxis, ScaleDraw::Text, d_x_column, xLabels);
@@ -826,7 +823,7 @@ void DataCurve::loadLabels()
         int y_axis = yAxis();
 		m->setAxes(x_axis, y_axis);
 
-		QSize size = t.textSize();
+		QSize size = t.textSize().toSize();
         int dx = int(d_labels_x_offset*0.01*size.height());
         int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
         int x2 = d_plot->transform(x_axis, x(index)) + dx;
@@ -923,7 +920,7 @@ void DataCurve::updateLabelsPosition()
 
     foreach(PlotMarker *m, d_labels_list){
         int index = m->index();
-        QSize size = m->label().textSize();
+        QSize size = m->label().textSize().toSize();
         int x_axis = xAxis();
         int y_axis = yAxis();
         int dx = int(d_labels_x_offset*0.01*size.height());
@@ -1113,7 +1110,7 @@ bool DataCurve::selectedLabels(const QPoint& pos)
         QMatrix wm;
         wm.translate(x, y);
 		wm.rotate(-d_labels_angle);
-        if (wm.mapToPolygon(QRect(QPoint(0, 0), m->label().textSize())).containsPoint(pos, Qt::OddEvenFill)){
+        if (wm.mapToPolygon(QRect(QPoint(0, 0), m->label().textSize().toSize())).containsPoint(pos, Qt::OddEvenFill)){
 			d_selected_label = m;
 			d_click_pos_x = d_plot->invTransform(xAxis(), pos.x());
 			d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());
@@ -1133,7 +1130,7 @@ bool DataCurve::hasSelectedLabels()
 		return false;
 
 	foreach(PlotMarker *m, d_labels_list){
-		if (m->label().backgroundPen().color() == Qt::blue)
+		if (m->label().borderPen().color() == Qt::blue)
 			return true;
 	}
 	return false;
@@ -1150,9 +1147,9 @@ void DataCurve::setLabelsSelected(bool on)
             continue;
 
         if (on){
-            t.setBackgroundPen(QPen(Qt::blue));
+            t.setBorderPen(QPen(Qt::blue));
         } else
-            t.setBackgroundPen(QPen(Qt::NoPen));
+            t.setBorderPen(QPen(Qt::NoPen));
         m->setLabel(t);
     }
     if (on){
@@ -1188,7 +1185,7 @@ void DataCurve::moveLabels(const QPoint& pos)
     int d_x = pos.x() - d_plot->transform(xAxis(), d_click_pos_x);
 	int d_y = pos.y() - d_plot->transform(yAxis(), d_click_pos_y);
 
-	int height = d_selected_label->label().textSize().height();
+	int height = d_selected_label->label().textSize().toSize().height();
 	d_labels_x_offset += int(d_x*100.0/(double)height);
     d_labels_y_offset -= int(d_y*100.0/(double)height);
 
@@ -1208,7 +1205,7 @@ PlotMarker::PlotMarker(int index, double angle):QwtPlotMarker(),
 	d_label_y_offset(0.0)
 {}
 
-void PlotMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRect &) const
+void PlotMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &) const
 {
 	p->save();
 	int x = xMap.transform (xValue());
@@ -1218,6 +1215,6 @@ void PlotMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &y
 	p->rotate(-d_angle);
 
 	QwtText text = label();
-	text.draw(p, QRect(QPoint(0, 0), text.textSize()));
+	text.draw(p, QRect(QPoint(0, 0), text.textSize().toSize()));
 	p->restore();
 }

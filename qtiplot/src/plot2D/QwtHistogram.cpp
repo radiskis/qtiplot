@@ -296,7 +296,7 @@ void QwtHistogram::loadLabels()
 		int y_axis = yAxis();
 		m->setAxes(x_axis, y_axis);
 
-		QSize size = t.textSize();
+		QSize size = t.textSize().toSize();
 		int dx = int(d_labels_x_offset*0.01*size.height());
 		int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
 		int x2 = d_plot->transform(x_axis, x(index)) + dx;

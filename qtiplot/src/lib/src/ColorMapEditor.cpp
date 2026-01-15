@@ -49,12 +49,12 @@ ColorMapEditor::ColorMapEditor(const QLocale& locale, int precision, QWidget* pa
 {
 	table = new QTableWidget();
 	table->setColumnCount(2);
-	table->setSelectionMode(qAbstractItemView::SingleSelection);
-	table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	table->setSelectionMode(QAbstractItemView::SingleSelection);
+	table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 	table->verticalHeader()->hide();
-	table->horizontalHeader()->setClickable(false);
-	table->horizontalHeader()->setResizeMode(0, QHeaderView::Stretch);
-	table->horizontalHeader()->setResizeMode(1, QHeaderView::Fixed);
+	table->horizontalHeader()->setSectionsClickable(false);
+	table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+	table->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
 	table->horizontalHeader()->setDefaultSectionSize(80);
 	table->viewport()->setMouseTracking(true);
 	table->viewport()->installEventFilter(this);

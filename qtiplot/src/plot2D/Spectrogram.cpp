@@ -56,13 +56,13 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_use_matrix_formula(false),
 	d_color_map_pen(false)
 {
-	setData(MatrixData(m));
+	setData(new MatrixData(m));
 
-	double step = fabs(data().range().maxValue() - data().range().minValue())/5.0;
+	double step = fabs(data()->interval(Qt::ZAxis).maxValue() - data()->interval(Qt::ZAxis).minValue())/5.0;
 
 	QList<double> contourLevels;
-	for ( double level = data().range().minValue() + step;
-		level < data().range().maxValue(); level += step )
+	for ( double level = data()->interval(Qt::ZAxis).minValue() + step;
+		level < data()->interval(Qt::ZAxis).maxValue(); level += step )
 		contourLevels += level;
 
 	setContourLevels(contourLevels);
@@ -73,11 +73,11 @@ void Spectrogram::updateData()
 	if (!d_matrix || !d_graph)
 		return;
 
-	setData(MatrixData(d_matrix, d_use_matrix_formula));
+	setData(new MatrixData(d_matrix, d_use_matrix_formula));
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
-		colorAxis->setColorMap(range(), colorMap());
+		colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 
 	d_graph->setAxisScale(color_axis, range().minValue(), range().maxValue());
 	d_graph->replot();
@@ -190,19 +190,19 @@ color_axis = axis;
 	}
 
 // First we switch axes
-setAxis(xAxis, yAxis);
+setAxes(xAxis, yAxis);
 
 // Next we switch axes scales
-QwtScaleDiv *scDiv = d_graph->axisScaleDiv(oldMainAxis);
+const QwtScaleDiv &scDiv = d_graph->axisScaleDiv(oldMainAxis);
 if (axis == QwtPlot::xBottom || axis == QwtPlot::xTop)
-	d_graph->setAxisScale(xAxis, scDiv->lowerBound(), scDiv->upperBound());
+	d_graph->setAxisScale(xAxis, scDiv.lowerBound(), scDiv.upperBound());
 else if (axis == QwtPlot::yLeft || color_axis == QwtPlot::yRight)
-	d_graph->setAxisScale(yAxis, scDiv->lowerBound(), scDiv->upperBound());
+	d_graph->setAxisScale(yAxis, scDiv.lowerBound(), scDiv.upperBound());
 
 colorAxis = d_graph->axisWidget(color_axis);
 d_graph->setAxisScale(color_axis, range().minValue(), range().maxValue());
 colorAxis->setColorBarEnabled(on);
-colorAxis->setColorMap(range(), colorMap());
+colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 if (!d_graph->axisEnabled(color_axis))
 	d_graph->enableAxis(color_axis);
 colorAxis->show();
@@ -270,7 +270,7 @@ Spectrogram* Spectrogram::copy(Graph *g)
 void Spectrogram::setGrayScale()
 {
 	color_map = LinearColorMap(Qt::black, Qt::white);
-	setColorMap(color_map);
+	setColorMap(new LinearColorMap(color_map));
 	color_map_policy = GrayScale;
 
 	if (!d_graph)
@@ -278,7 +278,7 @@ void Spectrogram::setGrayScale()
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
-		colorAxis->setColorMap(range(), colorMap());
+		colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 }
 
 void Spectrogram::setDefaultColorMap()
@@ -287,17 +287,17 @@ void Spectrogram::setDefaultColorMap()
 		return;
 
 	color_map = d_graph->multiLayer()->applicationWindow()->d_3D_color_map;
-	setColorMap(color_map);
+	setColorMap(new LinearColorMap(color_map));
 	color_map_policy = Default;
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
-		colorAxis->setColorMap(range(), colorMap());
+		colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 }
 
 void Spectrogram::setCustomColorMap(const LinearColorMap& map)
 {
-	setColorMap(map);
+	setColorMap(new LinearColorMap(map));
 	color_map = map;
 	color_map_policy = Custom;
 
@@ -306,7 +306,7 @@ void Spectrogram::setCustomColorMap(const LinearColorMap& map)
 
 	QwtScaleWidget *colorAxis = d_graph->axisWidget(color_axis);
 	if (colorAxis)
-		colorAxis->setColorMap(range(), colorMap());
+		colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 }
 
 QString Spectrogram::saveToString()
@@ -439,13 +439,13 @@ void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const 
         if ( pen.style() == Qt::NoPen )
             continue;
 
-        p->setPen(QwtPainter::scaledPen(pen));
+        p->setPen(pen);
 
         const QPolygonF &lines = contourLines[level];
         for ( int i = 0; i < (int)lines.size(); i += 2 ){
-            const QPointF p1( xMap.xTransform(lines[i].x()),
+            const QPointF p1( xMap.transform(lines[i].x()),
                 yMap.transform(lines[i].y()) );
-            const QPointF p2( xMap.xTransform(lines[i + 1].x()),
+            const QPointF p2( xMap.transform(lines[i + 1].x()),
                 yMap.transform(lines[i + 1].y()) );
 
             p->drawLine(p1, p2);
@@ -473,7 +473,7 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &, const QwtScaleM
 		if (!mrk)
 			return;
 
-		QSize size = mrk->label().textSize();
+		QSizeF size = mrk->label().textSize();
 		int dx = int((d_labels_x_offset + mrk->xLabelOffset())*0.01*size.height());
 		int dy = -int(((d_labels_y_offset + mrk->yLabelOffset())*0.01 + 0.5)*size.height());
 
@@ -579,10 +579,10 @@ bool Spectrogram::selectedLabels(const QPoint& pos)
         int x = d_graph->transform(xAxis(), m->xValue());
         int y = d_graph->transform(yAxis(), m->yValue());
 
-        QMatrix wm;
+        QTransform wm;
         wm.translate(x, y);
 		wm.rotate(-d_labels_angle);
-        if (wm.mapToPolygon(QRect(QPoint(0, 0), m->label().textSize())).containsPoint(pos, Qt::OddEvenFill)){
+        if (wm.map(QRectF(QPointF(0, 0), m->label().textSize())).containsPoint(pos, Qt::OddEvenFill)){
 			d_selected_label = m;
 			d_click_pos_x = d_graph->invTransform(xAxis(), pos.x());
 			d_click_pos_y = d_graph->invTransform(yAxis(), pos.y());
@@ -607,9 +607,9 @@ void Spectrogram::selectLabel(bool on)
 			return;
 
 		if (d_selected_label && m == d_selected_label && on)
-			t.setBackgroundPen(QPen(Qt::blue));
+			t.setBorderPen(QPen(Qt::blue));
 		else
-			t.setBackgroundPen(QPen(Qt::NoPen));
+			t.setBorderPen(QPen(Qt::NoPen));
 
 		m->setLabel(t);
 	}
@@ -693,7 +693,7 @@ void Spectrogram::setColorMapPen(bool on)
 {
 	d_color_map_pen = on;
 	if (on) {
-		setDefaultContourPen(Qt::NoPen);
+		setDefaultContourPen(QPen(Qt::NoPen));
 		d_pen_list.clear();
 	}
 }
@@ -701,7 +701,7 @@ void Spectrogram::setColorMapPen(bool on)
 void Spectrogram::setContourPenList(QList<QPen> lst)
 {
 	d_pen_list = lst;
-	setDefaultContourPen(Qt::NoPen);
+	setDefaultContourPen(QPen(Qt::NoPen));
 	d_color_map_pen = false;
 }
 
@@ -722,7 +722,7 @@ void Spectrogram::setContourLinePen(int index, const QPen &pen)
 	}
 
 	d_pen_list[index] = pen;
-	setDefaultContourPen(Qt::NoPen);
+	setDefaultContourPen(QPen(Qt::NoPen));
 	d_color_map_pen = false;
 	d_graph->replot();
 }
@@ -737,17 +737,21 @@ bool Spectrogram::setUseMatrixFormula(bool on)
 	return true;
 }
 
-QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area) const
+QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area, const QSize &imageSize) const
 {
 	if (area.isEmpty())
 		return QImage();
 
-	QRect rect = transform(xMap, yMap, area);
+	double x1 = xMap.transform(area.left());
+	double x2 = xMap.transform(area.right());
+	double y1 = yMap.transform(area.top());
+	double y2 = yMap.transform(area.bottom());
+	QRect rect = QRectF(x1, y1, x2 - x1, y2 - y1).toAlignedRect();
 
 	QwtScaleMap xxMap = xMap;
 	QwtScaleMap yyMap = yMap;
 
-	MatrixData *d_data = (MatrixData *)data().copy();
+	MatrixData *d_data = (MatrixData *)static_cast<const MatrixData *>(QwtPlotSpectrogram::data())->copy();
 	const QSize res = d_data->rasterHint(area);
 	if (res.isValid()){
 		rect.setSize(rect.size().boundedTo(res));
@@ -757,8 +761,8 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 		if ( xMap.p1() > xMap.p2() )
 			qSwap(px1, px2);
 
-		double sx1 = area.x();
-		double sx2 = area.x() + area.width();
+		double sx1 = area.left();
+		double sx2 = area.right();
 		if ( xMap.s1() > xMap.s2() )
 			qSwap(sx1, sx2);
 
@@ -767,8 +771,8 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 		if ( yMap.p1() > yMap.p2() )
 			qSwap(py1, py2);
 
-		double sy1 = area.y();
-		double sy2 = area.y() + area.height();
+		double sy1 = area.top();
+		double sy2 = area.bottom();
 		if ( yMap.s1() > yMap.s2() )
 			qSwap(sy1, sy2);
 
@@ -781,8 +785,10 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 	QImage image(rect.size(), QImage::Format_ARGB32);
 
 	const QwtInterval intensityRange = range();
-	if(!intensityRange.isValid())
+	if(!intensityRange.isValid()){
+		delete d_data;
 		return image;
+	}
 
 	d_data->initRaster(area, rect.size());
 
@@ -796,6 +802,7 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 	}
 
 	d_data->discardRaster();
+	delete d_data;
 
 	// Mirror the image in case of inverted maps
 	const bool hInvert = xxMap.p1() > xxMap.p2();

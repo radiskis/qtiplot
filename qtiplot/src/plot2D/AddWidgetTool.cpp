@@ -52,7 +52,7 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
 	graph->disableTools();
 	graph->multiLayer()->applicationWindow()->pickPointerCursor();
 
-    QwtPlotCanvas *canvas = graph->canvas();
+    QWidget *canvas = graph->canvas();
 	canvas->installEventFilter(this);
 
 	if (type == Rectangle || type == Ellipse){
@@ -82,7 +82,7 @@ AddWidgetTool::~AddWidgetTool()
 {
 	d_graph->unsetCursor();
 
-	QwtPlotCanvas *canvas = d_graph->canvas();
+	QWidget *canvas = d_graph->canvas();
 	canvas->unsetCursor();
 	canvas->removeEventFilter(this);
 

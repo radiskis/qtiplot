@@ -51,6 +51,8 @@
 #include <QShortcut>
 #include <QKeySequence>
 #include <QMenu>
+#include <QAbstractItemView>
+#include <QContextMenuEvent>
 
 CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 : QDialog( parent, fl )
@@ -118,18 +120,18 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 	available->setColumnCount(1);
 	available->header()->hide();
     available->setIndentation(15);
-	available->setSelectionMode (qAbstractItemView::ExtendedSelection);
+	available->setSelectionMode (QAbstractItemView::ExtendedSelection);
     gl->addWidget(available, 1, 0);
 
     QVBoxLayout* vl1 = new QVBoxLayout();
 	btnAdd = new QPushButton();
-	btnAdd->setPixmap( QPixmap(":/next.png") );
+	btnAdd->setIcon( QIcon(":/next.png") );
 	btnAdd->setFixedWidth (35);
 	btnAdd->setFixedHeight (30);
     vl1->addWidget(btnAdd);
 
 	btnRemove = new QPushButton();
-	btnRemove->setPixmap( QPixmap(":/prev.png") );
+	btnRemove->setIcon( QIcon(":/prev.png") );
 	btnRemove->setFixedWidth (35);
 	btnRemove->setFixedHeight(30);
     vl1->addWidget(btnRemove);
@@ -137,7 +139,7 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 
     gl->addLayout(vl1, 1, 1);
 	contents = new QListWidget();
-	contents->setSelectionMode (qAbstractItemView::ExtendedSelection);
+	contents->setSelectionMode (QAbstractItemView::ExtendedSelection);
     gl->addWidget(contents, 1, 2);
 
     QVBoxLayout* vl2 = new QVBoxLayout();
@@ -282,9 +284,9 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 
 	   QMenu contextMenu(this);
        if (count > 1)
-	       contextMenu.insertItem(tr("&Plot Selection"), this, SLOT(addCurves()));
+	       contextMenu.addAction(tr("&Plot Selection"), this, SLOT(addCurves()));
        else if (count == 1)
-	       contextMenu.insertItem(tr("&Plot"), this, SLOT(addCurves()));
+	       contextMenu.addAction(tr("&Plot"), this, SLOT(addCurves()));
 	   contextMenu.exec(QCursor::pos());
     }
 
@@ -295,9 +297,9 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 	   QMenu contextMenu(this);
        QList<QListWidgetItem *> lst = contents->selectedItems();
        if (lst.size() > 1)
-	       contextMenu.insertItem(tr("&Delete Selection"), this, SLOT(removeCurves()));
+	       contextMenu.addAction(tr("&Delete Selection"), this, SLOT(removeCurves()));
        else if (lst.size() == 1)
-	       contextMenu.insertItem(tr("&Delete Curve"), this, SLOT(removeCurves()));
+	       contextMenu.addAction(tr("&Delete Curve"), this, SLOT(removeCurves()));
 	   contextMenu.exec(QCursor::pos());
     }
 
@@ -314,25 +316,25 @@ void CurvesDialog::init()
 
         int style = app->defaultCurveStyle;
         if (style == Graph::Line)
-            box->setCurrentIndex(0);
+            boxStyle->setCurrentIndex(0);
         else if (style == Graph::Scatter)
-            box->setCurrentIndex(1);
+            boxStyle->setCurrentIndex(1);
         else if (style == Graph::LineSymbols)
-            box->setCurrentIndex(2);
+            boxStyle->setCurrentIndex(2);
         else if (style == Graph::VerticalDropLines)
-            box->setCurrentIndex(3);
+            boxStyle->setCurrentIndex(3);
         else if (style == Graph::Spline)
-            box->setCurrentIndex(4);
+            boxStyle->setCurrentIndex(4);
         else if (style == Graph::VerticalSteps)
-            box->setCurrentIndex(5);
+            boxStyle->setCurrentIndex(5);
         else if (style == Graph::HorizontalSteps)
-            box->setCurrentIndex(6);
+            boxStyle->setCurrentIndex(6);
         else if (style == Graph::Area)
-            box->setCurrentIndex(7);
+            boxStyle->setCurrentIndex(7);
         else if (style == Graph::VerticalBars)
-            box->setCurrentIndex(8);
+            boxStyle->setCurrentIndex(8);
         else if (style == Graph::HorizontalBars)
-            box->setCurrentIndex(9);
+            boxStyle->setCurrentIndex(9);
     }
 
 	if (!available->topLevelItemCount())
@@ -556,7 +558,7 @@ void CurvesDialog::enableContentsBtns()
 int CurvesDialog::curveStyle()
 {
 	int style = 0;
-	switch (boxStyle->currentItem())
+	switch (boxStyle->currentIndex())
 	{
 		case 0:
 			style = Graph::Line;

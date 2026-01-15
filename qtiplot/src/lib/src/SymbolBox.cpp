@@ -71,77 +71,93 @@ void SymbolBox::init(bool showNoSymbol)
 		this->addItem(tr("No Symbol" ));
 
 	symb.setStyle (QwtSymbol::Ellipse);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon, tr("Ellipse" ));
 
 	symb.setStyle (QwtSymbol::Rect);
 	icon.fill(c);
-	symb.draw(&p, r.adjusted(0, 0, -1, -1));
+	QRect r2 = r.adjusted(0, 0, -1, -1);
+	symb.setSize(r2.size());
+	symb.drawSymbol(&p, r2.center());
 	this->addItem(icon,tr("Rectangle"));
 
 	symb.setStyle (QwtSymbol::Diamond);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Diamond"));
 
 	symb.setStyle (QwtSymbol::Triangle);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Triangle"));
 
 	symb.setStyle (QwtSymbol::DTriangle);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Down Triangle"));
 
 	symb.setStyle (QwtSymbol::UTriangle);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Up Triangle"));
 
 	symb.setStyle (QwtSymbol::LTriangle);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Left Triangle"));
 
 	symb.setStyle (QwtSymbol::RTriangle);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Right Triangle"));
 
 	symb.setStyle (QwtSymbol::Cross);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Cross"));
 
 	symb.setStyle (QwtSymbol::XCross);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Diagonal Cross"));
 
 	symb.setStyle (QwtSymbol::HLine);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Horizontal Line"));
 
 	symb.setStyle (QwtSymbol::VLine);
 	p.eraseRect ( r );
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Vertical Line"));
 
 	symb.setStyle (QwtSymbol::Star1);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Star 1"));
 
 	symb.setStyle (QwtSymbol::Star2);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Star 2"));
 
 	symb.setStyle (QwtSymbol::Hexagon);
 	icon.fill(c);
-	symb.draw(&p, r);
+	symb.setSize(r.size());
+	symb.drawSymbol(&p, r.center());
 	this->addItem(icon,tr("Hexagon"));
 
 	p.end();
@@ -185,7 +201,7 @@ QwtSymbol::Style SymbolBox::style(int index)
 QList<int> SymbolBox::defaultSymbols()
 {
 	QList<int> lst;
-	for (int i = 0; i < QwtSymbol::StyleCnt; i++)
+	for (int i = 0; i < 16; i++)
 		lst << i;
 
 	return lst;

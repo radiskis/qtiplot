@@ -168,7 +168,7 @@ void ErrDialog::setSrcTables(QList<MdiSubWindow *> tables)
 	tableNamesBox->clear();
 
     foreach(MdiSubWindow *w, tables)
-		tableNamesBox->insertItem(w->objectName());
+		tableNamesBox->addItem(w->objectName());
 
 	selectSrcTable(tableNamesBox->currentIndex());
 }

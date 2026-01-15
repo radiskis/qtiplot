@@ -73,7 +73,7 @@ void SubtractLineTool::selectPoint(const QPointF &pos)
 		d_first_point_marker = new QwtPlotMarker();
 		d_first_point_marker->setLinePen(QPen(Qt::red, 1, Qt::DashLine));
 		d_first_point_marker->setLineStyle(QwtPlotMarker::Cross);
-		d_first_point_marker->setSymbol(QwtSymbol(QwtSymbol::Ellipse, QBrush(), QPen(Qt::red, 1), QSize(12, 12)));
+		d_first_point_marker->setSymbol(new QwtSymbol(QwtSymbol::Ellipse, QBrush(), QPen(Qt::red, 1), QSize(12, 12)));
 		d_first_point_marker->setValue(pos.x(), pos.y());
 		d_first_point_marker->attach(d_graph);
 		d_graph->replot();

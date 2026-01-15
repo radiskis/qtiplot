@@ -30,6 +30,7 @@
 #include <QScrollBar>
 #include <QShowEvent>
 #include <QPainter>
+#include <QTextBlock>
 
 LineNumberDisplay::LineNumberDisplay(QTextEdit *te, QWidget *parent)
 		 : QTextEdit(parent), d_text_edit(te)

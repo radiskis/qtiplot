@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <QtGui>
+#include <QApplication>
 #include <QFile>
 #include <QTextStream>
 
@@ -44,17 +45,18 @@
 #include <stdlib.h>
 
 #ifdef HAVE_ALGLIB
-	#include <interpolation.h>
+	#define AE_COMPILE_SPLINE2D
+	#include "../../3rdparty/alglib/src/interpolation.h"
 #endif
 
 MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
-	: qAbstractTableModel(parent),
+	: QAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent)
 {
 	init();
 
 	if (d_matrix){
-		d_txt_format = d_matrix->textFormat().toAscii();
+		d_txt_format = d_matrix->textFormat().toLatin1();
 		d_num_precision = d_matrix->precision();
 		d_locale = d_matrix->locale();
 	}
@@ -70,7 +72,7 @@ MatrixModel::MatrixModel(int rows, int cols, QObject *parent)
 }
 
 MatrixModel::MatrixModel(const QImage& image, QObject *parent)
-     : qAbstractTableModel(parent),
+     : QAbstractTableModel(parent),
 	 d_matrix((Matrix*)parent)
 {
 	init();
@@ -200,7 +202,7 @@ QString MatrixModel::text(int row, int col)
 
 	if (d_matrix){
 		QLocale locale = d_matrix->locale();
-		return locale.toString(val, d_matrix->textFormat().toAscii(), d_matrix->precision());
+		return locale.toString(val, d_matrix->textFormat().toLatin1(), d_matrix->precision());
 	}
 	return d_locale.toString(val, d_txt_format, d_num_precision);
 }
@@ -263,14 +265,14 @@ double MatrixModel::y(int row) const
 QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int role) const
 {
 	if (!d_matrix || d_matrix->headerViewType() == Matrix::ColumnRow)
-		return qAbstractItemModel::headerData(section, orientation, role);
+		return QAbstractItemModel::headerData(section, orientation, role);
 
 	QLocale locale = d_locale;
 	int prec = d_num_precision;
 	char fmt = d_txt_format;
 	if (d_matrix){
 		locale = d_matrix->locale();
-		fmt = d_matrix->textFormat().toAscii();
+		fmt = d_matrix->textFormat().toLatin1();
 		prec = d_matrix->precision();
 	}
 
@@ -293,7 +295,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 				return QVariant(locale.toString(start - section*dy, fmt, prec));
 		}
 	}
-	return qAbstractItemModel::headerData(section, orientation, role);
+	return QAbstractItemModel::headerData(section, orientation, role);
 }
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
@@ -308,14 +310,14 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 
 	if (role == Qt::DisplayRole || role == Qt::EditRole){
 		if (d_matrix)
-			return QVariant(d_matrix->locale().toString(val, d_matrix->textFormat().toAscii(), d_matrix->precision()));
+			return QVariant(d_matrix->locale().toString(val, d_matrix->textFormat().toLatin1(), d_matrix->precision()));
 		else
 			return QVariant(d_locale.toString(val, d_txt_format, d_num_precision));
 	} else
 		return QVariant();
 }
 
-bool MatrixModel::setSamples(const QModelIndex & index, const QVariant & value, int role)
+bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
 	if (!index.isValid())
 		return false;
@@ -511,9 +513,9 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 
 	QString s = t.readLine();
 	if (simplifySpaces)
-		s = s.simplifyWhiteSpace();
+		s = s.simplified();
 	else if (stripSpaces)
-		s = s.stripWhiteSpace();
+		s = s.trimmed();
 
 	QStringList line = s.split(sep);
 	int cols = line.size();
@@ -550,14 +552,14 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		}
 	}
 
-	qApp->processEvents(QEventLoop::ExcludeUserInput);
+	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 	if (startCol){
 		for (int i = startRow; i < d_rows; i++){
 			s = t.readLine();
 			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
+				s = s.simplified();
 			else if (stripSpaces)
-				s = s.stripWhiteSpace();
+				s = s.trimmed();
 			line = s.split(sep);
 
 			int nc = line.size() + startCol;
@@ -575,9 +577,9 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		for (int i = startRow; i < d_rows; i++){
 			s = t.readLine();
 			if (simplifySpaces)
-				s = s.simplifyWhiteSpace();
+				s = s.simplified();
 			else if (stripSpaces)
-				s = s.stripWhiteSpace();
+				s = s.trimmed();
 			line = s.split(sep);
 			int lc = line.size();
 			if (lc > d_cols)
@@ -1054,9 +1056,9 @@ void MatrixModel::resample(int rows, int cols, int method)
 	}
 
 	if (method == Matrix::Bilinear)
-		spline2dresamplebilinear(oldValues, d_rows, d_cols, newValues, rows, cols);
+		alglib::spline2dresamplebilinear(oldValues, d_rows, d_cols, newValues, rows, cols);
 	else
-		spline2dresamplebicubic(oldValues, d_rows, d_cols, newValues, rows, cols);
+		alglib::spline2dresamplebicubic(oldValues, d_rows, d_cols, newValues, rows, cols);
 
 	setDimensions(rows, cols);
 

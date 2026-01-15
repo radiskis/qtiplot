@@ -370,7 +370,7 @@ void SurfaceDialog::acceptParametricSurface()
 	parser.DefineVar("v", &v);
 
     int list_size = 15;
-	QString x_formula = boxX->text().simplified();
+	QString x_formula = boxX->toPlainText().simplified();
 	try {
 		parser.SetExpr(x_formula.toStdWString());
 		parser.Eval();
@@ -380,12 +380,12 @@ void SurfaceDialog::acceptParametricSurface()
 		return;
 	}
 
-    app->d_param_surface_func.remove(x_formula);
+    app->d_param_surface_func.removeAll(x_formula);
 	app->d_param_surface_func.push_front(x_formula);
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
 
-	QString y_formula = boxY->text().simplified();
+	QString y_formula = boxY->toPlainText().simplified();
 	try {
 		parser.SetExpr(y_formula.toStdWString());
 		parser.Eval();
@@ -395,12 +395,12 @@ void SurfaceDialog::acceptParametricSurface()
 		return;
 	}
 
-    app->d_param_surface_func.remove(y_formula);
+    app->d_param_surface_func.removeAll(y_formula);
 	app->d_param_surface_func.push_front(y_formula);
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
 
-	QString z_formula = boxZ->text().simplified();
+	QString z_formula = boxZ->toPlainText().simplified();
 	try {
 		parser.SetExpr(z_formula.toStdWString());
 		parser.Eval();
@@ -410,7 +410,7 @@ void SurfaceDialog::acceptParametricSurface()
 		return;
 	}
 
-    app->d_param_surface_func.remove(z_formula);
+    app->d_param_surface_func.removeAll(z_formula);
 	app->d_param_surface_func.push_front(z_formula);
 	while ((int)app->d_param_surface_func.size() > list_size)
 		app->d_param_surface_func.pop_back();
@@ -451,7 +451,7 @@ void SurfaceDialog::acceptFunction()
 		return;
 	}
 
-	QString formula = boxFunction->text().simplified();
+	QString formula = boxFunction->toPlainText().simplified();
 	bool error = false;
 	try{
 		MyParser parser;

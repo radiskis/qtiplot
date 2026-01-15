@@ -38,6 +38,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QGroupBox>
+#include <QCloseEvent>
 
 ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended, Qt::WindowFlags flags)
 : ExtensibleFileDialog( parent, extended, flags ), d_window(window)
@@ -193,7 +194,7 @@ void ExportDialog::setFileTypeFilters()
 		filters << "*." + list[i].toLower();
 
 	filters.sort();
-	setFilters(filters);
+	setNameFilters(filters);
 }
 
 void ExportDialog::accept()

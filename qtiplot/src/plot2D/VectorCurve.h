@@ -31,6 +31,8 @@
 
 #include "PlotCurve.h"
 #include <qwt_plot.h>
+#include <qwt_series_data.h>
+#include <QPen>
 
 class QwtPlot;
 
@@ -87,8 +89,8 @@ public:
 private:
 	void setVectorEnd(const QVector<double>&x, const QVector<double>&y);
 
-	void draw(QPainter *painter,const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
+	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
 
 	void drawVector(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
@@ -102,7 +104,7 @@ protected:
 	int d_style, d_headLength, d_headAngle, d_position;
 	QString d_end_x_a;
 	QString d_end_y_m;
-	QVectorData *vectorEnd;
+	QwtPointSeriesData *vectorEnd;
 };
 
 #endif

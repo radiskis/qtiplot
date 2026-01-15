@@ -31,6 +31,8 @@
 
 #include "PlotCurve.h"
 #include <qwt_plot.h>
+#include <QPen>
+#include <QVector>
 
 //! Error bars curve
 class ErrorBarsCurve: public DataCurve
@@ -86,8 +88,8 @@ public:
 	void loadData();
 
 private:
-	virtual void draw(QPainter *painter,const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, int from, int to) const;
+	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
 
 	void drawErrorBars(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;

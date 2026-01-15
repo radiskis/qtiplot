@@ -37,7 +37,9 @@ d_range(QwtInterval())
 LinearColorMap::LinearColorMap(const LinearColorMap& other) : QwtLinearColorMap(other.color1(), other.color2(), other.format()),
 d_range(other.intensityRange())
 {
-	setStopColors(other.colorStops());
+	QVector<double> stops = other.colorStops();
+	for (int i = 1; i < stops.size() - 1; i++)
+		addColorStop(stops[i], QColor(other.rgb(QwtInterval(0, 1), stops[i])));
 }
 
 LinearColorMap& LinearColorMap::operator=(const LinearColorMap& other)

@@ -28,10 +28,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui>
-#include <QHttp>
-#include <QIODevice>
-#include <QNetworkProxy>
+#include <QApplication>
+#include <QMessageBox>
+#include <QFontDialog>
+#include <QSpinBox>
+#include <QSlider>
+#include <QCheckBox>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QTabWidget>
+#include <QComboBox>
+#include <QLabel>
+#include <QTextEdit>
+#include <QGroupBox>
+#include <QPushButton>
+#include <QDialogButtonBox>
+#include <QLineEdit>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QUrlQuery>
 #include <QCompleter>
 #include <QDirModel>
 
@@ -108,12 +124,8 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *a
 
 void EnrichmentDialog::initEditorPage()
 {
-	http = new QHttp(this);
-    connect(http, SIGNAL(done(bool)), this, SLOT(updateForm(bool)));
-    http->setHost("mathtran.org");
-	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
-	if (!proxy.hostName().isEmpty())
-		http->setProxy(proxy.hostName(), proxy.port(), proxy.user(), proxy.password());
+	d_network_manager = new QNetworkAccessManager(this);
+    connect(d_network_manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(updateForm(QNetworkReply *)));
 
 	compileProcess = NULL;
 	dvipngProcess = NULL;
@@ -221,10 +233,10 @@ void EnrichmentDialog::initTextPage()
 	vl->addWidget(textApplyToBtn);
 
 	textApplyToBox = new QComboBox();
-	textApplyToBox->insertItem(tr("Object"));
-	textApplyToBox->insertItem(tr("Layer"));
-    textApplyToBox->insertItem(tr("Window"));
-    textApplyToBox->insertItem(tr("All Windows"));
+	textApplyToBox->addItem(tr("Object"));
+	textApplyToBox->addItem(tr("Layer"));
+    textApplyToBox->addItem(tr("Window"));
+    textApplyToBox->addItem(tr("All Windows"));
 	vl->addWidget(textApplyToBox);
 	vl->addStretch();
 
@@ -233,7 +245,7 @@ void EnrichmentDialog::initTextPage()
 	hl->addLayout(vl);
 
 	textEditBox = new QTextEdit();
-	textEditBox->setTextFormat(Qt::PlainText);
+	textEditBox->setAcceptRichText(false);
 
 	formatButtons =  new TextFormatButtons(textEditBox, TextFormatButtons::Legend);
 
@@ -355,10 +367,10 @@ void EnrichmentDialog::initFramePage()
 	vl->addWidget(l);
 
 	frameApplyToBox = new QComboBox();
-	frameApplyToBox->insertItem(tr("Object"));
-	frameApplyToBox->insertItem(tr("Layer"));
-    frameApplyToBox->insertItem(tr("Window"));
-    frameApplyToBox->insertItem(tr("All Windows"));
+	frameApplyToBox->addItem(tr("Object"));
+	frameApplyToBox->addItem(tr("Layer"));
+    frameApplyToBox->addItem(tr("Window"));
+    frameApplyToBox->addItem(tr("All Windows"));
 	vl->addWidget(frameApplyToBox);
 	vl->addStretch();
 	l->setBuddy(frameApplyToBox);
@@ -432,10 +444,10 @@ void EnrichmentDialog::initPatternPage()
 	vl->addWidget(l);
 
 	patternApplyToBox = new QComboBox();
-	patternApplyToBox->insertItem(tr("Object"));
-	patternApplyToBox->insertItem(tr("Layer"));
-    patternApplyToBox->insertItem(tr("Window"));
-    patternApplyToBox->insertItem(tr("All Windows"));
+	patternApplyToBox->addItem(tr("Object"));
+	patternApplyToBox->addItem(tr("Layer"));
+    patternApplyToBox->addItem(tr("Window"));
+    patternApplyToBox->addItem(tr("All Windows"));
 	vl->addWidget(patternApplyToBox);
 	vl->addStretch();
 	l->setBuddy(patternApplyToBox);
@@ -465,13 +477,13 @@ void EnrichmentDialog::initGeometryPage()
 		attachToBox->hide();
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("inch"));
-	unitBox->insertItem(tr("mm"));
-	unitBox->insertItem(tr("cm"));
-	unitBox->insertItem(tr("point"));
-	unitBox->insertItem(tr("pixel"));
+	unitBox->addItem(tr("inch"));
+	unitBox->addItem(tr("mm"));
+	unitBox->addItem(tr("cm"));
+	unitBox->addItem(tr("point"));
+	unitBox->addItem(tr("pixel"));
 	if (d_widget_type != MDIWindow)
-        unitBox->insertItem(tr("scale"));
+        unitBox->addItem(tr("scale"));
 	bl1->addWidget(unitBox, 1, 1);
 
 	QLabel *l1 = new QLabel("&" + tr("Unit"));
@@ -686,13 +698,13 @@ void EnrichmentDialog::clearForm()
 
 void EnrichmentDialog::apply()
 {
-	if (tabWidget->currentPage() == editPage)
+	if (tabWidget->currentWidget() == editPage)
 		fetchImage();
-	else if (tabWidget->currentPage() == framePage)
+	else if (tabWidget->currentWidget() == framePage)
 		frameApplyTo();
-	else if (imagePage && tabWidget->currentPage() == imagePage)
+	else if (imagePage && tabWidget->currentWidget() == imagePage)
 		chooseImageFile(imagePathBox->text());
-	else if (tabWidget->currentPage() == geometryPage){
+	else if (tabWidget->currentWidget() == geometryPage){
 		setCoordinates(unitBox->currentIndex());
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw)
@@ -700,12 +712,12 @@ void EnrichmentDialog::apply()
 
 		if (d_app)
 			d_app->d_keep_aspect_ration = keepAspectBox->isChecked();
-	} else if (patternPage && tabWidget->currentPage() == patternPage)
+	} else if (tabWidget->currentWidget() == patternPage)
 		patternApplyTo();
-	else if (textPage && tabWidget->currentPage() == textPage){
+	else if (textPage && tabWidget->currentWidget() == textPage){
 		LegendWidget *l = qobject_cast<LegendWidget *>(d_widget);
 		if (l)
-			l->setText(texteditBox->toPlainText());
+			l->setText(textEditBox->toPlainText());
 
 		textFormatApplyTo();
 		if (d_app)
@@ -722,7 +734,7 @@ QString EnrichmentDialog::createTempTexFile()
 
 	if (file.open(QIODevice::WriteOnly)){
 		QTextStream t( &file );
-		t.setEncoding(QTextStream::UnicodeUTF8);
+		t.setCodec("UTF-8");
 		t << "\\documentclass{article}\n";
 		t << "\\pagestyle{empty}\n";
 		t << "\\begin{document}\n";
@@ -771,25 +783,24 @@ void EnrichmentDialog::fetchImage()
 		return;
 	}
 
-    QUrl url;
-    url.setPath("/cgi-bin/mathtran");
-    url.setQueryDelimiters('=', ';');
-    url.addQueryItem("D", "3");
-    url.addQueryItem("tex", QUrl::toPercentEncoding(
-                     equationEditor->toPlainText()));
+    QUrl url("http://mathtran.org/cgi-bin/mathtran");
+    QUrlQuery query;
+    query.addQueryItem("D", "3");
+    query.addQueryItem("tex", equationEditor->toPlainText());
+    url.setQuery(query);
 
-    http->get(url.toString());
+    d_network_manager->get(QNetworkRequest(url));
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 }
 
-void EnrichmentDialog::updateForm(bool error)
+void EnrichmentDialog::updateForm(QNetworkReply *reply)
 {
 	QApplication::restoreOverrideCursor();
 
-    if (!error) {
+    if (reply->error() == QNetworkReply::NoError) {
         QImage image;
-        if (image.loadFromData(http->readAll())) {
+        if (image.loadFromData(reply->readAll())) {
             QPixmap pixmap = QPixmap::fromImage(image);
             outputLabel->setPixmap(pixmap);
 			TexWidget *tw = qobject_cast<TexWidget *>(d_widget);
@@ -802,9 +813,10 @@ void EnrichmentDialog::updateForm(bool error)
     } else {
 		QMessageBox::critical((QWidget *)parent(), tr("QtiPlot") + " - " + tr("Network connection error"),
 		tr("Error while trying to connect to host %1:").arg("mathtran.org") + "\n\n'" +
-		http->errorString() + "'\n\n" + tr("Please verify your network connection!"));
+		reply->errorString() + "'\n\n" + tr("Please verify your network connection!"));
 	}
 
+	reply->deleteLater();
     clearButton->setEnabled(true);
     updateButton->setEnabled(true);
     equationEditor->setReadOnly(false);
@@ -828,7 +840,7 @@ void EnrichmentDialog::chooseImageFile(const QString& fn)
 		if (i->load(path)){
 			imagePathBox->setText(path);
 			QFileInfo fi(path);
-			d_app->imagesDirPath = fi.dirPath(true);
+			d_app->imagesDirPath = fi.absolutePath();
 			d_app->modifiedProject();
 		}
 	}

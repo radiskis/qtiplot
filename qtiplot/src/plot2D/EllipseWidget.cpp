@@ -33,7 +33,10 @@
 
 #include <QPainter>
 #include <QPaintEngine>
+#include <QPainter>
+#include <QPaintEngine>
 #include <QPalette>
+#include <QPainterPath>
 
 #include <qwt_painter.h>
 
@@ -122,7 +125,7 @@ void EllipseWidget::drawFrame(QPainter *p, const QRect& rect)
 
 	QPainterPath ellipse;
 	if (d_frame == Line){
-		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		QPen pen = d_frame_pen;
 		p->setPen(pen);
 
 		int lw = pen.width()/2;

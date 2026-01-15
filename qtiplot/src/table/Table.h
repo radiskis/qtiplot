@@ -132,6 +132,38 @@ public:
         return selectedRanges().count() > 0 ? 0 : -1;
     }
 
+	void insertColumns(int col, int count = 1) {
+		for (int i = 0; i < count; i++)
+			insertColumn(col);
+	}
+
+	void insertRows(int row, int count = 1) {
+		for (int i = 0; i < count; i++)
+			insertRow(row);
+	}
+
+	void swapColumns(int col1, int col2) {
+		for (int i = 0; i < rowCount(); i++) {
+			QTableWidgetItem *it1 = takeItem(i, col1);
+			QTableWidgetItem *it2 = takeItem(i, col2);
+			setItem(i, col1, it2);
+			setItem(i, col2, it1);
+		}
+	}
+
+	void swapRows(int row1, int row2) {
+		for (int i = 0; i < columnCount(); i++) {
+			QTableWidgetItem *it1 = takeItem(row1, i);
+			QTableWidgetItem *it2 = takeItem(row2, i);
+			setItem(row1, i, it2);
+			setItem(row2, i, it1);
+		}
+	}
+
+	void updateContents() { viewport()->update(); }
+
+	void activateNextCell();
+
 private:
     QList<int> d_readOnlyCols;
 };

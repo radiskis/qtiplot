@@ -47,6 +47,8 @@
 #include <QVarLengthArray>
 #include <QClipboard>
 #include <QShortcut>
+#include <QDrag>
+#include <QMimeData>
 #include <QtPrintSupport/QPrinter>
 #include <QPrintDialog>
 #include <QPainter>
@@ -191,7 +193,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	bool notTemplate = !saveAsTemplate;
 
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<matrix>\n";
 	if (notTemplate)
         t << QString(objectName()) + "\t";
@@ -372,7 +374,7 @@ void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplat
 				else
 					setCell(row, col, cell.toDouble());
 			}
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		}
 
 		if (calculatedValues && !formula_str.isEmpty())
@@ -684,7 +686,7 @@ bool Matrix::muParserCalculate(int startRow, int endRow, int startCol, int endCo
 
 bool Matrix::calculate(int startRow, int endRow, int startCol, int endCol, bool forceMuParser)
 {
-	if (QString(scriptEnv->name()) == "muParser" || forceMuParser)
+	if (QString(scriptEnv->objectName()) == "muParser" || forceMuParser)
 		return muParserCalculate(startRow, endRow, startCol, endCol);
 
 	double *buffer = d_matrix_model->dataCopy(startRow, endRow, startCol, endCol);
@@ -1116,7 +1118,7 @@ void Matrix::print(QPrinter *printer)
 		tr.setWidth(w);
 		tr.setHeight(br.height());
 		header_label = d_matrix_model->headerData(i, Qt::Horizontal).toString();
-		p.drawText(tr, Qt::AlignCenter, header_label,-1);
+		p.drawText(tr, Qt::AlignCenter, header_label);
 		right += w;
 		p.drawLine(right, height, right, height+tr.height());
 
@@ -1138,7 +1140,7 @@ void Matrix::print(QPrinter *printer)
 		br.setTopLeft(QPoint(right,height));
 		br.setWidth(vertHeaderWidth);
 		br.setHeight(tr.height());
-		p.drawText(br,Qt::AlignCenter,cell_text,-1);
+		p.drawText(br,Qt::AlignCenter,cell_text);
 		right += vertHeaderWidth;
 		p.drawLine(right, height, right, height+tr.height());
 
@@ -1149,7 +1151,7 @@ void Matrix::print(QPrinter *printer)
 			br.setTopLeft(QPoint(right,height));
 			br.setWidth(w);
 			br.setHeight(tr.height());
-			p.drawText(br, Qt::AlignCenter, cell_text, -1);
+			p.drawText(br, Qt::AlignCenter, cell_text);
 			right += w;
 			p.drawLine(right, height, right, height+tr.height());
 
@@ -1223,7 +1225,7 @@ void Matrix::exportVector(const QString& fileName, int res, bool color)
 	QPrinter printer;
 	printer.setOutputFileName(fileName);
 	if (fileName.contains(".eps"))
-		printer.setOutputFormat(QPrinter::PostScriptFormat);
+		printer.setOutputFormat(QPrinter::PdfFormat);
 
 	exportVector(&printer, res, color);
 }
@@ -1337,7 +1339,7 @@ void Matrix::goToRow(int row)
     if (d_view_type == ImageView)
         d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
 	d_table_view->selectRow(row - 1);
-	d_table_view->scrollTo(d_matrix_model->index(row - 1, 0), qAbstractItemView::PositionAtTop);
+	d_table_view->scrollTo(d_matrix_model->index(row - 1, 0), QAbstractItemView::PositionAtTop);
 }
 
 void Matrix::goToColumn(int col)
@@ -1348,7 +1350,7 @@ void Matrix::goToColumn(int col)
     if (d_view_type == ImageView)
         d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, TableView, tr("Set Data Mode")));
 	d_table_view->selectColumn(col - 1);
-	d_table_view->scrollTo(d_matrix_model->index(0, col - 1), qAbstractItemView::PositionAtCenter);
+	d_table_view->scrollTo(d_matrix_model->index(0, col - 1), QAbstractItemView::PositionAtCenter);
 }
 
 void Matrix::moveCell(const QModelIndex& index)
@@ -1461,20 +1463,20 @@ void Matrix::initTableView()
 {
     d_table_view = new QTableView();
     d_table_view->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
-    d_table_view->setSelectionMode(qAbstractItemView::ContiguousSelection);// only one contiguous selection supported
+    d_table_view->setSelectionMode(QAbstractItemView::ContiguousSelection);// only one contiguous selection supported
     d_table_view->setModel(d_matrix_model);
-    d_table_view->setEditTriggers(qAbstractItemView::DoubleClicked);
+    d_table_view->setEditTriggers(QAbstractItemView::DoubleClicked);
     d_table_view->setFocusPolicy(Qt::StrongFocus);
     d_table_view->setFocus();
 
     QPalette pal = d_table_view->palette();
-	pal.setColor(QColorGroup::Base, QColor(255, 255, 128));
+	pal.setColor(QPalette::Base, QColor(255, 255, 128));
 	d_table_view->setPalette(pal);
 
 	// set header properties
 	QHeaderView* hHeader = (QHeaderView*)d_table_view->horizontalHeader();
-	hHeader->setMovable(false);
-	hHeader->setResizeMode(QHeaderView::Interactive);
+	hHeader->setSectionsMovable(false);
+	hHeader->setSectionResizeMode(QHeaderView::Interactive);
 	hHeader->setDefaultSectionSize(d_column_width);
 
     int cols = numCols();
@@ -1482,8 +1484,8 @@ void Matrix::initTableView()
 		d_table_view->setColumnWidth(i, d_column_width);
 
 	QHeaderView* vHeader = (QHeaderView*)d_table_view->verticalHeader();
-	vHeader->setMovable(false);
-	vHeader->setResizeMode(QHeaderView::Fixed);
+	vHeader->setSectionsMovable(false);
+	vHeader->setSectionResizeMode(QHeaderView::Fixed);
 
     d_stack->addWidget(d_table_view);
 
@@ -1972,3 +1974,4 @@ Matrix::~Matrix()
     delete d_undo_stack;
 	delete d_matrix_model;
 }
+

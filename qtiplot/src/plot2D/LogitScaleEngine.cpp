@@ -28,6 +28,9 @@
  ***************************************************************************/
 
 #include <LogitScaleEngine.h>
+#include <qwt_interval.h>
+#include <cmath>
+#include <qwt_transform.h> // This include is necessary for QwtTransform
 
 /*!
   Return a dummy transformation
@@ -86,7 +89,7 @@ QwtScaleDiv LogitScaleEngine::divideScale(double x1, double x2,
     if (interval.width() <= 0 )
         return QwtScaleDiv();
 
-    stepSize = fabs(qRound(stepSize));
+    stepSize = std::abs(qRound(stepSize));
     if ( stepSize == 0.0 )
         stepSize = 1.0;
 
@@ -158,10 +161,10 @@ double LogitScaleTransformation::invTransform(double p) const
 
 double LogitScaleTransformation::func(double x) const
 {
-	return log(x/(100-x));
+	return std::log(x/(100-x));
 }
 
 double LogitScaleTransformation::invFunc(double x) const
 {
-	return 100*exp(x)/(1 + exp(x));
+	return 100*std::exp(x)/(1 + std::exp(x));
 }

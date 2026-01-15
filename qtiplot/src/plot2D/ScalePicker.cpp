@@ -111,9 +111,9 @@ bool ScalePicker::labelClicked(const QwtScaleWidget *scale, const QPoint &pos)
 	}
 
 	QFont font = g->axisFont(axis);
-	const QwtScaleDiv *div = g->axisScaleDiv(axis);
+	const QwtScaleDiv &div = g->axisScaleDiv(axis);
 	const QwtScaleDraw *scDraw = scale->scaleDraw();
-	QList<double> ticks = div->ticks(QwtScaleDiv::MajorTick);
+	QList<double> ticks = div.ticks(QwtScaleDiv::MajorTick);
 	foreach(double val, ticks){
 		QRect r = scDraw->boundingLabelRect(font, val);
 		if (r.contains(pos))
@@ -188,7 +188,7 @@ void ScalePicker::refresh()
 
 QRect ScalePicker::scaleTicksRect(const QwtScaleWidget *scale) const
 {
-	int majTickLength = scale->scaleDraw()->majTickLength();
+	int majTickLength = scale->scaleDraw()->tickLength(QwtScaleDiv::MajorTick);
 	QRect rect = scale->rect();
 	switch(scale->alignment()){
 		case QwtScaleDraw::LeftScale:
@@ -257,11 +257,11 @@ void ScalePicker::selectTitle(QwtScaleWidget *scale, bool select)
 
     QwtText title = scale->title();
     if (select){
-        title.setBackgroundPen(QPen(Qt::blue));
+        title.setBorderPen(QPen(Qt::blue));
 		g->notifyFontChange(title.font());
 		g->notifyColorChange(title.color());
     } else
-        title.setBackgroundPen(QPen(Qt::NoPen));
+        title.setBorderPen(QPen(Qt::NoPen));
 
     scale->setTitle(title);
 }
@@ -282,7 +282,7 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
 	d_title_selected = false;
 
 	g->notifyFontChange(scale->font());
-	g->notifyColorChange(scale->palette().color(QPalette::Active, QColorGroup::Text));
+	g->notifyColorChange(scale->palette().color(QPalette::Active, QPalette::Text));
 
 	ScaleDraw *sc_draw = (ScaleDraw *)scale->scaleDraw();
 	sc_draw->setSelected(select);
@@ -298,7 +298,7 @@ void ScalePicker::deselect()
 	d_labels_selected = false;
 
 	QwtText title = d_selected_axis->title();
-    title.setBackgroundPen(QPen(Qt::NoPen));
+    title.setBorderPen(QPen(Qt::NoPen));
     d_selected_axis->setTitle(title);
 
 	ScaleDraw *sc_draw = (ScaleDraw *)d_selected_axis->scaleDraw();

@@ -67,22 +67,23 @@ void VectorCurve::copy(const VectorCurve *vc)
 	d_headAngle = vc->d_headAngle;
 	d_position = vc->d_position;
 	d_pen = vc->d_pen;
-	vectorEnd = (QVectorData *)vc->vectorEnd->copy();
+	vectorEnd = new QwtPointSeriesData(vc->vectorEnd->samples());
 }
 
-void VectorCurve::draw(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void VectorCurve::drawSeries(QPainter *painter,
+    const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
+	Q_UNUSED(canvasRect);
     if ( !painter || dataSize() <= 0 )
         return;
 
     if (to < 0)
         to = dataSize() - 1;
 
-	QwtPlotCurve::draw(painter, xMap, yMap, from, to);
+	QwtPlotCurve::drawSeries(painter, xMap, yMap, canvasRect, from, to);
 
     painter->save();
-    painter->setPen(QwtPainter::scaledPen(d_pen));
+    painter->setPen(d_pen);
     drawVector(painter, xMap, yMap, from, to);
     painter->restore();
 }
@@ -94,8 +95,8 @@ void VectorCurve::drawVector(QPainter *painter,
 		for (int i = from; i <= to; i++){
 			const double x0 = x(i);
 			const double y0 = y(i);
-			const double angle = vectorEnd->x(i);
-			const double mag = vectorEnd->y(i);
+			const double angle = vectorEnd->sample(i).x();
+			const double mag = vectorEnd->sample(i).y();
 
 			int xs = 0, ys = 0, xe = 0, ye = 0;
 			switch(d_position){
@@ -131,8 +132,8 @@ void VectorCurve::drawVector(QPainter *painter,
 		for (int i = from; i <= to; i++){
 			const int xs = xMap.transform(x(i));
 			const int ys = yMap.transform(y(i));
-			const int xe = xMap.transform(vectorEnd->x(i));
-			const int ye = yMap.transform(vectorEnd->y(i));
+			const int xe = xMap.transform(vectorEnd->sample(i).x());
+			const int ye = yMap.transform(vectorEnd->sample(i).y());
 			QwtPainter::drawLine(painter, xs, ys, xe, ye);
 			drawArrowHead(painter, xs, ys, xe, ye);
 		}
@@ -191,7 +192,14 @@ void VectorCurve::setVectorEnd(const QString& xColName, const QString& yColName)
 
 void VectorCurve::setVectorEnd(const QVector<double>&x, const QVector<double>&y)
 {
-	vectorEnd = new QVectorData(x, y);
+	QVector<QPointF> samples;
+	for (int i = 0; i < x.size(); i++)
+		samples << QPointF(x[i], y[i]);
+
+	if (vectorEnd)
+		delete vectorEnd;
+
+	vectorEnd = new QwtPointSeriesData(samples);
 }
 
 double VectorCurve::width()
@@ -247,8 +255,8 @@ QRectF VectorCurve::boundingRect() const
 		rect.setLeft(qMin((double)rect.left(), (double)vrect.left()));
 		rect.setRight(qMax((double)rect.right(), (double)vrect.right()));
 	} else {
-		const double angle = vectorEnd->x(0);
-		double mag = vectorEnd->y(0);
+		const double angle = vectorEnd->sample(0).x();
+		double mag = vectorEnd->sample(0).y();
 		switch(d_position)
 			{
 			case Tail:

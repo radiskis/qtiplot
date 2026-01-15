@@ -124,12 +124,12 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxConstants = new QTableWidget();
     boxConstants->setColumnCount(2);
-    boxConstants->horizontalHeader()->setClickable(false);
-    boxConstants->horizontalHeader()->setResizeMode (0, QHeaderView::ResizeToContents);
-	boxConstants->horizontalHeader()->setResizeMode (1, QHeaderView::Stretch);
+    boxConstants->horizontalHeader()->setSectionsClickable(false);
+    boxConstants->horizontalHeader()->setSectionResizeMode (0, QHeaderView::ResizeToContents);
+	boxConstants->horizontalHeader()->setSectionResizeMode (1, QHeaderView::Stretch);
     QStringList header = QStringList() << tr("Constant") << tr("Value");
     boxConstants->setHorizontalHeaderLabels(header);
-    boxConstants->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    boxConstants->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     boxConstants->verticalHeader()->hide();
 	boxConstants->setMinimumWidth(200);
 	boxConstants->hide();
@@ -343,7 +343,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	if (standAlone){
 		buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 		buttonBox->setCenterButtons(true);
-		connect(buttonBox, SIGNAL(clicked(qAbstractButton *)), this, SLOT(buttonClicked(qAbstractButton *)));
+		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 		vbox1->addWidget(buttonBox);
 
 		setSizeGripEnabled(true);
@@ -358,7 +358,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	graph = 0;
 }
 
-void FunctionDialog::buttonClicked(qAbstractButton *btn)
+void FunctionDialog::buttonClicked(QAbstractButton *btn)
 {
 	switch(buttonBox->buttonRole(btn)){
 		case QDialogButtonBox::AcceptRole:
@@ -492,7 +492,7 @@ bool FunctionDialog::acceptFunction()
 	}
 
 	QMap<QString, double> constants;
-	QString formula = boxFunction->text().simplified();
+	QString formula = boxFunction->toPlainText().simplified();
 	try {
 		double x = start;
 		MyParser parser;
@@ -502,10 +502,10 @@ bool FunctionDialog::acceptFunction()
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.toAscii().constData(), val);
+				parser.DefineConst(constName.toLatin1().constData(), val);
 			}
 		}
-		parser.SetExpr(formula.toAscii().constData());
+		parser.SetExpr(formula.toLatin1().constData());
 
 		parser.Eval();
 		x = end;
@@ -551,22 +551,22 @@ bool FunctionDialog::acceptParametric()
 	}
 
 	double parameter;
-	QString xformula = boxXFunction->text().simplified();
-	QString yformula = boxYFunction->text().simplified();
+	QString xformula = boxXFunction->toPlainText().simplified();
+	QString yformula = boxYFunction->toPlainText().simplified();
 
 	QMap<QString, double> constants;
 	try {
 		MyParser parser;
-		parser.DefineVar((boxParameter->text()).toAscii().constData(), &parameter);
+		parser.DefineVar((boxParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.toAscii().constData(), val);
+				parser.DefineConst(constName.toLatin1().constData(), val);
 			}
 		}
-		parser.SetExpr(xformula.toAscii().constData());
+		parser.SetExpr(xformula.toLatin1().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -580,15 +580,15 @@ bool FunctionDialog::acceptParametric()
 
 	try {
 		MyParser parser;
-		parser.DefineVar((boxParameter->text()).toAscii().constData(), &parameter);
+		parser.DefineVar((boxParameter->text()).toLatin1().constData(), &parameter);
 
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
-				parser.DefineConst(constName.toAscii().constData(), val);
+				parser.DefineConst(constName.toLatin1().constData(), val);
 		}
-		parser.SetExpr(yformula.toAscii().constData());
+		parser.SetExpr(yformula.toLatin1().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -634,22 +634,22 @@ bool FunctionDialog::acceptPolar()
 	}
 
 	double parameter;
-	QString rformula = boxPolarRadius->text().simplified();
-	QString tformula = boxPolarTheta->text().simplified();
+	QString rformula = boxPolarRadius->toPlainText().simplified();
+	QString tformula = boxPolarTheta->toPlainText().simplified();
 
 	QMap<QString, double> constants;
 	try {
 		MyParser parser;
-		parser.DefineVar((boxPolarParameter->text()).toAscii().constData(), &parameter);
+		parser.DefineVar((boxPolarParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
-				parser.DefineConst(constName.toAscii().constData(), val);
+				parser.DefineConst(constName.toLatin1().constData(), val);
 			}
 		}
-		parser.SetExpr(rformula.toAscii().constData());
+		parser.SetExpr(rformula.toLatin1().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -663,14 +663,14 @@ bool FunctionDialog::acceptPolar()
 
 	try {
 		MyParser parser;
-		parser.DefineVar((boxPolarParameter->text()).toAscii().constData(), &parameter);
+		parser.DefineVar((boxPolarParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
 			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
-				parser.DefineConst(constName.toAscii().constData(), val);
+				parser.DefineConst(constName.toLatin1().constData(), val);
 		}
-		parser.SetExpr(tformula.toAscii().constData());
+		parser.SetExpr(tformula.toLatin1().constData());
 
 		parameter = start;
 		parser.Eval();
@@ -913,18 +913,18 @@ void FunctionDialog::guessConstants()
 	QString var = "x";
 	switch (boxType->currentIndex()){
 		case 0:
-			text = boxFunction->text().remove(QRegExp("\\s")).remove(".");
+			text = boxFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
 			break;
 
 		case 1:
-			text = boxXFunction->text().remove(QRegExp("\\s")).remove(".");
-			text += "+" + boxYFunction->text().remove(QRegExp("\\s")).remove(".");
+			text = boxXFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
+			text += "+" + boxYFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
 			var = boxParameter->text();
 			break;
 
 		case 2:
-			text = boxPolarRadius->text().remove(QRegExp("\\s")).remove(".");
-			text += "+" + boxPolarTheta->text().remove(QRegExp("\\s")).remove(".");
+			text = boxPolarRadius->toPlainText().remove(QRegExp("\\s")).remove(".");
+			text += "+" + boxPolarTheta->toPlainText().remove(QRegExp("\\s")).remove(".");
 			var = boxPolarParameter->text();
 			break;
 	}

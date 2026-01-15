@@ -40,6 +40,7 @@
 #include <QFontDialog>
 #include <QFont>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 LayerDialog::LayerDialog( QWidget* parent, bool okMode, Qt::WindowFlags fl )
 : QDialog(parent, fl),
@@ -71,17 +72,17 @@ multi_layer(NULL)
 
 	alignHorBox = new QComboBox();
 	alignHorBox->setEditable(false);
-	alignHorBox->insertItem( tr( "Center" ) );
-	alignHorBox->insertItem( tr( "Left" ) );
-	alignHorBox->insertItem( tr( "Right" ) );
+	alignHorBox->addItem( tr( "Center" ) );
+	alignHorBox->addItem( tr( "Left" ) );
+	alignHorBox->addItem( tr( "Right" ) );
 	gl2->addWidget(alignHorBox, 0, 1);
 
 	gl2->addWidget(new QLabel( tr( "Vertical" )), 1, 0 );
 	alignVertBox = new QComboBox();
 	alignVertBox->setEditable(false);
-	alignVertBox->insertItem( tr( "Center" ) );
-	alignVertBox->insertItem( tr( "Top" ) );
-	alignVertBox->insertItem( tr( "Bottom" ) );
+	alignVertBox->addItem( tr( "Center" ) );
+	alignVertBox->addItem( tr( "Top" ) );
+	alignVertBox->addItem( tr( "Bottom" ) );
 	gl2->addWidget(alignVertBox, 1, 1);
 	gl2->setRowStretch(2, 1);
 
@@ -106,11 +107,11 @@ multi_layer(NULL)
 	gl5->addWidget(new QLabel(tr("Unit")), 0, 0);
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("inch"));
-	unitBox->insertItem(tr("mm"));
-	unitBox->insertItem(tr("cm"));
-	unitBox->insertItem(tr("point"));
-	unitBox->insertItem(tr("pixel"));
+	unitBox->addItem(tr("inch"));
+	unitBox->addItem(tr("mm"));
+	unitBox->addItem(tr("cm"));
+	unitBox->addItem(tr("point"));
+	unitBox->addItem(tr("pixel"));
 	gl5->addWidget(unitBox, 0, 1);
 
 	QLocale locale = QLocale();
@@ -287,8 +288,8 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 
 	fixedSizeBox->setChecked(!g->scaleLayersOnResize());
 
-	alignHorBox->setCurrentItem(g->horizontalAlignement());
-	alignVertBox->setCurrentItem(g->verticalAlignement());
+	alignHorBox->setCurrentIndex(g->horizontalAlignement());
+	alignVertBox->setCurrentIndex(g->verticalAlignement());
 
 	boxLayerSrc->setRange(1, g->numLayers());
 	boxLayerDest->setRange(1, g->numLayers());
@@ -361,7 +362,7 @@ void LayerDialog::update()
 	if (commonAxesBox->isEnabled() && commonAxesBox->isChecked())
 		multi_layer->setCommonLayerAxes(boxColsGap->value() == 0, boxRowsGap->value() == 0);
 
-	multi_layer->setAlignement(alignHorBox->currentItem(), alignVertBox->currentItem());
+	multi_layer->setAlignement(alignHorBox->currentIndex(), alignVertBox->currentIndex());
 
 	multi_layer->setMargins(boxLeftSpace->value(), boxRightSpace->value(),
 			boxTopSpace->value(), boxBottomSpace->value());

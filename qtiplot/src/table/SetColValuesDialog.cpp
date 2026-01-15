@@ -237,7 +237,7 @@ bool SetColValuesDialog::apply()
     if (col < 0 || col > table->numCols() - 1)
         return false;
 
-	QString formula = commands->text();
+	QString formula = commands->toPlainText();
 	QString oldFormula = table->getCommands()[col];
 
 	table->setCommand(col,formula);
@@ -257,11 +257,11 @@ void SetColValuesDialog::insertExplain(int index)
 {
 #ifdef SCRIPTING_PYTHON
 	if (boxMuParser && boxMuParser->isChecked())
-		explain->setText(muParserScripting::explainFunction(functions->text(index)));
+		explain->setText(muParserScripting::explainFunction(functions->itemText(index)));
 	else
-		explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+		explain->setText(scriptEnv->mathFunctionDoc(functions->itemText(index)));
 #else
-	explain->setText(scriptEnv->mathFunctionDoc(functions->text(index)));
+	explain->setText(scriptEnv->mathFunctionDoc(functions->itemText(index)));
 #endif
 }
 
@@ -272,12 +272,12 @@ void SetColValuesDialog::insertFunction()
 
 void SetColValuesDialog::insertCol()
 {
-	commands->insert(boxColumn->currentText());
+	commands->insertPlainText(boxColumn->currentText());
 }
 
 void SetColValuesDialog::insertCell()
 {
-	commands->insert(boxColumn->currentText().remove(")")+", i)");
+	commands->insertPlainText(boxColumn->currentText().remove(")")+", i)");
 }
 
 void SetColValuesDialog::setTable(Table* w)
@@ -286,7 +286,7 @@ void SetColValuesDialog::setTable(Table* w)
 	QStringList colNames = w->colNames();
 	int cols = w->numCols();
 	for (int i=0; i<cols; i++)
-		boxColumn->insertItem("col(\""+colNames[i]+"\")", i);
+		boxColumn->insertItem(i, "col(\""+colNames[i]+"\")");
 
 	Q3TableSelection sel = w->getSelection();
 	if (!w->table()->selectedRanges().isEmpty()) {

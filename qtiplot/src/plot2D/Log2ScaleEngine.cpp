@@ -33,6 +33,17 @@
   Return a dummy transformation
 */
 #include <qwt_transform.h>
+#include <qwt_interval.h>
+// #include <qwt_scale_arithmetic.h>
+#include <cmath>
+
+#ifndef LOG_MIN
+#define LOG_MIN 1.0e-100
+#endif
+
+#ifndef LOG_MAX
+#define LOG_MAX 1.0e100
+#endif
 
 /*!
   Return a dummy transformation
@@ -40,6 +51,18 @@
 QwtTransform *Log2ScaleEngine::transformation() const
 {
     return new QwtLogTransform(); 
+}
+
+static double floorEps(double value, double stepSize)
+{
+    if (stepSize == 0.0) return value;
+    return std::floor(value / stepSize + 1.0e-9) * stepSize;
+}
+
+static double ceilEps(double value, double stepSize)
+{
+    if (stepSize == 0.0) return value;
+    return std::ceil(value / stepSize - 1.0e-9) * stepSize;
 }
 
 /*!
@@ -61,10 +84,10 @@ void Log2ScaleEngine::autoScale(int maxNumSteps,
 
     double logRef = 1.0;
     if (reference() > LOG_MIN / 2)
-        logRef = qwtMin(reference(), LOG_MAX / 2);
+        logRef = qMin(reference(), LOG_MAX / 2);
 
     if (testAttribute(QwtScaleEngine::Symmetric)){
-        const double delta = qwtMax(interval.maxValue() / logRef,
+        const double delta = qMax(interval.maxValue() / logRef,
             logRef / interval.minValue());
         interval.setInterval(logRef / delta, logRef * delta);
     }
@@ -77,7 +100,7 @@ void Log2ScaleEngine::autoScale(int maxNumSteps,
     if (interval.width() == 0.0)
         interval = buildInterval(interval.minValue());
 
-    stepSize = divideInterval(log2(interval).width(), qwtMax(maxNumSteps, 1));
+    stepSize = divideInterval(log2(interval).width(), qMax(maxNumSteps, 1));
 
     if (!testAttribute(QwtScaleEngine::Floating))
         interval = align(interval, stepSize);
@@ -121,7 +144,7 @@ QwtScaleDiv Log2ScaleEngine::divideScale(double x1, double x2,
             maxMajSteps, maxMinSteps, stepSize);
     }
 
-    stepSize = qwtAbs(stepSize);
+    stepSize = qAbs(stepSize);
     if ( stepSize == 0.0 ){
         if ( maxMajSteps < 1 )
             maxMajSteps = 1;
@@ -165,8 +188,8 @@ QList<double> Log2ScaleEngine::buildMajorTicks(
     if ( numTicks > 10000 )
         numTicks = 10000;
 
-    const double lxmin = ::log2(interval.minValue());
-    const double lxmax = ::log2(interval.maxValue());
+    const double lxmin = std::log2(interval.minValue());
+    const double lxmax = std::log2(interval.maxValue());
     const double lstep = (lxmax - lxmin) / double(numTicks - 1);
 
     QList<double> ticks;
@@ -216,8 +239,8 @@ QwtInterval Log2ScaleEngine::align(
 {
     const QwtInterval intv = log2(interval);
 
-    const double x1 = QwtScaleArithmetic::floorEps(intv.minValue(), stepSize);
-    const double x2 = QwtScaleArithmetic::ceilEps(intv.maxValue(), stepSize);
+    const double x1 = floorEps(intv.minValue(), stepSize);
+    const double x2 = ceilEps(intv.maxValue(), stepSize);
 
     return QwtInterval(pow(2, x1), pow(2, x2));
 }
@@ -229,6 +252,6 @@ QwtInterval Log2ScaleEngine::align(
 QwtInterval Log2ScaleEngine::log2(
     const QwtInterval &interval) const
 {
-    return QwtInterval(::log2(interval.minValue()),
-            ::log2(interval.maxValue()));
+    return QwtInterval(std::log2(interval.minValue()),
+            std::log2(interval.maxValue()));
 }

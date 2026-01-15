@@ -35,10 +35,13 @@
 
 #include <QPainter>
 #include <QPaintEngine>
+#include <QPaintEvent>
+#include <QPainterPath>
 
 #include <qwt_plot.h>
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
+#include <qwt_scale_map.h>
 
 FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_plot(plot),
@@ -78,22 +81,14 @@ void FrameWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
+void FrameWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
 	int x = map[QwtPlot::xBottom].transform(d_x);
 	int y = map[QwtPlot::yLeft].transform(d_y);
 	int right = map[QwtPlot::xBottom].transform(d_x_right);
 	int bottom = map[QwtPlot::yLeft].transform(d_y_bottom);
 
-	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
-	QPen pen = d_frame_pen;
-	if (scaleFactor != 1.0)
-		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
-
 	drawFrame(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
-
-	if (scaleFactor != 1.0)
-		d_frame_pen = pen;//restore original pen
 }
 
 void FrameWidget::setFrameStyle(int style)
@@ -215,7 +210,7 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 
 	p->save();
 	if (d_frame == Line){
-		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		QPen pen = d_frame_pen;
 		p->setPen(pen);
 		int lw = pen.width()/2;
 		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
@@ -246,7 +241,7 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		p->fillPath(shadow.subtracted(contents), Qt::black);//draw shadow
 		if (background.alpha() != 0)
 			p->fillRect(r, background);
-		p->setPen(QwtPainter::scaledPen(d_frame_pen));
+		p->setPen(d_frame_pen);
 		if (d_brush.style() != Qt::NoBrush)
 			p->setBrush(d_brush);
 		QwtPainter::drawRect(p, r);

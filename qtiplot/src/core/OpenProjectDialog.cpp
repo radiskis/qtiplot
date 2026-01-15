@@ -29,6 +29,7 @@
 
 #include "OpenProjectDialog.h"
 #include "ApplicationWindow.h"
+#include <QCloseEvent>
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -64,7 +65,7 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WindowF
 	}
 
 	filters << tr("ODF Spreadsheet") + " (*.ods)" << tr("All files") + " (*)";
-	setFilters(filters);
+	setNameFilters(filters);
 
 	QWidget *advanced_options = new QWidget();
 	QHBoxLayout *advanced_layout = new QHBoxLayout();

@@ -56,7 +56,7 @@ public:
 	bool saveInternally(){return d_save_xpm;};
 	void setSaveInternally(bool save = true){d_save_xpm = save;};
 
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter & = QwtPlotPrintFilter());
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
 	virtual QString saveToString();
 
 	void clone(ImageWidget* t);

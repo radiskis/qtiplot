@@ -49,8 +49,10 @@
 #include <qwt_painter.h>
 #include <qwt_plot_layout.h>
 #include <qwt_plot_canvas.h>
-#include <qwt_layout_metrics.h>
+// #include <qwt_layout_metrics.h>
+#include <qwt_scale_map.h>
 #include <qwt_symbol.h>
+#include <QPaintEvent>
 
 #include <iostream>
 
@@ -71,7 +73,7 @@ d_tex_output(false)
 	d_text->setRenderFlags(Qt::AlignTop|Qt::AlignLeft);
 	d_text->setBackgroundBrush(QBrush(Qt::NoBrush));
 	d_text->setColor(Qt::black);
-	d_text->setBackgroundPen (QPen(Qt::NoPen));
+	d_text->setBorderPen (QPen(Qt::NoPen));
 	d_text->setPaintAttribute(QwtText::PaintBackground);
 
 	move(plot->mapToParent(plot->canvas()->pos() + QPoint(10, 10)));
@@ -96,7 +98,7 @@ void LegendWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
+void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
 	int x = map[QwtPlot::xBottom].transform(d_x);
 	int y = map[QwtPlot::yLeft].transform(d_y);
@@ -107,6 +109,8 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int left = left_margin;
 	int top = top_margin;
 
+    // Scale options removed/simplified for Qwt 6 port
+	/*
 	double xfactor = 1.0, yfactor = 1.0, scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
 	if (scaleFactor != 1.0){
 		xfactor = scaleFactor;
@@ -116,15 +120,30 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 		xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
 		yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
 	}
-
+    
 	h_space = int(h_space*xfactor);
 	left_margin = int(left_margin*xfactor);
 	top_margin = int(top_margin*yfactor);
 
 	const int dfy = qRound(d_frame_pen.width()*yfactor);
+    */
+    // Fallback: no scaling or use simple scaling if needed. 
+    // QwtPlotRenderer scales the context. We just draw.
+    // However, if we need resolution independence for frame widths:
+    double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+    double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+    
+    // We update temp margins for drawing calculation
+    h_space = int(h_space*xfactor);
+    left_margin = int(left_margin*xfactor);
+    top_margin = int(top_margin*yfactor);
+    
+    // Scale pen temporarily
+    d_frame_pen.setWidthF(d_frame_pen.widthF() * xfactor);
+
 	const int symbolLineLength = int((line_length + symbolsMaxWidth())*xfactor);
 	int width, height, textWidth, textHeight;
-	QVector<long> heights = itemsHeight(painter, symbolLineLength, dfy, width, height, textWidth, textHeight);
+	QVector<long> heights = itemsHeight(painter, symbolLineLength, d_frame_pen.width(), width, height, textWidth, textHeight);
 
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
@@ -146,8 +165,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	left_margin = left;
 	top_margin = top;
 
-	if (scaleFactor != 1.0)
-		d_frame_pen = pen;//restore original pen
+    d_frame_pen = pen; // Restore pen
 }
 
 void LegendWidget::setText(const QString& s)
@@ -184,7 +202,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 
 	QPen pen = v->vectorPen();
 	pen.setCosmetic(false);
-	p->setPen(QwtPainter::scaledPen(pen));
+	p->setPen(pen);
 	p->drawLine(x, y, x + l, y);
 
 	p->translate(x + l, y);
@@ -220,7 +238,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
 		QPen pen = pie->pen();
 		pen.setCosmetic(false);
-		pen = QwtPainter::scaledPen(pen);
+		//pen = QwtPainter::scaledPen(pen);
 
 		p->save();
 		p->setPen (QPen(pen.color(), pen.widthF(), Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
@@ -235,7 +253,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	if (c->style() != 0){
 		QPen pen = c->pen();
 		pen.setCosmetic(false);
-		p->setPen (QwtPainter::scaledPen(pen));
+		p->setPen (pen);
 		if (c->type() == Graph::VerticalBars || c->type() == Graph::HorizontalBars ||
 			c->type() == Graph::Histogram || c->type() == Graph::Box){
 			QRect lr = QRect(x, y - l/4, l, l/2);
@@ -248,15 +266,20 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 			QwtPainter::drawLine(p, x, y, x + l, y);
 	}
 
-	if (c->symbol().pen().style() != Qt::NoPen){
-		QwtSymbol symb = c->symbol();
-		QPen pen = symb.pen();
-		pen.setCosmetic(false);
-		symb.setPen(pen);
+	QPen pen;
+    if (c->symbol() && c->symbol()->style() != QwtSymbol::NoSymbol)
+		pen = c->symbol()->pen();
+	else 
+		pen = QPen(Qt::NoPen);
 
-		symb.draw(p, x + l/2, y);
+	if (pen.style() != Qt::NoPen){
+		QwtSymbol *symb = new QwtSymbol(c->symbol()->style(), c->symbol()->brush(), pen, c->symbol()->size());
+		pen.setCosmetic(false);
+		symb->setPen(pen);
+		symb->drawSymbol(p, QPointF(x + l/2, y));
+		delete symb;
 	} else //ImageSymbol ?
-		c->symbol().draw(p, x + l/2, y);
+		c->symbol()->drawSymbol(p, QPointF(x + l/2, y));
 	p->restore();
 }
 
@@ -557,12 +580,12 @@ int LegendWidget::symbolsMaxWidth()
 					maxL = 2*d_text->font().pointSize();//10;
 					line_length = 0;
 				} else {
-					int l = c->symbol().size().width();
+					int l = c->symbol()->size().width();
 					if (l < 3)
 						l = 3;
 					else if (l > 15)
 						l = 15;
-					if (l>maxL && c->symbol().style() != QwtSymbol::NoSymbol)
+					if (l>maxL && c->symbol()->style() != QwtSymbol::NoSymbol)
 						maxL = l;
 				}
 			}
@@ -866,18 +889,7 @@ void LegendWidget::setAngle(int angle)
 */
 QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
 {
-	QSize size = text.textSize(text.font());
-	QwtMetricsMap map;
-	map.setMetrics(this, p->device());
-	if (!map.isIdentity()){
-		QString s = text.text();
-		if (s.contains("<sub>") || s.contains("<sup>")){
-			int width = size.width() + QFontMetrics(text.font(), p->device()).boundingRect(" ").width();
-			size =  QSize(width, size.height());
-		} else
-			size = QFontMetrics(text.font(), p->device()).boundingRect(s + "  ").size();
-	}
-	return size;
+	return text.textSize(text.font()).toSize();
 }
 
 LegendWidget::~LegendWidget()

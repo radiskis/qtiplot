@@ -33,10 +33,11 @@
 
 #include <QDialog>
 #include <QProcess>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class QComboBox;
 class QGroupBox;
-class QHttp;
 class QLabel;
 class QPushButton;
 class QTextEdit;
@@ -75,7 +76,7 @@ public:
 private slots:
     void clearForm();
     void fetchImage();
-    void updateForm(bool error);
+    void updateForm(QNetworkReply *reply);
 	void apply();
 	void customButtons(QWidget *w);
 	void chooseImageFile(const QString& fn = QString());
@@ -113,7 +114,7 @@ private:
 	QString createTempTexFile();
 
 	ApplicationWindow *d_app;
-    QHttp *http;
+    QNetworkAccessManager *d_network_manager;
     QProcess *compileProcess, *dvipngProcess;
 
     QLabel *outputLabel;

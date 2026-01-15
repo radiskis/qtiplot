@@ -111,13 +111,13 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	for (line = lst.begin(); line != lst.end(); line++){
         QString s = *line;
         if (s.contains("<Type>"))
-			type = s.remove("<Type>").remove("</Type>").stripWhiteSpace().toInt();
+			type = s.remove("<Type>").remove("</Type>").trimmed().toInt();
 		else if (s.contains("<Title>"))
-			title = s.remove("<Title>").remove("</Title>").stripWhiteSpace();
+			title = s.remove("<Title>").remove("</Title>").trimmed();
 		else if (s.contains("<Expression>"))
 			formulas = s.remove("<Expression>").remove("</Expression>").split("\t");
 		else if (s.contains("<Variable>"))
-			var = s.remove("<Variable>").remove("</Variable>").stripWhiteSpace();
+			var = s.remove("<Variable>").remove("</Variable>").trimmed();
 		else if (s.contains("<Range>")){
 			QStringList l = s.remove("<Range>").remove("</Range>").split("\t");
 			if (l.size() == 2){
@@ -125,17 +125,17 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 				end = l[1].toDouble();
 			}
 		} else if (s.contains("<Points>"))
-			points = s.remove("<Points>").remove("</Points>").stripWhiteSpace().toInt();
+			points = s.remove("<Points>").remove("</Points>").trimmed().toInt();
 		else if (s.contains("<Log10>"))
-			logScale = s.remove("<Log10>").remove("</Log10>").stripWhiteSpace().toInt();
+			logScale = s.remove("<Log10>").remove("</Log10>").trimmed().toInt();
 		else if (s.contains("<Constant>")){
 			QStringList l = s.remove("<Constant>").remove("</Constant>").split("\t");
 			if (l.size() == 2)
 				constants.insert(l[0], l[1].toDouble());
 		} else if (s.contains("<Style>")){
-			style = s.remove("<Style>").remove("</Style>").stripWhiteSpace().toInt();
+			style = s.remove("<Style>").remove("</Style>").trimmed().toInt();
 		} else if (s.contains("<LineStyle>")){
-			lineStyle = (QwtPlotCurve::CurveStyle)(s.remove("<LineStyle>").remove("</LineStyle>").stripWhiteSpace().toInt());
+			lineStyle = (QwtPlotCurve::CurveStyle)(s.remove("<LineStyle>").remove("</LineStyle>").trimmed().toInt());
 			break;
 		}
 	}
@@ -316,7 +316,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 		} catch(mu::ParserError &) {}
 	}
 
-	if (curveType() == QwtPlotCurve::Yfx)
+	if (orientation() == Qt::Vertical)
 		setSamples(X, Y, points);
 	else
 		setSamples(Y, X, points);

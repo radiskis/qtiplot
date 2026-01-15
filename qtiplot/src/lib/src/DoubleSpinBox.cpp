@@ -35,7 +35,7 @@
 #include <math.h>
 
 DoubleSpinBox::DoubleSpinBox(const char format, QWidget * parent)
-:qAbstractSpinBox(parent),
+:QAbstractSpinBox(parent),
 d_format(format),
 d_min_val(-DBL_MAX),
 d_max_val(DBL_MAX),
@@ -97,7 +97,7 @@ void DoubleSpinBox::interpretText()
 		parser.setLocale(QLocale());
 		parser.addGSLConstants();
 		try {
-			parser.SetExpr(s.toAscii().constData());
+			parser.SetExpr(s.toLatin1().constData());
 			value = parser.Eval();
 		} catch (mu::ParserError &e){
 			lineEdit()->setText(textFromValue(d_value));
@@ -121,13 +121,13 @@ void DoubleSpinBox::stepBy ( int steps )
     	emit valueChanged(d_value);
 }
 
-qAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
+QAbstractSpinBox::StepEnabled DoubleSpinBox::stepEnabled () const
 {
-	qAbstractSpinBox::StepEnabled stepDown = qAbstractSpinBox::StepNone;
+	QAbstractSpinBox::StepEnabled stepDown = QAbstractSpinBox::StepNone;
 	if (d_value > d_min_val)
 		stepDown = StepDownEnabled;
 
-	qAbstractSpinBox::StepEnabled stepUp = qAbstractSpinBox::StepNone;
+	QAbstractSpinBox::StepEnabled stepUp = QAbstractSpinBox::StepNone;
 	if (d_value < d_max_val)
 		stepUp = StepUpEnabled;
 
@@ -173,7 +173,7 @@ QValidator::State DoubleSpinBox::validate(QString & , int & ) const
 void DoubleSpinBox::focusInEvent(QFocusEvent * e)
 {
 	emit activated(this);
-	return qAbstractSpinBox::focusInEvent(e);
+	return QAbstractSpinBox::focusInEvent(e);
 }
 
 /*****************************************************************************

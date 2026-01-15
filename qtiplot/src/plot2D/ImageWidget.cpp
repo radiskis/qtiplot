@@ -43,6 +43,7 @@
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
+#include <qwt_scale_map.h>
 
 ImageWidget::ImageWidget(Graph *plot, const QString& fn):FrameWidget(plot),
 d_save_xpm(false),
@@ -106,7 +107,7 @@ bool ImageWidget::load(const QString& fn, bool update)
 	QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 	for (int i=0; i<(int)lst.count(); i++){
 		if (fn.contains("." + lst[i])){
-			d_pix.load(fn, lst[i], QPixmap::Auto);
+			d_pix.load(fn, lst[i], Qt::AutoColor);
 			d_file_name = fn;
 			if (update)
 				repaint();
@@ -155,22 +156,22 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
+void ImageWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
 	int x = map[QwtPlot::xBottom].transform(d_x);
 	int y = map[QwtPlot::yLeft].transform(d_y);
 	int right = map[QwtPlot::xBottom].transform(d_x_right);
 	int bottom = map[QwtPlot::yLeft].transform(d_y_bottom);
 
-	QPen pen = d_frame_pen;
-	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
-	if (scaleFactor != 1.0)
-		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
+//	QPen pen = d_frame_pen;
+//	double scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
+//	if (scaleFactor != 1.0)
+//		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
 
 	draw(painter, QRect(x, y, abs(right - x), abs(bottom - y)));
 
-	if (scaleFactor != 1.0)
-		d_frame_pen = pen;//restore original pen
+//	if (scaleFactor != 1.0)
+//		d_frame_pen = pen;//restore original pen
 }
 
 void ImageWidget::draw(QPainter *painter, const QRect& rect)
@@ -213,7 +214,7 @@ void ImageWidget::drawFrame(QPainter *p, const QRect& rect)
 	p->save();
 
 	if (d_frame == Line){
-		QPen pen = QwtPainter::scaledPen(d_frame_pen);
+		QPen pen = d_frame_pen; // QwtPainter::scaledPen(d_frame_pen);
 		p->setPen(pen);
 		int lw = pen.width()/2;
 		QRect r = rect.adjusted(lw, lw, -lw - 1, -lw - 1);
@@ -327,7 +328,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 					xpm += s + "\n";
 				}
 				QImage image;
-    			if (image.loadFromData(xpm.toAscii()))
+    			if (image.loadFromData(xpm.toLatin1()))
 					i = g->addImage(image);
 			}
 		}

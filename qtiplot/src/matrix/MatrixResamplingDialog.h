@@ -32,7 +32,7 @@
 #include <QDialog>
 
 class Matrix;
-class qAbstractButton;
+class QAbstractButton;
 class QDialogButtonBox;
 class QSpinBox;
 class QComboBox;
@@ -54,7 +54,7 @@ public:
 private slots:
 	//! Apply changes
 	void apply();
-	void buttonClicked(qAbstractButton *);
+	void buttonClicked(QAbstractButton *);
 	void updateDimensionsInfo();
 
 private:

@@ -303,7 +303,7 @@ QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commen
 
 			rows++;
 			temp << s + "\n";
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		}
 	} else {//we write only 'maxRows' valid rows to the temp file
 		while(!t.atEnd() && rows < maxRows){
@@ -313,7 +313,7 @@ QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commen
 
 			rows++;
 			temp << s + "\n";
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		}
 	}
 	f.close();
@@ -330,7 +330,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
                         				int ignoreFirstLines, int maxRows, int& rows)
 {
 	ifstream f;
- 	f.open(fname.toAscii());
+ 	f.open(fname.toLocal8Bit().constData());
  	if(!f)
   		return QString();
 
@@ -346,7 +346,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 	}
 
 	bool validCommentString = !commentString.isEmpty();
-	string comment = commentString.toStdWString();
+	string comment = commentString.toStdString();
 	rows = 0;
 	if (maxRows <= 0){//read all valid lines
 		while(f.good() && !f.eof()){//count the number of valid rows
@@ -357,7 +357,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 
 			rows++;
 			temp << QString(s.c_str()) + "\n";
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		}
 	} else {//we write only 'maxRows' valid rows to the temp file
 		while(f.good() && !f.eof() && rows < maxRows){
@@ -368,7 +368,7 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 
 			rows++;
 			temp << QString(s.c_str()) + "\n";
-			qApp->processEvents(QEventLoop::ExcludeUserInput);
+			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 		}
 	}
 	f.close();

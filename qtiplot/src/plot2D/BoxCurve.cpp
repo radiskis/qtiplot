@@ -34,6 +34,7 @@
 #include <gsl/gsl_statistics.h>
 
 #include <qwt_painter.h>
+#include <qwt_scale_map.h>
 
 BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
@@ -94,7 +95,7 @@ void BoxCurve::draw(QPainter *painter,
 		to = size - 1;
 
 	painter->save();
-	QPen pen = QwtPainter::scaledPen(this->pen());
+	QPen pen = this->pen();
 	pen.setCapStyle(Qt::FlatCap);
 	painter->setPen(pen);
 
@@ -250,38 +251,45 @@ void BoxCurve::drawSymbols(QPainter *painter, const QwtScaleMap &xMap,
 {
 	const int px = xMap.transform(x(0));
 
-	QwtSymbol s = this->symbol();
-	s.setPen(QwtPainter::scaledPen(s.pen()));
+	const QwtSymbol *oldS = this->symbol();
+	QwtSymbol s;
+	if (oldS){
+		s.setStyle(oldS->style());
+		s.setPen(oldS->pen());
+		s.setBrush(oldS->brush());
+		s.setSize(oldS->size());
+	}
+	s.setPen(s.pen());
 
 	if (min_style != QwtSymbol::NoSymbol)
 	{
 		const int py_min = yMap.transform(y(0));
 		s.setStyle(min_style);
-		s.draw(painter, px, py_min);
+		s.drawSymbol(painter, QPointF(px, py_min));
 	}
 	if (max_style != QwtSymbol::NoSymbol)
 	{
 		const int py_max = yMap.transform(y(size - 1));
 		s.setStyle(max_style);
-		s.draw(painter, px, py_max);
+		s.drawSymbol(painter, QPointF(px, py_max));
 	}
 	if (p1_style != QwtSymbol::NoSymbol)
 	{
 		const int p1 = yMap.transform(gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.01));
 		s.setStyle(p1_style);
-		s.draw(painter, px, p1);
+		s.drawSymbol(painter, QPointF(px, p1));
 	}
 	if (p99_style != QwtSymbol::NoSymbol)
 	{
 		const int p99 = yMap.transform(gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.99));
 		s.setStyle(p99_style);
-		s.draw(painter, px, p99);
+		s.drawSymbol(painter, QPointF(px, p99));
 	}
 	if (mean_style != QwtSymbol::NoSymbol)
 	{
 		const int mean = yMap.transform(gsl_stats_mean(dat, 1, size));
 		s.setStyle(mean_style);
-		s.draw(painter, px, mean);
+		s.drawSymbol(painter, QPointF(px, mean));
 	}
 }
 
@@ -371,7 +379,11 @@ void BoxCurve::loadData()
 	if (size>0){
 		Y.resize(size);
 		gsl_sort (Y.data(), 1, size);
-        setSamples(QwtSingleArrayData(this->x(0), Y, size));
+		QVector<QPointF> samples;
+		double xVal = this->x(0);
+		for(int i=0; i<size; i++)
+			samples << QPointF(xVal, Y[i]);
+		setSamples(samples);
 		if (d_show_labels)
 			loadLabels();
 	} else
@@ -642,7 +654,7 @@ void BoxCurve::createLabel(double val)
 	const double hbw = 0.5*box_width;
 	const double l = 0.1*box_width;
 
-	QSize size = t.textSize();
+	QSizeF size = t.textSize();
 	double dx = d_labels_x_offset*0.01*size.height();
 	double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
 	double x2 = d_plot->transform(x_axis, x(0)) + dx;
@@ -713,7 +725,7 @@ void BoxCurve::updateLabels(bool updateText)
 			t.setText(labelText(index, val));
 			m->setLabel(t);
 		}
-		QSize size = m->label().textSize();
+		QSizeF size = m->label().textSize();
 		double dx = d_labels_x_offset*0.01*size.height();
 		double dy = -((d_labels_y_offset*0.01 + 0.5)*size.height());
 		double x2 = d_plot->transform(x_axis, x(0)) + dx;

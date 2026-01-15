@@ -32,6 +32,7 @@
 #include "PlotToolInterface.h"
 #include <qwt_plot_marker.h>
 #include <qwt_plot_picker.h>
+#include <QPoint>
 
 class ApplicationWindow;
 class QwtPlotCurve;

@@ -170,16 +170,16 @@ void LineDialog::initGeometryTab()
 	QGridLayout *bl1 = new QGridLayout();
 
 	attachToBox = new QComboBox();
-	attachToBox->insertItem(tr("Page"));
-	attachToBox->insertItem(tr("Layer Scales"));
+	attachToBox->addItem(tr("Page"));
+	attachToBox->addItem(tr("Layer Scales"));
 	attachToBox->setCurrentIndex((int)lm->attachPolicy());
 
 	bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
 	bl1->addWidget(attachToBox, 0, 1);
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("Scale Coordinates"));
-	unitBox->insertItem(tr("Pixels"));
+	unitBox->addItem(tr("Scale Coordinates"));
+	unitBox->addItem(tr("Pixels"));
 
 	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
 	bl1->addWidget(unitBox, 1, 1);
@@ -308,13 +308,13 @@ void LineDialog::setCoordinates(int unit)
 
 void LineDialog::apply()
 {
-    if (tw->currentPage()==(QWidget *)options){
+    if (tw->currentWidget()==(QWidget *)options){
         lm->setStyle(styleBox->style());
         lm->setColor(colorBox->color());
         lm->setWidth(widthBox->value());
         lm->drawEndArrow(endBox->isChecked());
         lm->drawStartArrow(startBox->isChecked());
-	} else if (tw->currentPage()==(QWidget *)head){
+	} else if (tw->currentWidget()==(QWidget *)head){
         if (lm->headLength() != boxHeadLength->value())
             lm->setHeadLength( boxHeadLength->value() );
 
@@ -323,9 +323,9 @@ void LineDialog::apply()
 
         if (lm->filledArrowHead() != filledBox->isChecked())
             lm->fillArrowHead( filledBox->isChecked() );
-	} else if (tw->currentPage()==(QWidget *)geometry){
+	} else if (tw->currentWidget()==(QWidget *)geometry){
 		lm->setAttachPolicy((ArrowMarker::AttachPolicy)attachToBox->currentIndex());
-        setCoordinates(unitBox->currentItem());
+        setCoordinates(unitBox->currentIndex());
 	}
 
 	Graph *g = (Graph *)lm->plot();
@@ -344,9 +344,9 @@ void LineDialog::accept()
 void LineDialog::enableHeadTab()
 {
 if (startBox->isChecked() || endBox->isChecked())
-	tw->setTabEnabled (head, true);
+	tw->setTabEnabled (tw->indexOf(head), true);
 else
-	tw->setTabEnabled (head, false);
+	tw->setTabEnabled (tw->indexOf(head), false);
 }
 
 void LineDialog::setDefaultValues()

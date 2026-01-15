@@ -127,7 +127,7 @@ public:
 	QwtInterval range() const;
 
 protected:
-	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &rect) const;
+	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area, const QSize &imageSize) const;
 	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();

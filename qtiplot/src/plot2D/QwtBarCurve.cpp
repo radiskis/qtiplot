@@ -63,9 +63,10 @@ void QwtBarCurve::copy(QwtBarCurve *b)
 	d_is_stacked = b->isStacked();
 }
 
-void QwtBarCurve::draw(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
+void QwtBarCurve::drawSeries(QPainter *painter,
+    const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
+    Q_UNUSED(canvasRect);
 	if ( !painter || dataSize() <= 0 )
 		return;
 
@@ -73,7 +74,7 @@ void QwtBarCurve::draw(QPainter *painter,
 		to = dataSize() - 1;
 
 	painter->save();
-	painter->setPen(QwtPainter::scaledPen(pen()));
+	painter->setPen(pen());
 	painter->setBrush(QwtPlotCurve::brush());
 
 	double dx, dy, ref;
@@ -85,17 +86,17 @@ void QwtBarCurve::draw(QPainter *painter,
 		ref = xMap.transform(1e-100);
 
 	if (bar_style == Vertical){
-		dx = xMap.xTransform(x(from + 1)) - xMap.xTransform(x(from));
+		dx = xMap.transform(x(from + 1)) - xMap.transform(x(from));
 		for (int i = from + 2; i < to; i++){
-			double min = xMap.xTransform(x(i + 1)) - xMap.xTransform(x(i));
+			double min = xMap.transform(x(i + 1)) - xMap.transform(x(i));
 			if (min <= dx)
 				dx = min;
 		}
 		bar_width = dx*(1 - bar_gap*0.01);
 	} else {
-		dy = abs(yMap.xTransform(y(from + 1)) - yMap.xTransform(y(from)));
+		dy = abs(yMap.transform(y(from + 1)) - yMap.transform(y(from)));
 		for (int i = from + 2; i<to; i++){
-			double min = yMap.xTransform(y(i + 1)) - yMap.xTransform(y(i));
+			double min = yMap.transform(y(i + 1)) - yMap.transform(y(i));
 			if (min <= dy)
 				dy = min;
 		}
@@ -107,8 +108,8 @@ void QwtBarCurve::draw(QPainter *painter,
 	const double half_width = (0.5 - bar_offset*0.01)*bar_width;
 	double bw1 = bar_width;
 	for (int i = from; i <= to; i++){
-		const double px = xMap.xTransform(x(i));
-		const double py = yMap.xTransform(y(i));
+		const double px = xMap.transform(x(i));
+		const double py = yMap.transform(y(i));
 
 		QRectF rect = QRectF();
 		if (bar_style == Vertical){
@@ -119,8 +120,8 @@ void QwtBarCurve::draw(QPainter *painter,
 					rect = QRectF(px - half_width, py, bw1, (ref - py));
 				else {
 					double sOffset = stackOffset(i, stack);
-					rect = QRectF(px - half_width, yMap.xTransform(y(i) + sOffset), bw1, 1);
-					rect.setBottom(yMap.xTransform(sOffset));
+					rect = QRectF(px - half_width, yMap.transform(y(i) + sOffset), bw1, 1);
+					rect.setBottom(yMap.transform(sOffset));
 				}
 			}
 		} else {
@@ -131,8 +132,8 @@ void QwtBarCurve::draw(QPainter *painter,
 					rect = QRectF(ref, py - half_width, (px - ref), bw1);
 				else {
 					double sOffset = stackOffset(i, stack);
-					rect = QRectF(xMap.xTransform(sOffset), py - half_width, 1, bw1);
-					rect.setRight(xMap.xTransform(x(i) + sOffset));
+					rect = QRectF(xMap.transform(sOffset), py - half_width, 1, bw1);
+					rect.setRight(xMap.transform(x(i) + sOffset));
 				}
 			}
 		}
@@ -239,29 +240,29 @@ double QwtBarCurve::dataOffset()
 {
 	if (bar_style == Vertical){
 		const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
-		double dx = xMap.xTransform(x(1)) - xMap.xTransform(x(0));
+		double dx = xMap.transform(x(1)) - xMap.transform(x(0));
 		if (plot()->isVisible()){
 			for (int i = 2; i < dataSize(); i++){
-				double min = xMap.xTransform(x(i)) - xMap.xTransform(x(i - 1));
+				double min = xMap.transform(x(i)) - xMap.transform(x(i - 1));
 				if (min <= dx)
 					 dx = min;
 			}
 			double bar_width = dx*(1 - bar_gap*0.01);
-			double x1 = xMap.xTransform(minXValue()) + bar_offset*0.01*bar_width;
+			double x1 = xMap.transform(minXValue()) + bar_offset*0.01*bar_width;
 			return xMap.invTransform(x1) - minXValue();
 		} else
 			return 0.5*bar_offset*0.01*dx*(1 - bar_gap*0.01);
 	} else {
 		const QwtScaleMap &yMap = plot()->canvasMap(yAxis());
-		double dy = yMap.xTransform(y(1)) - yMap.xTransform(y(0));
+		double dy = yMap.transform(y(1)) - yMap.transform(y(0));
 		if (plot()->isVisible()){
 			for (int i = 2; i < dataSize(); i++){
-				double min = yMap.xTransform(y(i)) - yMap.xTransform(y(i - 1));
+				double min = yMap.transform(y(i)) - yMap.transform(y(i - 1));
 				if (min <= dy)
 					dy = min;
 			}
 			double bar_width = dy*(1 - bar_gap*0.01);
-			double y1 = yMap.xTransform(minYValue()) + bar_offset*0.01*bar_width;
+			double y1 = yMap.transform(minYValue()) + bar_offset*0.01*bar_width;
 			return yMap.invTransform(y1) - minYValue();
 		} else
 			return 0.5*bar_offset*0.01*dy*(1 - bar_gap*0.01);

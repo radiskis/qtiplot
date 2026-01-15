@@ -39,6 +39,11 @@ Description          : Multi layer widget
 #include <QTextStream>
 #include <QSvgGenerator>
 #include <QDir>
+#include <QMimeData>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QWheelEvent>
+#include <QKeyEvent>
 
 #include <QPushButton>
 #include <QCheckBox>
@@ -63,7 +68,8 @@ Description          : Multi layer widget
 #include <qwt_plot_layout.h>
 #include <qwt_scale_widget.h>
 #include <qwt_text_label.h>
-#include <qwt_layout_metrics.h>
+// #include <qwt_layout_metrics.h>
+#include <qwt_scale_draw.h>
 
 #include "PlotCurve.h"
 #include "MultiLayer.h"
@@ -85,8 +91,8 @@ LayerButton::LayerButton(const QString& text, QWidget* parent)
 {
 	int btn_size = 20;
 
-	setToggleButton(true);
-	setOn(true);
+	setCheckable(true);
+	setChecked(true);
 	setMaximumWidth(btn_size);
 	setMaximumHeight(btn_size);
 	setToolTip(tr("Activate layer"));
@@ -94,10 +100,10 @@ LayerButton::LayerButton(const QString& text, QWidget* parent)
 
 void LayerButton::mousePressEvent( QMouseEvent *event )
 {
-	if (!isOn())
+	if (!isChecked())
 		emit clicked(this);
 
-	if (event->button() == Qt::RightButton && isOn())
+	if (event->button() == Qt::RightButton && isChecked())
 		showLayerContextMenu();
 }
 
@@ -211,7 +217,7 @@ Graph *MultiLayer::layer(int num)
 LayerButton* MultiLayer::addLayerButton()
 {
 	foreach(LayerButton *btn, buttonsList)
-		btn->setOn(false);
+		btn->setChecked(false);
 
 	LayerButton *button = new LayerButton(QString::number(graphsList.size() + 1));
 	connect (button, SIGNAL(clicked(LayerButton*)), this, SLOT(activateGraph(LayerButton*)));
@@ -257,8 +263,8 @@ void MultiLayer::activateGraph(LayerButton* button)
 {
 	for (int i = 0; i<buttonsList.count(); i++){
 		LayerButton *btn=(LayerButton*)buttonsList.at(i);
-		if (btn->isOn())
-			btn->setOn(false);
+		if (btn->isChecked())
+			btn->setChecked(false);
 
 		if (btn == button){
 			active_graph = (Graph*) graphsList.at(i);
@@ -271,7 +277,7 @@ void MultiLayer::activateGraph(LayerButton* button)
 				connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
 			} else
 				active_graph->raiseEnrichements();
-			button->setOn(true);
+			button->setChecked(true);
 		}
 	}
 }
@@ -337,9 +343,9 @@ void MultiLayer::setActiveLayer(Graph* g)
 
 		LayerButton *btn = (LayerButton *)buttonsList.at(i);
 		if (gr == g)
-			btn->setOn(true);
+			btn->setChecked(true);
 		else
-			btn->setOn(false);
+			btn->setChecked(false);
 	}
 }
 
@@ -416,7 +422,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 				if (!g)
 					continue;
 
-				QwtPlotCanvas *canvas = g->canvas();
+				QWidget *canvas = g->canvas();
 				QPoint pos = g->pos() + canvas->pos() - oPos;
 
 				double xl = g0->invTransform(QwtPlot::xBottom, pos.x());
@@ -428,7 +434,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 			}
 		}
 
-		QwtPlotCanvas *canvas0 = g0->canvas();
+		QWidget *canvas0 = g0->canvas();
 		g0->setGeometry(qRound(g0->x()*w_ratio), qRound(g0->y()*h_ratio),
 						qRound(g0->width()*w_ratio), qRound(g0->height()*h_ratio));
 
@@ -509,13 +515,13 @@ bool MultiLayer::removeLayer(Graph *g)
 	//remove corresponding button
 	LayerButton* btn = buttonsList.at(index);
 	if (btn)
-		btn->close(true);
+		btn->deleteLater();
 	buttonsList.removeAt(index);
 
 	int i = 0;
 	foreach(LayerButton* btn, buttonsList){
 		btn->setText(QString::number(++i));//update the texts of the buttons
-		btn->setOn(false);
+		btn->setChecked(false);
 	}
 
 	if (g->zoomOn() || g->activeTool())
@@ -539,7 +545,7 @@ bool MultiLayer::removeLayer(Graph *g)
 		Graph *gr = (Graph *)graphsList.at(i);
 		if (gr == active_graph){
 			LayerButton *button = (LayerButton *)buttonsList.at(i);
-			button->setOn(true);
+			button->setChecked(true);
 			break;
 		}
 	}
@@ -632,18 +638,18 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	//calculate scales/d_canvas dimensions reports for each layer and stores them in the above vectors
 		Graph *g = (Graph *)graphsList.at(i);
 		QwtPlotLayout *plotLayout = g->plotLayout();
-		QRect cRect = plotLayout->canvasRect();
+		QRect cRect = plotLayout->canvasRect().toRect();
 		double ch = (double)cRect.height();
 		double cw = (double)cRect.width();
 
-		QRect tRect = plotLayout->titleRect();
+		QRect tRect = plotLayout->titleRect().toRect();
 		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(QwtPlot::xTop);
 
 		int topHeight = 0;
 		if (!tRect.isNull())
 			topHeight += tRect.height() + plotLayout->spacing();
 		if (scale){
-			QRect sRect = plotLayout->scaleRect(QwtPlot::xTop);
+			QRect sRect = plotLayout->scaleRect(QwtPlot::xTop).toRect();
 			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
 			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool title = !scale->title().text().isEmpty();
@@ -656,7 +662,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::xBottom);
 		if (scale){
-			QRect sRect = plotLayout->scaleRect(QwtPlot::xBottom);
+			QRect sRect = plotLayout->scaleRect(QwtPlot::xBottom).toRect();
 			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
 			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
@@ -667,7 +673,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yLeft);
 		if (scale){
-			QRect sRect = plotLayout->scaleRect (QwtPlot::yLeft);
+			QRect sRect = plotLayout->scaleRect (QwtPlot::yLeft).toRect();
 			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
 			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
@@ -678,7 +684,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yRight);
 		if (scale){
-			QRect sRect = plotLayout->scaleRect(QwtPlot::yRight);
+			QRect sRect = plotLayout->scaleRect(QwtPlot::yRight).toRect();
 			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
 			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
@@ -934,7 +940,7 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 	if (graphsList.size() == 0)
 		return false;
 
-	QApplication::setOverrideCursor(Qt::waitCursor);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	if(d_layers_selector)
 		delete d_layers_selector;
@@ -1260,7 +1266,7 @@ void MultiLayer::exportVector(const QString& fileName, int res, bool color,
 	QPrinter printer;
 	printer.setOutputFileName(fileName);
 	if (fileName.contains(".eps"))
-		printer.setOutputFormat(QPrinter::PostScriptFormat);
+		printer.setOutputFormat(QPrinter::PdfFormat);
 
 	exportVector(&printer, res, color, customSize, unit, fontsFactor);
 }
@@ -1487,7 +1493,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	}
 
 	if (d_print_cropmarks){
-		cr.addCoords(-1, -1, 2, 2);
+		cr.adjust(-1, -1, 1, 1);
 		painter->save();
 		painter->setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
 		painter->drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
@@ -1658,53 +1664,30 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 	}
 }
 
-void MultiLayer::wheelEvent ( QWheelEvent * e )
+void MultiLayer::wheelEvent(QWheelEvent *e)
 {
-	QApplication::setOverrideCursor(Qt::waitCursor);
-
-	bool resize=false;
-	QPoint aux;
-	QSize intSize;
-	Graph *resize_graph = 0;
-	// Get the position of the mouse
-	int xMouse = e->x();
-	int yMouse = e->y();
-	foreach (Graph *g, graphsList){
-		intSize = g->size();
-		aux = g->pos();
-		if(xMouse>aux.x() && xMouse<(aux.x()+intSize.width())){
-			if(yMouse>aux.y() && yMouse<(aux.y()+intSize.height())){
-				resize_graph = g;
-				resize = true;
-			}
+	if (e->modifiers() & Qt::AltModifier || e->modifiers() & Qt::ControlModifier || e->modifiers() & Qt::ShiftModifier){
+		int delta = e->angleDelta().y();
+		if (e->modifiers() & Qt::AltModifier){
+			if (delta > 0)
+				d_cols++;
+			else if (d_cols > 1)
+				d_cols--;
+		} else if (e->modifiers() & Qt::ControlModifier){
+			if (delta > 0)
+				d_rows++;
+			else if (d_rows > 1)
+				d_rows--;
+		} else if (e->modifiers() & Qt::ShiftModifier){
+			if (delta > 0)
+				setSpacing(rowsSpace + 5, colsSpace + 5);
+			else
+				setSpacing(rowsSpace - 5, colsSpace - 5);
 		}
+		arrangeLayers(false, false);
+		return;
 	}
-	if(resize && (e->state()==Qt::AltButton || e->state()==Qt::ControlButton || e->state()==Qt::ShiftButton))
-	{
-		intSize = resize_graph->size();
-		if(e->state() == Qt::AltButton){// If alt is pressed then change the width
-			if(e->delta() > 0)
-				intSize.rwidth() += 5;
-			else if(e->delta() < 0)
-				intSize.rwidth() -= 5;
-		} else if(e->state() == Qt::ControlButton){// If crt is pressed then changed the height
-			if(e->delta() > 0)
-				intSize.rheight() += 5;
-			else if(e->delta() < 0)
-				intSize.rheight() -= 5;
-		} else if(e->state() == Qt::ShiftButton){// If shift is pressed then resize
-			if(e->delta() > 0){
-				intSize.rwidth() += 5;
-				intSize.rheight() += 5;
-			} else if(e->delta() < 0){
-				intSize.rwidth() -= 5;
-				intSize.rheight() -= 5;
-			}
-		}
-		resize_graph->resize(intSize);
-		emit modifiedPlot();
-	}
-	QApplication::restoreOverrideCursor();
+	e->ignore();
 }
 
 bool MultiLayer::isEmpty ()
@@ -1722,13 +1705,13 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 		if (!f.open(QIODevice::Append))
 			return;
 	}
-	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	QTextStream t(&f);
+	t.setCodec("UTF-8");
 	t << "<multiLayer>\n";
 
     bool notTemplate = !saveAsTemplate;
 	if (notTemplate)
-        t << QString(objectName())+"\t";
+		t << QString(objectName())+"\t";
 	t << QString::number(d_cols)+"\t";
 	t << QString::number(d_rows)+"\t";
 	if (notTemplate)
@@ -1827,7 +1810,7 @@ void MultiLayer::setNumLayers(int n)
 			Graph *gr=(Graph *)graphsList.at(j);
 			if (gr == active_graph){
 				LayerButton *button=(LayerButton *)buttonsList.at(j);
-				button->setOn(TRUE);
+				button->setChecked(true);
 				break;
 			}
 		}
@@ -2210,8 +2193,8 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 		return;
 
 	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine (axis);
-	const QwtScaleDiv *sd = g->axisScaleDiv(axis);
-	if (!se || !sd)
+	const QwtScaleDiv &sd = g->axisScaleDiv(axis);
+	if (!se)
 		return;
 
 	int majorTicks = g->axisMaxMajor(axis);
@@ -2231,13 +2214,13 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 			continue;
 
 		l->blockSignals(true);
-		l->setScale(axis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+		l->setScale(axis, sd.lowerBound(), sd.upperBound(), step, majorTicks, minorTicks,
 					se->type(), se->testAttribute(QwtScaleEngine::Inverted),
 					se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
 					se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
 					se->minTicksAfterBreak(), se->log10ScaleAfterBreak(), se->breakWidth(), se->hasBreakDecoration());
 		if (synchronizeScales){
-			l->setScale(oppositeAxis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+			l->setScale(oppositeAxis, sd.lowerBound(), sd.upperBound(), step, majorTicks, minorTicks,
 					se->type(), se->testAttribute(QwtScaleEngine::Inverted),
 					se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
 					se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),
@@ -2250,7 +2233,7 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 
 	if (synchronizeScales){
 		g->blockSignals(true);
-		g->setScale(oppositeAxis, sd->lowerBound(), sd->upperBound(), step, majorTicks, minorTicks,
+		g->setScale(oppositeAxis, sd.lowerBound(), sd.upperBound(), step, majorTicks, minorTicks,
 				se->type(), se->testAttribute(QwtScaleEngine::Inverted),
 				se->axisBreakLeft(), se->axisBreakRight(), se->breakPosition(),
 				se->stepBeforeBreak(), se->stepAfterBreak(), se->minTicksBeforeBreak(),

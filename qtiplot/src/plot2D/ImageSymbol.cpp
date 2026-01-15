@@ -31,7 +31,7 @@
 #include <qwt_painter.h>
 
 ImageSymbol::ImageSymbol(const QString& fileName):
-		QwtSymbol(QwtSymbol::Image, QBrush(), QPen(Qt::NoPen), QSize()),
+		QwtSymbol(QwtSymbol::Pixmap, QBrush(), QPen(Qt::NoPen), QSize()),
 	d_image_path(fileName)
 {
 	d_pixmap.load(fileName);
@@ -39,7 +39,7 @@ ImageSymbol::ImageSymbol(const QString& fileName):
 }
 
 ImageSymbol::ImageSymbol(const QPixmap& pixmap, const QString& fileName):
-		QwtSymbol(QwtSymbol::Image, QBrush(), QPen(Qt::NoPen), QSize()),
+		QwtSymbol(QwtSymbol::Pixmap, QBrush(), QPen(Qt::NoPen), QSize()),
 	d_image_path(fileName)
 {
 	d_pixmap = QPixmap(pixmap);
@@ -49,7 +49,11 @@ ImageSymbol::ImageSymbol(const QPixmap& pixmap, const QString& fileName):
 ImageSymbol *ImageSymbol::clone() const
 {
 	ImageSymbol *other = new ImageSymbol(d_image_path);
-	*other = *this;
+	other->d_pixmap = d_pixmap;
+	other->setPen(pen());
+	other->setBrush(brush());
+	other->setSize(size());
+	other->setStyle(style());
 
 	return other;
 }

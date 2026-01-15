@@ -28,7 +28,9 @@
  ***************************************************************************/
 
 #include <ProbabilityScaleEngine.h>
+#include <qwt_interval.h>
 #include <gsl/gsl_cdf.h>
+#include <cmath>
 
 /*!
   Return a dummy transformation
@@ -87,7 +89,7 @@ QwtScaleDiv ProbabilityScaleEngine::divideScale(double x1, double x2,
     if (interval.width() <= 0 )
         return QwtScaleDiv();
 
-    stepSize = fabs(qRound(stepSize));
+    stepSize = qAbs(qRound(stepSize));
     if ( stepSize == 0.0 )
         stepSize = 1.0;
 

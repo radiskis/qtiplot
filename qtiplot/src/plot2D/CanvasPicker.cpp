@@ -37,6 +37,8 @@
 
 #include <qwt_text_label.h>
 #include <qwt_plot_canvas.h>
+#include <QDrag>
+#include <QMimeData>
 
 CanvasPicker::CanvasPicker(Graph *graph):
 	QObject(graph)
@@ -44,7 +46,7 @@ CanvasPicker::CanvasPicker(Graph *graph):
 	pointSelected = false;
 	d_editing_marker = 0;
 
-	QwtPlotCanvas *canvas = graph->canvas();
+	QWidget *canvas = graph->canvas();
 	canvas->installEventFilter(this);
 }
 
@@ -141,7 +143,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 		case QEvent::MouseMove:
 			{
 				const QMouseEvent *me = (const QMouseEvent *)e;
-				if (me->state() != Qt::LeftButton)
+				if (!(me->buttons() & Qt::LeftButton))
   	            	return true;
 
 				QPoint pos = me->pos();
@@ -231,7 +233,10 @@ void CanvasPicker::drawLineMarker(const QPoint& point, bool endArrow)
 	ArrowMarker mrk;
 	mrk.attach(g);
 
-	int clw = g->canvas()->lineWidth();
+	int clw = 0;
+	QFrame *canvasFrame = qobject_cast<QFrame *>(g->canvas());
+	if (canvasFrame)
+		clw = canvasFrame->lineWidth();
 	mrk.setStartPoint(QPoint(startLinePoint.x() + clw, startLinePoint.y() + clw));
 	mrk.setEndPoint(QPoint(point.x() + clw,point.y() + clw));
 	mrk.setWidth(1);

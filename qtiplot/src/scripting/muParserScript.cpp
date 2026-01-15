@@ -388,7 +388,7 @@ bool muParserScript::compile(bool)
 		} else if (Code[i] == '#')
                         for (i++; Code[i] != '\n' && i < Code.size(); i++) ;
 		else if (Code[i] == '\n') {
-			muCodeLine = muCodeLine.stripWhiteSpace();
+			muCodeLine = muCodeLine.trimmed();
 			if (!muCodeLine.isEmpty())
 				muCode += muCodeLine;
 			muCodeLine = "";
@@ -396,7 +396,7 @@ bool muParserScript::compile(bool)
 			muCodeLine += Code[i];
 	}
 
-	muCodeLine = muCodeLine.stripWhiteSpace();
+	muCodeLine = muCodeLine.trimmed();
 	if (!muCodeLine.isEmpty())
 		muCode += muCodeLine;
 	compiled = Script::isCompiled;

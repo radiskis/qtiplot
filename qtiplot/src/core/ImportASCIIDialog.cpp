@@ -46,6 +46,7 @@
 #include <QStackedWidget>
 #include <QHeaderView>
 #include <QInputDialog>
+#include <QCloseEvent>
 
 ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bool extended, Qt::WindowFlags flags )
 : ExtensibleFileDialog(parent, extended, flags )
@@ -632,9 +633,9 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	QTextStream t(&f);
 	QString s = t.readLine();//read first line
 	if (simplifySpaces)
-		s = s.simplifyWhiteSpace();
+		s = s.simplified();
 	else if (stripSpaces)
-		s = s.stripWhiteSpace();
+		s = s.trimmed();
 
 	QStringList line = s.split(sep);
 	int cols = line.size();
@@ -706,16 +707,16 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			s = t.readLine();//read 2nd line
 
 		if (simplifySpaces)
-			s = s.simplifyWhiteSpace();
+			s = s.simplified();
 		else if (stripSpaces)
-			s = s.stripWhiteSpace();
+			s = s.trimmed();
 		line = s.split(sep, Qt::KeepEmptyParts);
 		for (int i=0; i<line.size(); i++){
 			int aux = startCol + i;
 			if (aux < comments.size())
 				comments[aux] = line[i];
 		}
-		qApp->processEvents(QEventLoop::ExcludeUserInput);
+		qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 	}
 
 	if ((!renameCols || allNumbers)&& !importComments && rows > 0){
@@ -745,9 +746,9 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 	while (!t.atEnd() && row < rows){
 		s = t.readLine();
 		if (simplifySpaces)
-			s = s.simplifyWhiteSpace();
+			s = s.simplified();
 		else if (stripSpaces)
-			s = s.stripWhiteSpace();
+			s = s.trimmed();
 		line = s.split(sep);
 		int lc = line.size();
 		if (lc > cols) {
@@ -768,7 +769,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		}
 
 		row++;
-		qApp->processEvents(QEventLoop::ExcludeUserInput);
+		qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 	}
 	blockSignals(false);
 	f.remove();
@@ -1038,22 +1039,22 @@ PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-    setSelectionMode(qAbstractItemView::NoSelection);
-    setEditTriggers(qAbstractItemView::NoEditTriggers);
+    setSelectionMode(QAbstractItemView::NoSelection);
+    setEditTriggers(QAbstractItemView::NoEditTriggers);
     setFocusPolicy(Qt::NoFocus);
 
     QPalette pal = palette();
-	pal.setColor(QColorGroup::Base, QColor(255, 255, 128));
+	pal.setColor(QPalette::Base, QColor(255, 255, 128));
 	setPalette(pal);
 
 	// set header properties
-	horizontalHeader()->setMovable(false);
-	horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+	horizontalHeader()->setSectionsMovable(false);
+	horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	for(int i=0; i<d_matrix_model->columnCount(); i++)
 		setColumnWidth(i, 100);
 
-	verticalHeader()->setMovable(false);
-	verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+	verticalHeader()->setSectionsMovable(false);
+	verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
 	setMinimumHeight(4*horizontalHeader()->height());
 }

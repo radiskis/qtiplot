@@ -34,6 +34,7 @@ Description          : 3D graph widget
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QtPrintSupport/QPrinter>
+#include <QPrintDialog>
 #include <QClipboard>
 #include <QPixmap>
 #include <QBitmap>
@@ -48,7 +49,12 @@ Description          : 3D graph widget
 #include <qwt3d_coordsys.h>
 
 #include <gsl/gsl_vector.h>
+#include <gsl/gsl_vector.h>
 #include <fstream>
+
+#ifndef LOG_MIN
+#define LOG_MIN 1.0e-100
+#endif
 
 ConstFunction::ConstFunction(Qwt3D::Curve *pw)
 : Function(pw)
@@ -76,7 +82,7 @@ double UserFunction::operator()(double x, double y)
 	try {
 		parser.DefineVar("x", &x);
 		parser.DefineVar("y", &y);
-		parser.SetExpr((const std::string)formula.toStdWString());
+		parser.SetExpr(formula.toStdWString());
 		result = parser.Eval();
 	} catch(mu::ParserError &e){
 		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
@@ -133,11 +139,11 @@ Triple UserParametricSurface::operator()(double u, double v)
 		parser.DefineVar("u", &u);
 		parser.DefineVar("v", &v);
 
-		parser.SetExpr((const std::string)d_x_formula.toStdWString());
+		parser.SetExpr(d_x_formula.toStdWString());
 		x = parser.Eval();
-		parser.SetExpr((const std::string)d_y_formula.toStdWString());
+		parser.SetExpr(d_y_formula.toStdWString());
 		y = parser.Eval();
-		parser.SetExpr((const std::string)d_z_formula.toStdWString());
+		parser.SetExpr(d_z_formula.toStdWString());
 		z = parser.Eval();
 	}
 	catch(mu::ParserError &e){
@@ -700,7 +706,7 @@ void Graph3D::updateData(Table* table)
 	yColName.chop(3);
 	int yCol = table->colIndex(yColName);
 
-	if (lst.size() == 3 && name.contains("(Z)", true)){
+	if (lst.size() == 3 && name.contains("(Z)")){
 		QString zColName = lst[2];
 		zColName.chop(3);
 		resetNonEmptyStyle();
@@ -964,7 +970,7 @@ void Graph3D::setTickLengths(const QStringList& lst)
 	double majorl, minorl;
 	QStringList tick_length = lst;
 	if (int(lst.count()) > 6)
-		tick_length.remove(tick_length.first());
+		tick_length.removeFirst();
 
 	majorl = tick_length[0].toDouble();
 	minorl = tick_length[1].toDouble();
@@ -1462,10 +1468,10 @@ void Graph3D::setScales(double xl, double xr, double yl, double yr, double zl, d
 		int xCol = d_table->colIndex(cols[0].remove("(X)"));
 		int yCol = d_table->colIndex(cols[1].remove("(Y)"));
 
-		if (plotAssociation.endsWith("(Z)",true)){
+		if (plotAssociation.endsWith("(Z)")){
 			int zCol = d_table->colIndex(cols[2].remove("(Z)"));
 			loadData(d_table, xCol, yCol, zCol, xl, xr, yl, yr, zl, zr, axis);
-		} else if (plotAssociation.endsWith("(Y)",true))
+		} else if (plotAssociation.endsWith("(Y)"))
 			updateScales(xl, xr, yl, yr, zl, zr, xCol, yCol);
 	}
 
@@ -1766,24 +1772,24 @@ void Graph3D::scaleFonts(double factor)
 		return;
 
 	QFont font = sp->coordinates()->axes[X1].numberFont();
-	font.setPointSizeFloat(font.pointSizeFloat()*factor);
+	font.setPointSizeF(font.pointSizeF()*factor);
 	sp->coordinates()->setNumberFont (font);
 	if (d_active_curve)
 		d_active_curve->legend()->axis()->setNumberFont (font);
 
-	titleFnt.setPointSizeFloat(factor*titleFnt.pointSizeFloat());
+	titleFnt.setPointSizeF(factor*titleFnt.pointSizeF());
 	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),titleFnt.weight(),titleFnt.italic());
 
 	font = xAxisLabelFont();
-	font.setPointSizeFloat(factor*font.pointSizeFloat());
+	font.setPointSizeF(factor*font.pointSizeF());
 	setXAxisLabelFont(font);
 
 	font = yAxisLabelFont();
-	font.setPointSizeFloat(factor*font.pointSizeFloat());
+	font.setPointSizeF(factor*font.pointSizeF());
 	setYAxisLabelFont(font);
 
 	font = zAxisLabelFont();
-	font.setPointSizeFloat(factor*font.pointSizeFloat());
+	font.setPointSizeF(factor*font.pointSizeF());
 	setZAxisLabelFont(font);
 }
 
@@ -2072,7 +2078,9 @@ void Graph3D::print()
         printer.setOrientation(QPrinter::Portrait);
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(false);
-	if (printer.setup())
+	printer.setFullPage(false);
+	QPrintDialog dialog(&printer, this);
+	if (dialog.exec() == QDialog::Accepted)
 		print(&printer);
 }
 
@@ -2113,7 +2121,7 @@ void Graph3D::print(QPrinter *printer)
 
 	if (d_print_cropmarks){
 		QRect cr = plotRect; // cropmarks rectangle
-		cr.addCoords(-1, -1, 2, 2);
+		cr.adjust(-1, -1, 2, 2);
 		paint.save();
 		paint.setPen(QPen(QColor(Qt::black), 0.5, Qt::DashLine));
 		paint.drawLine(paperRect.left(), cr.top(), paperRect.right(), cr.top());
@@ -2562,7 +2570,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 			return;
 	}
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<SurfacePlot>\n";
 	t << QString(name())+"\t";
 	t << birthDate() + "\n";
@@ -3274,7 +3282,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	ApplicationWindow::restoreWindowGeometry(plot, lst[1]);
 	QString formula = fList[1];
 	if (!formula.isEmpty()){
-		if (formula.endsWith("(Y)", true)){//Ribbon plot
+		if (formula.endsWith("(Y)")){//Ribbon plot
 			formula.remove("(X)").remove("(Y)");
 			QStringList l = formula.split(",");
 			if (l.size() < 2)
@@ -3284,7 +3292,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 				return 0;
 			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
 					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		} else if (formula.contains("(Z)",true) > 0){
+		} else if (formula.contains("(Z)") > 0){
 			formula.remove("(X)").remove("(Y)").remove("(Z)");
 			QStringList l = formula.split(",");
 			if (l.size() < 3)
@@ -3296,8 +3304,8 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
 							fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
 							fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		} else if (formula.startsWith("matrix<",true) && fList[1].endsWith(">",false)){
-			formula.remove("matrix<", true).remove(">");
+		} else if (formula.startsWith("matrix<",Qt::CaseInsensitive) && fList[1].endsWith(">",Qt::CaseInsensitive)){
+			formula.remove("matrix<", Qt::CaseInsensitive).remove(">");
 			Matrix* m = app->matrix(formula);
 			if (!m)
 				return 0;
@@ -3421,7 +3429,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	if (line.hasNext()){
 		s = line.next();
 		if (s == "<Grid>" && line.hasNext()){
-			s = line.next().stripWhiteSpace();
+			s = line.next().trimmed();
 
 			if (s.contains("<Major>")){
 				fList = s.remove("<Major>").remove("</Major>").split("\t", Qt::SkipEmptyParts);
@@ -3433,7 +3441,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			}
 
 			if (line.hasNext())
-				s = line.next().stripWhiteSpace();
+				s = line.next().trimmed();
 
 			if (s.contains("<Minor>")){
 				fList = s.remove("<Minor>").remove("</Minor>").split("\t", Qt::SkipEmptyParts);

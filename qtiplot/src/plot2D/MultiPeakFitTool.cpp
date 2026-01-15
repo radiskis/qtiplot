@@ -86,17 +86,17 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 	m->setXAxis(curve->xAxis());
 	m->setLinePen(QPen(Qt::green, 2, Qt::DashLine));
 
-	if (curve->curveType() == QwtPlotCurve::Xfy){
+	if (curve->orientation() == Qt::Horizontal){
 		m->setLineStyle(QwtPlotMarker::HLine);
-		d_fit->setInitialGuess(3*d_selected_peaks, curve->x(point_index));
-		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->y(point_index));
+		d_fit->setInitialGuess(3*d_selected_peaks, curve->sample(point_index).x());
+		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->sample(point_index).y());
 	} else {
 		m->setLineStyle(QwtPlotMarker::VLine);
-		d_fit->setInitialGuess(3*d_selected_peaks, curve->y(point_index));
-		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->x(point_index));
+		d_fit->setInitialGuess(3*d_selected_peaks, curve->sample(point_index).y());
+		d_fit->setInitialGuess(3*d_selected_peaks+1, curve->sample(point_index).x());
 	}
 
-	m->setValue(curve->x(point_index), curve->y(point_index));
+	m->setValue(curve->sample(point_index).x(), curve->sample(point_index).y());
 	d_graph->insertMarker(m);
 	d_lines.append(m);
 	d_graph->replot();

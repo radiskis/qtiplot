@@ -28,8 +28,10 @@
  ***************************************************************************/
 #include "TextEditor.h"
 #include <LegendWidget.h>
+#include <QTextFrame>
 #include <PieCurve.h>
 #include <MultiLayer.h>
+#include <QCloseEvent>
 
 #include <QTextCursor>
 #include <QMessageBox>
@@ -105,7 +107,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
                 move(QPoint(d_target->x() - rect.height(), d_target->y() + rect.y() + rect.height()/2));
 
 			t.setText(" ");
-			t.setBackgroundPen(QPen(Qt::NoPen));
+			t.setBorderPen(QPen(Qt::NoPen));
 			scale->setTitle(t);
 			moveCrs = false;
 		}
@@ -131,7 +133,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 
 void TextEditor::closeEvent(QCloseEvent *e)
 {
-	QString s = text();
+	QString s = toPlainText();
 	int lines = s.count(QRegExp("\n"));
 	if ( lines >= 100 && QMessageBox::question(d_graph->multiLayer(),
 		tr("QtiPlot") + " - " + tr("Confirmation"),

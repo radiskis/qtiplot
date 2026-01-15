@@ -73,7 +73,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 		filters << "*." + list[i].toLower();
 
 	filters.sort();
-	setFilters(filters);
+	setNameFilters(filters);
 	setFileMode( QFileDialog::AnyFile );
 
 	initAdvancedOptions();
@@ -189,11 +189,11 @@ void ImageExportDialog::initAdvancedOptions()
 	QGridLayout *size_layout = new QGridLayout(d_custom_size_box);
 
 	unitBox = new QComboBox();
-	unitBox->insertItem(tr("inch"));
-	unitBox->insertItem(tr("mm"));
-	unitBox->insertItem(tr("cm"));
-	unitBox->insertItem(tr("point"));
-	unitBox->insertItem(tr("pixel"));
+	unitBox->addItem(tr("inch"));
+	unitBox->addItem(tr("mm"));
+	unitBox->addItem(tr("cm"));
+	unitBox->addItem(tr("point"));
+	unitBox->addItem(tr("pixel"));
 	unitBox->setCurrentIndex(app->d_export_size_unit);
 
 	size_layout->addWidget(new QLabel(tr( "Unit" )), 0, 0);
@@ -385,7 +385,7 @@ void ImageExportDialog::closeEvent(QCloseEvent* e)
 
 void ImageExportDialog::selectFilter(const QString & filter)
 {
-	QFileDialog::selectFilter(filter);
+	QFileDialog::selectNameFilter(filter);
 	updateAdvancedOptions(filter);
 }
 

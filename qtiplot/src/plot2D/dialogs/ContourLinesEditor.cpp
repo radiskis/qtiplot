@@ -34,6 +34,7 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QAbstractItemView>
 #include <QCheckBox>
 #include <QLayout>
 #include <QLabel>
@@ -52,10 +53,10 @@ ContourLinesEditor::ContourLinesEditor(const QLocale& locale, int precision, QWi
 	table = new QTableWidget();
 	table->setColumnCount(2);
 	table->hideColumn(1);
-	table->setSelectionMode(qAbstractItemView::SingleSelection);
-	table->verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-	table->horizontalHeader()->setClickable( false );
-	table->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+	table->setSelectionMode(QAbstractItemView::SingleSelection);
+	table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	table->horizontalHeader()->setSectionsClickable( false );
+	table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	table->viewport()->setMouseTracking(true);
 	table->viewport()->installEventFilter(this);
 	table->setHorizontalHeaderLabels(QStringList() << tr("Level") << tr("Pen"));
@@ -129,7 +130,7 @@ void ContourLinesEditor::updateContents()
 	table->setRowCount(rows);
 	table->blockSignals(true);
 
-	QwtInterval range = d_spectrogram->data().range();
+	QwtInterval range = d_spectrogram->data()->interval(Qt::ZAxis);
 	for (int i = 0; i < rows; i++){
 		DoubleSpinBox *sb = new DoubleSpinBox();
 		sb->setLocale(d_locale);
@@ -173,7 +174,7 @@ void ContourLinesEditor::insertLevel()
 	if (!sb)
 		return;
 
-	QwtInterval range = d_spectrogram->data().range();
+	QwtInterval range = d_spectrogram->data()->interval(Qt::ZAxis);
 	double current_value = sb->value();
 	double previous_value = range.minValue ();
 	sb = (DoubleSpinBox*)table->cellWidget(row - 1, 0);

@@ -34,6 +34,7 @@
 #include <qwt_painter.h>
 #include <qwt_scale_widget.h>
 #include <QPainter>
+#include <qwt_scale_map.h>
 
 Grid::Grid() : QwtPlotGrid(),
 d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
@@ -41,8 +42,8 @@ d_min_pen_y(QPen(Qt::gray, 0.4, Qt::DotLine)),
 mrkX(NULL),
 mrkY(NULL)
 {
-	setMajPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
-	setMinPen(QPen(Qt::gray, 0.4, Qt::DotLine));
+	setMajorPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
+	setMinorPen(QPen(Qt::gray, 0.4, Qt::DotLine));
 	enableX(false);
 	enableY(false);
     setRenderHint(QwtPlotItem::RenderAntialiased, false);
@@ -69,7 +70,7 @@ void Grid::draw(QPainter *painter,
 	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
 
 	//  draw minor X gridlines
-	QPen pen = minPen();
+	QPen pen = minorPen();
 	pen.setWidthF(pen.widthF() * x_factor);
 	painter->setPen(pen);
 
@@ -93,7 +94,7 @@ void Grid::draw(QPainter *painter,
 	}
 
 	//  draw major X gridlines
-	pen = majPen();
+	pen = majorPen();
 	pen.setWidthF(pen.widthF() * x_factor);
 	painter->setPen(pen);
 
@@ -205,7 +206,7 @@ void Grid::load(const QStringList& grid)
 	enableY(majorOnY);
 	enableYMin(minorOnY);
 
-	setAxis(xAxis, yAxis);
+	setAxes(xAxis, yAxis);
 
 	enableZeroLineX(xZeroOn);
 	enableZeroLineY(yZeroOn);
@@ -310,7 +311,7 @@ void Grid::copy(Grid *grid)
 	enableY(grid->yEnabled());
 	enableYMin(grid->yMinEnabled());
 
-	setAxis(grid->xAxis(), grid->yAxis());
+	setAxes(grid->xAxis(), grid->yAxis());
 	setZ(grid->z());
 
 	enableZeroLineX(grid->xZeroLineEnabled());

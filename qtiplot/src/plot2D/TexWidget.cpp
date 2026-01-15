@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "TexWidget.h"
 #include <Graph.h>
+#include <qwt_scale_map.h>
 #include <PenStyleBox.h>
 
 #include <QPainter>
@@ -66,7 +67,7 @@ void TexWidget::paintEvent(QPaintEvent *e)
 	e->accept();
 }
 
-void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt], const QwtPlotPrintFilter &pfilter)
+void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt])
 {
 	int x = map[QwtPlot::xBottom].transform(d_x);
 	int y = map[QwtPlot::yLeft].transform(d_y);
@@ -75,15 +76,9 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	int width = abs(xr - x);
 	int height = abs(yr - y);
 
-	QPen pen = d_frame_pen;
-	double xfactor = 1.0, yfactor = 1.0, scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
-	if (scaleFactor != 1.0){
-		xfactor = yfactor = scaleFactor;
-		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
-	} else {// calculate resolution factor
-		xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-		yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-	}
+	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+
 
 	drawFrame(painter, QRect(x, y, width, height));
 
@@ -99,9 +94,6 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 		h -= d_margin;
 	}
 	painter->drawPixmap(QRect (x + lw + margin_x, y + lw + margin_y, w, h), d_pix);
-
-	if (scaleFactor != 1.0)
-		d_frame_pen = pen;//restore original pen
 }
 
 void TexWidget::setPixmap(const QPixmap& pix)
@@ -204,7 +196,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 				xpm += s + "\n";
 			}
 			QImage image;
-    		if (image.loadFromData(xpm.toAscii()))
+    		if (image.loadFromData(xpm.toLatin1()))
 				pix = QPixmap::fromImage(image);
 		}
 	}

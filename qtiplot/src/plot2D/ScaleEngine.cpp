@@ -33,6 +33,14 @@
 #include "ProbabilityScaleEngine.h"
 #include "LogitScaleEngine.h"
 #include <limits.h>
+#include <cmath>
+#include <cfloat>
+
+static const double LOG_MIN = 1.0e-100;
+
+ScaleTransformation::ScaleTransformation(const ScaleEngine *engine):
+	d_engine(engine)
+{}
 
 QwtTransform* ScaleEngine::transformation() const
 {
@@ -74,58 +82,6 @@ double ScaleTransformation::invTransform(double p) const
 	return p; 
 }
 
-    const int d_break_space = d_engine->breakWidth();
-	const double lb = d_engine->axisBreakLeft();
-    const double rb = d_engine->axisBreakRight();
-	const double pm = p1 + (p2 - p1)*(double)d_engine->breakPosition()/100.0;
-	double pml, pmr;
-	if (p2 > p1){
-		pml = pm - d_break_space;
-		pmr = pm + d_break_space;
-	} else {
-		pml = pm + d_break_space;
-		pmr = pm - d_break_space;
-	}
-
-	if (p > pml && p < pmr)
-		return pm;
-
-	bool invertedScale = d_engine->testAttribute(QwtScaleEngine::Inverted);
-	ScaleTransformation::Type d_type = d_engine->type();
-
-	if (invertedScale){
-		if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
-			if (d_engine->log10ScaleAfterBreak())
-				return s1*exp((p - p1)/(pml - p1)*log(rb/s1));
-            else
-				return s1 + (rb - s1)/(pml - p1)*(p - p1);
-		}
-
-		if ((p2 > p1 && p >= pmr) || (p2 < p1 && p <= pmr)){
-			if (d_type == ScaleTransformation::Log10 || d_type == ScaleTransformation::Ln)
-				return lb * exp((p - pmr)/(p2 - pmr)*log(s2/lb));
-			else if (d_type == ScaleTransformation::Linear)
-				return lb + (p - pmr)/(p2 - pmr)*(s2 - lb);
-		}
-
-	}
-
-    if ((p2 > p1 && p <= pml) || (p2 < p1 && p >= pml)){
-        if (d_type == ScaleTransformation::Linear)
-            return s1 + (lb - s1)*(p - p1)/(pml - p1);
-        else if (d_type == ScaleTransformation::Log10 || d_type == ScaleTransformation::Ln)
-            return s1 * exp((p - p1)/(pml - p1)*log(lb/s1));
-    }
-
-	if ((p2 > p1 && p >= pmr) || (p2 < p1 && p <= pmr)){
-	    if (d_engine->log10ScaleAfterBreak())
-            return rb * exp((p - pmr)/(p2 - pmr)*log(s2/rb));
-	    else
-            return rb + (p - pmr)*(s2 - rb)/(p2 - pmr);
-	}
-
-	return DBL_MAX; // something invalid
-}
 
 double ScaleTransformation::transform(double s) const
 {
@@ -315,7 +271,7 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
 		step1 = d_step_after;
 		step2 = d_step_before;
         if (d_log10_scale_after)
-            engine = new QwtLog10ScaleEngine();
+            engine = new QwtLogScaleEngine();
         else
             engine = new QwtLinearScaleEngine();
     } else
@@ -339,7 +295,7 @@ QwtScaleDiv ScaleEngine::divideScale(double x1, double x2, int maxMajSteps,
     if (testAttribute(QwtScaleEngine::Inverted))
 		engine = newScaleEngine();
     else if (d_log10_scale_after)
-		engine = new QwtLog10ScaleEngine();
+		engine = new QwtLogScaleEngine();
 	else
 		engine = new QwtLinearScaleEngine();
 
@@ -391,7 +347,7 @@ QwtScaleEngine *ScaleEngine::newScaleEngine() const
 	QwtScaleEngine *engine = NULL;
 	switch (d_type){
 		case ScaleTransformation::Log10:
-			engine = new QwtLog10ScaleEngine();
+			engine = new QwtLogScaleEngine();
 		break;
 
 		case ScaleTransformation::Ln:

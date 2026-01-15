@@ -30,6 +30,11 @@
 #define ARROWMARKER_H
 
 #include <qwt_plot_marker.h>
+#include <QObject>
+#include <QColor>
+#include <QPen>
+#include <QPolygon>
+#include <QEvent>
 
 /*!\brief Draws lines and arrows on a QwtPlot.
  *

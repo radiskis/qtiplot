@@ -31,7 +31,7 @@
 
 #include <Graph.h>
 
-class qAbstractButton;
+class QAbstractButton;
 class QDialogButtonBox;
 class QTableWidget;
 class QStackedWidget;
@@ -80,7 +80,7 @@ private slots:
 	void showPolarThetaLog();
 	void setActiveEditor(ScriptEdit *edit){d_active_editor = edit;};
 	void guessConstants();
-	void buttonClicked(qAbstractButton *);
+	void buttonClicked(QAbstractButton *);
 	void clearList();
 	void setUserFunctionParameters();
 
