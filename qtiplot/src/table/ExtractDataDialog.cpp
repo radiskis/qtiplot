@@ -160,7 +160,7 @@ QSize ExtractDataDialog::sizeHint() const
 
 void ExtractDataDialog::apply()
 {
-	Table *t = table->extractData(destNameBox->text(), commands->text(), start->value() - 1, end->value() - 1);
+	Table *t = table->extractData(destNameBox->text(), commands->toPlainText(), start->value() - 1, end->value() - 1);
 	if (!t)
 		return;
 
@@ -170,7 +170,7 @@ void ExtractDataDialog::apply()
 void ExtractDataDialog::insertExplain(int index)
 {
 
-	explain->setText(muParserScripting::explainFunction(functions->text(index)));
+	explain->setText(muParserScripting::explainFunction(functions->itemText(index)));
 }
 
 void ExtractDataDialog::insertFunction()
@@ -180,12 +180,12 @@ void ExtractDataDialog::insertFunction()
 
 void ExtractDataDialog::insertCol()
 {
-	commands->insert(boxColumn->currentText());
+	commands->insertPlainText(boxColumn->currentText());
 }
 
 void ExtractDataDialog::insertOp()
 {
-	commands->insert(boxOperators->currentText());
+	commands->insertPlainText(boxOperators->currentText());
 }
 
 void ExtractDataDialog::setTable(Table* w)
@@ -194,14 +194,14 @@ void ExtractDataDialog::setTable(Table* w)
 	QStringList colNames = w->colNames();
 	int cols = w->numCols();
 	for (int i=0; i<cols; i++)
-		boxColumn->insertItem("col(\""+colNames[i]+"\")", i);
+		boxColumn->insertItem(i, "col(\""+colNames[i]+"\")");
 
 	Q3TableSelection sel = w->getSelection();
 	if (!w->table()->selectedRanges().isEmpty()) {
-		w->setSelectedCol(sel.leftCol);
+		w->setSelectedCol(sel.leftCol());
 
-		start->setValue(sel.topRow + 1);
-		end->setValue(sel.bottomRow + 1);
+		start->setValue(sel.topRow() + 1);
+		end->setValue(sel.bottomRow() + 1);
 	} else {
 		start->setValue(1);
 		end->setValue(w->numRows());

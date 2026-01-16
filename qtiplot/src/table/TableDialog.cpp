@@ -322,7 +322,7 @@ void TableDialog::apply()
 
 	int sc = d_table->selectedColumn();
 	d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());
-	d_table->setColComment(sc, comments->text().replace("\n", " ").replace("\t", " "));
+	d_table->setColComment(sc, comments->toPlainText().replace("\n", " ").replace("\t", " "));
 	d_table->setColName(sc, name.replace("_", "-"), enumerateAllBox->isChecked());
 
 	bool rightColumns = applyToRightCols->isChecked();

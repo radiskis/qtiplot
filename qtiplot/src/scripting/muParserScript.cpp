@@ -62,14 +62,14 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
 		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
-			parser.SetVarFactory(mu_addVariable);
-			rparser.SetVarFactory(mu_addVariableR);
+			parser.SetVarFactory((mu::facfun_type)mu_addVariable);
+			rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
 		}
 	} else {
-		parser.SetVarFactory(mu_addVariable);
-		rparser.SetVarFactory(mu_addVariableR);
-		parser.SetVarFactory(mu_addVariable);
-		rparser.SetVarFactory(mu_addVariableR);
+		parser.SetVarFactory((mu::facfun_type)mu_addVariable);
+		rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
+		parser.SetVarFactory((mu::facfun_type)mu_addVariable);
+		rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
 	}
 }
 
@@ -113,7 +113,7 @@ double muParserScript::col(const QString &arg)
 		col = table->colNames().indexOf(items[0].mid(1,items[0].length()-2));
 		if (col<0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
-					arg(items[0]).arg(Context->name()).toStdWString());
+					arg(items[0]).arg(Context->objectName()).toStdWString());
 	} else
 		col = items[0].toInt() - 1; //use column index
 
@@ -128,10 +128,10 @@ double muParserScript::col(const QString &arg)
 	rvariables.clear();
 	if (row < 0 || row >= table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row+1).arg(Context->name()).toStdWString());
+				arg(row+1).arg(Context->objectName()).toStdWString());
 	if (col < 0 || col >= table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col+1).arg(Context->name()).toStdWString());
+				arg(col+1).arg(Context->objectName()).toStdWString());
 	if (table->text(row, col).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -177,7 +177,7 @@ double muParserScript::tablecol(const QString &arg)
 		col = target_table->colIndex(arg2.mid(1, arg2.length() - 2));
 		if (col < 0)
 			throw Parser::exception_type(tr("There's no column named %1 in table %2!").
-					arg(arg2).arg(target_table->name()).toStdWString());
+					arg(arg2).arg(target_table->objectName()).toStdWString());
 	} else {
 		local_parser.SetExpr(arg2.toStdWString());
 		col = qRound(local_parser.Eval()) - 1;
@@ -189,10 +189,10 @@ double muParserScript::tablecol(const QString &arg)
 	rvariables.clear();
 	if (row < 0 || row >= target_table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row+1).arg(target_table->name()).toStdWString());
+				arg(row+1).arg(target_table->objectName()).toStdWString());
 	if (col < 0 || col >= target_table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col+1).arg(target_table->name()).toStdWString());
+				arg(col+1).arg(target_table->objectName()).toStdWString());
 	if (target_table->text(row,col).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -206,10 +206,10 @@ double muParserScript::cell(int row, int col)
 	Matrix *matrix = (Matrix*) Context;
 	if (row < 1 || row > matrix->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in matrix %2!").
-				arg(row).arg(Context->name()).toStdWString());
+				arg(row).arg(Context->objectName()).toStdWString());
 	if (col < 1 || col > matrix->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in matrix %2!").
-				arg(col).arg(Context->name()).toStdWString());
+				arg(col).arg(Context->objectName()).toStdWString());
 	if (matrix->text(row - 1,col - 1).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -223,10 +223,10 @@ double muParserScript::tableCell(int col, int row)
 	Table *table = (Table*) Context;
 	if (row < 1 || row > table->numRows())
 		throw Parser::exception_type(tr("There's no row %1 in table %2!").
-				arg(row).arg(Context->name()).toStdWString());
+				arg(row).arg(Context->objectName()).toStdWString());
 	if (col < 1 || col > table->numCols())
 		throw Parser::exception_type(tr("There's no column %1 in table %2!").
-				arg(col).arg(Context->name()).toStdWString());
+				arg(col).arg(Context->objectName()).toStdWString());
 	if (table->text(row-1,col-1).isEmpty())
 		throw new EmptySourceError();
 	else
@@ -271,7 +271,7 @@ double* muParserScript::defineVariable(const char *name, double val)
       variables.insert(name, valptr);
     } catch (mu::ParserError &e) {
       delete valptr;
-      emit_error(QString(e.GetMsg().c_str()), 0);
+      emit_error(QString::fromStdWString(e.GetMsg()), 0);
       return valptr;
     }
   }
@@ -296,7 +296,7 @@ bool muParserScript::setDouble(double val, const char *name)
       variables.insert(name, valptr);
     } catch (mu::ParserError &e) {
       delete valptr;
-      emit_error(QString(e.GetMsg().c_str()), 0);
+      emit_error(QString::fromStdWString(e.GetMsg()), 0);
       return false;
     }
   }
@@ -413,7 +413,7 @@ bool muParserScript::compile(bool)
         } catch (mu::ParserError &e) {
             if (e.GetCode() != ecVAL_EXPECTED){
                 QApplication::restoreOverrideCursor();
-                emit_error(e.GetMsg().c_str(), 0);
+                emit_error(QString::fromStdWString(e.GetMsg()), 0);
                 return false;
             }
         }
@@ -457,13 +457,13 @@ QVariant muParserScript::eval()
 	try {
 		current = this;
 		for (QStringList::iterator i=muCode.begin(); i != muCode.end(); i++) {
-			parser.SetExpr(i->ascii());
+			parser.SetExpr(i->toStdWString());
 			val = parser.Eval();
 		}
 	} catch (EmptySourceError *e) {
 		return QVariant("");
 	} catch (ParserError &e) {
-		emit_error(e.GetMsg().c_str(), 0);
+		emit_error(QString::fromStdWString(e.GetMsg()), 0);
 		return QVariant();
 	}
 	return QVariant(val);
@@ -476,13 +476,13 @@ bool muParserScript::exec()
 	try {
 		current = this;
 		for (QStringList::iterator i=muCode.begin(); i != muCode.end(); i++) {
-			parser.SetExpr(i->ascii());
+			parser.SetExpr(i->toStdWString());
 			parser.Eval();
 		}
 	} catch (EmptySourceError *e) {
 		return true;
 	} catch (mu::ParserError &e) {
-		emit_error(e.GetMsg().c_str(), 0);
+		emit_error(QString::fromStdWString(e.GetMsg()), 0);
 		return false;
 	}
 	return true;
@@ -496,7 +496,7 @@ double muParserScript::sum(const QString &arg, int start, int end)
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->objectName()).toStdWString());
 
 	rvariables.clear();
 	return table->sum(col, start, end);
@@ -510,7 +510,7 @@ double muParserScript::avg(const QString &arg, int start, int end)
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->objectName()).toStdWString());
 
 	rvariables.clear();
 	return table->avg(col, start, end);
@@ -524,7 +524,7 @@ double muParserScript::min(const QString &arg, int start, int end)
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->objectName()).toStdWString());
 
 	rvariables.clear();
 	return table->minColumnValue(col, start, end);
@@ -538,7 +538,7 @@ double muParserScript::max(const QString &arg, int start, int end)
 	Table *table = (Table*) Context;
 	int col = table->colNames().indexOf(arg);
 	if (col < 0)
-		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->name()).toStdWString());
+		throw Parser::exception_type(tr("There's no column named %1 in table %2!").arg(arg).arg(Context->objectName()).toStdWString());
 
 	rvariables.clear();
 	return table->maxColumnValue(col, start, end);

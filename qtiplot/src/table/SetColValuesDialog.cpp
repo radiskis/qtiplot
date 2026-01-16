@@ -290,10 +290,10 @@ void SetColValuesDialog::setTable(Table* w)
 
 	Q3TableSelection sel = w->getSelection();
 	if (!w->table()->selectedRanges().isEmpty()) {
-		w->setSelectedCol(sel.leftCol);
+		w->setSelectedCol(sel.leftCol());
 
-		start->setValue(sel.topRow + 1);
-		end->setValue(sel.bottomRow + 1);
+		start->setValue(sel.topRow() + 1);
+		end->setValue(sel.bottomRow() + 1);
 	} else {
 		start->setValue(1);
 		end->setValue(w->numRows());

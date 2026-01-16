@@ -31,6 +31,7 @@
 
 #include "Table.h"
 #include <QDialog>
+#include <QCloseEvent>
 
 class QPushButton;
 class QLineEdit;

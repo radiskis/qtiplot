@@ -48,10 +48,11 @@
 #include <QShortcut>
 #include <QDockWidget>
 
-ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
-  : QTextEdit(parent, name), scripted(env), d_error(false), d_completer(0), d_highlighter(0),
+ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
+  : QTextEdit(parent), scripted(env), d_error(false), d_completer(0), d_highlighter(0),
   d_file_name(QString()), d_search_string(QString()), d_output_widget(NULL)
 {
+	setObjectName(name);
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 	connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
@@ -60,7 +61,6 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const char *name)
 
 	setLineWrapMode(NoWrap);
 	setUndoRedoEnabled(true);
-	setTextFormat(Qt::PlainText);
 	setAcceptRichText (false);
 	setFocusPolicy(Qt::StrongFocus);
 
@@ -159,7 +159,7 @@ void ScriptEdit::customEvent(QEvent *e)
 	{
 		scriptingChangeEvent((ScriptingChangeEvent*)e);
 		delete myScript;
-		myScript = scriptEnv->newScript("", this, name());
+		myScript = scriptEnv->newScript("", this, objectName());
 		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
 		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
 
@@ -236,21 +236,22 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	QMenu *menu = createStandardContextMenu();
 	Q_CHECK_PTR(menu);
 
-	menu->insertSeparator();
 	bool emptyText = toPlainText().isEmpty();
 	if (!emptyText){
+		menu->addSeparator();
 		menu->addAction(actionFind);
 		menu->addAction(actionFindNext);
 		menu->addAction(actionFindPrevious);
 		menu->addAction(actionReplace);
-		menu->insertSeparator();
+		menu->addSeparator();
 	}
+	menu->addSeparator();
 	menu->addAction(actionPrint);
 	menu->addAction(actionImport);
-	menu->insertSeparator();
+	menu->addSeparator();
 	menu->addAction(actionSave);
 	menu->addAction(actionExport);
-	menu->insertSeparator();
+	menu->addSeparator();
 
 	Note *sp = qobject_cast<Note*>(myScript->context());
 	if (sp){
@@ -268,7 +269,7 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 			menu->addAction(actionRemoveTab);
 		}
 
-		menu->insertSeparator();
+		menu->addSeparator();
 	}
 
 	bool python = myScript->scriptingEnv()->name() == QString("Python");
@@ -282,11 +283,11 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 
 	if (sp && python){
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
-		actionAutoexec->setToggleAction(true);
-		actionAutoexec->setOn(sp->autoexec());
+		actionAutoexec->setCheckable(true);
+		actionAutoexec->setChecked(sp->autoexec());
 		connect(actionAutoexec, SIGNAL(toggled(bool)), sp, SLOT(setAutoexec(bool)));
 		menu->addAction(actionAutoexec);
-		menu->insertSeparator();
+		menu->addSeparator();
 	}
 
 	functionsMenu->clear();
@@ -409,7 +410,7 @@ void ScriptEdit::execute()
 	clearErrorHighlighting();
 
 	QString fname = "<%1:%2>";
-	fname = fname.arg(name());
+	fname = fname.arg(objectName());
 	QTextCursor codeCursor = textCursor();
 	if (codeCursor.selectedText().isEmpty()){
 		codeCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
@@ -433,7 +434,7 @@ void ScriptEdit::executeAll()
 	clearErrorHighlighting();
 
 	QString fname = "<%1>";
-	fname = fname.arg(name());
+	fname = fname.arg(objectName());
 	myScript->setObjectName(fname);
 	myScript->setCode(text());
 	myScript->exec();
@@ -447,7 +448,7 @@ void ScriptEdit::evaluate()
 	clearErrorHighlighting();
 
 	QString fname = "<%1:%2>";
-	fname = fname.arg(name());
+	fname = fname.arg(objectName());
 	QTextCursor codeCursor = textCursor();
 	if (codeCursor.selectedText().isEmpty()){
 		codeCursor.movePosition(QTextCursor::StartOfLine, QTextCursor::MoveAnchor);
@@ -522,7 +523,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 	if (f.isEmpty()) return QString();
 
 	QFile file(f);
-	if (!file.open(IO_ReadOnly)){
+	if (!file.open(QIODevice::ReadOnly)){
 		QMessageBox::critical(this, tr("QtiPlot - Error Opening File"), tr("Could not open file \"%1\" for reading.").arg(f));
 		return QString();
 	}
@@ -537,7 +538,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 
 	clear();
 	QTextStream ts(&file);
-	ts.setEncoding(QTextStream::UnicodeUTF8);
+	ts.setCodec("UTF-8");
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -579,14 +580,14 @@ QString ScriptEdit::exportASCII(const QString &filename)
 			fn.append(".py");
 
 		QFile f(fn);
-		if (!f.open(IO_WriteOnly)){
+		if (!f.open(QIODevice::WriteOnly)){
 			QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
 						tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
 			return QString();
 		}
 
 		QTextStream t( &f );
-		t.setEncoding(QTextStream::UnicodeUTF8);
+		t.setCodec("UTF-8");
 		t << text();
 		f.close();
 

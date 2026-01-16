@@ -409,7 +409,7 @@ void TableStatistics::removeCol(const QString &col)
 
 	for (int c = 0; c < d_targets.size(); c++)
 		if (col == QString(d_base->objectName()) + "_" + text(c, 0)){
-			d_targets.remove(d_targets.at(c));
+			d_targets.removeAt(c);
 			d_table->removeRow(c);
 			return;
 		}
@@ -441,7 +441,7 @@ void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 	}
 
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<TableStatistics>\n";
 	t << QString(objectName())+"\t";
 	t << QString(d_base->objectName()) + "\t";

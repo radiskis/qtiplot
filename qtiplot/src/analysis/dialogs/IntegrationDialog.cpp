@@ -258,8 +258,8 @@ void IntegrationDialog::setTable(Table *t)
 
 	Q3TableSelection sel = d_table->getSelection();
 
-	int startRow = sel.topRow;
-	int endRow = sel.bottomRow;
+	int startRow = sel.topRow();
+	int endRow = sel.bottomRow();
 	if (!sel.isEmpty()){
 		boxStartRow->setValue(startRow + 1);
 		boxEndRow->setValue(endRow + 1);

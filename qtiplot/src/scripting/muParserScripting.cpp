@@ -144,7 +144,7 @@ const QString muParserScripting::explainFunction(const QString &name)
 
 	for (const mathFunction *i = math_functions; i->name; i++){
 		if (name == i->name){
-			QString s = QObject::tr(i->description);
+			QString s = i->description;
 			if (QLocale().decimalPoint() == ',')
 				s.replace(",", ";");
 

@@ -264,7 +264,7 @@ void Note::save(const QString &fn, const QString &info, bool)
 			return;
 	}
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<note>\n";
 	t << QString(name()) + "\t" + birthDate() + "\n";
 	t << info;
@@ -289,13 +289,13 @@ void Note::saveTab(int index, const QString &fn)
 		return;
 
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<tab>\n";
 	if (d_tab_widget->currentIndex() == index)
 		t << "<active>1</active>\n";
 
 	t << "<title>" + d_tab_widget->tabText(index) + "</title>\n";
-	t << "<content>\n" + editor(index)->text().trimmed() + "\n</content>";
+	t << "<content>\n" + editor(index)->toPlainText().trimmed() + "\n</content>";
 	t << "\n</tab>\n";
 
 	f.close();
@@ -379,10 +379,12 @@ void Note::restore(const QStringList& data, int, bool)
 void Note::setAutoexec(bool exec)
 {
   autoExec = exec;
-  if (autoExec)
-    currentEditor()->setPaletteBackgroundColor(QColor(255,239,185));
-  else
-    currentEditor()->unsetPalette();
+  if (autoExec) {
+    QPalette pal = currentEditor()->palette();
+    pal.setColor(QPalette::Base, QColor(255,239,185));
+    currentEditor()->setPalette(pal);
+  } else
+    currentEditor()->setPalette(QPalette());
 }
 
 void Note::setFont(const QFont& f)

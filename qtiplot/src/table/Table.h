@@ -29,6 +29,9 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <algorithm>
+#include <functional>
+
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QItemSelection>
@@ -38,6 +41,19 @@
 #include <MdiSubWindow.h>
 #include <ScriptingEnv.h>
 #include <Script.h>
+
+struct Q3TableSelection {
+    int m_topRow, m_leftCol, m_bottomRow, m_rightCol;
+    Q3TableSelection(int t=0, int l=0, int b=0, int r=0) : m_topRow(t), m_leftCol(l), m_bottomRow(b), m_rightCol(r) {}
+    void init(int t, int l) { m_topRow=t; m_leftCol=l; m_bottomRow=t; m_rightCol=l; }
+    bool isEmpty() const { return m_topRow < 0 || m_leftCol < 0; }
+    int numRows() const { return m_bottomRow - m_topRow + 1; }
+    int numCols() const { return m_rightCol - m_leftCol + 1; }
+	int topRow() const { return m_topRow; }
+	int leftCol() const { return m_leftCol; }
+	int bottomRow() const { return m_bottomRow; }
+	int rightCol() const { return m_rightCol; }
+};
 
 class MyTable : public QTableWidget
 {
@@ -164,18 +180,40 @@ public:
 
 	void activateNextCell();
 
+	Q3TableSelection selection(int index) {
+		QList<QTableWidgetSelectionRange> ranges = selectedRanges();
+		if (index >= 0 && index < ranges.count()) {
+			return Q3TableSelection(ranges[index].topRow(), ranges[index].leftColumn(), ranges[index].bottomRow(), ranges[index].rightColumn());
+		}
+		return Q3TableSelection();
+	}
+
+	void addSelection(const Q3TableSelection &sel) {
+		setRangeSelected(QTableWidgetSelectionRange(sel.topRow(), sel.leftCol(), sel.bottomRow(), sel.rightCol()), true);
+	}
+
+	void removeRows(const QVector<int> &rows) {
+		QList<int> sortedRows;
+		for(int i=0; i<rows.count(); i++) sortedRows << rows[i];
+		std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
+		for(int i=0; i<sortedRows.count(); i++) removeRow(sortedRows[i]);
+	}
+
+    bool isSelected(int r, int c) {
+        QTableWidgetItem *it = item(r, c);
+        return it ? it->isSelected() : false;
+    }
+
+    void setReadOnly(bool ro) {
+        if (ro) setEditTriggers(QAbstractItemView::NoEditTriggers);
+        else setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked | QAbstractItemView::EditKeyPressed);
+    }
+
 private:
     QList<int> d_readOnlyCols;
 };
 
-struct Q3TableSelection {
-    int topRow, leftCol, bottomRow, rightCol;
-    Q3TableSelection(int t=0, int l=0, int b=0, int r=0) : topRow(t), leftCol(l), bottomRow(b), rightCol(r) {}
-    void init(int t, int l) { topRow=t; leftCol=l; bottomRow=t; rightCol=l; }
-    bool isEmpty() const { return topRow < 0 || leftCol < 0; }
-    int numRows() const { return bottomRow - topRow + 1; }
-    int numCols() const { return rightCol - leftCol + 1; }
-};
+
 
 /*!\brief MDI window providing a spreadsheet table with column logic.
  *

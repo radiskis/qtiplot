@@ -61,6 +61,13 @@ public:
 	void SetExpr(const string_type& expr) { Parser::SetExpr(expr); }
 	void SetExpr(const char* expr) { Parser::SetExpr(QString(expr).toStdWString()); }
 
+	void DefineFun(const char* name, double (*fun)(double)) { Parser::DefineFun(QString(name).toStdWString(), fun); }
+	void DefineFun(const char* name, double (*fun)(double, double)) { Parser::DefineFun(QString(name).toStdWString(), fun); }
+	void DefineFun(const char* name, double (*fun)(double, double, double)) { Parser::DefineFun(QString(name).toStdWString(), fun); }
+	void DefineFun(const char* name, double (*fun)(const mu::char_type*), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
+	void DefineFun(const char* name, double (*fun)(const mu::char_type*, double), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
+	void DefineFun(const char* name, double (*fun)(const mu::char_type*, double, double), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
+
 	const static QStringList functionsList();
 	const static QStringList functionNamesList();
 	static QString explainFunction(int index);

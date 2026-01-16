@@ -54,13 +54,14 @@ class ScriptEdit: public QTextEdit, public scripted
   Q_OBJECT
 
   public:
-    ScriptEdit(ScriptingEnv *env, QWidget *parent=0, const char *name=0);
+    ScriptEdit(ScriptingEnv *env, QWidget *parent=0, const QString& name = QString());
   	~ScriptEdit();
 	//! Handle changing of scripting environment.
     void customEvent(QEvent*);
   	//! Map cursor positions to line numbers.
     int lineNumber(int pos) const;
 	bool error(){return d_error;};
+	QString text() {return toPlainText();};
 
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);

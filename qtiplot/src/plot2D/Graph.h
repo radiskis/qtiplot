@@ -911,8 +911,7 @@ signals:
     	void printFrame(QPainter *painter, const QRect &rect) const;
 		void printCanvas(QPainter *painter, const QRectF &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
-		virtual void printScale (QPainter *, int axisId, int startDist, int endDist,
-			int baseDist, const QRect &) const;
+
 		virtual void drawItems (QPainter *painter, const QRectF &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 

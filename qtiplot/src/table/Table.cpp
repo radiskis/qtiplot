@@ -82,7 +82,7 @@ void Table::init(int rows, int cols)
 	d_numeric_precision = 13;
 
 	d_table = new MyTable(rows, cols, this, "table");
-	d_table->setSelectionMode (qAbstractItemView::ExtendedSelection); // Q3Table::Single allowed ranges, Extended? Or Single?
+	d_table->setSelectionMode (QAbstractItemView::ExtendedSelection); // Q3Table::Single allowed ranges, Extended? Or Single?
     // Q3Table::Single meant "Single selection of cells or ranges"? NO.
     // Q3Table documentation says "Single: When the user selects an item, any already-selected item becomes unselected." (Single item).
     // But QtiPlot seems to support ranges (extractData, etc).
@@ -180,9 +180,9 @@ void Table::setTextFont(const QFont& fnt)
 void Table::setHeaderColor(const QColor& col)
 {
 	QPalette palette = d_table->horizontalHeader()->palette ();
-    palette.setColor (QColorGroup::ButtonText, col);
+    palette.setColor (QPalette::ButtonText, col);
 #ifdef Q_OS_MAC //! Highlighting of the header text
-    palette.setColor (QColorGroup::BrightText, col);
+    palette.setColor (QPalette::BrightText, col);
 #endif
     d_table->horizontalHeader()->setPalette (palette);
 }
@@ -238,7 +238,7 @@ void Table::print(QPrinter *printer)
 		tr.setWidth(w);
 		tr.setHeight(br.height());
 		QString headLabel = d_table->model()->headerData(i, Qt::Horizontal).toString();
-		p.drawText(tr,Qt::AlignCenter,headLabel,-1);
+		p.drawText(tr,Qt::AlignCenter,headLabel);
 		right+=w;
 		p.drawLine(right,height,right,height+tr.height());
 
@@ -260,7 +260,7 @@ void Table::print(QPrinter *printer)
 		br.setTopLeft(QPoint(right,height));
 		br.setWidth(vertHeaderWidth);
 		br.setHeight(tr.height());
-		p.drawText(br,Qt::AlignCenter,text,-1);
+		p.drawText(br,Qt::AlignCenter,text);
 		right += vertHeaderWidth;
 		p.drawLine(right,height,right,height+tr.height());
 
@@ -272,7 +272,7 @@ void Table::print(QPrinter *printer)
 			br.setTopLeft(QPoint(right,height));
 			br.setWidth(w);
 			br.setHeight(tr.height());
-			p.drawText(br,Qt::AlignCenter,text,-1);
+			p.drawText(br,Qt::AlignCenter,text);
 			right+=w;
 			p.drawLine(right,height,right,height+tr.height());
 
@@ -336,7 +336,7 @@ void Table::cellEdited(int row, int col)
   		QVariant ret = script->eval();
   		if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
   			d_table->setText(row, col, ret.toString());
-  		else if(ret.canCast(QVariant::Double))
+  		else if(ret.canConvert<double>())
   			d_table->setText(row, col, locale().toString(ret.toDouble(), f, precision));
   		else
   			d_table->setText(row, col, "");
@@ -920,7 +920,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 			return;
 	}
 	QTextStream t( &f );
-	t.setEncoding(QTextStream::UnicodeUTF8);
+	t.setCodec("UTF-8");
 	t << "<table>";
 	if (saveAsTemplate){
 	    t << "\t" + QString::number(d_table->numRows()) + "\t";
@@ -1086,7 +1086,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
 		if (col_label.contains(newLabel) > 0){
 			if (warn){
 				QMessageBox::critical(0, tr("QtiPlot - Error"),
-				tr("There is already a column called : <b>"+newLabel+"</b> in table <b>"+caption+"</b>!<p>Please choose another name!"));
+				tr("There is already a column called : <b>%1</b> in table <b>%2</b>!<p>Please choose another name!").arg(newLabel).arg(caption));
 			}
 			return;
         }
@@ -1429,7 +1429,7 @@ void Table::deleteRows(int startRow, int endRow)
         end = d_table->numRows() - 1;
 
 	int rows = abs(end - start) + 1;
-	Q3MemArray<int> rowsToDelete(rows);
+	QVector<int> rowsToDelete(rows);
 	for (int i=0; i<rows; i++)
 		rowsToDelete[i] = start + i;
 
@@ -1606,7 +1606,7 @@ void Table::pasteSelection()
 				msgBox.addButton(tr("&Values"), QMessageBox::AcceptRole);
 				QPushButton *namesButton = msgBox.addButton(tr("Column &Names"), QMessageBox::AcceptRole);
 				msgBox.setDefaultButton(namesButton);
-				qAbstractButton *commentsButton = msgBox.addButton(tr("&Comments"), QMessageBox::AcceptRole);
+				QAbstractButton *commentsButton = msgBox.addButton(tr("&Comments"), QMessageBox::AcceptRole);
 				msgBox.addButton(QMessageBox::Cancel);
 
 				if (msgBox.exec() == QMessageBox::Cancel)
@@ -4037,7 +4037,7 @@ Q3TableSelection Table::getSelection()
     QList<QTableWidgetSelectionRange> ranges = d_table->selectedRanges();
     if (ranges.isEmpty()) {
         sel.init(d_table->currentRow(), d_table->currentColumn());
-        if (sel.topRow < 0) sel.init(0,0);
+        if (sel.topRow() < 0) sel.init(0,0);
         return sel;
     }
 
@@ -4053,7 +4053,7 @@ Q3TableSelection Table::getSelection()
         right = qMax(right, ranges[i].rightColumn());
     }
     sel.init(top, left);
-    sel.bottomRow = bottom;
-    sel.rightCol = right;
+    sel.m_bottomRow = bottom;
+    sel.m_rightCol = right;
     return sel;
 }

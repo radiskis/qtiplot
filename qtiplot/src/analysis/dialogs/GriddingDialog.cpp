@@ -255,8 +255,8 @@ void GriddingDialog::loadDataFromTable()
 	QLocale locale = app->locale();
 	Q3TableSelection sel = d_table->getSelection();
 
-	int startRow = sel.topRow;
-	int endRow = sel.bottomRow;
+	int startRow = sel.topRow();
+	int endRow = sel.bottomRow();
 	int zcol = d_table->colIndex(d_col_name);
 	if (zcol < 0 || zcol >= d_table->numCols())
 		return;

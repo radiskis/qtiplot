@@ -67,9 +67,9 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::Window
         int er = t->numRows();
         Q3TableSelection sel = d_source_table->getSelection();
         if (!d_source_table->table()->selectedRanges().isEmpty()){
-            sr = sel.topRow;
-            er = sel.bottomRow + 1;
-            col = sel.leftCol;
+            sr = sel.topRow();
+            er = sel.bottomRow() + 1;
+            col = sel.leftCol();
             d_col_name = t->colName(col);
         }
         int size = 0;

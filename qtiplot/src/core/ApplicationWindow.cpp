@@ -2117,7 +2117,7 @@ void ApplicationWindow::plotPie()
 	QStringList s = table->selectedColumns();
 	if (s.count()>0){
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::Pie, sel.topRow, sel.bottomRow);
+		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
 }
@@ -2168,7 +2168,7 @@ void ApplicationWindow::plotVectXYXY()
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4) {
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow, sel.bottomRow);
+		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
@@ -2184,7 +2184,7 @@ void ApplicationWindow::plotVectXYAM()
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4){
 		Q3TableSelection sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow, sel.bottomRow);
+		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
 }
@@ -3513,7 +3513,7 @@ void ApplicationWindow::showBinMatrixDialog()
 		return;
 
 	Q3TableSelection sel = t->getSelection();
-	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow - sel.bottomRow) < 2){
+	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow() - sel.bottomRow()) < 2){
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("You must select a single Y column that has an associated X column!"));
 		return;
@@ -3528,7 +3528,7 @@ void ApplicationWindow::showBinMatrixDialog()
 		return;
 	}
 
-	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow, sel.bottomRow, this);
+	CreateBinMatrixDialog *cbmd = new CreateBinMatrixDialog(t, sel.topRow(), sel.bottomRow(), this);
 	cbmd->exec();
 }
 
@@ -3579,13 +3579,13 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 	QStringList selection = t->selectedColumns();
 	Q3TableSelection sel = t->getSelection();
 	if (selection.size() != 1 || t->colPlotDesignation(t->colIndex(selection[0])) != Table::Z ||
-		fabs(sel.topRow - sel.bottomRow) < 2){
+		fabs(sel.topRow() - sel.bottomRow()) < 2){
 		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
 		return;
 	}
 
-	int startRow = sel.topRow;
-	int endRow = sel.bottomRow;
+	int startRow = sel.topRow();
+	int endRow = sel.bottomRow();
 	int zcol = t->colIndex(selection[0]);
 	if (zcol < 0 || zcol >= t->numCols())
 		return;
@@ -3666,13 +3666,13 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 		Q3TableSelection sel = t->getSelection();
 		if (t->selectedColumns().size() != 1 ||
 			t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
-			fabs(sel.topRow - sel.bottomRow) < 2){
+			fabs(sel.topRow() - sel.bottomRow()) < 2){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
 			return 0;
 		}
 		zcol = t->colIndex(t->selectedColumns()[0]);
-		startRow = sel.topRow;
-		endRow = sel.bottomRow;
+		startRow = sel.topRow();
+		endRow = sel.bottomRow();
 	} else
 		zcol = t->colIndex(colName);
 
@@ -7609,7 +7609,7 @@ void ApplicationWindow::showColStatistics()
 			targets << i;
 
 	Q3TableSelection select = t->getSelection();
-	newTableStatistics(t, TableStatistics::column, targets, select.topRow, select.bottomRow)->showNormal();
+	newTableStatistics(t, TableStatistics::column, targets, select.topRow(), select.bottomRow())->showNormal();
 }
 
 void ApplicationWindow::showRowStatistics()
@@ -7624,7 +7624,7 @@ void ApplicationWindow::showRowStatistics()
 			targets << i;
 
 	Q3TableSelection select = t->getSelection();
-	newTableStatistics(t, TableStatistics::row, targets, select.leftCol, select.rightCol)->showNormal();
+	newTableStatistics(t, TableStatistics::row, targets, select.leftCol(), select.rightCol())->showNormal();
 }
 
 void ApplicationWindow::showColMenu(int c)
@@ -7979,7 +7979,7 @@ void ApplicationWindow::zoomRectanglePlot()
 	}
 
 	Q3TableSelection sel = t->getSelection();
-    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow, sel.bottomRow);
+    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
     if (ml){
         Graph *ag = ml->activeLayer();
         ag->setTitle("");
@@ -8037,7 +8037,7 @@ void ApplicationWindow::plotDoubleYAxis()
 	}
 
 	Q3TableSelection sel = t->getSelection();
-	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow, sel.bottomRow);
+	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
 	if (ml){
 		Graph *g = ml->activeLayer();
 		g->enableAxis(QwtPlot::yRight);
@@ -13294,7 +13294,7 @@ void ApplicationWindow::integrate()
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		Q3TableSelection sel = t->getSelection();
-		if (!cols || sel.topRow == sel.bottomRow){
+		if (!cols || sel.topRow() == sel.bottomRow()){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("Please select a 'Y' column first!"));
 			return;
@@ -17855,7 +17855,7 @@ MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
             return 0;
 
         Q3TableSelection sel = table->getSelection();
-        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow, sel.bottomRow);
+        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
     } else if (w->inherits("Matrix")){
         Matrix *m = static_cast<Matrix *>(w);
         return plotHistogram(m);
@@ -18747,8 +18747,8 @@ void ApplicationWindow::showFrequencyCountDialog()
     Q3TableSelection sel = t->getSelection();
     if (!t->table()->selectedRanges().isEmpty()){
         if (sel.numRows() > 1 && sel.numCols() == 1){
-            int col = sel.leftCol;
-            for (int i = sel.topRow; i <= sel.bottomRow; i++){
+            int col = sel.leftCol();
+            for (int i = sel.topRow(); i <= sel.bottomRow(); i++){
                 if (!t->text(i, col).isEmpty())
                    validRows++;
                 if (validRows > 1){
@@ -18783,8 +18783,8 @@ Note * ApplicationWindow::newStemPlot()
 	QStringList lst = t->selectedColumns();
 	if (lst.isEmpty()){
 		Q3TableSelection sel = t->getSelection();
-		for (int i = sel.leftCol; i <= sel.rightCol; i++)
-			editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow + 1, sel.bottomRow + 1) + "\n");
+		for (int i = sel.leftCol(); i <= sel.rightCol(); i++)
+			editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
 	} else {
 		for (int i = 0; i < lst.count(); i++)
 			editor->insertPlainText(stemPlot(t, lst[i], 1001) + "\n");

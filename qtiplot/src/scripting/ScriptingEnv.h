@@ -63,6 +63,8 @@ class ScriptingEnv : public QObject
     //! Instantiate the Script subclass matching the ScriptEnv subclass.
     virtual Script *newScript(const QString&, QObject*, const QString&) { return 0; }
 
+    QString name() const { return objectName(); }
+
     //! If an exception / error occured, return a nicely formated stack backtrace.
     virtual QString stackTraceString() { return QString(); }
 
