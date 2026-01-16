@@ -83,7 +83,7 @@ public:
 	//! Return the window name
 	QString name(){return objectName();};
 	//! Set the window name
-	void setObjectName(const QString& s){setObjectName(s); updateCaption();};
+	void setObjectName(const QString& s){QMdiSubWindow::setObjectName(s); updateCaption();};
 
 	//! Return the caption policy
 	CaptionPolicy captionPolicy(){return d_caption_policy;};

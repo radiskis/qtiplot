@@ -250,10 +250,6 @@ void ApplicationWindow::init(bool factorySettings)
 	folders->header()->hide();
 	folders->setSelectionMode(QAbstractItemView::SingleSelection);
 
-	connect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
-			this, SLOT(folderItemChanged(QTreeWidgetItem *)));
-	connect(folders, SIGNAL(itemRenamed(QTreeWidgetItem *, int, const QString &)),
-			this, SLOT(renameFolder(QTreeWidgetItem *, int, const QString &)));
 	connect(folders, SIGNAL(contextMenuRequested(QTreeWidgetItem *, const QPoint &, int)),
 			this, SLOT(showFolderPopupMenu(QTreeWidgetItem *, const QPoint &, int)));
 	connect(folders, SIGNAL(dragItems(QList<QTreeWidgetItem *>)),
@@ -269,6 +265,11 @@ void ApplicationWindow::init(bool factorySettings)
 	FolderListItem *fli = new FolderListItem(folders, current_folder);
 	current_folder->setFolderListItem(fli);
 	fli->setOpen( true );
+
+	connect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
+			this, SLOT(folderItemChanged(QTreeWidgetItem *)));
+	connect(folders, SIGNAL(itemRenamed(QTreeWidgetItem *, int, const QString &)),
+			this, SLOT(renameFolder(QTreeWidgetItem *, int, const QString &)));
 
 	lv = new FolderListView();
     QStringList lvHeaders;
@@ -1358,6 +1359,7 @@ void ApplicationWindow::initMainMenu()
 	menuBar()->addMenu(fileMenu);
 
 	recent = new QMenu(this);
+	recentMenuAction = recent->menuAction();
 	newMenu = new QMenu(this);
 	newMenu->setObjectName("newMenu");
 	exportPlotMenu = new QMenu(this);
@@ -1502,12 +1504,12 @@ void ApplicationWindow::initMainMenu()
 	windowsMenu = new QMenu(this);
 	windowsMenu->setObjectName("windowsMenu");
 	
+	foldersMenu = new QMenu(this);
+
 	connect(windowsMenu, SIGNAL(aboutToShow()), this, SLOT(windowsMenuAboutToShow()));
 	connect(windowsMenu, SIGNAL(triggered(QAction*)), this, SLOT(windowsMenuTriggered(QAction*)));
 	connect(foldersMenu, SIGNAL(triggered(QAction*)), this, SLOT(foldersMenuTriggered(QAction*)));
 	menuBar()->addMenu(windowsMenu);
-
-	foldersMenu = new QMenu(this);
 	
 
 	help = new QMenu(this);
