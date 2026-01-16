@@ -13690,7 +13690,7 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 
 void ApplicationWindow::connectTable(Table* w)
 {
-    connect (w->table(), SIGNAL(selectionChanged()), this, SLOT(customColumnActions()));
+    connect (w->table(), SIGNAL(itemSelectionChanged()), this, SLOT(customColumnActions()));
 	connect (w,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
 	connect (w,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
 	connect (w,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));

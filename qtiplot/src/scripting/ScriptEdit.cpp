@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
     File                 : ScriptEdit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
@@ -82,45 +82,45 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
 
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("Ctrl+J") );
-	connect(actionExecute, SIGNAL(activated()), this, SLOT(execute()));
+	connect(actionExecute, SIGNAL(triggered()), this, SLOT(execute()));
 
 	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("Ctrl+Shift+J") );
-	connect(actionExecuteAll, SIGNAL(activated()), this, SLOT(executeAll()));
+	connect(actionExecuteAll, SIGNAL(triggered()), this, SLOT(executeAll()));
 
 	actionEval = new QAction(tr("&Evaluate Expression"), this);
 	actionEval->setShortcut( tr("Ctrl+Return") );
-	connect(actionEval, SIGNAL(activated()), this, SLOT(evaluate()));
+	connect(actionEval, SIGNAL(triggered()), this, SLOT(evaluate()));
 
 	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
-	connect(actionPrint, SIGNAL(activated()), this, SLOT(print()));
+	connect(actionPrint, SIGNAL(triggered()), this, SLOT(print()));
 
 	actionImport = new QAction(QIcon(":/fileopen.png"), tr("&Import..."), this);
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
-	connect(actionImport, SIGNAL(activated()), this, SLOT(importASCII()));
+	connect(actionImport, SIGNAL(triggered()), this, SLOT(importASCII()));
 
 	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
-	connect(actionSave, SIGNAL(activated()), this, SLOT(save()));
+	connect(actionSave, SIGNAL(triggered()), this, SLOT(save()));
 
 	actionExport = new QAction(QIcon(":/filesaveas.png"), tr("Sa&ve as..."), this);
-	connect(actionExport, SIGNAL(activated()), this, SLOT(exportASCII()));
+	connect(actionExport, SIGNAL(triggered()), this, SLOT(exportASCII()));
 
 	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
-	connect(actionFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
+	connect(actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
 
 	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
-	connect(actionReplace, SIGNAL(activated()), this, SLOT(replace()));
+	connect(actionReplace, SIGNAL(triggered()), this, SLOT(replace()));
 
 	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("&Find next"), this);
 	actionFindNext->setShortcut(QKeySequence(Qt::Key_F3));
-	connect(actionFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+	connect(actionFindNext, SIGNAL(triggered()), this, SLOT(findNext()));
 
 	actionFindPrevious = new QAction(QIcon(":/find_previous.png"), tr("&Find previous"), this);
 	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
-	connect(actionFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
+	connect(actionFindPrevious, SIGNAL(triggered()), this, SLOT(findPrevious()));
 
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
@@ -256,16 +256,16 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	Note *sp = qobject_cast<Note*>(myScript->context());
 	if (sp){
 		QAction *actionRenameTab = new QAction(tr("Rena&me Tab..."), menu);
-		connect(actionRenameTab, SIGNAL(activated()), sp, SLOT(renameCurrentTab()));
+		connect(actionRenameTab, SIGNAL(triggered()), sp, SLOT(renameCurrentTab()));
 		menu->addAction(actionRenameTab);
 
 		QAction *actionAddTab = new QAction(QIcon(QPixmap(":/plus.png")), tr("A&dd Tab"), menu);
-		connect(actionAddTab, SIGNAL(activated()), sp, SLOT(addTab()));
+		connect(actionAddTab, SIGNAL(triggered()), sp, SLOT(addTab()));
 		menu->addAction(actionAddTab);
 
 		if (sp->tabs() > 1){
 			QAction *actionRemoveTab = new QAction(QIcon(QPixmap(":/delete.png")), tr("C&lose Tab"), menu);
-			connect(actionRemoveTab, SIGNAL(activated()), sp, SLOT(removeTab()));
+			connect(actionRemoveTab, SIGNAL(triggered()), sp, SLOT(removeTab()));
 			menu->addAction(actionRemoveTab);
 		}
 
