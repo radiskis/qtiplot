@@ -75,10 +75,6 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 
 void QtiPlotApplication::close()
 {
-	ApplicationWindow *mw = d_windows.last();
-	if (mw)
-		mw->showDemoVersionMessage();
-
 	quit();
 }
 

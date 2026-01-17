@@ -956,8 +956,7 @@ public slots:
 	void downloadManual();
 	//! Show translations page in external browser
 	void downloadTranslation();
-	//! Shown when the user tries to save the project.
-	void showDemoVersionMessage();
+	//! Show Pro version message
 	void showProVersionMessage();
 
 	void parseCommandLineArguments(const QStringList& args);
