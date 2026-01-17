@@ -16536,24 +16536,6 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	return new_folder;
 }
 
-void ApplicationWindow::showDemoVersionMessage()
-{
-    saved = true;
-	QMessageBox::critical(this, tr("QtiPlot - Demo Version"),
-			tr("You are using the demonstration version of Qtiplot.\
-				It is identical with the full version, except that you can't save your work to project files and you can't use it for more than 10 minutes per session.\
-				<br><br>\
-				If you want to have ready-to-use, fully functional binaries, please subscribe for a\
-				<a href=\"http://soft.proindependent.com/individual_contract.html\">single-user binaries maintenance contract</a>.\
-				<br><br>\
-				QtiPlot is free software in the sense of free speech.\
-				If you know how to use it, you can get\
-				<a href=\"http://soft.proindependent.com/download.html\">the source code</a>\
-				free of charge.\
-				Nevertheless, you are welcome to\
-				<a href=\"http://soft.proindependent.com/why_donate.html\">make a donation</a>\
-				in order to support the further development of QtiPlot."));
-}
 
 void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
