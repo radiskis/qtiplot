@@ -1519,15 +1519,15 @@ void ApplicationWindow::initMainMenu()
 	help->addAction(actionShowHelp);
 	help->addAction(actionChooseHelpFolder);
 	help->addSeparator();
+
 	help->addAction(actionHomePage);
 	help->addAction(actionCheckUpdates);
 	help->addAction(actionDownloadManual);
 	help->addAction(actionTranslations);
 	help->addSeparator();
-#ifndef QTIPLOT_PRO
+
 	help->addAction(actionTechnicalSupport);
 	help->addAction(actionDonate);
-#endif
 	help->addAction(actionHelpForums);
 	help->addAction(actionHelpBugReports);
 	help->addSeparator();
@@ -6760,10 +6760,6 @@ bool ApplicationWindow::saveProject(bool compress)
 		return false;
 	}
 
-#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-	showDemoVersionMessage();
-	return false;
-#endif
 
 	saveFolder(projectFolder(), projectname, compress);
 	savedProject();
@@ -6862,11 +6858,6 @@ QString ApplicationWindow::getSaveProjectName(const QString& fileName, bool *com
 
 void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 {
-#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-	showDemoVersionMessage();
-	return;
-#endif
-
 	QString fn = getSaveProjectName(fileName, &compress);
 	if (!fn.isEmpty()){
 		projectname = fn;
@@ -6883,11 +6874,6 @@ void ApplicationWindow::saveProjectAs(const QString& fileName, bool compress)
 
 void ApplicationWindow::saveWindowAs(const QString& fileName, bool compress)
 {
-#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-	showDemoVersionMessage();
-	return;
-#endif
-
 	MdiSubWindow *w = this->activeWindow();
 	if (!w)
 		return;
@@ -10531,10 +10517,6 @@ void ApplicationWindow::dragEnterEvent( QDragEnterEvent* e )
 
 void ApplicationWindow::closeEvent( QCloseEvent* ce )
 {
-	#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-        showDemoVersionMessage();
-    #endif
-
 	switch(showSaveProjectMessage()){
 		case QMessageBox::Yes:
 			if (!saveProject()){
@@ -10572,13 +10554,8 @@ QMessageBox::StandardButton ApplicationWindow::showSaveProjectMessage()
 		QString s = tr("Save changes to project: <p><b> %1 </b> ?").arg(projectname);
 		switch(QMessageBox::information(this, tr("QtiPlot"), s, QMessageBox::Yes|QMessageBox::No|QMessageBox::Cancel, QMessageBox::Yes)){
 			case QMessageBox::Yes:
-			#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-				showDemoVersionMessage();
-				return QMessageBox::Discard;
-			#else
 				saveProject();
 				return QMessageBox::Yes;
-			#endif
 			break;
 			case QMessageBox::No:
 			default:
@@ -16694,11 +16671,6 @@ void ApplicationWindow::saveAsProject()
 
 void ApplicationWindow::saveFolderAsProject(Folder *f)
 {
-#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-	showDemoVersionMessage();
-	return;
-#endif
-
 	bool compress = false;
 	QString fn = getSaveProjectName("", &compress, 1);
 	if (!fn.isEmpty())

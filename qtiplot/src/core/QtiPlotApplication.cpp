@@ -59,19 +59,13 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
 		mw->restoreApplicationGeometry();
-	#if (!defined(QTIPLOT_PRO) && !defined(QTIPLOT_DEMO) && !defined(Q_WS_X11))
-		mw->showDonationDialog();
-	#endif
+
 		if (mw->autoSearchUpdates){
 			mw->autoSearchUpdatesRequest = true;
 			mw->searchForUpdates();
 		}
 		mw->parseCommandLineArguments(args);
 	}
-
-	#if defined(QTIPLOT_DEMO) || (!defined(QTIPLOT_PRO) && defined(Q_OS_WIN))
-		QTimer::singleShot(600000, this, SLOT(close()));
-	#endif
 
 	#ifdef Q_WS_MAC
 		qt_mac_set_menubar_merge(false);
@@ -190,9 +184,6 @@ void QtiPlotApplication::newWindow()
 		return;
 
 	mw->restoreApplicationGeometry();
-#if (!defined(QTIPLOT_PRO) && !defined(QTIPLOT_DEMO) && !defined(Q_WS_X11))
-	mw->showDonationDialog();
-#endif
 	mw->initWindow();
 
 	updateDockMenu();

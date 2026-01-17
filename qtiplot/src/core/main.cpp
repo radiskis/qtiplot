@@ -130,7 +130,6 @@ int main( int argc, char ** argv )
 	Q_IMPORT_PLUGIN(qtiff);
 #endif
 
-#ifdef QTIPLOT_PRO
 	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
 	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotTexPlugin);
@@ -139,7 +138,6 @@ int main( int argc, char ** argv )
 	Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotOriginPlugin);
 	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
-#endif
 
 	QtiPlotApplication app( argc, argv );
 	app.connect( &app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()) );
