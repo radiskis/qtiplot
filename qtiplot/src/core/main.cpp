@@ -130,14 +130,14 @@ int main( int argc, char ** argv )
 	Q_IMPORT_PLUGIN(qtiff);
 #endif
 
-	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
-	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotTexPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotOdsPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotExcelPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotOriginPlugin);
-	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotTexPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotOdsPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotExcelPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotEmfExportPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotOriginPlugin);
+//	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
 
 	QtiPlotApplication app( argc, argv );
 	app.connect( &app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()) );
