@@ -37,6 +37,7 @@
 ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::WindowFlags flags)
 	: QFileDialog(parent, flags)
 {
+	setOption(QFileDialog::DontUseNativeDialog);
 	d_extension = 0;
 
 	d_extension_toggle = new QPushButton();

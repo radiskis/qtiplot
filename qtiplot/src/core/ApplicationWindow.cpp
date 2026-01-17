@@ -5134,7 +5134,7 @@ void ApplicationWindow::scriptPrint(const QString &text)
 #ifdef SCRIPTING_CONSOLE
 	if(!text.trimmed().isEmpty()) console->append(text);
 #else
-	printf(text.toStdWString());
+	printf("%s\n", text.toLocal8Bit().constData());
 #endif
 }
 
