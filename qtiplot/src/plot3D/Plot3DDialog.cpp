@@ -1115,7 +1115,7 @@ bool Plot3DDialog::updatePlot()
     if (!app)
         return false;
 
-	if (generalDialog->currentWidget() == bars){
+    if (generalDialog->currentWidget() == bars){
 		d_plot->setBarRadius(boxBarsRad->text().toDouble());
 		d_plot->setBarLines(boxBarLines->isChecked());
 		d_plot->setFilledBars(boxFilledBars->isChecked());

@@ -14,7 +14,6 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/FFT.h \
 			   src/analysis/Filter.h \
 			   src/analysis/Fit.h \
-			   src/analysis/FitModelHandler.h \
 			   src/analysis/Integration.h \
 			   src/analysis/Interpolation.h \
 			   src/analysis/LogisticFit.h \
@@ -40,7 +39,6 @@ INCLUDEPATH += src/analysis/dialogs/
 			   src/analysis/FFT.cpp \
 			   src/analysis/Filter.cpp \
 			   src/analysis/Fit.cpp \
-			   src/analysis/FitModelHandler.cpp \
 			   src/analysis/Integration.cpp \
 			   src/analysis/Interpolation.cpp \
 			   src/analysis/LogisticFit.cpp \

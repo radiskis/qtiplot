@@ -103,7 +103,7 @@ ExtractDataDialog::ExtractDataDialog( ScriptingEnv *env, QWidget* parent, Qt::Wi
 	hbox2->addWidget(gb);
 
 	commands = new ScriptEdit(scriptEnv);
-	commands->setTabStopWidth(((ApplicationWindow *)parent)->d_notes_tab_length);
+	commands->setTabStopDistance(((ApplicationWindow *)parent)->d_notes_tab_length);
     commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
@@ -196,9 +196,9 @@ void ExtractDataDialog::setTable(Table* w)
 	for (int i=0; i<cols; i++)
 		boxColumn->insertItem(i, "col(\""+colNames[i]+"\")");
 
-	Q3TableSelection sel = w->getSelection();
+	QTableWidgetSelectionRange sel = w->getSelection();
 	if (!w->table()->selectedRanges().isEmpty()) {
-		w->setSelectedCol(sel.leftCol());
+		w->setSelectedCol(sel.leftColumn());
 
 		start->setValue(sel.topRow() + 1);
 		end->setValue(sel.bottomRow() + 1);

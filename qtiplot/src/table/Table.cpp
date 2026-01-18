@@ -173,7 +173,7 @@ void Table::setTextFont(const QFont& fnt)
 {
 	d_table->setFont (fnt);
 	QFontMetrics fm(fnt);
-	int lm = fm.width( QString::number(10*d_table->numRows()));
+	int lm = fm.horizontalAdvance( QString::number(10*d_table->numRows()));
 	d_table->setLeftMargin( lm );
 }
 
@@ -542,9 +542,9 @@ void Table::setCommands(const QString& com)
 
 bool Table::calculate()
 {
-	Q3TableSelection sel = getSelection();
+	QTableWidgetSelectionRange sel = getSelection();
 	bool success = true;
-	for (int col = sel.leftCol(); col <= sel.rightCol(); col++)
+	for (int col = sel.leftColumn(); col <= sel.rightColumn(); col++)
 		if (!calculate(col, sel.topRow(), sel.bottomRow()))
 			success = false;
 	return success;
@@ -1238,7 +1238,7 @@ void Table::columnRange(int c, double *min, double *max)
 	double d_min = 0.0;
 	double d_max = 0.0;
 
-	Q3TableSelection selection = getSelection();
+	QTableWidgetSelectionRange selection = getSelection();
 
 	QLocale l = locale();
 	int startRow = selection.topRow();
@@ -1404,7 +1404,7 @@ void Table::clearCell(int row, int col)
 
 void Table::deleteSelectedRows()
 {
-	Q3TableSelection sel = d_table->selection(0);
+	QTableWidgetSelectionRange sel = d_table->selectedRanges().isEmpty() ? QTableWidgetSelectionRange() : d_table->selectedRanges()[0];
 	deleteRows(sel.topRow() + 1, sel.bottomRow() + 1);
 }
 
@@ -1445,7 +1445,7 @@ void Table::cutSelection()
 
 void Table::selectAllTable()
 {
-	d_table->addSelection (Q3TableSelection( 0, 0, d_table->numRows(), d_table->numCols() ));
+	d_table->setRangeSelected(QTableWidgetSelectionRange(0, 0, d_table->numRows() - 1, d_table->numCols() - 1), true);
 }
 
 void Table::deselect()
@@ -1475,13 +1475,13 @@ void Table::clearSelection()
 			clearCol();
 		}
 	} else {
-		Q3TableSelection sel=d_table->selection(0);
-		int top=sel.topRow();
-		int bottom=sel.bottomRow();
-		int left=sel.leftCol();
-		int right=sel.rightCol();
+		QTableWidgetSelectionRange sel = d_table->selectedRanges().isEmpty() ? QTableWidgetSelectionRange() : d_table->selectedRanges()[0];
+		int top = sel.topRow();
+		int bottom = sel.bottomRow();
+		int left = sel.leftColumn();
+		int right = sel.rightColumn();
 
-		if (sel.isEmpty ()){
+		if (sel.rowCount() == 0){
 			int col = d_table->currentColumn();
 			if (col < 0 || d_table->currentRow() < 0)
 				return;
@@ -1544,20 +1544,20 @@ void Table::copySelection()
 			text += d_table->text(i, selection[c-1]) + eol;
 		}
 	} else {
-		Q3TableSelection sel = d_table->selection(0);
-		int right = sel.rightCol();
+		QTableWidgetSelectionRange sel = d_table->selectedRanges().isEmpty() ? QTableWidgetSelectionRange() : d_table->selectedRanges()[0];
+		int right = sel.rightColumn();
 		int bottom = sel.bottomRow();
 		if (right < 0 || bottom < 0)
 			text = d_table->text(d_table->currentRow(), d_table->currentColumn());
 		else {
 			for (int i = sel.topRow(); i<bottom; i++){
-				for (int j = sel.leftCol(); j<right; j++)
+				for (int j = sel.leftColumn(); j<right; j++)
 					text += d_table->text(i, j) + "\t";
 				text += d_table->text(i, right) + eol;
 			}
-			for (int j = sel.leftCol(); j<right; j++)
-					text += d_table->text(bottom, j) + "\t";
-				text += d_table->text(bottom, right);
+			for (int j = sel.leftColumn(); j<right; j++)
+				text += d_table->text(bottom, j) + "\t";
+			text += d_table->text(bottom, right);
 		}
 	}
 
@@ -1630,10 +1630,10 @@ void Table::pasteSelection()
 	int top = 0, left = 0, firstCol = firstSelectedColumn();
 	int selectionIndex = d_table->currentSelection();
 	if (selectionIndex >= 0){
-		Q3TableSelection sel = d_table->selection(selectionIndex);
-		if (!sel.isEmpty()){// not entire columns but only cells are selected
+		QTableWidgetSelectionRange sel = d_table->selectedRanges().count() > selectionIndex ? d_table->selectedRanges()[selectionIndex] : QTableWidgetSelectionRange();
+		if (sel.rowCount() > 0){// not entire columns but only cells are selected
 			top = sel.topRow();
-			left = sel.leftCol();
+			left = sel.leftColumn();
 		}
 	} else {
 		top = d_table->currentRow();
@@ -2276,7 +2276,7 @@ void Table::setColumnsFormat(const QStringList& lst)
 
 QDateTime Table::dateTime(double val)
 {
-	QDateTime d = QDateTime(QDate::fromJulianDay((int)val + 1));
+	QDateTime d = QDate::fromJulianDay((int)val + 1).startOfDay();
 	double msecs = (val - floor(val))*864e5;
 	d.setTime(d.time().addMSecs(qRound(msecs)));
 
@@ -2390,11 +2390,11 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells)
                 day = 12;
 
             if (format == "M")
-                d_table->setText(i, col, QDate::shortMonthName(day).left(1));
+                d_table->setText(i, col, QLocale::system().monthName(day, QLocale::ShortFormat).left(1));
             else if (format == "MMM")
-                d_table->setText(i, col, QDate::shortMonthName(day));
+                d_table->setText(i, col, QLocale::system().monthName(day, QLocale::ShortFormat));
             else if (format == "MMMM")
-                d_table->setText(i, col, QDate::longMonthName(day));
+                d_table->setText(i, col, QLocale::system().monthName(day, QLocale::LongFormat));
         }
     }
 	emit modifiedData(this, colName(col));
@@ -2423,11 +2423,11 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
                 day = 7;
 
             if (format == "d")
-                d_table->setText(i, col, QDate::shortDayName(day).left(1));
+                d_table->setText(i, col, QLocale::system().dayName(day, QLocale::ShortFormat).left(1));
             else if (format == "ddd")
-                d_table->setText(i, col, QDate::shortDayName(day));
+                d_table->setText(i, col, QLocale::system().dayName(day, QLocale::ShortFormat));
             else if (format == "dddd")
-                d_table->setText(i, col, QDate::longDayName(day));
+                d_table->setText(i, col, QLocale::system().dayName(day, QLocale::LongFormat));
         }
     }
 	emit modifiedData(this, colName(col));
@@ -2439,7 +2439,7 @@ void Table::setRandomValues()
 	if (list.isEmpty())
 		return;
 
-	Q3TableSelection selection = getSelection();
+	QTableWidgetSelectionRange selection = getSelection();
 	for (int i = 0; i < list.count(); i++)
 		setRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
 
@@ -2478,7 +2478,7 @@ void Table::setNormalRandomValues()
 	if (list.isEmpty())
 		return;
 
-	Q3TableSelection selection = getSelection();
+	QTableWidgetSelectionRange selection = getSelection();
 	for (int i = 0; i < list.count(); i++)
 		setNormalRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
 
@@ -2659,10 +2659,10 @@ void Table::setHeaderColType()
 
 QStringList Table::writableSelectedColumns()
 {
-	Q3TableSelection selection = getSelection();
+	QTableWidgetSelectionRange selection = getSelection();
 	QStringList list = selectedColumns();
 	if (list.isEmpty()){
-		for (int i = selection.leftCol(); i <= selection.rightCol(); i++)
+		for (int i = selection.leftColumn(); i <= selection.rightColumn(); i++)
 			list << colName(i);
 	}
 
@@ -2689,7 +2689,7 @@ void Table::setAscValues()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Q3TableSelection selection = getSelection();
+	QTableWidgetSelectionRange selection = getSelection();
 	for (int j = 0; j < list.count(); j++){
 		QString name = list[j];
 		selectedCol = colIndex(name);
@@ -3564,7 +3564,7 @@ void Table::restore(const QStringList& flist, int fileVersion, bool)
 {
 	int cols = numCols();
 	QStringList::const_iterator line = flist.begin();
-	for (line; line != flist.end(); line++){
+	for (; line != flist.end(); line++){
 		QStringList fields = (*line).split("\t");
 		if (fields[0] == "geometry" || fields[0] == "tgeometry"){
 			ApplicationWindow::restoreWindowGeometry(this, *line);
@@ -3782,12 +3782,12 @@ void Table::swapColumns(int col1, int col2)
     int width2 = d_table->columnWidth(col2);
 
     d_table->swapColumns(col1, col2);
-    col_label.swap (col1, col2);
-    comments.swap (col1, col2);
-    commands.swap (col1, col2);
-    colTypes.swap (col1, col2);
-    col_format.swap (col1, col2);
-    col_plot_type.swap (col1, col2);
+    col_label.swapItemsAt (col1, col2);
+    comments.swapItemsAt (col1, col2);
+    commands.swapItemsAt (col1, col2);
+    colTypes.swapItemsAt (col1, col2);
+    col_format.swapItemsAt (col1, col2);
+    col_plot_type.swapItemsAt (col1, col2);
 
     d_table->setColumnWidth(col1, width2);
     d_table->setColumnWidth(col2, width1);
@@ -4030,30 +4030,26 @@ void MyTable::activateNextCell()
     setRangeSelected(range, true);
 }
 
-Q3TableSelection Table::getSelection()
+QTableWidgetSelectionRange Table::getSelection()
 {
-    Q3TableSelection sel;
-    // d_table is MyTable/QTableWidget
-    QList<QTableWidgetSelectionRange> ranges = d_table->selectedRanges();
-    if (ranges.isEmpty()) {
-        sel.init(d_table->currentRow(), d_table->currentColumn());
-        if (sel.topRow() < 0) sel.init(0,0);
-        return sel;
-    }
+	QList<QTableWidgetSelectionRange> ranges = d_table->selectedRanges();
+	if (ranges.isEmpty()) {
+		int r = d_table->currentRow();
+		int c = d_table->currentColumn();
+		if (r < 0) { r = 0; c = 0; }
+		return QTableWidgetSelectionRange(r, c, r, c);
+	}
 
-    int top = ranges[0].topRow();
-    int bottom = ranges[0].bottomRow();
-    int left = ranges[0].leftColumn();
-    int right = ranges[0].rightColumn();
+	int top = ranges[0].topRow();
+	int bottom = ranges[0].bottomRow();
+	int left = ranges[0].leftColumn();
+	int right = ranges[0].rightColumn();
 
-    for (int i=1; i<ranges.count(); ++i) {
-        top = qMin(top, ranges[i].topRow());
-        bottom = qMax(bottom, ranges[i].bottomRow());
-        left = qMin(left, ranges[i].leftColumn());
-        right = qMax(right, ranges[i].rightColumn());
-    }
-    sel.init(top, left);
-    sel.m_bottomRow = bottom;
-    sel.m_rightCol = right;
-    return sel;
+	for (int i=1; i<ranges.count(); ++i) {
+		top = qMin(top, ranges[i].topRow());
+		bottom = qMax(bottom, ranges[i].bottomRow());
+		left = qMin(left, ranges[i].leftColumn());
+		right = qMax(right, ranges[i].rightColumn());
+	}
+	return QTableWidgetSelectionRange(top, left, bottom, right);
 }

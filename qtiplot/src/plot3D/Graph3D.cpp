@@ -2073,9 +2073,9 @@ void Graph3D::print()
 {
 	QPrinter printer;
 	if (width() > height())
-        printer.setOrientation(QPrinter::Landscape);
-    else
-        printer.setOrientation(QPrinter::Portrait);
+		printer.setPageOrientation(QPageLayout::Landscape);
+	else
+		printer.setPageOrientation(QPageLayout::Portrait);
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(false);
 	printer.setFullPage(false);
@@ -2092,12 +2092,12 @@ void Graph3D::print(QPrinter *printer)
 	//printing should preserve plot aspect ratio, if possible
 	double aspect = double(width())/double(height());
 	if (aspect < 1)
-		printer->setOrientation(QPrinter::Portrait);
+		printer->setPageOrientation(QPageLayout::Portrait);
 	else
-		printer->setOrientation(QPrinter::Landscape);
+		printer->setPageOrientation(QPageLayout::Landscape);
 
 	QRect plotRect = rect();
-	QRect paperRect = printer->paperRect();
+	QRect paperRect = printer->pageLayout().fullRectPixels(printer->resolution());
 	if (d_scale_on_print){
 		int dpiy = printer->logicalDpiY();
 		int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
@@ -2266,9 +2266,9 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
     else if (fileName.endsWith(".ps", Qt::CaseInsensitive))
         format = "PS";
 	else if (fileName.endsWith(".svg", Qt::CaseInsensitive))
-        format = "SVG";
-    else if (fileName.endsWith(".pgf", Qt::CaseInsensitive))
-        format = "PGF";
+		format = "SVG";
+	else if (fileName.endsWith(".pgf", Qt::CaseInsensitive))
+		format = "PGF";
 
 	QSize cs = Graph::customPrintSize(customSize, unit, 72);
 	QSize size = this->size();
@@ -2525,7 +2525,7 @@ void Graph3D::setScale(double  xVal, double  yVal, double  zVal)
     if (sp->xScale() == xVal && sp->yScale() == yVal && sp->zScale() == zVal)
         return;
 
-	sp->setScale(xVal, yVal, zVal);
+    sp->setScale(xVal, yVal, zVal);
 }
 
 void Graph3D::setShift(double  xVal,double  yVal,double  zVal)

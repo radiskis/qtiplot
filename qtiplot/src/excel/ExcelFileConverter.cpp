@@ -148,7 +148,7 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 
 void ExcelFileConverter::displayJavaError(QProcess::ProcessError error)
 {
-	if (java && java->pid()){
+	if (java && java->processId()){
 		displayError("<a href=\"http://www.java.com/\">" + tr("Java") + "</a>", error);
 
 		java->kill();
@@ -158,7 +158,7 @@ void ExcelFileConverter::displayJavaError(QProcess::ProcessError error)
 
 void ExcelFileConverter::displayOfficeError(QProcess::ProcessError error)
 {
-	if (soffice && soffice->pid())
+	if (soffice && soffice->processId())
 		displayError("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>/" +
 					 "<a href=\"http://www.documentfoundation.org/\">" + tr("LibreOffice") + "</a>", error);
 

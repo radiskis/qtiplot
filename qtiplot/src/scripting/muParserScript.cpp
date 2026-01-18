@@ -97,7 +97,7 @@ double muParserScript::col(const QString &arg)
 					item += arg[++i];
 				} else
 					item += arg[i];
-				item += "\"";
+			item += "\"";
 		} else if (arg[i] == ',') {
 			items << item;
 			item = "";
@@ -153,7 +153,7 @@ double muParserScript::tablecol(const QString &arg)
 					item += arg[++i];
 				} else
 					item += arg[i];
-				item += "\"";
+			item += "\"";
 		} else if (arg[i] == ',') {
 			items << item;
 			item = "";
@@ -161,7 +161,6 @@ double muParserScript::tablecol(const QString &arg)
 			item += arg[i];
 	}
 	items << item;
-	Table *this_table = (Table*) Context;
 	int col, row;
 	Parser local_parser(rparser);
 	if (items.count() != 2)

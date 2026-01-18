@@ -211,7 +211,7 @@ QString PolynomialFit::legendInfo()
 			legend += "+";
 
 		QString s;
-		s.sprintf("%.5f",cj);
+		s = QString::asprintf("%.5f",cj);
 		if (s != "1.00000")
 			legend += locale.toString(cj, 'g', d_prec);
 

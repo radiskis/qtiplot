@@ -26,6 +26,7 @@ Description          : Graph widget
  ***************************************************************************/
 
 #include <QVarLengthArray>
+#include <algorithm>
 #include <PenStyleBox.h>
 #include <ScreenPickerTool.h>
 #include <DataPickerTool.h>
@@ -217,8 +218,12 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	plCanvas->setFrameShadow(QwtPlot::Plain);
 	plCanvas->setCursor(Qt::ArrowCursor);
 	plCanvas->setLineWidth(0);
-	// plCanvas->setPaintAttribute(QwtPlotCanvas::PaintCached, false);
-	// plCanvas->setPaintAttribute(QwtPlotCanvas::PaintPacked, false);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::BackingStore, false);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::ImmediatePaint, true);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, false);
+	plCanvas->setAutoFillBackground(true);
+	plCanvas->setAttribute(Qt::WA_OpaquePaintEvent, false);
+	plCanvas->setAttribute(Qt::WA_NoSystemBackground, false);
 
     QColor background = QColor(Qt::white);
     background.setAlpha(255);
@@ -353,7 +358,7 @@ QList <FrameWidget *> Graph::increasingAreaEnrichmentsList()
 	foreach(FrameWidget *f, d_enrichments)
 		lst << f;
 
-	qSort(lst.begin(), lst.end(), areaLessThan);
+	std::sort(lst.begin(), lst.end(), areaLessThan);
 
 	return lst;
 }
@@ -1747,7 +1752,7 @@ void Graph::exportVector(QPrinter *printer, int res, bool color,
 
 		if (res && res != printer->resolution())
 			printer->setResolution(res);
-		printer->setPaperSize (QSizeF(size), QPrinter::DevicePixel);
+		printer->setPageSize(QPageSize(QSizeF(size) / printer->resolution(), QPageSize::Inch));
 
 		if (br.width() != width() || br.height() != height()){
 			double wfactor = (double)br.width()/(double)width();
@@ -1763,17 +1768,17 @@ void Graph::exportVector(QPrinter *printer, int res, bool color,
 		// LegendWidget size doesn't increase linearly with resolution.
 		// The extra width multiplication factor bellow accounts for this.
 		// We could calculate it precisely, but it's quite complicated...
-		printer->setPaperSize (QSizeF(br.width()*wfactor*1.05, br.height()*hfactor), QPrinter::DevicePixel);
+		printer->setPageSize(QPageSize(QSizeF(br.width()*wfactor*1.05, br.height()*hfactor) / printer->resolution(), QPageSize::Inch));
 		r.setSize(QSize(qRound(width()*wfactor), qRound(height()*hfactor)));
 	} else
-		printer->setPaperSize (QSizeF(br.size()), QPrinter::DevicePixel);
+		printer->setPageSize(QPageSize(QSizeF(br.size()) / printer->resolution(), QPageSize::Inch));
 
 	if (color)
 		printer->setColorMode(QPrinter::Color);
 	else
 		printer->setColorMode(QPrinter::GrayScale);
 
-	printer->setOrientation(QPrinter::Portrait);
+	printer->setPageOrientation(QPageLayout::Portrait);
 
 	QPainter paint(printer);
 	print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
@@ -1807,9 +1812,9 @@ void Graph::print()
 	//printing should preserve plot aspect ratio, if possible
 	double aspect = double(width())/double(height());
 	if (aspect < 1)
-		printer.setOrientation(QPrinter::Portrait);
+		printer.setPageOrientation(QPageLayout::Portrait);
 	else
-		printer.setOrientation(QPrinter::Landscape);
+		printer.setPageOrientation(QPageLayout::Landscape);
 
 	QPrintDialog printDialog(&printer, multiLayer()->applicationWindow());
     if (printDialog.exec() == QDialog::Accepted){
@@ -1824,7 +1829,7 @@ void Graph::print()
 	#endif
 
 		QRect plotRect = rect();
-		QRect paperRect = printer.paperRect();
+		QRect paperRect = printer.pageLayout().fullRectPixels(printer.resolution());
 		double fontFactor = 1.0;
 		if (multiLayer()->scaleLayersOnPrint()){
 			int margin = (int)((1/2.54)*printer.logicalDpiY()); // 1 cm margins

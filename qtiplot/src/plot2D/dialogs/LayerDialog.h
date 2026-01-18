@@ -46,7 +46,7 @@ class LayerDialog : public QDialog
     Q_OBJECT
 
 public:
-	LayerDialog(QWidget* parent, bool okMode = false, Qt::WindowFlags fl = 0);
+	LayerDialog(QWidget* parent, bool okMode = false, Qt::WindowFlags fl = {});
 	void setMultiLayer(MultiLayer *g);
 	void setLayers(int layers);
 	void setLayerCanvasSize(int w, int h, int unit);

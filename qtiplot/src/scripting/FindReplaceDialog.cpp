@@ -39,6 +39,7 @@
 #include <QLayout>
 #include <QGroupBox>
 #include <QMessageBox>
+#include <QCompleter>
 
 FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), d_editor(editor)
@@ -54,7 +55,7 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 	boxFind->setEditable(true);
 	boxFind->setDuplicatesEnabled(false);
 	boxFind->setInsertPolicy( QComboBox::InsertAtTop );
-	boxFind->setAutoCompletion(true);
+	boxFind->setCompleter(new QCompleter(boxFind->model(), this));
 	boxFind->setMaxCount ( 10 );
 	boxFind->setMaxVisibleItems ( 10 );
 	boxFind->setMinimumWidth(250);
@@ -75,7 +76,7 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 		boxReplace->setEditable(true);
 		boxReplace->setDuplicatesEnabled(false);
 		boxReplace->setInsertPolicy( QComboBox::InsertAtTop );
-		boxReplace->setAutoCompletion(true);
+		boxReplace->setCompleter(new QCompleter(boxReplace->model(), this));
 		boxReplace->setMaxCount ( 10 );
 		boxReplace->setMaxVisibleItems ( 10 );
 		boxReplace->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));

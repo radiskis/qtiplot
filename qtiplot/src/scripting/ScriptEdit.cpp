@@ -172,7 +172,7 @@ void ScriptEdit::focusInEvent(QFocusEvent *e)
      if (d_completer)
          d_completer->setWidget(this);
 
-	 activated(this);
+     activated(this);
 	 return QTextEdit::focusInEvent(e);
 }
 
@@ -210,7 +210,7 @@ void ScriptEdit::keyPressEvent(QKeyEvent *e)
      if (!d_completer || (ctrlOrShift && e->text().isEmpty()))
          return;
 
-	 static QString eow("~!@#$%^&*()+{}|:\"<>?,./;'[]\\-="); // end of word
+     static QString eow("~!@#$%^&*()+{}|:\"<>?,./;'[]\\-="); // end of word
      bool hasModifier = (e->modifiers() != Qt::NoModifier) && !ctrlOrShift;
      QString completionPrefix = textUnderCursor();
 
@@ -761,7 +761,8 @@ bool ScriptEdit::find(const QString& searchString, QTextDocument::FindFlags flag
 
     if (!found)
         QMessageBox::information(this, tr("QtiPlot"), tr("QtiPlot has finished searching the document."));
-	return found;
+
+    return found;
 }
 
 void ScriptEdit::findNext()

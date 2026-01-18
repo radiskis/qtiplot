@@ -51,7 +51,7 @@ public:
 	 * \param parent parent widget (must be the application window!=
 	 * \param fl window flags
 	 */
-    CustomActionDialog( QWidget* parent, Qt::WindowFlags fl = 0 );
+    CustomActionDialog( QWidget* parent, Qt::WindowFlags fl = {} );
 
 private slots:
 	void chooseIcon();
@@ -88,48 +88,5 @@ private:
     QPushButton *newMenuBtn, *removeMenuBtn;
 };
 
-class CustomActionHandler : public QXmlDefaultHandler
-{
-public:
-    CustomActionHandler(QAction *action);
 
-    bool startElement(const QString &namespaceURI, const QString &localName,
-                       const QString &qName, const QXmlAttributes &attributes);
-    bool endElement(const QString &namespaceURI, const QString &localName,
-                     const QString &qName);
-    bool characters(const QString &str){currentText += str; return true;};
-    bool fatalError(const QXmlParseException &){return false;};
-    QString errorString() const {return errorStr;};
-	QString parentName(){return d_widget_name;};
-
-private:
-    bool metFitTag;
-    QString currentText;
-    QString errorStr;
-    QString filePath;
-	QString d_widget_name;
-    QAction *d_action;
-};
-
-class CustomMenuHandler : public QXmlDefaultHandler
-{
-public:
-    CustomMenuHandler();
-
-    bool startElement(const QString &namespaceURI, const QString &localName,
-                       const QString &qName, const QXmlAttributes &attributes);
-    bool endElement(const QString &namespaceURI, const QString &localName,
-                     const QString &qName);
-    bool characters(const QString &str){currentText += str; return true;};
-    bool fatalError(const QXmlParseException &){return false;};
-    QString errorString() const {return errorStr;};
-	QString location(){return d_location;};
-	QString title(){return d_title;};
-
-private:
-    bool metFitTag;
-    QString currentText;
-    QString errorStr;
-	QString d_location, d_title;
-};
 #endif

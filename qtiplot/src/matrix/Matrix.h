@@ -76,8 +76,8 @@ public:
 	 * \param name window name
 	 * \param f window flags
 	 */
-	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
-	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
+	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
+	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
 	~Matrix();
 
 	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise,

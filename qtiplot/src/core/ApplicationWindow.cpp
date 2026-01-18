@@ -39,6 +39,7 @@ Description          : QtiPlot's main window
 #include "OpenProjectDialog.h"
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
+#include <QXmlStreamReader>
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QDesktopServices>
@@ -2118,7 +2119,7 @@ void ApplicationWindow::plotPie()
 
 	QStringList s = table->selectedColumns();
 	if (s.count()>0){
-		Q3TableSelection sel = table->getSelection();
+		QTableWidgetSelectionRange sel = table->getSelection();
 		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
@@ -2169,7 +2170,7 @@ void ApplicationWindow::plotVectXYXY()
 
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4) {
-		Q3TableSelection sel = table->getSelection();
+	QTableWidgetSelectionRange sel = table->getSelection();
 		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
@@ -2185,7 +2186,7 @@ void ApplicationWindow::plotVectXYAM()
 
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4){
-		Q3TableSelection sel = table->getSelection();
+	QTableWidgetSelectionRange sel = table->getSelection();
 		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
 	} else
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
@@ -3514,7 +3515,7 @@ void ApplicationWindow::showBinMatrixDialog()
 	if (!t)
 		return;
 
-	Q3TableSelection sel = t->getSelection();
+		QTableWidgetSelectionRange sel = t->getSelection();
 	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow() - sel.bottomRow()) < 2){
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("You must select a single Y column that has an associated X column!"));
@@ -3579,7 +3580,7 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 		return;
 
 	QStringList selection = t->selectedColumns();
-	Q3TableSelection sel = t->getSelection();
+		QTableWidgetSelectionRange sel = t->getSelection();
 	if (selection.size() != 1 || t->colPlotDesignation(t->colIndex(selection[0])) != Table::Z ||
 		fabs(sel.topRow() - sel.bottomRow()) < 2){
 		QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
@@ -3665,7 +3666,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 
 	int zcol = -1;
 	if (colName.isEmpty()){
-		Q3TableSelection sel = t->getSelection();
+		QTableWidgetSelectionRange sel = t->getSelection();
 		if (t->selectedColumns().size() != 1 ||
 			t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
 			fabs(sel.topRow() - sel.bottomRow()) < 2){
@@ -6787,7 +6788,7 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 	else
 		fd.setAcceptMode(QFileDialog::AcceptOpen);
 
-	fd.setConfirmOverwrite(false);
+	fd.setOption(QFileDialog::DontConfirmOverwrite, true);
 	fd.setFileMode(QFileDialog::AnyFile);
 
 	if (fd.exec() != QDialog::Accepted )
@@ -6965,7 +6966,7 @@ void ApplicationWindow::increaseNoteIndent()
 	if (!w)
 		return;
 
-	w->setTabStopWidth(w->currentEditor()->tabStopWidth() + 5);
+	w->setTabStopDistance(w->currentEditor()->tabStopDistance() + 5);
 	modifiedProject();
 }
 
@@ -6975,7 +6976,7 @@ void ApplicationWindow::decreaseNoteIndent()
 	if (!w)
 		return;
 
-	w->setTabStopWidth(w->currentEditor()->tabStopWidth() - 5);
+	w->setTabStopDistance(w->currentEditor()->tabStopDistance() - 5);
 	modifiedProject();
 }
 
@@ -7282,7 +7283,7 @@ void ApplicationWindow::showTitleDialog()
 	if (w->inherits("MultiLayer")){
 		Graph* g = ((MultiLayer*)w)->activeLayer();
 		if (g){
-			TextDialog* td= new TextDialog(TextDialog::LayerTitle, this,0);
+			TextDialog* td= new TextDialog(TextDialog::LayerTitle, this, {});
 			td->setGraph(g);
 			td->exec();
 		}
@@ -7303,7 +7304,7 @@ void ApplicationWindow::showAxisTitleDialog()
 	if (!g)
 		return;
 
-	TextDialog* td = new TextDialog(TextDialog::AxisTitle, this, 0);
+	TextDialog* td = new TextDialog(TextDialog::AxisTitle, this, {});
 	td->setGraph(g);
 	td->exec();
 }
@@ -7596,7 +7597,7 @@ void ApplicationWindow::showColStatistics()
 		if (t->isColumnSelected(i))
 			targets << i;
 
-	Q3TableSelection select = t->getSelection();
+	QTableWidgetSelectionRange select = t->getSelection();
 	newTableStatistics(t, TableStatistics::column, targets, select.topRow(), select.bottomRow())->showNormal();
 }
 
@@ -7611,8 +7612,8 @@ void ApplicationWindow::showRowStatistics()
 		if (t->isRowSelected(i))
 			targets << i;
 
-	Q3TableSelection select = t->getSelection();
-	newTableStatistics(t, TableStatistics::row, targets, select.leftCol(), select.rightCol())->showNormal();
+	QTableWidgetSelectionRange select = t->getSelection();
+	newTableStatistics(t, TableStatistics::row, targets, select.leftColumn(), select.rightColumn())->showNormal();
 }
 
 void ApplicationWindow::showColMenu(int c)
@@ -7966,7 +7967,7 @@ void ApplicationWindow::zoomRectanglePlot()
 		return;
 	}
 
-	Q3TableSelection sel = t->getSelection();
+	QTableWidgetSelectionRange sel = t->getSelection();
     MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
     if (ml){
         Graph *ag = ml->activeLayer();
@@ -8024,7 +8025,7 @@ void ApplicationWindow::plotDoubleYAxis()
 		return;
 	}
 
-	Q3TableSelection sel = t->getSelection();
+	QTableWidgetSelectionRange sel = t->getSelection();
 	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
 	if (ml){
 		Graph *g = ml->activeLayer();
@@ -8614,8 +8615,8 @@ void ApplicationWindow::printPreview()
 	}
 
 	QPrinter p;
-	p.setPaperSize(d_print_paper_size);
-	p.setOrientation(d_printer_orientation);
+	p.setPageSize(QPageSize((QPageSize::PageSizeId)d_print_paper_size));
+	p.setPageOrientation((QPageLayout::Orientation)d_printer_orientation);
 
 	QPrintPreviewDialog *preview = new QPrintPreviewDialog(&p, this, Qt::Window);
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
@@ -8631,14 +8632,14 @@ void ApplicationWindow::setPrintPreviewOptions(QPrinter *printer)
 	if (!printer)
 		return;
 
-	d_print_paper_size = printer->paperSize();
-	d_printer_orientation = printer->orientation();
+	d_print_paper_size = printer->pageLayout().pageSize().id();
+	d_printer_orientation = printer->pageLayout().orientation();
 }
 
 void ApplicationWindow::printAllPlots()
 {
 	QPrinter printer;
-	printer.setOrientation(QPrinter::Landscape);
+	printer.setPageOrientation(QPageLayout::Landscape);
 	printer.setColorMode (QPrinter::Color);
 	printer.setFullPage(true);
 
@@ -9783,8 +9784,9 @@ void ApplicationWindow::analysisMenuAboutToShow()
 {
     analysisMenu->clear();
     MdiSubWindow *w = activeWindow();
-    if (!w)
+    if (!w) {
         return;
+    }
 
 	if (w->inherits("MultiLayer")){
         QMenu *translateMenu = analysisMenu->addMenu (tr("&Translate"));
@@ -13272,7 +13274,7 @@ void ApplicationWindow::integrate()
 		Table *t = (Table *)w;
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
-		Q3TableSelection sel = t->getSelection();
+		QTableWidgetSelectionRange sel = t->getSelection();
 		if (!cols || sel.topRow() == sel.bottomRow()){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("Please select a 'Y' column first!"));
@@ -16883,7 +16885,7 @@ void ApplicationWindow::projectProperties()
 	if (projectname != "untitled")
 	{
 		QFileInfo fi(projectname);
-		s += tr("Created") + ": " + fi.created().toString(Qt::LocalDate) + "\n\n";
+		s += tr("Created") + ": " + fi.birthTime().toString(Qt::LocalDate) + "\n\n";
 		s += tr("Modified") + ": " + fi.lastModified().toString(Qt::LocalDate) + "\n\n";
 	}
 	else
@@ -17416,8 +17418,9 @@ void ApplicationWindow::moveFolder(FolderListItem *src, FolderListItem *dest)
 
 bool ApplicationWindow::copyFolder(Folder *src, Folder *dest)
 {
-    if (!src || !dest)
+    if (!src || !dest) {
         return false;
+    }
 
 	if (dest->subfolders().contains(src->objectName())){
 		QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
@@ -17621,7 +17624,7 @@ void ApplicationWindow::showScriptWindow(bool parent)
 		if (d_completion && d_completer)
             scriptWindow->editor()->setCompleter(d_completer);
         scriptWindow->showLineNumbers(d_note_line_numbers);
-        scriptWindow->editor()->setTabStopWidth(d_notes_tab_length);
+        scriptWindow->editor()->setTabStopDistance(d_notes_tab_length);
         scriptWindow->editor()->setCurrentFont(d_notes_font);
 		scriptWindow->resize(d_script_win_rect.size());
 		scriptWindow->move(d_script_win_rect.topLeft());
@@ -17632,7 +17635,7 @@ void ApplicationWindow::showScriptWindow(bool parent)
 		scriptWindow->setAttribute(Qt::WA_DeleteOnClose);
 
 	if (!scriptWindow->isVisible()){
-		Qt::WindowFlags flags = 0;
+		Qt::WindowFlags flags = {};
 		if (d_script_win_on_top)
 			flags |= Qt::WindowStaysOnTopHint;
 		scriptWindow->setWindowFlags(flags);
@@ -17807,10 +17810,7 @@ MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
 
     if (w->inherits("Table")){
         Table *table = static_cast<Table *>(w);
-        if (!validFor2DPlot(table, type))
-            return 0;
-
-        Q3TableSelection sel = table->getSelection();
+		QTableWidgetSelectionRange sel = table->getSelection();
         return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
     } else if (w->inherits("Matrix")){
         Matrix *m = static_cast<Matrix *>(w);
@@ -18349,8 +18349,9 @@ void ApplicationWindow::showCustomActionDialog()
 
 void ApplicationWindow::addCustomAction(QAction *action, const QString& parentName, int index)
 {
-    if (!action)
+    if (!action) {
         return;
+    }
 
 	QList<QToolBar *> toolBars = toolBarsList();
     foreach (QToolBar *t, toolBars){
@@ -18451,43 +18452,73 @@ void ApplicationWindow::loadCustomActions()
 	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
 	for (int i = 0; i < lst.count(); i++){// parse menu files first
 	    QString fileName = path + lst[i];
-        QFile file(fileName);
-        QFileInfo fi(file);
-        if (!file.open(QFile::ReadOnly | QFile::Text))
-            continue;
-
+		QFileInfo fi(fileName);
 		if (fi.completeSuffix () != "qcm")
 			continue;
 
-		CustomMenuHandler handler;
-		QXmlSimpleReader reader;
-		reader.setContentHandler(&handler);
-		reader.setErrorHandler(&handler);
+        QFile file(fileName);
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+            continue;
 
-		QXmlInputSource xmlInputSource(&file);
-		if (reader.parse(xmlInputSource))
-			addCustomMenu(handler.title(), handler.location());
+		QXmlStreamReader reader(&file);
+		QString title, location;
+		if (reader.readNextStartElement()) {
+			if (reader.name() == "menu") {
+				while (reader.readNextStartElement()) {
+					if (reader.name() == "title")
+						title = reader.readElementText();
+					else if (reader.name() == "location")
+						location = reader.readElementText();
+					else
+						reader.skipCurrentElement();
+				}
+			}
+		}
+		if (!title.isEmpty())
+			addCustomMenu(title, location);
 	}
 
 	for (int i = 0; i < lst.count(); i++){// parse action files
 	    QString fileName = path + lst[i];
-        QFile file(fileName);
-        QFileInfo fi(file);
-        if (!file.open(QFile::ReadOnly | QFile::Text))
-            continue;
-
+		QFileInfo fi(fileName);
 		if (fi.completeSuffix () != "qca")
 			continue;
 
-		QAction *action = new QAction(this);
-		CustomActionHandler handler(action);
-		QXmlSimpleReader reader;
-		reader.setContentHandler(&handler);
-		reader.setErrorHandler(&handler);
+        QFile file(fileName);
+        if (!file.open(QFile::ReadOnly | QFile::Text))
+            continue;
 
-		QXmlInputSource xmlInputSource(&file);
-		if (reader.parse(xmlInputSource))
-			addCustomAction(action, handler.parentName());
+		QXmlStreamReader reader(&file);
+		QAction *action = new QAction(this);
+		QString parentName, filePath;
+		if (reader.readNextStartElement()) {
+			if (reader.name() == "action") {
+				while (reader.readNextStartElement()) {
+					QString name = reader.name().toString();
+					if (name == "text")
+						action->setText(reader.readElementText());
+					else if (name == "file")
+						filePath = reader.readElementText();
+					else if (name == "icon") {
+						QString iconPath = reader.readElementText();
+						if (!iconPath.isEmpty() && QFile::exists(iconPath)) {
+							action->setIcon(QIcon(iconPath));
+							action->setIconText(iconPath);
+						}
+					} else if (name == "tooltip")
+						action->setToolTip(reader.readElementText());
+					else if (name == "shortcut")
+						action->setShortcut(reader.readElementText());
+					else if (name == "location") {
+						parentName = reader.readElementText();
+						action->setStatusTip(parentName);
+					} else
+						reader.skipCurrentElement();
+				}
+			}
+		}
+		action->setData(filePath);
+		addCustomAction(action, parentName);
 	}
 }
 
@@ -18700,10 +18731,10 @@ void ApplicationWindow::showFrequencyCountDialog()
 		return;
 
     int validRows = 0;
-    Q3TableSelection sel = t->getSelection();
+    QTableWidgetSelectionRange sel = t->getSelection();
     if (!t->table()->selectedRanges().isEmpty()){
-        if (sel.numRows() > 1 && sel.numCols() == 1){
-            int col = sel.leftCol();
+        if (sel.rowCount() > 1 && sel.columnCount() == 1){
+            int col = sel.leftColumn();
             for (int i = sel.topRow(); i <= sel.bottomRow(); i++){
                 if (!t->text(i, col).isEmpty())
                    validRows++;
@@ -18738,9 +18769,9 @@ Note * ApplicationWindow::newStemPlot()
 	ScriptEdit* editor = n->currentEditor();
 	QStringList lst = t->selectedColumns();
 	if (lst.isEmpty()){
-		Q3TableSelection sel = t->getSelection();
-		for (int i = sel.leftCol(); i <= sel.rightCol(); i++)
-			editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
+		QTableWidgetSelectionRange sel = t->getSelection();
+			for (int i = sel.leftColumn(); i <= sel.rightColumn(); i++)
+				editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
 	} else {
 		for (int i = 0; i < lst.count(); i++)
 			editor->insertPlainText(stemPlot(t, lst[i], 1001) + "\n");

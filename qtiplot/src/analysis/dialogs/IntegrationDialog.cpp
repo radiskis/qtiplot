@@ -256,11 +256,11 @@ void IntegrationDialog::setTable(Table *t)
 	if (t->selectedYColumns().size() < 2)
 		boxShowTable->hide();
 
-	Q3TableSelection sel = d_table->getSelection();
+	QTableWidgetSelectionRange sel = d_table->getSelection();
 
 	int startRow = sel.topRow();
 	int endRow = sel.bottomRow();
-	if (!sel.isEmpty()){
+	if (sel.rowCount() > 0){
 		boxStartRow->setValue(startRow + 1);
 		boxEndRow->setValue(endRow + 1);
 	} else {

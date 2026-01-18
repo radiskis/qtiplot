@@ -140,7 +140,7 @@ QString Statistics::logInfo(bool header)
 	QFontMetrics fm(app->font());
 	int width = 0;
 	foreach(QString s, lst){
-		int aw = fm.width(s);
+		int aw = fm.horizontalAdvance(s);
 		if (aw > width)
 			width = aw;
 	}
@@ -150,10 +150,10 @@ QString Statistics::logInfo(bool header)
 	QString lineSep;
 	for (int i = 0; i < 6; i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
 		s += aux + QString(spaces, QLatin1Char(' '));
 		if (i == 5){
-			int scores = ceil((double)fm.width(s)/(double)fm.width(QLatin1Char('-')));
+			int scores = ceil((double)fm.horizontalAdvance(s)/(double)fm.horizontalAdvance(QLatin1Char('-')));
 			lineSep = "\n" + QString(scores, QLatin1Char('-')) + "\n";
 			s += lineSep;
 		}
@@ -164,7 +164,7 @@ QString Statistics::logInfo(bool header)
 
 	for (int i = 6; i < lst.size(); i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.width(aux))/(double)fm.width(QLatin1Char(' '))) + 1;
+		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
 		s += aux + QString(spaces, QLatin1Char(' '));
 	}
 

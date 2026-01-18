@@ -529,6 +529,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 					((Graph *)plot())->deselectMarker();
 					return true;
 				}
+				break;
 			}
 
 		default:

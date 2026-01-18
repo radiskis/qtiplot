@@ -27,7 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Fit.h"
-#include "FitModelHandler.h"
+#include <QXmlStreamReader>
 #include "fit_gsl.h"
 #include <Table.h>
 #include <Matrix.h>
@@ -1100,11 +1100,6 @@ bool Fit::save(const QString& fileName)
 
 bool Fit::load(const QString& fileName)
 {
-    FitModelHandler handler(this);
-    QXmlSimpleReader reader;
-    reader.setContentHandler(&handler);
-    reader.setErrorHandler(&handler);
-
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
         QMessageBox::warning(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
@@ -1114,11 +1109,64 @@ bool Fit::load(const QString& fileName)
         return false;
     }
 
-    QXmlInputSource xmlInputSource(&file);
-    if (reader.parse(xmlInputSource)){
-        d_file_name = fileName;
-        return true;
-    }
+    QXmlStreamReader reader(&file);
+	if (reader.readNextStartElement()) {
+		if (reader.name() != "fit") {
+			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+								tr("The file is not a QtiPlot fit model file."));
+			return false;
+		}
+
+		QString version = reader.attributes().value("version").toString();
+		if (!version.isEmpty() && version != "1.0") {
+			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+								tr("The file is not a QtiPlot fit model version 1.0 file."));
+			return false;
+		}
+
+		QString formula;
+		QStringList parameters, explanations;
+		QList<double> values;
+
+		while (reader.readNextStartElement()) {
+			QString name = reader.name().toString();
+			if (name == "model")
+				setObjectName(reader.readElementText());
+			else if (name == "type")
+				setType((Fit::FitType)reader.readElementText().toInt());
+			else if (name == "function")
+				formula = reader.readElementText().replace("&lt;", "<").replace("&gt;", ">");
+			else if (name == "parameter") {
+				while (reader.readNextStartElement()) {
+					QString pName = reader.name().toString();
+					if (pName == "name")
+						parameters << reader.readElementText();
+					else if (pName == "explanation")
+						explanations << reader.readElementText();
+					else if (pName == "value")
+						values.append(reader.readElementText().toDouble());
+					else
+						reader.skipCurrentElement();
+				}
+			} else
+				reader.skipCurrentElement();
+		}
+
+		if (reader.hasError()) {
+			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+								tr("Error reading file %1:\n%2.")
+								.arg(fileName)
+								.arg(reader.errorString()));
+			return false;
+		}
+
+		setParametersList(parameters);
+		setFormula(formula, false);
+		setInitialGuesses(values.toVector().data());
+		setParameterExplanations(explanations);
+		d_file_name = fileName;
+		return true;
+	}
     return false;
 }
 

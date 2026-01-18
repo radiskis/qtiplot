@@ -47,7 +47,7 @@ class TableDialog : public QDialog
     Q_OBJECT
 
 public:
-    TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl = 0 );
+    TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl = {} );
 
 private slots:
 	void openColumnValuesDialog();

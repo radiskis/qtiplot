@@ -70,7 +70,7 @@
 #include <QFontComboBox>
 #include <QNetworkProxy>
 #include <QCompleter>
-#include <QDirModel>
+#include <QFileSystemModel>
 #include <QTableWidget>
 #include <QColorDialog>
 
@@ -1430,7 +1430,7 @@ void ConfigDialog::moveSymbol(bool up)
 	if (destRow < 0 || destRow >= d_indexed_symbols.size())
 		return;
 
-	d_indexed_symbols.swap(row, destRow);
+	d_indexed_symbols.swapItemsAt(row, destRow);
 	setSymbolsList(d_indexed_symbols);
 
 	symbolsList->selectRow(destRow);
@@ -1464,8 +1464,8 @@ void ConfigDialog::moveColor(bool up)
 	if (destRow < 0 || destRow >= d_indexed_colors.size())
 		return;
 
-	d_indexed_colors.swap(row, destRow);
-	d_indexed_color_names.swap(row, destRow);
+	d_indexed_colors.swapItemsAt(row, destRow);
+	d_indexed_color_names.swapItemsAt(row, destRow);
 	setColorsList(d_indexed_colors, d_indexed_color_names);
 
 	colorsList->selectRow(destRow);
@@ -1779,7 +1779,7 @@ void ConfigDialog::initFileLocationsPage()
 	fileLocationsPage = new QWidget();
 
 	QCompleter *completer = new QCompleter(this);
-	completer->setModel(new QDirModel(completer));
+	completer->setModel(new QFileSystemModel(completer));
     completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
     completer->setCompletionMode(QCompleter::InlineCompletion);
 
@@ -2075,8 +2075,8 @@ void ConfigDialog::languageChange()
 	QFontMetrics fm(axesGridList->font());
 	int width = 32, i;
 	for (i = 0; i < axesGridList->count(); i++)
-		if (fm.width(axesGridList->item(i)->text()) > width)
-			width = fm.width(axesGridList->item(i)->text());
+		if (fm.horizontalAdvance(axesGridList->item(i)->text()) > width)
+			width = fm.horizontalAdvance(axesGridList->item(i)->text());
 
 	axesGridList->setMaximumWidth(axesGridList->iconSize().width() + width + 50);
 	// resize the list to the maximum width
@@ -2183,7 +2183,7 @@ void ConfigDialog::languageChange()
     else if (locale.name() == QLocale(QLocale::French).name())
         boxDecimalSeparator->setCurrentIndex(3);
 
-	lblClipboardSeparator->setText(tr("Clipboard Decimal Separators"));
+    lblClipboardSeparator->setText(tr("Clipboard Decimal Separators"));
 	boxClipboardLocale->clear();
 	boxClipboardLocale->addItem(tr("System Locale Setting"));
 	boxClipboardLocale->addItem("1,000.0");
@@ -2197,7 +2197,7 @@ void ConfigDialog::languageChange()
     else if (app->clipboardLocale().name() == QLocale(QLocale::French).name())
         boxClipboardLocale->setCurrentIndex(3);
 
-	lblTranslationsPath->setText("<a href=\"http://soft.proindependent.com/translations.html\">" + tr("Translations") + "</a>");
+    lblTranslationsPath->setText("<a href=\"http://soft.proindependent.com/translations.html\">" + tr("Translations") + "</a>");
 	lblHelpPath->setText("<a href=\"http://soft.proindependent.com/manuals.html\">" + tr("Help") + "</a>");
 	texCompilerLabel->setText("<a href=\"http://www.latex-project.org/\">" + tr("LaTeX Compiler") + "</a>");
 	officeLabel->setText("<a href=\"http://www.openoffice.org/\">" + tr("OpenOffice.org") + "</a>/" +
@@ -3076,7 +3076,7 @@ void ConfigDialog::customizeNotes()
         Note *n = qobject_cast<Note *>(w);
         if (n){
             n->showLineNumbers(app->d_note_line_numbers);
-            n->setTabStopWidth(app->d_notes_tab_length);
+            n->setTabStopDistance(app->d_notes_tab_length);
             n->setFont(f);
         }
     }

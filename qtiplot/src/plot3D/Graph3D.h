@@ -62,7 +62,7 @@ class Graph3D: public MdiSubWindow
 	Q_OBJECT
 
 public:
-	Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f=0);
+	Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f= {});
 	~Graph3D();
 
 	enum PlotType{NoTable = -1, Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};

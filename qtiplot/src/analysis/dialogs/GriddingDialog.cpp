@@ -253,7 +253,7 @@ void GriddingDialog::loadDataFromTable()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QLocale locale = app->locale();
-	Q3TableSelection sel = d_table->getSelection();
+	QTableWidgetSelectionRange sel = d_table->getSelection();
 
 	int startRow = sel.topRow();
 	int endRow = sel.bottomRow();

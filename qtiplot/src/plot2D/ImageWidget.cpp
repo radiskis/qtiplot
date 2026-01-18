@@ -133,7 +133,7 @@ QPixmap ImageWidget::windowPixmap(ApplicationWindow *mw, const QString& name, co
 
 	Table *t = qobject_cast<Table *> (w);
 	if (t)
-		return QPixmap::grabWidget(t->table());
+		return t->table()->grab();
 
 	return QPixmap();
 }

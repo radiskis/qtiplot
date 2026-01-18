@@ -49,7 +49,7 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = 0, Qt::WindowFlags fl = {} );
 
 private slots:
 	//! Apply changes

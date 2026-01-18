@@ -464,12 +464,12 @@ void ScriptWindow::replace()
 
 void ScriptWindow::increaseIndent()
 {
-	te->setTabStopWidth(te->tabStopWidth() + 5);
+	te->setTabStopDistance(te->tabStopDistance() + 5);
 }
 
 void ScriptWindow::decreaseIndent()
 {
-	te->setTabStopWidth(te->tabStopWidth() - 5);
+	te->setTabStopDistance(te->tabStopDistance() - 5);
 }
 
 void ScriptWindow::enableActions()

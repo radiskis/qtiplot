@@ -1069,7 +1069,7 @@ void DataCurve::restoreLabels(const QStringList& lst)
                 font.setUnderline(fontList[4].toInt());
             setLabelsFont(font);
         } else if (s.contains("<Font>")){
-            s.remove("<Font>").remove("</Font>").trimmed();
+            s = s.remove("<Font>").remove("</Font>").trimmed();
             QFont fnt;
 			fnt.fromString(s);
             setLabelsFont(fnt);

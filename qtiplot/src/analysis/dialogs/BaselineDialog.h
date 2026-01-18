@@ -48,7 +48,7 @@ class BaselineDialog : public QDialog
 	Q_OBJECT
 
 public:
-	BaselineDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
+	BaselineDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
 	void setGraph(Graph *g);
 
 private slots:

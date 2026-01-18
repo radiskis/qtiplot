@@ -42,18 +42,6 @@
 #include <ScriptingEnv.h>
 #include <Script.h>
 
-struct Q3TableSelection {
-    int m_topRow, m_leftCol, m_bottomRow, m_rightCol;
-    Q3TableSelection(int t=0, int l=0, int b=0, int r=0) : m_topRow(t), m_leftCol(l), m_bottomRow(b), m_rightCol(r) {}
-    void init(int t, int l) { m_topRow=t; m_leftCol=l; m_bottomRow=t; m_rightCol=l; }
-    bool isEmpty() const { return m_topRow < 0 || m_leftCol < 0; }
-    int numRows() const { return m_bottomRow - m_topRow + 1; }
-    int numCols() const { return m_rightCol - m_leftCol + 1; }
-	int topRow() const { return m_topRow; }
-	int leftCol() const { return m_leftCol; }
-	int bottomRow() const { return m_bottomRow; }
-	int rightCol() const { return m_rightCol; }
-};
 
 class MyTable : public QTableWidget
 {
@@ -126,14 +114,14 @@ public:
 
     void adjustColumn(int col) { resizeColumnToContents(col); }
 
-    bool isRowSelected(int row, bool full = false) {
+    bool isRowSelected(int row, bool /*full*/ = false) {
         QList<QTableWidgetSelectionRange> ranges = selectedRanges();
         for(int i=0; i<ranges.count(); ++i)
              if (ranges[i].topRow() <= row && ranges[i].bottomRow() >= row) return true;
         return false;
     }
     
-    bool isColumnSelected(int col, bool full = false) {
+    bool isColumnSelected(int col, bool /*full*/ = false) {
         QList<QTableWidgetSelectionRange> ranges = selectedRanges();
         for(int i=0; i<ranges.count(); ++i)
              if (ranges[i].leftColumn() <= col && ranges[i].rightColumn() >= col) return true;
@@ -180,16 +168,16 @@ public:
 
 	void activateNextCell();
 
-	Q3TableSelection selection(int index) {
+	QTableWidgetSelectionRange selection(int index) {
 		QList<QTableWidgetSelectionRange> ranges = selectedRanges();
 		if (index >= 0 && index < ranges.count()) {
-			return Q3TableSelection(ranges[index].topRow(), ranges[index].leftColumn(), ranges[index].bottomRow(), ranges[index].rightColumn());
+			return ranges[index];
 		}
-		return Q3TableSelection();
+		return QTableWidgetSelectionRange();
 	}
 
-	void addSelection(const Q3TableSelection &sel) {
-		setRangeSelected(QTableWidgetSelectionRange(sel.topRow(), sel.leftCol(), sel.bottomRow(), sel.rightCol()), true);
+	void addSelection(const QTableWidgetSelectionRange &sel) {
+		setRangeSelected(sel, true);
 	}
 
 	void removeRows(const QVector<int> &rows) {
@@ -235,9 +223,9 @@ public:
 		Overwrite //!< replace content of table with the imported file
 	};
 
-	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f=0);
+	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
 
-	Q3TableSelection getSelection();
+	QTableWidgetSelectionRange getSelection();
 
 	//! Sets the number of significant digits
 	void setNumericPrecision(int prec);

@@ -1241,8 +1241,8 @@ public:
 	bool d_disable_curve_antialiasing;
 	bool d_force_muParser;
 	bool d_keep_aspect_ration;
-	QPrinter::PaperSize d_print_paper_size;
-	QPrinter::Orientation d_printer_orientation;
+	int d_print_paper_size;
+	int d_printer_orientation;
 	bool d_muparser_c_locale;
 	Graph::LegendDisplayMode d_graph_legend_display;
 	Graph::AxisTitlePolicy d_graph_axis_labeling;
