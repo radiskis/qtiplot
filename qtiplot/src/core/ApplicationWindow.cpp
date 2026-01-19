@@ -90,6 +90,9 @@ Description          : QtiPlot's main window
 #include <ScaleDraw.h>
 #include <ScaleEngine.h>
 #include <QwtHistogram.h>
+#include <TranslateCurveTool.h>
+#include <LinearColorMap.h>
+#include <PolarGraph.h>
 #include <FunctionCurve.h>
 #include <PieCurve.h>
 #include <EllipseWidget.h>
@@ -1649,6 +1652,7 @@ void ApplicationWindow::plotMenuAboutToShow()
 	plot2DMenu->addAction(actionPlotL);
 	plot2DMenu->addAction(actionPlotP);
 	plot2DMenu->addAction(actionPlotLP);
+	plot2DMenu->addAction(actionPlotPolar);
 
     QMenu *specialPlotMenu = plot2DMenu->addMenu (tr("Special Line/Symb&ol"));
 	specialPlotMenu->addAction(actionPlotVerticalDropLines);
@@ -1832,6 +1836,18 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
 			actionFind->setEnabled(true);
+		} else if (w->inherits("PolarGraph")) {
+			actionExportGraph->setEnabled(true);
+			plotDataMenu->menuAction()->setVisible(true);
+			analysisMenu->menuAction()->setVisible(true);
+			format->menuAction()->setVisible(true);
+			format->clear();
+			format->addAction(actionShowPlotDialog);
+			format->addSeparator();
+			format->addAction(actionShowScaleDialog);
+			format->addAction(actionShowAxisDialog);
+			format->addAction(actionShowGridDialog);
+			format->addAction(actionShowTitleDialog);
 		} else
 			disableActions();
 	} else
@@ -1951,7 +1967,19 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
         formatToolBar->setEnabled (true);
         noteTools->setEnabled (true);
         setFormatBarFont(((Note*)w)->currentEditor()->currentFont());
-    }
+    } else if (qobject_cast<PolarGraph*>(w)){
+		actionTextColor->setVisible(true);
+		if (d_plot_tool_bar){
+			if(!plotTools->isVisible())
+				plotTools->show();
+			plotTools->setEnabled (true);
+			custom2DPlotTools((MultiLayer *)w);
+		}
+		if(d_format_tool_bar && !formatToolBar->isVisible()){
+			formatToolBar->setEnabled (true);
+            formatToolBar->show();
+		}
+	}
 }
 
 void ApplicationWindow::disableToolbars()
@@ -2601,25 +2629,52 @@ Graph3D* ApplicationWindow::newPlot3D(const QString& title)
 
 Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int type)
 {
-	int zCol = table->colIndex(zColName);
-	if (zCol < 0)
-		return 0;
-
 	Graph3D *plot = newPlot3D();
 	if (!plot)
 		return 0;
 
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
+	int zCol = table->colIndex(zColName);
 	if (type == Graph3D::Ribbon){
-		int ycol = table->colIndex(zColName);
+		int ycol = table->colY(zCol);
 		plot->addRibbon(table, table->colName(table->colX(ycol)), zColName);
 	} else
 		plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
 
 	emit modified();
-	QApplication::restoreOverrideCursor();
 	return plot;
+}
+
+MdiSubWindow* ApplicationWindow::newPolarPlot(const QString& title)
+{
+	PolarGraph* w = new PolarGraph(generateUniqueName(title.isEmpty() ? tr("Polar") : title), this);
+	initPolarPlot(w);
+	return w;
+}
+
+void ApplicationWindow::plotPolar()
+{
+	Table *table = (Table *)activeWindow(TableWindow);
+    if (!table)
+		return;
+
+	if (table->selectedColumns().count() < 2){
+		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
+				tr("You must select at least two columns for plotting!"));
+		return;
+	}
+
+	QStringList s = table->selectedColumns();
+    plotPolar(table, s);
+}
+
+MdiSubWindow* ApplicationWindow::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
+{
+    if (!table || colList.size() < 2) return 0;
+    
+    PolarGraph* w = (PolarGraph*)newPolarPlot();
+    // Use first column as radius, second as theta for now
+    w->addCurve(table, colList[0], colList[1]);
+    return w;
 }
 
 void ApplicationWindow::initPlot3D(Graph3D *plot)
@@ -2643,6 +2698,20 @@ void ApplicationWindow::initPlot3D(Graph3D *plot)
 		plot3DTools->setEnabled(true);
 
 	windowActivated(plot);
+}
+
+void ApplicationWindow::initPolarPlot(PolarGraph *w)
+{
+	if (d_mdi_windows_area)
+		d_workspace->addSubWindow(w);
+	else
+		w->setParent(0);
+
+	w->setWindowIcon(QIcon(":/lpPlot.png"));
+	w->show();
+
+	addListViewItem(w);
+	windowActivated(w);
 }
 
 void ApplicationWindow::exportMatrix(const QString& exportFilter)
@@ -3896,33 +3965,33 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 	}
 
 	switch(type){
-		case NoWindow:
-		break;
-
 		case TableWindow:
-			if (d_active_window->inherits("Table"))
+			if (qobject_cast<Table *>(d_active_window))
 				return d_active_window;
-			else
-				return NULL;
 		break;
-
 		case MatrixWindow:
-			return qobject_cast<Matrix *>(d_active_window);
+			if (qobject_cast<Matrix *>(d_active_window))
+				return d_active_window;
 		break;
-
 		case MultiLayerWindow:
-			return qobject_cast<MultiLayer *>(d_active_window);
+			if (qobject_cast<MultiLayer *>(d_active_window))
+				return d_active_window;
 		break;
-
 		case NoteWindow:
-			return qobject_cast<Note *>(d_active_window);
+			if (qobject_cast<Note *>(d_active_window))
+				return d_active_window;
 		break;
-
 		case Plot3DWindow:
-			return qobject_cast<Graph3D *>(d_active_window);
+			if (qobject_cast<Graph3D *>(d_active_window))
+				return d_active_window;
 		break;
+		case PolarGraphWindow:
+			if (qobject_cast<PolarGraph *>(d_active_window))
+				return d_active_window;
+		break;
+		default:
+			return d_active_window;
 	}
-	return d_active_window;
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
@@ -13995,6 +14064,9 @@ void ApplicationWindow::createActions()
 
 	actionPlotLP = new QAction(QIcon(":/lpPlot.png"), tr("Line + S&ymbol"), this);
 	connect(actionPlotLP, SIGNAL(triggered()), this, SLOT(plotLP()));
+
+	actionPlotPolar = new QAction(QIcon(":/lpPlot.png"), tr("&Polar"), this);
+	connect(actionPlotPolar, SIGNAL(triggered()), this, SLOT(plotPolar()));
 
 	actionPlotVerticalDropLines = new QAction(QIcon(":/dropLines.png"), tr("Vertical &Drop Lines"), this);
 	connect(actionPlotVerticalDropLines, SIGNAL(triggered()), this, SLOT(plotVerticalDropLines()));

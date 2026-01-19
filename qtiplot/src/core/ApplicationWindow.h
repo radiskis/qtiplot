@@ -96,6 +96,7 @@ class TableStatistics;
 class CurveRangeDialog;
 class LegendWidget;
 class ArrowMarker;
+class PolarGraph;
 class TextEditor;
 class AssociationsDialog;
 class ScriptEdit;
@@ -156,7 +157,7 @@ public:
 	~ApplicationWindow();
 
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
-	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow};
+	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow, PolarGraphWindow};
 	enum MatrixToTableConversion{Direct, XYZ, YXZ};
 	enum EndLineChar{LF, CRLF, CR};
 	enum Analysis{NoAnalysis, Integrate, Diff, FitLinear, FitGauss, FitLorentz, FitSigmoidal, FitSlope};
@@ -380,6 +381,11 @@ public slots:
 	//@{
 	Graph3D* newPlot3D(const QString& title = QString());
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
+
+	MdiSubWindow* newPolarPlot(const QString& title = QString());
+	MdiSubWindow* plotPolar(Table* table, const QStringList& colList, int startRow = 0, int endRow = -1);
+	void plotPolar();
+
 	//@}
 
 	//! \name Surface Plots
@@ -428,6 +434,7 @@ public slots:
 	void clearLogInfo();
 	void updateFunctionLists(int type, QStringList &formulas);
 	void updateSurfaceFuncList(const QString& s);
+	void initPolarPlot(PolarGraph *w);
 	//@}
 
 	//! \name Matrices
@@ -1522,7 +1529,9 @@ private:
 	QAction *actionExportPDF, *actionReadOnlyCol, *actionStemPlot;
 	QAction *actionCloseAllWindows, *actionCloseProject, *actionClearLogInfo, *actionShowPlotWizard, *actionShowConfigureDialog;
 	QAction *actionShowCurvesDialog, *actionAddErrorBars, *actionAddFunctionCurve, *actionUnzoom, *actionNewLegend, *actionAddImage, *actionAddText;
-	QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotVerticalDropLines, *actionPlotSpline;
+	QAction *actionPlotL, *actionPlotP, *actionPlotLP, *actionPlotPolar, *actionPlotSpline;
+	QAction *actionPlotVerticalDropLines, *actionPlotHorizontalDropLines;
+
 	QAction *actionPlotVertSteps, *actionPlotHorSteps, *actionPlotVerticalBars, *actionStackBars, *actionStackColumns;
 	QAction *actionPlotHorizontalBars, *actionPlotArea, *actionPlotPie, *actionPlotVectXYAM, *actionPlotVectXYXY;
 	QAction *actionPlotHistogram, *actionPlotStackedHistograms, *actionPlot2VerticalLayers, *actionPlot2HorizontalLayers, *actionPlot4Layers, *actionPlotStackedLayers;

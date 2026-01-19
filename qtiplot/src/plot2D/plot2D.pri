@@ -26,6 +26,7 @@
 			   src/plot2D/MultiLayer.h \
 			   src/plot2D/MultiPeakFitTool.h \
 			   src/plot2D/PieCurve.h \
+			   src/plot2D/PolarGraph.h \
 			   src/plot2D/PlotCurve.h \
 			   src/plot2D/PlotToolInterface.h \
 			   src/plot2D/ProbabilityScaleEngine.h \
@@ -67,6 +68,7 @@
 			   src/plot2D/MultiLayer.cpp \
 			   src/plot2D/MultiPeakFitTool.cpp \
 			   src/plot2D/PieCurve.cpp \
+			   src/plot2D/PolarGraph.cpp \
 			   src/plot2D/PlotCurve.cpp \
 			   src/plot2D/ProbabilityScaleEngine.cpp \
 			   src/plot2D/QwtBarCurve.cpp \
