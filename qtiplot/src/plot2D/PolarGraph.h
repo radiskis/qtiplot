@@ -28,6 +28,13 @@ public:
     QwtPolarPlot* plot() { return d_plot; }
     
     void addCurve(Table* t, const QString& rColName, const QString& thetaColName);
+    
+    void exportImage(const QString& fileName, int quality = 100, bool transparent = false, int dpi = 0,
+            const QSizeF& customSize = QSizeF(), int unit = 0, double fontsFactor = 1.0, int compression = 0);
+    void exportVector(const QString& fileName, int res = 0, bool color = true,
+            const QSizeF& customSize = QSizeF(), int unit = 0, double fontsFactor = 1.0);
+    void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = 0, double fontsFactor = 1.0);
+    void exportPDF(const QString& fname);
 
     // Serialization
     QString saveToString();

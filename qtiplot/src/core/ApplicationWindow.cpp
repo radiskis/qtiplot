@@ -1973,7 +1973,6 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
 			if(!plotTools->isVisible())
 				plotTools->show();
 			plotTools->setEnabled (true);
-			custom2DPlotTools((MultiLayer *)w);
 		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
@@ -6423,13 +6422,14 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 
 	MultiLayer *plot2D = qobject_cast<MultiLayer *>(w);
 	Graph3D *plot3D = qobject_cast<Graph3D *>(w);
+	PolarGraph *plotPolar = qobject_cast<PolarGraph *>(w);
 	if(plot2D && plot2D->isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Export Error"),
 					tr("<h4>There are no plot layers available in this window!</h4>"));
 		return;
 	}
 
-	if (!plot2D && !plot3D)
+	if (!plot2D && !plot3D && !plotPolar)
 		return;
 
 	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog);
@@ -6458,6 +6458,11 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		return;
     }
+    
+    if (plotPolar && selected_filter.contains(".emf")){
+        // Polar plots don't support EMF yet, but we could add it if there's a plugin
+        return;
+    }
 
 #ifdef TEX_OUTPUT
 	if (plot2D && selected_filter.contains(".tex")){
@@ -6477,6 +6482,12 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 			else
 				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		} else if (plotPolar){
+            if (selected_filter.contains(".svg"))
+                plotPolar->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+            else
+                plotPolar->exportVector(file_name, ied->vectorResolution(), ied->color(),
+                        ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		}
 	} else if (selected_filter.contains(".odf")){
 		if (plot2D)
@@ -6484,6 +6495,9 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 		else if (plot3D)
 			plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
+		else if (plotPolar)
+			plotPolar->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 
 	} else {
@@ -6495,6 +6509,9 @@ void ApplicationWindow::exportGraph(const QString& exportFilter)
 							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
 				else if (plot3D){
 					plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
+				} else if (plotPolar){
+					plotPolar->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
 				}
 			}
@@ -8624,7 +8641,7 @@ void ApplicationWindow::exportPDF()
 		return;
 	}
 
-	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w)){
+	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w) || qobject_cast<PolarGraph *>(w)){
 		exportGraph("*.pdf");
 		return;
 	} else if (qobject_cast<Matrix *>(w)){
@@ -10092,7 +10109,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 
 	MdiSubWindow *w = activeWindow();
 	if (w){
-		if (w->inherits("MultiLayer") || w->inherits("Graph3D")){
+		if (w->inherits("MultiLayer") || w->inherits("Graph3D") || w->inherits("PolarGraph")){
 			fileMenu->addMenu (exportPlotMenu);
 			if (qobject_cast<MultiLayer*>(w))
 				exportPlotMenu->addAction(actionExportLayer);
