@@ -189,7 +189,12 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
     setLayout(vbox4);
     setFocusProxy (colName);
 
-    updateColumn(d_table->selectedColumn());
+    int sc = d_table->selectedColumn();
+    if (sc < 0)
+        sc = d_table->firstSelectedColumn();
+    if (sc < 0)
+        sc = 0;
+    updateColumn(sc);
 
    // signals and slots connections
 	connect(colWidth, SIGNAL(valueChanged(int)), this, SLOT(setColumnWidth(int)));
@@ -237,6 +242,9 @@ void TableDialog::nextColumn()
 
 void TableDialog::updateColumn(int sc)
 {
+    if (sc < 0 || sc >= d_table->numCols())
+        return;
+
     int colType = d_table->columnType(sc);
     if (!sc)
         buttonPrev->setEnabled(false);

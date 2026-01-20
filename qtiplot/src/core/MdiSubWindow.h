@@ -63,6 +63,7 @@ public:
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
 	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = {});
+	virtual ~MdiSubWindow();
 
 	//! Possible window captions.
 	enum CaptionPolicy{

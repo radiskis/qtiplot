@@ -278,8 +278,9 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 		symb->setPen(pen);
 		symb->drawSymbol(p, QPointF(x + l/2, y));
 		delete symb;
-	} else //ImageSymbol ?
+	} else if (c->symbol()){//ImageSymbol ?
 		c->symbol()->drawSymbol(p, QPointF(x + l/2, y));
+	}
 	p->restore();
 }
 
@@ -579,7 +580,7 @@ int LegendWidget::symbolsMaxWidth()
 					c->type() == Graph::Box){
 					maxL = 2*d_text->font().pointSize();//10;
 					line_length = 0;
-				} else {
+				} else if (c->symbol()){
 					int l = c->symbol()->size().width();
 					if (l < 3)
 						l = 3;
