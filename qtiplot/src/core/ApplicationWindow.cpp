@@ -3991,6 +3991,7 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 		default:
 			return d_active_window;
 	}
+	return NULL;
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
@@ -8352,7 +8353,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 				DataPickerTool *dpt = (DataPickerTool *)g->activeTool();
 				if (dpt){
 					QAction *act = new QAction(tr("Paste Selection as Te&xt"), this);
-					connect(act, SIGNAL(activated()), dpt, SLOT(pasteSelectionAsLayerText()));
+					connect(act, SIGNAL(triggered()), dpt, SLOT(pasteSelectionAsLayerText()));
 					curveMenu.addAction(act);
 				}
 			}
@@ -8361,7 +8362,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 			curveMenu.addSeparator();
 			if (g->rangeSelectorsEnabled()){
 				QAction *act = new QAction(tr("Set Display Range"), this);
-				connect(act, SIGNAL(activated()), g->rangeSelectorTool(), SLOT(setCurveRange()));
+				connect(act, SIGNAL(triggered()), g->rangeSelectorTool(), SLOT(setCurveRange()));
 				curveMenu.addAction(act);
 			}
 		}
@@ -14759,7 +14760,7 @@ void ApplicationWindow::createActions()
 #ifdef SCRIPTING_PYTHON
 	actionShowScriptWindow = new QAction(QPixmap(":/python.png"), tr("&Script Window"), this);
 	actionShowScriptWindow->setShortcut(QKeySequence(Qt::ALT + Qt::Key_F3));
-	actionShowScriptWindow->setToggleAction( true );
+	actionShowScriptWindow->setCheckable( true );
 	connect(actionShowScriptWindow, SIGNAL(triggered()), this, SLOT(showScriptWindow()));
 
 	actionOpenQtDesignerUi = new QAction(tr("Load Custom User &Interface..."), this);

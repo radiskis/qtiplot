@@ -85,7 +85,9 @@ private:
 	int symbolsMaxWidth();
 	QString parse(const QString& str);
 
+	protected:
 	virtual void paintEvent(QPaintEvent *e);
+	private:
 
 	//! Pointer to the QwtText object
 	QwtText* d_text;

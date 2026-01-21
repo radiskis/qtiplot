@@ -27,8 +27,10 @@
 #                                                                          #
 ############################################################################
 
-from PyQt4 import pyqtconfig
-config = pyqtconfig.Configuration()
+import sys
+import os
 
-print "-L%s -lpython%d%d" % (config.py_lib_dir, config.py_version >> 16, (config.py_version  >> 8) & 0xff)
+lib_dir = os.path.join(sys.prefix, "libs")
+version = sys.version_info
+print("-L%s -lpython%d%d" % (lib_dir, version.major, version.minor))
 

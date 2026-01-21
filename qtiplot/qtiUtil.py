@@ -215,9 +215,15 @@ def exportTableToTeX(t, filename=None):
 		exportToTeX(table, filename=None):
 		Export table as TeX-tabular to filename. If filename==None, popup a file selection dialog.
 	"""
-	from PyQt4.QtGui import QFileDialog
+	try:
+		from PyQt5.QtWidgets import QFileDialog
+	except ImportError:
+		print("Warning: PyQt5 could not be imported in qtiUtil.py.")
+		return
 	if not filename:
-		filename=QFileDialog.getSaveFileName(qti.app,"QtiPlot - Export TeX table","","All files *;;TeX documents (*.tex *.TEX);;");
+		filename, _ = QFileDialog.getSaveFileName(qti.app, "QtiPlot - Export TeX table", "", "All files (*);;TeX documents (*.tex *.TEX)")
+	if not filename:
+		return
 	f=open(filename,'w')
 	f.write('\\begin{tabular}{|' + 'c|'*t.numCols() + '}\\hline\n')
 	for col in range(1,t.numCols()):
@@ -241,7 +247,6 @@ def exportAllTablesToTeX(folder, dir, recurs=True):
 		for f in folder.folders():
 			exportAllTablesToTeX(f, dir, True)
 
-global factor
 def factor(n):
 	"Calculates factorial"
 	f = 1
@@ -251,7 +256,6 @@ def factor(n):
 	return f
 qti.mathFunctions["factor"] = factor
 
-global derivative
 def derivative(yCol, xCol, row, table = 0):
 	"derivative(yCol, xCol, row, table = 0):\n\nCalculates the derivative of column yCol with respect to column xCol in table. If not specified table = self."
 	if (table == 0):

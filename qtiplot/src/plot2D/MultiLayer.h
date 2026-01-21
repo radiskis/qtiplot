@@ -239,6 +239,7 @@ signals:
 private:
 	//! \name Event Handlers
 	//@{
+	protected:
 	void mouseReleaseEvent(QMouseEvent *);
 	void showEvent(QShowEvent *);
 	void dropEvent(QDropEvent*);
@@ -246,6 +247,7 @@ private:
 	void wheelEvent(QWheelEvent *);
 	void keyPressEvent(QKeyEvent *);
 	bool eventFilter(QObject *object, QEvent *);
+	private:
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
 	//! Try to guess on which layer the user clicked if the layers are superposed

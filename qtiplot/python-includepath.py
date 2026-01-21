@@ -27,5 +27,5 @@
 #                                                                          #
 ############################################################################
 
-from distutils import sysconfig
-print sysconfig.get_python_inc()
+import sysconfig
+print(sysconfig.get_path('include'))

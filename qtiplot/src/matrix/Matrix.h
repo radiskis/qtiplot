@@ -337,7 +337,9 @@ signals:
 	void modifiedLabel(Matrix *);
 
 private:
+protected:
 	bool eventFilter(QObject *, QEvent *);
+private:
 
 	//! Initialize the matrix
 	void initTable(int rows, int cols);

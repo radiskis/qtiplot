@@ -905,15 +905,19 @@ signals:
 		QwtInterval axisBoundingInterval(int axis);
 		void deselectCurves();
 
+	protected:
 		void dropEvent(QDropEvent*);
 		void dragEnterEvent(QDragEnterEvent*);
 		void showEvent (QShowEvent * event);
+	private:
     	void printFrame(QPainter *painter, const QRect &rect) const;
 		void printCanvas(QPainter *painter, const QRectF &canvasRect,
    			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
 
+	protected:
 		virtual void drawItems (QPainter *painter, const QRectF &rect,
 			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
+	private:
 
 		void drawInwardTicks(QPainter *painter, const QRect &rect,
 							const QwtScaleMap&map, int axis, bool min, bool maj) const;

@@ -28,6 +28,8 @@
 ############################################################################
 
 import __main__
+import qti
+from qti import *
 
 def import_to_global(modname, attrs=None, math=False):
 	"""
@@ -131,20 +133,26 @@ try:
 	import_to_global("scipy.special", special_functions, True)
 	have_scipy = True
 	print("Loaded %d special functions from scipy.special." % len(special_functions))
-except(ImportError): pass
+except ImportError: pass
 
 # make Qt API available (it gets imported in any case by the qti module)
-global QtGui
-from PyQt4 import QtGui
+try:
+	global QtGui
+	from PyQt5 import QtGui
 
-global QtCore
-from PyQt4 import QtCore
+	global QtCore
+	from PyQt5 import QtCore
 
-global Qt
-from PyQt4.QtCore import Qt
+	global QtWidgets
+	from PyQt5 import QtWidgets
+
+	global Qt
+	from PyQt5.QtCore import Qt
+except ImportError:
+	print("Warning: PyQt5 could not be imported. This is expected if there is a compiler ABI mismatch (MinGW vs MSVC).")
+	print("Qt classes (QtGui, QtCore, QtWidgets) will not be available in the scripting environment until compilers are synchronized.")
 
 # import QtiPlot's classes to the global namespace (particularly useful for fits)
-from qti import *
 
 # import selected methods of ApplicationWindow into the global namespace
 appImports = (
@@ -175,9 +183,9 @@ import_to_global("qtiUtil", None, True)
 # Provide easy access to SymPy, for symbolic mathematics
 try:
 	import_to_global("sympy", None, False)
-	print "\nsympy module successfully imported: SymPy is a Python library for symbolic mathematics."
-	print "If you are new to SymPy, start with the documentation: http://docs.sympy.org/\n"
-except(ImportError): pass
+	print("\nsympy module successfully imported: SymPy is a Python library for symbolic mathematics.")
+	print("If you are new to SymPy, start with the documentation: http://docs.sympy.org/\n")
+except ImportError: pass
 
 # Provide easy access to R, for statistical computing.
 # See http://www.r-project.org/ for information on R and how to get it.
@@ -212,7 +220,7 @@ try:
   # make it also avilable as a function of qti.app
   setattr(app, "newTableFromRDataFrame", newTableFromRDataFrame)
 
-  print "R support successfully set up"
-except(ImportError): pass
+  print("R support successfully set up")
+except ImportError: pass
 
-print "Python scripting engine is ready."
+print("Python scripting engine is ready.")

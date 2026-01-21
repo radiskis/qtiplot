@@ -32,6 +32,15 @@
 #endif
 #include <Python.h>
 
+#define PyString_Check PyUnicode_Check
+#define PyString_AsString PyUnicode_AsUTF8
+#define PyString_FromString PyUnicode_FromString
+#define PyString_AS_STRING PyUnicode_AsUTF8
+#define PyInt_Check PyLong_Check
+#define PyInt_AsLong PyLong_AsLong
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_AS_LONG PyLong_AsLong
+
 #include "PythonScript.h"
 #include "PythonScripting.h"
 #include <ApplicationWindow.h>
@@ -135,7 +144,7 @@ bool PythonScript::compile(bool for_eval)
 	Py_XDECREF(PyCode);
 	
 	// Simplest case: Code is a single expression
-	PyCode = Py_CompileString(Code, Name, Py_eval_input);
+	PyCode = Py_CompileString(Code.toUtf8().constData(), Name.toUtf8().constData(), Py_eval_input);
 
 	if (PyCode)
 		success = true;
@@ -148,11 +157,7 @@ bool PythonScript::compile(bool for_eval)
 		// for why there isn't an easier way to do this in Python.
 		PyErr_Clear(); // silently ignore errors
 		PyObject *key, *value;
-#if PY_VERSION_HEX >= 0x02050000
 		Py_ssize_t i=0;
-#else
-		int i=0;
-#endif
 		QString signature = "";
 		while(PyDict_Next(topLevelLocal, &i, &key, &value))
 			signature.append(PyString_AsString(key)).append(",");
@@ -160,10 +165,10 @@ bool PythonScript::compile(bool for_eval)
 		QString fdef = "def __doit__("+signature+"):\n";
 		fdef.append(Code);
 		fdef.replace('\n',"\n\t");
-		PyCode = Py_CompileString(fdef, Name, Py_file_input);
+		PyCode = Py_CompileString(fdef.toUtf8().constData(), Name.toUtf8().constData(), Py_file_input);
 		if (PyCode){
 			PyObject *tmp = PyDict_New();
-			Py_XDECREF(PyEval_EvalCode((PyCodeObject*)PyCode, topLevelLocal, tmp));
+			Py_XDECREF(PyEval_EvalCode(PyCode, topLevelLocal, tmp));
 			Py_DECREF(PyCode);
 			PyCode = PyDict_GetItemString(tmp,"__doit__");
 			Py_XINCREF(PyCode);
@@ -174,7 +179,7 @@ bool PythonScript::compile(bool for_eval)
 		// Code contains statements (or errors), but we do not need to get
 		// a return value.
 		PyErr_Clear(); // silently ignore errors
-		PyCode = Py_CompileString(Code, Name, Py_file_input);
+		PyCode = Py_CompileString(Code.toUtf8().constData(), Name.toUtf8().constData(), Py_file_input);
 		success = (PyCode != NULL);
 	}
 
@@ -203,7 +208,7 @@ QVariant PythonScript::eval()
 		pyret = PyObject_Call(PyCode, empty_tuple, topLevelLocal);
 		Py_DECREF(empty_tuple);
 	} else
-		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, topLevelGlobal, topLevelLocal);
+		pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
 	endStdoutRedirect();
 	if (!pyret){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
@@ -225,8 +230,6 @@ QVariant PythonScript::eval()
 	/* numeric types */
 	else if (PyFloat_Check(pyret))
 		qret = QVariant(PyFloat_AS_DOUBLE(pyret));
-	else if (PyInt_Check(pyret))
-		qret = QVariant((qlonglong)PyInt_AS_LONG(pyret));
 	else if (PyLong_Check(pyret))
 		qret = QVariant((qlonglong)PyLong_AsLongLong(pyret));
 	else if (PyNumber_Check(pyret)){
@@ -239,20 +242,12 @@ QVariant PythonScript::eval()
 	} else if (PyBool_Check(pyret))
 		qret = QVariant(pyret==Py_True, 0);
 	// could handle advanced types (such as PyList->QValueList) here if needed
-	/* fallback: try to convert to (unicode) string */
+	/* fallback: try to convert to string */
 	if(!qret.isValid()) {
-		PyObject *pystring = PyObject_Unicode(pyret);
+		PyObject *pystring = PyObject_Str(pyret);
 		if (pystring) {
-			PyObject *asUTF8 = PyUnicode_EncodeUTF8(PyUnicode_AS_UNICODE(pystring), PyUnicode_GET_DATA_SIZE(pystring), 0);
+			qret = QVariant(QString::fromUtf8(PyString_AsString(pystring)));
 			Py_DECREF(pystring);
-			if (asUTF8) {
-				qret = QVariant(QString::fromUtf8(PyString_AS_STRING(asUTF8)));
-				Py_DECREF(asUTF8);
-			} else if ( (pystring = PyObject_Str(pyret)) ) {
-				// single '=' to assign and test null
-				qret = QVariant(QString(PyString_AS_STRING(pystring)));
-				Py_DECREF(pystring);
-			}
 		}
 	}
 
@@ -295,7 +290,7 @@ bool PythonScript::exec()
 		pyret = PyObject_Call(PyCode,empty_tuple,topLevelLocal);
 		Py_DECREF(empty_tuple);
 	} else {
-		pyret = PyEval_EvalCode((PyCodeObject*)PyCode, topLevelGlobal, topLevelLocal);
+		pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
 	}
 
 	endStdoutRedirect();

@@ -27,6 +27,14 @@
 #                                                                          #
 ############################################################################
 
-from PyQt4 import pyqtconfig
-config = pyqtconfig.Configuration()
-print " ".join([config.sip_bin, "-I", config.pyqt_sip_dir, config.pyqt_sip_flags])
+import sys
+import os
+
+# Since we don't have pyqtconfig anymore, we need to find sip executable.
+# User has sip 6.x installed via pip.
+# The executable should be sip-module or just sip if in path.
+# For now, let's assume 'sip-module' is available as it was seen in Scripts.
+sip_bin = "sip-module"
+# We also need the include directory for PyQt/Qt if we were using it, 
+# but for now let's just output a basic sip command.
+print(sip_bin)

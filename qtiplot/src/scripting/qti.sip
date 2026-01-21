@@ -30,40 +30,83 @@
  *                                                                         *
  ***************************************************************************/
 
-%Module qti 0
+%Module qti
+
+%ModuleCode
+#include <QObject>
+#include <QWidget>
+#include <QMainWindow>
+#include <QMdiSubWindow>
+#include <QFrame>
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QDateTime>
+#include <QDate>
+#include <QTime>
+#include <QLocale>
+#include <QStringList>
+#include <QPixmap>
+#include <QImage>
+#include <QPoint>
+#include <QRect>
+#include <QSize>
+#include <QFont>
+#include <QColor>
+#include <QPen>
+#include <QBrush>
+#include <QPrinter>
+#include <qwt_plot.h>
+#include <qwt_plot_curve.h>
+#include <qwt_plot_spectrogram.h>
+#include <qwt_symbol.h>
+#include <qwt_plot_marker.h>
+#include <qwt_plot_grid.h>
+#include <qwt_scale_draw.h>
+#include <qwt_scale_widget.h>
+#include <qwt_color_map.h>
+#include <qwt_raster_data.h>
+%End
+
 %Import QtCore/QtCoremod.sip
 %Import QtGui/QtGuimod.sip
+%Import QtWidgets/QtWidgetsmod.sip
+
+class ScriptingEnv;
 
 class ScriptEdit: QTextEdit
 {
 %TypeHeaderCode
-#include "../src/scripting/ScriptEdit.h"
+#include "ScriptEdit.h"
 %End
+public:
+  ScriptEdit(ScriptingEnv *env, QWidget *parent=0, const QString& name = QString());
+private:
+  ScriptEdit(const ScriptEdit &);
+  ScriptEdit& operator=(const ScriptEdit &);
 public slots:
   void print();
-  void insertFunction(const QString &);
+
   void exportPDF(const QString& fileName);
   QString save();
-  QString exportASCII(const QString &file=QString::null)/PyName=saveAs/;
-  QString importASCII(const QString &file=QString::null);
+  QString exportASCII(const QString &file=QString())/PyName=saveAs/;
+  QString importASCII(const QString &file=QString());
 
-private:
-  ScriptEdit(ScriptEdit&);
+
 };
 
 class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 {
 %TypeHeaderCode
-#include "../src/core/MdiSubWindow.h"
+#include "MdiSubWindow.h"
 %End
 public:
+  MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = 0);
   enum CaptionPolicy{Name = 0, Label = 1, Both = 2};
 
   SIP_PYOBJECT windowLabel();
 %MethodCode
-  sipRes = PyString_FromString(sipCpp->windowLabel());
+  sipRes = PyUnicode_FromString(sipCpp->windowLabel().toUtf8().constData());
 %End
-  void setWindowLabel(const QString&);
 
   CaptionPolicy captionPolicy();
   void setCaptionPolicy(CaptionPolicy);
@@ -72,25 +115,38 @@ public:
 
   void askOnCloseEvent(bool)/PyName=confirmClose/;
 
-private:
-  MdiSubWindow(const MdiSubWindow&);
+
 };
 
 class Table: MdiSubWindow
 {
+  Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
+private:
+    Table(const Table &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/table/Table.h"
+#include "Table.h"
 #include <QDate>
 #include <QTime>
 #include <QDateTime>
 #include <datetime.h> // python include
 #define CHECK_TABLE_COL(arg)\
     int col;\
-    if (PyInt_Check(arg)) {\
-      col = (int)PyInt_AsLong(arg) - 1;\
+    if (PyLong_Check(arg)) {\
+      col = (int)PyLong_AsLong(arg) - 1;\
 		if (col < 0 || col >= sipCpp->numCols()) {\
 			sipIsErr = 1;\
-			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col+1, sipCpp->name().ascii());\
+			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col+1, sipCpp->name().toUtf8().constData());\
 		}\
 	 } else {\
       PyObject *tmp = PyObject_Str(arg);\
@@ -98,11 +154,11 @@ class Table: MdiSubWindow
 			sipIsErr = 1;\
 			PyErr_Format(PyExc_TypeError, "Column argument must be either int or string.");\
 		} else {\
-			col = sipCpp->colIndex(PyString_AsString(tmp));\
+			col = sipCpp->colIndex(PyUnicode_AsUTF8(tmp));\
 			if (col < 0) {\
 				sipIsErr = 1;\
-				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyString_AsString(tmp),\
-						sipCpp->name().ascii());\
+				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyUnicode_AsUTF8(tmp),\
+						sipCpp->name().toUtf8().constData());\
 				Py_DECREF(tmp);\
 			}\
 		}\
@@ -112,7 +168,7 @@ class Table: MdiSubWindow
    int row = arg-1;\
 	if (row < 0 || row >= sipCpp->numRows()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name().ascii());\
+		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name().toUtf8().constData());\
 	}
 
 static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
@@ -137,7 +193,7 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
   case Table::Text:
     item = PyObject_Str(item);
     if (item) {
-      table->setText(row, col, PyString_AsString(item));
+      table->setText(row, col, PyUnicode_AsUTF8(item));
       Py_DECREF(item);
     }
     else {
@@ -179,19 +235,19 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
     }
     break;
   case Table::Month:
-    item = PyNumber_Int(item);
+    item = PyNumber_Long(item);
     if (item) {
-      int m = PyInt_AS_LONG(item) % 12; // no type checking required since we casted above
+      int m = PyLong_AsLong(item) % 12; // no type checking required since we casted above
       if (!m)
         m = 12;
       QString format = table->columnFormat(col);
       Py_DECREF(item);
       if (format == "M")
-          table->setText(row, col, QDate::shortMonthName(m).left(1));
+          table->setText(row, col, QLocale().monthName(m, QLocale::ShortFormat).left(1));
       else if (format == "MMM")
-          table->setText(row, col, QDate::shortMonthName(m));
+          table->setText(row, col, QLocale().monthName(m, QLocale::ShortFormat));
       else if (format == "MMMM")
-          table->setText(row, col, QDate::longMonthName(m));
+          table->setText(row, col, QLocale().monthName(m, QLocale::LongFormat));
     }
     else {
       if (PyType_Ready(item_type) == 0)
@@ -200,19 +256,19 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
     }
     break;
   case Table::Day:
-    item = PyNumber_Int(item);
+    item = PyNumber_Long(item);
     if (item) {
-      int day = PyInt_AS_LONG(item) % 7; // no type checking required since we casted above
+      int day = PyLong_AsLong(item) % 7; // no type checking required since we casted above
       if (!day)
         day = 7;
       QString format = table->columnFormat(col);
       Py_DECREF(item);
       if (format == "d")
-          table->setText(row, col, QDate::shortDayName(day).left(1));
+          table->setText(row, col, QLocale().dayName(day, QLocale::ShortFormat).left(1));
       else if (format == "ddd")
-          table->setText(row, col, QDate::shortDayName(day));
+          table->setText(row, col, QLocale().dayName(day, QLocale::ShortFormat));
       else if (format == "dddd")
-          table->setText(row, col, QDate::longDayName(day));
+          table->setText(row, col, QLocale().dayName(day, QLocale::LongFormat));
     }
     else {
       if (PyType_Ready(item_type) == 0)
@@ -222,7 +278,7 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
     break;
   default:
     PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                 table->columnType(col), col+1, table->name().ascii());
+                 table->columnType(col), col+1, table->name().toUtf8().constData());
     return 1;
     break;
   } // switch column type
@@ -238,7 +294,7 @@ static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
       *item = PyFloat_FromDouble(table->cell(row, col));
     break;
   case Table::Text:
-    *item = PyString_FromString(table->text(row, col));
+    *item = PyUnicode_FromString(table->text(row, col).toUtf8().constData());
     break;
   case Table::Date:
     if (table->text(row, col).isEmpty())
@@ -268,7 +324,7 @@ static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
       *item = Py_None;
     else {
       QDate date = QDate::fromString(table->text(row, col), table->columnFormat(col));
-      *item = PyInt_FromLong(date.month());
+      *item = PyLong_FromLong(date.month());
     }
     break;
   case Table::Day:
@@ -276,13 +332,13 @@ static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
       *item = Py_None;
     else {
       QDate date = QDate::fromString(table->text(row, col), table->columnFormat(col));
-      *item = PyInt_FromLong(date.dayOfWeek());
+      *item = PyLong_FromLong(date.dayOfWeek());
     }
     break;
   default:
     *item = NULL;
     PyErr_Format(PyExc_ValueError, "Type %d of column %d in table %s not supported!",
-                 table->columnType(col), col+1, table->name().ascii());
+                 table->columnType(col), col+1, table->name().toUtf8().constData());
     return 1;
     break;
   } // switch column type
@@ -317,9 +373,10 @@ public:
 %MethodCode
   SIP_SSIZE_T len, start, stop, step, slicelength;
   len = sipCpp->numRows();
-  if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
+  if (PySlice_Unpack((PyObject *)a0, &start, &stop, &step) < 0)
     sipIsErr = 1;
   else {
+    slicelength = (stop - start + step - 1) / step;
     start += 1; // row index starts at 1 (python at 0); the stop is inclusive (python exclusive) so no need to change
     if (step == 1)
       sipCpp->deleteRows(start, stop);
@@ -338,12 +395,8 @@ public:
   CHECK_TABLE_COL(a0);
   CHECK_TABLE_ROW(a1);
   if (sipIsErr == 0) {
-		PyObject *encstr = PyString_FromString(sipCpp->text(row, col).utf8());
-		if (encstr) {
-			sipRes = PyUnicode_FromEncodedObject(encstr, "utf8", 0);
-			Py_DECREF(encstr);
-		} else {
-			sipRes = NULL;
+		sipRes = PyUnicode_FromString(sipCpp->text(row, col).toUtf8().constData());
+		if (!sipRes) {
 			sipIsErr = 1;
 		}
 	}
@@ -417,9 +470,10 @@ public:
 %MethodCode
   SIP_SSIZE_T len, start, stop, step, slicelength;
   len = sipCpp->numRows();
-  if (PySlice_GetIndicesEx((PySliceObject *)a0, len, &start, &stop, &step, &slicelength) < 0)
+  if (PySlice_Unpack((PyObject *)a0, &start, &stop, &step) < 0)
     sipIsErr = 1;
   else {
+    slicelength = (stop - start + step - 1) / step;
     PyObject *item;
     sipRes = PyList_New(slicelength);
     for(int i = 0; i < slicelength; i++) {
@@ -482,8 +536,8 @@ public:
   if (idx < 0)
     sipIsErr = 1;
   else {
-    PyObject* methodName = PyString_FromString("setRowData");
-    PyObject* rowNumber = PyInt_FromLong(idx + 1); // setRowData's index starts at 1
+    PyObject* methodName = PyUnicode_FromString("setRowData");
+    PyObject* rowNumber = PyLong_FromLong(idx + 1); // setRowData's index starts at 1
     PyObject* ret = PyObject_CallMethodObjArgs(sipSelf, methodName, rowNumber, a1, NULL);
     if (ret == NULL)
       sipIsErr = 1;
@@ -497,8 +551,8 @@ public:
 %MethodCode
   sipRes = sipCpp->numRows() + 1;
   sipCpp->resizeRows(sipRes);
-  PyObject* methodName = PyString_FromString("setRowData");
-  PyObject* rowNumber = PyInt_FromLong(sipRes);
+  PyObject* methodName = PyUnicode_FromString("setRowData");
+  PyObject* rowNumber = PyLong_FromLong(sipRes);
   PyObject* ret = PyObject_CallMethodObjArgs(sipSelf, methodName, rowNumber, a0, NULL);
   if (ret == NULL)
     sipIsErr = 1;
@@ -578,18 +632,17 @@ public:
 		sipIsErr = 1;\
 		PyErr_SetString(PyExc_ValueError, "Invalid column argument");\
 	} else
-		sipRes = PyString_FromString(sipCpp->colLabel(a0-1));
+		sipRes = PyUnicode_FromString(sipCpp->colLabel(a0-1).toUtf8().constData());
 %End
   SIP_PYTUPLE colNames();
 %MethodCode
-  QStringList l = sipCpp->colNames();
-  int size = l.count();
-  sipRes = PyTuple_New(size);
-  if(sipRes) {
-    for(int i=0; i<size; i++)
-      PyTuple_SET_ITEM(sipRes, i, PyString_FromString(l.at(i)));
-  } else
-    sipIsErr = 1;
+    QStringList l = sipCpp->colNames();
+    sipRes = PyTuple_New(l.count());
+    if (sipRes) {
+      for (int i=0; i<l.count(); i++)
+        PyTuple_SET_ITEM(sipRes, i, PyUnicode_FromString(l.at(i).toUtf8().constData()));
+    } else
+      sipIsErr = 1;
 %End
   void setColName(SIP_PYOBJECT, const QString&, bool=false);
 %MethodCode
@@ -653,7 +706,7 @@ public:
   for (int i=0; i<n; i++) {
     PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a0,i));
     if (str) {
-      l << PyString_AsString(str);
+      l << PyUnicode_AsUTF8(str);
 		Py_DECREF(str);
 	 } else {
       sipIsErr = 1;
@@ -698,10 +751,10 @@ if (sipIsErr == 0)
 
 	QString comment(SIP_PYOBJECT);
 %MethodCode
-  	sipIsErr = 0;
-  	CHECK_TABLE_COL(a0);
-	if (sipIsErr == 0)
-		return Py_BuildValue("s", sipCpp->comment(col).toAscii().constData());
+  sipIsErr = 0;
+  CHECK_TABLE_COL(a0);
+  if (sipIsErr == 0)
+    return PyUnicode_FromString(sipCpp->comment(col).toUtf8().constData());
 %End
 
 	void setComment(SIP_PYOBJECT, const QString&);
@@ -855,11 +908,11 @@ if (sipIsErr == 0)
   	CHECK_TABLE_COL(a0);
 
   	int col2;
-    if (PyInt_Check(a1)) {
-      col2 = (int)PyInt_AsLong(a1) - 1;
+    if (PyLong_Check(a1)) {
+      col2 = (int)PyLong_AsLong(a1) - 1;
 		if (col2 < 0 || col2 >= sipCpp->numCols()) {
 			sipIsErr = 1;
-			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col2+1, sipCpp->name().ascii());
+			PyErr_Format(PyExc_ValueError, "There's no column %d in table %s!", col2+1, sipCpp->name().toUtf8().constData());
 		}
 	 } else {
       PyObject *tmp = PyObject_Str(a1);
@@ -867,10 +920,10 @@ if (sipIsErr == 0)
 			sipIsErr = 1;
 			PyErr_Format(PyExc_TypeError, "Column argument must be either int or string.");
 		} else {
-			col2 = sipCpp->colNames().findIndex(PyString_AsString(tmp));
+			    col2 = sipCpp->colNames().indexOf(PyUnicode_AsUTF8(tmp));
 			if (col2 < 0) {
 				sipIsErr = 1;
-				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyString_AsString(tmp),sipCpp->name().ascii());
+				PyErr_Format(PyExc_ValueError, "There's no column named %s in table %s!", PyUnicode_AsUTF8(tmp),sipCpp->name().toUtf8().constData());
 				Py_DECREF(tmp);
 			}
 		}
@@ -889,12 +942,24 @@ void scrollToCell(SIP_PYOBJECT, int);
     sipCpp->table()->ensureCellVisible(row, col); // for some reason these indices seem to start at 1
 %End
 
-private:
-  Table(const Table&);
+
 };
 
 class QwtLinearColorMap
 {
+private:
+    QwtLinearColorMap(const QwtLinearColorMap &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
 #include <qwt_color_map.h>
 %End
@@ -911,8 +976,7 @@ public:
   QColor color1() const;
   QColor color2() const;
 
-private:
-  QwtLinearColorMap(const QwtLinearColorMap&);
+
 };
 
 class LinearColorMap : QwtLinearColorMap
@@ -931,28 +995,42 @@ public:
   //! Get the upper range limit
   double upperBound();
 
-private:
-  LinearColorMap(const LinearColorMap&);
+
 };
 
 class Matrix: MdiSubWindow
 {
+private:
+    Matrix(const Matrix &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/matrix/Matrix.h"
+#include "Matrix.h"
 #define CHECK_MATRIX_COL(arg)\
 	int col = arg-1;\
    if (col < 0 || col >= sipCpp->numCols()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no column %d in matrix %s!", col+1, sipCpp->name().ascii());\
+		PyErr_Format(PyExc_ValueError, "There's no column %d in matrix %s!", col+1, sipCpp->name().toUtf8().constData());\
 	}
 #define CHECK_MATRIX_ROW(arg)\
    int row = arg-1;\
 	if (row < 0 || row >= sipCpp->numRows()) {\
 		sipIsErr = 1;\
-		PyErr_Format(PyExc_ValueError, "There's no row %d in matrix %s!", row+1, sipCpp->name().ascii());\
+		PyErr_Format(PyExc_ValueError, "There's no row %d in matrix %s!", row+1, sipCpp->name().toUtf8().constData());\
 	}
 %End
 public:
+  Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
+  Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
   enum HeaderViewType{ColumnRow, XY};
   enum ViewType{TableView, ImageView};
   enum ImportMode{NewColumns, NewRows, Overwrite};
@@ -972,7 +1050,7 @@ public:
 	CHECK_MATRIX_ROW(a0);
 	CHECK_MATRIX_COL(a1);
 	if (sipIsErr == 0)
-		sipRes = PyString_FromString(sipCpp->text(row, col));
+		sipRes = PyUnicode_FromString(sipCpp->text(row, col).toUtf8().constData());
 %End
   double cell(int, int);
 %MethodCode
@@ -1008,25 +1086,25 @@ public:
     void setCoordinates(double xs, double xe, double ys, double ye);
 
 	QString xLabel();
-	void setXLabel(const QString&);
+
 	QString yLabel();
-	void setYLabel(const QString&);
+
 	QString zLabel();
-	void setZLabel(const QString&);
+
 	QString xUnit();
-	void setXUnit(const QString&);
+
 	QString yUnit();
-	void setYUnit(const QString&);
+
 	QString zUnit();
-	void setZUnit(const QString&);
+
 	QString xComment();
-	void setXComment(const QString&);
+
 	QString yComment();
-	void setYComment(const QString&);
+
 	QString zComment();
-	void setZComment(const QString&);
+
 	QString formula();
-    void setFormula(const QString &);
+
     bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool muParser = true);
 
     void setNumericPrecision(int prec);
@@ -1046,12 +1124,11 @@ public:
 	void setGrayScale();
 	void setRainbowColorMap();
 	LinearColorMap *colorMapPointer()/PyName=colorMap/;
-	void setColorMap(const LinearColorMap&);
 
 	void resetView();
 
 	QImage image();
-	void importImage(const QString&);
+
 	void exportRasterImage(const QString&, int = 100, int dpi = 0, int compression = 0);
 	void exportToFile(const QString&)  /PyName=export/;
 	void exportVector(const QString&, int = 0, bool = true);
@@ -1060,24 +1137,34 @@ public:
 			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
 	bool exportASCII(const QString&, const QString&="\t", bool=false);
 
-private:
-  Matrix(const Matrix&);
+
 };
 
 class ArrowMarker // : QwtPlotMarker
 {
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/plot2D/ArrowMarker.h"
+#include "ArrowMarker.h"
 %End
 public:
 
   ArrowMarker();
+private:
+  ArrowMarker(const ArrowMarker&);
 
   void setStartPoint(double, double) /PyName=setStart/;
   void setEndPoint(double, double) /PyName=setEnd/;
 
   void setStyle(Qt::PenStyle);
-  void setColor(const QColor&);
+
   void setWidth(double);
   void drawStartArrow(bool = true);
   void drawEndArrow(bool = true);
@@ -1085,25 +1172,24 @@ public:
   void setHeadAngle(int);
   void fillArrowHead(bool = true);
 
-private:
-  ArrowMarker(const ArrowMarker&);
+
 };
 
 class FrameWidget : QWidget  /PyName=Frame/
 {
 %TypeHeaderCode
-#include "../src/plot2D/FrameWidget.h"
+#include "FrameWidget.h"
 %End
 
 public:
-    enum FrameStyle{None = 0, Line = 1, Shadow = 2};
+  FrameWidget(Graph *);
+  enum FrameStyle{None = 0, Line = 1, Shadow = 2};
     enum Unit{Inch = 0, Millimeter, Centimeter, Point, Pixel, Scale};
 
     double xValue();
 	double yValue();
 	void setOriginCoord(double, double);
 	void setOrigin(int x, int y);
-	void move(const QPoint&);
 
 	QRectF boundingRect();
 	void setCoordinates(double left, double top, double right, double bottom);
@@ -1118,31 +1204,27 @@ public:
 	void setFrameStyle(int);
 
 	QPen framePen();
-	void setFramePen(const QPen&);
 
 	Qt::PenStyle frameLineStyle();
 	void setFrameLineStyle(const Qt::PenStyle&);
 
 	QColor frameColor();
-	void setFrameColor(const QColor&);
 
 	double frameWidth();
 	void setFrameWidth(double);
 
 	QColor backgroundColor();
-	void setBackgroundColor(const QColor&);
 
 	QBrush brush();
 	void setBrush(const QBrush& );
 
-private:
-  FrameWidget(const FrameWidget&);
+
 };
 
 class ImageWidget : FrameWidget /PyName=Image/
 {
 %TypeHeaderCode
-#include "../src/plot2D/ImageWidget.h"
+#include "ImageWidget.h"
 %End
 public:
 
@@ -1150,58 +1232,63 @@ public:
   QString fileName();
   bool load(const QString& fn);
 
-private:
-  ImageWidget(const ImageWidget&);
+
 };
 
 class LegendWidget : FrameWidget /PyName=Legend/
 {
 %TypeHeaderCode
-#include "../src/plot2D/LegendWidget.h"
+#include "LegendWidget.h"
 %End
 public:
-
-  void setText(const QString&);
-  void setTextColor(const QColor&);
-  void setFont(const QFont&);
+  LegendWidget(Graph *);
   void setAngle(int);
   int angle();
 
   bool isAutoUpdateEnabled();
   void setAutoUpdate(bool);
 
-private:
-  LegendWidget(const LegendWidget&);
+
 };
 
 class RectangleWidget : FrameWidget /PyName=Rectangle/
 {
 %TypeHeaderCode
-#include "../src/plot2D/RectangleWidget.h"
+#include "RectangleWidget.h"
 %End
 public:
 
   RectangleWidget(Graph *);
 
-private:
-  RectangleWidget(const RectangleWidget&);
+
 };
 
 class EllipseWidget : FrameWidget /PyName=Ellipse/
 {
 %TypeHeaderCode
-#include "../src/plot2D/EllipseWidget.h"
+#include "EllipseWidget.h"
 %End
 public:
 
   EllipseWidget(Graph *);
 
-private:
-  EllipseWidget(const EllipseWidget&);
+
 };
 
 class QwtSymbol /PyName = PlotSymbol/
 {
+private:
+  QwtSymbol(const QwtSymbol &);
+  QwtSymbol& operator=(const QwtSymbol &);
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
 #include <qwt_symbol.h>
 %End
@@ -1225,7 +1312,6 @@ class QwtSymbol /PyName = PlotSymbol/
 		Star2,
 		Hexagon,
 
-		StyleCnt
 	};
 
 	QwtSymbol();
@@ -1242,8 +1328,7 @@ class QwtSymbol /PyName = PlotSymbol/
 	const QSize& size() const;
 	Style style() const;
 
-	private:
-		QwtSymbol(const QwtSymbol&);
+	
 };
 
 class ImageSymbol: QwtSymbol
@@ -1258,20 +1343,42 @@ public:
 
 	QPixmap pixmap();
 	QString imagePath();
-
+           
 private:
 	ImageSymbol(const ImageSymbol&);
+	ImageSymbol& operator=(const ImageSymbol&);
+
+
 };
 
 class QwtPlotCurve
 {
+private:
+    QwtPlotCurve(const QwtPlotCurve &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
 #include <qwt_plot_curve.h>
 %End
 	public:
 		int dataSize() const;
 		double x(int i) const;
+%MethodCode
+  sipRes = sipCpp->sample(a0).x();
+%End
 		double y(int i) const;
+%MethodCode
+  sipRes = sipCpp->sample(a0).y();
+%End
 		double minXValue() const;
 		double maxXValue() const;
 		double minYValue() const;
@@ -1286,28 +1393,38 @@ class QwtPlotCurve
 		int yAxis () const;
 		void setYAxis(int);
 
-		void setPen(const QPen &);
 		const QPen &pen() const;
 
-		void setBrush(const QBrush &);
 		const QBrush &brush() const;
 
-		void setSymbol(const QwtSymbol &s);
-		const QwtSymbol& symbol() const;
+		void setSymbol(QwtSymbol *s /Transfer/);
+		const QwtSymbol* symbol() const;
 
 		void setVisible(bool on);
 		bool isVisible();
 
 		void setTitle(const QString &title);
 
-	private:
-		QwtPlotCurve(const QwtPlotCurve&);
+	
 };
 
 class PlotCurve : QwtPlotCurve
 {
+private:
+    PlotCurve(const PlotCurve &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/plot2D/PlotCurve.h"
+#include "PlotCurve.h"
 %End
 public:
 	PlotCurve(const QString& name = QString());
@@ -1315,14 +1432,13 @@ public:
 	int skipSymbolsCount();
 	void setSkipSymbolsCount(int);
 
-private:
-	PlotCurve(const PlotCurve&);
+
 };
 
 class FunctionCurve : PlotCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/FunctionCurve.h"
+#include "FunctionCurve.h"
 %End
 public:
 	enum FunctionType{Normal = 0, Parametric = 1, Polar = 2};
@@ -1360,14 +1476,13 @@ public:
 
 	bool loadData(int points = 0, bool xLog10Scale = false);
 
-private:
-	FunctionCurve(const FunctionCurve&);
+
 };
 
 class DataCurve : PlotCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/PlotCurve.h"
+#include "PlotCurve.h"
 %End
 public:
 	DataCurve(Table *t, const QString& xColName, const QString& name, int startRow = 0, int endRow = -1);
@@ -1416,14 +1531,13 @@ public:
 
 	void clearLabels();
 
-private:
-	DataCurve(const DataCurve&);
+
 };
 
 class ErrorBarsCurve : DataCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/ErrorBarsCurve.h"
+#include "ErrorBarsCurve.h"
 %End
 public:
 	enum Orientation{Horizontal = 0, Vertical = 1};
@@ -1466,14 +1580,13 @@ public:
 
 	void loadData();
 
-private:
-	ErrorBarsCurve(const ErrorBarsCurve&);
+
 };
 
 class PieCurve : DataCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/PieCurve.h"
+#include "PieCurve.h"
 %End
 public:
 	PieCurve(Table *t, const QString& name, int startRow, int endRow);
@@ -1526,14 +1639,13 @@ public:
 	void loadData();
 	void clearLabels();
 
-	private:
-		PieCurve(const PieCurve&);
+	
 };
 
 class VectorCurve : DataCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/VectorCurve.h"
+#include "VectorCurve.h"
 %End
 public:
 	enum VectorStyle{XYXY, XYAM};
@@ -1541,6 +1653,12 @@ public:
 
 	VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
 				const QString& endCol1, const QString& endCol2, int startRow, int endRow);
+
+private:
+	VectorCurve(const VectorCurve&);
+	VectorCurve& operator=(const VectorCurve&);
+
+public:
 
 	QString vectorEndXAColName();
 	QString vectorEndYMColName();
@@ -1550,7 +1668,6 @@ public:
 	void setWidth(double);
 
 	QColor color();
-	void setColor(const QColor&);
 
 	int headLength();
 	void setHeadLength(int);
@@ -1570,16 +1687,13 @@ public:
 	void loadData();
 
 	QPen vectorPen();
-	void setVectorPen(const QPen&);
 
-	private:
-		VectorCurve(const VectorCurve&);
 };
 
 class QwtHistogram : DataCurve /PyName=Histogram/
 {
 %TypeHeaderCode
-#include "../src/plot2D/QwtHistogram.h"
+#include "QwtHistogram.h"
 %End
 public:
 	QwtHistogram(Table *t, const QString& name, int startRow = 0, int endRow = -1);
@@ -1600,14 +1714,13 @@ public:
 
 	Matrix* matrix();
 
-private:
-	QwtHistogram(const QwtHistogram&);
+
 };
 
 class BoxCurve : DataCurve
 {
 %TypeHeaderCode
-#include "../src/plot2D/BoxCurve.h"
+#include "BoxCurve.h"
 %End
 public:
 	enum BoxStyle{NoBox, Rect, Diamond, WindBox, Notch};
@@ -1650,12 +1763,23 @@ public:
 	double median();
 	double quantile(double);
 
-private:
-	BoxCurve(const BoxCurve&);
+
 };
 
-class QwtPlotSpectrogram // : QwtPlotItem
+class QwtPlotSpectrogram
 {
+private:
+  QwtPlotSpectrogram(const QwtPlotSpectrogram &);
+  QwtPlotSpectrogram& operator=(const QwtPlotSpectrogram &);
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
 #include <qwt_plot_spectrogram.h>
 %End
@@ -1665,23 +1789,27 @@ public:
 		ContourMode = 2
 	};
 
-	QwtPlotSpectrogram (const QString &title = QString::null);
+	QwtPlotSpectrogram (const QString &title = QString());
 	void setDefaultContourPen (const QPen &);
 	void setDisplayMode (DisplayMode mode, bool on = true);
 
-private:
-	QwtPlotSpectrogram(const QwtPlotSpectrogram&);
+
 };
 
 class Spectrogram : QwtPlotSpectrogram
 {
 %TypeHeaderCode
-#include "../src/plot2D/Spectrogram.h"
+#include "Spectrogram.h"
 %End
 public:
 
 	Spectrogram(Graph *graph, Matrix *m);
 
+private:
+	Spectrogram(const Spectrogram&);
+	Spectrogram& operator=(const Spectrogram&);
+
+public:
 	Matrix * matrix();
 	bool setMatrix(Matrix *, bool = false);
 
@@ -1743,18 +1871,23 @@ public:
     void setContourLinePen(int, const QPen &);
 	void updateData();
 
-private:
-	Spectrogram(const Spectrogram&);
+
 };
 
 class Grid // : QwtPlotGrid
 {
 %TypeHeaderCode
-#include "../src/plot2D/Grid.h"
+#include "Grid.h"
 %End
 public:
 
 	Grid();
+
+private:
+	Grid(const Grid&);
+	Grid& operator=(const Grid&);
+
+public:
 
 	//! obsolete, use enableXMaj() instead
 	void enableX(bool = true) /PyName=enableXMax/;
@@ -1791,8 +1924,7 @@ public:
 	void setMinPenY(const QPen &p);
 	const QPen& minPenY();
 
-private:
-	Grid(const Grid&);
+
 };
 
 class QwtScaleDiv
@@ -1805,8 +1937,7 @@ class QwtScaleDiv
 		double lowerBound();
 		double upperBound();
 
-	private:
-		QwtScaleDiv(const QwtScaleDiv&);
+	
 };
 
 class QwtPlot : QFrame
@@ -1815,15 +1946,23 @@ class QwtPlot : QFrame
 #include "qwt_plot.h"
 %End
 
-private:
-  QwtPlot(const QwtPlot&);
+
 };
 
 class Graph : QwtPlot /PyName=Layer/
 {
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/plot2D/Graph.h"
-#include "../src/plot2D/LegendWidget.h"
+#include "Graph.h"
+#include "LegendWidget.h"
 %End
 public:
   enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
@@ -1837,7 +1976,7 @@ public:
   bool isPiePlot();
   SIP_PYOBJECT pieLegendText() /PyName=pieLegend/;
 %MethodCode
-  sipRes = PyString_FromString(sipCpp->pieLegendText());
+  sipRes = PyUnicode_FromString(sipCpp->pieLegendText().toUtf8().constData());
 %End
 
   DataCurve* insertCurve(Table*, const QString&, int style = 1, int startRow = 0, int endRow = -1);
@@ -1849,7 +1988,7 @@ public:
   for (int i=0; i<n; i++) {
     PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
     if (str) {
-      l << PyString_AsString(str);
+      l << PyUnicode_AsUTF8(str);
 		Py_DECREF(str);
 	 } else {
       sipIsErr = 1;
@@ -1871,7 +2010,7 @@ public:
 	}
 %End
   void removeCurve(int);
-  void removeCurve(const QString&);
+
   void removeCurve(QwtPlotCurve*);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
@@ -1945,8 +2084,8 @@ public:
   int numArrows();
 
   ImageWidget* addImage(ImageWidget*);
-  ImageWidget* addImage(const QString&);
-  ImageWidget* addImage(const QImage&);
+
+
   void remove(ImageWidget*);
 
   void setTitle(const QString& t);
@@ -1956,7 +2095,6 @@ public:
   void removeTitle();
 
   LegendWidget* newLegend(const QString& = QString());
-  void setLegend(const QString&);
 
   LegendWidget* legend();
   void removeLegend();
@@ -1999,7 +2137,7 @@ public:
   void setAxisLabelsColor(int axis, const QColor& color);
   void setLabelsNumericFormat(int axis, int format, int = 6, const QString& = QString()) /PyName=setAxisNumericFormat/;
 
-  QwtScaleDiv* axisScaleDiv (int axisId);
+  QwtScaleDiv axisScaleDiv (int axisId);
   void setScale(int axis, double start, double end, double step = 0.0,
                 int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false,
 				double left_break = -DBL_MAX, double right_break = DBL_MAX, int pos = 50,
@@ -2010,7 +2148,7 @@ public:
   bool hasSynchronizedScaleDivisions();
   void setSynchronizedScaleDivisions(bool);
 
-  void setMargin(int);
+  void setAxisMargin(int, int);
   void setFrame(int width = 1, const QColor& color = QColor(Qt::black));
   void setCanvasFrame(int width = 1, const QColor& color =  QColor(Qt::black));
   void setBackgroundColor(const QColor& color);
@@ -2062,25 +2200,34 @@ public:
 	{
         QwtPlotItem* pItem;
 		pItem = sipCpp->plotItem(a0);
-		pItem->setAxis(a1, a2);
+		pItem->setAxes(a1, a2);
 		sipCpp->setAutoScale();
 	}
 %End
 
   void setWaterfallSideLines(bool = true);
-  void setWaterfallFillColor(const QColor&);
+
   void setWaterfallOffset(double x, double y, bool = true);
 
-private:
-  Graph(const Graph&);
+
 };
 
 class MultiLayer : MdiSubWindow /PyName=Graph/
 {
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/plot2D/MultiLayer.h"
+#include "MultiLayer.h"
 %End
 public:
+  MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f= 0);
 
   enum HorAlignement{HCenter, Left, Right};
   enum VertAlignement{VCenter, Top, Bottom};
@@ -2124,16 +2271,29 @@ public:
 
   void reverseWaterfallOrder();
 
-private:
-  MultiLayer(const MultiLayer&);
+
 };
 
 class Note: MdiSubWindow
 {
+private:
+    Note(const Note &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/scripting/Note.h"
+#include "Note.h"
 %End
 public:
+  Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
   bool autoexec() const;
   void setAutoexec(bool = true);
 
@@ -2141,13 +2301,13 @@ public:
   void setText(const QString &s);
 
   void exportPDF(const QString& fileName);
-  QString exportASCII(const QString &file=QString::null)/PyName=saveAs/;
-  QString importASCII(const QString &file=QString::null);
+  QString exportASCII(const QString &file=QString())/PyName=saveAs/;
+  QString importASCII(const QString &file=QString());
 
   void showLineNumbers(bool = true);
 
   void setFont(const QFont& f);
-  void setTabStopWidth(int length);
+  void setTabStopDistance(double length);
 
   int tabs();
   void addTab();
@@ -2158,16 +2318,16 @@ public:
   ScriptEdit* editor(int index);
   ScriptEdit* currentEditor();
 
-private:
-  Note(const Note&);
+
 };
 
 class Graph3D: MdiSubWindow
 {
 %TypeHeaderCode
-#include "../src/plot3D/Graph3D.h"
+#include "Graph3D.h"
 %End
 public:
+  Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f= 0);
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
 	enum AxisNumericFormat{Default = 0, Decimal = 1, Scientific = 2, Engineering = 3};
 
@@ -2183,18 +2343,17 @@ public:
     void setZoom(double val);
     void setOrthogonal(bool = true);
     void setMeshLineWidth(int);
-	void setMeshColor(const QColor&);
-	void setAxesColor(const QColor&);
-	void setNumbersColor(const QColor&);
-	void setLabelsColor(const QColor&);
+
+
+
+
     void setLabelsDistance(int);
-	void setBackgroundColor(const QColor&);
-	void setGridColor(const QColor&);
+
+
     void setDataColors(const QColor&, const QColor&);
 	QString colorMapFile();
     void setDataColorMap(const QString& fileName);
 	LinearColorMap *colorMapPointer()/PyName=colorMap/;
-	void setDataColorMap(const LinearColorMap&);
 
     void changeTransparency(double) /PyName=setOpacity/;
     void setResolution(int);
@@ -2243,9 +2402,7 @@ public:
 
     void update();
 
-    void setXAxisLabel(const QString&);
-    void setYAxisLabel(const QString&);
-	void setZAxisLabel(const QString&);
+
 
 	void setXAxisTickLength(double majorLength, double minorLength);
     void setYAxisTickLength(double majorLength, double minorLength);
@@ -2271,41 +2428,43 @@ public:
 	sipCpp->setAxisNumericFormat(2, a0, a1);
 %End
 
-private:
-  Graph3D(const Graph3D&);
+
 };
 
 class ApplicationWindow: QMainWindow
 {
+private:
+    ApplicationWindow(const ApplicationWindow &);
+
+
+
+
+
+
+
+
+
+
+
 %TypeHeaderCode
-#include "../src/core/ApplicationWindow.h"
+#include "ApplicationWindow.h"
 %End
 %ConvertToSubClassCode
 // we have to do this to override casting in qt/qobject.sip
- sipClass = sipFindClass(sipCpp->className());
+ return sipFindType(sipCpp->metaObject()->className());
 %End
 
 public:
+  ApplicationWindow();
   enum MatrixToTableConversion{Direct, XYZ, YXZ};
 
-  Table* table(const QString&);
-%MethodCode
-  sipRes = sipCpp->current_folder->table(*a0, false);
-  if(!sipRes)
-    sipRes = sipCpp->projectFolder()->table(*a0, true);
-%End
   Table* newTable();
   Table* currentTable();
   Table* newTable(const QString&, int=30, int=2);
 %MethodCode
   sipRes = sipCpp->newTable(*a0, a1, a2);
 %End
-  Matrix* matrix(const QString&);
-%MethodCode
-  sipRes = sipCpp->current_folder->matrix(*a0, false);
-  if(!sipRes)
-    sipRes = sipCpp->projectFolder()->matrix(*a0, true);
-%End
+
   Matrix* newMatrix();
   Matrix* currentMatrix();
   Matrix* newMatrix(const QString&, int=32, int=32);
@@ -2325,13 +2484,7 @@ public:
 		sipRes = sipCpp->multilayerPlot(*a0, a1, a2, a3);
 %End
 
-  Note *note(const QString&);
-%MethodCode
-  sipRes = sipCpp->current_folder->note(*a0, false);
-  if(!sipRes)
-    sipRes = sipCpp->projectFolder()->note(*a0, true);
-%End
-  Note* newNote(const QString& = QString::null);
+  Note* newNote(const QString& = QString());
   Note* currentNote();
   MultiLayer *plot(Table*, SIP_PYTUPLE, int=0);
 %MethodCode
@@ -2344,7 +2497,7 @@ public:
 	  for (int i=0; i<n; i++) {
 		PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
 		if (str) {
-		  l << PyString_AsString(str);
+		  l << PyUnicode_AsUTF8(str);
 			Py_DECREF(str);
 		 } else {
 		  sipIsErr = 1;
@@ -2384,7 +2537,7 @@ public:
 	  for (int i=0; i<n; i++) {
 		PyObject *str = PyObject_Str(PyTuple_GET_ITEM(a1,i));
 		if (str) {
-		  l << PyString_AsString(str);
+		  l << PyUnicode_AsUTF8(str);
 			Py_DECREF(str);
 		 } else {
 		  sipIsErr = 1;
@@ -2403,13 +2556,6 @@ public:
   sipRes = sipCpp->newFunctionPlot(QStringList() << *a0, a1, a2, a3);
 %End
 
-  Graph3D *plot3D(const QString&);
-%MethodCode
-  sipRes = sipCpp->current_folder->plot3D(*a0, false);
-  if(!sipRes)
-    sipRes = sipCpp->projectFolder()->plot3D(*a0, true);
-%End
-
     Graph3D* newPlot3D(const QString& = QString());
     Graph3D* plotXYZ(Table* table, const QString&, int = 0) /PyName=plot3D/;
 	Graph3D* plot3DMatrix(Matrix *, int style = 5) /PyName=plot3D/;
@@ -2421,7 +2567,7 @@ public:
   QList<MdiSubWindow*> windowsList() /PyName=windows/;
 
   // folders
-  Folder *activeFolder() /NoDerived/;
+  Folder *activeFolder() ;
 %MethodCode
   sipRes = sipCpp->current_folder;
 %End
@@ -2435,7 +2581,6 @@ public:
   bool changeFolder(Folder *, bool force = false);
   bool copyFolder(Folder *src, Folder *dest);
 
-  MdiSubWindow* openTemplate(const QString&);
   void saveAsTemplate(MdiSubWindow*, const QString&);
 
   void setWindowName(MdiSubWindow *, const QString &);
@@ -2457,30 +2602,28 @@ public:
   QString stemPlot(Table *t, const QString& colName, int power = 1001, int startRow = 0, int endRow = -1);
 
   QMdiArea* workspace();
-  Table* importOdfSpreadsheet(const QString& = QString::null, int = -1);
-  Table* importExcel(const QString& = QString::null, int = -1);
+  Table* importOdfSpreadsheet(const QString& = QString(), int = -1);
+  Table* importExcel(const QString& = QString(), int = -1);
   Table* importWaveFile();
 
-private:
-  ApplicationWindow(const ApplicationWindow&);
+
 };
 
 class Fit : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Fit.h"
+#include "Fit.h"
 %End
 public:
   enum Algorithm{ScaledLevenbergMarquardt, UnscaledLevenbergMarquardt, NelderMeadSimplex};
   enum WeightingMethod{NoWeighting, Instrumental, Statistical, Dataset, Direct};
-
-  Fit(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
+  Fit(ApplicationWindow * app /TransferThis/, Graph*=0, const char*=0);
   ~Fit();
 
   virtual void fit();
   virtual bool run();
 
-  bool setWeightingData(WeightingMethod, const QString&=QString::null);
+  bool setWeightingData(WeightingMethod, const QString&=QString());
   bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
   void setInterval(double from, double to);
 
@@ -2573,8 +2716,7 @@ if(sipRes)
   double lcl(int, double);
   double ucl(int, double);
 
-  Table* parametersTable(const QString&);
-  Matrix* covarianceMatrix(const QString&);
+
 };
 
 %ModuleCode
@@ -2585,8 +2727,8 @@ ApplicationWindow *sipqti_app()
   PyObject *mydict = PyModule_GetDict(me);
   PyObject *pyapp = PyDict_GetItemString(mydict,"app");
   Py_DECREF(me);
-  if (sipCanConvertToInstance(pyapp, sipClass_ApplicationWindow, SIP_NOT_NONE))
-    return (ApplicationWindow*) sipConvertToInstance(pyapp, sipClass_ApplicationWindow, NULL, SIP_NOT_NONE, NULL, &iserr);
+  if (sipCanConvertToType(pyapp, sipType_ApplicationWindow, SIP_NOT_NONE))
+    return (ApplicationWindow*) sipConvertToType(pyapp, sipType_ApplicationWindow, NULL, SIP_NOT_NONE, NULL, &iserr);
   else
     return NULL;
 }
@@ -2597,143 +2739,59 @@ ApplicationWindow *sipqti_app();
 #define SIPQTI_APP(sipcppexpr)\
 ApplicationWindow *app = sipqti_app();\
 if (app) sipCpp = sipcppexpr;\
-else { sipCpp = NULL; }
+else sipCpp = NULL;
 %End
 
 class ExponentialFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/ExponentialFit.h"
+#include "ExponentialFit.h"
 %End
 public:
-  ExponentialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
-  ExponentialFit(Table *, const QString&, const QString&, int = 1, int = -1, bool = false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipExponentialFit(app, a0, *a1, *a2, a3, a4, a5))
-%End
-
-  ExponentialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, bool=false);
-  ExponentialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, bool=false);
-  ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, bool=false);
-  ExponentialFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, bool=false);
-  ExponentialFit(QwtPlotCurve *, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipExponentialFit(app, a0, a1))
-%End
-  ExponentialFit(QwtPlotCurve *, double, double, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipExponentialFit(app, a0, a1, a2, a3))
-%End
-  ExponentialFit(Graph *, const QString&, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipExponentialFit(app, a0, *a1, a2))
-%End
-  ExponentialFit(Graph *, const QString&, double, double, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipExponentialFit(app, a0, *a1, a2, a3, a4))
-%End
+  ExponentialFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
+  ExponentialFit(ApplicationWindow * app /TransferThis/, PlotCurve *, bool=false);
+  ExponentialFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double, bool=false);
+  ExponentialFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, bool=false);
+  ExponentialFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double, bool=false);
 };
 
 class TwoExpFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/ExponentialFit.h"
+#include "ExponentialFit.h"
 %End
 public:
-  TwoExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  TwoExpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipTwoExpFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  TwoExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  TwoExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  TwoExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  TwoExpFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipTwoExpFit(app, a0))
-%End
-  TwoExpFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipTwoExpFit(app, a0, a1, a2))
-%End
-  TwoExpFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipTwoExpFit(app, a0, *a1))
-%End
-  TwoExpFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipTwoExpFit(app, a0, *a1, a2, a3))
-%End
+  TwoExpFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  TwoExpFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  TwoExpFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  TwoExpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  TwoExpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 };
 
 class ThreeExpFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/ExponentialFit.h"
+#include "ExponentialFit.h"
 %End
 public:
-  ThreeExpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  ThreeExpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipThreeExpFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  ThreeExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  ThreeExpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  ThreeExpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  ThreeExpFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipThreeExpFit(app, a0))
-%End
-  ThreeExpFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipThreeExpFit(app, a0, a1, a2))
-%End
-  ThreeExpFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipThreeExpFit(app, a0, *a1))
-%End
-  ThreeExpFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipThreeExpFit(app, a0, *a1, a2, a3))
-%End
+  ThreeExpFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  ThreeExpFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  ThreeExpFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  ThreeExpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  ThreeExpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 };
 
 class SigmoidalFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/SigmoidalFit.h"
+#include "SigmoidalFit.h"
 %End
 public:
-  SigmoidalFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  SigmoidalFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  SigmoidalFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  SigmoidalFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  SigmoidalFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  SigmoidalFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSigmoidalFit(app, a0))
-%End
-  SigmoidalFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSigmoidalFit(app, a0, a1, a2))
-%End
-  SigmoidalFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1))
-%End
-  SigmoidalFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSigmoidalFit(app, a0, *a1, a2, a3))
-%End
+  SigmoidalFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  SigmoidalFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  SigmoidalFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  SigmoidalFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  SigmoidalFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 
   void guessInitialValues();
 };
@@ -2741,35 +2799,14 @@ public:
 class LogisticFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/LogisticFit.h"
+#include "LogisticFit.h"
 %End
 public:
-  LogisticFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  LogisticFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLogisticFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  LogisticFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  LogisticFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  LogisticFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  LogisticFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLogisticFit(app, a0))
-%End
-  LogisticFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLogisticFit(app, a0, a1, a2))
-%End
-  LogisticFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLogisticFit(app, a0, *a1))
-%End
-  LogisticFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLogisticFit(app, a0, *a1, a2, a3))
-%End
+  LogisticFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  LogisticFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  LogisticFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  LogisticFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  LogisticFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 
   void guessInitialValues();
 };
@@ -2777,35 +2814,14 @@ public:
 class GaussAmpFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/MultiPeakFit.h"
+#include "MultiPeakFit.h"
 %End
 public:
-  GaussAmpFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  GaussAmpFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  GaussAmpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  GaussAmpFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  GaussAmpFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  GaussAmpFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussAmpFit(app, a0))
-%End
-  GaussAmpFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussAmpFit(app, a0, a1, a2))
-%End
-  GaussAmpFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1))
-%End
-  GaussAmpFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussAmpFit(app, a0, *a1, a2, a3))
-%End
+  GaussAmpFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  GaussAmpFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  GaussAmpFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  GaussAmpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  GaussAmpFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 
   void guessInitialValues();
 };
@@ -2813,41 +2829,20 @@ public:
 class NonLinearFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/NonLinearFit.h"
+#include "NonLinearFit.h"
 %End
 public:
-  NonLinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  NonLinearFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipNonLinearFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  NonLinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  NonLinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  NonLinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  NonLinearFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipNonLinearFit(app, a0))
-%End
-  NonLinearFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipNonLinearFit(app, a0, a1, a2))
-%End
-  NonLinearFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipNonLinearFit(app, a0, *a1))
-%End
-  NonLinearFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipNonLinearFit(app, a0, *a1, a2, a3))
-%End
+  NonLinearFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  NonLinearFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  NonLinearFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  NonLinearFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  NonLinearFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
   void setParameters(...);
 %MethodCode
   QStringList l;
-  char *item;
+  const char *item;
   for (int i=0; i<PyTuple_GET_SIZE(a0); i++)
-    if (item = PyString_AsString(PyTuple_GET_ITEM(a0, i)))
+    if (item = PyUnicode_AsUTF8(PyTuple_GET_ITEM(a0, i)))
       l << item;
     else
       sipIsErr = 1;
@@ -2856,54 +2851,33 @@ public:
 %End
   // TODO: make it accept Python callables
   bool setFormula(const QString&, bool = true);
-  bool save(const QString&);
-  bool load(const QString&);
+
+
 };
 
 class PluginFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/PluginFit.h"
+#include "PluginFit.h"
 %End
 public:
-  PluginFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  PluginFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPluginFit(app, a0, *a1, *a2, a3, a4))
-%End
+  PluginFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  PluginFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  PluginFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  PluginFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  PluginFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 
-  PluginFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  PluginFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  PluginFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  PluginFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPluginFit(app, a0))
-%End
-  PluginFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPluginFit(app, a0, a1, a2))
-%End
-  PluginFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPluginFit(app, a0, *a1))
-%End
-  PluginFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPluginFit(app, a0, *a1, a2, a3))
-%End
-  bool load(const QString&);
 };
 
 class MultiPeakFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/MultiPeakFit.h"
+#include "MultiPeakFit.h"
 %End
 public:
   enum PeakProfile{Gauss, Lorentz};
-  MultiPeakFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, PeakProfile=Gauss, int=1);
-  MultiPeakFit(ApplicationWindow * /TransferThis/, Graph *, PeakProfile=Gauss, int=1);
+  MultiPeakFit(ApplicationWindow * app /TransferThis/, PlotCurve *, PeakProfile=Gauss, int=1);
+  MultiPeakFit(ApplicationWindow * app /TransferThis/, Graph *, PeakProfile=Gauss, int=1);
 
   int peaks() /PyName=numPeaks/;
   void setNumPeaks(int);
@@ -2920,103 +2894,40 @@ public:
 class LorentzFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "../src/analysis/MultiPeakFit.h"
+#include "MultiPeakFit.h"
 %End
 public:
-  LorentzFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  LorentzFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLorentzFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  LorentzFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  LorentzFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  LorentzFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  LorentzFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLorentzFit(app, a0))
-%End
-  LorentzFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLorentzFit(app, a0, a1, a2))
-%End
-  LorentzFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLorentzFit(app, a0, *a1))
-%End
-  LorentzFit(Graph *, const QString&, int, int) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLorentzFit(app, a0, *a1, a2, a3))
-%End
+  LorentzFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  LorentzFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  LorentzFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  LorentzFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  LorentzFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, int, int);
 };
 
 class GaussFit : MultiPeakFit
 {
 %TypeHeaderCode
-#include "../src/analysis/MultiPeakFit.h"
+#include "MultiPeakFit.h"
 %End
 public:
-  GaussFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  GaussFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  GaussFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  GaussFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  GaussFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  GaussFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussFit(app, a0))
-%End
-  GaussFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussFit(app, a0, a1, a2))
-%End
-  GaussFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussFit(app, a0, *a1))
-%End
-  GaussFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipGaussFit(app, a0, *a1, a2, a3))
-%End
+  GaussFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  GaussFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  GaussFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  GaussFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  GaussFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 };
 
 class PolynomialFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/PolynomialFit.h"
+#include "PolynomialFit.h"
 %End
 public:
-  PolynomialFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int, bool);
-  PolynomialFit(Table *, const QString&, const QString&, int = 1, int = -1, int = 2, bool = false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, *a2, a3, a4, a5, a6))
-%End
-
-  PolynomialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int=2, bool=false);
-  PolynomialFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int=2, bool=false);
-  PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, int=2, bool=false);
-  PolynomialFit(ApplicationWindow * /TransferThis/, Graph *, QString&, double, double, int=2, bool=false);
-  PolynomialFit(QwtPlotCurve *, int=2, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPolynomialFit(app, a0, a1, a2))
-%End
-  PolynomialFit(QwtPlotCurve *, double, double, int=2, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPolynomialFit(app, a0, a1, a2, a3, a4))
-%End
-  PolynomialFit(Graph *, QString&, int=2, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, a2, a3))
-%End
-  PolynomialFit(Graph *, QString&, double, double, int=2, bool=false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipPolynomialFit(app, a0, *a1, a2, a3, a4, a5))
-%End
+  PolynomialFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, int = 2, bool = false);
+  PolynomialFit(ApplicationWindow * app /TransferThis/, PlotCurve *, int=2, bool=false);
+  PolynomialFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double, int=2, bool=false);
+  PolynomialFit(ApplicationWindow * app /TransferThis/, Graph *, QString&, int=2, bool=false);
+  PolynomialFit(ApplicationWindow * app /TransferThis/, Graph *, QString&, double, double, int=2, bool=false);
 
   virtual QString legendInfo();
   void fit();
@@ -3028,45 +2939,27 @@ public:
 class LinearFit : Fit
 {
 %TypeHeaderCode
-#include "../src/analysis/PolynomialFit.h"
+#include "PolynomialFit.h"
 %End
 public:
-  LinearFit(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  LinearFit(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLinearFit(app, a0, *a1, *a2, a3, a4))
-%End
-
-  LinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  LinearFit(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  LinearFit(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  LinearFit(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLinearFit(app, a0))
-%End
-  LinearFit(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLinearFit(app, a0, a1, a2))
-%End
-  LinearFit(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLinearFit(app, a0, *a1))
-%End
-  LinearFit(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipLinearFit(app, a0, *a1, a2, a3))
-%End
+  LinearFit(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  LinearFit(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  LinearFit(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  LinearFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  LinearFit(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
   void fit();
 };
 
 class Filter : QObject
 {
 %TypeHeaderCode
-#include "../src/analysis/Filter.h"
+#include "Filter.h"
 %End
 public:
-  Filter(ApplicationWindow* /TransferThis/, Graph*=0, const char*=0);
+  Filter(ApplicationWindow * app /TransferThis/, Table *t, const QString& name = QString());
+  Filter(ApplicationWindow * app /TransferThis/, Graph *g, const QString& name = QString());
+  Filter(ApplicationWindow * app /TransferThis/, Matrix *m, const QString& name = QString());
+  Filter(ApplicationWindow * app /TransferThis/, PlotCurve *c);
   ~Filter();
 
   void setOutputPoints(int);
@@ -3074,11 +2967,10 @@ public:
   void setMaximumIterations(int);
 
   void setColor(int);
-  void setColor(const QString&);
-  void setColor(const QColor&);
 
-  bool setDataFromCurve(QwtPlotCurve *c);
-  bool setDataFromCurve(QwtPlotCurve *c, double from, double to);
+
+  bool setDataFromCurve(PlotCurve *c);
+  bool setDataFromCurve(PlotCurve *c, double from, double to);
   bool setDataFromCurve(const QString&, Graph*=0);
   bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
   virtual bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool = false);
@@ -3092,70 +2984,28 @@ public:
 class Differentiation : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Differentiation.h"
+#include "Differentiation.h"
 %End
 public:
-  Differentiation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Differentiation(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDifferentiation(app, a0, *a1, *a2, a3, a4))
-%End
-
-  Differentiation(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  Differentiation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  Differentiation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  Differentiation(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDifferentiation(app, a0, a1, a2))
-%End
-  Differentiation(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDifferentiation(app, a0))
-%End
-  Differentiation(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDifferentiation(app, a0, *a1))
-%End
-  Differentiation(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDifferentiation(app, a0, *a1, a2, a3))
-%End
+  Differentiation(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
+  Differentiation(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  Differentiation(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  Differentiation(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  Differentiation(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
   bool run();
 };
 
 class Integration : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Integration.h"
+#include "Integration.h"
 %End
 public:
-  Integration(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, bool);
-  Integration(Table *, const QString&, const QString&, int = 1, int = -1, bool = false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0, *a1, *a2, a3, a4, a5))
-%End
-
-  Integration(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  Integration(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  Integration(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  Integration(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0))
-%End
-  Integration(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0, a1, a2))
-%End
-  Integration(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0, *a1))
-%End
-  Integration(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipIntegration(app, a0, *a1, a2, a3))
-%End
+  Integration(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
+  Integration(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  Integration(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
+  Integration(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  Integration(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
 
   void enableGraphicsDisplay(bool on = true, Graph *g = 0);
   bool run();
@@ -3166,37 +3016,16 @@ public:
 class Interpolation : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Interpolation.h"
+#include "Interpolation.h"
 %End
 public:
   enum InterpolationMethod{Linear, Cubic, Akima};
-
-  Interpolation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  Interpolation(Table *, const QString&, const QString&, int = 1, int = -1, int = 0) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipInterpolation(app, a0, *a1, *a2, a3, a4, a5))
-%End
-
-  Interpolation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int=0);
-  Interpolation(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int=0);
-  Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=0);
-  Interpolation(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=0);
-  Interpolation(QwtPlotCurve *, int=0) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipInterpolation(app, a0, a1))
-%End
-  Interpolation(QwtPlotCurve *, double, double, int=0) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipInterpolation(app, a0, a1, a2, a3))
-%End
-  Interpolation(Graph *, const QString&, int=0) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipInterpolation(app, a0, *a1, a2))
-%End
-  Interpolation(Graph *, const QString&, double, double, int=0) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipInterpolation(app, a0, *a1, a2, a3, a4))
-%End
+// 
+  Interpolation(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, int = 0);
+  Interpolation(ApplicationWindow * app /TransferThis/, PlotCurve *, int=0);
+  Interpolation(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double, int=0);
+  Interpolation(ApplicationWindow * app /TransferThis/, Graph *, const QString&, int=0);
+  Interpolation(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double, int=0);
 
   void setMethod(int n);
   bool run();
@@ -3205,37 +3034,16 @@ public:
 class SmoothFilter : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/SmoothFilter.h"
+#include "SmoothFilter.h"
 %End
 public:
   enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3, Lowess = 4};
-
-  SmoothFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  SmoothFilter(Table *, const QString&, const QString&, int = 1, int = -1, int = 3) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, *a2, a3, a4, a5))
-%End
-
-  SmoothFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int = 3);
-  SmoothFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int = 3);
-  SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=3);
-  SmoothFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=3);
-  SmoothFilter(QwtPlotCurve *, int=3) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSmoothFilter(app, a0, a1))
-%End
-  SmoothFilter(QwtPlotCurve *, double, double, int=3) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSmoothFilter(app, a0, a1, a2, a3))
-%End
-  SmoothFilter(Graph *, const QString&, int=3) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, a2))
-%End
-  SmoothFilter(Graph *, const QString&, double, double, int=3) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipSmoothFilter(app, a0, *a1, a2, a3, a4))
-%End
+// 
+  SmoothFilter(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, int = 3);
+  SmoothFilter(ApplicationWindow * app /TransferThis/, PlotCurve *, int = 3);
+  SmoothFilter(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double, int = 3);
+  SmoothFilter(ApplicationWindow * app /TransferThis/, Graph *, const QString&, int=3);
+  SmoothFilter(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double, int=3);
 
   void setMethod(int);
   void setSmoothPoints(int, int = 0);
@@ -3247,37 +3055,16 @@ public:
 class FFTFilter : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/FFTFilter.h"
+#include "FFTFilter.h"
 %End
 public:
   enum FilterType{LowPass = 1, HighPass = 2, BandPass = 3, BandBlock = 4};
-
-  FFTFilter(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int, int);
-  FFTFilter(Table *, const QString&, const QString&, int = 1, int = -1, int = 1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFTFilter(app, a0, *a1, *a2, a3, a4, a5))
-%End
-
-  FFTFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, int = 1);
-  FFTFilter(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double, int = 1);
-  FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, int=1);
-  FFTFilter(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double, int=1);
-  FFTFilter(QwtPlotCurve *, int=1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFTFilter(app, a0, a1))
-%End
-  FFTFilter(QwtPlotCurve *, double, double, int=1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFTFilter(app, a0, a1, a2, a3))
-%End
-  FFTFilter(Graph *, const QString&, int=1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFTFilter(app, a0, *a1, a2))
-%End
-  FFTFilter(Graph *, const QString&, double, double, int=1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFTFilter(app, a0, *a1, a2, a3, a4))
-%End
+// 
+  FFTFilter(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1, int = 1);
+  FFTFilter(ApplicationWindow * app /TransferThis/, PlotCurve *, int = 1);
+  FFTFilter(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double, int = 1);
+  FFTFilter(ApplicationWindow * app /TransferThis/, Graph *, const QString&, int=1);
+  FFTFilter(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double, int=1);
 
   void setFilterType(int);
   void setCutoff(double);
@@ -3290,41 +3077,15 @@ public:
 class FFT : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/FFT.h"
+#include "FFT.h"
 %End
 public:
-
-  FFT(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString& = QString(), int = 1, int = -1);
-  FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&, double, double);
-  FFT(ApplicationWindow * /TransferThis/, Graph *, const QString&);
-  FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *);
-  FFT(ApplicationWindow * /TransferThis/, QwtPlotCurve *, double, double);
-  FFT(ApplicationWindow * /TransferThis/, Matrix *, Matrix * = NULL, bool = false, bool = true, bool = false, bool = true);
-
-  FFT(Matrix *, Matrix * = NULL, bool = false, bool = true, bool = false, bool = true) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, a1, a2, a3, a4, a5))
-%End
-  FFT(Table *, const QString&, const QString& = QString(), int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, *a1, *a2, a3, a4))
-%End
-  FFT(Graph *, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, *a1))
-%End
-  FFT(Graph *, const QString&, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, *a1, a2, a3))
-%End
-  FFT(QwtPlotCurve *) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0))
-%End
-  FFT(QwtPlotCurve *, double, double) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipFFT(app, a0, a1, a2))
-%End
+  FFT(ApplicationWindow * app /TransferThis/, Matrix *, Matrix * = NULL, bool = false, bool = true, bool = false, bool = true);
+  FFT(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString& = QString(), int = 1, int = -1);
+  FFT(ApplicationWindow * app /TransferThis/, Graph *, const QString&);
+  FFT(ApplicationWindow * app /TransferThis/, Graph *, const QString&, double, double);
+  FFT(ApplicationWindow * app /TransferThis/, PlotCurve *);
+  FFT(ApplicationWindow * app /TransferThis/, PlotCurve *, double, double);
 
   void setInverseFFT(bool=true);
   void setSampling(double);
@@ -3341,15 +3102,10 @@ public:
 class Correlation : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Correlation.h"
+#include "Correlation.h"
 %End
 public:
-
-  Correlation(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&, int, int);
-  Correlation(Table *, const QString&, const QString&, int = 1, int = -1) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipCorrelation(app, a0, *a1, *a2, a3, a4))
-%End
+  Correlation(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&, int = 1, int = -1);
 
   bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1);
   bool run();
@@ -3358,15 +3114,10 @@ public:
 class Convolution : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Convolution.h"
+#include "Convolution.h"
 %End
 public:
-
-  Convolution(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&);
-  Convolution(Table *, const QString&, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipConvolution(app, a0, *a1, *a2))
-%End
+  Convolution(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&);
 
   void setDataFromTable(Table *, const QString&, const QString&);
   bool run();
@@ -3375,15 +3126,10 @@ public:
 class Deconvolution : Filter
 {
 %TypeHeaderCode
-#include "../src/analysis/Convolution.h"
+#include "Convolution.h"
 %End
 public:
-
-  Deconvolution(ApplicationWindow * /TransferThis/, Table *, const QString&, const QString&);
-  Deconvolution(Table *, const QString&, const QString&) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipDeconvolution(app, a0, *a1, *a2))
-%End
+  Deconvolution(ApplicationWindow * app /TransferThis/, Table *, const QString&, const QString&);
 
   void setDataFromTable(Table *, const QString&, const QString&);
   bool run();
@@ -3395,14 +3141,9 @@ class Statistics : QObject
 #include <Statistics.h>
 %End
 public:
-  Statistics(ApplicationWindow * /TransferThis/, const QString& = QString());
-  Statistics(const QString& = QString()) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipStatistics(app, *a0))
-%End
+  Statistics(ApplicationWindow * app /TransferThis/, const QString& = QString());
   ~Statistics();
 
-  bool setData(const QString&);
   void showResultsLog(bool = true);
 
   //! Returns the size of the input data set
@@ -3425,14 +3166,9 @@ class StatisticTest : Statistics
 #include <StatisticTest.h>
 %End
 public:
-  StatisticTest(ApplicationWindow * /TransferThis/, double = 0.0, double = 0.05, const QString& = QString());
-  StatisticTest(double = 0.0, double = 0.05, const QString& = QString()) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipStatisticTest(app, a0, a1, *a2))
-%End
+  StatisticTest(ApplicationWindow * app /TransferThis/, double = 0.0, double = 0.05, const QString& = QString());
   enum Tail{Left = 0, Right = 1, Both = 2};
 
-  void setTail(const Tail&);
   void setTestValue(double);
   void setSignificanceLevel(double);
   void showDescriptiveStatistics(bool show = true);
@@ -3449,14 +3185,8 @@ class tTest : StatisticTest
 #include <tTest.h>
 %End
 public:
+  tTest(ApplicationWindow * app /TransferThis/, double, double, const QString& = QString(), const QString& = QString(), bool = false);
 
-  tTest(ApplicationWindow * /TransferThis/, double, double, const QString& = QString(), const QString& = QString(), bool = false);
-  tTest(double, double, const QString& = QString(), const QString& = QString(), bool = false) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new siptTest(app, a0, a1, *a2, *a3, a4))
-%End
-
-  bool setSample1(const QString&);
   bool setSample2(const QString&, bool = false);
 
   virtual QString logInfo();
@@ -3477,11 +3207,7 @@ class ChiSquareTest : StatisticTest
 #include <ChiSquareTest.h>
 %End
 public:
-  ChiSquareTest(ApplicationWindow * /TransferThis/, double testValue, double level, const QString& = QString());
-  ChiSquareTest(double testValue, double level, const QString& = QString()) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipChiSquareTest(app, a0, a1, *a2))
-%End
+  ChiSquareTest(ApplicationWindow * app /TransferThis/, double testValue, double level, const QString& = QString());
 
   virtual QString logInfo();
   double chiSquare();
@@ -3495,11 +3221,7 @@ class ShapiroWilkTest : StatisticTest
 #include <ShapiroWilkTest.h>
 %End
 public:
-  ShapiroWilkTest(ApplicationWindow * /TransferThis/, const QString& = QString());
-  ShapiroWilkTest(const QString& = QString()) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipShapiroWilkTest(app, *a0))
-%End
+  ShapiroWilkTest(ApplicationWindow * app /TransferThis/, const QString& = QString());
 
   virtual QString logInfo();
   double w();
@@ -3513,11 +3235,7 @@ class Anova : StatisticTest
 #include <Anova.h>
 %End
 public:
-  Anova(ApplicationWindow * /TransferThis/, bool twoWay = false, double level = 0.05);
-  Anova(bool twoWay = false, double level = 0.05) /NoDerived/;
-%MethodCode
-  SIPQTI_APP(new sipAnova(app, a0, a1))
-%End
+  Anova(ApplicationWindow * app /TransferThis/, bool twoWay = false, double level = 0.05);
 
   bool run();
   bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
@@ -3563,34 +3281,39 @@ public:
 class PythonScripting
 {
 %TypeHeaderCode
-#include "../src/scripting/PythonScripting.h"
+#include "PythonScripting.h"
 %End
 public:
-  void write(const QString&);
+  PythonScripting(ApplicationWindow *parent);
+
 private:
-  PythonScripting(const PythonScripting&);
+  PythonScripting(const PythonScripting &);
+  PythonScripting& operator=(const PythonScripting &);
 };
 class PythonScript
 {
 %TypeHeaderCode
-#include "../src/scripting/PythonScript.h"
+#include "PythonScript.h"
 %End
 public:
-  void write(const QString&);
+  PythonScript(PythonScripting *env, const QString &code, QObject *context=0, const QString &name="<input>");
+
 private:
-  PythonScript(const PythonScript&);
+  PythonScript(const PythonScript &);
+  PythonScript& operator=(const PythonScript &);
 };
 
 class Folder : QObject
 {
 %TypeHeaderCode
-#include "../src/core/Folder.h"
+#include "Folder.h"
 %End
 public:
+  Folder(Folder *parent, const QString &name);
   QList<MdiSubWindow*> windowsList() /PyName=windows/;
 // TODO: implement signal Folder::nameChanged and make it update the project explorer; adjust renaming from GUI accordingly
 //  void setFolderName(const QString&) /PyName=setName/;
-  QString name();
+  QString objectName() /PyName=name/;
   QString path();
 
   QList<Folder*> folders();
@@ -3607,9 +3330,8 @@ public:
   Folder* rootFolder();
 
   QString logInfo();
-  void appendLogInfo(const QString&);
+
   void clearLogInfo();
 
-private:
-  Folder(const Folder&);
+
 };

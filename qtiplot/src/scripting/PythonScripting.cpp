@@ -32,19 +32,17 @@
 #endif
 #include <Python.h>
 #include <compile.h>
-#include <eval.h>
 #include <frameobject.h>
 #include <traceback.h>
 
-#if PY_VERSION_HEX < 0x020400A1
-typedef struct _traceback {
-	PyObject_HEAD
-		struct _traceback *tb_next;
-	PyFrameObject *tb_frame;
-	int tb_lasti;
-	int tb_lineno;
-} PyTracebackObject;
-#endif
+#define PyString_Check PyUnicode_Check
+#define PyString_AsString PyUnicode_AsUTF8
+#define PyString_FromString PyUnicode_FromString
+#define PyString_AS_STRING PyUnicode_AsUTF8
+#define PyInt_Check PyLong_Check
+#define PyInt_AsLong PyLong_AsLong
+#define PyInt_FromLong PyLong_FromLong
+#define PyInt_AS_LONG PyLong_AsLong
 
 #include "PythonScript.h"
 #include "PythonScripting.h"
@@ -59,7 +57,7 @@ typedef struct _traceback {
 
 // includes sip.h, which undefines Qt's "slots" macro since SIP 4.6
 #include "sip.h"
-extern "C" void initqti();
+extern "C" PyObject* PyInit_qti();
 
 const char* PythonScripting::langName = "Python";
 
@@ -90,10 +88,10 @@ PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const ch
 	else
 		args = globals;
 	PyObject *ret=NULL;
-	PyObject *co = Py_CompileString(code.toStdWString(), name, Py_eval_input);
+	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_eval_input);
 	if (co)
 	{
-		ret = PyEval_EvalCode((PyCodeObject*)co, globals, args);
+		ret = PyEval_EvalCode(co, globals, args);
 		Py_DECREF(co);
 	}
 	PyGILState_Release(state);
@@ -110,10 +108,10 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 		// "local" variable assignments automatically become global:
 		args = globals;
 	PyObject *tmp = NULL;
-	PyObject *co = Py_CompileString(code.toStdWString(), name, Py_file_input);
+	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_file_input);
 	if (co)
 	{
-		tmp = PyEval_EvalCode((PyCodeObject*)co, globals, args);
+		tmp = PyEval_EvalCode(co, globals, args);
 		Py_DECREF(co);
 	}
 	if (tmp) Py_DECREF(tmp);
@@ -127,7 +125,7 @@ QString PythonScripting::errorMsg()
 	PyObject *exception=0, *value=0, *traceback=0;
 	PyTracebackObject *excit=0;
 	PyFrameObject *frame;
-	char *fname;
+	const char *fname;
 	QString msg;
 	if (!PyErr_Occurred())
 	{
@@ -166,10 +164,14 @@ QString PythonScripting::errorMsg()
 		while (excit && (PyObject*)excit != Py_None)
 		{
 			frame = excit->tb_frame;
-			msg.append("at ").append(PyString_AsString(frame->f_code->co_filename));
+			PyCodeObject *code = PyFrame_GetCode(frame);
+			msg.append("at ").append(toString(PyObject_GetAttrString((PyObject*)code, "co_filename"), true));
 			msg.append(":").append(QString::number(excit->tb_lineno));
-			if (frame->f_code->co_name && *(fname = PyString_AsString(frame->f_code->co_name)) != '?')
+			PyObject *co_name = PyObject_GetAttrString((PyObject*)code, "co_name");
+			if (co_name && *(fname = PyString_AsString(co_name)) != '?')
 				msg.append(" in ").append(fname);
+			Py_XDECREF(co_name);
+			Py_DECREF(code);
 			msg.append("\n");
 			excit = excit->tb_next;
 		}
@@ -199,14 +201,13 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 			return;
 		}
 		globals = PyModule_GetDict(mainmod);
-		Py_DECREF(mainmod);
-		PyGILState_Release(state);
 	} else {
-		PyEval_InitThreads ();
+		PyImport_AppendInittab("qti", PyInit_qti);
 		Py_Initialize ();
 		if (!Py_IsInitialized ())
 			return;
-		initqti();
+
+		mainmod = PyImport_AddModule("__main__");
 
 		mainmod = PyImport_AddModule("__main__");
 		if (!mainmod)
@@ -300,8 +301,8 @@ bool PythonScripting::loadInitFile(const QString &path)
 	bool success = false;
 	if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
 		// if we have a recent pycFile, use it
-		FILE *f = fopen(pycFile.filePath(), "rb");
-		success = PyRun_SimpleFileEx(f, pycFile.filePath(), false) == 0;
+		FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
+		success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
 		fclose(f);
 	} else if (pyFile.isReadable() && pyFile.exists()) {
 		// try to compile pyFile to pycFile
@@ -310,8 +311,8 @@ bool PythonScripting::loadInitFile(const QString &path)
 			PyObject *compile = PyDict_GetItemString(PyModule_GetDict(compileModule), "compile");
 			if (compile) {
 				PyObject *tmp = PyObject_CallFunctionObjArgs(compile,
-						PyString_FromString(pyFile.filePath()),
-						PyString_FromString(pycFile.filePath()),
+						PyString_FromString(pyFile.filePath().toUtf8().constData()),
+						PyString_FromString(pycFile.filePath().toUtf8().constData()),
 						NULL);
 				if (tmp)
 					Py_DECREF(tmp);
@@ -325,8 +326,8 @@ bool PythonScripting::loadInitFile(const QString &path)
 		pycFile.refresh();
 		if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
 			// run the newly compiled pycFile
-			FILE *f = fopen(pycFile.filePath(), "rb");
-			success = PyRun_SimpleFileEx(f, pycFile.filePath(), false) == 0;
+			FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
+			success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
 			fclose(f);
 		} else {
 			// fallback: just run pyFile
@@ -337,7 +338,7 @@ bool PythonScripting::loadInitFile(const QString &path)
 			QFile f(pyFile.filePath());
 			if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
 				QByteArray data = f.readAll();
-				success = PyRun_SimpleString(data.data());
+				success = PyRun_SimpleString(data.data()) == 0;
 				f.close();
 			}
 		}
@@ -354,16 +355,16 @@ bool PythonScripting::isRunning() const
 	return isinit;
 }
 
+extern const sipAPIDef *sipAPI_qti;
+
 bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 {
 	if(!val) return false;
 	PyObject *pyobj=NULL;
 
-	sipAPIDef sip_API;
-
 	PyGILState_STATE state = PyGILState_Ensure();
-	const auto klass = sip_API.api_find_class(val->className());
-	if (klass) pyobj = sip_API.api_convert_from_type(val, klass->wt_td, NULL);
+	const auto klass = sipAPI_qti->api_find_type(val->metaObject()->className());
+	if (klass) pyobj = sipAPI_qti->api_convert_from_type(val, klass, NULL);
 
 	if (pyobj) {
 		if (dict)
@@ -412,11 +413,7 @@ const QStringList PythonScripting::mathFunctions() const
 	PyGILState_STATE state = PyGILState_Ensure();
 	QStringList flist;
 	PyObject *key, *value;
-#if PY_VERSION_HEX >= 0x02050000
 	Py_ssize_t i=0;
-#else
-	int i=0;
-#endif
 	while(PyDict_Next(math, &i, &key, &value))
 		if (PyCallable_Check(value))
 			flist << PyString_AsString(key);
@@ -428,11 +425,11 @@ const QStringList PythonScripting::mathFunctions() const
 const QString PythonScripting::mathFunctionDoc(const QString &name) const
 {
 	PyGILState_STATE state = PyGILState_Ensure();
-	PyObject *mathf = PyDict_GetItemString(math,name); // borrowed
+	PyObject *mathf = PyDict_GetItemString(math, name.toUtf8().constData()); // borrowed
 	QString qdocstr("");
 	if (mathf) {
 		PyObject *pydocstr = PyObject_GetAttrString(mathf, "__doc__"); // new
-		qdocstr = PyString_AsString(pydocstr);
+		qdocstr = QString::fromUtf8(PyUnicode_AsUTF8(pydocstr));
 		Py_XDECREF(pydocstr);
 	}
 	PyGILState_Release(state);

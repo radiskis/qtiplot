@@ -12,3 +12,4 @@ manual/html/*.html
 manual/html/*.adp
 manual/*.pdf
 .DS_Store
+*.pyc

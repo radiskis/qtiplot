@@ -1,0 +1,14 @@
+[build-system]
+requires = ["sip >=6, <7", "PyQt-builder >=1, <2"]
+build-backend = "sipbuild.api"
+
+[project]
+name = "qti"
+
+[tool.sip.project]
+sip-files-dir = "qtiplot/src/scripting"
+
+[tool.sip.bindings.qti]
+sip-file = "qti.sip"
+headers = ["qtiplot/src/scripting/PythonScripting.h"]
+include-dirs = ["qtiplot/src/core", "qtiplot/src/lib/include", "qtiplot/src/plot2D", "qtiplot/src/plot3D", "qtiplot/src/matrix", "qtiplot/src/table", "qtiplot/src/scripting"]

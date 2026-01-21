@@ -1157,7 +1157,10 @@ private:
 	void insertTranslatedStrings();
 	void translateActionsStrings();
 	//@}
+public:
 	virtual QMenu * createPopupMenu(){return NULL;};
+private:
+
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString());
 	QMessageBox::StandardButton showSaveProjectMessage();
 	QString getSaveProjectName(const QString& fileName, bool *compress = 0, int scope = 0);
