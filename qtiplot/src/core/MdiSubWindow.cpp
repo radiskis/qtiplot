@@ -65,6 +65,12 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 		d_folder->addWindow(this);
 }
 
+MdiSubWindow::~MdiSubWindow()
+{
+	if (d_folder)
+		d_folder->removeWindow(this);
+}
+
 void MdiSubWindow::updateCaption()
 {
 switch (d_caption_policy)

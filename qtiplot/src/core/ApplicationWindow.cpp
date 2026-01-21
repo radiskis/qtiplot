@@ -58,6 +58,7 @@ Description          : QtiPlot's main window
 #include <TableDialog.h>
 #include <TableStatistics.h>
 #include <Fit.h>
+#include "PolarGraph.h"
 #include <MultiPeakFit.h>
 #include <PolynomialFit.h>
 #include <SigmoidalFit.h>
@@ -7223,8 +7224,11 @@ void ApplicationWindow::renameWindow(QTreeWidgetItem *item, int, const QString &
 	if (!w || text == w->objectName())
 		return;
 
-	if(!setWindowName(w, text))
-        item->setText(0, w->objectName());
+	if(!setWindowName(w, text)){
+		lv->blockSignals(true);
+		item->setText(0, w->objectName());
+		lv->blockSignals(false);
+	}
 }
 
 bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
@@ -16612,6 +16616,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					lst<<s;
 				}
 				Graph3D::restore(this, lst, d_file_version);
+			} else if (s == "<PolarGraph>"){
+				lst.clear();
+				while ( s!="</PolarGraph>" ){
+					s = t.readLine();
+					lst<<s;
+				}
+				PolarGraph::restore(this, lst);
 			} else if  (s == "</folder>")
 				goToParentFolder();
 		}
@@ -16875,28 +16886,36 @@ void ApplicationWindow::renameFolder(QTreeWidgetItem *it, int col, const QString
 	if (!it)
 		return;
 
-	Folder *parent = (Folder *)current_folder->parent();
+	Folder *f = ((FolderListItem *)it)->folder();
+	if (!f)
+		return;
+
+	Folder *parent = (Folder *)f->parent();
 	if (!parent)//the parent folder is the project folder (it always exists)
 		parent = projectFolder();
 
 	while(text.isEmpty()){
 		QMessageBox::critical(this,tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		it->setFlags(it->flags() & ~Qt::ItemIsEditable); // disable edit? or just let it close
-		it->setText(0, ((FolderListItem*)it)->folder()->objectName());
+		folders->blockSignals(true);
+		it->setText(0, f->objectName());
+		folders->blockSignals(false);
 		return;
 	}
 
 	QStringList lst = parent->subfolders();
-	lst.removeAll(current_folder->objectName());
+	lst.removeAll(f->objectName());
 	while(lst.contains(text)){
 		QMessageBox::critical(this,tr("QtiPlot - Error"),
 				tr("Name already exists!")+"\n"+tr("Please choose another name!"));
 
-		it->setText(0, ((FolderListItem*)it)->folder()->objectName());
+		folders->blockSignals(true);
+		it->setText(0, f->objectName());
+		folders->blockSignals(false);
 		return;
 	}
 
-	current_folder->setObjectName(text);
+	f->setObjectName(text);
 	connect(folders, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem *)),
 			this, SLOT(folderItemChanged(QTreeWidgetItem *)));
 	folders->setCurrentItem(parent->folderListItem());//update the list views
@@ -17193,9 +17212,14 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 
 	desactivateFolders();
 	newFolder->folderListItem()->setActive(true);
+
+	folders->blockSignals(true);
 	folders->setCurrentItem(newFolder->folderListItem());
+	folders->blockSignals(false);
 
 	Folder *oldFolder = current_folder;
+	current_folder = newFolder;
+
 	MdiSubWindow::Status old_active_window_state = MdiSubWindow::Normal;
 	MdiSubWindow *old_active_window = oldFolder->activeWindow();
 	if (old_active_window)
@@ -17214,7 +17238,6 @@ bool ApplicationWindow::changeFolder(Folder *newFolder, bool force)
 		active_window_state = active_window->status();
 
 	hideFolderWindows(oldFolder);
-	current_folder = newFolder;
 
 	results->setText(current_folder->logInfo());
 
