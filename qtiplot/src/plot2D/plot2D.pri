@@ -102,6 +102,7 @@
 		       src/plot2D/dialogs/PlotDialog.h \
 			   src/plot2D/dialogs/TextDialog.h \
 			   src/plot2D/dialogs/TextEditor.h \
+			   src/plot2D/dialogs/PolarSettingsDialog.h \
 
 	SOURCES += src/plot2D/dialogs/AssociationsDialog.cpp \
 			   src/plot2D/dialogs/AxesDialog.cpp \
@@ -117,3 +118,4 @@
 		       src/plot2D/dialogs/PlotDialog.cpp \
 			   src/plot2D/dialogs/TextDialog.cpp \
 			   src/plot2D/dialogs/TextEditor.cpp \
+			   src/plot2D/dialogs/PolarSettingsDialog.cpp \

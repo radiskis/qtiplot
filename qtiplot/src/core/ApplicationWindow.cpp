@@ -58,6 +58,7 @@ Description          : QtiPlot's main window
 #include <TableDialog.h>
 #include <TableStatistics.h>
 #include <Fit.h>
+#include "PolarGraph.h"
 #include <MultiPeakFit.h>
 #include <PolynomialFit.h>
 #include <SigmoidalFit.h>
@@ -16614,6 +16615,13 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 					lst<<s;
 				}
 				Graph3D::restore(this, lst, d_file_version);
+			} else if (s == "<PolarGraph>"){
+				lst.clear();
+				while ( s!="</PolarGraph>" ){
+					s = t.readLine();
+					lst<<s;
+				}
+				PolarGraph::restore(this, lst);
 			} else if  (s == "</folder>")
 				goToParentFolder();
 		}
