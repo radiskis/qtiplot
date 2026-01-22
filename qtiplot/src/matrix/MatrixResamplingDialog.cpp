@@ -83,11 +83,11 @@ MatrixResamplingDialog::MatrixResamplingDialog(Matrix *m, bool shrink, QWidget* 
 	topLayout->setRowStretch(3, 1);
 
 	buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Close);
-	connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+	connect(buttonBox, &QDialogButtonBox::clicked, this, &MatrixResamplingDialog::buttonClicked);
 
-	connect(boxAction, SIGNAL(activated(int)), this, SLOT(updateDimensionsInfo()));
-	connect(boxColumns, SIGNAL(valueChanged(int)), this, SLOT(updateDimensionsInfo()));
-	connect(boxRows, SIGNAL(valueChanged(int)), this, SLOT(updateDimensionsInfo()));
+	connect(boxAction, QOverload<int>::of(&QComboBox::activated), this, &MatrixResamplingDialog::updateDimensionsInfo);
+	connect(boxColumns, QOverload<int>::of(&QSpinBox::valueChanged), this, &MatrixResamplingDialog::updateDimensionsInfo);
+	connect(boxRows, QOverload<int>::of(&QSpinBox::valueChanged), this, &MatrixResamplingDialog::updateDimensionsInfo);
 
 	updateDimensionsInfo();
 

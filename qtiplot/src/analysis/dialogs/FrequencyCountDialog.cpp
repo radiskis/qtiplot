@@ -152,9 +152,9 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::Window
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
+	connect(buttonApply, &QAbstractButton::clicked, this, &FrequencyCountDialog::apply);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &FrequencyCountDialog::close);
+    connect(buttonOk, &QAbstractButton::clicked, this, &FrequencyCountDialog::accept);
 }
 
 bool FrequencyCountDialog::apply()

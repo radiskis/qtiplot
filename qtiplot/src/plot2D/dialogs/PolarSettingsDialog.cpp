@@ -33,15 +33,15 @@ PolarSettingsDialog::PolarSettingsDialog(PolarGraph *g, QWidget *parent)
     btnLayout->addStretch();
     
     QPushButton *btnApply = new QPushButton(tr("&Apply"));
-    connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
+    connect(btnApply, &QPushButton::clicked, this, &PolarSettingsDialog::apply);
     btnLayout->addWidget(btnApply);
 
     QPushButton *btnOk = new QPushButton(tr("&OK"));
-    connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(btnOk, &QPushButton::clicked, this, &PolarSettingsDialog::accept);
     btnLayout->addWidget(btnOk);
 
     QPushButton *btnCancel = new QPushButton(tr("&Cancel"));
-    connect(btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(btnCancel, &QPushButton::clicked, this, &PolarSettingsDialog::reject);
     btnLayout->addWidget(btnCancel);
     
     layout->addLayout(btnLayout);
@@ -72,7 +72,7 @@ QWidget* PolarSettingsDialog::initFormatTab()
     foreach(QwtPolarCurve *c, curves){
         boxCurve->addItem(c->title().text());
     }
-    connect(boxCurve, SIGNAL(currentIndexChanged(int)), this, SLOT(setActiveCurve(int)));
+    connect(boxCurve, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PolarSettingsDialog::setActiveCurve);
 
     // Line Group
     QGroupBox *lineBox = new QGroupBox(tr("Line"));

@@ -252,25 +252,25 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	d_magnifier = NULL;
 	d_panner = NULL;
 
-	connect (cp,SIGNAL(viewLineDialog()),this,SIGNAL(viewLineDialog()));
-	connect (cp,SIGNAL(showPlotDialog(int)),this,SIGNAL(showPlotDialog(int)));
-	connect (cp,SIGNAL(showMarkerPopupMenu()),this,SIGNAL(showMarkerPopupMenu()));
-	connect (cp,SIGNAL(modified()), this, SIGNAL(modifiedGraph()));
+	connect(cp, &CanvasPicker::viewLineDialog, this, &Graph::viewLineDialog);
+	connect(cp, &CanvasPicker::showPlotDialog, this, &Graph::showPlotDialog);
+	connect(cp, &CanvasPicker::showMarkerPopupMenu, this, &Graph::showMarkerPopupMenu);
+	connect(cp, &CanvasPicker::modified, this, &Graph::modifiedGraph);
 
-	connect (titlePicker,SIGNAL(showTitleMenu()),this,SLOT(showTitleContextMenu()));
-	connect (titlePicker,SIGNAL(doubleClicked()),this, SLOT(enableTextEditor()));
-	connect (titlePicker,SIGNAL(removeTitle()),this,SLOT(removeTitle()));
-	connect (titlePicker,SIGNAL(clicked()), this,SLOT(selectTitle()));
+	connect(titlePicker, &TitlePicker::showTitleMenu, this, &Graph::showTitleContextMenu);
+	connect(titlePicker, &TitlePicker::doubleClicked, this, static_cast<void (Graph::*)()>(&Graph::enableTextEditor));
+	connect(titlePicker, &TitlePicker::removeTitle, this, &Graph::removeTitle);
+	connect(titlePicker, &TitlePicker::clicked, this, [this](){ selectTitle(); });
 
-	connect (scalePicker,SIGNAL(clicked()),this,SLOT(activateGraph()));
-	connect (scalePicker,SIGNAL(clicked()),this,SLOT(deselectMarker()));
-	connect (scalePicker,SIGNAL(axisDblClicked(int)),this,SIGNAL(axisDblClicked(int)));
-	connect (scalePicker,SIGNAL(axisTicksDblClicked(int)),this,SIGNAL(showAxisDialog(int)));
-	connect (scalePicker, SIGNAL(axisTitleDblClicked()), this, SLOT(enableTextEditor()));
-	connect (scalePicker,SIGNAL(axisTitleRightClicked()),this,SLOT(showAxisTitleMenu()));
-	connect (scalePicker,SIGNAL(axisRightClicked(int)),this,SLOT(showAxisContextMenu(int)));
+	connect(scalePicker, &ScalePicker::clicked, this, &Graph::activateGraph);
+	connect(scalePicker, &ScalePicker::clicked, this, &Graph::deselectMarker);
+	connect(scalePicker, &ScalePicker::axisDblClicked, this, &Graph::axisDblClicked);
+	connect(scalePicker, &ScalePicker::axisTicksDblClicked, this, static_cast<void (Graph::*)(int)>(&Graph::showAxisDialog));
+	connect(scalePicker, &ScalePicker::axisTitleDblClicked, this, static_cast<void (Graph::*)()>(&Graph::enableTextEditor));
+	connect(scalePicker, &ScalePicker::axisTitleRightClicked, this, &Graph::showAxisTitleMenu);
+	connect(scalePicker, &ScalePicker::axisRightClicked, this, &Graph::showAxisContextMenu);
 
-	connect (d_zoomer[0],SIGNAL(zoomed (const QRectF &)),this,SLOT(zoomed (const QRectF &)));
+	connect(d_zoomer[0], &QwtPlotZoomer::zoomed, this, &Graph::zoomed);
 }
 
 MultiLayer* Graph::multiLayer() const
@@ -395,16 +395,16 @@ void Graph::select(QWidget *l, bool add)
             d_markers_selector->add(l);
         else {
             d_markers_selector = new SelectionMoveResizer(l);
-			connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
-			connect(d_markers_selector, SIGNAL(destroyed(QObject*)), this, SLOT(selectorDeleted()));
+			connect(d_markers_selector, &SelectionMoveResizer::targetsChanged, this, &Graph::modifiedGraph);
+			connect(d_markers_selector, &SelectionMoveResizer::destroyed, this, &Graph::selectorDeleted);
         }
     } else {
         if (d_markers_selector)
             delete d_markers_selector;
 
         d_markers_selector = new SelectionMoveResizer(l);
-        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
-		connect(d_markers_selector, SIGNAL(destroyed(QObject*)), this, SLOT(selectorDeleted()));
+        connect(d_markers_selector, &SelectionMoveResizer::targetsChanged, this, &Graph::modifiedGraph);
+		connect(d_markers_selector, &SelectionMoveResizer::destroyed, this, &Graph::selectorDeleted);
     }
 
 	selectionChanged(d_markers_selector);
@@ -446,7 +446,7 @@ void Graph::setSelectedArrow(ArrowMarker *mrk, bool add)
 				d_markers_selector = new SelectionMoveResizer(mrk);
             else
                 return;
-            connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+            connect(d_markers_selector, &SelectionMoveResizer::targetsChanged, this, &Graph::modifiedGraph);
         }
 	} else {
 	    if (d_lines.contains(mrk)){
@@ -462,7 +462,7 @@ void Graph::setSelectedArrow(ArrowMarker *mrk, bool add)
 				d_markers_selector = new SelectionMoveResizer(mrk);
         } else
             return;
-        connect(d_markers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedGraph()));
+        connect(d_markers_selector, &SelectionMoveResizer::targetsChanged, this, &Graph::modifiedGraph);
 	}
 }
 
@@ -2222,7 +2222,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
         for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-                connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+                connect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
 		}
         updatePlot();
     }
@@ -4175,11 +4175,11 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				connect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+				connect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
 		}
 
 		d_panner = new QwtPlotPanner(cnvs);
-		connect(d_panner, SIGNAL(panned(int, int)), multiLayer(), SLOT(notifyChanges()));
+		connect(d_panner, &QwtPlotPanner::panned, multiLayer(), &MultiLayer::notifyChanges);
 
 		foreach (QwtPlotItem *it, d_curves){
 			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
@@ -4207,7 +4207,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				disconnect(scale, SIGNAL(scaleDivChanged()), this, SLOT(updateMarkersBoundingRect()));
+				disconnect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
 		}
 
 		cnvs->setCursor(Qt::ArrowCursor);
@@ -4799,7 +4799,7 @@ void Graph::showTitleContextMenu()
 	titleMenu.addAction(tr("C&lear"),this, SLOT(clearTitle()));
 	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeTitle()));
 	titleMenu.addSeparator();
-	titleMenu.addAction(tr("&Properties..."), this, SIGNAL(viewTitleDialog()));
+	titleMenu.addAction(tr("&Properties..."), this, &Graph::viewTitleDialog);
 	titleMenu.exec(QCursor::pos());
 }
 
@@ -4852,7 +4852,7 @@ void Graph::showAxisTitleMenu()
 	titleMenu.addAction(tr("C&lear"),this, SLOT(clearAxisTitle()));
 	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeAxisTitle()));
 	titleMenu.addSeparator();
-	titleMenu.addAction(tr("&Properties..."), this, SIGNAL(showAxisTitleDialog()));
+	titleMenu.addAction(tr("&Properties..."), this, &Graph::showAxisTitleDialog);
 	titleMenu.exec(QCursor::pos());
 }
 
@@ -5367,7 +5367,7 @@ bool Graph::enableRangeSelectors(const QObject *status_target, const char *statu
 	if (!d_range_selector){
 		d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
 		//setActiveTool(d_range_selector);
-		connect(d_range_selector, SIGNAL(changed()), this, SIGNAL(dataRangeChanged()));
+		connect(d_range_selector, &RangeSelectorTool::changed, this, &Graph::dataRangeChanged);
 	}
 
 	d_range_selector->setVisible(true);

@@ -136,10 +136,9 @@ void RectangleWidget::setLinkedLayer(int layerIndex)
     if (!g)
         return;
 
-    this->disconnect(g, SLOT(setCanvasCoordinates(const QRectF&)));
-    connect(this, SIGNAL(changedCoordinates(const QRectF&)),
-            g, SLOT(setCanvasCoordinates(const QRectF&)));
-    connect(g, SIGNAL(destroyed(QObject *)), this, SLOT(closedLinkedLayer(QObject *)));
+    this->disconnect(g, &Graph::setCanvasCoordinates);
+    connect(this, &RectangleWidget::changedCoordinates, g, &Graph::setCanvasCoordinates);
+    connect(g, &QObject::destroyed, this, &RectangleWidget::closedLinkedLayer);
 }
 
 void RectangleWidget::closedLinkedLayer(QObject *)

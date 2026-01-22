@@ -165,7 +165,7 @@ void FitDialog::initFitPage()
 	boxFrom = new DoubleSpinBox();
     boxFrom->setLocale(app->locale());
     boxFrom->setDecimals(app->d_decimal_digits);
-    connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
+    connect(boxFrom, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &FitDialog::updatePreview);
     gl1->addWidget(boxFrom, 0, 3);
 
 	gl1->addWidget(new QLabel( tr("To x=")), 1, 2);
@@ -173,7 +173,7 @@ void FitDialog::initFitPage()
 	boxTo = new DoubleSpinBox();
     boxTo->setLocale(app->locale());
     boxTo->setDecimals(app->d_decimal_digits);
-    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
+    connect(boxTo, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &FitDialog::updatePreview);
     gl1->addWidget(boxTo, 1, 3);
     gl1->setColumnStretch(3, 1);
 
@@ -210,23 +210,23 @@ void FitDialog::initFitPage()
     QVBoxLayout *vb = new QVBoxLayout();
     btnSaveGuesses = new QPushButton(tr( "&Save" ));
 	btnSaveGuesses->setIcon(QIcon(":/filesave.png"));
-    connect(btnSaveGuesses, SIGNAL(clicked()), this, SLOT(saveInitialGuesses()));
+    connect(btnSaveGuesses, &QAbstractButton::clicked, this, &FitDialog::saveInitialGuesses);
     vb->addWidget(btnSaveGuesses);
 
     btnLoadGuesses = new QPushButton(tr("Re&load" ));
 	btnLoadGuesses->setIcon(QIcon(":/reload.png"));
-    connect(btnLoadGuesses, SIGNAL(clicked()), this, SLOT(loadInitialGuesses()));
+    connect(btnLoadGuesses, &QAbstractButton::clicked, this, &FitDialog::loadInitialGuesses);
     vb->addWidget(btnLoadGuesses);
 
 	btnGuess = new QPushButton(tr( "&Guess" ));
 	btnGuess->setIcon(QIcon(":/help.png"));
-    connect(btnGuess, SIGNAL(clicked()), this, SLOT(guessInitialValues()));
+    connect(btnGuess, &QAbstractButton::clicked, this, &FitDialog::guessInitialValues);
     vb->addWidget(btnGuess);
 
     btnParamRange = new QPushButton(tr("&Range" ));
 	btnParamRange->setIcon(QIcon(":/param_range_btn.png"));
     btnParamRange->setCheckable(true);
-    connect(btnParamRange, SIGNAL(toggled(bool)), this, SLOT(showParameterRange(bool)));
+    connect(btnParamRange, &QAbstractButton::toggled, this, &FitDialog::showParameterRange);
     vb->addWidget(btnParamRange);
 
     vb->addStretch();
@@ -386,14 +386,14 @@ void FitDialog::initFitPage()
     fitPage->setLayout(vbox1);
     tw->addWidget(fitPage);
 
-	connect( boxCurve, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT(accept()));
-	connect( buttonCancel1, SIGNAL( clicked() ), this, SLOT(close()));
-	connect( buttonEdit, SIGNAL( clicked() ), this, SLOT(showEditPage()));
-	connect( btnDeleteFitCurves, SIGNAL( clicked() ), this, SLOT(deleteFitCurves()));
-	connect( boxWeighting, SIGNAL( activated(int) ), this, SLOT( enableWeightingParameters(int) ) );
-	connect( buttonAdvanced, SIGNAL(clicked()), this, SLOT(showAdvancedPage() ) );
-    connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ) );
+	connect(boxCurve, QOverload<const QString&>::of(&QComboBox::activated), this, &FitDialog::activateCurve);
+	connect(buttonOk, &QAbstractButton::clicked, this, &FitDialog::accept);
+	connect(buttonCancel1, &QAbstractButton::clicked, this, &FitDialog::close);
+	connect(buttonEdit, &QAbstractButton::clicked, this, &FitDialog::showEditPage);
+	connect(btnDeleteFitCurves, &QAbstractButton::clicked, this, &FitDialog::deleteFitCurves);
+	connect(boxWeighting, QOverload<int>::of(&QComboBox::activated), this, &FitDialog::enableWeightingParameters);
+	connect(buttonAdvanced, &QAbstractButton::clicked, this, &FitDialog::showAdvancedPage);
+    connect(tableNamesBox, QOverload<int>::of(&QComboBox::activated), this, &FitDialog::selectSrcTable);
 
 	connect(boxColor, SIGNAL(colorChanged(const QColor &)), this, SLOT(updatePreviewColor(const QColor &)));
 	setFocusProxy(boxFunction);
@@ -453,7 +453,7 @@ void FitDialog::initEditPage()
     	polynomOrderBox->setMinimum(1);
 	polynomOrderBox->setValue(1);
 	polynomOrderBox->hide();
-	connect(polynomOrderBox, SIGNAL(valueChanged(int)), this, SLOT(setNumPeaks(int)));
+	connect(polynomOrderBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &FitDialog::setNumPeaks);
     hbox1->addWidget(polynomOrderBox);
 
 	buttonPlugins = new QPushButton(tr( "Choose plug&ins folder..." ) );
@@ -567,17 +567,17 @@ void FitDialog::initEditPage()
     editPage->setLayout(vbox2);
     tw->addWidget(editPage);
 
-	connect( buttonPlugins, SIGNAL(clicked()), this, SLOT(chooseFolder()));
-    connect( buttonClear, SIGNAL(clicked()), this, SLOT(resetFunction()));
+	connect(buttonPlugins, &QAbstractButton::clicked, this, &FitDialog::chooseFolder);
+    connect(buttonClear, &QAbstractButton::clicked, this, &FitDialog::resetFunction);
 	connect( categoryBox, SIGNAL(currentRowChanged (int)), this, SLOT(showFunctionsList(int)));
 	connect( funcBox, SIGNAL(currentRowChanged(int)), this, SLOT(showExpression(int)));
-	connect( boxUseBuiltIn, SIGNAL(toggled(bool)), this, SLOT(setFunction(bool)));
-	connect( btnAddName, SIGNAL(clicked()), this, SLOT(addFunctionName()));
-	connect( btnAddTxt, SIGNAL(clicked()), this, SLOT(addFunction()));
-	connect( btnContinue, SIGNAL(clicked()), this, SLOT(showFitPage()));
-	connect( btnAddFunc, SIGNAL(clicked()), this, SLOT(saveUserFunction()));
-	connect( btnDelFunc, SIGNAL(clicked()), this, SLOT(removeUserFunction()));
-	connect( buttonCancel2, SIGNAL(clicked()), this, SLOT(close()));
+	connect(boxUseBuiltIn, &QAbstractButton::toggled, this, &FitDialog::setFunction);
+	connect(btnAddName, &QAbstractButton::clicked, this, &FitDialog::addFunctionName);
+	connect(btnAddTxt, &QAbstractButton::clicked, this, &FitDialog::addFunction);
+	connect(btnContinue, &QAbstractButton::clicked, this, &FitDialog::showFitPage);
+	connect(btnAddFunc, &QAbstractButton::clicked, this, &FitDialog::saveUserFunction);
+	connect(btnDelFunc, &QAbstractButton::clicked, this, &FitDialog::removeUserFunction);
+	connect(buttonCancel2, &QAbstractButton::clicked, this, &FitDialog::close);
 }
 
 void FitDialog::initAdvancedPage()
@@ -586,7 +586,7 @@ void FitDialog::initAdvancedPage()
 
 	generatePointsBtn = new QRadioButton (tr("&Uniform X Function"));
 	generatePointsBtn->setChecked(app->generateUniformFitPoints);
-	connect( generatePointsBtn, SIGNAL(clicked()), this, SLOT(enableApplyChanges()));
+	connect(generatePointsBtn, &QAbstractButton::clicked, this, &FitDialog::enableApplyChanges);
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(generatePointsBtn, 0, 0);
@@ -597,8 +597,8 @@ void FitDialog::initAdvancedPage()
     generatePointsBox->setRange(0, 1000000);
 	generatePointsBox->setSingleStep(10);
 	generatePointsBox->setValue(app->fitPoints);
-	connect(generatePointsBox, SIGNAL(valueChanged(int)), this, SLOT(enableApplyChanges(int)));
-    connect(generatePointsBox, SIGNAL(valueChanged(int)), this, SLOT(updatePreview()));
+	connect(generatePointsBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &FitDialog::enableApplyChanges);
+    connect(generatePointsBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &FitDialog::updatePreview);
 	showPointsBox(!app->generateUniformFitPoints);
 
     QHBoxLayout *hb = new QHBoxLayout();
@@ -610,7 +610,7 @@ void FitDialog::initAdvancedPage()
 	samePointsBtn = new QRadioButton(tr( "Same X as Fitting &Data" ));
     gl1->addWidget(samePointsBtn, 1, 0);
 	samePointsBtn->setChecked(!app->generateUniformFitPoints);
-	connect( samePointsBtn, SIGNAL(clicked()), this, SLOT(enableApplyChanges()));
+	connect(samePointsBtn, &QAbstractButton::clicked, this, &FitDialog::enableApplyChanges);
 
     QGroupBox *gb1 = new QGroupBox(tr("Generated Fit Curve"));
     gb1->setLayout(gl1);
@@ -620,7 +620,7 @@ void FitDialog::initAdvancedPage()
 	boxPrecision = new QSpinBox ();
     boxPrecision->setRange(0, 13);
 	boxPrecision->setValue (app->fit_output_precision);
-	connect( boxPrecision, SIGNAL(valueChanged (int)), this, SLOT(enableApplyChanges(int)));
+	connect(boxPrecision, QOverload<int>::of(&QSpinBox::valueChanged), this, &FitDialog::enableApplyChanges);
 
     gl2->addWidget(boxPrecision, 0, 2);
 	btnParamTable = new QPushButton(tr( "Parameters &Table" ));
@@ -637,7 +637,7 @@ void FitDialog::initAdvancedPage()
     gl2->addWidget(covMatrixName, 2, 2);
 
 	btnConfidenceLimits = new QPushButton(tr( "Co&nf. Bands" ));
-	connect(btnConfidenceLimits, SIGNAL(clicked()), this, SLOT(showConfidenceLimits()));
+	connect(btnConfidenceLimits, &QAbstractButton::clicked, this, &FitDialog::showConfidenceLimits);
 	gl2->addWidget(btnConfidenceLimits, 3, 0);
 
 	boxConfidenceLevel = new DoubleSpinBox();
@@ -649,27 +649,27 @@ void FitDialog::initAdvancedPage()
 	gl2->addWidget(boxConfidenceLevel, 3, 1);
 
 	btnPredictionLimits = new QPushButton(tr( "Pred. &Bands" ));
-	connect(btnPredictionLimits, SIGNAL(clicked()), this, SLOT(showPredictionLimits()));
+	connect(btnPredictionLimits, &QAbstractButton::clicked, this, &FitDialog::showPredictionLimits);
 	gl2->addWidget(btnPredictionLimits, 3, 2);
 
 	btnResiduals = new QPushButton(tr( "&Residuals Plot" ));
-	connect(btnResiduals, SIGNAL(clicked()), this, SLOT(showResiduals()));
+	connect(btnResiduals, &QAbstractButton::clicked, this, &FitDialog::showResiduals);
 	gl2->addWidget(btnResiduals, 3, 3);
 
 	scaleErrorsBox = new QCheckBox(tr("&Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
-	connect( scaleErrorsBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
+	connect(scaleErrorsBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
 
     QGroupBox *gb2 = new QGroupBox(tr("Parameters Output"));
     gb2->setLayout(gl2);
 
 	logBox = new QCheckBox (tr("&Write Parameters to Result Log"));
 	logBox->setChecked(app->writeFitResultsToLog());
-	connect( logBox, SIGNAL(stateChanged(int)), this, SLOT(enableApplyChanges(int)));
+	connect(logBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
 
 	plotLabelBox = new QCheckBox (tr("&Paste Parameters to Plot"));
 	plotLabelBox->setChecked(app->pasteFitResultsToPlot);
-	connect( plotLabelBox, SIGNAL(stateChanged (int)), this, SLOT(enableApplyChanges(int)));
+	connect(plotLabelBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addStretch();
@@ -678,7 +678,7 @@ void FitDialog::initAdvancedPage()
     hbox1->addWidget(buttonCancel3);
 	btnApply = new QPushButton(tr( "&Apply" ));
 	btnApply->setEnabled(false);
-	connect( btnApply, SIGNAL(clicked()), this, SLOT(applyChanges()));
+	connect(btnApply, &QAbstractButton::clicked, this, &FitDialog::applyChanges);
     hbox1->addWidget(btnApply);
 
     QVBoxLayout *vbox1 = new QVBoxLayout();
@@ -713,7 +713,7 @@ void FitDialog::initAdvancedPage()
 	frameLayout->addSpacing (space);
 
 	btnBack = new QPushButton();
-	connect( btnBack, SIGNAL(clicked()), this, SLOT(returnToFitPage()));
+	connect(btnBack, &QAbstractButton::clicked, this, &FitDialog::returnToFitPage);
 	btnBack->setIcon(QIcon(":/prev.png"));
 	btnBack->setIconSize(QSize(16, 17));
 	btnBack->setToolTip(tr("Fitting Session"));
@@ -750,11 +750,11 @@ void FitDialog::initAdvancedPage()
 	advancedPage->setLayout(vbox1);
     tw->addWidget(advancedPage);
 
-	connect(btnParamTable, SIGNAL(clicked()), this, SLOT(showParametersTable()));
-	connect(btnCovMatrix, SIGNAL(clicked()), this, SLOT(showCovarianceMatrix()));
-	connect(samePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
-	connect(generatePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
-	connect(buttonCancel3, SIGNAL(clicked()), this, SLOT(close()));
+	connect(btnParamTable, &QAbstractButton::clicked, this, &FitDialog::showParametersTable);
+	connect(btnCovMatrix, &QAbstractButton::clicked, this, &FitDialog::showCovarianceMatrix);
+	connect(samePointsBtn, &QAbstractButton::toggled, this, &FitDialog::showPointsBox);
+	connect(generatePointsBtn, &QAbstractButton::toggled, this, &FitDialog::showPointsBox);
+	connect(buttonCancel3, &QAbstractButton::clicked, this, &FitDialog::close);
 }
 
 void FitDialog::applyChanges()
@@ -843,7 +843,7 @@ void FitDialog::setGraph(Graph *g)
 	activateCurve(boxCurve->currentText());
 
 	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
-	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect(d_graph, &Graph::dataRangeChanged, this, &FitDialog::changeDataRange);
 };
 
 void FitDialog::activateCurve(const QString& s)
@@ -1046,7 +1046,7 @@ void FitDialog::showFitPage()
 		sb->setLocale(locale);
 		sb->setDecimals(prec);
 		sb->setValue(d_current_fit->initialGuess(i));
-        connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updatePreview()));
+        connect(sb, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &FitDialog::updatePreview);
         boxParams->setCellWidget(i, 2, sb);
 
         it = new QTableWidgetItem();

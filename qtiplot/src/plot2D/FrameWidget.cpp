@@ -63,8 +63,8 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	pos = QPoint(pos.x() + 10, pos.y() + 10);
 	move(pos);
 
-	connect (this, SIGNAL(showMenu()), plot->multiLayer(), SIGNAL(showMarkerPopupMenu()));
-	connect (this, SIGNAL(showDialog()), plot->multiLayer(), SIGNAL(showEnrichementDialog()));
+	connect (this, &FrameWidget::showMenu, plot->multiLayer(), &MultiLayer::showMarkerPopupMenu);
+	connect (this, &FrameWidget::showDialog, plot->multiLayer(), &MultiLayer::showEnrichementDialog);
 
 	d_plot->raiseEnrichements();
 	raise();

@@ -902,8 +902,8 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 
 	ScriptingEnv *scriptEnv = d_matrix->scriptingEnv();
 	Script *script = scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(objectName()));
-	connect(script, SIGNAL(error(const QString&, const QString&, int)), scriptEnv, SIGNAL(error(const QString&, const QString&, int)));
-	connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+	connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
+	connect(script, &Script::print, scriptEnv, &ScriptingEnv::print);
 
 	if (!script->compile()){
 		QApplication::restoreOverrideCursor();

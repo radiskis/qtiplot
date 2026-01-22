@@ -643,8 +643,8 @@ bool Matrix::canCalculate(bool useMuParser)
 		}
 	} else {
 		Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
-		connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
-		connect(script, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+		connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
+		connect(script, &Script::print, scriptEnv, &ScriptingEnv::print);
 		if (!script->compile())
 			return false;
 
@@ -1491,7 +1491,7 @@ void Matrix::initTableView()
 
     // recreate keyboard shortcut
 	d_select_all_shortcut = new QShortcut(QKeySequence(tr("Ctrl+A", "Matrix: select all")), this);
-	connect(d_select_all_shortcut, SIGNAL(activated()), d_table_view, SLOT(selectAll()));
+	connect(d_select_all_shortcut, &QShortcut::activated, d_table_view, &QAbstractItemView::selectAll);
 }
 
 QImage Matrix::image()

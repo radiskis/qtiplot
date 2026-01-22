@@ -48,7 +48,7 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 	else if ( (args.count() == 1) && (args[0] == "-a" || args[0] == "--about") ) {
 	#ifdef Q_OS_WIN
 		QMessageBox *msg = ApplicationWindow::about();
-		connect(msg, SIGNAL(destroyed()), this, SLOT(quit()));
+		connect(msg, &QObject::destroyed, this, &QtiPlotApplication::quit);
 	#else
 		ApplicationWindow::about(false);
 	#endif

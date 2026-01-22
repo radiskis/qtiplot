@@ -192,7 +192,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 		aLevelsBox = new QSpinBox();
 		aLevelsBox->setMinimum(2);
 		aLevelsBox->setValue(2);
-		connect(aLevelsBox, SIGNAL(valueChanged(int)), this, SLOT(updateLevelBoxes()));
+		connect(aLevelsBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &AnovaDialog::updateLevelBoxes);
 
 		QLabel *lblA = new QLabel(tr("Factor &A Levels"));
 		lblA->setBuddy(aLevelsBox);
@@ -202,7 +202,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 		bLevelsBox = new QSpinBox();
 		bLevelsBox->setMinimum(2);
 		bLevelsBox->setValue(2);
-		connect(bLevelsBox, SIGNAL(valueChanged(int)), this, SLOT(updateLevelBoxes()));
+		connect(bLevelsBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &AnovaDialog::updateLevelBoxes);
 
 		QLabel *lblB = new QLabel(tr("Factor &B Levels"));
 		lblB->setBuddy(bLevelsBox);
@@ -236,14 +236,14 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	vl->addStretch();
 	vl->addLayout(hl2);
 
-	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(btnAdd, SIGNAL(clicked()),this, SLOT(addData()));
-	connect(btnRemove, SIGNAL(clicked()),this, SLOT(removeData()));
-	connect(currentFolderBox, SIGNAL(toggled(bool)), this, SLOT(showCurrentFolder(bool)));
-	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
-	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
-	connect(boxNoteWindow, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
-	connect(boxResultsLog, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+	connect(buttonOk, &QAbstractButton::clicked, this, &AnovaDialog::accept);
+	connect(btnAdd, &QAbstractButton::clicked, this, &AnovaDialog::addData);
+	connect(btnRemove, &QAbstractButton::clicked, this, &AnovaDialog::removeData);
+	connect(currentFolderBox, &QAbstractButton::toggled, this, &AnovaDialog::showCurrentFolder);
+	connect(boxResultsTable, &QAbstractButton::toggled, tableNameLineEdit, &QWidget::setEnabled);
+	connect(boxNoteWindow, &QAbstractButton::toggled, noteNameLineEdit, &QWidget::setEnabled);
+	connect(boxNoteWindow, &QAbstractButton::toggled, this, &AnovaDialog::enableDescriptiveStatistics);
+	connect(boxResultsLog, &QAbstractButton::toggled, this, &AnovaDialog::enableDescriptiveStatistics);
 }
 
 void AnovaDialog::enableDescriptiveStatistics()

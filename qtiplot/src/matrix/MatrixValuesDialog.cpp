@@ -134,7 +134,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	if (scriptEnv->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
 		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);
-		connect(boxMuParser, SIGNAL(toggled(bool)), this, SLOT(updateFunctionsList(bool)));
+		connect(boxMuParser, &QCheckBox::toggled, this, &MatrixValuesDialog::updateFunctionsList);
 		updateFunctionsList(boxMuParser->isChecked());
 		vbox3->addWidget(boxMuParser);
 	}
@@ -144,12 +144,12 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 
 	insertExplain(0);
 
-	connect(btnAddCell, SIGNAL(clicked()), this, SLOT(addCell()));
-	connect(btnAddFunction, SIGNAL(clicked()), this, SLOT(insertFunction()));
-	connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
-	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openPropertiesDialog()));
-	connect(btnCancel, SIGNAL(clicked()), this, SLOT(close()));
-	connect(functions, SIGNAL(activated(int)), this, SLOT(insertExplain(int)));
+	connect(btnAddCell, &QPushButton::clicked, this, &MatrixValuesDialog::addCell);
+	connect(btnAddFunction, &QPushButton::clicked, this, &MatrixValuesDialog::insertFunction);
+	connect(btnApply, &QPushButton::clicked, this, &MatrixValuesDialog::apply);
+	connect(buttonProperties, &QPushButton::clicked, this, &MatrixValuesDialog::openPropertiesDialog);
+	connect(btnCancel, &QPushButton::clicked, this, &MatrixValuesDialog::close);
+	connect(functions, QOverload<int>::of(&QComboBox::activated), this, &MatrixValuesDialog::insertExplain);
 }
 
 void MatrixValuesDialog::openPropertiesDialog()
@@ -158,7 +158,7 @@ void MatrixValuesDialog::openPropertiesDialog()
 	if (!app)
 		return;
 
-	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixDialog()));
+	connect(this, &QObject::destroyed, app, &ApplicationWindow::showMatrixDialog);
 	this->apply();
 	this->close();
 }

@@ -67,11 +67,11 @@ ContourLinesEditor::ContourLinesEditor(const QLocale& locale, int precision, QWi
 
 	insertBtn = new QPushButton(tr("&Insert"));
 	insertBtn->setEnabled(false);
-	connect(insertBtn, SIGNAL(clicked()), this, SLOT(insertLevel()));
+	connect(insertBtn, &QPushButton::clicked, this, &ContourLinesEditor::insertLevel);
 
 	deleteBtn = new QPushButton(tr("&Delete"));
 	deleteBtn->setEnabled(false);
-	connect(deleteBtn, SIGNAL(clicked()), this, SLOT(deleteLevel()));
+	connect(deleteBtn, &QPushButton::clicked, this, &ContourLinesEditor::deleteLevel);
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->addWidget(insertBtn);
@@ -269,10 +269,10 @@ void ContourLinesEditor::showPenDialog(int row, int col)
 		hl1->addWidget(applyAllWidthBox, 2, 2);
 
 		QPushButton *acceptPenBtn = new QPushButton(tr("&Ok"));
-		connect(acceptPenBtn, SIGNAL(clicked()), this, SLOT(updatePen()));
+		connect(acceptPenBtn, &QPushButton::clicked, this, &ContourLinesEditor::updatePen);
 
 		QPushButton *closeBtn = new QPushButton(tr("&Close"));
-		connect(closeBtn, SIGNAL(clicked()), penDialog, SLOT(reject()));
+		connect(closeBtn, &QPushButton::clicked, penDialog, &ContourLinesEditor::reject);
 
 		QHBoxLayout *hl2 = new QHBoxLayout();
 		hl2->addStretch();

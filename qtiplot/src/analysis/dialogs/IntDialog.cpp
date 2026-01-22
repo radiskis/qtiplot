@@ -65,16 +65,16 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
 
 	addFunctionBtn = new QPushButton(tr("&Add" ));
 	addFunctionBtn->setAutoDefault(false);
-	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
+	connect(addFunctionBtn, &QAbstractButton::clicked, this, &IntDialog::insertFunction);
 	vl1->addWidget(addFunctionBtn);
 
 	buttonClear = new QPushButton(tr("Clea&r" ));
-	connect(buttonClear, SIGNAL( clicked() ), this, SLOT(clearFunction()));
+	connect(buttonClear, &QAbstractButton::clicked, this, &IntDialog::clearFunction);
 	vl1->addWidget(buttonClear);
 
 	buttonFunctionLog = new QPushButton(tr("Rece&nt") );
 	buttonFunctionLog->setToolTip(tr("Click here to select a recently typed expression"));
-	connect(buttonFunctionLog, SIGNAL(clicked()), this, SLOT(showFunctionLog()));
+	connect(buttonFunctionLog, &QAbstractButton::clicked, this, &IntDialog::showFunctionLog);
 	vl1->addWidget(buttonFunctionLog);
 
 	vl1->addStretch();
@@ -134,8 +134,8 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
 	hb->addWidget(gb1);
 	hb->addLayout(vl);
 
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect(buttonOk, &QAbstractButton::clicked, this, &IntDialog::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &IntDialog::reject);
 }
 
 void IntDialog::accept()

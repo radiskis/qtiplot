@@ -49,10 +49,10 @@ ColorMapDialog::ColorMapDialog(QWidget* parent, Qt::WindowFlags fl)
 		editor = new ColorMapEditor();
 
 	applyBtn = new QPushButton(tr("&Apply"));
-	connect(applyBtn, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(applyBtn, &QPushButton::clicked, this, &ColorMapDialog::apply);
 
 	closeBtn = new QPushButton(tr("&Close"));
-	connect(closeBtn, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(closeBtn, &QPushButton::clicked, this, &ColorMapDialog::reject);
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->setSpacing(5);

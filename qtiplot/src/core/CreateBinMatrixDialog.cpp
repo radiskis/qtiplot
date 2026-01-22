@@ -108,8 +108,8 @@ d_end_row(endRow)
 	mainLayout->addStretch();
 	mainLayout->addLayout( bottomLayout );
 
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect(buttonOk, &QAbstractButton::clicked, this, &CreateBinMatrixDialog::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &CreateBinMatrixDialog::reject);
 }
 
 void CreateBinMatrixDialog::accept()

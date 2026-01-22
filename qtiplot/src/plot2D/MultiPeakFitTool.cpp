@@ -58,7 +58,7 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 		QMessageBox::information(app, app->objectName(), msg);
 	emit statusText(msg);
 
-	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
+	connect(d_picker_tool, &DataPickerTool::selected, this, &MultiPeakFitTool::selectPeak);
 	d_graph->canvas()->grabMouse();
 }
 

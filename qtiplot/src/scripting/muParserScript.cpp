@@ -59,8 +59,8 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
 	parser.addGSLConstants();
 	rparser = parser;
 	if (Context->inherits("Table") || Context->inherits("Matrix")){
-		connect(this, SIGNAL(error(const QString&,const QString&,int)), env, SIGNAL(error(const QString&,const QString&,int)));
-		connect(this, SIGNAL(print(const QString&)), env, SIGNAL(print(const QString&)));
+		connect(this, &muParserScript::error, env, &muParserScript::error);
+		connect(this, &muParserScript::print, env, &muParserScript::print);
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
 			parser.SetVarFactory((mu::facfun_type)mu_addVariable);
 			rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);

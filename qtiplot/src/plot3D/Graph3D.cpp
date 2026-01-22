@@ -173,7 +173,7 @@ void Graph3D::initPlot()
 
 	animation_redraw_wait = 50;
 	d_timer = new QTimer(this);
-	connect(d_timer, SIGNAL(timeout()), this, SLOT(rotate()));
+	connect(d_timer, &QTimer::timeout, this, &Graph3D::rotate);
 
 	ApplicationWindow *app = applicationWindow();
 
@@ -243,10 +243,10 @@ void Graph3D::initPlot()
 		sp->coordinates()->axes[i].setLabelFont(app->d_3D_axes_font);
 	}
 
-	connect(sp,SIGNAL(rotationChanged(double, double, double)),this,SLOT(rotationChanged(double, double, double)));
-	connect(sp,SIGNAL(zoomChanged(double)),this,SLOT(zoomChanged(double)));
-	connect(sp,SIGNAL(scaleChanged(double, double, double)),this,SLOT(scaleChanged(double, double, double)));
-	connect(sp,SIGNAL(shiftChanged(double, double, double)),this,SLOT(shiftChanged(double, double, double)));
+	connect(sp, &SurfacePlot::rotationChanged, this, &Graph3D::rotationChanged);
+	connect(sp, &SurfacePlot::zoomChanged, this, &Graph3D::zoomChanged);
+	connect(sp, &SurfacePlot::scaleChanged, this, &Graph3D::scaleChanged);
+	connect(sp, &SurfacePlot::shiftChanged, this, &Graph3D::shiftChanged);
 }
 
 void Graph3D::initCoord()

@@ -110,7 +110,7 @@ void SelectionMoveResizer::add(QWidget *target)
 
 	d_widgets << target;
 	target->installEventFilter(this);
-	connect(target, SIGNAL(destroyed(QObject*)), this, SLOT(removeWidget(QObject*)));
+	connect(target, &QObject::destroyed, this, &SelectionMoveResizer::removeWidget);
 
 	QRect r = target->frameGeometry();
 	QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(target);

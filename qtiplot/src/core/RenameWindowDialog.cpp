@@ -88,8 +88,8 @@ RenameWindowDialog::RenameWindowDialog(QWidget* parent, Qt::WindowFlags fl )
 	mainLayout->addLayout(rightLayout);
 
     // signals and slots connections
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+    connect(buttonOk, &QAbstractButton::clicked, this, &RenameWindowDialog::accept);
+    connect(buttonCancel, &QAbstractButton::clicked, this, &RenameWindowDialog::reject);
 }
 
 void RenameWindowDialog::setWidget(MdiSubWindow *w)

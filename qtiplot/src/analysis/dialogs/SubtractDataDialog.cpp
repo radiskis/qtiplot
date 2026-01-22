@@ -113,20 +113,20 @@ SubtractDataDialog::SubtractDataDialog( QWidget* parent, Qt::WindowFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect( btnDataset, SIGNAL( toggled(bool) ), boxOffset, SLOT( setDisabled(bool) ) );
-	connect( btnDataset, SIGNAL( toggled(bool) ), boxReferenceName, SLOT( setEnabled(bool) ) );
-	connect( btnDataset, SIGNAL( toggled(bool) ), boxColumnName, SLOT( setEnabled(bool) ) );
-	connect( btnDataset, SIGNAL( toggled(bool) ), boxCurrentFolder, SLOT( setEnabled(bool) ) );
+	connect(btnDataset, &QAbstractButton::toggled, boxOffset, &QWidget::setDisabled);
+	connect(btnDataset, &QAbstractButton::toggled, boxReferenceName, &QWidget::setEnabled);
+	connect(btnDataset, &QAbstractButton::toggled, boxColumnName, &QWidget::setEnabled);
+	connect(btnDataset, &QAbstractButton::toggled, boxCurrentFolder, &QWidget::setEnabled);
 
-	connect( btnValue, SIGNAL( toggled(bool) ), boxOffset, SLOT( setEnabled(bool) ) );
-	connect( btnValue, SIGNAL( toggled(bool) ), boxReferenceName, SLOT( setDisabled(bool) ) );
-	connect( btnValue, SIGNAL( toggled(bool) ), boxColumnName, SLOT( setDisabled(bool) ) );
-	connect( btnValue, SIGNAL( toggled(bool) ), boxCurrentFolder, SLOT( setDisabled(bool) ) );
+	connect(btnValue, &QAbstractButton::toggled, boxOffset, &QWidget::setEnabled);
+	connect(btnValue, &QAbstractButton::toggled, boxReferenceName, &QWidget::setDisabled);
+	connect(btnValue, &QAbstractButton::toggled, boxColumnName, &QWidget::setDisabled);
+	connect(btnValue, &QAbstractButton::toggled, boxCurrentFolder, &QWidget::setDisabled);
 
-	connect( boxCurrentFolder, SIGNAL( toggled(bool) ), this, SLOT( setCurrentFolder(bool) ) );
-	connect( boxReferenceName, SIGNAL( activated(int) ), this, SLOT( updateTableColumns(int) ) );
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( interpolate() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+	connect(boxCurrentFolder, &QAbstractButton::toggled, this, &SubtractDataDialog::setCurrentFolder);
+	connect(boxReferenceName, QOverload<int>::of(&QComboBox::activated), this, &SubtractDataDialog::updateTableColumns);
+	connect(buttonApply, &QAbstractButton::clicked, this, &SubtractDataDialog::interpolate);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &SubtractDataDialog::close);
 }
 
 void SubtractDataDialog::setCurrentFolder(bool on)
@@ -333,5 +333,5 @@ void SubtractDataDialog::setGraph(Graph *g)
 	if (g->rangeSelectorsEnabled())
 		boxInputName->setCurrentIndex(boxInputName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
+	connect(graph, &QObject::destroyed, this, &SubtractDataDialog::close);
 }

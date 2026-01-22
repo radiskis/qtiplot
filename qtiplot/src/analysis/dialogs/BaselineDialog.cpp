@@ -134,16 +134,16 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	enableBaselineOptions();
 
-	connect(boxTableName, SIGNAL(activated(int)), this, SLOT(updateTableColumns(int)));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
-	connect(buttonCreate, SIGNAL(clicked()), this, SLOT(createBaseline()));
-	connect(buttonSubtract, SIGNAL(clicked()), this, SLOT(subtractBaseline()));
-	connect(buttonUndo, SIGNAL(clicked()), this, SLOT(undo()));
-	connect(buttonModify, SIGNAL(clicked()), this, SLOT(modifyBaseline()));
+	connect(boxTableName, QOverload<int>::of(&QComboBox::activated), this, &BaselineDialog::updateTableColumns);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &BaselineDialog::close);
+	connect(buttonCreate, &QAbstractButton::clicked, this, &BaselineDialog::createBaseline);
+	connect(buttonSubtract, &QAbstractButton::clicked, this, &BaselineDialog::subtractBaseline);
+	connect(buttonUndo, &QAbstractButton::clicked, this, &BaselineDialog::undo);
+	connect(buttonModify, &QAbstractButton::clicked, this, &BaselineDialog::modifyBaseline);
 
-	connect(btnAutomatic, SIGNAL(toggled(bool)), this, SLOT(enableBaselineOptions()));
-	connect(btnEquation, SIGNAL(toggled(bool)), this, SLOT(enableBaselineOptions()));
-	connect(btnDataset, SIGNAL(toggled(bool)), this, SLOT(enableBaselineOptions()));
+	connect(btnAutomatic, &QAbstractButton::toggled, this, &BaselineDialog::enableBaselineOptions);
+	connect(btnEquation, &QAbstractButton::toggled, this, &BaselineDialog::enableBaselineOptions);
+	connect(btnDataset, &QAbstractButton::toggled, this, &BaselineDialog::enableBaselineOptions);
 }
 
 void BaselineDialog::enableBaselineOptions()
@@ -407,7 +407,7 @@ void BaselineDialog::setGraph(Graph *g)
 	if (g->rangeSelectorsEnabled())
 		boxInputName->setCurrentIndex(boxInputName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
-	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
+	connect(graph, &QObject::destroyed, this, &BaselineDialog::close);
 	connect (graph, SIGNAL(modifiedGraph()), this, SLOT(updateGraphCurves()));
 }
 

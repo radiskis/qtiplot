@@ -114,9 +114,9 @@ FindDialog::FindDialog( QWidget* parent, Qt::WindowFlags fl )
 	setStartPath();
 
     // signals and slots connections
-    connect( buttonFind, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonReset, SIGNAL( clicked() ), this, SLOT( setStartPath() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+    connect(buttonFind, &QAbstractButton::clicked, this, &FindDialog::accept);
+	connect(buttonReset, &QAbstractButton::clicked, this, &FindDialog::setStartPath);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &FindDialog::reject);
 }
 
 void FindDialog::setStartPath()

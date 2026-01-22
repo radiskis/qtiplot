@@ -80,8 +80,8 @@ CurveRangeDialog::CurveRangeDialog(QWidget* parent, Qt::WindowFlags fl )
 	vb->addWidget(gb1);
 	vb->addLayout(hl);
 
-	connect( buttonOK, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
+	connect(buttonOK, &QPushButton::clicked, this, &CurveRangeDialog::accept);
+	connect(buttonCancel, &QPushButton::clicked, this, &CurveRangeDialog::reject);
 }
 
 void CurveRangeDialog::accept()

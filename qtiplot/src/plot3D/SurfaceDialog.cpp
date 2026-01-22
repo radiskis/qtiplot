@@ -86,10 +86,10 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WindowFlags fl )
 	d_graph = 0;
     setFocusProxy(boxFunction);
 
-	connect( boxType, SIGNAL(activated(int)), optionStack, SLOT(setCurrentIndex(int)));
-	connect( buttonClear, SIGNAL(clicked()), this, SLOT(clearFunction()));
-    connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
-    connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(boxType, QOverload<int>::of(&QComboBox::activated), optionStack, &QStackedWidget::setCurrentIndex);
+	connect(buttonClear, &QAbstractButton::clicked, this, &SurfaceDialog::clearFunction);
+    connect(buttonOk, &QAbstractButton::clicked, this, &SurfaceDialog::accept);
+    connect(buttonCancel, &QAbstractButton::clicked, this, &SurfaceDialog::reject);
 }
 
 void SurfaceDialog::initFunctionPage()
@@ -108,7 +108,7 @@ void SurfaceDialog::initFunctionPage()
 
 	buttonRecentFunc = new QPushButton(tr("Rece&nt"));
 	buttonRecentFunc->setToolTip(tr("Click here to select a recently typed expression"));
-	connect(buttonRecentFunc, SIGNAL(clicked()), this, SLOT(showFunctionLog()));
+	connect(buttonRecentFunc, &QAbstractButton::clicked, this, &SurfaceDialog::showFunctionLog);
 	vl1->addWidget(buttonRecentFunc);
 	vl1->addStretch();
 
@@ -222,15 +222,15 @@ void SurfaceDialog::initParametricSurfacePage()
 
 	buttonXLog = new QPushButton(recentBtnText);
 	buttonXLog->setToolTip(recentTip);
-	connect(buttonXLog, SIGNAL(clicked()), this, SLOT(showXLog()));
+	connect(buttonXLog, &QAbstractButton::clicked, this, &SurfaceDialog::showXLog);
 
 	buttonYLog = new QPushButton(recentBtnText);
 	buttonYLog->setToolTip(recentTip);
-	connect(buttonYLog, SIGNAL(clicked()), this, SLOT(showYLog()));
+	connect(buttonYLog, &QAbstractButton::clicked, this, &SurfaceDialog::showYLog);
 
 	buttonZLog = new QPushButton(recentBtnText);
 	buttonZLog->setToolTip(recentTip);
-	connect(buttonZLog, SIGNAL(clicked()), this, SLOT(showZLog()));
+	connect(buttonZLog, &QAbstractButton::clicked, this, &SurfaceDialog::showZLog);
 
 	QGroupBox *gb = new QGroupBox(tr("Equations"));
 	QGridLayout *gl = new QGridLayout(gb);

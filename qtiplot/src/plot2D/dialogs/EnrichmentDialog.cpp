@@ -87,17 +87,17 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *a
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Tex Equation Editor"));
 
     	clearButton = buttonBox->addButton(tr("Clea&r"), QDialogButtonBox::ResetRole);
-		connect(clearButton, SIGNAL(clicked()), this, SLOT(clearForm()));
+		connect(clearButton, &QPushButton::clicked, this, &EnrichmentDialog::clearForm);
 	} else if (wt == MDIWindow)
         setWindowTitle(tr("QtiPlot") + " - " + tr("Window Geometry"));
 	else
 		setWindowTitle(tr("QtiPlot") + " - " + tr("Object Properties"));
 
     updateButton = buttonBox->addButton(tr("&Apply"), QDialogButtonBox::ApplyRole);
-	connect(updateButton, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(updateButton, &QPushButton::clicked, this, &EnrichmentDialog::apply);
 
 	cancelButton = buttonBox->addButton(tr("&Close"), QDialogButtonBox::RejectRole);
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(cancelButton, &QPushButton::clicked, this, &EnrichmentDialog::reject);
 
 	tabWidget = new QTabWidget();
 	if (wt == Text)
@@ -141,7 +141,7 @@ void EnrichmentDialog::initEditorPage()
 	texCompilerBox->addItem(tr("locally installed"));
 	if (d_app)
 		texCompilerBox->setCurrentIndex(d_app->d_latex_compiler);
-	connect(texCompilerBox, SIGNAL(activated(int)), this, SLOT(updateCompilerInterface(int)));
+	connect(texCompilerBox, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::updateCompilerInterface);
 
 	QHBoxLayout *hl = new QHBoxLayout;
 	hl->addWidget(new QLabel(tr("LaTeX Compiler")));
@@ -167,32 +167,32 @@ void EnrichmentDialog::initTextPage()
 	gl1->addWidget(new QLabel(tr("Color")), 0, 0);
 
 	textColorBtn = new ColorButton();
-	connect(textColorBtn, SIGNAL(colorChanged()), this, SLOT(textFormatApplyTo()));
+	connect(textColorBtn, &ColorButton::colorChanged, this, &EnrichmentDialog::textFormatApplyTo);
 	gl1->addWidget(textColorBtn, 0, 1);
 
 	textFontBtn = new QPushButton(tr( "&Font" ));
 	textFontBtn->setIcon(QIcon(":/font.png"));
-	connect(textFontBtn, SIGNAL(clicked()), this, SLOT(customFont()));
+	connect(textFontBtn, &QPushButton::clicked, this, &EnrichmentDialog::customFont);
 	gl1->addWidget(textFontBtn, 0, 2);
 
     gl1->addWidget(new QLabel(tr("Background")), 1, 0);
 	textBackgroundBtn = new ColorButton();
-	connect(textBackgroundBtn, SIGNAL(colorChanged()), this, SLOT(textFormatApplyTo()));
+	connect(textBackgroundBtn, &ColorButton::colorChanged, this, &EnrichmentDialog::textFormatApplyTo);
 	gl1->addWidget(textBackgroundBtn, 1, 1);
 
 	boxBackgroundTransparency = new QSpinBox();
 	boxBackgroundTransparency->setRange(0, 100);
 	boxBackgroundTransparency->setSuffix(" %");
 	boxBackgroundTransparency->setWrapping(true);
-	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), this, SLOT(updateTransparency(int)));
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &EnrichmentDialog::updateTransparency);
 	gl1->addWidget(boxBackgroundTransparency, 2, 1);
 
 	transparencySlider = new QSlider();
 	transparencySlider->setOrientation(Qt::Horizontal);
 	transparencySlider->setRange(0, 100);
 
-	connect(transparencySlider, SIGNAL(valueChanged(int)), boxBackgroundTransparency, SLOT(setValue(int)));
-	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), transparencySlider, SLOT(setValue(int)));
+	connect(transparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxBackgroundTransparency, &EnrichmentDialog::setValue);
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), transparencySlider, &EnrichmentDialog::setValue);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(transparencySlider);
@@ -207,7 +207,7 @@ void EnrichmentDialog::initTextPage()
     boxTextAngle->setRange(-360, 360);
     boxTextAngle->setSingleStep(45);
     boxTextAngle->setWrapping(true);
-    connect(boxTextAngle, SIGNAL(valueChanged(int)), this, SLOT(textFormatApplyTo()));
+    connect(boxTextAngle, QOverload<int>::of(&QSpinBox::valueChanged), this, &EnrichmentDialog::textFormatApplyTo);
     gl1->addWidget(boxTextAngle, 3, 1);
 
 	QLabel *l2 = new QLabel("&" + tr("Rotate (deg.)"));
@@ -219,17 +219,17 @@ void EnrichmentDialog::initTextPage()
 
 	texOutputBox = new QCheckBox(tr("TeX &Output"));
 	gl1->addWidget(texOutputBox, 2, 2);
-	connect(texOutputBox, SIGNAL(clicked()), this, SLOT(updateButtons()));
+	connect(texOutputBox, &QPushButton::clicked, this, &EnrichmentDialog::updateButtons);
 
 	gl1->setColumnStretch(4, 1);
 
     QVBoxLayout *vl = new QVBoxLayout();
     textDefaultBtn = new QPushButton( tr( "Set As &Default" ) );
-    connect(textDefaultBtn, SIGNAL(clicked()), this, SLOT(setTextDefaultValues()));
+    connect(textDefaultBtn, &QPushButton::clicked, this, &EnrichmentDialog::setTextDefaultValues);
 	vl->addWidget(textDefaultBtn);
 
     textApplyToBtn = new QPushButton(tr("Apply format &to..."));
-	connect(textApplyToBtn, SIGNAL(clicked()), this, SLOT(textFormatApplyTo()));
+	connect(textApplyToBtn, &QPushButton::clicked, this, &EnrichmentDialog::textFormatApplyTo);
 	vl->addWidget(textApplyToBtn);
 
 	textApplyToBox = new QComboBox();
@@ -281,12 +281,12 @@ void EnrichmentDialog::initImagePage()
 	gl->addWidget(imagePathBox, 0, 1);
 
 	QPushButton *browseBtn = new QPushButton();
-	connect(browseBtn, SIGNAL(clicked()), this, SLOT(chooseImageFile()));
+	connect(browseBtn, &QPushButton::clicked, this, &EnrichmentDialog::chooseImageFile);
 	browseBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseBtn, 0, 2);
 
 	boxSaveImagesInternally = new QCheckBox(tr("&Save internally"));
-	connect(boxSaveImagesInternally, SIGNAL(toggled(bool)), this, SLOT(saveImagesInternally(bool)));
+	connect(boxSaveImagesInternally, &QCheckBox::toggled, this, &EnrichmentDialog::saveImagesInternally);
 
 	gl->addWidget(boxSaveImagesInternally, 1, 1);
 	gl->setColumnStretch(1, 1);
@@ -312,7 +312,7 @@ void EnrichmentDialog::initFramePage()
 		frameBox->addItem(tr("Rectangle"));
 		frameBox->addItem(tr("Shadow"));
 	}
-	connect(frameBox, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
+	connect(frameBox, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::frameApplyTo);
     gl->addWidget(frameBox, 0, 1);
 
 	QLabel *l1 = new QLabel("&" + tr("Shape"));
@@ -320,7 +320,7 @@ void EnrichmentDialog::initFramePage()
 	gl->addWidget(l1, 0, 0);
 
 	frameColorBtn = new ColorButton();
-	connect(frameColorBtn, SIGNAL(colorChanged()), this, SLOT(frameApplyTo()));
+	connect(frameColorBtn, &ColorButton::colorChanged, this, &EnrichmentDialog::frameApplyTo);
     gl->addWidget(frameColorBtn, 1, 1);
 
 	QLabel *l2 = new QLabel("&" + tr("Color"));
@@ -328,7 +328,7 @@ void EnrichmentDialog::initFramePage()
 	gl->addWidget(l2, 1, 0);
 
 	boxFrameLineStyle = new PenStyleBox();
-	connect(boxFrameLineStyle, SIGNAL(activated(int)), this, SLOT(frameApplyTo()));
+	connect(boxFrameLineStyle, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::frameApplyTo);
 	gl->addWidget(boxFrameLineStyle, 2, 1);
 
 	QLabel *l3 = new QLabel("&" + tr("Line Style"));
@@ -352,7 +352,7 @@ void EnrichmentDialog::initFramePage()
 	l4->setBuddy(boxFrameWidth);
 	gl->addWidget(l4, 3, 0);
 
-	connect(boxFrameWidth, SIGNAL(valueChanged(double)), this, SLOT(frameApplyTo()));
+	connect(boxFrameWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::frameApplyTo);
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
 	gl->setColumnStretch(2, 1);
@@ -360,7 +360,7 @@ void EnrichmentDialog::initFramePage()
 	QVBoxLayout *vl = new QVBoxLayout();
 
 	frameDefaultBtn = new QPushButton(tr("Set As &Default"));
-	connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
+	connect(frameDefaultBtn, &QPushButton::clicked, this, &EnrichmentDialog::setFrameDefaultValues);
 	vl->addWidget(frameDefaultBtn);
 
 	QLabel *l = new QLabel(tr("Apply t&o..."));
@@ -391,7 +391,7 @@ void EnrichmentDialog::initPatternPage()
     gl->addWidget(new QLabel( tr("Fill Color")), 0, 0);
 
 	backgroundColorBtn = new ColorButton();
-	connect(backgroundColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
+	connect(backgroundColorBtn, &ColorButton::colorChanged, this, &EnrichmentDialog::patternApplyTo);
     gl->addWidget(backgroundColorBtn, 0, 1);
 
 	boxTransparency = new QSpinBox();
@@ -399,7 +399,7 @@ void EnrichmentDialog::initPatternPage()
 	boxTransparency->setSuffix(" %");
 	boxTransparency->setWrapping(true);
     boxTransparency->setSpecialValueText(tr("Transparent"));
-	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(patternApplyTo()));
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &EnrichmentDialog::patternApplyTo);
 	gl->addWidget(boxTransparency, 1, 1);
 
 	fillTransparencySlider = new QSlider();
@@ -407,15 +407,15 @@ void EnrichmentDialog::initPatternPage()
 	fillTransparencySlider->setRange(0, 100);
 	gl->addWidget(fillTransparencySlider, 2, 1);
 
-	connect(fillTransparencySlider, SIGNAL(valueChanged(int)), boxTransparency, SLOT(setValue(int)));
-	connect(boxTransparency, SIGNAL(valueChanged(int)), fillTransparencySlider, SLOT(setValue(int)));
+	connect(fillTransparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxTransparency, &EnrichmentDialog::setValue);
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), fillTransparencySlider, &EnrichmentDialog::setValue);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(fillTransparencySlider);
 	gl->addWidget(l1, 1, 0);
 
 	patternBox = new PatternBox();
-	connect(patternBox, SIGNAL(activated(int)), this, SLOT(patternApplyTo()));
+	connect(patternBox, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::patternApplyTo);
 	gl->addWidget(patternBox, 3, 1);
 
 	QLabel *l2 = new QLabel("&" + tr("Pattern"));
@@ -424,12 +424,12 @@ void EnrichmentDialog::initPatternPage()
 
 	gl->addWidget(new QLabel(tr("Pattern Color")), 4, 0);
 	patternColorBtn = new ColorButton();
-	connect(patternColorBtn, SIGNAL(colorChanged()), this, SLOT(patternApplyTo()));
+	connect(patternColorBtn, &ColorButton::colorChanged, this, &EnrichmentDialog::patternApplyTo);
 	gl->addWidget(patternColorBtn, 4, 1);
 
 	useFrameColorBox = new QCheckBox(tr("Use &Frame Color"));
-	connect(useFrameColorBox, SIGNAL(toggled(bool)), this, SLOT(patternApplyTo()));
-	connect(useFrameColorBox, SIGNAL(toggled(bool)), patternColorBtn, SLOT(setDisabled(bool)));
+	connect(useFrameColorBox, &QCheckBox::toggled, this, &EnrichmentDialog::patternApplyTo);
+	connect(useFrameColorBox, &QCheckBox::toggled, patternColorBtn, &EnrichmentDialog::setDisabled);
 	gl->addWidget(useFrameColorBox, 5, 1);
 
 	gl->setColumnStretch(2, 1);
@@ -437,7 +437,7 @@ void EnrichmentDialog::initPatternPage()
 
 	QVBoxLayout *vl = new QVBoxLayout();
 	rectangleDefaultBtn = new QPushButton(tr("Set As &Default"));
-	connect(rectangleDefaultBtn, SIGNAL(clicked()), this, SLOT(setRectangleDefaultValues()));
+	connect(rectangleDefaultBtn, &QPushButton::clicked, this, &EnrichmentDialog::setRectangleDefaultValues);
 	vl->addWidget(rectangleDefaultBtn);
 
 	QLabel *l = new QLabel(tr("Apply t&o..."));
@@ -551,10 +551,10 @@ void EnrichmentDialog::initGeometryPage()
     vl->addLayout(bl1);
     vl->addLayout(bl2);
 
-	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
-	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(adjustHeight(double)));
-	connect(heightBox, SIGNAL(valueChanged(double)), this, SLOT(adjustWidth(double)));
-	connect(bestSizeButton, SIGNAL(clicked()), this, SLOT(setBestSize()));
+	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::displayCoordinates);
+	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::adjustHeight);
+	connect(heightBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::adjustWidth);
+	connect(bestSizeButton, &QPushButton::clicked, this, &EnrichmentDialog::setBestSize);
 
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
 }
@@ -764,9 +764,9 @@ void EnrichmentDialog::fetchImage()
 			delete compileProcess;
 
 		compileProcess = new QProcess(this);
-		connect(compileProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+		connect(compileProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
 			this, SLOT(finishedCompiling(int, QProcess::ExitStatus)));
-		connect(compileProcess, SIGNAL(error(QProcess::ProcessError)),
+		connect(compileProcess, &QProcess::errorOccurrence,
 			this, SLOT(displayCompileError(QProcess::ProcessError)));
 
 		compileProcess->setWorkingDirectory(QDir::tempPath());
@@ -1330,9 +1330,9 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 	compileProcess = NULL;
 
 	dvipngProcess = new QProcess(this);
-	connect(dvipngProcess, SIGNAL(error(QProcess::ProcessError)),
+	connect(dvipngProcess, &QProcess::errorOccurrence,
 		this, SLOT(displayCompileError(QProcess::ProcessError)));
-	connect(dvipngProcess, SIGNAL(finished(int, QProcess::ExitStatus)),
+	connect(dvipngProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
 		this, SLOT(createImage()));
 
 	dvipngProcess->setWorkingDirectory (QDir::tempPath());

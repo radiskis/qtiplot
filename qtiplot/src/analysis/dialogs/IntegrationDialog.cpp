@@ -96,9 +96,9 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags 
 
 	setGraph(g);
 
-	connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
-	connect(buttonFit, SIGNAL(clicked()), this, SLOT(integrate()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &IntegrationDialog::activateCurve);
+	connect(buttonFit, &QAbstractButton::clicked, this, &IntegrationDialog::integrate);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &IntegrationDialog::close);
 }
 
 IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
@@ -154,8 +154,8 @@ IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WindowFlags 
 
 	setTable(t);
 
-	connect(buttonFit, SIGNAL(clicked()), this, SLOT(integrate()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(buttonFit, &QAbstractButton::clicked, this, &IntegrationDialog::integrate);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &IntegrationDialog::close);
 }
 
 void IntegrationDialog::integrate()
@@ -208,8 +208,8 @@ void IntegrationDialog::setGraph(Graph *g)
 
 	activateCurve(boxName->currentText());
 
-	connect (d_graph, SIGNAL(destroyed()), this, SLOT(close()));
-	connect (d_graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect(d_graph, &QObject::destroyed, this, &IntegrationDialog::close);
+	connect(d_graph, &Graph::dataRangeChanged, this, &IntegrationDialog::changeDataRange);
 }
 
 void IntegrationDialog::activateCurve(const QString& s)
@@ -268,7 +268,7 @@ void IntegrationDialog::setTable(Table *t)
 		boxEndRow->setValue(t->numRows());
 	}
 
-	connect (d_table, SIGNAL(destroyed()), this, SLOT(close()));
+	connect(d_table, &QObject::destroyed, this, &IntegrationDialog::close);
 }
 
 void IntegrationDialog::integrateTable()

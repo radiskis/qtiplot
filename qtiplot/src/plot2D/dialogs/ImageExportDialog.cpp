@@ -235,8 +235,8 @@ void ImageExportDialog::initAdvancedOptions()
 	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
-	connect(widthBox, SIGNAL(valueChanged (double)), this, SLOT(adjustHeight(double)));
-	connect(heightBox, SIGNAL(valueChanged (double)), this, SLOT(adjustWidth(double)));
+	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ImageExportDialog::adjustHeight);
+	connect(heightBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ImageExportDialog::adjustWidth);
 
 	size_layout->addWidget(new QLabel(tr("Scale Fonts Factor")), 3, 0);
 	scaleFontsBox = new DoubleSpinBox();
@@ -264,7 +264,7 @@ void ImageExportDialog::initAdvancedOptions()
 	hb->addStretch();
 
 	d_preview_button = new QPushButton(tr("&Preview"));
-	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
+	connect(d_preview_button, &QPushButton::clicked, this, &ImageExportDialog::preview);
 
 	hb->addWidget(d_preview_button);
 	hb->addStretch();

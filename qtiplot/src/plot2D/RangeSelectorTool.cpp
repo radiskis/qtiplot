@@ -497,20 +497,20 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 	QPushButton *closeBtn = btnBox->addButton(QDialogButtonBox::Ok);
 	switch (op){
 		case Copy:
-			connect(closeBtn, SIGNAL(clicked()), this, SLOT(copyMultipleSelection()));
+			connect(closeBtn, &QPushButton::clicked, this, &RangeSelectorTool::copyMultipleSelection);
 		break;
 
 		case Cut:
-			connect(closeBtn, SIGNAL(clicked()), this, SLOT(cutMultipleSelection()));
+			connect(closeBtn, &QPushButton::clicked, this, &RangeSelectorTool::cutMultipleSelection);
 		break;
 
 		case Delete:
-			connect(closeBtn, SIGNAL(clicked()), this, SLOT(clearMultipleSelection()));
+			connect(closeBtn, &QPushButton::clicked, this, &RangeSelectorTool::clearMultipleSelection);
 		break;
 	}
 
 	QPushButton *cancelBtn = btnBox->addButton(QDialogButtonBox::Cancel);
-	connect(cancelBtn, SIGNAL(clicked()), d_selection_dialog, SLOT(close()));
+	connect(cancelBtn, &QPushButton::clicked, d_selection_dialog, &QDialog::close);
 	vb->addWidget(btnBox);
 
 	d_selection_dialog->show();

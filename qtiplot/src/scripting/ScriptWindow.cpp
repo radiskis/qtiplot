@@ -77,7 +77,7 @@ d_app(app)
 	consoleWindow->setWidget(console);
 	connect(te, SIGNAL(error(const QString&, const QString&, int)), console, SLOT(setPlainText(const QString&)));
 	connect(te, SIGNAL(error(const QString&, const QString&, int)), consoleWindow, SLOT(show()));
-	connect(te, SIGNAL(textChanged ()), this, SLOT(enableActions()));
+	connect(te, &QTextEdit::textChanged, this, SLOT(enableActions()));
 
 	initActions();
 	enableActions();
@@ -108,95 +108,95 @@ void ScriptWindow::initActions()
 {
 	actionNew = new QAction(QIcon(":/new.png"), tr("&New"), this);
 	actionNew->setShortcut( tr("Ctrl+N") );
-	connect(actionNew, SIGNAL(triggered()), this, SLOT(newScript()));
+	connect(actionNew, &QAction::triggered, this, &ScriptWindow::newScript);
 	file->addAction(actionNew);
 
 	actionOpen = new QAction(QIcon(":/fileopen.png"), tr("&Open..."), this);
 	actionOpen->setShortcut( tr("Ctrl+O") );
-	connect(actionOpen, SIGNAL(triggered()), this, SLOT(open()));
+	connect(actionOpen, &QAction::triggered, this, &ScriptWindow::open);
 	file->addAction(actionOpen);
 
 	file->addSeparator();
 
 	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
 	actionSave->setShortcut( tr("Ctrl+S") );
-	connect(actionSave, SIGNAL(triggered()), this, SLOT(save()));
+	connect(actionSave, &QAction::triggered, this, &ScriptWindow::save);
 	file->addAction(actionSave);
 
 	actionSaveAs = new QAction(QIcon(":/filesaveas.png"), tr("Save &As..."), this);
-	connect(actionSaveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
+	connect(actionSaveAs, &QAction::triggered, this, &ScriptWindow::saveAs);
 	file->addAction(actionSaveAs);
 
 	file->addSeparator();
 
 	actionPrintPreview = new QAction(QIcon(":/preview.png"), tr("Print Pre&view..."), this);
-	connect(actionPrintPreview, SIGNAL(triggered()), this, SLOT(printPreview()));
+	connect(actionPrintPreview, &QAction::triggered, this, &ScriptWindow::printPreview);
 	file->addAction(actionPrintPreview);
 
 	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
 	actionPrint->setShortcut( tr("Ctrl+P") );
-	connect(actionPrint, SIGNAL(triggered()), te, SLOT(print()));
+	connect(actionPrint, &QAction::triggered, te, &ScriptWindow::print);
 	file->addAction(actionPrint);
 
 	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
-	connect(actionUndo, SIGNAL(triggered()), te, SLOT(undo()));
+	connect(actionUndo, &QAction::triggered, te, &ScriptWindow::undo);
 	edit->addAction(actionUndo);
 	actionUndo->setEnabled(false);
 
 	actionRedo = new QAction(QIcon(":/redo.png"), tr("&Redo"), this);
 	actionRedo->setShortcut( tr("Ctrl+Y") );
-	connect(actionRedo, SIGNAL(triggered()), te, SLOT(redo()));
+	connect(actionRedo, &QAction::triggered, te, &ScriptWindow::redo);
 	edit->addAction(actionRedo);
 	actionRedo->setEnabled(false);
 	edit->addSeparator();
 
 	actionCut = new QAction(QIcon(":/cut.png"), tr("&Cut"), this);
 	actionCut->setShortcut( tr("Ctrl+x") );
-	connect(actionCut, SIGNAL(triggered()), te, SLOT(cut()));
+	connect(actionCut, &QAction::triggered, te, &ScriptWindow::cut);
 	edit->addAction(actionCut);
 	actionCut->setEnabled(false);
 
 	actionCopy = new QAction(QIcon(":/copy.png"), tr("&Copy"), this);
 	actionCopy->setShortcut( tr("Ctrl+C") );
-	connect(actionCopy, SIGNAL(triggered()), te, SLOT(copy()));
+	connect(actionCopy, &QAction::triggered, te, &ScriptWindow::copy);
 	edit->addAction(actionCopy);
 	actionCopy->setEnabled(false);
 
 	actionPaste = new QAction(QIcon(":/paste.png"), tr("&Paste"), this);
 	actionPaste->setShortcut( tr("Ctrl+V") );
-	connect(actionPaste, SIGNAL(triggered()), te, SLOT(paste()));
+	connect(actionPaste, &QAction::triggered, te, &ScriptWindow::paste);
 	edit->addAction(actionPaste);
 
 	edit->addSeparator();
 
 	actionIncreaseIndent = new QAction(QIcon(":/increase_indent.png"), tr("Increase Indent"), this);
-	connect(actionIncreaseIndent, SIGNAL(triggered()), this, SLOT(increaseIndent()));
+	connect(actionIncreaseIndent, &QAction::triggered, this, &ScriptWindow::increaseIndent);
 	edit->addAction(actionIncreaseIndent);
 
 	actionDecreaseIndent = new QAction(QIcon(":/decrease_indent.png"),tr("Decrease Indent"), this);
-	connect(actionDecreaseIndent, SIGNAL(triggered()), this, SLOT(decreaseIndent()));
+	connect(actionDecreaseIndent, &QAction::triggered, this, &ScriptWindow::decreaseIndent);
 	edit->addAction(actionDecreaseIndent);
 
 	edit->addSeparator();
 
 	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
 	actionFind->setShortcut(tr("Ctrl+Alt+F"));
-	connect(actionFind, SIGNAL(triggered()), this, SLOT(find()));
+	connect(actionFind, &QAction::triggered, this, &ScriptWindow::find);
 	edit->addAction(actionFind);
 
 	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("Find &Next"), this);
 	actionFindNext->setShortcut(tr("F3"));
-	connect(actionFindNext, SIGNAL(triggered()), this, SLOT(findNext()));
+	connect(actionFindNext, &QAction::triggered, this, &ScriptWindow::findNext);
 	edit->addAction(actionFindNext);
 
 	actionFindPrev = new QAction(QIcon(":/find_previous.png"), tr("Find &Previous"), this);
 	actionFindPrev->setShortcut(tr("F4"));
-	connect(actionFindPrev, SIGNAL(triggered()), this, SLOT(findPrevious()));
+	connect(actionFindPrev, &QAction::triggered, this, &ScriptWindow::findPrevious);
 	edit->addAction(actionFindPrev);
 
 	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
-	connect(actionReplace, SIGNAL(triggered()), this, SLOT(replace()));
+	connect(actionReplace, &QAction::triggered, this, &ScriptWindow::replace);
 	edit->addAction(actionReplace);
 
 	edit->addSeparator();
@@ -204,22 +204,22 @@ void ScriptWindow::initActions()
 	actionShowLineNumbers = new QAction(tr("Show &Line Numbers"), this);
 	actionShowLineNumbers->setCheckable(true);
 	actionShowLineNumbers->setChecked(d_app->d_note_line_numbers);
-	connect(actionShowLineNumbers, SIGNAL(toggled(bool)), d_line_number, SLOT(setVisible(bool)));
+	connect(actionShowLineNumbers, &QAction::toggled, d_line_number, &QWidget::setVisible);
 	edit->addAction(actionShowLineNumbers);
 
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("CTRL+J") );
-	connect(actionExecute, SIGNAL(triggered()), te, SLOT(execute()));
+	connect(actionExecute, &QAction::triggered, te, &ScriptWindow::execute);
 	run->addAction(actionExecute);
 
 	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("CTRL+SHIFT+J") );
-	connect(actionExecuteAll, SIGNAL(triggered()), te, SLOT(executeAll()));
+	connect(actionExecuteAll, &QAction::triggered, te, &ScriptWindow::executeAll);
 	run->addAction(actionExecuteAll);
 
 	actionEval = new QAction(tr("&Evaluate Expression"), this);
 	actionEval->setShortcut( tr("CTRL+Return") );
-	connect(actionEval, SIGNAL(triggered()), te, SLOT(evaluate()));
+	connect(actionEval, &QAction::triggered, te, &ScriptWindow::evaluate);
 	run->addAction(actionEval);
 
 	run->addSeparator();
@@ -231,7 +231,7 @@ void ScriptWindow::initActions()
 	actionRedirectOutput = new QAction(tr("Ouput on Next &Line"), this);
 	actionRedirectOutput->setCheckable(true);
 	actionRedirectOutput->setChecked(true);
-	connect(actionRedirectOutput, SIGNAL(toggled(bool)), this, SLOT(redirectOutput(bool)));
+	connect(actionRedirectOutput, &QAction::toggled, this, &ScriptWindow::redirectOutput);
 	run->addAction(actionRedirectOutput);
 
 	actionAlwaysOnTop = new QAction(tr("Always on &Top"), this);
@@ -239,16 +239,16 @@ void ScriptWindow::initActions()
 	if (d_app)
 		actionAlwaysOnTop->setChecked (d_app->d_script_win_on_top);
 	windowMenu->addAction(actionAlwaysOnTop);
-	connect(actionAlwaysOnTop, SIGNAL(toggled(bool)), this, SLOT(setAlwaysOnTop(bool)));
+	connect(actionAlwaysOnTop, &QAction::toggled, this, &ScriptWindow::setAlwaysOnTop);
 
 	actionShowWorkspace = new QAction(tr("Show &Workspace"), this);
 	actionShowWorkspace->setCheckable(true);
 	actionShowWorkspace->setChecked(d_app->isMdiAreaEnabled());
-	connect(actionShowWorkspace, SIGNAL(toggled(bool)), this, SLOT(showWorkspace(bool)));
+	connect(actionShowWorkspace, &QAction::toggled, this, &ScriptWindow::showWorkspace);
 	windowMenu->addAction(actionShowWorkspace);
 
 	actionHide = new QAction(tr("&Close"), this);
-	connect(actionHide, SIGNAL(triggered()), this, SLOT(close()));
+	connect(actionHide, &QAction::triggered, this, &ScriptWindow::close);
 	windowMenu->addAction(actionHide);
 
 	connect(te, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));

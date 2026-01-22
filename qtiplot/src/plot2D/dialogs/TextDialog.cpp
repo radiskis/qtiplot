@@ -84,12 +84,12 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WindowFlags fl)
 		topLayout->addWidget(new QLabel(tr("Distance to axis")), 2, 0);
 		distanceBox = new QSpinBox();
 		distanceBox->setRange(0, 1000);
-		connect(distanceBox, SIGNAL(valueChanged(int)), this, SLOT(apply()));
+		connect(distanceBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &TextDialog::apply);
 
 		topLayout->addWidget(distanceBox, 2, 1);
 		invertTitleBox = new QCheckBox(tr("&Inverted"));
 		invertTitleBox->hide();
-		connect(invertTitleBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+		connect(invertTitleBox, &QCheckBox::toggled, this, &TextDialog::apply);
 		topLayout->addWidget(invertTitleBox, 1, 2);
 	}
 
@@ -129,11 +129,11 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WindowFlags fl)
 	mainLayout->addWidget(textEditBox, 1);
 
 	// signals and slots connections
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( buttonFont, SIGNAL( clicked() ), this, SLOT(customFont() ) );
-	connect( colorBtn, SIGNAL(colorChanged()), this, SLOT(apply()));
-	connect( alignmentBox, SIGNAL(activated(int)), this, SLOT(apply()));
+	connect(buttonApply, &QPushButton::clicked, this, &TextDialog::apply);
+	connect(buttonCancel, &QPushButton::clicked, this, &TextDialog::reject);
+	connect(buttonFont, &QPushButton::clicked, this, &TextDialog::customFont);
+	connect(colorBtn, &ColorButton::colorChanged, this, &TextDialog::apply);
+	connect(alignmentBox, QOverload<int>::of(&QComboBox::activated), this, &TextDialog::apply);
 }
 
 void TextDialog::setGraph(Graph *g)

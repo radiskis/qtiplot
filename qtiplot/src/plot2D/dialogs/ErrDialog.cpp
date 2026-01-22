@@ -146,12 +146,12 @@ ErrDialog::ErrDialog( QWidget* parent, Qt::WindowFlags fl )
 	languageChange();
 
 	// signals and slots connections
-	connect( buttonAdd, SIGNAL( clicked() ), this, SLOT( add() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( percentBox, SIGNAL( toggled(bool) ), valueBox, SLOT( setEnabled(bool) ) );
-	connect( columnBox, SIGNAL( toggled(bool) ), tableNamesBox, SLOT( setEnabled(bool) ) );
-	connect( columnBox, SIGNAL( toggled(bool) ), colNamesBox, SLOT( setEnabled(bool) ) );
-	connect( tableNamesBox, SIGNAL( activated(int) ), this, SLOT( selectSrcTable(int) ));
+	connect(buttonAdd, &QPushButton::clicked, this, &ErrDialog::add);
+	connect(buttonCancel, &QPushButton::clicked, this, &ErrDialog::reject);
+	connect(percentBox, &QCheckBox::toggled, valueBox, &ErrDialog::setEnabled);
+	connect(columnBox, &QCheckBox::toggled, tableNamesBox, &ErrDialog::setEnabled);
+	connect(columnBox, &QCheckBox::toggled, colNamesBox, &ErrDialog::setEnabled);
+	connect(tableNamesBox, QOverload<int>::of(&QComboBox::activated), this, &ErrDialog::selectSrcTable);
 }
 
 void ErrDialog::setCurveNames(const QStringList& names)

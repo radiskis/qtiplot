@@ -199,7 +199,7 @@ multi_layer(NULL)
 
 	if (!okMode){
 		buttonApply = new QPushButton(tr( "&Apply" ));
-		connect( buttonApply, SIGNAL( clicked() ), this, SLOT(update() ) );
+		connect(buttonApply, &QPushButton::clicked, this, &LayerDialog::update);
 		hbox1->addWidget(buttonApply);
 	}
 
@@ -236,17 +236,17 @@ multi_layer(NULL)
 	vbox2->addStretch();
 	vbox2->addLayout(hbox1);
 
-	connect( buttonSwapLayers, SIGNAL( clicked() ), this, SLOT( swapLayers() ) );
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( fitBox, SIGNAL( toggled(bool) ), this, SLOT(enableLayoutOptions(bool) ) );
-	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateSizes(int)));
-	connect(boxCanvasWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasHeight(double)));
-	connect(boxCanvasHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasWidth(double)));
+	connect(buttonSwapLayers, &QPushButton::clicked, this, &LayerDialog::swapLayers);
+	connect(buttonOk, &QPushButton::clicked, this, &LayerDialog::accept);
+	connect(buttonCancel, &QPushButton::clicked, this, &LayerDialog::reject);
+	connect(fitBox, &QCheckBox::toggled, this, &LayerDialog::enableLayoutOptions);
+	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &LayerDialog::updateSizes);
+	connect(boxCanvasWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LayerDialog::adjustCanvasHeight);
+	connect(boxCanvasHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LayerDialog::adjustCanvasWidth);
 
-	connect(boxColsGap, SIGNAL(valueChanged(int)), this, SLOT(showCommonAxesBox()));
-	connect(boxRowsGap, SIGNAL(valueChanged(int)), this, SLOT(showCommonAxesBox()));
-	connect(alignPolicyBox, SIGNAL(activated(int)), this, SLOT(showCommonAxesBox()));
+	connect(boxColsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, &LayerDialog::showCommonAxesBox);
+	connect(boxRowsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, &LayerDialog::showCommonAxesBox);
+	connect(alignPolicyBox, QOverload<int>::of(&QComboBox::activated), this, &LayerDialog::showCommonAxesBox);
 }
 
 void LayerDialog::enableLayoutOptions(bool ok)

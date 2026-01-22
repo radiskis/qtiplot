@@ -105,9 +105,9 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WindowFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
-	connect(buttonFit, SIGNAL(clicked()), this, SLOT(interpolate()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &InterpolationDialog::activateCurve);
+	connect(buttonFit, &QAbstractButton::clicked, this, &InterpolationDialog::interpolate);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &InterpolationDialog::close);
 }
 
 void InterpolationDialog::interpolate()
@@ -150,8 +150,8 @@ void InterpolationDialog::setGraph(Graph *g)
 
 	activateCurve(boxName->currentText());
 
-	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
-	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect(graph, &QObject::destroyed, this, &InterpolationDialog::close);
+	connect(graph, &Graph::dataRangeChanged, this, &InterpolationDialog::changeDataRange);
 }
 
 void InterpolationDialog::activateCurve(const QString& s)

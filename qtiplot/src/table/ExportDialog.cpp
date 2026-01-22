@@ -58,14 +58,13 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 		selectFile(d_window->objectName());
 	}
 
-#if QT_VERSION >= 0x040300
-	connect(this, SIGNAL(filterSelected ( const QString & )),
-			this, SLOT(updateAdvancedOptions ( const QString & )));
+	connect(this, &QFileDialog::filterSelected,
+			this, &ExportDialog::updateAdvancedOptions);
 #else
 	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
 	if (combo_boxes.size() >= 2)
-		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
-				this, SLOT(updateAdvancedOptions ( const QString & )));
+		connect(combo_boxes[1], &QComboBox::currentTextChanged,
+				this, &ExportDialog::updateAdvancedOptions);
 #endif
 
 	selectNameFilter(((ApplicationWindow *)parent)->d_export_ASCII_file_filter);
@@ -136,9 +135,9 @@ void ExportDialog::initAdvancedOptions()
 	vl1->addWidget( boxSelection );
 
     // signals and slots connections
-    connect( boxTable, SIGNAL(activated(const QString &)), this, SLOT(updateOptions(const QString &)));
-    connect( buttonHelp, SIGNAL(clicked()), this, SLOT(help()));
-	connect( boxAllTables, SIGNAL(toggled(bool)), this, SLOT( enableTableName(bool)));
+    connect( boxTable, &QComboBox::activated, this, &ExportDialog::updateOptions);
+    connect( buttonHelp, &QPushButton::clicked, this, &ExportDialog::help);
+	connect( boxAllTables, &QCheckBox::toggled, this, &ExportDialog::enableTableName);
 }
 
 void ExportDialog::updateAdvancedOptions (const QString & filter)

@@ -110,9 +110,9 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WindowFlags fl )
 	hlayout->addWidget(gb1, 1);
 	hlayout->addLayout(vl);
 
-	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( fit() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-	connect( boxName, SIGNAL( activated(const QString &) ), this, SLOT(activateCurve(const QString &)));
+	connect(buttonFit, &QAbstractButton::clicked, this, &PolynomFitDialog::fit);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &PolynomFitDialog::close);
+	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &PolynomFitDialog::activateCurve);
 }
 
 void PolynomFitDialog::fit()
@@ -151,8 +151,8 @@ void PolynomFitDialog::setGraph(Graph *g)
 
 	activateCurve(boxName->currentText());
 
-	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
-	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect(graph, &QObject::destroyed, this, &PolynomFitDialog::close);
+	connect(graph, &Graph::dataRangeChanged, this, &PolynomFitDialog::changeDataRange);
 }
 
 void PolynomFitDialog::activateCurve(const QString& s)

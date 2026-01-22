@@ -55,12 +55,12 @@ void Note::init(ScriptingEnv * /*env*/)
 	connect(d_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int)));
 #endif
 	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SLOT(notifyChanges()));
-	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SIGNAL(currentEditorChanged()));
+	connect(d_tab_widget, &QTabWidget::currentChanged, this, &Note::currentEditorChanged);
 
 	QPushButton *btnAdd = new QPushButton("+");
 	btnAdd->setToolTip(tr("Add tab"));
 	btnAdd->setMaximumWidth(20);
-	connect(btnAdd, SIGNAL(clicked()), this, SLOT(addTab()));
+	connect(btnAdd, &QAbstractButton::clicked, this, &Note::addTab);
 
 	QWidget *addWidget = new QWidget;
 	QHBoxLayout *hb = new QHBoxLayout(addWidget);
@@ -167,9 +167,9 @@ void Note::addTab()
 
 	d_tab_widget->setCurrentIndex(d_tab_widget->addTab(frame, tr("untitled")));
 
-	connect(editor, SIGNAL(textChanged()), this, SLOT(modifiedNote()));
-	connect(editor, SIGNAL(textChanged()), this, SIGNAL(currentEditorChanged()));
-	connect(editor, SIGNAL(dirPathChanged(const QString& )), this, SIGNAL(dirPathChanged(const QString&)));
+	connect(editor, &NoteEditor::textChanged, this, SLOT(modifiedNote()));
+	connect(editor, &NoteEditor::textChanged, this, SIGNAL(currentEditorChanged()));
+	connect(editor, &NoteEditor::dirPathChanged, this, &Note::dirPathChanged);
 }
 
 int Note::indexOf(ScriptEdit* editor)

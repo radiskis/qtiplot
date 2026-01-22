@@ -163,12 +163,12 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	// signals and slots connections
 	connect( itemsList, SIGNAL(currentRowChanged(int)), this, SLOT(setCurrentPage(int)));
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT( apply() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( btnDefaultSettings, SIGNAL( clicked() ), this, SLOT( resetDefaultSettings() ) );
-	connect( buttonTextFont, SIGNAL( clicked() ), this, SLOT( pickTextFont() ) );
-	connect( buttonHeaderFont, SIGNAL( clicked() ), this, SLOT( pickHeaderFont() ) );
+	connect(buttonOk, &QAbstractButton::clicked, this, &ConfigDialog::accept);
+	connect(buttonApply, &QAbstractButton::clicked, this, &ConfigDialog::apply);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &ConfigDialog::reject);
+	connect(btnDefaultSettings, &QAbstractButton::clicked, this, &ConfigDialog::resetDefaultSettings);
+	connect(buttonTextFont, &QAbstractButton::clicked, this, &ConfigDialog::pickTextFont);
+	connect(buttonHeaderFont, &QAbstractButton::clicked, this, &ConfigDialog::pickHeaderFont);
 
 	setCurrentPage(0);
 }
@@ -489,11 +489,11 @@ void ConfigDialog::initPlotsPage()
 	printLayout->addStretch();
 	plotsTabWidget->addTab(plotPrint, QString());
 
-	connect( boxFrame, SIGNAL( toggled(bool) ), this, SLOT( showFrameWidth(bool) ) );
-	connect( buttonAxesFont, SIGNAL( clicked() ), this, SLOT( pickAxesFont() ) );
-	connect( buttonNumbersFont, SIGNAL( clicked() ), this, SLOT( pickNumbersFont() ) );
-	connect( buttonLegendFont, SIGNAL( clicked() ), this, SLOT( pickLegendFont() ) );
-	connect( buttonTitleFont, SIGNAL( clicked() ), this, SLOT( pickTitleFont() ) );
+	connect(boxFrame, &QAbstractButton::toggled, this, &ConfigDialog::showFrameWidth);
+	connect(buttonAxesFont, &QAbstractButton::clicked, this, &ConfigDialog::pickAxesFont);
+	connect(buttonNumbersFont, &QAbstractButton::clicked, this, &ConfigDialog::pickNumbersFont);
+	connect(buttonLegendFont, &QAbstractButton::clicked, this, &ConfigDialog::pickLegendFont);
+	connect(buttonTitleFont, &QAbstractButton::clicked, this, &ConfigDialog::pickTitleFont);
 }
 
 void ConfigDialog::showFrameWidth(bool ok)
@@ -611,12 +611,12 @@ void ConfigDialog::initPlots3DPage()
 
 	boxMajorGrids = new QCheckBox(tr("Ma&jor Grids"));
 	boxMajorGrids->setChecked(app->d_3D_major_grids);
-	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMajorGrids(bool)));
+	connect(boxMajorGrids, &QAbstractButton::toggled, this, &ConfigDialog::enableMajorGrids);
 	gl1->addWidget(boxMajorGrids, 0, 1);
 
 	boxMinorGrids = new QCheckBox(tr("Mi&nor Grids"));
 	boxMinorGrids->setChecked(app->d_3D_minor_grids);
-	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMinorGrids(bool)));
+	connect(boxMinorGrids, &QAbstractButton::toggled, this, &ConfigDialog::enableMinorGrids);
 	gl1->addWidget(boxMinorGrids, 0, 2);
 
 	label3DGridsColor = new QLabel(tr("Color"));
@@ -673,9 +673,9 @@ void ConfigDialog::initPlots3DPage()
 	plots3DPageLayout->addWidget(topBox);
 	plots3DPageLayout->addLayout(hb);
 
-	connect( btnNumFnt, SIGNAL( clicked() ), this, SLOT(pick3DNumbersFont() ) );
-	connect( btnTitleFnt, SIGNAL( clicked() ), this, SLOT(pick3DTitleFont() ) );
-	connect( btnLabelsFnt, SIGNAL( clicked() ), this, SLOT(pick3DAxesFont() ) );
+	connect(btnNumFnt, &QAbstractButton::clicked, this, &ConfigDialog::pick3DNumbersFont);
+	connect(btnTitleFnt, &QAbstractButton::clicked, this, &ConfigDialog::pick3DTitleFont);
+	connect(btnLabelsFnt, &QAbstractButton::clicked, this, &ConfigDialog::pick3DAxesFont);
 }
 
 void ConfigDialog::initAppPage()
@@ -849,8 +849,8 @@ void ConfigDialog::initAppPage()
 	initFileLocationsPage();
 	initProxyPage();
 
-	connect( boxLanguage, SIGNAL( activated(int) ), this, SLOT( switchToLanguage(int) ) );
-	connect( fontsBtn, SIGNAL( clicked() ), this, SLOT( pickApplicationFont() ) );
+	connect(boxLanguage, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::switchToLanguage);
+	connect(fontsBtn, &QAbstractButton::clicked, this, &ConfigDialog::pickApplicationFont);
 	connect( boxSave, SIGNAL( toggled(bool) ), boxMinutes, SLOT( setEnabled(bool) ) );
 }
 
@@ -870,7 +870,7 @@ void ConfigDialog::initNotesPage()
 	boxTabLength->setRange(0, 1000);
 	boxTabLength->setSingleStep(5);
 	boxTabLength->setValue(app->d_notes_tab_length);
-    connect(boxTabLength, SIGNAL(valueChanged(int)), this, SLOT(customizeNotes()));
+    connect(boxTabLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &ConfigDialog::customizeNotes);
 	gl1->addWidget(boxTabLength, 0, 1);
 
 	labelNotesFont = new QLabel();
@@ -884,7 +884,7 @@ void ConfigDialog::initNotesPage()
     boxFontSize = new QSpinBox();
 	boxFontSize->setRange(0, 1000);
 	boxFontSize->setValue(app->d_notes_font.pointSize());
-    connect(boxFontSize, SIGNAL(valueChanged(int)), this, SLOT(customizeNotes()));
+    connect(boxFontSize, QOverload<int>::of(&QSpinBox::valueChanged), this, &ConfigDialog::customizeNotes);
 	gl1->addWidget(boxFontSize, 1, 2);
 
     buttonBoldFont = new QPushButton(tr("&B"));
@@ -893,7 +893,7 @@ void ConfigDialog::initNotesPage()
     buttonBoldFont->setFont(font);
     buttonBoldFont->setCheckable(true);
     buttonBoldFont->setChecked(app->d_notes_font.bold());
-    connect(buttonBoldFont, SIGNAL(clicked()), this, SLOT(customizeNotes()));
+    connect(buttonBoldFont, &QAbstractButton::clicked, this, &ConfigDialog::customizeNotes);
 	gl1->addWidget(buttonBoldFont, 1, 3);
 
     buttonItalicFont = new QPushButton(tr("&It"));
@@ -902,12 +902,12 @@ void ConfigDialog::initNotesPage()
     buttonItalicFont->setFont(font);
     buttonItalicFont->setCheckable(true);
     buttonItalicFont->setChecked(app->d_notes_font.italic());
-    connect(buttonItalicFont, SIGNAL(clicked()), this, SLOT(customizeNotes()));
+    connect(buttonItalicFont, &QAbstractButton::clicked, this, &ConfigDialog::customizeNotes);
 	gl1->addWidget(buttonItalicFont, 1, 4);
 
     lineNumbersBox = new QCheckBox();
 	lineNumbersBox->setChecked(app->d_note_line_numbers);
-    connect(lineNumbersBox, SIGNAL(toggled(bool)), this, SLOT(customizeNotes()));
+    connect(lineNumbersBox, &QAbstractButton::toggled, this, &ConfigDialog::customizeNotes);
 	gl1->addWidget(lineNumbersBox, 2, 0);
 	gl1->setColumnStretch(5, 1);
 
@@ -1051,8 +1051,8 @@ void ConfigDialog::initFittingPage()
 	fitPageLayout->addWidget(boxMultiPeakMsgs);
 	fitPageLayout->addStretch();
 
-	connect(samePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
-	connect(generatePointsBtn, SIGNAL(toggled(bool)), this, SLOT(showPointsBox(bool)));
+	connect(samePointsBtn, &QAbstractButton::toggled, this, &ConfigDialog::showPointsBox);
+	connect(generatePointsBtn, &QAbstractButton::toggled, this, &ConfigDialog::showPointsBox);
 }
 
 void ConfigDialog::initLayerSpeedPage()
@@ -1074,7 +1074,7 @@ void ConfigDialog::initLayerSpeedPage()
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 
 	connect(disableAntialiasingBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(setEnabled(bool)));
-	connect(antialiasingGroupBox, SIGNAL(toggled(bool)), this, SLOT(enableCurveAntialiasingSizeBox(bool)));
+	connect(antialiasingGroupBox, &QAbstractButton::toggled, this, &ConfigDialog::enableCurveAntialiasingSizeBox);
 
 	QGridLayout * gl = new QGridLayout(antialiasingGroupBox);
 	gl->addWidget(disableAntialiasingBox, 0, 0);
@@ -1142,7 +1142,7 @@ void ConfigDialog::initLayerGeometryPage()
 	gl->addWidget(unitBoxLabel, 0, 0);
 
 	unitBox = new QComboBox();
-	connect(unitBox, SIGNAL(activated(int)), this, SLOT(updateCanvasSize(int)));
+	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::updateCanvasSize);
 	gl->addWidget(unitBox, 0, 1);
 
 	QLocale locale = QLocale();
@@ -1157,7 +1157,7 @@ void ConfigDialog::initLayerGeometryPage()
 	boxCanvasWidth->setLocale(locale);
 	boxCanvasWidth->setDecimals(6);
 	//boxCanvasWidth->setValue(convertFromPixels(app->d_layer_canvas_width, unit,0));
-	connect(boxCanvasWidth, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasHeight(double)));
+	connect(boxCanvasWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::adjustCanvasHeight);
 	gl->addWidget(boxCanvasWidth, 1, 1);
 
 	canvasHeightLabel = new QLabel();
@@ -1168,7 +1168,7 @@ void ConfigDialog::initLayerGeometryPage()
 	boxCanvasHeight->setLocale(locale);
 	boxCanvasHeight->setDecimals(6);
 	//boxCanvasHeight->setValue(convertFromPixels(app->d_layer_canvas_height, unit, 1));
-	connect(boxCanvasHeight, SIGNAL(valueChanged (double)), this, SLOT(adjustCanvasWidth(double)));
+	connect(boxCanvasHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::adjustCanvasWidth);
 	gl->addWidget(boxCanvasHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
@@ -1310,23 +1310,23 @@ void ConfigDialog::initCurvesPage()
 	hl2->setSpacing(0);
 	hl2->addStretch();
 	btnNewColor = new QPushButton(QIcon(":/plus.png"), QString());
-	connect(btnNewColor, SIGNAL(clicked()), this, SLOT(newColor()));
+	connect(btnNewColor, &QAbstractButton::clicked, this, &ConfigDialog::newColor);
 	hl2->addWidget(btnNewColor);
 
 	btnRemoveColor = new QPushButton(QIcon(":/delete.png"), QString());
-	connect(btnRemoveColor, SIGNAL(clicked()), this, SLOT(removeColor()));
+	connect(btnRemoveColor, &QAbstractButton::clicked, this, &ConfigDialog::removeColor);
 	hl2->addWidget(btnRemoveColor);
 
 	btnColorUp = new QPushButton(QIcon(":/arrow_up.png"), QString());
-	connect(btnColorUp, SIGNAL(clicked()), this, SLOT(moveColor()));
+	connect(btnColorUp, &QAbstractButton::clicked, this, &ConfigDialog::moveColor);
 	hl2->addWidget(btnColorUp);
 
 	btnColorDown = new QPushButton(QIcon(":/arrow_down.png"), QString());
-	connect(btnColorDown, SIGNAL(clicked()), this, SLOT(moveColorDown()));
+	connect(btnColorDown, &QAbstractButton::clicked, this, &ConfigDialog::moveColorDown);
 	hl2->addWidget(btnColorDown);
 
 	btnLoadDefaultColors = new QPushButton();
-	connect(btnLoadDefaultColors, SIGNAL(clicked()), this, SLOT(loadDefaultColors()));
+	connect(btnLoadDefaultColors, &QAbstractButton::clicked, this, &ConfigDialog::loadDefaultColors);
 	hl2->addWidget(btnLoadDefaultColors);
 
 	hl2->addStretch();
@@ -1354,13 +1354,13 @@ void ConfigDialog::initCurvesPage()
 	vl2->addWidget(symbolsList);
 
 	btnSymbolUp = new QPushButton(QIcon(":/arrow_up.png"), QString());
-	connect(btnSymbolUp, SIGNAL(clicked()), this, SLOT(moveSymbol()));
+	connect(btnSymbolUp, &QAbstractButton::clicked, this, &ConfigDialog::moveSymbol);
 
 	btnSymbolDown = new QPushButton(QIcon(":/arrow_down.png"), QString());
-	connect(btnSymbolDown, SIGNAL(clicked()), this, SLOT(moveSymbolDown()));
+	connect(btnSymbolDown, &QAbstractButton::clicked, this, &ConfigDialog::moveSymbolDown);
 
 	btnLoadDefaultSymbols = new QPushButton();
-	connect(btnLoadDefaultSymbols, SIGNAL(clicked()), this, SLOT(loadDefaultSymbols()));
+	connect(btnLoadDefaultSymbols, &QAbstractButton::clicked, this, &ConfigDialog::loadDefaultSymbols);
 
 	QHBoxLayout *hl4 = new QHBoxLayout();
 	hl4->setSpacing(0);
@@ -1387,7 +1387,7 @@ void ConfigDialog::setSymbolsList(const QList<int>& symbList)
 		SymbolBox *sb = new SymbolBox(false);
 		sb->setCurrentIndex(symbList[i]);
 		connect(sb, SIGNAL(activated(SymbolBox *)), this, SLOT(setCurrentSymbol(SymbolBox *)));
-		connect(sb, SIGNAL(activated(int)), this, SLOT(updateSymbolsList(int)));
+		connect(sb, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::updateSymbolsList);
 		symbolsList->setCellWidget(i, 0, sb);
 	}
 }
@@ -1708,15 +1708,15 @@ void ConfigDialog::initGridPage()
 
 	//grid page slot connections
 	connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridOptions(int)));
-	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
-	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
-	connect(boxAntialiseGrid,SIGNAL(toggled(bool)), this, SLOT(updateGrid()));
+	connect(boxMajorGrid, &QAbstractButton::toggled, this, &ConfigDialog::majorGridEnabled);
+	connect(boxMinorGrid, &QAbstractButton::toggled, this, &ConfigDialog::minorGridEnabled);
+	connect(boxAntialiseGrid, &QAbstractButton::toggled, this, &ConfigDialog::updateGrid);
 	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
 	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
 	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
 	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxWidthMajor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
-	connect(boxWidthMinor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
+	connect(boxWidthMajor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::updateGrid);
+	connect(boxWidthMinor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::updateGrid);
 }
 
 void ConfigDialog::initConfirmationsPage()
@@ -1824,7 +1824,7 @@ void ConfigDialog::initFileLocationsPage()
 
     browseTexCompilerBtn = new QPushButton;
 	browseTexCompilerBtn->setIcon(QIcon(":/folder_open.png"));
-	connect(browseTexCompilerBtn, SIGNAL(clicked()), this, SLOT(chooseTexCompiler()));
+	connect(browseTexCompilerBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseTexCompiler);
 
     gl->addWidget(browseTexCompilerBtn, 2, 2);
 
@@ -1839,7 +1839,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	browseOfficeBtn = new QPushButton;
 	browseOfficeBtn->setIcon(QIcon(":/folder_open.png"));
-	connect(browseOfficeBtn, SIGNAL(clicked()), this, SLOT(chooseOffice()));
+	connect(browseOfficeBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseOffice);
 	gl->addWidget(browseOfficeBtn, 3, 2);
 
 	javaLabel = new QLabel(tr("Java"));
@@ -1853,7 +1853,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	browseJavaBtn = new QPushButton;
 	browseJavaBtn->setIcon(QIcon(":/folder_open.png"));
-	connect(browseJavaBtn, SIGNAL(clicked()), this, SLOT(chooseJava()));
+	connect(browseJavaBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseJava);
 	gl->addWidget(browseJavaBtn, 4, 2);
 
 	jodconverterLabel = new QLabel;
@@ -1867,7 +1867,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	browseJODConverterBtn = new QPushButton;
 	browseJODConverterBtn->setIcon(QIcon(":/folder_open.png"));
-	connect(browseJODConverterBtn, SIGNAL(clicked()), this, SLOT(chooseJODConverter()));
+	connect(browseJODConverterBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseJODConverter);
 	gl->addWidget(browseJODConverterBtn, 5, 2);
 
 	gl->setRowStretch(6, 1);
@@ -1882,7 +1882,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	QPushButton *browsePythonConfigBtn = new QPushButton();
 	browsePythonConfigBtn->setIcon(QIcon(":/folder_open.png"));
-	connect(browsePythonConfigBtn, SIGNAL(clicked()), this, SLOT(choosePythonConfigFolder()));
+	connect(browsePythonConfigBtn, &QAbstractButton::clicked, this, &ConfigDialog::choosePythonConfigFolder);
 	gl->addWidget(browsePythonConfigBtn, 6, 2);
 
 	bool showScriptsFolder = (app->defaultScriptingLang == QString("Python"));
@@ -1898,11 +1898,11 @@ void ConfigDialog::initFileLocationsPage()
 	browsePythonScriptsBtn = new QPushButton();
 	browsePythonScriptsBtn->setIcon(QIcon(":/folder_open.png"));
 	browsePythonScriptsBtn->setVisible(showScriptsFolder);
-	connect(browsePythonScriptsBtn, SIGNAL(clicked()), this, SLOT(chooseStartupScriptsFolder()));
+	connect(browsePythonScriptsBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseStartupScriptsFolder);
 	gl->addWidget(browsePythonScriptsBtn, 7, 2);
 	gl->setRowStretch(8, 1);
 
-	connect(boxScriptingLanguage, SIGNAL(activated(const QString &)), this, SLOT(showStartupScriptsFolder(const QString &)));
+	connect(boxScriptingLanguage, QOverload<const QString&>::of(&QComboBox::activated), this, &ConfigDialog::showStartupScriptsFolder);
 #endif
 
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
@@ -1910,8 +1910,8 @@ void ConfigDialog::initFileLocationsPage()
 
 	appTabWidget->addTab(fileLocationsPage, QString());
 
-	connect(browseTranslationsBtn, SIGNAL(clicked()), this, SLOT(chooseTranslationsFolder()));
-	connect(browseHelpBtn, SIGNAL(clicked()), this, SLOT(chooseHelpFolder()));
+	connect(browseTranslationsBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseTranslationsFolder);
+	connect(browseHelpBtn, &QAbstractButton::clicked, this, &ConfigDialog::chooseHelpFolder);
 }
 
 void ConfigDialog::languageChange()

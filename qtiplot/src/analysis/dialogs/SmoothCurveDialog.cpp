@@ -128,9 +128,9 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WindowFlag
 	hb->addWidget(gb1);
 	hb->addLayout(vl);
 
-	connect( btnSmooth, SIGNAL(clicked()), this, SLOT( smooth()));
-	connect( buttonCancel, SIGNAL(clicked()), this, SLOT( close()));
-	connect( boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+	connect(btnSmooth, &QAbstractButton::clicked, this, &SmoothCurveDialog::smooth);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &SmoothCurveDialog::close);
+	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &SmoothCurveDialog::activateCurve);
 }
 
 void SmoothCurveDialog::smooth()

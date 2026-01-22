@@ -197,17 +197,17 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
     updateColumn(sc);
 
    // signals and slots connections
-	connect(colWidth, SIGNAL(valueChanged(int)), this, SLOT(setColumnWidth(int)));
-	connect(buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
-    connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
-    connect(buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
-	connect(columnsBox, SIGNAL(activated(int)), this, SLOT(setPlotDesignation(int)) );
-	connect(displayBox, SIGNAL(activated(int)), this, SLOT(updateDisplay(int)));
-	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
-	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
-	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openColumnValuesDialog()));
-	connect(precisionBox, SIGNAL(valueChanged(int)), this, SLOT(updatePrecision(int)));
-	connect(boxShowTableComments, SIGNAL(toggled(bool)), d_table, SLOT(showComments(bool)));
+	connect(colWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &TableDialog::setColumnWidth);
+	connect(buttonApply, &QPushButton::clicked, this, &TableDialog::apply);
+    connect(buttonOk, &QPushButton::clicked, this, &TableDialog::accept);
+    connect(buttonCancel, &QPushButton::clicked, this, &TableDialog::close);
+	connect(columnsBox, QOverload<int>::of(&QComboBox::activated), this, &TableDialog::setPlotDesignation);
+	connect(displayBox, QOverload<int>::of(&QComboBox::activated), this, &TableDialog::updateDisplay);
+	connect(buttonPrev, &QPushButton::clicked, this, &TableDialog::prevColumn);
+	connect(buttonNext, &QPushButton::clicked, this, &TableDialog::nextColumn);
+	connect(buttonProperties, &QPushButton::clicked, this, &TableDialog::openColumnValuesDialog);
+	connect(precisionBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &TableDialog::updatePrecision);
+	connect(boxShowTableComments, &QCheckBox::toggled, d_table, &Table::showComments);
 }
 
 void TableDialog::accept()
@@ -222,7 +222,7 @@ void TableDialog::openColumnValuesDialog()
 	if (!app)
 		return;
 
-	connect(this, SIGNAL(destroyed()), app, SLOT(showColumnValuesDialog()));
+	connect(this, &QObject::destroyed, app, &ApplicationWindow::showColumnValuesDialog);
 	this->accept();
 }
 

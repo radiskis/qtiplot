@@ -101,9 +101,9 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WindowFlags fl )
 
     lastPage = scalesPage;
 
-    connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-    connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-    connect( buttonApply, SIGNAL( clicked() ), this, SLOT(updatePlot() ) );
+    connect(buttonOk, &QPushButton::clicked, this, &AxesDialog::accept);
+    connect(buttonCancel, &QPushButton::clicked, this, &AxesDialog::reject);
+    connect(buttonApply, &QPushButton::clicked, this, &AxesDialog::updatePlot);
 	connect( generalDialog, SIGNAL( currentChanged ( QWidget * ) ), this, SLOT(pageChanged( QWidget *)));
 }
 
@@ -300,11 +300,11 @@ void AxesDialog::initScalesPage()
 
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
 
-	connect(btnInvert,SIGNAL(clicked()), this, SLOT(updatePlot()));
+	connect(btnInvert, &QPushButton::clicked, this, &AxesDialog::updatePlot);
 	connect(axesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateScale()));
-	connect(boxScaleType,SIGNAL(activated(int)), this, SLOT(updateMinorTicksList(int)));
-	connect(btnStep,SIGNAL(clicked()), this, SLOT(stepEnabled()));
-	connect(btnMajor,SIGNAL(clicked()), this, SLOT(stepDisabled()));
+	connect(boxScaleType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateMinorTicksList);
+	connect(btnStep, &QPushButton::clicked, this, &AxesDialog::stepEnabled);
+	connect(btnMajor, &QPushButton::clicked, this, &AxesDialog::stepDisabled);
 }
 
 void AxesDialog::initGridPage()
@@ -422,17 +422,17 @@ void AxesDialog::initGridPage()
 	//grid page slot connections
 	connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridSettings(int)));
 
-	connect(boxMajorGrid,SIGNAL(toggled(bool)), this, SLOT(majorGridEnabled(bool)));
-	connect(boxMinorGrid,SIGNAL(toggled(bool)), this, SLOT(minorGridEnabled(bool)));
-	connect(boxAntialiseGrid,SIGNAL(toggled(bool)), this, SLOT(updateGrid()));
+	connect(boxMajorGrid, &QCheckBox::toggled, this, &AxesDialog::majorGridEnabled);
+	connect(boxMinorGrid, &QCheckBox::toggled, this, &AxesDialog::minorGridEnabled);
+	connect(boxAntialiseGrid, &QCheckBox::toggled, this, &AxesDialog::updateGrid);
 	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
 	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
-	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxWidthMajor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
-	connect(boxWidthMinor,SIGNAL(valueChanged(double)),this, SLOT(updateGrid()));
-	connect(boxXLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
-	connect(boxYLine,SIGNAL(clicked()),this, SLOT(updatePlot()));
+	connect(boxTypeMajor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
+	connect(boxTypeMinor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
+	connect(boxWidthMajor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &AxesDialog::updateGrid);
+	connect(boxWidthMinor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &AxesDialog::updateGrid);
+	connect(boxXLine, &QPushButton::clicked, this, &AxesDialog::updatePlot);
+	connect(boxYLine, &QPushButton::clicked, this, &AxesDialog::updatePlot);
 }
 
 void AxesDialog::initAxesPage()
@@ -484,7 +484,7 @@ void AxesDialog::initAxesPage()
 
 	invertTitleBox = new QCheckBox(tr("&Inverted"));
 	invertTitleBox->hide();
-	connect(invertTitleBox, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
+	connect(invertTitleBox, &QCheckBox::toggled, this, &AxesDialog::updatePlot);
 
 	formatButtons = new TextFormatButtons(boxTitle, TextFormatButtons::AxisLabel);
 
@@ -497,12 +497,12 @@ void AxesDialog::initAxesPage()
 	QHBoxLayout *hl = new QHBoxLayout();
 	hl->addWidget(new QLabel(tr("Color")));
 	axisLabelColorButton = new ColorButton();
-	connect(axisLabelColorButton, SIGNAL(colorChanged()), this, SLOT(pickAxisLabelColor()));
+	connect(axisLabelColorButton, &ColorButton::colorChanged, this, &AxesDialog::pickAxisLabelColor);
 	hl->addWidget(axisLabelColorButton);
 
 	buttonLabelFont = new QPushButton(tr("&Font"));
 	buttonLabelFont->setIcon(QIcon(":/font.png"));
-	connect(buttonLabelFont, SIGNAL(clicked()), this, SLOT(customAxisLabelFont()));
+	connect(buttonLabelFont, &QPushButton::clicked, this, &AxesDialog::customAxisLabelFont);
 	hl->addWidget(buttonLabelFont);
 
 	QLabel *distLabel = new QLabel("&" + tr("Distance to axis"));
@@ -511,7 +511,7 @@ void AxesDialog::initAxesPage()
 	boxLabelsDistance->setRange(0, 1000);
 	boxLabelsDistance->setSuffix(" " + tr("pixels"));
 	distLabel->setBuddy(boxLabelsDistance);
-	connect(boxLabelsDistance, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxLabelsDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
 	hl->addWidget(boxLabelsDistance);
 	hl->addStretch();
 
@@ -680,21 +680,21 @@ void AxesDialog::initAxesPage()
 	connect(axesTitlesList, SIGNAL(currentRowChanged(int)), this, SLOT(showAxisSettings(int)));
 	connect(boxShowLabels, SIGNAL(clicked(bool)), this, SLOT(updateTickLabelsList(bool)));
 
-	connect(boxAxisColor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(boxAxisNumColor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(boxMajorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(boxMinorTicksType, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(showTicksPolicyBox, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(boxBaseline, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxAxisColor, &ColorButton::colorChanged, this, &AxesDialog::updatePlot);
+	connect(boxAxisNumColor, &ColorButton::colorChanged, this, &AxesDialog::updatePlot);
+	connect(boxMajorTicksType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
+	connect(boxMinorTicksType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
+	connect(showTicksPolicyBox, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
+	connect(boxBaseline, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
 	connect(boxAxisBackbone, SIGNAL(clicked(bool)), this, SLOT(updatePlot()));
-	connect(boxTickLabelDistance, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
+	connect(boxTickLabelDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
 
-	connect(boxShowFormula, SIGNAL(clicked()), this, SLOT(showFormulaBox()));
-	connect(boxShowAxis, SIGNAL(clicked()), this, SLOT(showAxis()));
-	connect(boxFormat, SIGNAL(activated(int)), this, SLOT(setLabelsNumericFormat(int)));
-	connect(btnAxesFont, SIGNAL(clicked()), this, SLOT(customAxisFont()));
-	connect(boxAxisType, SIGNAL(activated(int)), this, SLOT(showAxisFormatOptions(int)));
-	connect(boxPrecision, SIGNAL(valueChanged(int)), this, SLOT(setLabelsNumericFormat(int)));
+	connect(boxShowFormula, &QPushButton::clicked, this, &AxesDialog::showFormulaBox);
+	connect(boxShowAxis, &QPushButton::clicked, this, &AxesDialog::showAxis);
+	connect(boxFormat, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::setLabelsNumericFormat);
+	connect(btnAxesFont, &QPushButton::clicked, this, &AxesDialog::customAxisFont);
+	connect(boxAxisType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::showAxisFormatOptions);
+	connect(boxPrecision, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::setLabelsNumericFormat);
 }
 
 void AxesDialog::initFramePage()
@@ -742,7 +742,7 @@ void AxesDialog::initFramePage()
     QVBoxLayout *vl = new QVBoxLayout();
 
     frameDefaultBtn = new QPushButton(tr("Set As &Default"));
-    connect(frameDefaultBtn, SIGNAL(clicked()), this, SLOT(setFrameDefaultValues()));
+    connect(frameDefaultBtn, &QPushButton::clicked, this, &AxesDialog::setFrameDefaultValues);
 	vl->addWidget(frameDefaultBtn);
 
 	QLabel *l = new QLabel(tr("Apply &to..."));
@@ -764,13 +764,13 @@ void AxesDialog::initFramePage()
 
     generalDialog->addTab(frame, tr( "General" ) );
 
-	connect(boxFrameColor, SIGNAL(colorChanged()), this, SLOT(applyCanvasFormat()));
-	connect(boxBackbones, SIGNAL(toggled(bool)), this, SLOT(applyCanvasFormat()));
-	connect(boxFramed, SIGNAL(toggled(bool)), this, SLOT(applyCanvasFormat()));
-	connect(boxFrameWidth, SIGNAL(valueChanged (int)), this, SLOT(applyCanvasFormat()));
-	connect(boxAxesLinewidth, SIGNAL(valueChanged (int)), this, SLOT(applyCanvasFormat()));
-	connect(boxMajorTicksLength, SIGNAL(valueChanged (int)), this, SLOT(changeMajorTicksLength(int)));
-	connect(boxMinorTicksLength, SIGNAL(valueChanged (int)), this, SLOT(changeMinorTicksLength(int)));
+	connect(boxFrameColor, &ColorButton::colorChanged, this, &AxesDialog::applyCanvasFormat);
+	connect(boxBackbones, &QCheckBox::toggled, this, &AxesDialog::applyCanvasFormat);
+	connect(boxFramed, &QCheckBox::toggled, this, &AxesDialog::applyCanvasFormat);
+	connect(boxFrameWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::applyCanvasFormat);
+	connect(boxAxesLinewidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::applyCanvasFormat);
+	connect(boxMajorTicksLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::changeMajorTicksLength);
+	connect(boxMinorTicksLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::changeMinorTicksLength);
 }
 
 void AxesDialog::changeMinorTicksLength (int minLength)

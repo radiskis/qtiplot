@@ -211,22 +211,22 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	loadDataFromTable();
 	preview();
 
-	connect(previewBox, SIGNAL(toggled(bool)), this, SLOT(preview()));
-	connect(boxPlotStyle, SIGNAL(activated(int)), this, SLOT(setPlotStyle(int)));
-	connect(boxMethod, SIGNAL(activated(int)), this, SLOT(showMethodParameters(int)));
-	connect(boxRows, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-	connect(boxCols, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-	connect(boxNQ, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-	connect(boxNW, SIGNAL(valueChanged(int)), this, SLOT(preview()));
+	connect(previewBox, &QGroupBox::toggled, this, &GriddingDialog::preview);
+	connect(boxPlotStyle, QOverload<int>::of(&QComboBox::activated), this, &GriddingDialog::setPlotStyle);
+	connect(boxMethod, QOverload<int>::of(&QComboBox::activated), this, &GriddingDialog::showMethodParameters);
+	connect(boxRows, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxCols, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxNQ, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxNW, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
 	connect(boxModel, SIGNAL(activated(int)), this, SLOT(preview()));
-	connect(boxRadius, SIGNAL(valueChanged(double)), this, SLOT(preview()));
-	connect(boxXStart, SIGNAL(valueChanged(double)), this, SLOT(preview()));
-	connect(boxXEnd, SIGNAL(valueChanged(double)), this, SLOT(preview()));
-	connect(boxYStart, SIGNAL(valueChanged(double)), this, SLOT(preview()));
-	connect(boxYEnd, SIGNAL(valueChanged(double)), this, SLOT(preview()));
+	connect(boxRadius, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxXStart, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxXEnd, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxYStart, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
+	connect(boxYEnd, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
 
-	connect( buttonFit, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+	connect(buttonFit, &QAbstractButton::clicked, this, &GriddingDialog::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &GriddingDialog::close);
 }
 
 void GriddingDialog::showMethodParameters(int method)

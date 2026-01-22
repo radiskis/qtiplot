@@ -177,18 +177,18 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 
     init();
 
-	connect(btnUp, SIGNAL(clicked()),this, SLOT(raiseCurve()));
-	connect(btnDown, SIGNAL(clicked()),this, SLOT(shiftCurveBy()));
+	connect(btnUp, &QPushButton::clicked, this, &CurvesDialog::raiseCurve);
+	connect(btnDown, &QPushButton::clicked, this, &CurvesDialog::shiftCurveBy);
 
-	connect(boxShowCurrentFolder, SIGNAL(toggled(bool)), this, SLOT(showCurrentFolder(bool)));
-    connect(boxShowRange, SIGNAL(toggled(bool)), this, SLOT(showCurveRange(bool)));
-	connect(btnRange, SIGNAL(clicked()),this, SLOT(showCurveRangeDialog()));
-	connect(btnAssociations, SIGNAL(clicked()),this, SLOT(showPlotAssociations()));
-	connect(btnEditFunction, SIGNAL(clicked()),this, SLOT(showFunctionDialog()));
-	connect(btnAdd, SIGNAL(clicked()),this, SLOT(addCurves()));
-	connect(btnRemove, SIGNAL(clicked()),this, SLOT(removeCurves()));
-	connect(btnOK, SIGNAL(clicked()),this, SLOT(close()));
-	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
+	connect(boxShowCurrentFolder, &QCheckBox::toggled, this, &CurvesDialog::showCurrentFolder);
+    connect(boxShowRange, &QCheckBox::toggled, this, &CurvesDialog::showCurveRange);
+	connect(btnRange, &QPushButton::clicked, this, &CurvesDialog::showCurveRangeDialog);
+	connect(btnAssociations, &QPushButton::clicked, this, &CurvesDialog::showPlotAssociations);
+	connect(btnEditFunction, &QPushButton::clicked, this, &CurvesDialog::showFunctionDialog);
+	connect(btnAdd, &QPushButton::clicked, this, &CurvesDialog::addCurves);
+	connect(btnRemove, &QPushButton::clicked, this, &CurvesDialog::removeCurves);
+	connect(btnOK, &QPushButton::clicked, this, &CurvesDialog::close);
+	connect(btnCancel, &QPushButton::clicked, this, &CurvesDialog::close);
 	connect(contents, SIGNAL(currentRowChanged(int)), this, SLOT(showCurveBtn(int)));
     connect(contents, SIGNAL(itemSelectionChanged()), this, SLOT(enableContentsBtns()));
     connect(available, SIGNAL(itemSelectionChanged()), this, SLOT(enableAddBtn()));

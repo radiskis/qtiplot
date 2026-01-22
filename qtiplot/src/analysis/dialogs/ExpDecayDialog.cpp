@@ -61,7 +61,7 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	gl1->addWidget(new QLabel(tr("Exponential Fit of")), 0, 0);
 
 	boxName = new QComboBox();
-	connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateCurve(const QString&)));
+	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &ExpDecayDialog::activateCurve);
 	gl1->addWidget(boxName, 0, 1);
 
 	if (type < 0)
@@ -151,8 +151,8 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	setLayout(hlayout);
 
 	// signals and slots connections
-	connect( buttonFit, SIGNAL( clicked() ), this, SLOT(fit()));
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT(close()));
+	connect(buttonFit, &QAbstractButton::clicked, this, &ExpDecayDialog::fit);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &ExpDecayDialog::close);
 }
 
 void ExpDecayDialog::setGraph(Graph *g)
@@ -170,8 +170,8 @@ void ExpDecayDialog::setGraph(Graph *g)
 
 	activateCurve(boxName->currentText());
 
-	connect (graph, SIGNAL(destroyed()), this, SLOT(close()));
-	connect (graph, SIGNAL(dataRangeChanged()), this, SLOT(changeDataRange()));
+	connect(graph, &QObject::destroyed, this, &ExpDecayDialog::close);
+	connect(graph, &Graph::dataRangeChanged, this, &ExpDecayDialog::changeDataRange);
 }
 
 void ExpDecayDialog::activateCurve(const QString& s)

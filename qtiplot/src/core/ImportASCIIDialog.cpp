@@ -99,13 +99,13 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 
 	initPreview(d_import_mode->currentIndex());
 
-    connect(d_preview_lines_box, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-    connect(d_rename_columns, SIGNAL(clicked()), this, SLOT(preview()));
-    connect(d_import_comments, SIGNAL(clicked()), this, SLOT(preview()));
-    connect(d_strip_spaces, SIGNAL(clicked()), this, SLOT(preview()));
-    connect(d_simplify_spaces, SIGNAL(clicked()), this, SLOT(preview()));
-    connect(d_ignored_lines, SIGNAL(valueChanged(int)), this, SLOT(preview()));
-    connect(d_omit_thousands_sep, SIGNAL(clicked()), this, SLOT(preview()));
+    connect(d_preview_lines_box, QOverload<int>::of(&QSpinBox::valueChanged), this, &ImportASCIIDialog::preview);
+    connect(d_rename_columns, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
+    connect(d_import_comments, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
+    connect(d_strip_spaces, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
+    connect(d_simplify_spaces, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
+    connect(d_ignored_lines, QOverload<int>::of(&QSpinBox::valueChanged), this, &ImportASCIIDialog::preview);
+    connect(d_omit_thousands_sep, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
     connect(d_column_separator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
     connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
@@ -165,7 +165,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 
 	QHBoxLayout *renameBox = new QHBoxLayout;
 	d_rename_columns = new QCheckBox(tr("Use first row &as"));
-	connect(d_rename_columns, SIGNAL(toggled(bool)), this, SLOT(enableComments()));
+	connect(d_rename_columns, &QAbstractButton::toggled, this, &ImportASCIIDialog::enableComments);
 	renameBox->addWidget(d_rename_columns);
 
 	d_first_line_role = new QComboBox();
@@ -220,7 +220,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	advanced_layout->addWidget(d_read_only, 5, 2);
 
 	d_preview_button = new QCheckBox(tr("&Preview Lines"));
-	connect(d_preview_button, SIGNAL(clicked()), this, SLOT(preview()));
+	connect(d_preview_button, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
 	advanced_layout->addWidget(d_preview_button, 6, 0);
 
 	d_preview_lines_box = new QSpinBox();
@@ -232,12 +232,12 @@ void ImportASCIIDialog::initAdvancedOptions()
 
 	QHBoxLayout *btnsLayout = new QHBoxLayout();
 	d_col_types_button = new QPushButton(tr("Column T&ypes..."));
-	connect(d_col_types_button, SIGNAL(clicked()), this, SLOT(showColTypeDialog()));
+	connect(d_col_types_button, &QAbstractButton::clicked, this, &ImportASCIIDialog::showColTypeDialog);
 	d_col_types_button->hide();
 	btnsLayout->addWidget(d_col_types_button);
 
 	d_help_button = new QPushButton(tr("&Help"));
-	connect(d_help_button, SIGNAL(clicked()), this, SLOT(displayHelp()));
+	connect(d_help_button, &QAbstractButton::clicked, this, &ImportASCIIDialog::displayHelp);
 	btnsLayout->addWidget(d_help_button);
 	advanced_layout->addLayout(btnsLayout, 6, 2);
 
@@ -981,8 +981,8 @@ void PreviewTable::showColTypeDialog()
 	connect(typesBox, SIGNAL(currentIndexChanged (int)), this, SLOT(setColumnType(int)));
 	connect(formatBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
 	connect(formatBox, SIGNAL(editTextChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
-	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
-	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
+	connect(buttonPrev, &QAbstractButton::clicked, this, &PreviewTable::prevColumn);
+	connect(buttonNext, &QAbstractButton::clicked, this, &PreviewTable::nextColumn);
 	colTypeDialog->exec();
 }
 

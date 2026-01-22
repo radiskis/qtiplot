@@ -55,9 +55,8 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
 	setObjectName(name);
 	myScript = scriptEnv->newScript("", this, name);
 	connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
-	connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
-	connect(myScript, SIGNAL(error(const QString&, const QString&, int)),
-			this, SIGNAL(error(const QString&, const QString&, int)));
+	connect(myScript, &muParserScript::print, this, SLOT(scriptPrint(const QString&)));
+	connect(myScript, &muParserScript::error, this, &ScriptEdit::error);
 
 	setLineWrapMode(NoWrap);
 	setUndoRedoEnabled(true);
@@ -82,75 +81,75 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
 
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("Ctrl+J") );
-	connect(actionExecute, SIGNAL(triggered()), this, SLOT(execute()));
+	connect(actionExecute, &QAction::triggered, this, &ScriptEdit::execute);
 
 	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("Ctrl+Shift+J") );
-	connect(actionExecuteAll, SIGNAL(triggered()), this, SLOT(executeAll()));
+	connect(actionExecuteAll, &QAction::triggered, this, &ScriptEdit::executeAll);
 
 	actionEval = new QAction(tr("&Evaluate Expression"), this);
 	actionEval->setShortcut( tr("Ctrl+Return") );
-	connect(actionEval, SIGNAL(triggered()), this, SLOT(evaluate()));
+	connect(actionEval, &QAction::triggered, this, &ScriptEdit::evaluate);
 
 	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
-	connect(actionPrint, SIGNAL(triggered()), this, SLOT(print()));
+	connect(actionPrint, &QAction::triggered, this, &ScriptEdit::print);
 
 	actionImport = new QAction(QIcon(":/fileopen.png"), tr("&Import..."), this);
 	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
-	connect(actionImport, SIGNAL(triggered()), this, SLOT(importASCII()));
+	connect(actionImport, &QAction::triggered, this, &ScriptEdit::importASCII);
 
 	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
 	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
-	connect(actionSave, SIGNAL(triggered()), this, SLOT(save()));
+	connect(actionSave, &QAction::triggered, this, &ScriptEdit::save);
 
 	actionExport = new QAction(QIcon(":/filesaveas.png"), tr("Sa&ve as..."), this);
-	connect(actionExport, SIGNAL(triggered()), this, SLOT(exportASCII()));
+	connect(actionExport, &QAction::triggered, this, &ScriptEdit::exportASCII);
 
 	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
 	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
-	connect(actionFind, SIGNAL(triggered()), this, SLOT(showFindDialog()));
+	connect(actionFind, &QAction::triggered, this, &ScriptEdit::showFindDialog);
 
 	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
 	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
-	connect(actionReplace, SIGNAL(triggered()), this, SLOT(replace()));
+	connect(actionReplace, &QAction::triggered, this, &ScriptEdit::replace);
 
 	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("&Find next"), this);
 	actionFindNext->setShortcut(QKeySequence(Qt::Key_F3));
-	connect(actionFindNext, SIGNAL(triggered()), this, SLOT(findNext()));
+	connect(actionFindNext, &QAction::triggered, this, &ScriptEdit::findNext);
 
 	actionFindPrevious = new QAction(QIcon(":/find_previous.png"), tr("&Find previous"), this);
 	actionFindPrevious->setShortcut(QKeySequence(Qt::Key_F4));
-	connect(actionFindPrevious, SIGNAL(triggered()), this, SLOT(findPrevious()));
+	connect(actionFindPrevious, &QAction::triggered, this, &ScriptEdit::findPrevious);
 
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
 	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
 
-	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(matchParentheses()));
+	connect(this, &QPlainTextEdit::cursorPositionChanged, this, &ScriptEdit::matchParentheses);
 }
 
 void ScriptEdit::enableShortcuts()
 {
 	QShortcut *accelFindNext = new QShortcut(actionFindNext->shortcut(), this);
-	connect(accelFindNext, SIGNAL(activated()), this, SLOT(findNext()));
+	connect(accelFindNext, &QShortcut::activated, this, SLOT(findNext()));
 
 	QShortcut *accelReplace = new QShortcut(actionReplace->shortcut(), this);
-	connect(accelReplace, SIGNAL(activated()), this, SLOT(replace()));
+	connect(accelReplace, &QShortcut::activated, this, SLOT(replace()));
 
 	QShortcut *accelFindPrevious = new QShortcut(actionFindPrevious->shortcut(), this);
-	connect(accelFindPrevious, SIGNAL(activated()), this, SLOT(findPrevious()));
+	connect(accelFindPrevious, &QShortcut::activated, this, SLOT(findPrevious()));
 
 	QShortcut *accelFind = new QShortcut(actionFind->shortcut(), this);
-	connect(accelFind, SIGNAL(activated()), this, SLOT(showFindDialog()));
+	connect(accelFind, &QShortcut::activated, this, SLOT(showFindDialog()));
 
 	QShortcut *accelSave = new QShortcut(actionSave->shortcut(), this);
-	connect(accelSave, SIGNAL(activated()), this, SLOT(save()));
+	connect(accelSave, &QShortcut::activated, this, SLOT(save()));
 
 	QShortcut *accelImport = new QShortcut(actionImport->shortcut(), this);
-	connect(accelImport, SIGNAL(activated()), this, SLOT(importASCII()));
+	connect(accelImport, &QShortcut::activated, this, SLOT(importASCII()));
 
 	QShortcut *accelEval = new QShortcut(actionEval->shortcut(), this);
-	connect(accelEval, SIGNAL(activated()), this, SLOT(evaluate()));
+	connect(accelEval, &QShortcut::activated, this, SLOT(evaluate()));
 }
 
 void ScriptEdit::customEvent(QEvent *e)
@@ -161,7 +160,7 @@ void ScriptEdit::customEvent(QEvent *e)
 		delete myScript;
 		myScript = scriptEnv->newScript("", this, objectName());
 		connect(myScript, SIGNAL(error(const QString&, const QString&, int)), this, SLOT(insertErrorMsg(const QString&)));
-		connect(myScript, SIGNAL(print(const QString&)), this, SLOT(scriptPrint(const QString&)));
+		connect(myScript, &muParserScript::print, this, SLOT(scriptPrint(const QString&)));
 
 		rehighlight();
 	}
@@ -256,16 +255,16 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 	Note *sp = qobject_cast<Note*>(myScript->context());
 	if (sp){
 		QAction *actionRenameTab = new QAction(tr("Rena&me Tab..."), menu);
-		connect(actionRenameTab, SIGNAL(triggered()), sp, SLOT(renameCurrentTab()));
+		connect(actionRenameTab, &QAction::triggered, sp, &ScriptEdit::renameCurrentTab);
 		menu->addAction(actionRenameTab);
 
 		QAction *actionAddTab = new QAction(QIcon(QPixmap(":/plus.png")), tr("A&dd Tab"), menu);
-		connect(actionAddTab, SIGNAL(triggered()), sp, SLOT(addTab()));
+		connect(actionAddTab, &QAction::triggered, sp, &ScriptEdit::addTab);
 		menu->addAction(actionAddTab);
 
 		if (sp->tabs() > 1){
 			QAction *actionRemoveTab = new QAction(QIcon(QPixmap(":/delete.png")), tr("C&lose Tab"), menu);
-			connect(actionRemoveTab, SIGNAL(triggered()), sp, SLOT(removeTab()));
+			connect(actionRemoveTab, &QAction::triggered, sp, &ScriptEdit::removeTab);
 			menu->addAction(actionRemoveTab);
 		}
 

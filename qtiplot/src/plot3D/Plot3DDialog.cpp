@@ -88,10 +88,10 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WindowFlags fl )
 	vl->addWidget(generalDialog);
 	vl->addLayout(hbox);
 
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( buttonApply, SIGNAL( clicked() ), this, SLOT(updatePlot() ) );
-	connect( btnTable, SIGNAL( clicked() ), this, SLOT(worksheet() ) );
+	connect(buttonOk, &QAbstractButton::clicked, this, &Plot3DDialog::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &Plot3DDialog::reject);
+	connect(buttonApply, &QAbstractButton::clicked, this, &Plot3DDialog::updatePlot);
+	connect(btnTable, &QAbstractButton::clicked, this, &Plot3DDialog::worksheet);
 }
 
 void Plot3DDialog::initPrintPage()
@@ -246,7 +246,7 @@ void Plot3DDialog::initAxesPage()
     axes->setLayout(hb2);
 	generalDialog->addTab(axes, tr( "&Axis" ) );
 
-	connect( btnLabelFont, SIGNAL(clicked()), this, SLOT(pickAxisLabelFont()));
+	connect(btnLabelFont, &QAbstractButton::clicked, this, &Plot3DDialog::pickAxisLabelFont);
 }
 
 void Plot3DDialog::initTitlePage()
@@ -280,14 +280,14 @@ void Plot3DDialog::initTitlePage()
     title->setLayout(vl);
 	generalDialog->addTab(title, tr( "&Title" ) );
 
-	connect( btnTitleFont, SIGNAL(clicked()), this, SLOT(pickTitleFont() ) );
+	connect(btnTitleFont, &QAbstractButton::clicked, this, &Plot3DDialog::pickTitleFont);
 }
 
 void Plot3DDialog::initColorsPage()
 {
 	linearColorMapGroupBox = new QGroupBox(tr( "Linea&r color map" ));
 	linearColorMapGroupBox->setCheckable(true);
-	connect(linearColorMapGroupBox, SIGNAL(clicked(bool)),
+	connect(linearColorMapGroupBox, &QGroupBox::clicked,
 			this, SLOT(updateColorMapFileGroupBox(bool)));
 
 	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
@@ -298,7 +298,7 @@ void Plot3DDialog::initColorsPage()
 
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
 	colorMapFileGroupBox->setCheckable(true);
-	connect(colorMapFileGroupBox, SIGNAL(clicked(bool)), this,
+	connect(colorMapFileGroupBox, &QGroupBox::clicked, this,
 			SLOT(updateLinearColorMapGroupBox(bool)));
 
 	QGridLayout* layout = new QGridLayout(colorMapFileGroupBox);
@@ -389,10 +389,10 @@ void Plot3DDialog::initColorsPage()
     colors->setLayout(vl0);
 	generalDialog->addTab(colors, tr( "&Colors" ) );
 
-	connect(btnColorMap, SIGNAL(clicked()), this, SLOT(pickDataColorMap()));
-	connect(transparencySlider, SIGNAL(valueChanged(int)), boxTransparency, SLOT(setValue(int)));
-	connect(boxTransparency, SIGNAL(valueChanged(int)), transparencySlider, SLOT(setValue(int)));
-	connect(boxTransparency, SIGNAL(valueChanged(int)), this, SLOT(changeTransparency(int)));
+	connect(btnColorMap, &QAbstractButton::clicked, this, &Plot3DDialog::pickDataColorMap);
+	connect(transparencySlider, &QSlider::valueChanged, boxTransparency, &QSpinBox::setValue);
+	connect(boxTransparency, &QSlider::valueChanged, transparencySlider, &QSpinBox::setValue);
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeTransparency);
 }
 
 void Plot3DDialog::initGeneralPage()
@@ -506,14 +506,14 @@ void Plot3DDialog::initGeneralPage()
 	general->setLayout(hl);
 	generalDialog->addTab(general, tr("&General"));
 
-	connect( boxZoom, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
-	connect( boxXScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
-	connect( boxYScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
-	connect( boxZScale, SIGNAL(valueChanged(int)), this, SLOT(changeZoom(int)));
-	connect( btnNumbersFont, SIGNAL(clicked()), this, SLOT(pickNumbersFont()));
-	connect( boxXRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect( boxYRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect( boxZRotation, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
+	connect(boxZoom, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeZoom);
+	connect(boxXScale, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeZoom);
+	connect(boxYScale, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeZoom);
+	connect(boxZScale, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeZoom);
+	connect(btnNumbersFont, &QAbstractButton::clicked, this, &Plot3DDialog::pickNumbersFont);
+	connect(boxXRotation, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxYRotation, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxZRotation, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
 }
 
 void Plot3DDialog::enableMajorGrids(bool on)
@@ -695,7 +695,7 @@ void Plot3DDialog::initPointsOptionsStack()
     points->setLayout(vl);
 
 	generalDialog->insertTab(4, points, tr( "Points" ) );
-	connect( boxPointStyle, SIGNAL( activated(int) ), optionStack, SLOT( setCurrentIndex(int) ) );
+	connect(boxPointStyle, QOverload<int>::of(&QComboBox::activated), optionStack, &QStackedWidget::setCurrentIndex);
 }
 
 void Plot3DDialog::setPlot(Graph3D *g)
@@ -855,47 +855,47 @@ void Plot3DDialog::setPlot(Graph3D *g)
 void Plot3DDialog::initConnections()
 {
 	// scales page connections
-	connect(boxFrom, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-    connect(boxTo, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect(boxMajors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
-	connect(boxMinors, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
-	connect(boxPrecision, SIGNAL(valueChanged(int)), this, SLOT(updatePlot()));
-	connect(boxTickLabelsFormat, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(axesList, SIGNAL(currentRowChanged(int)), this, SLOT(viewScaleLimits(int)));
+	connect(boxFrom, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+    connect(boxTo, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxMajors, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxMinors, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxPrecision, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxTickLabelsFormat, QOverload<int>::of(&QComboBox::activated), this, &Plot3DDialog::updatePlot);
+	connect(axesList, &QListWidget::currentRowChanged, this, &Plot3DDialog::viewScaleLimits);
 
 	// axes page connections
-	connect(boxMajorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect(boxMinorLength, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect(axesList2, SIGNAL(currentRowChanged(int)), this, SLOT(viewAxisOptions(int)));
+	connect(boxMajorLength, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxMinorLength, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(axesList2, &QListWidget::currentRowChanged, this, &Plot3DDialog::viewAxisOptions);
 
 	//grid page connections
-	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMajorGrids(bool)));
-	connect(boxMajorGrids, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
-	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(enableMinorGrids(bool)));
-	connect(boxMinorGrids, SIGNAL(toggled(bool)), this, SLOT(updatePlot()));
-	connect(boxMajorGridStyle, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(boxMinorGridStyle, SIGNAL(activated(int)), this, SLOT(updatePlot()));
-	connect(boxMajorGridWidth, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect(boxMinorGridWidth, SIGNAL(valueChanged(double)), this, SLOT(updatePlot()));
-	connect(btnGrid, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(btnGridMinor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(boxMajorGrids, &QAbstractButton::toggled, this, &Plot3DDialog::enableMajorGrids);
+	connect(boxMajorGrids, &QAbstractButton::toggled, this, &Plot3DDialog::updatePlot);
+	connect(boxMinorGrids, &QAbstractButton::toggled, this, &Plot3DDialog::enableMinorGrids);
+	connect(boxMinorGrids, &QAbstractButton::toggled, this, &Plot3DDialog::updatePlot);
+	connect(boxMajorGridStyle, QOverload<int>::of(&QComboBox::activated), this, &Plot3DDialog::updatePlot);
+	connect(boxMinorGridStyle, QOverload<int>::of(&QComboBox::activated), this, &Plot3DDialog::updatePlot);
+	connect(boxMajorGridWidth, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(boxMinorGridWidth, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &Plot3DDialog::updatePlot);
+	connect(btnGrid, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(btnGridMinor, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
 
 	//color page connections
-	connect(btnAxes, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(btnLabels, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(btnNumbers, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(btnMesh, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(btnBackground, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
-	connect(d_color_map_editor, SIGNAL(scalingChanged()), this, SLOT(updatePlot()));
+	connect(btnAxes, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(btnLabels, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(btnNumbers, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(btnMesh, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(btnBackground, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
+	connect(d_color_map_editor, &Plot3DColorMap::scalingChanged, this, &Plot3DDialog::updatePlot);
 
-	connect(boxMeshLineWidth, SIGNAL(valueChanged(double)), d_plot, SLOT(setMeshLineWidth(double)));
-	connect(boxOrthogonal, SIGNAL(toggled(bool)), d_plot, SLOT(setOrthogonal(bool)));
-	connect(boxLegend, SIGNAL(toggled(bool)), d_plot, SLOT(showColorLegend(bool)));
-    connect(boxResolution, SIGNAL(valueChanged(int)), d_plot, SLOT(setResolution(int)));
-	connect(boxDistance, SIGNAL(valueChanged(int)), d_plot, SLOT(setLabelsDistance(int)));
+	connect(boxMeshLineWidth, QOverload<double>::of(&DoubleSpinBox::valueChanged), d_plot, &Graph3D::setMeshLineWidth);
+	connect(boxOrthogonal, &QAbstractButton::toggled, d_plot, &Graph3D::setOrthogonal);
+	connect(boxLegend, &QAbstractButton::toggled, d_plot, &Graph3D::showColorLegend);
+    connect(boxResolution, QOverload<int>::of(&QSpinBox::valueChanged), d_plot, &Graph3D::setResolution);
+	connect(boxDistance, QOverload<int>::of(&QSpinBox::valueChanged), d_plot, &Graph3D::setLabelsDistance);
 
 	//title page connections
-	connect(btnTitleColor, SIGNAL(colorChanged()), this, SLOT(updatePlot()));
+	connect(btnTitleColor, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
 }
 
 void Plot3DDialog::worksheet()

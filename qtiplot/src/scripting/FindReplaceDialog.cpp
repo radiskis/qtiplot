@@ -111,11 +111,11 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 
 	if (replace){
         buttonReplace = new QPushButton(tr("&Replace"));
-        connect(buttonReplace, SIGNAL(clicked()), this, SLOT(replace()));
+        connect(buttonReplace, &QAbstractButton::clicked, this, &FindReplaceDialog::replace);
 		vb2->addWidget(buttonReplace);
 
 		buttonReplaceAll = new QPushButton(tr("Replace &all"));
-		connect(buttonReplaceAll, SIGNAL(clicked()), this, SLOT(replaceAll()));
+		connect(buttonReplaceAll, &QAbstractButton::clicked, this, &FindReplaceDialog::replaceAll);
 		vb2->addWidget(buttonReplaceAll);
 	}
 
@@ -127,9 +127,9 @@ FindReplaceDialog::FindReplaceDialog(ScriptEdit *editor, bool replace, QWidget* 
 	hb->addLayout(vb1);
 	hb->addLayout(vb2);
 
-    connect(buttonNext, SIGNAL(clicked()), this, SLOT(find()));
-    connect(buttonPrevious, SIGNAL(clicked()), this, SLOT(findPrevious()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(buttonNext, &QAbstractButton::clicked, this, &FindReplaceDialog::find);
+    connect(buttonPrevious, &QAbstractButton::clicked, this, &FindReplaceDialog::findPrevious);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &FindReplaceDialog::reject);
 }
 
 bool FindReplaceDialog::find(bool previous)

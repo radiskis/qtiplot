@@ -112,8 +112,8 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WindowFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect( buttonFilter, SIGNAL( clicked() ), this, SLOT( filter() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( close() ) );
+	connect(buttonFilter, &QAbstractButton::clicked, this, &FilterDialog::filter);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &FilterDialog::close);
 }
 
 void FilterDialog::filter()

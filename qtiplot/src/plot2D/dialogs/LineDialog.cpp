@@ -149,20 +149,20 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WindowFlags fl 
 
 	enableHeadTab();
 
-	connect(colorBox, SIGNAL(colorChanged()), this, SLOT(apply()));
-	connect(styleBox, SIGNAL(activated(int)), this, SLOT(apply()));
-	connect(widthBox, SIGNAL(valueChanged(double)), this, SLOT(apply()));
-	connect(startBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
-	connect(endBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+	connect(colorBox, &ColorButton::colorChanged, this, &LineDialog::apply);
+	connect(styleBox, QOverload<int>::of(&QComboBox::activated), this, &LineDialog::apply);
+	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LineDialog::apply);
+	connect(startBox, &QCheckBox::toggled, this, &LineDialog::apply);
+	connect(endBox, &QCheckBox::toggled, this, &LineDialog::apply);
 
-	connect(boxHeadLength, SIGNAL(valueChanged(int)), this, SLOT(apply()));
-	connect(boxHeadAngle, SIGNAL(valueChanged(int)), this, SLOT(apply()));
-	connect(filledBox, SIGNAL(toggled(bool)), this, SLOT(apply()));
+	connect(boxHeadLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &LineDialog::apply);
+	connect(boxHeadAngle, QOverload<int>::of(&QSpinBox::valueChanged), this, &LineDialog::apply);
+	connect(filledBox, &QCheckBox::toggled, this, &LineDialog::apply);
 
-	connect(btnOk, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(btnApply, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(btnOk, &QPushButton::clicked, this, &LineDialog::accept);
+	connect(btnApply, &QPushButton::clicked, this, &LineDialog::apply);
 	connect(tw, SIGNAL(currentChanged (QWidget *)), this, SLOT(enableButtonDefault(QWidget *)));
-	connect(buttonDefault, SIGNAL(clicked()), this, SLOT(setDefaultValues()));
+	connect(buttonDefault, &QPushButton::clicked, this, &LineDialog::setDefaultValues);
 }
 
 void LineDialog::initGeometryTab()
@@ -251,7 +251,7 @@ void LineDialog::initGeometryTab()
     geometry->setLayout(vl);
 	tw->addTab(geometry, tr( "&Geometry" ) );
 
-	connect(unitBox, SIGNAL(activated(int)), this, SLOT(displayCoordinates(int)));
+	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &LineDialog::displayCoordinates);
 	displayCoordinates(0);
 }
 

@@ -92,7 +92,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonFunctionLog = new QPushButton(recentBtnText);
 	buttonFunctionLog->setToolTip(recentTip);
-	connect(buttonFunctionLog, SIGNAL(clicked()), this, SLOT(showFunctionLog()));
+	connect(buttonFunctionLog, &QPushButton::clicked, this, &FunctionDialog::showFunctionLog);
 	vl->addWidget(buttonFunctionLog);
 	vl->addStretch();
 
@@ -157,7 +157,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonXParLog = new QPushButton(recentBtnText);
 	buttonXParLog->setToolTip(recentTip);
-	connect(buttonXParLog, SIGNAL(clicked()), this, SLOT(showXParLog()));
+	connect(buttonXParLog, &QPushButton::clicked, this, &FunctionDialog::showXParLog);
 
 	QVBoxLayout *vlxpar = new QVBoxLayout();
 	vlxpar->addWidget(new QLabel(tr( "x = " )));
@@ -174,7 +174,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonYParLog = new QPushButton(recentBtnText);
 	buttonYParLog->setToolTip(recentTip);
-	connect(buttonYParLog, SIGNAL(clicked()), this, SLOT(showYParLog()));
+	connect(buttonYParLog, &QPushButton::clicked, this, &FunctionDialog::showYParLog);
 
 	QVBoxLayout *vlypar = new QVBoxLayout();
 	vlypar->addWidget(new QLabel(tr( "y = " )));
@@ -222,7 +222,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonPolarRadiusLog = new QPushButton(recentBtnText);
 	buttonPolarRadiusLog->setToolTip(recentTip);
-	connect(buttonPolarRadiusLog, SIGNAL(clicked()), this, SLOT(showPolarRadiusLog()));
+	connect(buttonPolarRadiusLog, &QPushButton::clicked, this, &FunctionDialog::showPolarRadiusLog);
 
 	QVBoxLayout *vlrpar = new QVBoxLayout();
 	vlrpar->addWidget(new QLabel(tr( "R =" )));
@@ -239,7 +239,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonPolarRThetaLog = new QPushButton(recentBtnText);
 	buttonPolarRThetaLog->setToolTip(recentTip);
-	connect(buttonPolarRThetaLog, SIGNAL(clicked()), this, SLOT(showPolarThetaLog()));
+	connect(buttonPolarRThetaLog, &QPushButton::clicked, this, &FunctionDialog::showPolarThetaLog);
 
 	QVBoxLayout *vltpar = new QVBoxLayout();
 	vltpar->addWidget(new QLabel(tr( "Theta =" )));
@@ -281,7 +281,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	addFunctionBtn = new QPushButton(tr( "&Add Function" ));
 	addFunctionBtn->setIcon(QIcon(":/plus.png"));
 	addFunctionBtn->setAutoDefault(false);
-	connect(addFunctionBtn, SIGNAL(clicked()), this, SLOT(insertFunction()));
+	connect(addFunctionBtn, &QPushButton::clicked, this, &FunctionDialog::insertFunction);
 
 	loadUserFunctions();
 	initBuiltInFitModels();
@@ -291,7 +291,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxFunctionCategory->addItem(tr("Fit model"));
 	if (!d_user_functions.isEmpty())
 		boxFunctionCategory->addItem(tr("User defined"));
-	connect(boxFunctionCategory, SIGNAL(activated(int)), this, SLOT(updateFunctionsList(int)));
+	connect(boxFunctionCategory, QOverload<int>::of(&QComboBox::activated), this, &FunctionDialog::updateFunctionsList);
 
 	QLabel *label = new QLabel(tr("Function"));
 	QHBoxLayout *hbox4 = new QHBoxLayout();
@@ -300,7 +300,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxMathFunctions = new QComboBox();
 	boxMathFunctions->addItems(MyParser::functionsList());
-	connect(boxMathFunctions, SIGNAL(activated(int)), this, SLOT(updateFunctionExplain(int)));
+	connect(boxMathFunctions, QOverload<int>::of(&QComboBox::activated), this, &FunctionDialog::updateFunctionExplain);
 	updateFunctionExplain(0);
 
 	QVBoxLayout *vbox = new QVBoxLayout();
@@ -309,7 +309,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	buttonClear = new QPushButton(tr( "Clea&r Function" ));
 	buttonClear->setIcon(QIcon(":/delete.png"));
-	connect(buttonClear, SIGNAL( clicked() ), this, SLOT(clearList()));
+	connect(buttonClear, &QPushButton::clicked, this, &FunctionDialog::clearList);
 
 	boxFunctionExplain->setMaximumHeight(buttonClear->sizeHint().height() + boxMathFunctions->sizeHint().height() +
 										 boxFunctionCategory->sizeHint().height() + 10);
@@ -352,7 +352,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	}
 
 	setFocusProxy (boxFunction);
-	connect( boxType, SIGNAL( activated(int) ), this, SLOT( raiseWidget(int) ) );
+	connect(boxType, QOverload<int>::of(&QComboBox::activated), this, &FunctionDialog::raiseWidget);
 
 	curveID = -1;
 	graph = 0;
@@ -417,7 +417,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			sb->setLocale(QLocale());
 			sb->setValue(i.value());
         	boxConstants->setCellWidget(row, 1, sb);
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+			connect(sb, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &FunctionDialog::apply);
 			row++;
  		}
 	} else
@@ -973,7 +973,7 @@ void FunctionDialog::guessConstants()
 				sb->setValue(values[index]);
 		}
 		if (!d_stand_alone)
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(apply()));
+			connect(sb, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &FunctionDialog::apply);
 		row++;
 	}
 

@@ -81,7 +81,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 
 	if (d_type != onMatrix){
 		boxName = new QComboBox();
-		connect(boxName, SIGNAL(activated(const QString&)), this, SLOT(activateDataSet(const QString&)));
+		connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &FFTDialog::activateDataSet);
 		gl1->addWidget(boxName, 0, 1);
 		setFocusProxy(boxName);
 	}
@@ -105,7 +105,7 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 			gl1->addWidget(new QLabel(tr("Sampling Interval")), 3, 0);
 			gl1->addWidget(boxSampling, 3, 1);
 		} else
-			connect(boxReal, SIGNAL(activated(const QString&)), this, SLOT(activateDataSet(const QString&)));
+			connect(boxReal, QOverload<const QString&>::of(&QComboBox::activated), this, &FFTDialog::activateDataSet);
 	} else if (d_type == onGraph){
 		gl1->addWidget(new QLabel(tr("Sampling Interval")), 1, 0);
 		gl1->addWidget(boxSampling, 1, 1);
@@ -149,12 +149,12 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	hbox2->addLayout(vbox2);
 
 	// signals and slots connections
-	connect(buttonOK, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(buttonCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(buttonOK, &QAbstractButton::clicked, this, &FFTDialog::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &FFTDialog::close);
 	if (d_type == onMatrix){
 		updateShiftLabel();
-		connect(forwardBtn, SIGNAL(toggled(bool)), this, SLOT(updateShiftLabel()));
-		connect(backwardBtn, SIGNAL(toggled(bool)), this, SLOT(updateShiftLabel()));
+		connect(forwardBtn, &QAbstractButton::toggled, this, &FFTDialog::updateShiftLabel);
+		connect(backwardBtn, &QAbstractButton::toggled, this, &FFTDialog::updateShiftLabel);
 	}
 }
 

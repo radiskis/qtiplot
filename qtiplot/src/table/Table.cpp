@@ -97,8 +97,8 @@ void Table::init(int rows, int cols)
 	d_table->horizontalHeader()->setSectionsMovable(true);
 	d_table->setCurrentCell(0, 0);
 
-	connect(d_table->verticalHeader(), SIGNAL(sectionMoved(int, int, int)), this, SLOT(notifyChanges()));
-	connect(d_table->horizontalHeader(), SIGNAL(sectionMoved(int, int, int)), this, SLOT(moveColumn(int, int, int)));
+	connect(d_table->verticalHeader(), &QHeaderView::sectionMoved, this, static_cast<void (Table::*)()>(&Table::notifyChanges));
+	connect(d_table->horizontalHeader(), &QHeaderView::sectionMoved, this, &Table::moveColumn);
 
 	setFocusPolicy(Qt::StrongFocus);
 	setFocus();
@@ -116,7 +116,7 @@ void Table::init(int rows, int cols)
 	head->setMouseTracking(true);
 	head->setSectionResizeMode(QHeaderView::Interactive);
 	head->installEventFilter(this);
-	connect(head, SIGNAL(sectionResized(int, int, int)), this, SLOT(colWidthModified(int, int, int)));
+	connect(head, &QHeaderView::sectionResized, this, &Table::colWidthModified);
 
 	col_plot_type[0] = X;
 	setHeaderColType();
@@ -131,12 +131,12 @@ void Table::init(int rows, int cols)
 	setWidget(d_table);
 
 	QShortcut *accelTab = new QShortcut(QKeySequence(Qt::Key_Tab), this);
-	connect(accelTab, SIGNAL(activated()), this, SLOT(moveCurrentCell()));
+	connect(accelTab, &QShortcut::activated, this, &Table::moveCurrentCell);
 
 	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_A), this);
-	connect(accelAll, SIGNAL(activated()), this, SLOT(selectAllTable()));
+	connect(accelAll, &QShortcut::activated, this, &Table::selectAllTable);
 
-	connect(d_table, SIGNAL(cellChanged(int, int)), this, SLOT(cellEdited(int, int)));
+	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
 
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
@@ -144,11 +144,11 @@ void Table::init(int rows, int cols)
 void Table::setAutoUpdateValues(bool on)
 {
 	if (on){
-		connect(this, SIGNAL(modifiedData(Table *, const QString&)),
-            	this, SLOT(updateValues(Table*, const QString&)));
+		connect(this, &Table::modifiedData,
+            	this, &Table::updateValues);
 	} else {
-		disconnect(this, SIGNAL(modifiedData(Table *, const QString&)),
-            	this, SLOT(updateValues(Table*, const QString&)));
+		disconnect(this, &Table::modifiedData,
+            	this, &Table::updateValues);
 	}
 }
 
@@ -329,7 +329,7 @@ void Table::cellEdited(int row, int col)
   		d_table->setText(row, col, locale().toString(res, f, precision));
   	else {
   		Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
-  		connect(script, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
+  		connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
 
   		script->setInt(row+1, "i");
   		script->setInt(col+1, "j");
@@ -685,8 +685,8 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	Script *colscript = scriptEnv->newScript(cmd, this,  QString("<%1>").arg(colName(col)));
-	connect(colscript, SIGNAL(error(const QString&,const QString&,int)), scriptEnv, SIGNAL(error(const QString&,const QString&,int)));
-	connect(colscript, SIGNAL(print(const QString&)), scriptEnv, SIGNAL(print(const QString&)));
+	connect(colscript, &Script::error, scriptEnv, &ScriptingEnv::error);
+	connect(colscript, &Script::print, scriptEnv, &ScriptingEnv::print);
 
 	if (!colscript->compile()){
 		QApplication::restoreOverrideCursor();
@@ -1851,7 +1851,7 @@ void Table::normalizeCol(int col)
 void Table::sortColumnsDialog()
 {
 	SortDialog *sortd = new SortDialog(applicationWindow());
-	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sortColumns(int, int, const QString&)));
+	connect(sortd, &SortDialog::sort, this, static_cast<void (Table::*)(int, int, const QString&)>(&Table::sortColumns));
 	sortd->insertColumnsList(selectedColumns());
 	sortd->exec();
 }
@@ -1859,7 +1859,7 @@ void Table::sortColumnsDialog()
 void Table::sortTableDialog()
 {
 	SortDialog *sortd = new SortDialog(applicationWindow());
-	connect (sortd, SIGNAL(sort(int, int, const QString&)), this, SLOT(sort(int, int, const QString&)));
+	connect(sortd, &SortDialog::sort, this, &Table::sort);
 	sortd->insertColumnsList(colNames());
 	sortd->exec();
 }

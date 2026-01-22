@@ -77,7 +77,7 @@ d_tex_output(false)
 	d_text->setPaintAttribute(QwtText::PaintBackground);
 
 	move(plot->mapToParent(plot->canvas()->pos() + QPoint(10, 10)));
-	connect (this, SIGNAL(enableEditor()), plot, SLOT(enableTextEditor()));
+	connect (this, &LegendWidget::enableEditor, plot, &Graph::enableTextEditor);
 
 	setMouseTracking(true);
 	show();

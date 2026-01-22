@@ -152,7 +152,7 @@ d_common_axes_layout(false)
 	d_add_layer_btn->setIcon(QIcon(":/plus.png"));
 	d_add_layer_btn->setMaximumWidth(LayerButton::btnSize());
 	d_add_layer_btn->setMaximumHeight(LayerButton::btnSize());
-	connect (d_add_layer_btn, SIGNAL(clicked()), this->applicationWindow(), SLOT(addLayer()));
+	connect (d_add_layer_btn, &QPushButton::clicked, this->applicationWindow(), &ApplicationWindow::addLayer);
 	toolbuttonsBox->addWidget(d_add_layer_btn);
 
 	d_remove_layer_btn = new QPushButton();
@@ -160,7 +160,7 @@ d_common_axes_layout(false)
 	d_remove_layer_btn->setIcon(QIcon(":/delete.png"));
 	d_remove_layer_btn->setMaximumWidth(LayerButton::btnSize());
 	d_remove_layer_btn->setMaximumHeight(LayerButton::btnSize());
-	connect (d_remove_layer_btn, SIGNAL(clicked()), this, SLOT(confirmRemoveLayer()));
+	connect (d_remove_layer_btn, &QPushButton::clicked, this, &MultiLayer::confirmRemoveLayer);
 	toolbuttonsBox->addWidget(d_remove_layer_btn);
 
 #ifdef Q_OS_MAC
@@ -220,11 +220,11 @@ LayerButton* MultiLayer::addLayerButton()
 		btn->setChecked(false);
 
 	LayerButton *button = new LayerButton(QString::number(graphsList.size() + 1));
-	connect (button, SIGNAL(clicked(LayerButton*)), this, SLOT(activateGraph(LayerButton*)));
-	connect (button, SIGNAL(showCurvesDialog()), this, SIGNAL(showCurvesDialog()));
+	connect (button, &LayerButton::clicked, this, &MultiLayer::activateGraph);
+	connect (button, &LayerButton::showCurvesDialog, this, &MultiLayer::showCurvesDialog);
 	ApplicationWindow *app = applicationWindow();
 	if (app)
-		connect(button, SIGNAL(showLayerContextMenu()), app, SLOT(showWindowContextMenu()));
+		connect(button, &LayerButton::showLayerContextMenu, app, &ApplicationWindow::showWindowContextMenu);
 
 	buttonsList.append(button);
     layerButtonsBox->addWidget(button);
@@ -274,7 +274,7 @@ void MultiLayer::activateGraph(LayerButton* button)
 			if (d_layers_selector){
 				delete d_layers_selector;
 				d_layers_selector = new SelectionMoveResizer(active_graph->canvas());
-				connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+				connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
 			} else
 				active_graph->raiseEnrichements();
 			button->setChecked(true);
@@ -316,11 +316,11 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 		QMouseEvent e(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton, {}, {});
 		if (!active_graph->mousePressed(&e)){
 			d_layers_selector = new SelectionMoveResizer(active_graph->canvas());
-			connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+			connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
 		}
 	} else {
 		d_layers_selector = new SelectionMoveResizer(g->canvas());
-		connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+		connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
 	}
 }
 
@@ -1532,28 +1532,28 @@ void MultiLayer::connectLayer(Graph *g)
 {
 	ApplicationWindow *app = applicationWindow();
 	if (app){
-		connect(g, SIGNAL(selectionChanged(SelectionMoveResizer *)), app, SLOT(graphSelectionChanged(SelectionMoveResizer *)));
-		connect(g, SIGNAL(showPlotDialog(int)), app, SLOT(showPlotDialog(int)));
-		connect(g, SIGNAL(showContextMenu()), app, SLOT(showGraphContextMenu()));
-		connect(g, SIGNAL(showMarkerPopupMenu()), app, SLOT(showMarkerPopupMenu()));
-		connect(g, SIGNAL(viewTitleDialog()), app, SLOT(showTitleDialog()));
-		connect(g, SIGNAL(showAxisTitleDialog()), app, SLOT(showAxisTitleDialog()));
-		connect(g, SIGNAL(axisDblClicked(int)), app, SLOT(showScalePageFromAxisDialog(int)));
-		connect(g, SIGNAL(showAxisDialog(int)), app, SLOT(showAxisPageFromAxisDialog(int)));
-		connect(g, SIGNAL(enableTextEditor(Graph *)), app, SLOT(enableTextEditor(Graph *)));
-		connect(g, SIGNAL(showCurveContextMenu(QwtPlotItem *)), app, SLOT(showCurveContextMenu(QwtPlotItem *)));
+		connect(g, &Graph::selectionChanged, app, &ApplicationWindow::graphSelectionChanged);
+		connect(g, QOverload<int>::of(&Graph::showPlotDialog), app, &ApplicationWindow::showPlotDialog);
+		connect(g, &Graph::showContextMenu, app, &ApplicationWindow::showGraphContextMenu);
+		connect(g, &Graph::showMarkerPopupMenu, app, &ApplicationWindow::showMarkerPopupMenu);
+		connect(g, &Graph::viewTitleDialog, app, &ApplicationWindow::showTitleDialog);
+		connect(g, &Graph::showAxisTitleDialog, app, &ApplicationWindow::showAxisTitleDialog);
+		connect(g, &Graph::axisDblClicked, app, &ApplicationWindow::showScalePageFromAxisDialog);
+		connect(g, &Graph::showAxisDialog, app, &ApplicationWindow::showAxisPageFromAxisDialog);
+		connect(g, &Graph::enableTextEditor, app, &ApplicationWindow::enableTextEditor);
+		connect(g, &Graph::showCurveContextMenu, app, &ApplicationWindow::showCurveContextMenu);
 	}
-	connect (g,SIGNAL(drawLineEnded(bool)), this, SIGNAL(drawLineEnded(bool)));
-	connect (g,SIGNAL(viewLineDialog()),this,SIGNAL(showLineDialog()));
-	connect (g,SIGNAL(cursorInfo(const QString&)),this,SIGNAL(cursorInfo(const QString&)));
-	connect (g,SIGNAL(modifiedGraph()),this,SIGNAL(modifiedPlot()));
-	connect (g,SIGNAL(modifiedGraph()),this,SLOT(notifyChanges()));
-	connect (g,SIGNAL(selectedGraph(Graph*)),this, SLOT(setActiveLayer(Graph*)));
-	connect (g,SIGNAL(selectedCanvas(Graph*)), this, SLOT(selectLayerCanvas(Graph*)));
-	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SIGNAL(currentFontChanged(const QFont&)));
-	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SIGNAL(currentColorChanged(const QColor&)));
+	connect (g, &Graph::drawLineEnded, this, &MultiLayer::drawLineEnded);
+	connect (g, &Graph::viewLineDialog, this, &MultiLayer::showLineDialog);
+	connect (g, &Graph::cursorInfo, this, &MultiLayer::cursorInfo);
+	connect (g, &Graph::modifiedGraph, this, &MultiLayer::modifiedPlot);
+	connect (g, &Graph::modifiedGraph, this, &MultiLayer::notifyChanges);
+	connect (g, &Graph::selectedGraph, this, &MultiLayer::setActiveLayer);
+	connect (g, &Graph::selectedCanvas, this, &MultiLayer::selectLayerCanvas);
+	connect (g, &Graph::currentFontChanged, this, &MultiLayer::currentFontChanged);
+	connect (g, &Graph::currentColorChanged, this, &MultiLayer::currentColorChanged);
 	if (d_link_x_axes)
-		connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+		connect(g, &Graph::axisDivChanged, this, &MultiLayer::updateLayerAxes);
 }
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
@@ -1589,13 +1589,13 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 						d_layers_selector->add((*i)->canvas());
 					else {
 						d_layers_selector = new SelectionMoveResizer(g->canvas());
-						connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+						connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
 					}
 				} else {
 					setActiveLayer(g);
 					if (!g->mousePressed(e) && !d_layers_selector){
 						d_layers_selector = new SelectionMoveResizer(g->canvas());
-						connect(d_layers_selector, SIGNAL(targetsChanged()), this, SIGNAL(modifiedPlot()));
+						connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
 					}
 				}
 				return true;
@@ -1943,15 +1943,15 @@ void MultiLayer::createWaterfallBox()
 		return;
 
 	QPushButton *btn = new QPushButton(tr("Offset Amount..."));
-	connect (btn, SIGNAL(clicked()), this, SLOT(showWaterfallOffsetDialog()));
+	connect (btn, &QPushButton::clicked, this, &MultiLayer::showWaterfallOffsetDialog);
 
 	waterfallBox->addWidget(btn);
 	btn = new QPushButton(tr("Reverse Order"));
-	connect (btn, SIGNAL(clicked()), this, SLOT(reverseWaterfallOrder()));
+	connect (btn, &QPushButton::clicked, this, &MultiLayer::reverseWaterfallOrder);
 
 	waterfallBox->addWidget(btn);
 	btn = new QPushButton(tr("Fill Area..."));
-	connect (btn, SIGNAL(clicked()), this, SLOT(showWaterfallFillDialog()));
+	connect (btn, &QPushButton::clicked, this, &MultiLayer::showWaterfallFillDialog);
 	waterfallBox->addWidget(btn);
 }
 
@@ -1996,14 +1996,14 @@ void MultiLayer::showWaterfallOffsetDialog()
 	hl1->setRowStretch(2, 1);
 	hl1->setColumnStretch(1, 1);
 
-	connect(yOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallYOffset(double)));
-	connect(xOffsetBox, SIGNAL(valueChanged(double)), active_graph, SLOT(setWaterfallXOffset(double)));
+	connect(yOffsetBox, &DoubleSpinBox::valueChanged, active_graph, &Graph::setWaterfallYOffset);
+	connect(xOffsetBox, &DoubleSpinBox::valueChanged, active_graph, &Graph::setWaterfallXOffset);
 
 	QPushButton *applyBtn = new QPushButton(tr("&Apply"));
-	connect(applyBtn, SIGNAL(clicked()), this, SLOT(updateWaterfalls()));
+	connect(applyBtn, &QPushButton::clicked, this, &MultiLayer::updateWaterfalls);
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
-	connect(closeBtn, SIGNAL(clicked()), offsetDialog, SLOT(reject()));
+	connect(closeBtn, &QPushButton::clicked, offsetDialog, &QDialog::reject);
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->addStretch();
@@ -2055,12 +2055,12 @@ void MultiLayer::showWaterfallFillDialog()
 	fillColorBox->setColor(brush.style() != Qt::NoBrush ? brush.color() : d_waterfall_fill_color);
 	gb1->setChecked(brush.style() != Qt::NoBrush);
 
-	connect(gb1, SIGNAL(toggled(bool)), active_graph, SLOT(updateWaterfallFill(bool)));
-	connect(fillColorBox, SIGNAL(colorChanged(const QColor&)), this, SLOT(setWaterfallFillColor(const QColor&)));
-	connect(sideLinesBox, SIGNAL(toggled(bool)), active_graph, SLOT(setWaterfallSideLines(bool)));
+	connect(gb1, &QGroupBox::toggled, active_graph, &Graph::updateWaterfallFill);
+	connect(fillColorBox, &ColorButton::colorChanged, this, &MultiLayer::setWaterfallFillColor);
+	connect(sideLinesBox, &QCheckBox::toggled, active_graph, &Graph::setWaterfallSideLines);
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
-	connect(closeBtn, SIGNAL(clicked()), waterfallFillDialog, SLOT(reject()));
+	connect(closeBtn, &QPushButton::clicked, waterfallFillDialog, &QDialog::reject);
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->addStretch();
@@ -2180,10 +2180,10 @@ void MultiLayer::linkXLayerAxes(bool link)
 
 	if (link){
 		foreach(Graph *g, graphsList)
-			connect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+			connect(g, &Graph::axisDivChanged, this, &MultiLayer::updateLayerAxes);
 	} else {
 		foreach(Graph *g, graphsList)
-			disconnect(g, SIGNAL(axisDivChanged(Graph *, int)), this, SLOT(updateLayerAxes(Graph *, int)));
+			disconnect(g, &Graph::axisDivChanged, this, &MultiLayer::updateLayerAxes);
 	}
 }
 
@@ -2248,7 +2248,7 @@ void MultiLayer::updateLayersLayout(Graph *g)
 	if (!g || g != graphsList.last())
 		return;
 
-	disconnect (g, SIGNAL(updatedLayout(Graph *)), this, SLOT(updateLayersLayout(Graph *)));
+	disconnect (g, &Graph::updatedLayout, this, &MultiLayer::updateLayersLayout);
 	arrangeLayers(false, true);
 	foreach(Graph *ag, graphsList){
 		if (ag->curveCount())

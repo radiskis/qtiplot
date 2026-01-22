@@ -194,7 +194,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 		boxSampleSize->setEnabled(false);
 		gl4->addWidget(boxSampleSize, 1, 1);
 
-		connect(boxOtherSampleSize, SIGNAL(toggled(bool)), boxSampleSize, SLOT(setEnabled(bool)));
+		connect(boxOtherSampleSize, &QAbstractButton::toggled, boxSampleSize, &QWidget::setEnabled);
 		boxPowerAnalysis->setChecked(app->d_stats_power);
 	}
 
@@ -249,16 +249,16 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	vl->addStretch();
 	vl->addLayout(hl2);
 
-	connect(buttonOk, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(buttonAddLevel, SIGNAL(clicked()), this, SLOT(addConfidenceLevel()));
-	connect(leftTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
-	connect(rightTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
-	connect(bothTailButton, SIGNAL(toggled(bool)), this, SLOT(updateMeanLabel()));
-	connect(boxMean, SIGNAL(valueChanged(double)), this, SLOT(updateMeanLabels(double)));
-	connect(boxResultsTable, SIGNAL(toggled(bool)), tableNameLineEdit, SLOT(setEnabled(bool)));
-	connect(boxNoteWindow, SIGNAL(toggled(bool)), noteNameLineEdit, SLOT(setEnabled(bool)));
-	connect(boxNoteWindow, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
-	connect(boxResultsLog, SIGNAL(toggled(bool)), this, SLOT(enableDescriptiveStatistics()));
+	connect(buttonOk, &QAbstractButton::clicked, this, &StudentTestDialog::accept);
+	connect(buttonAddLevel, &QAbstractButton::clicked, this, &StudentTestDialog::addConfidenceLevel);
+	connect(leftTailButton, &QAbstractButton::toggled, this, &StudentTestDialog::updateMeanLabel);
+	connect(rightTailButton, &QAbstractButton::toggled, this, &StudentTestDialog::updateMeanLabel);
+	connect(bothTailButton, &QAbstractButton::toggled, this, &StudentTestDialog::updateMeanLabel);
+	connect(boxMean, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &StudentTestDialog::updateMeanLabels);
+	connect(boxResultsTable, &QAbstractButton::toggled, tableNameLineEdit, &QWidget::setEnabled);
+	connect(boxNoteWindow, &QAbstractButton::toggled, noteNameLineEdit, &QWidget::setEnabled);
+	connect(boxNoteWindow, &QAbstractButton::toggled, this, &StudentTestDialog::enableDescriptiveStatistics);
+	connect(boxResultsLog, &QAbstractButton::toggled, this, &StudentTestDialog::enableDescriptiveStatistics);
 }
 
 void StudentTestDialog::enableDescriptiveStatistics()

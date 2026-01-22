@@ -123,16 +123,16 @@ PlotWizard::PlotWizard( QWidget* parent, Qt::WindowFlags fl )
 	vlayout->addLayout( bottomLayout );
 
 	// signals and slots connections
-	connect( boxTables, SIGNAL(activated(const QString &)),this, SLOT(changeColumnsList(const QString &)));
-	connect( buttonOk, SIGNAL( clicked() ), this, SLOT( accept() ) );
-	connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( reject() ) );
-	connect( buttonNew, SIGNAL( clicked() ), this, SLOT( addCurve() ) );
-	connect( buttonDelete, SIGNAL( clicked() ), this, SLOT( removeCurve() ) );
-	connect( buttonX, SIGNAL( clicked() ), this, SLOT(addXCol()));
-	connect( buttonY, SIGNAL( clicked() ), this, SLOT(addYCol()));
-	connect( buttonXErr, SIGNAL( clicked() ), this, SLOT(addXErrCol()));
-	connect( buttonYErr, SIGNAL( clicked() ), this, SLOT(addYErrCol()));
-	connect( buttonZ, SIGNAL( clicked() ), this, SLOT(addZCol()));
+	connect(boxTables, QOverload<const QString&>::of(&QComboBox::activated), this, &PlotWizard::changeColumnsList);
+	connect(buttonOk, &QAbstractButton::clicked, this, &PlotWizard::accept);
+	connect(buttonCancel, &QAbstractButton::clicked, this, &PlotWizard::reject);
+	connect(buttonNew, &QAbstractButton::clicked, this, &PlotWizard::addCurve);
+	connect(buttonDelete, &QAbstractButton::clicked, this, &PlotWizard::removeCurve);
+	connect(buttonX, &QAbstractButton::clicked, this, &PlotWizard::addXCol);
+	connect(buttonY, &QAbstractButton::clicked, this, &PlotWizard::addYCol);
+	connect(buttonXErr, &QAbstractButton::clicked, this, &PlotWizard::addXErrCol);
+	connect(buttonYErr, &QAbstractButton::clicked, this, &PlotWizard::addYErrCol);
+	connect(buttonZ, &QAbstractButton::clicked, this, &PlotWizard::addZCol);
 }
 
 QSize PlotWizard::sizeHint() const

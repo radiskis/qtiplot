@@ -144,13 +144,13 @@ ExtractDataDialog::ExtractDataDialog( ScriptingEnv *env, QWidget* parent, Qt::Wi
 	if (functions->count() > 0)
 		insertExplain(0);
 
-	connect(btnAddFunction, SIGNAL(clicked()),this, SLOT(insertFunction()));
-	connect(btnAddCol, SIGNAL(clicked()),this, SLOT(insertCol()));
-	connect(btnAddOp, SIGNAL(clicked()),this, SLOT(insertOp()));
-	connect(btnApply, SIGNAL(clicked()),this, SLOT(apply()));
-	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
-	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
-	connect(buttonClearFormulas, SIGNAL(clicked()), this, SLOT(clearFormulas()));
+	connect(btnAddFunction, &QPushButton::clicked, this, &ExtractDataDialog::insertFunction);
+	connect(btnAddCol, &QPushButton::clicked, this, &ExtractDataDialog::insertCol);
+	connect(btnAddOp, &QPushButton::clicked, this, &ExtractDataDialog::insertOp);
+	connect(btnApply, &QPushButton::clicked, this, &ExtractDataDialog::apply);
+	connect(btnCancel, &QPushButton::clicked, this, &ExtractDataDialog::close);
+	connect(functions, QOverload<int>::of(&QComboBox::activated), this, &ExtractDataDialog::insertExplain);
+	connect(buttonClearFormulas, &QPushButton::clicked, this, &ExtractDataDialog::clearFormulas);
 }
 
 QSize ExtractDataDialog::sizeHint() const

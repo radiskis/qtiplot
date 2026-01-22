@@ -91,8 +91,8 @@ TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, T
 
 	setBase(base);
 
-	connect(this, SIGNAL(removedCol(int)), this, SLOT(removeStatsCol(int)));
-	connect(this, SIGNAL(colIndexChanged(int, int)), this, SLOT(changeColIndex(int, int)));
+	connect(this, QOverload<int>::of(&Table::removedCol), this, &TableStatistics::removeStatsCol);
+	connect(this, &Table::colIndexChanged, this, &TableStatistics::changeColIndex);
 }
 
 void TableStatistics::setBase(Table *t)
@@ -127,10 +127,10 @@ void TableStatistics::setBase(Table *t)
 		}
 	}
 
-	connect(d_base, SIGNAL(modifiedData(Table*, const QString&)), this, SLOT(update(Table*, const QString&)));
-	connect(d_base, SIGNAL(changedColHeader(const QString&, const QString&)), this, SLOT(renameCol(const QString&, const QString&)));
-	connect(d_base, SIGNAL(removedCol(const QString&)), this, SLOT(removeCol(const QString&)));
-	connect(d_base, SIGNAL(destroyed()), this, SLOT(closedBase()));
+	connect(d_base, &Table::modifiedData, this, QOverload<Table*, const QString&>::of(&TableStatistics::update));
+	connect(d_base, &Table::changedColHeader, this, &TableStatistics::renameCol);
+	connect(d_base, QOverload<const QString&>::of(&Table::removedCol), this, &TableStatistics::removeCol);
+	connect(d_base, &QObject::destroyed, this, &TableStatistics::closedBase);
 }
 
 void TableStatistics::setColumnStatsTypes(const QList<int>& colStatTypes)

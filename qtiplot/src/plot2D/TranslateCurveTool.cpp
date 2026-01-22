@@ -48,8 +48,8 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 
 	// Phase 1: select curve point
 	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
-	connect((DataPickerTool*)d_sub_tool, SIGNAL(selected(QwtPlotCurve*, int)),
-			this, SLOT(selectCurvePoint(QwtPlotCurve*,int)));
+	connect((DataPickerTool*)d_sub_tool, &DataPickerTool::selected,
+			this, &TranslateCurveTool::selectCurvePoint);
 
 	emit statusText(tr("Double-click on plot to select a data point!"));
 }
@@ -91,7 +91,7 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	if (d_dir == Horizontal)
 		moveRestriction = ScreenPickerTool::Horizontal;
 	((ScreenPickerTool*)d_sub_tool)->setMoveRestriction(moveRestriction);
-	connect((ScreenPickerTool*)d_sub_tool, SIGNAL(selected(const QPointF&)), this, SLOT(selectDestination(const QPointF&)));
+	connect((ScreenPickerTool*)d_sub_tool, &ScreenPickerTool::selected, this, &TranslateCurveTool::selectDestination);
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));
 }
 

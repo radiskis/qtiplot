@@ -142,7 +142,7 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	if (env->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
 		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);
-		connect(boxMuParser, SIGNAL(toggled(bool)), this, SLOT(updateFunctionsList(bool)));
+		connect(boxMuParser, &QCheckBox::toggled, this, &SetColValuesDialog::updateFunctionsList);
 		updateFunctionsList(boxMuParser->isChecked());
 		vbox3->addWidget(boxMuParser);
 	}
@@ -159,16 +159,16 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	if (functions->count() > 0)
 		insertExplain(0);
 
-	connect(btnAddFunction, SIGNAL(clicked()),this, SLOT(insertFunction()));
-	connect(btnAddCol, SIGNAL(clicked()),this, SLOT(insertCol()));
-	connect(addCellButton, SIGNAL(clicked()),this, SLOT(insertCell()));
-	connect(btnApply, SIGNAL(clicked()),this, SLOT(apply()));
-	connect(btnCancel, SIGNAL(clicked()),this, SLOT(close()));
-	connect(functions, SIGNAL(activated(int)),this, SLOT(insertExplain(int)));
-	connect(buttonPrev, SIGNAL(clicked()), this, SLOT(prevColumn()));
-	connect(buttonNext, SIGNAL(clicked()), this, SLOT(nextColumn()));
-	connect(buttonProperties, SIGNAL(clicked()), this, SLOT(openColumnPropertiesDialog()));
-	connect(buttonClearFormulas, SIGNAL(clicked()), this, SLOT(clearFormulas()));
+	connect(btnAddFunction, &QPushButton::clicked, this, &SetColValuesDialog::insertFunction);
+	connect(btnAddCol, &QPushButton::clicked, this, &SetColValuesDialog::insertCol);
+	connect(addCellButton, &QPushButton::clicked, this, &SetColValuesDialog::insertCell);
+	connect(btnApply, &QPushButton::clicked, this, &SetColValuesDialog::apply);
+	connect(btnCancel, &QPushButton::clicked, this, &SetColValuesDialog::close);
+	connect(functions, QOverload<int>::of(&QComboBox::activated), this, &SetColValuesDialog::insertExplain);
+	connect(buttonPrev, &QPushButton::clicked, this, &SetColValuesDialog::prevColumn);
+	connect(buttonNext, &QPushButton::clicked, this, &SetColValuesDialog::nextColumn);
+	connect(buttonProperties, &QPushButton::clicked, this, &SetColValuesDialog::openColumnPropertiesDialog);
+	connect(buttonClearFormulas, &QPushButton::clicked, this, &SetColValuesDialog::clearFormulas);
 }
 
 void SetColValuesDialog::openColumnPropertiesDialog()
@@ -177,7 +177,7 @@ void SetColValuesDialog::openColumnPropertiesDialog()
 	if (!app)
 		return;
 
-	connect(this, SIGNAL(destroyed()), app, SLOT(showColumnOptionsDialog()));
+	connect(this, &QObject::destroyed, app, &ApplicationWindow::showColumnOptionsDialog);
 	this->apply();
 	this->close();
 }

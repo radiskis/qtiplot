@@ -186,11 +186,11 @@ MatrixSizeDialog::MatrixSizeDialog( Matrix *m, QWidget* parent, Qt::WindowFlags 
 	boxXEnd->setValue(m->xEnd());
 	boxYEnd->setValue(m->yEnd());
 
-	connect( buttonApply, SIGNAL(clicked()), this, SLOT(apply()));
-	connect( buttonOk, SIGNAL(clicked()), this, SLOT(accept() ));
-	connect( buttonCancel, SIGNAL(clicked()), this, SLOT(reject()));
-	connect( buttonValues, SIGNAL(clicked()), this, SLOT(openValuesDialog()));
-	connect( buttonProperties, SIGNAL(clicked()), this, SLOT(openPropertiesDialog()));
+	connect(buttonApply, &QPushButton::clicked, this, &MatrixSizeDialog::apply);
+	connect(buttonOk, &QPushButton::clicked, this, &MatrixSizeDialog::accept);
+	connect(buttonCancel, &QPushButton::clicked, this, &MatrixSizeDialog::reject);
+	connect(buttonValues, &QPushButton::clicked, this, &MatrixSizeDialog::openValuesDialog);
+	connect(buttonProperties, &QPushButton::clicked, this, &MatrixSizeDialog::openPropertiesDialog);
 }
 
 void MatrixSizeDialog::openValuesDialog()
@@ -199,7 +199,7 @@ void MatrixSizeDialog::openValuesDialog()
 	if (!app)
 		return;
 
-	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixValuesDialog()));
+	connect(this, &QObject::destroyed, app, &ApplicationWindow::showMatrixValuesDialog);
 	this->accept();
 }
 
@@ -209,7 +209,7 @@ void MatrixSizeDialog::openPropertiesDialog()
 	if (!app)
 		return;
 
-	connect(this, SIGNAL(destroyed()), app, SLOT(showMatrixDialog()));
+	connect(this, &QObject::destroyed, app, &ApplicationWindow::showMatrixDialog);
 	this->accept();
 }
 

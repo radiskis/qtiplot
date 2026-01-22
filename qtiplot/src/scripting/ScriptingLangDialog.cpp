@@ -54,8 +54,8 @@ ScriptingLangDialog::ScriptingLangDialog(ScriptingEnv *env, ApplicationWindow *p
 	vl->addWidget(langList);
 	vl->addLayout(hbox1);
 
-	connect(btnOK, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(btnCancel, SIGNAL(clicked()), this, SLOT(close()));
+	connect(btnOK, &QAbstractButton::clicked, this, &ScriptingLangDialog::accept);
+	connect(btnCancel, &QAbstractButton::clicked, this, &ScriptingLangDialog::close);
 	connect(langList, SIGNAL(itemActivated(QListWidgetItem*)), this, SLOT(accept()));
 
 	updateLangList();
