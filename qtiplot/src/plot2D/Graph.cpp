@@ -324,7 +324,7 @@ void Graph::enableTextEditor()
     if (!app)
         return;
 
-	if (app->d_in_place_editing)
+    if (app->d_in_place_editing)
         emit enableTextEditor(this);
     else if (titlePicker->selected())
         viewTitleDialog();
@@ -1410,11 +1410,7 @@ void Graph::updateOppositeScaleDiv(int axis)
 	sc_engine->clone((ScaleEngine *)axisScaleEngine(a));
 
 	int minorTicks = axisMaxMinor(a);
-	int max_min_intervals = minorTicks;
-	if (minorTicks == 1)
-		max_min_intervals = 3;
-	if (minorTicks > 1)
-		max_min_intervals = minorTicks + 1;
+
 
 	setAxisMaxMajor(axis, axisMaxMajor(a));
 	setAxisMaxMinor(axis, minorTicks);
@@ -3921,7 +3917,7 @@ void Graph::setBarsGap(int curve, int gapPercent, int offset)
     if (bars->gap() == gapPercent && bars->offset() == offset)
         return;
 
-	bars->setGap(gapPercent);
+    bars->setGap(gapPercent);
 	bars->setOffset(offset);
 }
 
@@ -4369,7 +4365,7 @@ FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, dou
 	else
 		name = generateFunctionName();
 
-	FunctionCurve *c = new FunctionCurve((const FunctionCurve::FunctionType)type, name);
+	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, name);
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
@@ -4455,7 +4451,7 @@ void Graph::createTable(const QwtPlotCurve* curve)
     if (!curve)
         return;
 
-	MultiLayer *plot = multiLayer();
+    MultiLayer *plot = multiLayer();
 	if (!plot)
 		return;
 
@@ -5159,7 +5155,7 @@ void Graph::copyCurves(Graph* g)
 
 			if (cv->testCurveAttribute (QwtPlotCurve::Fitted)){
 				c->setCurveAttribute(QwtPlotCurve::Fitted, true);
-				if (d_Douglas_Peuker_tolerance > 0.0 && c->dataSize() >= d_speed_mode_points){
+				if (d_Douglas_Peuker_tolerance > 0.0 && c->dataSize() >= (size_t)d_speed_mode_points){
 					//QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(d_Douglas_Peuker_tolerance);
 					//c->setCurveFitter(fitter);
 				}
@@ -5243,7 +5239,7 @@ void Graph::setCurveStyle(int index, int s)
         curve_type == VectXYXY || curve_type == VectXYAM)
         return;//these are not line styles, but distinct curve types and this function must not change the curve type
 
-	c->setCurveAttribute(QwtPlotCurve::Fitted, false);
+    c->setCurveAttribute(QwtPlotCurve::Fitted, false);
 	c->setCurveAttribute(QwtPlotCurve::Inverted, false);
 
 	if (s == 5){//ancient spline style in Qwt 4.2.0
@@ -5426,8 +5422,8 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 		}
 	}
 	if (d_curves.size() > 1){
-		colorIndex = (++colorIndex)%16;
-		symbolIndex = (++symbolIndex)%15;
+		colorIndex = (colorIndex + 1) % 16;
+		symbolIndex = (symbolIndex + 1) % 15;
 	} else
 		symbolIndex = 0;
 
@@ -5719,7 +5715,7 @@ bool Graph::isCurveAntialiasingEnabled(QwtPlotItem *it)
 	if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 		return true;
 
-	if (d_disable_curve_antialiasing && ((PlotCurve *)it)->dataSize() > d_max_antialising_size)
+	if (d_disable_curve_antialiasing && ((PlotCurve *)it)->dataSize() > (size_t)d_max_antialising_size)
 		return false;
 
 	return true;
@@ -6259,7 +6255,7 @@ void Graph::printCanvas(QPainter *painter, const QRectF &canvasRect,
 }
 
 void Graph::drawItems (QPainter *painter, const QRectF &rect,
-						const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
+						const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &/*pfilter*/) const
 {	
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i) || d_is_printing)
@@ -6825,7 +6821,7 @@ void Graph::showEvent (QShowEvent * event)
   \param plotRect Bounding rectangle
   \param pfilter Print filter
 */
-void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
+void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &/*pfilter*/)
 {
     if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
         return;

@@ -211,7 +211,7 @@ void Table::print(QPrinter *printer)
     if (!p.begin(printer))
         return; // paint on printer
 
-	QPaintDevice *dev = p.device();
+    QPaintDevice *dev = p.device();
 	int dpiy = dev->logicalDpiY();
 	const int margin = (int) ( (1/2.54)*dpiy ); // 2 cm margins
 
@@ -1071,7 +1071,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
     if (col_label[col] == text && !enumerateRight)
         return;
 
-	QString caption = objectName();
+    QString caption = objectName();
 	QString oldLabel = col_label[col];
 	int cols = col + 1;
 	if (enumerateRight)
@@ -1274,7 +1274,7 @@ void Table::insertCols(int start, int count)
     if (start < 0)
         start = 0;
 
-	int max = 0;
+    int max = 0;
 	int cols = d_table->numCols();
 	QList<bool> hiddenCols;
 
@@ -1428,7 +1428,7 @@ void Table::deleteRows(int startRow, int endRow)
     if (end >= d_table->numRows())
         end = d_table->numRows() - 1;
 
-	int rows = abs(end - start) + 1;
+    int rows = abs(end - start) + 1;
 	QVector<int> rowsToDelete(rows);
 	for (int i=0; i<rows; i++)
 		rowsToDelete[i] = start + i;
@@ -2208,7 +2208,7 @@ void Table::freeMemory()
     for ( int i = 0; i < d_table->numCols(); i++)
         delete[] d_saved_cells[i];
 
-	delete[] d_saved_cells;
+    delete[] d_saved_cells;
 	d_saved_cells = 0;
 }
 
@@ -2372,7 +2372,7 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells)
     if (colTypes[col] == Month && col_format[col] == format)
         return;
 
-	colTypes[col] = Month;
+    colTypes[col] = Month;
 	col_format[col] = format;
 
 	if (!updateCells)
@@ -2405,7 +2405,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
     if (colTypes[col] == Day && col_format[col] == format)
         return;
 
-	colTypes[col] = Day;
+    colTypes[col] = Day;
 	col_format[col] = format;
 
 	if (!updateCells)
@@ -3560,7 +3560,7 @@ void Table::copy(Table *m, bool values)
 	col_format = m->getColumnsFormat();
 }
 
-void Table::restore(const QStringList& flist, int fileVersion, bool)
+void Table::restore(const QStringList& flist, int /*fileVersion*/, bool)
 {
 	int cols = numCols();
 	QStringList::const_iterator line = flist.begin();
@@ -3751,7 +3751,7 @@ void Table::setReadOnlyColumn(int col, bool on)
     if (col < 0 || col >= d_table->numCols())
         return;
 
-	if (d_table->isColumnReadOnly(col) == on)
+    if (d_table->isColumnReadOnly(col) == on)
 		return;
 
 	d_table->setColumnReadOnly(col, on);
@@ -4024,7 +4024,7 @@ void MyTable::activateNextCell()
     if(row+1 >= numRows())
         setNumRows(row + 11);
 
-	setCurrentCell (row + 1, col);
+    setCurrentCell (row + 1, col);
     // selectCells(row+1, col, row+1, col); // Q3Table
     QTableWidgetSelectionRange range(row+1, col, row+1, col);
     setRangeSelected(range, true);
