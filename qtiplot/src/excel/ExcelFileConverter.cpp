@@ -55,7 +55,7 @@ void ExcelFileConverter::startOpenOfficeServer()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	soffice = new QProcess(app);
-	connect(soffice, SIGNAL(started()), this, SLOT(startConvertion()));
+	connect(soffice, &QProcess::started, this, &ExcelFileConverter::startConvertion);
 	connect(soffice, &QProcess::errorOccurred,
 			this, &ExcelFileConverter::displayOfficeError);
 

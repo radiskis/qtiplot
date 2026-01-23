@@ -123,7 +123,7 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
 
 	functionsMenu = new QMenu(this);
 	Q_CHECK_PTR(functionsMenu);
-	connect(functionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(insertFunction(QAction *)));
+	connect(functionsMenu, &QMenu::triggered, this, QOverload<QAction*>::of(&ScriptEdit::insertFunction));
 
 	connect(this, &QTextEdit::cursorPositionChanged, this, &ScriptEdit::matchParentheses);
 }
@@ -284,7 +284,7 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
 		actionAutoexec->setCheckable(true);
 		actionAutoexec->setChecked(sp->autoexec());
-		connect(actionAutoexec, SIGNAL(toggled(bool)), sp, SLOT(setAutoexec(bool)));
+		connect(actionAutoexec, &QAction::toggled, sp, &Note::setAutoexec);
 		menu->addAction(actionAutoexec);
 		menu->addSeparator();
 	}
@@ -639,7 +639,7 @@ void ScriptEdit::setDirPath(const QString& path)
 		 return;
 
 	 d_completer->setWidget(this);
-	 QObject::connect(d_completer, SIGNAL(activated(const QString&)), this, SLOT(insertCompletion(const QString&)));
+	 QObject::connect(d_completer, QOverload<const QString&>::of(&QCompleter::activated), this, &ScriptEdit::insertCompletion);
 }
 
  void ScriptEdit::insertCompletion(const QString& completion)

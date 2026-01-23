@@ -37,7 +37,7 @@
 
 #include <gsl/gsl_statistics.h>
 
-MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot)
+MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks)
 	: PlotToolInterface(graph),
 	d_profile(profile),
 	d_num_peaks(num_peaks)
@@ -50,12 +50,11 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	d_fit->setPeakCurvesColor(app->peakCurvesColor);
 	d_fit->generateFunction(app->generateUniformFitPoints, app->fitPoints);
 
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
-	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
+	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display);
+	connect(d_picker_tool, &DataPickerTool::statusText, this, &MultiPeakFitTool::statusText);
     d_graph->canvas()->setCursor(QCursor(QPixmap(cursor_xpm), -1, -1));
 
-	connect(d_picker_tool, SIGNAL(selected(QwtPlotCurve*,int)), this, SLOT(selectPeak(QwtPlotCurve*,int)));
+	connect(d_picker_tool, &DataPickerTool::selected, this, &MultiPeakFitTool::selectPeak);
 	d_graph->canvas()->grabMouse();
 
 	emit statusText(tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!"));

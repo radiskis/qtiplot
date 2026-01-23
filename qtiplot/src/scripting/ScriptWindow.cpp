@@ -55,7 +55,7 @@ d_app(app)
 	te = new ScriptEdit(env, this, objectName());
 	te->setContext(this);
 	te->setDirPath(d_app->scriptsDirPath);
-	connect(te, SIGNAL(dirPathChanged(const QString& )), d_app, SLOT(scriptsDirPathChanged(const QString&)));
+	connect(te, &ScriptEdit::dirPathChanged, d_app, &ApplicationWindow::scriptsDirPathChanged);
 
 	d_line_number = new LineNumberDisplay(te, this);
 	d_frame = new QWidget(this);
@@ -251,10 +251,10 @@ void ScriptWindow::initActions()
 	connect(actionHide, &QAction::triggered, this, &ScriptWindow::close);
 	windowMenu->addAction(actionHide);
 
-	connect(te, SIGNAL(copyAvailable(bool)), actionCut, SLOT(setEnabled(bool)));
-	connect(te, SIGNAL(copyAvailable(bool)), actionCopy, SLOT(setEnabled(bool)));
-	connect(te, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(te, SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
+	connect(te, &ScriptEdit::copyAvailable, actionCut, &QAction::setEnabled);
+	connect(te, &ScriptEdit::copyAvailable, actionCopy, &QAction::setEnabled);
+	connect(te, &ScriptEdit::undoAvailable, actionUndo, &QAction::setEnabled);
+	connect(te, &ScriptEdit::redoAvailable, actionRedo, &QAction::setEnabled);
 }
 
 void ScriptWindow::languageChange()
@@ -271,7 +271,7 @@ void ScriptWindow::languageChange()
 	edit->setTitle(tr("&Edit"));
 	run->setTitle(tr("E&xecute"));
 
-	menuBar()->addAction(tr("&Close"), this, SLOT(close()));
+	menuBar()->addAction(tr("&Close"), this, &ScriptWindow::close);
 
 	actionNew->setText(tr("&New"));
 	actionNew->setShortcut(tr("Ctrl+N"));
@@ -428,7 +428,7 @@ void ScriptWindow::printPreview()
 {
 	QPrintPreviewDialog *preview = new QPrintPreviewDialog(this);
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Script print preview"));
-	connect(preview, SIGNAL(paintRequested(QPrinter *)), te, SLOT(print(QPrinter *)));
+	connect(preview, &QPrintPreviewDialog::paintRequested, te, QOverload<QPrinter *>::of(&ScriptEdit::print));
 	preview->exec();
 }
 

@@ -218,7 +218,7 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	connect(boxCols, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
 	connect(boxNQ, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
 	connect(boxNW, QOverload<int>::of(&QSpinBox::valueChanged), this, &GriddingDialog::preview);
-	connect(boxModel, SIGNAL(activated(int)), this, SLOT(preview()));
+	connect(boxModel, QOverload<int>::of(&QComboBox::activated), this, &GriddingDialog::preview);
 	connect(boxRadius, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
 	connect(boxXStart, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);
 	connect(boxXEnd, QOverload<double>::of(&DoubleSpinBox::valueChanged), this, &GriddingDialog::preview);

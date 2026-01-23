@@ -66,7 +66,7 @@ void TextFormatButtons::init(Buttons buttons)
 		buttonCurve->setFixedHeight(btnSize);
 		buttonCurve->setFont(font);
 		layout->addWidget(buttonCurve);
-		connect( buttonCurve, SIGNAL(clicked()), this, SLOT(addCurve()) );
+		connect(buttonCurve, &QPushButton::clicked, this, &TextFormatButtons::addCurve);
 	}
 
 	QPushButton *buttonSubscript = new QPushButton(QPixmap(":/index.png"), QString());
@@ -74,14 +74,14 @@ void TextFormatButtons::init(Buttons buttons)
 	buttonSubscript->setFixedHeight(btnSize);
 	buttonSubscript->setFont(font);
 	layout->addWidget(buttonSubscript);
-	connect( buttonSubscript, SIGNAL(clicked()), this, SLOT(addSubscript()) );
+	connect(buttonSubscript, &QPushButton::clicked, this, &TextFormatButtons::addSubscript);
 
 	QPushButton *buttonSuperscript = new QPushButton(QPixmap(":/exp.png"), QString());
 	buttonSuperscript->setFixedWidth(btnSize);
 	buttonSuperscript->setFixedHeight(btnSize);
 	buttonSuperscript->setFont(font);
 	layout->addWidget(buttonSuperscript);
-	connect( buttonSuperscript, SIGNAL(clicked()), this, SLOT(addSuperscript()));
+	connect(buttonSuperscript, &QPushButton::clicked, this, &TextFormatButtons::addSuperscript);
 
 	if (buttons == Equation || buttons == TexLegend){
 		QPushButton *buttonFraction = new QPushButton(QPixmap(":/fraction.png"), QString());
@@ -89,14 +89,14 @@ void TextFormatButtons::init(Buttons buttons)
 		buttonFraction->setFixedHeight(btnSize);
 		buttonFraction->setFont(font);
 		layout->addWidget(buttonFraction);
-		connect(buttonFraction, SIGNAL(clicked()), this, SLOT(addFraction()));
+		connect(buttonFraction, &QPushButton::clicked, this, &TextFormatButtons::addFraction);
 
 		QPushButton *buttonSquareRoot = new QPushButton(QPixmap(":/square_root.png"), QString());
 		buttonSquareRoot->setFixedWidth(btnSize);
 		buttonSquareRoot->setFixedHeight(btnSize);
 		buttonSquareRoot->setFont(font);
 		layout->addWidget(buttonSquareRoot);
-		connect(buttonSquareRoot, SIGNAL(clicked()), this, SLOT(addSquareRoot()));
+		connect(buttonSquareRoot, &QPushButton::clicked, this, &TextFormatButtons::addSquareRoot);
 	}
 
 	QPushButton *buttonLowerGreek = new QPushButton(QString(QChar(0x3B1)));
@@ -104,28 +104,28 @@ void TextFormatButtons::init(Buttons buttons)
 	buttonLowerGreek->setFixedWidth(btnSize);
 	buttonLowerGreek->setFixedHeight(btnSize);
 	layout->addWidget(buttonLowerGreek);
-	connect( buttonLowerGreek, SIGNAL(clicked()), this, SLOT(showLowerGreek()));
+	connect(buttonLowerGreek, &QPushButton::clicked, this, &TextFormatButtons::showLowerGreek);
 
 	QPushButton *buttonUpperGreek = new QPushButton(QString(QChar(0x393)));
 	buttonUpperGreek->setFont(font);
 	buttonUpperGreek->setFixedWidth(btnSize);
 	buttonUpperGreek->setFixedHeight(btnSize);
 	layout->addWidget(buttonUpperGreek);
-	connect( buttonUpperGreek, SIGNAL(clicked()), this, SLOT(showUpperGreek()));
+	connect(buttonUpperGreek, &QPushButton::clicked, this, &TextFormatButtons::showUpperGreek);
 
 	QPushButton *buttonArrowSymbols = new QPushButton(QString(QChar(0x2192)));
 	buttonArrowSymbols->setFont(font);
 	buttonArrowSymbols->setFixedWidth(btnSize);
 	buttonArrowSymbols->setFixedHeight(btnSize);
 	layout->addWidget(buttonArrowSymbols);
-	connect( buttonArrowSymbols, SIGNAL(clicked()), this, SLOT(showArrowSymbols()));
+	connect(buttonArrowSymbols, &QPushButton::clicked, this, &TextFormatButtons::showArrowSymbols);
 
 	QPushButton *buttonMathSymbols = new QPushButton(QString(QChar(0x222B)));
 	buttonMathSymbols->setFont(font);
 	buttonMathSymbols->setFixedWidth(btnSize);
 	buttonMathSymbols->setFixedHeight(btnSize);
 	layout->addWidget(buttonMathSymbols);
-	connect( buttonMathSymbols, SIGNAL(clicked()), this, SLOT(showMathSymbols()));
+	connect(buttonMathSymbols, &QPushButton::clicked, this, &TextFormatButtons::showMathSymbols);
 
 	if (buttons != Plot3D && buttons != Equation && buttons != TexLegend){
 		font = this->font();
@@ -136,7 +136,7 @@ void TextFormatButtons::init(Buttons buttons)
 		buttonBold->setFixedWidth(btnSize);
 		buttonBold->setFixedHeight(btnSize);
 		layout->addWidget(buttonBold);
-		connect( buttonBold, SIGNAL(clicked()), this, SLOT(addBold()));
+		connect(buttonBold, &QPushButton::clicked, this, &TextFormatButtons::addBold);
 
 		font = this->font();
 		font.setItalic(true);
@@ -146,7 +146,7 @@ void TextFormatButtons::init(Buttons buttons)
 		buttonItalics->setFixedWidth(btnSize);
 		buttonItalics->setFixedHeight(btnSize);
 		layout->addWidget(buttonItalics);
-		connect( buttonItalics, SIGNAL(clicked()), this, SLOT(addItalics()));
+		connect(buttonItalics, &QPushButton::clicked, this, &TextFormatButtons::addItalics);
 
 		font = this->font();
 		font.setUnderline(true);
@@ -157,7 +157,7 @@ void TextFormatButtons::init(Buttons buttons)
 		buttonUnderline->setFixedHeight(btnSize);
 		layout->addWidget(buttonUnderline);
    		layout->addStretch();
-		connect( buttonUnderline, SIGNAL(clicked()), this, SLOT(addUnderline()));
+		connect(buttonUnderline, &QPushButton::clicked, this, &TextFormatButtons::addUnderline);
 	} else
 		layout->addStretch();
 }
@@ -169,7 +169,7 @@ void TextFormatButtons::showLowerGreek()
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
 	greekLetters->setFont(f);
-	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
+	connect(greekLetters, &SymbolDialog::addLetter, this, &TextFormatButtons::addSymbol);
 	greekLetters->show();
 	greekLetters->setFocus();
 }
@@ -181,7 +181,7 @@ void TextFormatButtons::showUpperGreek()
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
 	greekLetters->setFont(f);
-	connect(greekLetters, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
+	connect(greekLetters, &SymbolDialog::addLetter, this, &TextFormatButtons::addSymbol);
 	greekLetters->show();
 	greekLetters->setFocus();
 }
@@ -197,7 +197,7 @@ void TextFormatButtons::showMathSymbols()
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
 	mathSymbols->setFont(f);
-	connect(mathSymbols, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
+	connect(mathSymbols, &SymbolDialog::addLetter, this, &TextFormatButtons::addSymbol);
 	mathSymbols->show();
 	mathSymbols->setFocus();
 }
@@ -214,7 +214,7 @@ void TextFormatButtons::showArrowSymbols()
 	QFont f = connectedTextEdit->font();
 	f.setPointSize(12);
 	arrowSymbols->setFont(f);
-	connect(arrowSymbols, SIGNAL(addLetter(const QString&)), this, SLOT(addSymbol(const QString&)));
+	connect(arrowSymbols, &SymbolDialog::addLetter, this, &TextFormatButtons::addSymbol);
 	arrowSymbols->show();
 	arrowSymbols->setFocus();
 }

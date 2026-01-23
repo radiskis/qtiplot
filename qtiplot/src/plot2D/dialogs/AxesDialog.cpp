@@ -301,7 +301,7 @@ void AxesDialog::initScalesPage()
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
 
 	connect(btnInvert, &QCheckBox::clicked, this, [this](bool){ updatePlot(); });
-	connect(axesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateScale()));
+	connect(axesList, &QListWidget::currentRowChanged, this, &AxesDialog::updateScale);
 	connect(boxScaleType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateMinorTicksList);
 	connect(btnStep, &QRadioButton::clicked, this, &AxesDialog::stepEnabled);
 	connect(btnMajor, &QRadioButton::clicked, this, &AxesDialog::stepDisabled);
@@ -420,13 +420,13 @@ void AxesDialog::initGridPage()
 	generalDialog->addTab( gridPage, tr( "Grid" ) );
 
 	//grid page slot connections
-	connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridSettings(int)));
+	connect(axesGridList, &QListWidget::currentRowChanged, this, &AxesDialog::showGridSettings);
 
 	connect(boxMajorGrid, &QCheckBox::toggled, this, &AxesDialog::majorGridEnabled);
 	connect(boxMinorGrid, &QCheckBox::toggled, this, &AxesDialog::minorGridEnabled);
 	connect(boxAntialiseGrid, &QCheckBox::toggled, this, &AxesDialog::updateGrid);
-	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
-	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
+	connect(boxColorMajor, &ColorButton::colorChanged, this, &AxesDialog::updateGrid);
+	connect(boxColorMinor, &ColorButton::colorChanged, this, &AxesDialog::updateGrid);
 	connect(boxTypeMajor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
 	connect(boxTypeMinor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
 	connect(boxWidthMajor, &DoubleSpinBox::valueChanged, this, [this](double){ updateGrid(); });
@@ -677,8 +677,8 @@ void AxesDialog::initAxesPage()
 
 	generalDialog->addTab(axesPage, tr("Axis"));
 
-	connect(axesTitlesList, SIGNAL(currentRowChanged(int)), this, SLOT(showAxisSettings(int)));
-	connect(boxShowLabels, SIGNAL(clicked(bool)), this, SLOT(updateTickLabelsList(bool)));
+	connect(axesTitlesList, &QListWidget::currentRowChanged, this, &AxesDialog::showAxisSettings);
+	connect(boxShowLabels, &QGroupBox::clicked, this, &AxesDialog::updateTickLabelsList);
 
 	connect(boxAxisColor, &ColorButton::colorChanged, this, [this](){ updatePlot(); });
 	connect(boxAxisNumColor, &ColorButton::colorChanged, this, [this](){ updatePlot(); });

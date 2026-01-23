@@ -62,15 +62,15 @@ ColorMapEditor::ColorMapEditor(const QLocale& locale, int precision, QWidget* pa
 	table->setMinimumHeight(6*table->horizontalHeader()->height() + 2);
 	table->installEventFilter(this);
 
-	connect(table, SIGNAL(cellClicked (int, int)), this, SLOT(showColorDialog(int, int)));
+	connect(table, &QTableWidget::cellClicked, this, &ColorMapEditor::showColorDialog);
 
 	insertBtn = new QPushButton(tr("&Insert"));
 	insertBtn->setEnabled(false);
-	connect(insertBtn, SIGNAL(clicked()), this, SLOT(insertLevel()));
+	connect(insertBtn, &QPushButton::clicked, this, &ColorMapEditor::insertLevel);
 
 	deleteBtn = new QPushButton(tr("&Delete"));
 	deleteBtn->setEnabled(false);
-	connect(deleteBtn, SIGNAL(clicked()), this, SLOT(deleteLevel()));
+	connect(deleteBtn, &QPushButton::clicked, this, &ColorMapEditor::deleteLevel);
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->addWidget(insertBtn);
@@ -79,7 +79,7 @@ ColorMapEditor::ColorMapEditor(const QLocale& locale, int precision, QWidget* pa
 
 	scaleColorsBox = new QCheckBox(tr("&Scale Colors"));
 	scaleColorsBox->setChecked(true);
-	connect(scaleColorsBox, SIGNAL(toggled(bool)), this, SLOT(setScaledColors(bool)));
+	connect(scaleColorsBox, &QCheckBox::toggled, this, &ColorMapEditor::setScaledColors);
 
 	QVBoxLayout* vl = new QVBoxLayout(this);
 	vl->setSpacing(0);
@@ -139,17 +139,17 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 			sb->setPrefix("<= ");
 			sb->setDisabled(true);
 		} else if (i == 1)
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateLowerRangeLimit(double)));
+			connect(sb, &DoubleSpinBox::valueChanged, this, &ColorMapEditor::updateLowerRangeLimit);
 		else if (i == rows - 1){
 			sb->setPrefix(">= ");
-			connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateUpperRangeLimit(double)));
+			connect(sb, &DoubleSpinBox::valueChanged, this, &ColorMapEditor::updateUpperRangeLimit);
 		} else
 			sb->setRange(min_val, max_val);
 
 		sb->setValue(min_val + colors[i]*width);
 
-		connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateColorMap()));
-		connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
+		connect(sb, &DoubleSpinBox::valueChanged, this, &ColorMapEditor::updateColorMap);
+		connect(sb, &DoubleSpinBox::activated, this, &ColorMapEditor::spinBoxActivated);
 		table->setCellWidget(i, 0, sb);
 
 		QColor c = color_map.color(i);
@@ -237,8 +237,8 @@ void ColorMapEditor::insertLevel()
 	sb->setDecimals(d_precision);
 	sb->setValue(val);
 	sb->setRange(min_val, max_val);
-	connect(sb, SIGNAL(valueChanged(double)), this, SLOT(updateColorMap()));
-	connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
+	connect(sb, &DoubleSpinBox::valueChanged, this, &ColorMapEditor::updateColorMap);
+	connect(sb, &DoubleSpinBox::activated, this, &ColorMapEditor::spinBoxActivated);
     table->setCellWidget(row, 0, sb);
 
 	QTableWidgetItem *it = new QTableWidgetItem(c.name());

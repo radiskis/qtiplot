@@ -52,9 +52,9 @@ void Note::init(ScriptingEnv * /*env*/)
 	d_tab_widget->setTabsClosable(true);
 	d_tab_widget->setDocumentMode(true);
 
-	connect(d_tab_widget, SIGNAL(tabCloseRequested(int)), this, SLOT(removeTab(int)));
+	connect(d_tab_widget, &QTabWidget::tabCloseRequested, this, &Note::removeTab);
 #endif
-	connect(d_tab_widget, SIGNAL(currentChanged(int)), this, SLOT(notifyChanges()));
+	connect(d_tab_widget, &QTabWidget::currentChanged, this, &Note::notifyChanges);
 	connect(d_tab_widget, &QTabWidget::currentChanged, this, &Note::currentEditorChanged);
 
 	QPushButton *btnAdd = new QPushButton("+");

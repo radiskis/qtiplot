@@ -79,13 +79,12 @@ OpenProjectDialog::OpenProjectDialog(QWidget *parent, bool extended, Qt::WindowF
 	setExtensionWidget(advanced_options);
 
 #if QT_VERSION >= 0x040300
-	connect(this, SIGNAL(filterSelected ( const QString & )),
-			this, SLOT(updateAdvancedOptions ( const QString & )));
+	connect(this, &QFileDialog::filterSelected, this, &OpenProjectDialog::updateAdvancedOptions);
 #else
 	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
 	if (combo_boxes.size() >= 2)
-		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
-				this, SLOT(updateAdvancedOptions ( const QString & )));
+		connect(combo_boxes[1], &QComboBox::currentIndexChanged,
+				this, &OpenProjectDialog::updateAdvancedOptions);
 #endif
 
 	if (app){

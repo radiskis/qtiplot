@@ -85,7 +85,7 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	QLocale::NumberOptions groupSep = app->d_ASCII_import_locale.numberOptions();
 	d_omit_thousands_sep->setChecked(groupSep & QLocale::OmitGroupSeparator);
 
-	connect(d_import_mode, SIGNAL(currentIndexChanged(int)), this, SLOT(updateImportMode(int)));
+	connect(d_import_mode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportASCIIDialog::updateImportMode);
 	if (app->d_ASCII_import_mode < d_import_mode->count())
 		d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 
@@ -106,11 +106,11 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
     connect(d_simplify_spaces, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
     connect(d_ignored_lines, QOverload<int>::of(&QSpinBox::valueChanged), this, &ImportASCIIDialog::preview);
     connect(d_omit_thousands_sep, &QAbstractButton::clicked, this, &ImportASCIIDialog::preview);
-    connect(d_column_separator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
-    connect(boxDecimalSeparator, SIGNAL(currentIndexChanged(int)), this, SLOT(preview()));
-    connect(d_comment_string, SIGNAL(textChanged(const QString&)), this, SLOT(preview()));
-    connect(this, SIGNAL(currentChanged(const QString&)), this, SLOT(changePreviewFile(const QString&)));
-	connect(this, SIGNAL(filterSelected(const QString &)), this, SLOT(selectFilter(const QString &)));
+    connect(d_column_separator, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<>::of(&ImportASCIIDialog::preview));
+    connect(boxDecimalSeparator, QOverload<int>::of(&QComboBox::currentIndexChanged), this, QOverload<>::of(&ImportASCIIDialog::preview));
+    connect(d_comment_string, &QLineEdit::textChanged, this, QOverload<>::of(&ImportASCIIDialog::preview));
+    connect(this, &QFileDialog::currentChanged, this, &ImportASCIIDialog::changePreviewFile);
+	connect(this, &QFileDialog::filterSelected, this, &ImportASCIIDialog::selectFilter);
 }
 
 void ImportASCIIDialog::initAdvancedOptions()
@@ -171,8 +171,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	d_first_line_role = new QComboBox();
 	d_first_line_role->addItem(tr("Column Names"));
 	d_first_line_role->addItem(tr("Column Comments"));
-	connect(d_first_line_role, SIGNAL(activated(int)), this, SLOT(enableComments()));
-	connect(d_first_line_role, SIGNAL(activated(int)), this, SLOT(preview()));
+	connect(d_first_line_role, QOverload<int>::of(&QComboBox::activated), this, &ImportASCIIDialog::enableComments);
+	connect(d_first_line_role, QOverload<int>::of(&QComboBox::activated), this, QOverload<>::of(&ImportASCIIDialog::preview));
 	renameBox->addWidget(d_first_line_role);
 	advanced_layout->addLayout(renameBox, 0, 2, 1, 2);
 
@@ -213,7 +213,7 @@ void ImportASCIIDialog::initAdvancedOptions()
 	boxEndLine->addItem(tr("LF (Unix)"));
 	boxEndLine->addItem(tr("CRLF (Windows)"));
 	boxEndLine->addItem(tr("CR (Mac)"));
-    connect(boxEndLine, SIGNAL(activated(int)), this, SLOT(preview()));
+    connect(boxEndLine, QOverload<int>::of(&QComboBox::activated), this, QOverload<>::of(&ImportASCIIDialog::preview));
 	advanced_layout->addWidget(boxEndLine, 5, 1);
 
     d_read_only = new QCheckBox(tr("Import as &read-only"));
@@ -279,7 +279,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 			d_preview_table = new PreviewTable(30, 2, this);
 			d_preview_table->setNumericPrecision(app->d_decimal_digits);
 			d_preview_stack->addWidget(d_preview_table);
-			connect(d_preview_table, SIGNAL(modifiedColumnType()), this, SLOT(preview()));
+			connect(d_preview_table, &PreviewTable::modifiedColumnType, this, QOverload<>::of(&ImportASCIIDialog::preview));
 			enableTableOptions(true);
 		break;
 
@@ -300,7 +300,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 				d_preview_table = new PreviewTable(30, ((Table*)w)->numCols(), this);
 				d_preview_table->setNumericPrecision(app->d_decimal_digits);
 				d_preview_stack->addWidget(d_preview_table);
-				connect(d_preview_table, SIGNAL(modifiedColumnType()), this, SLOT(preview()));
+				connect(d_preview_table, &PreviewTable::modifiedColumnType, this, QOverload<>::of(&ImportASCIIDialog::preview));
 				enableTableOptions(true);
 			} else if (w->inherits("Matrix")){
 				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
@@ -608,8 +608,8 @@ PreviewTable::PreviewTable(int numRows, int numCols, QWidget * parent, const cha
 	d_start_col = numCols;
 	setHeader();
 	setMinimumHeight(2*horizontalHeader()->height());
-	connect(horizontalHeader(), SIGNAL(sectionResized(int, int, int)), this, SLOT(setHeader()));
-    connect(horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(onHeaderClicked(int)));
+	connect(horizontalHeader(), &QHeaderView::sectionResized, this, &PreviewTable::setHeader);
+    connect(horizontalHeader(), &QHeaderView::sectionClicked, this, &PreviewTable::onHeaderClicked);
 }
 
 void PreviewTable::importASCII(const QString &fname, const QString &sep, int ignoredLines, bool renameCols,
@@ -964,7 +964,7 @@ void PreviewTable::showColTypeDialog()
 	buttonNext->setMaximumWidth(40);
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));
-	connect(closeBtn, SIGNAL(clicked()), colTypeDialog, SLOT(reject()));
+	connect(closeBtn, &QPushButton::clicked, colTypeDialog, &QDialog::reject);
 
 	QHBoxLayout *hl2 = new QHBoxLayout();
 	hl2->addStretch();
@@ -978,9 +978,9 @@ void PreviewTable::showColTypeDialog()
 
 	updateColumn(d_selected_column);
 
-	connect(typesBox, SIGNAL(currentIndexChanged (int)), this, SLOT(setColumnType(int)));
-	connect(formatBox, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
-	connect(formatBox, SIGNAL(editTextChanged(const QString&)), this, SLOT(setColumnFormat(const QString&)));
+	connect(typesBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PreviewTable::setColumnType);
+	connect(formatBox, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &PreviewTable::setColumnFormat);
+	connect(formatBox, &QComboBox::editTextChanged, this, &PreviewTable::setColumnFormat);
 	connect(buttonPrev, &QAbstractButton::clicked, this, &PreviewTable::prevColumn);
 	connect(buttonNext, &QAbstractButton::clicked, this, &PreviewTable::nextColumn);
 	colTypeDialog->exec();

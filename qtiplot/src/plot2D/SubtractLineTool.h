@@ -45,7 +45,7 @@ class SubtractLineTool : public QObject, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
-		SubtractLineTool(Graph *graph, ApplicationWindow *app, const QObject *status_target, const char *status_slot);
+		SubtractLineTool(Graph *graph, ApplicationWindow *app);
 		virtual ~SubtractLineTool();
 
 		virtual int rtti() const {return PlotToolInterface::Rtti_SubtractLineTool;};

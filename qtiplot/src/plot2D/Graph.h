@@ -706,7 +706,7 @@ class Graph: public QwtPlot
 		 * Therefore, range selection (like zooming) has to be provided in addition to the generic
 		 * tool interface.
 		 */
-		bool enableRangeSelectors(const QObject *status_target=NULL, const char *status_slot="");
+		bool enableRangeSelectors();
 		bool rangeSelectorsEnabled();
 		QPointer<RangeSelectorTool> rangeSelectorTool(){return d_range_selector;};
 		DataCurve *selectedDataCurve();

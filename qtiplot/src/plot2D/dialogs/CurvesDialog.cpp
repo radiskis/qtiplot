@@ -284,9 +284,9 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 
 	   QMenu contextMenu(this);
        if (count > 1)
-	       contextMenu.addAction(tr("&Plot Selection"), this, SLOT(addCurves()));
+	       contextMenu.addAction(tr("&Plot Selection"), this, &CurvesDialog::addCurves);
        else if (count == 1)
-	       contextMenu.addAction(tr("&Plot"), this, SLOT(addCurves()));
+	       contextMenu.addAction(tr("&Plot"), this, &CurvesDialog::addCurves);
 	   contextMenu.exec(QCursor::pos());
     }
 
@@ -297,9 +297,9 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 	   QMenu contextMenu(this);
        QList<QListWidgetItem *> lst = contents->selectedItems();
        if (lst.size() > 1)
-	       contextMenu.addAction(tr("&Delete Selection"), this, SLOT(removeCurves()));
+	       contextMenu.addAction(tr("&Delete Selection"), this, &CurvesDialog::removeCurves);
        else if (lst.size() == 1)
-	       contextMenu.addAction(tr("&Delete Curve"), this, SLOT(removeCurves()));
+	       contextMenu.addAction(tr("&Delete Curve"), this, &CurvesDialog::removeCurves);
 	   contextMenu.exec(QCursor::pos());
     }
 

@@ -50,13 +50,13 @@ LineNumberDisplay::LineNumberDisplay(QTextEdit *te, QWidget *parent)
 	setPalette(palette);
 
 	if (te){
-		connect(this, SIGNAL(selectionChanged()), this, SLOT(updateDocumentSelection()));
+		connect(this, &QTextEdit::selectionChanged, this, &LineNumberDisplay::updateDocumentSelection);
 
-		connect(te->document(), SIGNAL(contentsChanged()), this, SLOT(updateLineNumbers()));
-		connect((QObject *)te->verticalScrollBar(), SIGNAL(valueChanged(int)),
-			(QObject *)verticalScrollBar(), SLOT(setValue(int)));
-        connect(te, SIGNAL(currentCharFormatChanged (const QTextCharFormat &)),
-                this, SLOT(changeCharFormat (const QTextCharFormat &)));
+		connect(te->document(), &QTextDocument::contentsChanged, this, [this](){ updateLineNumbers(); });
+		connect(te->verticalScrollBar(), &QScrollBar::valueChanged,
+			verticalScrollBar(), &QScrollBar::setValue);
+        connect(te, &QTextEdit::currentCharFormatChanged,
+                this, &LineNumberDisplay::changeCharFormat);
 	}
 }
 

@@ -284,7 +284,7 @@ void FitDialog::initFitPage()
     QHBoxLayout *hbox3 = new QHBoxLayout();
 	previewBox = new QCheckBox(tr("&Preview"));
 	previewBox->setChecked(false);
-    connect(previewBox, SIGNAL(clicked(bool)), this, SLOT(showPreview(bool)));
+    connect(previewBox, &QCheckBox::clicked, this, &FitDialog::showPreview);
     hbox3->addWidget(previewBox);
 	hbox3->addStretch();
 	btnDeleteFitCurves = new QPushButton(tr( "&Delete Fit Curves" ));
@@ -395,7 +395,7 @@ void FitDialog::initFitPage()
 	connect(buttonAdvanced, &QAbstractButton::clicked, this, &FitDialog::showAdvancedPage);
     connect(tableNamesBox, QOverload<int>::of(&QComboBox::activated), this, &FitDialog::selectSrcTable);
 
-	connect(boxColor, SIGNAL(colorChanged(const QColor &)), this, SLOT(updatePreviewColor(const QColor &)));
+	connect(boxColor, &QtColorPicker::colorChanged, this, &FitDialog::updatePreviewColor);
 	setFocusProxy(boxFunction);
 }
 
@@ -481,7 +481,7 @@ void FitDialog::initEditPage()
 
 	editBox = new ScriptEdit(((ApplicationWindow *)parent())->scriptingEnv());
 	editBox->enableShortcuts();
-	connect(editBox->document(), SIGNAL(contentsChange(int,int,int)), this, SLOT(guessParameters()));
+	connect(editBox->document(), &QTextDocument::contentsChange, this, &FitDialog::guessParameters);
 	editBox->setFocus();
 
 	boxErrorMsg = new QLabel();
@@ -569,8 +569,8 @@ void FitDialog::initEditPage()
 
 	connect(buttonPlugins, &QAbstractButton::clicked, this, &FitDialog::chooseFolder);
     connect(buttonClear, &QAbstractButton::clicked, this, &FitDialog::resetFunction);
-	connect( categoryBox, SIGNAL(currentRowChanged (int)), this, SLOT(showFunctionsList(int)));
-	connect( funcBox, SIGNAL(currentRowChanged(int)), this, SLOT(showExpression(int)));
+	connect( categoryBox, &QListWidget::currentRowChanged, this, &FitDialog::showFunctionsList);
+	connect( funcBox, &QListWidget::currentRowChanged, this, &FitDialog::showExpression);
 	connect(boxUseBuiltIn, &QAbstractButton::toggled, this, &FitDialog::setFunction);
 	connect(btnAddName, &QAbstractButton::clicked, this, &FitDialog::addFunctionName);
 	connect(btnAddTxt, &QAbstractButton::clicked, this, &FitDialog::addFunction);
@@ -842,7 +842,7 @@ void FitDialog::setGraph(Graph *g)
 
 	activateCurve(boxCurve->currentText());
 
-	connect (d_graph, SIGNAL(closedGraph()), this, SLOT(close()));
+	connect(d_graph, &Graph::closedGraph, this, &FitDialog::close);
 	connect(d_graph, &Graph::dataRangeChanged, this, &FitDialog::changeDataRange);
 };
 

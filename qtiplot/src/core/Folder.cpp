@@ -303,10 +303,10 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
     setDragEnabled(true);
 
 	if (parent){
-		connect(this, SIGNAL(itemCollapsed(QTreeWidgetItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
-		connect(this, SIGNAL(itemExpanded(QTreeWidgetItem *)), (ApplicationWindow *)parent, SLOT(modifiedProject()));
-		connect(this, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(expandedItem(QTreeWidgetItem *)));
-        connect(this, SIGNAL(itemChanged(QTreeWidgetItem *, int)), this, SLOT(onItemChanged(QTreeWidgetItem *, int)));
+		connect(this, &FolderListView::itemCollapsed, (ApplicationWindow *)parent, [parent](){ ((ApplicationWindow *)parent)->modifiedProject(); });
+		connect(this, &FolderListView::itemExpanded, (ApplicationWindow *)parent, [parent](){ ((ApplicationWindow *)parent)->modifiedProject(); });
+		connect(this, &FolderListView::itemExpanded, this, &FolderListView::expandedItem);
+        connect(this, &FolderListView::itemChanged, this, &FolderListView::onItemChanged);
 	}
 }
 

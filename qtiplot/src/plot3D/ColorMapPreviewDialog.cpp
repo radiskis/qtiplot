@@ -57,8 +57,7 @@ ColorMapPreviewDialog::ColorMapPreviewDialog(QWidget *parent, Qt::WindowFlags fl
 	advanced_layout->addWidget(d_preview_label);
 	
 	setExtensionWidget(advanced_options);
-	connect(this, SIGNAL(currentChanged(const QString&)), 
-			this, SLOT(updatePreview(const QString&)));
+	connect(this, &QFileDialog::currentChanged, this, &ColorMapPreviewDialog::updatePreview);
 }
 
 void ColorMapPreviewDialog::updatePreview(const QString& fileName)

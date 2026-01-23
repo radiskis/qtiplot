@@ -77,15 +77,13 @@ class PlotToolInterface
         Rtti_PlotUserTool = 1000
     };
 
-		PlotToolInterface(Graph *graph, const QObject *status_target = NULL, const char *status_slot = "") {d_status_target = status_target; d_status_slot = status_slot; d_graph = graph;};
+		PlotToolInterface(Graph *graph) {d_graph = graph;};
 		virtual ~PlotToolInterface() {};
 
         virtual int rtti() const { return Rtti_PlotTool;};
 
 	protected:
 		Graph *d_graph;
-		const QObject *d_status_target;
-		const char *d_status_slot;
 };
 
 #endif // ifndef PLOT_TOOL_INTERFACE_H

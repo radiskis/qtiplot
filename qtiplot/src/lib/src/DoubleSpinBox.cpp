@@ -50,7 +50,7 @@ d_prefix(QString())
 	setFocusPolicy(Qt::StrongFocus);
 	lineEdit()->setText(locale().toString(d_value, d_format, d_prec));
 	setWrapping(false);
-	connect(this, SIGNAL(editingFinished()), this, SLOT(interpretText()));
+	connect(this, &QAbstractSpinBox::editingFinished, this, &DoubleSpinBox::interpretText);
 }
 
 void DoubleSpinBox::setSingleStep(double val)
@@ -201,7 +201,7 @@ d_type(type)
 
 	setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(d_spin_box);
-	connect(d_checkbox, SIGNAL(toggled(bool)), d_spin_box, SLOT(setEnabled(bool)));
+	connect(d_checkbox, &QCheckBox::toggled, d_spin_box, &DoubleSpinBox::setEnabled);
 }
 
 double RangeLimitBox::value()

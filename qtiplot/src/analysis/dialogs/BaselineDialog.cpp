@@ -408,7 +408,7 @@ void BaselineDialog::setGraph(Graph *g)
 		boxInputName->setCurrentIndex(boxInputName->findText(g->curveRange(g->rangeSelectorTool()->selectedCurve())));
 
 	connect(graph, &QObject::destroyed, this, &BaselineDialog::close);
-	connect (graph, SIGNAL(modifiedGraph()), this, SLOT(updateGraphCurves()));
+	connect(graph, &Graph::modifiedGraph, this, &BaselineDialog::updateGraphCurves);
 }
 
 void BaselineDialog::updateGraphCurves()

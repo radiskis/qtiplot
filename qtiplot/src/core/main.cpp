@@ -140,6 +140,6 @@ int main( int argc, char ** argv )
 //	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
 
 	QtiPlotApplication app( argc, argv );
-	app.connect( &app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()) );
+	QObject::connect(&app, &QtiPlotApplication::lastWindowClosed, &app, &QtiPlotApplication::quit);
 	return app.exec();
 }

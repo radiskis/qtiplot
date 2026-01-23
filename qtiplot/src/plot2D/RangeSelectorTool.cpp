@@ -47,7 +47,7 @@
 #include <QCheckBox>
 #include <QDialogButtonBox>
 
-RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target, const char *status_slot)
+RangeSelectorTool::RangeSelectorTool(Graph *graph)
 	: QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph)
 {
@@ -93,8 +93,6 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph, const QObject *status_target,
 	d_graph->canvas()->setFocus();
 	d_graph->replot();
 
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	emit statusText(tr("Click or use Ctrl+arrow key to select range (arrows select active cursor)!"));
 }
 

@@ -48,7 +48,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 
-DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, const QObject *status_target, const char *status_slot) :
+DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode) :
 	QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph),
 	d_app(app),
@@ -69,8 +69,6 @@ DataPickerTool::DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode, 
 		d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 	}
 
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	switch(d_mode) {
 		case Display:
 			emit statusText(tr("Click on plot or move cursor to display coordinates!"));
@@ -601,7 +599,7 @@ int DataPickerTool::findClosestPoint(QwtPlotCurve *c, double x, bool up)
 }
 
 BaselineTool::BaselineTool(QwtPlotCurve *c, Graph *graph, ApplicationWindow *app)
-	: DataPickerTool(graph, app, DataPickerTool::Move, app->infoLineEdit(), SLOT(setText(const QString&)))
+	: DataPickerTool(graph, app, DataPickerTool::Move)
 {
 	setSelectedCurve(c);
 }

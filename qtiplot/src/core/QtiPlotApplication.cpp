@@ -151,10 +151,10 @@ void QtiPlotApplication::updateDockMenu()
 		a->setData(QVariant(d_windows.indexOf(w)));
 	}
 	dockMenu->addSeparator();
-	connect(dockMenu, SIGNAL(triggered(QAction *)), this, SLOT(activateWindow(QAction *)));
+	connect(dockMenu, &QMenu::triggered, this, QOverload<QAction *>::of(&QtiPlotApplication::activateWindow));
 #endif
 
-	dockMenu->addAction(QObject::tr("New Window"), this, SLOT(newWindow()));
+	dockMenu->addAction(QObject::tr("New Window"), this, &QtiPlotApplication::newWindow);
 
 	qt_mac_set_dock_menu(dockMenu);
 }

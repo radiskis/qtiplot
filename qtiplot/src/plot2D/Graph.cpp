@@ -270,7 +270,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	connect(scalePicker, &ScalePicker::axisTitleRightClicked, this, &Graph::showAxisTitleMenu);
 	connect(scalePicker, &ScalePicker::axisRightClicked, this, &Graph::showAxisContextMenu);
 
-	connect(d_zoomer[0], &QwtPlotZoomer::zoomed, this, &Graph::zoomed);
+	connect(d_zoomer[0], SIGNAL(zoomed(const QRectF &)), this, SLOT(zoomed(const QRectF &)));
 }
 
 MultiLayer* Graph::multiLayer() const
@@ -4207,7 +4207,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				disconnect(scale, &QwtScaleWidget::scaleDivChanged, this, nullptr);
+				disconnect(scale, SIGNAL(scaleDivChanged()), this, 0);
 		}
 
 		cnvs->setCursor(Qt::ArrowCursor);
@@ -4794,10 +4794,10 @@ void Graph::showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumn
 void Graph::showTitleContextMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.addAction(QPixmap(":/cut.png"), tr("Cu&t"),this, SLOT(cutTitle()));
-	titleMenu.addAction(QPixmap(":/copy.png"), tr("&Copy"),this, SLOT(copyTitle()));
-	titleMenu.addAction(tr("C&lear"),this, SLOT(clearTitle()));
-	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeTitle()));
+	titleMenu.addAction(QPixmap(":/cut.png"), tr("Cu&t"), this, &Graph::cutTitle);
+	titleMenu.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, &Graph::copyTitle);
+	titleMenu.addAction(tr("C&lear"), this, &Graph::clearTitle);
+	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"), this, &Graph::removeTitle);
 	titleMenu.addSeparator();
 	titleMenu.addAction(tr("&Properties..."), this, &Graph::viewTitleDialog);
 	titleMenu.exec(QCursor::pos());
@@ -4847,10 +4847,10 @@ void Graph::copyAxisTitle()
 void Graph::showAxisTitleMenu()
 {
 	QMenu titleMenu(this);
-	titleMenu.addAction(QPixmap(":/cut.png"), tr("Cu&t"), this, SLOT(cutAxisTitle()));
-	titleMenu.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, SLOT(copyAxisTitle()));
-	titleMenu.addAction(tr("C&lear"),this, SLOT(clearAxisTitle()));
-	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"),this, SLOT(removeAxisTitle()));
+	titleMenu.addAction(QPixmap(":/cut.png"), tr("Cu&t"), this, &Graph::cutAxisTitle);
+	titleMenu.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, &Graph::copyAxisTitle);
+	titleMenu.addAction(tr("C&lear"), this, &Graph::clearAxisTitle);
+	titleMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"), this, &Graph::removeAxisTitle);
 	titleMenu.addSeparator();
 	titleMenu.addAction(tr("&Properties..."), this, &Graph::showAxisTitleDialog);
 	titleMenu.exec(QCursor::pos());
@@ -4859,11 +4859,11 @@ void Graph::showAxisTitleMenu()
 void Graph::showAxisContextMenu(int axis)
 {
 	QMenu menu(this);
-	menu.addAction(QPixmap(":/unzoom.png"), tr("&Rescale to show all"), this, SLOT(setAutoScale()), tr("Ctrl+Shift+R"));
+	menu.addAction(QPixmap(":/unzoom.png"), tr("&Rescale to show all"), this, &Graph::setAutoScale, tr("Ctrl+Shift+R"));
 	menu.addSeparator();
-	menu.addAction(tr("&Hide axis"), this, SLOT(hideSelectedAxis()));
+	menu.addAction(tr("&Hide axis"), this, &Graph::hideSelectedAxis);
 
-	QAction *gridsAction = menu.addAction(tr("&Show grids"), this, SLOT(showGrids()));
+	QAction *gridsAction = menu.addAction(tr("&Show grids"), this, &Graph::showGrids);
 	gridsAction->setCheckable(true);
 	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale){
 		if (grid()->yEnabled())
@@ -4874,8 +4874,8 @@ void Graph::showAxisContextMenu(int axis)
 	}
 
 	menu.addSeparator();
-	menu.addAction(tr("&Scale..."), this, SLOT(showScaleDialog()));
-	menu.addAction(tr("&Properties..."), this, SLOT(showAxisDialog()));
+	menu.addAction(tr("&Scale..."), this, &Graph::showScaleDialog);
+	menu.addAction(tr("&Properties..."), this, QOverload<>::of(&Graph::showAxisDialog));
 	menu.exec(QCursor::pos());
 }
 
@@ -5362,10 +5362,10 @@ bool Graph::hasActiveTool()
 	return false;
 }
 
-bool Graph::enableRangeSelectors(const QObject *status_target, const char *status_slot)
+bool Graph::enableRangeSelectors()
 {
 	if (!d_range_selector){
-		d_range_selector = new RangeSelectorTool(this, status_target, status_slot);
+		d_range_selector = new RangeSelectorTool(this);
 		//setActiveTool(d_range_selector);
 		connect(d_range_selector, &RangeSelectorTool::changed, this, &Graph::dataRangeChanged);
 	}

@@ -42,7 +42,7 @@
 #include <qwt_scale_widget.h>
 #include <qwt_text_label.h>
 
-AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, const QObject *status_target, const char *status_slot)
+AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action)
 	: QObject(graph),
 	PlotToolInterface(graph),
 	d_action(action),
@@ -73,8 +73,6 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action, con
             scale->installEventFilter(this);
     }
 
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	emit statusText(tr("Click on plot to choose the position of the new object!"));
 }
 

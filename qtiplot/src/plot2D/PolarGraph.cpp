@@ -109,7 +109,7 @@ void PolarGraph::showSettingsDialog()
 void PolarGraph::contextMenuEvent(QContextMenuEvent *e)
 {
     QMenu menu(this);
-    menu.addAction(tr("Options..."), this, SLOT(showSettingsDialog()));
+    menu.addAction(tr("Options..."), this, &PolarGraph::showSettingsDialog);
     menu.exec(e->globalPos());
 }
 

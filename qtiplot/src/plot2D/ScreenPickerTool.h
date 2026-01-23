@@ -56,7 +56,7 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 	Q_OBJECT
 	public:
 		enum MoveRestriction { NoRestriction, Vertical, Horizontal };
-		ScreenPickerTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
+		ScreenPickerTool(Graph *graph);
 		virtual ~ScreenPickerTool();
 		virtual void append(const QPointF &pos);
 		void setMoveRestriction(ScreenPickerTool::MoveRestriction r){d_move_restriction = r;};
@@ -84,7 +84,7 @@ class DrawPointTool : public ScreenPickerTool
 {
 	Q_OBJECT
 	public:
-		DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
+		DrawPointTool(ApplicationWindow *app, Graph *graph);
 		virtual int rtti() const { return Rtti_DrawDataPoints;};
 		void setDataCurve(DataCurve *);
 

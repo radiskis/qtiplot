@@ -1468,7 +1468,7 @@ void ApplicationWindow::initMainMenu()
     plotDataMenu = new QMenu(this);
 	plotDataMenu->setObjectName("plotDataMenu");
 	
-    connect(plotDataMenu, SIGNAL(aboutToShow()), this, SLOT(plotDataMenuAboutToShow()));
+    connect(plotDataMenu, &QMenu::aboutToShow, this, &ApplicationWindow::plotDataMenuAboutToShow);
     menuBar()->addMenu(plotDataMenu);
 
 	normMenu = new QMenu(this);
@@ -1479,12 +1479,12 @@ void ApplicationWindow::initMainMenu()
 
 	analysisMenu = new QMenu(this);
 	analysisMenu->setObjectName("analysisMenu");
-    connect(analysisMenu, SIGNAL(aboutToShow()), this, SLOT(analysisMenuAboutToShow()));
+    connect(analysisMenu, &QMenu::aboutToShow, this, &ApplicationWindow::analysisMenuAboutToShow);
     menuBar()->addMenu(analysisMenu);
 
 	tableMenu = new QMenu(this);
 	tableMenu->setObjectName("tableMenu");
-    connect(tableMenu, SIGNAL(aboutToShow()), this, SLOT(tableMenuAboutToShow()));
+    connect(tableMenu, &QMenu::aboutToShow, this, &ApplicationWindow::tableMenuAboutToShow);
     menuBar()->addMenu(tableMenu);
 
 	smoothMenu = new QMenu(this);
@@ -1508,9 +1508,9 @@ void ApplicationWindow::initMainMenu()
 	
 	foldersMenu = new QMenu(this);
 
-	connect(windowsMenu, SIGNAL(aboutToShow()), this, SLOT(windowsMenuAboutToShow()));
-	connect(windowsMenu, SIGNAL(triggered(QAction*)), this, SLOT(windowsMenuTriggered(QAction*)));
-	connect(foldersMenu, SIGNAL(triggered(QAction*)), this, SLOT(foldersMenuTriggered(QAction*)));
+	connect(windowsMenu, &QMenu::aboutToShow, this, &ApplicationWindow::windowsMenuAboutToShow);
+	connect(windowsMenu, &QMenu::triggered, this, &ApplicationWindow::windowsMenuTriggered);
+	connect(foldersMenu, &QMenu::triggered, this, &ApplicationWindow::foldersMenuTriggered);
 	menuBar()->addMenu(windowsMenu);
 	
 
@@ -1542,7 +1542,7 @@ void ApplicationWindow::initMainMenu()
 	menus << tableMenu << newMenu << exportPlotMenu << importMenu;
 
 	foreach (QMenu *m, menus)
-    	connect(m, SIGNAL(triggered(QAction *)), this, SLOT(performCustomAction(QAction *)));
+    	connect(m, &QMenu::triggered, this, &ApplicationWindow::performCustomAction);
 
 	disableActions();
 }
@@ -1563,8 +1563,8 @@ void ApplicationWindow::tableMenuAboutToShow()
 	setAsMenu->addAction(actionSetXErrCol);
 	setAsMenu->addAction(actionSetYErrCol);
 	setAsMenu->addSeparator();
-	setAsMenu->addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
-	setAsMenu->addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
+	setAsMenu->addAction(tr("&Read-only"), this, &ApplicationWindow::setReadOnlyColumns);
+	setAsMenu->addAction(tr("Read/&Write"), this, &ApplicationWindow::setReadWriteColumns);
 
 	tableMenu->addAction(actionShowColumnOptionsDialog);
 	tableMenu->addSeparator();
@@ -2919,7 +2919,7 @@ MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const Mul
 		g->setAlignPolicy(align);
 		g->setSpacing(0, 0);
 		g->setCommonLayerAxes();
-		connect(layersList.last(), SIGNAL(updatedLayout(Graph *)), g, SLOT(updateLayersLayout(Graph *)));
+		connect(layersList.last(), &Graph::updatedLayout, g, &MultiLayer::updateLayersLayout);
 	} else {
 		g->arrangeLayers(false, true);
 		foreach(Graph *ag, layersList){
@@ -3233,13 +3233,13 @@ Note* ApplicationWindow::newNote(const QString& caption)
 
 	addListViewItem(m);
 
-	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
-	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
-	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
-	connect(m, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
-	connect(m, SIGNAL(dirPathChanged(const QString&)), this, SLOT(scriptsDirPathChanged(const QString&)));
-	connect(m, SIGNAL(currentEditorChanged()), this, SLOT(scriptingMenuAboutToShow()));
+	connect(m, &MdiSubWindow::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect(m, &MdiSubWindow::resizedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect(m, &MdiSubWindow::closedWindow, this, &ApplicationWindow::closeWindow);
+	connect(m, &MdiSubWindow::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
+	connect(m, &MdiSubWindow::statusChanged, this, &ApplicationWindow::updateWindowStatus);
+	connect(m, &Note::dirPathChanged, this, &ApplicationWindow::scriptsDirPathChanged);
+	connect(m, &Note::currentEditorChanged, this, &ApplicationWindow::scriptingMenuAboutToShow);
 
 	m->showNormal();
 	return m;
@@ -3254,8 +3254,8 @@ void ApplicationWindow::connectScriptEditor(ScriptEdit *editor)
 	actionUndo->setEnabled(doc->isUndoAvailable());
 	actionRedo->setEnabled(doc->isRedoAvailable());
 
-	connect(editor, SIGNAL(undoAvailable(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(editor, SIGNAL(redoAvailable(bool)), actionRedo, SLOT(setEnabled(bool)));
+	connect(editor, &ScriptEdit::undoAvailable, actionUndo, &QAction::setEnabled);
+	connect(editor, &ScriptEdit::redoAvailable, actionRedo, &QAction::setEnabled);
 }
 
 /*
@@ -3561,16 +3561,16 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 	addListViewItem(m);
 
 	QUndoStack *stack = m->undoStack();
-	connect(stack, SIGNAL(canUndoChanged(bool)), actionUndo, SLOT(setEnabled(bool)));
-	connect(stack, SIGNAL(canRedoChanged(bool)), actionRedo, SLOT(setEnabled(bool)));
-	connect(m, SIGNAL(modifiedWindow(MdiSubWindow*)), this, SLOT(modifiedProject(MdiSubWindow*)));
-	connect(m, SIGNAL(modifiedLabel(Matrix*)), this, SLOT(updateMatrixPlotLabels(Matrix*)));
-	connect(m, SIGNAL(modifiedData(Matrix*)), this, SLOT(updateMatrixPlots(Matrix *)));
-	connect(m, SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect(m, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
-	connect(m, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
-	connect(m, SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
-	connect(m, SIGNAL(showContextMenu()), this, SLOT(showWindowContextMenu()));
+	connect(stack, &QUndoStack::canUndoChanged, actionUndo, &QAction::setEnabled);
+	connect(stack, &QUndoStack::canRedoChanged, actionRedo, &QAction::setEnabled);
+	connect(m, &Matrix::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect(m, &Matrix::modifiedLabel, this, &ApplicationWindow::updateMatrixPlotLabels);
+	connect(m, &Matrix::modifiedData, this, &ApplicationWindow::updateMatrixPlots);
+	connect(m, &Matrix::resizedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect(m, &Matrix::closedWindow, this, &ApplicationWindow::closeWindow);
+	connect(m, &Matrix::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
+	connect(m, &Matrix::statusChanged, this, &ApplicationWindow::updateWindowStatus);
+	connect(m, &Matrix::showContextMenu, this, &ApplicationWindow::showWindowContextMenu);
 
 	emit modified();
 }
@@ -6588,11 +6588,11 @@ void ApplicationWindow::exportPresentationODF()
 	QHBoxLayout *bl = new QHBoxLayout();
 	bl->addStretch();
 	QPushButton *okBtn = new QPushButton(tr("&Save"));
-	connect(okBtn, SIGNAL(clicked()), previewDlg, SLOT(accept()));
+	connect(okBtn, &QPushButton::clicked, previewDlg, &QDialog::accept);
 	bl->addWidget(okBtn);
 
 	QPushButton *cancelBtn = new QPushButton(tr("&Cancel"));
-	connect(cancelBtn, SIGNAL(clicked()), previewDlg, SLOT(reject()));
+	connect(cancelBtn, &QPushButton::clicked, previewDlg, &QDialog::reject);
 	bl->addWidget(cancelBtn);
 	bl->addStretch();
 
@@ -7766,26 +7766,26 @@ void ApplicationWindow::showColMenu(int c)
 		contextMenu.addMenu(&plot);
 		contextMenu.addSeparator();
 
-		contextMenu.addAction(QIcon(":/cut.png"),tr("Cu&t"), w, SLOT(cutSelection()));
-		contextMenu.addAction(QIcon(":/copy.png"),tr("&Copy"), w, SLOT(copySelection()));
-		contextMenu.addAction(QIcon(":/paste.png"),tr("Past&e"), w, SLOT(pasteSelection()));
+		contextMenu.addAction(QIcon(":/cut.png"),tr("Cu&t"), static_cast<Table *>(w), &Table::cutSelection);
+		contextMenu.addAction(QIcon(":/copy.png"),tr("&Copy"), static_cast<Table *>(w), &Table::copySelection);
+		contextMenu.addAction(QIcon(":/paste.png"),tr("Past&e"), static_cast<Table *>(w), &Table::pasteSelection);
 		contextMenu.addSeparator();
 
-		QAction * xColID=colType.addAction(QIcon(":/x_col.png"), tr("&X"), this, SLOT(setXCol()));
+		QAction * xColID=colType.addAction(QIcon(":/x_col.png"), tr("&X"), this, &ApplicationWindow::setXCol);
 		
-		QAction * yColID=colType.addAction(QIcon(":/y_col.png"), tr("&Y"), this, SLOT(setYCol()));
+		QAction * yColID=colType.addAction(QIcon(":/y_col.png"), tr("&Y"), this, &ApplicationWindow::setYCol);
         
-		QAction * zColID=colType.addAction(QIcon(":/z_col.png"), tr("&Z"), this, SLOT(setZCol()));
-        
-        colType.addSeparator();
-		QAction * labelID = colType.addAction(QIcon(":/set_label_col.png"), tr("&Label"), this, SLOT(setLabelCol()));
-        
-		QAction * noneID=colType.addAction(QIcon(":/disregard_col.png"), tr("&None"), this, SLOT(disregardCol()));
+		QAction * zColID=colType.addAction(QIcon(":/z_col.png"), tr("&Z"), this, &ApplicationWindow::setZCol);
         
         colType.addSeparator();
-        QAction * xErrColID =colType.addAction(tr("X E&rror"), this, SLOT(setXErrCol()));
+		QAction * labelID = colType.addAction(QIcon(":/set_label_col.png"), tr("&Label"), this, &ApplicationWindow::setLabelCol);
         
-		QAction * yErrColID = colType.addAction(QIcon(":/errors.png"), tr("Y &Error"), this, SLOT(setYErrCol()));
+		QAction * noneID=colType.addAction(QIcon(":/disregard_col.png"), tr("&None"), this, &ApplicationWindow::disregardCol);
+        
+        colType.addSeparator();
+        QAction * xErrColID =colType.addAction(tr("X E&rror"), this, &ApplicationWindow::setXErrCol);
+        
+		QAction * yErrColID = colType.addAction(QIcon(":/errors.png"), tr("Y &Error"), this, &ApplicationWindow::setYErrCol);
         
         colType.addSeparator();
 
@@ -7823,7 +7823,7 @@ void ApplicationWindow::showColMenu(int c)
 			fill.setTitle(tr("&Fill Column With"));
 			contextMenu.addMenu(&fill);
 
-			norm.addAction(tr("&Column"), w, SLOT(normalizeSelection()));
+			norm.addAction(tr("&Column"), static_cast<Table *>(w), &Table::normalizeSelection);
 			norm.addAction(actionNormalizeTable);
 			norm.setTitle(tr("&Normalize"));
 			contextMenu.addMenu(& norm);
@@ -7834,17 +7834,17 @@ void ApplicationWindow::showColMenu(int c)
 
 			contextMenu.addSeparator();
 
-			contextMenu.addAction(QIcon(":/erase.png"), tr("Clea&r"), w, SLOT(clearSelection()));
-			contextMenu.addAction(QIcon(":/delete_column.png"), tr("&Delete"), w, SLOT(removeCol()));
+			contextMenu.addAction(QIcon(":/erase.png"), tr("Clea&r"), static_cast<Table *>(w), &Table::clearSelection);
+			contextMenu.addAction(QIcon(":/delete_column.png"), tr("&Delete"), static_cast<Table *>(w), qOverload<>(&Table::removeCol));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.addSeparator();
-			contextMenu.addAction(QIcon(":/insert_column.png"), tr("&Insert"), w, SLOT(insertCol()));
+			contextMenu.addAction(QIcon(":/insert_column.png"), tr("&Insert"), static_cast<Table *>(w), &Table::insertCol);
 			contextMenu.addAction(actionAddColToTable);
 			contextMenu.addSeparator();
 
-			sorting.addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
-			sorting.addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+			sorting.addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), static_cast<Table *>(w), &Table::sortColAsc);
+			sorting.addAction(QIcon(":/sort_descending.png"), tr("&Descending"), static_cast<Table *>(w), &Table::sortColDesc);
 			sorting.setTitle(tr("Sort Colu&mn"));
 			contextMenu.addMenu(&sorting);
 
@@ -7908,18 +7908,18 @@ void ApplicationWindow::showColMenu(int c)
 		plot.setTitle(tr("&Plot"));
 		contextMenu.addMenu(&plot);
 		contextMenu.addSeparator();
-		contextMenu.addAction(QIcon(":/cut.png"),tr("Cu&t"), w, SLOT(cutSelection()));
-		contextMenu.addAction(QIcon(":/copy.png"),tr("&Copy"), w, SLOT(copySelection()));
-		contextMenu.addAction(QIcon(":/paste.png"),tr("Past&e"), w, SLOT(pasteSelection()));
+		contextMenu.addAction(QIcon(":/cut.png"), tr("Cu&t"), static_cast<Table *>(w), &Table::cutSelection);
+		contextMenu.addAction(QIcon(":/copy.png"), tr("&Copy"), static_cast<Table *>(w), &Table::copySelection);
+		contextMenu.addAction(QIcon(":/paste.png"), tr("Past&e"), static_cast<Table *>(w), &Table::pasteSelection);
 		contextMenu.addSeparator();
 
 		if (w){
-			contextMenu.addAction(QIcon(":/erase.png"),tr("Clea&r"), w, SLOT(clearSelection()));
-			contextMenu.addAction(QIcon(":/close.png"),tr("&Delete"), w, SLOT(removeCol()));
+			contextMenu.addAction(QIcon(":/erase.png"), tr("Clea&r"), static_cast<Table *>(w), &Table::clearSelection);
+			contextMenu.addAction(QIcon(":/close.png"), tr("&Delete"), static_cast<Table *>(w), qOverload<>(&Table::removeCol));
 			contextMenu.addAction(actionHideSelectedColumns);
 			contextMenu.addAction(actionShowAllColumns);
 			contextMenu.addSeparator();
-			contextMenu.addAction(tr("&Insert"), w, SLOT(insertCol()));
+			contextMenu.addAction(tr("&Insert"), static_cast<Table *>(w), &Table::insertCol);
 			contextMenu.addAction(actionAddColToTable);
 			contextMenu.addSeparator();
 		}
@@ -7934,8 +7934,8 @@ void ApplicationWindow::showColMenu(int c)
 		colType.addAction(actionSetXErrCol);
 		colType.addAction(actionSetYErrCol);
 		colType.addSeparator();
-		colType.addAction(tr("&Read-only"), this, SLOT(setReadOnlyColumns()));
-		colType.addAction(tr("Read/&Write"), this, SLOT(setReadWriteColumns()));
+		colType.addAction(tr("&Read-only"), this, &ApplicationWindow::setReadOnlyColumns);
+		colType.addAction(tr("Read/&Write"), this, &ApplicationWindow::setReadWriteColumns);
 		colType.setTitle(tr("Set As"));
 		contextMenu.addMenu(&colType);
 
@@ -7954,8 +7954,8 @@ void ApplicationWindow::showColMenu(int c)
 			contextMenu.addMenu(&norm);
 
 			contextMenu.addSeparator();
-			sorting.addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
-			sorting.addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+			sorting.addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), static_cast<Table *>(w), &Table::sortColAsc);
+			sorting.addAction(QIcon(":/sort_descending.png"), tr("&Descending"), static_cast<Table *>(w), &Table::sortColDesc);
 			sorting.addAction(actionSortSelection);
 			sorting.setTitle("&" + tr("Sort Columns"));
 			contextMenu.addMenu(&sorting);
@@ -8315,7 +8315,7 @@ void ApplicationWindow::showCurveContextMenu(QwtPlotItem *cv)
 		return;
 
 	QMenu curveMenu(this);
-	curveMenu.addAction(cv->title().text(), this, SLOT(showCurvePlotDialog()));
+	curveMenu.addAction(cv->title().text(), this, &ApplicationWindow::showCurvePlotDialog);
 	curveMenu.addSeparator();
 
 	curveMenu.addAction(actionHideCurve);
@@ -8556,14 +8556,18 @@ void ApplicationWindow::removePoints()
 		msgBox.setWindowIcon(this->windowIcon());
 		msgBox.exec();
 		if (msgBox.clickedButton() == yesButton || msgBox.clickedButton() == msgBox.defaultButton()){
-			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
+			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Remove);
+			connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
+			g->setActiveTool(tool);
 			displayBar->show();
 			if (msgBox.clickedButton() == yesButton)
 				d_confirm_modif_2D_points = false;
 		} else
 			btnPointer->setChecked(true);
 	} else {
-		g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Remove, info, SLOT(setText(const QString&))));
+		DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Remove);
+		connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
+		g->setActiveTool(tool);
 		displayBar->show();
 	}
 }
@@ -8593,7 +8597,8 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 		msgBox.setWindowIcon(this->windowIcon());
 		msgBox.exec();
 		if (msgBox.clickedButton() == yesButton || msgBox.clickedButton() == msgBox.defaultButton()){
-			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move);
+			connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
 			if (wholeCurve)
 				tool->setMode(DataPickerTool::MoveCurve);
 			g->setActiveTool(tool);
@@ -8603,7 +8608,8 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 		} else
 			btnPointer->setChecked(true);
 	} else {
-		DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+		DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move);
+		connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
 		if (wholeCurve)
 			tool->setMode(DataPickerTool::MoveCurve);
 		g->setActiveTool(tool);
@@ -8616,7 +8622,8 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 	{
 		case 0:
 			if (g){
-				DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move, info, SLOT(setText(const QString&)));
+			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Move);
+			connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
 				if (wholeCurve)
 					tool->setMode(DataPickerTool::MoveCurve);
 				g->setActiveTool(tool);
@@ -8707,8 +8714,8 @@ void ApplicationWindow::printPreview()
 
 	QPrintPreviewDialog *preview = new QPrintPreviewDialog(&p, this, Qt::Window);
 	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
-	connect(preview, SIGNAL(paintRequested(QPrinter *)), w, SLOT(print(QPrinter *)));
-	connect(preview, SIGNAL(paintRequested(QPrinter *)), this, SLOT(setPrintPreviewOptions(QPrinter *)));
+	connect(preview, &QPrintPreviewDialog::paintRequested, w, qOverload<QPrinter*>(&MdiSubWindow::print));
+	connect(preview, &QPrintPreviewDialog::paintRequested, this, &ApplicationWindow::setPrintPreviewOptions);
 
 	preview->exec();
 }
@@ -8818,7 +8825,7 @@ void ApplicationWindow::showFitDialog()
 		return;
 
 	FitDialog *fd = new FitDialog(g, this);
-	connect (plot, SIGNAL(destroyed()), fd, SLOT(close()));
+	connect (plot, &Graph::destroyed, fd, &FindDialog::close);
 
 	fd->setSrcTables(tableList());
 	fd->show();
@@ -9024,8 +9031,11 @@ void ApplicationWindow::showScreenReader()
 		return;
 
 	QList<Graph *> layers = g->multiLayer()->layersList();
-	foreach(Graph *g, layers)
-		g->setActiveTool(new ScreenPickerTool(g, info, SLOT(setText(const QString&))));
+	foreach(Graph *g, layers){
+		ScreenPickerTool *tool = new ScreenPickerTool(g);
+		connect(tool, &ScreenPickerTool::statusText, info, &QLineEdit::setText);
+		g->setActiveTool(tool);
+	}
 
 	displayBar->show();
 }
@@ -9047,12 +9057,16 @@ void ApplicationWindow::drawPoints()
 			return;
 		}
 
-		DrawPointTool *tool = new DrawPointTool(this, g, info, SLOT(setText(const QString&)));
+		DrawPointTool *tool = new DrawPointTool(this, g);
+		connect(tool, &DrawPointTool::statusText, info, &QLineEdit::setText);
 		if (ok && !txt.isEmpty() && txt != newItemString)
 			tool->setDataCurve(g->dataCurve(txt));
 		g->setActiveTool(tool);
-	} else
-		g->setActiveTool(new DrawPointTool(this, g, info, SLOT(setText(const QString&))));
+	} else {
+		DrawPointTool *tool = new DrawPointTool(this, g);
+		connect(tool, &DrawPointTool::statusText, info, &QLineEdit::setText);
+		g->setActiveTool(tool);
+	}
 
 	displayBar->show();
 }
@@ -9074,7 +9088,11 @@ void ApplicationWindow::showRangeSelectors()
 	}
 
 	displayBar->show();
-	g->enableRangeSelectors(info, SLOT(setText(const QString&)));
+	if (g->enableRangeSelectors()){
+		RangeSelectorTool *tool = g->rangeSelectorTool();
+		if (tool)
+			connect(tool, &RangeSelectorTool::statusText, info, &QLineEdit::setText);
+	}
 }
 
 void ApplicationWindow::showCursor()
@@ -9093,8 +9111,11 @@ void ApplicationWindow::showCursor()
 	foreach(Graph *g, layers){
 		if (g->isPiePlot() || !g->curveCount())
 			continue;
-		if (g->validCurvesDataSize())
-			g->setActiveTool(new DataPickerTool(g, this, DataPickerTool::Display, info, SLOT(setText(const QString&))));
+		if (g->validCurvesDataSize()){
+			DataPickerTool *tool = new DataPickerTool(g, this, DataPickerTool::Display);
+			connect(tool, &DataPickerTool::statusText, info, &QLineEdit::setText);
+			g->setActiveTool(tool);
+		}
 	}
 	displayBar->show();
 }
@@ -9121,7 +9142,9 @@ void ApplicationWindow::addRectangle()
 		return;
 	}
 
-	g->setActiveTool(new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle, info, SLOT(setText(const QString&))));
+	AddWidgetTool *tool = new AddWidgetTool(AddWidgetTool::Rectangle, g, actionAddRectangle);
+	connect(tool, &AddWidgetTool::statusText, info, &QLineEdit::setText);
+	g->setActiveTool(tool);
 	btnPointer->setChecked(false);
 }
 
@@ -9133,7 +9156,9 @@ void ApplicationWindow::addEllipse()
 		return;
 	}
 
-    g->setActiveTool(new AddWidgetTool(AddWidgetTool::Ellipse, g, actionAddEllipse, info, SLOT(setText(const QString&))));
+    AddWidgetTool *tool = new AddWidgetTool(AddWidgetTool::Ellipse, g, actionAddEllipse);
+	connect(tool, &AddWidgetTool::statusText, info, &QLineEdit::setText);
+	g->setActiveTool(tool);
 	btnPointer->setChecked(false);
 }
 
@@ -9145,7 +9170,9 @@ void ApplicationWindow::addTexFormula()
 		return;
 	}
 
-	g->setActiveTool(new AddWidgetTool(AddWidgetTool::TexEquation, g, actionAddFormula, info, SLOT(setText(const QString&))));
+	AddWidgetTool *tool = new AddWidgetTool(AddWidgetTool::TexEquation, g, actionAddFormula);
+	connect(tool, &AddWidgetTool::statusText, info, &QLineEdit::setText);
+	g->setActiveTool(tool);
 	btnPointer->setChecked(false);
 }
 
@@ -9157,7 +9184,9 @@ void ApplicationWindow::addText()
 		return;
 	}
 
-	g->setActiveTool(new AddWidgetTool(AddWidgetTool::Text, g, actionAddText, info, SLOT(setText(const QString&))));
+	AddWidgetTool *tool = new AddWidgetTool(AddWidgetTool::Text, g, actionAddText);
+	connect(tool, &AddWidgetTool::statusText, info, &QLineEdit::setText);
+	g->setActiveTool(tool);
 	btnPointer->setChecked(false);
 }
 
@@ -9961,8 +9990,8 @@ void ApplicationWindow::analysisMenuAboutToShow()
 		bool columns = ((Table *)w)->selectedColumns().count() > 1;
 		QString sortMenuText = columns ? "&" + tr("Sort Columns") : tr("Sort Colu&mn");
 		QMenu *sortMenu = analysisMenu->addMenu(sortMenuText);
-		sortMenu->addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), w, SLOT(sortColAsc()));
-		sortMenu->addAction(QIcon(":/sort_descending.png"), tr("&Descending"), w, SLOT(sortColDesc()));
+		sortMenu->addAction(QIcon(":/sort_ascending.png"), tr("&Ascending"), static_cast<Table *>(w), &Table::sortColAsc);
+		sortMenu->addAction(QIcon(":/sort_descending.png"), tr("&Descending"), static_cast<Table *>(w), &Table::sortColDesc);
 		if (columns)
 			sortMenu->addAction(actionSortSelection);
 		analysisMenu->addMenu(sortMenu);
@@ -10199,8 +10228,8 @@ void ApplicationWindow::windowsMenuAboutToShow()
 		return;
 	}
 
-	windowsMenu->addAction(tr("&Cascade"), this, SLOT(cascade()));
-	windowsMenu->addAction(tr("&Tile"), d_workspace, SLOT(tileSubWindows()));
+	windowsMenu->addAction(tr("&Cascade"), this, &ApplicationWindow::cascade);
+	windowsMenu->addAction(tr("&Tile"), d_workspace, &QMdiArea::tileSubWindows);
 	windowsMenu->addSeparator();
 	windowsMenu->addAction(actionNextWindow);
 	windowsMenu->addAction(actionPrevWindow);
@@ -10238,7 +10267,7 @@ void ApplicationWindow::windowsMenuAboutToShow()
 
 	if (moreWindows){
 		windowsMenu->addSeparator();
-		windowsMenu->addAction(tr("More windows..."), this, SLOT(showMoreWindows()));
+		windowsMenu->addAction(tr("More windows..."), this, &ApplicationWindow::showMoreWindows);
 	}
 
 	reloadCustomActions();
@@ -10254,14 +10283,14 @@ void ApplicationWindow::showMarkerPopupMenu()
 	QMenu markerMenu(this);
 
 	if (g->imageMarkerSelected()){
-		markerMenu.addAction(QIcon(":/pixelProfile.png"),tr("&View Pixel Line profile"),this, SLOT(pixelLineProfile()));
-		markerMenu.addAction(tr("&Intensity Matrix"),this, SLOT(intensityTable()));
+		markerMenu.addAction(QIcon(":/pixelProfile.png"), tr("&View Pixel Line profile"), this, &ApplicationWindow::pixelLineProfile);
+		markerMenu.addAction(tr("&Intensity Matrix"), this, &ApplicationWindow::intensityTable);
 		markerMenu.addSeparator();
 	}
 	if (!g->activeEnrichment())
-		markerMenu.addAction(QIcon(":/cut.png"),tr("&Cut"),this, SLOT(cutSelection()));
-	markerMenu.addAction(QIcon(":/copy.png"), tr("&Copy"),this, SLOT(copySelection()));
-	markerMenu.addAction(QIcon(":/delete.png"), tr("&Delete"),this, SLOT(clearSelection()));
+		markerMenu.addAction(QIcon(":/cut.png"), tr("&Cut"), this, &ApplicationWindow::cutSelection);
+	markerMenu.addAction(QIcon(":/copy.png"), tr("&Copy"), this, &ApplicationWindow::copySelection);
+	markerMenu.addAction(QIcon(":/delete.png"), tr("&Delete"), this, &ApplicationWindow::clearSelection);
 	markerMenu.addSeparator();
 
 	if (g->activeEnrichment()){
@@ -10271,9 +10300,9 @@ void ApplicationWindow::showMarkerPopupMenu()
 	}
 
 	if (g->arrowMarkerSelected())
-		markerMenu.addAction(tr("&Properties..."),this, SLOT(showLineDialog()));
+		markerMenu.addAction(tr("&Properties..."), this, &ApplicationWindow::showLineDialog);
 	else
-		markerMenu.addAction(tr("&Properties..."), this, SLOT(showEnrichementDialog()));
+		markerMenu.addAction(tr("&Properties..."), this, &ApplicationWindow::showEnrichementDialog);
 
 	markerMenu.exec(QCursor::pos());
 }
@@ -10732,10 +10761,10 @@ void ApplicationWindow::deleteSelectedItems()
 void ApplicationWindow::showListViewSelectionMenu(const QPoint &p)
 {
 	QMenu cm(this);
-	cm.addAction(tr("&Show All Windows"), this, SLOT(showSelectedWindows()));
-	cm.addAction(tr("&Hide All Windows"), this, SLOT(hideSelectedWindows()));
+	cm.addAction(tr("&Show All Windows"), this, &ApplicationWindow::showSelectedWindows);
+	cm.addAction(tr("&Hide All Windows"), this, &ApplicationWindow::hideSelectedWindows);
 	cm.addSeparator();
-	cm.addAction(tr("&Delete Selection"), this, SLOT(deleteSelectedItems()), Qt::Key_F8);
+	cm.addAction(tr("&Delete Selection"), this, &ApplicationWindow::deleteSelectedItems, Qt::Key_F8);
 	cm.exec(p);
 }
 
@@ -10755,7 +10784,7 @@ void ApplicationWindow::showListViewPopupMenu(const QPoint &p)
 
 	cm.addAction(actionNewFolder);
 	cm.addSeparator();
-	cm.addAction(tr("Auto &Column Width"), lv, SLOT(adjustColumns()));
+	cm.addAction(tr("Auto &Column Width"), lv, &FolderListView::adjustColumns);
 	cm.exec(p);
 }
 
@@ -10798,21 +10827,22 @@ void ApplicationWindow::showWindowPopupMenu(QTreeWidgetItem *it, const QPoint &p
 		cm.addSeparator();
 		if (!hidden(w))
 			cm.addAction(actionHideWindow);
-		cm.addAction(QPixmap(":/close.png"), tr("&Delete Window"), w, SLOT(close()), Qt::Key_F8);
+		cm.addAction(QPixmap(":/close.png"), tr("&Delete Window"), w, &MdiSubWindow::close, Qt::Key_F8);
 		cm.addSeparator();
-		cm.addAction(tr("&Rename Window"), this, SLOT(renameWindow()), Qt::Key_F2);
+		QAction *a = cm.addAction(tr("&Rename Window"), this, qOverload<>(&ApplicationWindow::renameWindow));
+	a->setShortcut(Qt::Key_F2);
 		cm.addAction(actionResizeWindow);
 		cm.addSeparator();
-		cm.addAction(QPixmap(":/fileprint.png"), tr("&Print Window"), w, SLOT(print()));
+		cm.addAction(QPixmap(":/fileprint.png"), tr("&Print Window"), w, qOverload<>(&MdiSubWindow::print));
 		cm.addSeparator();
-		cm.addAction(tr("&Properties..."), this, SLOT(windowProperties()));
+		cm.addAction(tr("&Properties..."), this, &ApplicationWindow::windowProperties);
 
 		if (w->inherits("Table")){
 			QStringList graphs = dependingPlots(w->objectName());
 			if (int(graphs.count())>0){
 				cm.addSeparator();
 				for (int i=0;i<int(graphs.count());i++)
-					plots.addAction(graphs[i], window(graphs[i]), SLOT(showMaximized()));
+					plots.addAction(graphs[i], window(graphs[i]), &MdiSubWindow::showMaximized);
 
 				plots.setTitle(tr("D&epending Graphs"));
 				cm.addMenu(&plots);
@@ -10822,7 +10852,7 @@ void ApplicationWindow::showWindowPopupMenu(QTreeWidgetItem *it, const QPoint &p
 			if (int(graphs.count())>0){
 				cm.addSeparator();
 				for (int i=0;i<int(graphs.count());i++)
-					plots.addAction(graphs[i], window(graphs[i]), SLOT(showMaximized()));
+					plots.addAction(graphs[i], window(graphs[i]), &MdiSubWindow::showMaximized);
 
 				plots.setTitle(tr("D&epending 3D Graphs"));
 				cm.addMenu(&plots);
@@ -10844,7 +10874,7 @@ void ApplicationWindow::showWindowPopupMenu(QTreeWidgetItem *it, const QPoint &p
 			Graph3D *sp = qobject_cast<Graph3D*>(w);
 			Matrix *m = sp->matrix();
 			if (m){
-				plots.addAction(m->objectName(), m, SLOT(showMaximized()));
+				plots.addAction(m->objectName(), m, &MdiSubWindow::showMaximized);
 				plots.setTitle(tr("D&epends on"));
 				cm.addMenu(&plots);
 			} else if (sp->table()){
@@ -10958,23 +10988,26 @@ void ApplicationWindow::showGraphContextMenu()
 
 	QMenu cm(this);
 	if (plot->isLayerSelected(ag)){
-		cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, SLOT(copyActiveLayer()));
+		cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, &ApplicationWindow::copyActiveLayer);
 		if (lastCopiedLayer)
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, SLOT(pasteSelection()));
-		else if (d_enrichement_copy)
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste"), plot, SIGNAL(pasteMarker()));
-		else if (d_arrow_copy)
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, &ApplicationWindow::pasteSelection);
+		else if (d_enrichement_copy){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		} else if (d_arrow_copy){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		}
 		cm.addAction(actionDeleteLayer);
 		cm.addSeparator();
-		cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
+		cm.addAction(tr("P&roperties..."), this, &ApplicationWindow::showGeneralPlotDialog);
 		cm.exec(QCursor::pos());
 		return;
 	}
 
 	QMenu addMenu(this);
 	if (ag->isPiePlot()){
-		cm.addAction(tr("Re&move Pie Curve"),ag, SLOT(removePie()));
+		cm.addAction(tr("Re&move Pie Curve"), ag, &Graph::removePie);
 		addMenu.addAction(actionNewLegend);
 	} else {
 		if (ag->visibleCurves() != ag->curveCount()){
@@ -11011,35 +11044,43 @@ void ApplicationWindow::showGraphContextMenu()
 		plotDataMenu->setTitle(tr("&Data"));
 		cm.addMenu(plotDataMenu);
 
-		paletteMenu.addAction(tr("&Gray Scale"), ag, SLOT(setGrayScale()));
-		paletteMenu.addAction(tr("&Indexed Colors"), ag, SLOT(setIndexedColors()));
+		paletteMenu.addAction(tr("&Gray Scale"), ag, &Graph::setGrayScale);
+		paletteMenu.addAction(tr("&Indexed Colors"), ag, &Graph::setIndexedColors);
 		paletteMenu.setTitle(tr("Pale&tte"));
 		cm.addMenu(&paletteMenu);
 		cm.addSeparator();
 	}
 
 	QMenu copy(this);
-	copy.addAction(tr("&Layer"), this, SLOT(copyActiveLayer()));
-	copy.addAction(tr("&Window"), plot, SLOT(copyAllLayers()));
+	copy.addAction(tr("&Layer"), this, &ApplicationWindow::copyActiveLayer);
+	copy.addAction(tr("&Window"), static_cast<MultiLayer *>(plot), &MultiLayer::copyAllLayers);
 	copy.setTitle(tr("&Copy"));
 	copy.setIcon(QIcon(":/copy.png"));
 	cm.addMenu(&copy);
 
 	if (lastCopiedLayer)
-		cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, SLOT(pasteSelection()));
+		cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, &ApplicationWindow::pasteSelection);
 	else if (d_enrichement_copy){
-		if (qobject_cast<LegendWidget *>(d_enrichement_copy))
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Text"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<TexWidget *>(d_enrichement_copy))
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Tex Formula"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<ImageWidget *>(d_enrichement_copy))
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Image"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<RectangleWidget *>(d_enrichement_copy))
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Rectangle"), plot, SIGNAL(pasteMarker()));
-		else if (qobject_cast<EllipseWidget *>(d_enrichement_copy))
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Ellipse"), plot, SIGNAL(pasteMarker()));
-	} else if (d_arrow_copy)
-		cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"), plot, SIGNAL(pasteMarker()));
+		if (qobject_cast<LegendWidget *>(d_enrichement_copy)){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Text"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		} else if (qobject_cast<TexWidget *>(d_enrichement_copy)){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Tex Formula"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		} else if (qobject_cast<ImageWidget *>(d_enrichement_copy)){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Image"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		} else if (qobject_cast<RectangleWidget *>(d_enrichement_copy)){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Rectangle"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		} else if (qobject_cast<EllipseWidget *>(d_enrichement_copy)){
+			QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Ellipse"));
+			connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+		}
+	} else if (d_arrow_copy){
+		QAction *a = cm.addAction(QPixmap(":/paste.png"), tr("&Paste Line/Arrow"));
+		connect(a, &QAction::triggered, plot, &MultiLayer::pasteMarker);
+	}
 
 	QMenu exports(this);
 	exports.addAction(actionExportLayer);
@@ -11048,15 +11089,15 @@ void ApplicationWindow::showGraphContextMenu()
 	cm.addMenu(&exports);
 
 	QMenu prints(this);
-	prints.addAction(tr("&Layer") + "...", plot, SLOT(printActiveLayer()));
-	prints.addAction(tr("&Window") + "...", plot, SLOT(print()));
+	prints.addAction(tr("&Layer") + "...", static_cast<MultiLayer *>(plot), &MultiLayer::printActiveLayer);
+	prints.addAction(tr("&Window") + "...", static_cast<MultiLayer *>(plot), qOverload<>(&MultiLayer::print));
 	prints.setTitle(tr("&Print"));
 	prints.setIcon(QIcon(":/fileprint.png"));
 	cm.addMenu(&prints);
 
 	cm.addSeparator();
 
-	cm.addAction(tr("P&roperties..."), this, SLOT(showGeneralPlotDialog()));
+	cm.addAction(tr("P&roperties..."), this, &ApplicationWindow::showGeneralPlotDialog);
 	cm.addSeparator();
 	cm.addAction(actionDeleteLayer);
 	cm.exec(QCursor::pos());
@@ -11076,7 +11117,7 @@ void ApplicationWindow::showWindowContextMenu()
 			return;
 
 		if (lastCopiedLayer){
-			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, SLOT(pasteSelection()));
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, &ApplicationWindow::pasteSelection);
 			cm.addSeparator();
 		}
 
@@ -11089,11 +11130,11 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionRename);
 		cm.addAction(actionCopyWindow);
 		cm.addSeparator();
-		cm.addAction(QPixmap(":/copy.png"),tr("&Copy Page"), g, SLOT(copyAllLayers()));
-		cm.addAction(tr("E&xport Page"), this, SLOT(exportGraph()));
+		cm.addAction(QPixmap(":/copy.png"), tr("&Copy Page"), static_cast<MultiLayer *>(g), &MultiLayer::copyAllLayers);
+		cm.addAction(tr("E&xport Page"), this, [this]{ exportGraph(); });
 		cm.addAction(actionPrint);
 		cm.addSeparator();
-		cm.addAction(tr("&Properties..."), this, SLOT(showGeneralPlotDialog()));
+		cm.addAction(tr("&Properties..."), this, &ApplicationWindow::showGeneralPlotDialog);
 		cm.addSeparator();
 		cm.addAction(actionCloseWindow);
 	} else if (w->inherits("Graph3D")){
@@ -11104,24 +11145,24 @@ void ApplicationWindow::showWindowContextMenu()
 			if (hasTable())
 				plot3D.addAction(actionAdd3DData);
 			if (matrixNames().count())
-				plot3D.addAction(tr("&Matrix..."), this, SLOT(add3DMatrixPlot()));
+				plot3D.addAction(tr("&Matrix..."), this, &ApplicationWindow::add3DMatrixPlot);
 			plot3D.addAction(actionEditSurfacePlot);
 		} else {
 			if (g->table())
-				cm.addAction(tr("Choose &Data Set..."), this, SLOT(change3DData()));
+				cm.addAction(tr("Choose &Data Set..."), this, qOverload<>(&ApplicationWindow::change3DData));
 			else if (g->matrix())
-				cm.addAction(tr("Choose &Matrix..."), this, SLOT(change3DMatrix()));
+				cm.addAction(tr("Choose &Matrix..."), this, qOverload<>(&ApplicationWindow::change3DMatrix));
 			else if (g->userFunction() || g->parametricSurface())
 				cm.addAction(actionEditSurfacePlot);
-			cm.addAction(QPixmap(":/erase.png"), tr("C&lear"), g, SLOT(clearData()));
+			cm.addAction(QPixmap(":/erase.png"), tr("C&lear"), static_cast<Graph3D *>(g), &Graph3D::clearData);
 		}
 		cm.addMenu(format);
 		cm.addSeparator();
 		cm.addAction(actionRename);
 		cm.addAction(actionCopyWindow);
 		cm.addSeparator();
-		cm.addAction(tr("&Copy Graph"), g, SLOT(copyImage()));
-		cm.addAction(tr("&Export") + "...", this, SLOT(exportGraph()));
+		cm.addAction(tr("&Copy Graph"), static_cast<Graph3D *>(g), &Graph3D::copyImage);
+		cm.addAction(tr("&Export") + "...", this, [this]{ exportGraph(); });
 		cm.addAction(actionPrint);
 		cm.addSeparator();
 		cm.addAction(actionAnimate);
@@ -11139,18 +11180,18 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addSeparator();
 
 		if (t->viewType() == Matrix::TableView){
-			cm.addAction(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
-			cm.addAction(QPixmap(":/copy.png"),tr("&Copy"), t, SLOT(copySelection()));
-			cm.addAction(QPixmap(":/paste.png"),tr("&Paste"), t, SLOT(pasteSelection()));
+			cm.addAction(QPixmap(":/cut.png"), tr("Cu&t"), static_cast<Matrix *>(t), &Matrix::cutSelection);
+			cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), static_cast<Matrix *>(t), &Matrix::copySelection);
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste"), static_cast<Matrix *>(t), &Matrix::pasteSelection);
             cm.addSeparator();
-			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), t, SLOT(insertRow()));
-			cm.addAction(QPixmap(":/insert_column.png"), tr("&Insert Column"), t, SLOT(insertColumn()));
+			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), static_cast<Matrix *>(t), &Matrix::insertRow);
+			cm.addAction(QPixmap(":/insert_column.png"), tr("&Insert Column"), static_cast<Matrix *>(t), &Matrix::insertColumn);
             if (t->numSelectedRows() > 0)
-				cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
+				cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Rows"), static_cast<Matrix *>(t), &Matrix::deleteSelectedRows);
             else if (t->numSelectedColumns() > 0)
-				cm.addAction(QPixmap(":/delete_column.png"), tr("&Delete Columns"), t, SLOT(deleteSelectedColumns()));
+				cm.addAction(QPixmap(":/delete_column.png"), tr("&Delete Columns"), static_cast<Matrix *>(t), &Matrix::deleteSelectedColumns);
 
-			cm.addAction(QPixmap(":/erase.png"),tr("Clea&r"), t, SLOT(clearSelection()));
+			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r"), static_cast<Matrix *>(t), &Matrix::clearSelection);
             cm.addSeparator();
             cm.addAction(actionViewMatrixImage);
 		} else if (t->viewType() == Matrix::ImageView){
@@ -11238,34 +11279,34 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			cm.addAction(actionShowColumnValuesDialog);
 			cm.addAction(actionTableRecalculate);
 			cm.addSeparator();
-			cm.addAction(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
-			cm.addAction(QPixmap(":/copy.png"),tr("&Copy"), t, SLOT(copySelection()));
-			cm.addAction(QPixmap(":/paste.png"),tr("&Paste"), t, SLOT(pasteSelection()));
+			cm.addAction(QPixmap(":/cut.png"), tr("Cu&t"), static_cast<Table *>(t), &Table::cutSelection);
+			cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), static_cast<Table *>(t), &Table::copySelection);
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste"), static_cast<Table *>(t), &Table::pasteSelection);
 			cm.addSeparator();
 			moveRow.addAction(actionMoveRowUp);
 			moveRow.addAction(actionMoveRowDown);
 			moveRow.setTitle(tr("Move Row"));
 			cm.addMenu (&moveRow);
-			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), t, SLOT(insertRow()));
-			cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Row"), t, SLOT(deleteSelectedRows()));
-			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r Row"), t, SLOT(clearSelection()));
+			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), static_cast<Table *>(t), &Table::insertRow);
+			cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Row"), static_cast<Table *>(t), &Table::deleteSelectedRows);
+			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r Row"), static_cast<Table *>(t), &Table::clearSelection);
 		} else if (t->numSelectedRows() > 1) {
 			cm.addAction(actionShowColumnValuesDialog);
-			cm.addAction(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
-			cm.addAction(QPixmap(":/copy.png"),tr("&Copy"), t, SLOT(copySelection()));
-			cm.addAction(QPixmap(":/paste.png"),tr("&Paste"), t, SLOT(pasteSelection()));
+			cm.addAction(QPixmap(":/cut.png"), tr("Cu&t"), static_cast<Table *>(t), &Table::cutSelection);
+			cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), static_cast<Table *>(t), &Table::copySelection);
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste"), static_cast<Table *>(t), &Table::pasteSelection);
 			cm.addSeparator();
 			cm.addAction(actionTableRecalculate);
-			cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Rows"), t, SLOT(deleteSelectedRows()));
-			cm.addAction(QPixmap(":/erase.png"),tr("Clea&r Rows"), t, SLOT(clearSelection()));
+			cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Rows"), static_cast<Table *>(t), &Table::deleteSelectedRows);
+			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r Rows"), static_cast<Table *>(t), &Table::clearSelection);
 		} else if (t->numRows() > 0 && t->numCols() > 0){
 			cm.addAction(actionShowColumnValuesDialog);
-			cm.addAction(QPixmap(":/cut.png"),tr("Cu&t"), t, SLOT(cutSelection()));
-			cm.addAction(QPixmap(":/copy.png"),tr("&Copy"), t, SLOT(copySelection()));
-			cm.addAction(QPixmap(":/paste.png"),tr("&Paste"), t, SLOT(pasteSelection()));
+			cm.addAction(QPixmap(":/cut.png"), tr("Cu&t"), static_cast<Table *>(t), &Table::cutSelection);
+			cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), static_cast<Table *>(t), &Table::copySelection);
+			cm.addAction(QPixmap(":/paste.png"), tr("&Paste"), static_cast<Table *>(t), &Table::pasteSelection);
 			cm.addSeparator();
 			cm.addAction(actionTableRecalculate);
-			cm.addAction(QPixmap(":/erase.png"),tr("Clea&r"), t, SLOT(clearSelection()));
+			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r"), static_cast<Table *>(t), &Table::clearSelection);
 		}
 		cm.addSeparator();
 		cm.addAction(actionShowColStatistics);
@@ -12082,16 +12123,16 @@ void ApplicationWindow::initPlot3DToolBar()
 	plot3DTools->hide();
 
 	connect(actionAnimate, &QAction::toggled, this, &ApplicationWindow::toggle3DAnimation);
-	connect( coord, SIGNAL( triggered( QAction* ) ), this, SLOT( pickCoordSystem( QAction* ) ) );
-	connect( floorstyle, SIGNAL( triggered( QAction* ) ), this, SLOT( pickFloorStyle( QAction* ) ) );
-	connect( plotstyle, SIGNAL( triggered( QAction* ) ), this, SLOT( pickPlotStyle( QAction* ) ) );
+	connect( coord, &QActionGroup::triggered, this, &ApplicationWindow::pickCoordSystem);
+	connect( floorstyle, &QActionGroup::triggered, this, &ApplicationWindow::pickFloorStyle);
+	connect( plotstyle, &QActionGroup::triggered, this, &ApplicationWindow::pickPlotStyle);
 
-	connect( left, SIGNAL( triggered( bool ) ), this, SLOT( setLeftGrid3DPlot(bool) ));
-	connect( right, SIGNAL( triggered( bool ) ), this, SLOT( setRightGrid3DPlot( bool ) ) );
-	connect( ceil, SIGNAL( triggered( bool ) ), this, SLOT( setCeilGrid3DPlot( bool ) ) );
-	connect( floor, SIGNAL( triggered( bool ) ), this, SLOT(setFloorGrid3DPlot( bool ) ) );
-	connect( back, SIGNAL( triggered( bool ) ), this, SLOT(setBackGrid3DPlot( bool ) ) );
-	connect( front, SIGNAL( triggered( bool ) ), this, SLOT( setFrontGrid3DPlot( bool ) ) );
+	connect( left, &QAction::triggered, this, &ApplicationWindow::setLeftGrid3DPlot);
+	connect( right, &QAction::triggered, this, &ApplicationWindow::setRightGrid3DPlot);
+	connect( ceil, &QAction::triggered, this, &ApplicationWindow::setCeilGrid3DPlot);
+	connect( floor, &QAction::triggered, this, &ApplicationWindow::setFloorGrid3DPlot);
+	connect( back, &QAction::triggered, this, &ApplicationWindow::setBackGrid3DPlot);
+	connect( front, &QAction::triggered, this, &ApplicationWindow::setFrontGrid3DPlot);
 }
 
 void ApplicationWindow::pixelLineProfile()
@@ -13723,11 +13764,11 @@ void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 
 void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 {
-	connect (plot, SIGNAL(showContextMenu()), this,SLOT(showWindowContextMenu()));
-	connect (plot, SIGNAL(showOptionsDialog()), this,SLOT(showPlot3dDialog()));
-	connect (plot, SIGNAL(closedWindow(MdiSubWindow*)), this, SLOT(closeWindow(MdiSubWindow*)));
-	connect (plot, SIGNAL(hiddenWindow(MdiSubWindow*)), this, SLOT(hideWindow(MdiSubWindow*)));
-	connect (plot, SIGNAL(statusChanged(MdiSubWindow*)), this, SLOT(updateWindowStatus(MdiSubWindow*)));
+	connect (plot, &Graph3D::showContextMenu, this, &ApplicationWindow::showWindowContextMenu);
+	connect (plot, &Graph3D::showOptionsDialog, this, &ApplicationWindow::showPlot3dDialog);
+	connect (plot, &Graph3D::closedWindow, this, &ApplicationWindow::closeWindow);
+	connect (plot, &Graph3D::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
+	connect (plot, &Graph3D::statusChanged, this, &ApplicationWindow::updateWindowStatus);
 	connect(plot, &Graph3D::modified, this, &ApplicationWindow::modified);
 
 	plot->askOnCloseEvent(confirmClosePlot3D);
@@ -13735,42 +13776,41 @@ void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
-	connect (g,SIGNAL(showEnrichementDialog()),this,SLOT(showEnrichementDialog()));
-	connect (g,SIGNAL(showCurvesDialog()),this,SLOT(showCurvesDialog()));
-	connect (g,SIGNAL(drawLineEnded(bool)), btnPointer, SLOT(setChecked(bool)));
-	connect (g,SIGNAL(showMarkerPopupMenu()),this,SLOT(showMarkerPopupMenu()));
-	connect (g,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
-	connect (g,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
-	connect (g,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
-	connect (g,SIGNAL(cursorInfo(const QString&)),info,SLOT(setText(const QString&)));
-	connect (g,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect (g,SIGNAL(modifiedPlot()), this, SLOT(modifiedProject()));
-	connect (g,SIGNAL(showLineDialog()),this, SLOT(showLineDialog()));
-	connect (g,SIGNAL(pasteMarker()),this,SLOT(pasteSelection()));
-	connect (g,SIGNAL(setPointerCursor()),this, SLOT(pickPointerCursor()));
-	connect (g,SIGNAL(currentFontChanged(const QFont&)), this, SLOT(setFormatBarFont(const QFont&)));
-	connect (g,SIGNAL(currentColorChanged(const QColor&)), this, SLOT(setFormatBarColor(const QColor&)));
+	connect (g, &MultiLayer::showEnrichementDialog, this, &ApplicationWindow::showEnrichementDialog);
+	connect (g, &MultiLayer::showCurvesDialog, this, &ApplicationWindow::showCurvesDialog);
+	connect (g, &MultiLayer::drawLineEnded, btnPointer, &QAction::setChecked);
+	connect (g, &MultiLayer::showMarkerPopupMenu, this, &ApplicationWindow::showMarkerPopupMenu);
+	connect (g, &MultiLayer::closedWindow, this, &ApplicationWindow::closeWindow);
+	connect (g, &MultiLayer::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
+	connect (g, &MultiLayer::statusChanged, this, &ApplicationWindow::updateWindowStatus);
+	connect (g, &MultiLayer::cursorInfo, info, &QLineEdit::setText);
+	connect (g, &MultiLayer::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect (g, &MultiLayer::modifiedPlot, this, qOverload<>(&ApplicationWindow::modifiedProject));
+	connect (g, &MultiLayer::showLineDialog, this, &ApplicationWindow::showLineDialog);
+	connect (g, &MultiLayer::pasteMarker, this, &ApplicationWindow::pasteSelection);
+	connect (g, &MultiLayer::setPointerCursor, this, &ApplicationWindow::pickPointerCursor);
+	connect (g, &MultiLayer::currentFontChanged, this, &ApplicationWindow::setFormatBarFont);
+	connect (g, &MultiLayer::currentColorChanged, this, &ApplicationWindow::setFormatBarColor);
 
 	g->askOnCloseEvent(confirmClosePlot2D);
 }
 
 void ApplicationWindow::connectTable(Table* w)
 {
-    connect (w->table(), SIGNAL(itemSelectionChanged()), this, SLOT(customColumnActions()));
-	connect (w,SIGNAL(statusChanged(MdiSubWindow*)),this, SLOT(updateWindowStatus(MdiSubWindow*)));
-	connect (w,SIGNAL(hiddenWindow(MdiSubWindow*)),this, SLOT(hideWindow(MdiSubWindow*)));
-	connect (w,SIGNAL(closedWindow(MdiSubWindow*)),this, SLOT(closeWindow(MdiSubWindow*)));
-	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeCurves(const QString&)));
-	connect (w,SIGNAL(removedCol(const QString&)),this,SLOT(removeColumnNameFromCompleter(const QString&)));
-	connect (w,SIGNAL(addedCol(const QString&)),this,SLOT(addColumnNameToCompleter(const QString&)));
-	connect (w,SIGNAL(modifiedData(Table *, const QString&)),
-			this, SLOT(updateCurves(Table *, const QString&)));
-	connect (w,SIGNAL(resizedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect (w,SIGNAL(modifiedWindow(MdiSubWindow*)),this,SLOT(modifiedProject(MdiSubWindow*)));
-	connect (w,SIGNAL(optionsDialog()),this,SLOT(showColumnOptionsDialog()));
-	connect (w,SIGNAL(colValuesDialog()),this,SLOT(showColumnValuesDialog()));
-	connect (w,SIGNAL(showContextMenu(bool)),this,SLOT(showTableContextMenu(bool)));
-	connect (w,SIGNAL(changedColHeader(const QString&,const QString&)),this,SLOT(updateColNames(const QString&,const QString&)));
+    connect (w->table(), &QTableWidget::itemSelectionChanged, this, &ApplicationWindow::customColumnActions);
+	connect (w, &Table::statusChanged, this, &ApplicationWindow::updateWindowStatus);
+	connect (w, &Table::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
+	connect (w, &Table::closedWindow, this, &ApplicationWindow::closeWindow);
+	connect (w, qOverload<const QString&>(&Table::removedCol), this, &ApplicationWindow::removeCurves);
+	connect (w, qOverload<const QString&>(&Table::removedCol), this, &ApplicationWindow::removeColumnNameFromCompleter);
+	connect (w, &Table::addedCol, this, [this](const QString& s){ addColumnNameToCompleter(s); });
+	connect (w, &Table::modifiedData, this, &ApplicationWindow::updateCurves);
+	connect (w, &Table::resizedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect (w, &Table::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
+	connect (w, &Table::optionsDialog, this, &ApplicationWindow::showColumnOptionsDialog);
+	connect (w, &Table::colValuesDialog, this, &ApplicationWindow::showColumnValuesDialog);
+	connect (w, &Table::showContextMenu, this, &ApplicationWindow::showTableContextMenu);
+	connect (w, &Table::changedColHeader, this, &ApplicationWindow::updateColNames);
 
 	w->askOnCloseEvent(confirmCloseTable);
 }
@@ -15870,7 +15910,9 @@ void ApplicationWindow::translateCurve(TranslateCurveTool::Direction direction)
 		return;
 	} else if (g->validCurvesDataSize()) {
 		btnPointer->setChecked(true);
-		g->setActiveTool(new TranslateCurveTool(g, this, direction, info, SLOT(setText(const QString&))));
+		TranslateCurveTool *tool = new TranslateCurveTool(g, this, direction);
+		connect(tool, &TranslateCurveTool::statusText, info, &QLineEdit::setText);
+		g->setActiveTool(tool);
 		displayBar->show();
 	}
 }
@@ -16031,7 +16073,9 @@ void ApplicationWindow::fitMultiPeak(int profile)
 		int peaks = QInputDialog::getInt(this, tr("QtiPlot - Enter the number of peaks"),
 				tr("Peaks"), 2, 2, 1000000, 1, &ok, windowFlags());
 		if (ok && peaks){
-			g->setActiveTool(new MultiPeakFitTool(g, this, (MultiPeakFit::PeakProfile)profile, peaks, info, SLOT(setText(const QString&))));
+			MultiPeakFitTool *tool = new MultiPeakFitTool(g, this, (MultiPeakFit::PeakProfile)profile, peaks);
+			connect(tool, &MultiPeakFitTool::statusText, info, &QLineEdit::setText);
+			g->setActiveTool(tool);
 			displayBar->show();
 		}
 	}
@@ -16059,7 +16103,9 @@ void ApplicationWindow::subtractStraightLine()
 				tr("This functionality is not available for pie plots!"));
 		return;
 	} else {
-		g->setActiveTool(new SubtractLineTool(g, this, info, SLOT(setText(const QString&))));
+		SubtractLineTool *tool = new SubtractLineTool(g, this);
+		connect(tool, &SubtractLineTool::statusText, info, &QLineEdit::setText);
+		g->setActiveTool(tool);
 		displayBar->show();
 	}
 }
@@ -16777,21 +16823,23 @@ void ApplicationWindow::showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p
 	cm.addSeparator();
 	cm.addAction(actionAppendProject);
 	if (((FolderListItem *)it)->folder()->parent())
-		cm.addAction(QIcon(":/filesaveas.png"), tr("Save &As Project..."), this, SLOT(saveAsProject()));
+		cm.addAction(QIcon(":/filesaveas.png"), tr("Save &As Project..."), this, &ApplicationWindow::saveAsProject);
 	else
 		cm.addAction(actionSaveProjectAs);
 	cm.addSeparator();
 
 	if (fromFolders && show_windows_policy != HideAll)
 	{
-		cm.addAction(tr("&Show All Windows"), this, SLOT(showAllFolderWindows()));
-		cm.addAction(tr("&Hide All Windows"), this, SLOT(hideAllFolderWindows()));
+		cm.addAction(tr("&Show All Windows"), this, &ApplicationWindow::showAllFolderWindows);
+		cm.addAction(tr("&Hide All Windows"), this, &ApplicationWindow::hideAllFolderWindows);
 		cm.addSeparator();
 	}
 
 	{
-		cm.addAction(QPixmap(":/close.png"), tr("&Delete Folder"), this, SLOT(deleteFolder()), Qt::Key_F8);
-		cm.addAction(tr("&Rename"), this, SLOT(startRenameFolder()), Qt::Key_F2);
+		QAction *a = cm.addAction(QPixmap(":/close.png"), tr("&Delete Folder"), this, qOverload<>(&ApplicationWindow::deleteFolder));
+		a->setShortcut(Qt::Key_F8);
+		a = cm.addAction(tr("&Rename"), this, qOverload<>(&ApplicationWindow::startRenameFolder));
+		a->setShortcut(Qt::Key_F2);
 		cm.addSeparator();
 	}
 
@@ -16813,14 +16861,14 @@ void ApplicationWindow::showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p
 	lst << tr("&None") << tr("&Windows in Active Folder") << tr("Windows in &Active Folder && Subfolders");
 	for (int i = 0; i < 3; ++i)
 	{
-		QAction *a = viewWindowsMenu.addAction(lst[i],this, SLOT( setShowWindowsPolicy( int ) ) );
+		QAction *a = viewWindowsMenu.addAction(lst[i], this, [this, i]() { setShowWindowsPolicy(i); });
 		a->setData( i );
 		
 		a->setChecked( show_windows_policy == i );
 	}
 	cm.addMenu(&viewWindowsMenu)->setText(tr("&View Windows"));
 	cm.addSeparator();
-	cm.addAction(tr("&Properties..."), this, SLOT(folderProperties()));
+	cm.addAction(tr("&Properties..."), this, &ApplicationWindow::folderProperties);
 	cm.exec(p);
 }
 
@@ -17606,7 +17654,7 @@ void ApplicationWindow::initSearchForUpdates()
 {
 	/*version_buffer.open(IO_WriteOnly);
 	http = new QHttp(this);
-	connect(http, SIGNAL(done(bool)), this, SLOT(receivedVersionFile(bool)));
+	connect(http, &QHttp::done, this, &ApplicationWindow::receivedVersionFile);
 
 	QNetworkProxy proxy = QNetworkProxy::applicationProxy();
 	if (!proxy.hostName().isEmpty())
@@ -17882,7 +17930,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		if (execute){
 			scriptWindow->hide();
     		scriptWindow->executeAll();
-			if (scriptWindow->editor()->error())
+			if (scriptWindow->editor()->hasError())
 				showScriptWindow();
 		}
 		return this;

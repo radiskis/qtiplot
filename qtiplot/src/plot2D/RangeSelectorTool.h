@@ -58,7 +58,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
-		RangeSelectorTool(Graph *graph, const QObject *status_target=NULL, const char *status_slot="");
+		RangeSelectorTool(Graph *graph);
 		virtual ~RangeSelectorTool();
 		double minXValue() const { return qMin(d_active_marker.xValue(), d_inactive_marker.xValue()); }
 		double maxXValue() const { return qMax(d_active_marker.xValue(), d_inactive_marker.xValue()); }

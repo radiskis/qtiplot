@@ -38,16 +38,16 @@
 #include <QLineEdit>
 #include <qwt_plot_curve.h>
 
-TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir, const QObject *status_target, const char *status_slot)
-	: PlotToolInterface(graph, status_target, status_slot),
+TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir)
+	: PlotToolInterface(graph),
 	d_dir(dir),
 	d_app(app)
 {
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 
 	// Phase 1: select curve point
-	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display, this, SIGNAL(statusText(const QString&)));
+	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display);
+	connect((DataPickerTool*)d_sub_tool, &DataPickerTool::statusText,
+			this, &TranslateCurveTool::statusText);
 	connect((DataPickerTool*)d_sub_tool, &DataPickerTool::selected,
 			this, &TranslateCurveTool::selectCurvePoint);
 
@@ -85,7 +85,9 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	delete d_sub_tool;
 
 	// Phase 2: select destination
-	d_sub_tool = new ScreenPickerTool(d_graph, this, SIGNAL(statusText(const QString&)));
+	d_sub_tool = new ScreenPickerTool(d_graph);
+	connect((ScreenPickerTool*)d_sub_tool, &ScreenPickerTool::statusText,
+			this, &TranslateCurveTool::statusText);
 	((ScreenPickerTool*)d_sub_tool)->append(d_curve_point);
 	ScreenPickerTool::MoveRestriction moveRestriction = ScreenPickerTool::Vertical;
 	if (d_dir == Horizontal)

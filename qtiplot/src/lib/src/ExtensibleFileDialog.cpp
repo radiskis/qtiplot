@@ -57,8 +57,8 @@ ExtensibleFileDialog::ExtensibleFileDialog(QWidget *parent, bool extended, Qt::W
 		layout()->addWidget(d_extension_toggle);
 	}
 
-	connect(this, SIGNAL(accepted()), this, SLOT(close()));
-    connect(this, SIGNAL(rejected()), this, SLOT(close()));
+	connect(this, &QDialog::accepted, this, &QWidget::close);
+    connect(this, &QDialog::rejected, this, &QWidget::close);
 }
 
 void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
@@ -67,7 +67,7 @@ void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
 		return;
 	if (d_extension) {
 		d_extension->hide();
-		disconnect(d_extension_toggle, SIGNAL(toggled(bool)));
+		d_extension_toggle->disconnect(SIGNAL(toggled(bool)));
 	}
 	d_extension = extension;
 	if (!d_extension) {
@@ -83,8 +83,8 @@ void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
 		layout()->addWidget(d_extension);
 
 	d_extension->setVisible(d_extension_toggle->isChecked());
-	connect(d_extension_toggle, SIGNAL(toggled(bool)), d_extension, SLOT(setVisible(bool)));
-	connect(d_extension_toggle, SIGNAL(toggled(bool)), this, SLOT(updateToggleButtonText(bool)));
+	connect(d_extension_toggle, &QPushButton::toggled, d_extension, &QWidget::setVisible);
+	connect(d_extension_toggle, &QPushButton::toggled, this, &ExtensibleFileDialog::updateToggleButtonText);
 }
 
 void ExtensibleFileDialog::setEditableFilter(bool on)
@@ -100,8 +100,8 @@ void ExtensibleFileDialog::setEditableFilter(bool on)
 		QComboBox *filterBox = qobject_cast<QComboBox*>(item->widget());
 		if (filterBox){
 			filterBox->setEditable(on);
-			connect(filterBox, SIGNAL(editTextChanged(const QString &)),
-					this, SIGNAL(filterSelected(const QString &)));
+			connect(filterBox, &QComboBox::editTextChanged,
+					this, &QFileDialog::filterSelected);
 			return;
 		}
 	}

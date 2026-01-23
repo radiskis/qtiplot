@@ -50,7 +50,7 @@ class MultiPeakFitTool : public QObject, public PlotToolInterface
 {
 	Q_OBJECT
 	public:
-		MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks, const QObject *status_target, const char *status_slot);
+		MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPeakFit::PeakProfile profile, int num_peaks);
 		virtual ~MultiPeakFitTool();
 
         virtual int rtti() const {return PlotToolInterface::Rtti_MultiPeakFitTool;};

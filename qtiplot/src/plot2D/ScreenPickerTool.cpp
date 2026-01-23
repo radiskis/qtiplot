@@ -42,9 +42,9 @@
 #include <QKeyEvent>
 #include <qwt_picker_machine.h>
 
-ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, const char *status_slot)
+ScreenPickerTool::ScreenPickerTool(Graph *graph)
 	: QwtPlotPicker(graph->canvas()),
-	PlotToolInterface(graph, status_target, status_slot),
+	PlotToolInterface(graph),
 	d_move_restriction(NoRestriction)
 {
 	d_selection_marker.setLineStyle(QwtPlotMarker::Cross);
@@ -53,8 +53,6 @@ ScreenPickerTool::ScreenPickerTool(Graph *graph, const QObject *status_target, c
 	setStateMachine(new QwtPickerClickPointMachine());
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
-	if (status_target)
-		connect(this, SIGNAL(statusText(const QString&)), status_target, status_slot);
 	emit statusText(tr("Click on plot or move cursor to display coordinates!"));
 }
 
@@ -143,8 +141,8 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 	return QwtPlotPicker::eventFilter(obj, event);
 }
 
-DrawPointTool::DrawPointTool(ApplicationWindow *app, Graph *graph, const QObject *status_target, const char *status_slot)
-	: ScreenPickerTool(graph, status_target, status_slot),
+DrawPointTool::DrawPointTool(ApplicationWindow *app, Graph *graph)
+	: ScreenPickerTool(graph),
 	d_app(app)
 {
 	d_curve = NULL;
@@ -237,7 +235,7 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
 }
 
 ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matrix *m, Table *horTable, Table *verTable)
-	: ScreenPickerTool(graph, app->infoLineEdit(), SLOT(setText(const QString&))),
+	: ScreenPickerTool(graph),
 	d_app(app),
 	d_matrix(m),
 	d_hor_table(horTable),

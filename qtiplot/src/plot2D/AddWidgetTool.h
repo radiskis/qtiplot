@@ -52,7 +52,7 @@ class AddWidgetTool : public QObject, public PlotToolInterface
         	UserWidget = 1000
     	};
 
-		AddWidgetTool(WidgetType type, Graph *graph, QAction *d_action, const QObject *status_target = NULL, const char *status_slot = "");
+		AddWidgetTool(WidgetType type, Graph *graph, QAction *action);
 		virtual ~AddWidgetTool();
 
 		virtual int rtti() const {return PlotToolInterface::Rtti_AddWidgetTool;};

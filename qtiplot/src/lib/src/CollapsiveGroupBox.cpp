@@ -31,7 +31,7 @@
 CollapsiveGroupBox::CollapsiveGroupBox(const QString & title, QWidget *parent) : QGroupBox(title, parent)
 {
 	setCheckable(true);
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(setExpanded(bool)));
+	connect(this, &QGroupBox::toggled, this, &CollapsiveGroupBox::setExpanded);
 }
 
 void CollapsiveGroupBox::setCollapsed(bool collapsed)
