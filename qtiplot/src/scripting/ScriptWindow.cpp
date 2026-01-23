@@ -75,9 +75,9 @@ d_app(app)
 	console = new QTextEdit(consoleWindow);
 	console->setReadOnly(true);
 	consoleWindow->setWidget(console);
-	connect(te, SIGNAL(error(const QString&, const QString&, int)), console, SLOT(setPlainText(const QString&)));
-	connect(te, SIGNAL(error(const QString&, const QString&, int)), consoleWindow, SLOT(show()));
-	connect(te, &QTextEdit::textChanged, this, SLOT(enableActions()));
+	connect(te, QOverload<const QString&, const QString&, int>::of(&ScriptEdit::error), console, [this](const QString& message){ console->setPlainText(message); });
+	connect(te, QOverload<const QString&, const QString&, int>::of(&ScriptEdit::error), consoleWindow, &QWidget::show);
+	connect(te, &QTextEdit::textChanged, this, &ScriptWindow::enableActions);
 
 	initActions();
 	enableActions();
@@ -113,7 +113,7 @@ void ScriptWindow::initActions()
 
 	actionOpen = new QAction(QIcon(":/fileopen.png"), tr("&Open..."), this);
 	actionOpen->setShortcut( tr("Ctrl+O") );
-	connect(actionOpen, &QAction::triggered, this, &ScriptWindow::open);
+	connect(actionOpen, &QAction::triggered, this, [this](bool){ open(); });
 	file->addAction(actionOpen);
 
 	file->addSeparator();
@@ -135,37 +135,37 @@ void ScriptWindow::initActions()
 
 	actionPrint = new QAction(QIcon(":/fileprint.png"), tr("&Print"), this);
 	actionPrint->setShortcut( tr("Ctrl+P") );
-	connect(actionPrint, &QAction::triggered, te, &ScriptWindow::print);
+	connect(actionPrint, &QAction::triggered, te, QOverload<>::of(&ScriptEdit::print));
 	file->addAction(actionPrint);
 
 	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
 	actionUndo->setShortcut( tr("Ctrl+Z") );
-	connect(actionUndo, &QAction::triggered, te, &ScriptWindow::undo);
+	connect(actionUndo, &QAction::triggered, te, &QTextEdit::undo);
 	edit->addAction(actionUndo);
 	actionUndo->setEnabled(false);
 
 	actionRedo = new QAction(QIcon(":/redo.png"), tr("&Redo"), this);
 	actionRedo->setShortcut( tr("Ctrl+Y") );
-	connect(actionRedo, &QAction::triggered, te, &ScriptWindow::redo);
+	connect(actionRedo, &QAction::triggered, te, &QTextEdit::redo);
 	edit->addAction(actionRedo);
 	actionRedo->setEnabled(false);
 	edit->addSeparator();
 
 	actionCut = new QAction(QIcon(":/cut.png"), tr("&Cut"), this);
 	actionCut->setShortcut( tr("Ctrl+x") );
-	connect(actionCut, &QAction::triggered, te, &ScriptWindow::cut);
+	connect(actionCut, &QAction::triggered, te, &QTextEdit::cut);
 	edit->addAction(actionCut);
 	actionCut->setEnabled(false);
 
 	actionCopy = new QAction(QIcon(":/copy.png"), tr("&Copy"), this);
 	actionCopy->setShortcut( tr("Ctrl+C") );
-	connect(actionCopy, &QAction::triggered, te, &ScriptWindow::copy);
+	connect(actionCopy, &QAction::triggered, te, &QTextEdit::copy);
 	edit->addAction(actionCopy);
 	actionCopy->setEnabled(false);
 
 	actionPaste = new QAction(QIcon(":/paste.png"), tr("&Paste"), this);
 	actionPaste->setShortcut( tr("Ctrl+V") );
-	connect(actionPaste, &QAction::triggered, te, &ScriptWindow::paste);
+	connect(actionPaste, &QAction::triggered, te, &QTextEdit::paste);
 	edit->addAction(actionPaste);
 
 	edit->addSeparator();
@@ -209,17 +209,17 @@ void ScriptWindow::initActions()
 
 	actionExecute = new QAction(tr("E&xecute"), this);
 	actionExecute->setShortcut( tr("CTRL+J") );
-	connect(actionExecute, &QAction::triggered, te, &ScriptWindow::execute);
+	connect(actionExecute, &QAction::triggered, te, &ScriptEdit::execute);
 	run->addAction(actionExecute);
 
 	actionExecuteAll = new QAction(QIcon(":/play.png"), tr("Execute &All"), this);
 	actionExecuteAll->setShortcut( tr("CTRL+SHIFT+J") );
-	connect(actionExecuteAll, &QAction::triggered, te, &ScriptWindow::executeAll);
+	connect(actionExecuteAll, &QAction::triggered, te, &ScriptEdit::executeAll);
 	run->addAction(actionExecuteAll);
 
 	actionEval = new QAction(tr("&Evaluate Expression"), this);
 	actionEval->setShortcut( tr("CTRL+Return") );
-	connect(actionEval, &QAction::triggered, te, &ScriptWindow::evaluate);
+	connect(actionEval, &QAction::triggered, te, &ScriptEdit::evaluate);
 	run->addAction(actionEval);
 
 	run->addSeparator();

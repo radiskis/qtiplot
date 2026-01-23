@@ -61,7 +61,7 @@ public:
 	//! Use this function to initialize the values range.
 	void setRange(double min, double max);
 	//! Use this function to initialize the values range.
-	void setRange(const QwtInterval& range){setRange(range.maxValue(), range.maxValue());}
+	void setRange(const QwtInterval& range){setRange(range.minValue(), range.maxValue());}
 
 signals:
 	void scalingChanged();

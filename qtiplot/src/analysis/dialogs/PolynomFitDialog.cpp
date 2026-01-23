@@ -112,7 +112,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	connect(buttonFit, &QAbstractButton::clicked, this, &PolynomFitDialog::fit);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &PolynomFitDialog::close);
-	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &PolynomFitDialog::activateCurve);
+	connect(boxName, &QComboBox::textActivated, this, &PolynomFitDialog::activateCurve);
 }
 
 void PolynomFitDialog::fit()

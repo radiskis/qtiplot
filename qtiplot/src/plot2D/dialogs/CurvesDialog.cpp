@@ -189,16 +189,16 @@ CurvesDialog::CurvesDialog( QWidget* parent, Qt::WindowFlags fl )
 	connect(btnRemove, &QPushButton::clicked, this, &CurvesDialog::removeCurves);
 	connect(btnOK, &QPushButton::clicked, this, &CurvesDialog::close);
 	connect(btnCancel, &QPushButton::clicked, this, &CurvesDialog::close);
-	connect(contents, SIGNAL(currentRowChanged(int)), this, SLOT(showCurveBtn(int)));
-    connect(contents, SIGNAL(itemSelectionChanged()), this, SLOT(enableContentsBtns()));
-    connect(available, SIGNAL(itemSelectionChanged()), this, SLOT(enableAddBtn()));
+	connect(contents, &QListWidget::currentRowChanged, this, &CurvesDialog::showCurveBtn);
+    connect(contents, &QListWidget::itemSelectionChanged, this, &CurvesDialog::enableContentsBtns);
+    connect(available, &QTreeWidget::itemSelectionChanged, this, &CurvesDialog::enableAddBtn);
 
     QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(removeCurves()));
+    connect(shortcut, &QShortcut::activated, this, &CurvesDialog::removeCurves);
     shortcut = new QShortcut(QKeySequence("-"), this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(removeCurves()));
+    connect(shortcut, &QShortcut::activated, this, &CurvesDialog::removeCurves);
     shortcut = new QShortcut(QKeySequence("+"), this);
-    connect(shortcut, SIGNAL(activated()), this, SLOT(addCurves()));
+    connect(shortcut, &QShortcut::activated, this, &CurvesDialog::addCurves);
 }
 
 void CurvesDialog::showCurveBtn(int)

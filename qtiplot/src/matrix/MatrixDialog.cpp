@@ -103,8 +103,8 @@ MatrixDialog::MatrixDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	// signals and slots connections
 	connect(buttonApply, &QPushButton::clicked, this, &MatrixDialog::apply);
-	connect(buttonOk, &QPushButton::clicked, this, &ColorMapDialog::accept);
-	connect(buttonCancel, &QPushButton::clicked, this, &ColorMapDialog::close);
+	connect(buttonOk, &QPushButton::clicked, this, &MatrixDialog::accept);
+	connect(buttonCancel, &QPushButton::clicked, this, &MatrixDialog::close);
 	connect(buttonProperties, &QPushButton::clicked, this, &MatrixDialog::openValuesDialog);
 	connect(boxNumericDisplay, QOverload<int>::of(&QComboBox::activated), this, &MatrixDialog::showPrecisionBox);
 }
@@ -115,7 +115,7 @@ void MatrixDialog::openValuesDialog()
 	if (!app)
 		return;
 
-	connect(this, &QObject::destroyed, app, &ApplicationWindow::showMatrixValuesDialog);
+	connect(this, &QObject::destroyed, app, [app](QObject*){ app->showMatrixValuesDialog(); });
 	this->accept();
 }
 

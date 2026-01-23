@@ -136,7 +136,7 @@ void RectangleWidget::setLinkedLayer(int layerIndex)
     if (!g)
         return;
 
-    this->disconnect(g, &Graph::setCanvasCoordinates);
+    disconnect(this, &RectangleWidget::changedCoordinates, g, &Graph::setCanvasCoordinates);
     connect(this, &RectangleWidget::changedCoordinates, g, &Graph::setCanvasCoordinates);
     connect(g, &QObject::destroyed, this, &RectangleWidget::closedLinkedLayer);
 }

@@ -49,7 +49,7 @@ SubtractLineTool::SubtractLineTool(Graph *graph, ApplicationWindow *app, const Q
 	QString msg = tr("Move cursor and click to select and double-click/press 'Enter' to set the position of the first point!");
 	emit statusText(msg);
 
-	connect(d_picker_tool, &ScreenPickerTool::selected, this, &SubtractLineTool::selectPoint);
+	connect(d_picker_tool, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &SubtractLineTool::selectPoint);
 	d_graph->canvas()->grabMouse();
 }
 

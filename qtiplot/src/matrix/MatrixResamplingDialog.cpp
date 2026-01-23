@@ -30,6 +30,7 @@
 #include "Matrix.h"
 
 #include <QDialogButtonBox>
+#include <QAbstractButton>
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>

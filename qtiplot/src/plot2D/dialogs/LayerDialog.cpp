@@ -241,11 +241,11 @@ multi_layer(NULL)
 	connect(buttonCancel, &QPushButton::clicked, this, &LayerDialog::reject);
 	connect(fitBox, &QCheckBox::toggled, this, &LayerDialog::enableLayoutOptions);
 	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &LayerDialog::updateSizes);
-	connect(boxCanvasWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LayerDialog::adjustCanvasHeight);
-	connect(boxCanvasHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LayerDialog::adjustCanvasWidth);
+	connect(boxCanvasWidth, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustCanvasHeight(val); });
+	connect(boxCanvasHeight, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustCanvasWidth(val); });
 
-	connect(boxColsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, &LayerDialog::showCommonAxesBox);
-	connect(boxRowsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, &LayerDialog::showCommonAxesBox);
+	connect(boxColsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ showCommonAxesBox(); });
+	connect(boxRowsGap, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ showCommonAxesBox(); });
 	connect(alignPolicyBox, QOverload<int>::of(&QComboBox::activated), this, &LayerDialog::showCommonAxesBox);
 }
 

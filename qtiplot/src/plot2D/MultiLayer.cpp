@@ -1539,8 +1539,8 @@ void MultiLayer::connectLayer(Graph *g)
 		connect(g, &Graph::viewTitleDialog, app, &ApplicationWindow::showTitleDialog);
 		connect(g, &Graph::showAxisTitleDialog, app, &ApplicationWindow::showAxisTitleDialog);
 		connect(g, &Graph::axisDblClicked, app, &ApplicationWindow::showScalePageFromAxisDialog);
-		connect(g, &Graph::showAxisDialog, app, &ApplicationWindow::showAxisPageFromAxisDialog);
-		connect(g, &Graph::enableTextEditor, app, &ApplicationWindow::enableTextEditor);
+		connect(g, static_cast<void (Graph::*)(int)>(&Graph::showAxisDialog), app, &ApplicationWindow::showAxisPageFromAxisDialog);
+		connect(g, static_cast<void (Graph::*)(Graph*)>(&Graph::enableTextEditor), app, &ApplicationWindow::enableTextEditor);
 		connect(g, &Graph::showCurveContextMenu, app, &ApplicationWindow::showCurveContextMenu);
 	}
 	connect (g, &Graph::drawLineEnded, this, &MultiLayer::drawLineEnded);
@@ -2056,7 +2056,7 @@ void MultiLayer::showWaterfallFillDialog()
 	gb1->setChecked(brush.style() != Qt::NoBrush);
 
 	connect(gb1, &QGroupBox::toggled, active_graph, &Graph::updateWaterfallFill);
-	connect(fillColorBox, &ColorButton::colorChanged, this, &MultiLayer::setWaterfallFillColor);
+	connect(fillColorBox, &ColorButton::colorChanged, this, [this, fillColorBox](){ setWaterfallFillColor(fillColorBox->color()); });
 	connect(sideLinesBox, &QCheckBox::toggled, active_graph, &Graph::setWaterfallSideLines);
 
 	QPushButton *closeBtn = new QPushButton(tr("&Close"));

@@ -58,6 +58,7 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 		selectFile(d_window->objectName());
 	}
 
+#if QT_VERSION >= 0x040400
 	connect(this, &QFileDialog::filterSelected,
 			this, &ExportDialog::updateAdvancedOptions);
 #else
@@ -109,13 +110,13 @@ void ExportDialog::initAdvancedOptions()
 	buttonHelp = new QPushButton(tr( "&Help" ));
 	gl1->addWidget( buttonHelp, 1, 2);
 
-	QString help = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
-	help += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
+	QString helpText = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
+	helpText += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
 
-	boxSeparator->setWhatsThis(help);
-	separatorLbl->setWhatsThis(help);
-	boxSeparator->setToolTip(help);
-	separatorLbl->setToolTip(help);
+	boxSeparator->setWhatsThis(helpText);
+	separatorLbl->setWhatsThis(helpText);
+	boxSeparator->setToolTip(helpText);
+	separatorLbl->setToolTip(helpText);
 
 	boxNames = new QCheckBox(tr( "Include Column &Names" ));
     boxNames->setChecked( app->d_export_col_names );
@@ -135,9 +136,9 @@ void ExportDialog::initAdvancedOptions()
 	vl1->addWidget( boxSelection );
 
     // signals and slots connections
-    connect( boxTable, &QComboBox::activated, this, &ExportDialog::updateOptions);
-    connect( buttonHelp, &QPushButton::clicked, this, &ExportDialog::help);
-	connect( boxAllTables, &QCheckBox::toggled, this, &ExportDialog::enableTableName);
+    connect(boxTable, &QComboBox::textActivated, this, &ExportDialog::updateOptions);
+    connect(buttonHelp, &QPushButton::clicked, this, [this](){ help(); });
+	connect(boxAllTables, &QCheckBox::toggled, this, &ExportDialog::enableTableName);
 }
 
 void ExportDialog::updateAdvancedOptions (const QString & filter)

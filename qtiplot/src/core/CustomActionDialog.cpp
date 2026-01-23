@@ -144,12 +144,12 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
 	init();
 
 	QShortcut *accelRemove = new QShortcut(QKeySequence(Qt::Key_Delete), this);
-	connect(accelRemove, SIGNAL(activated()), this, SLOT(removeAction()));
+	connect(accelRemove, &QShortcut::activated, this, &CustomActionDialog::removeAction);
 
 	connect(newMenuBtn, &QAbstractButton::clicked, this, &CustomActionDialog::addMenu);
 	connect(removeMenuBtn, &QAbstractButton::clicked, this, &CustomActionDialog::removeMenu);
-	connect(menuBox, SIGNAL(currentIndexChanged (const QString &)),
-			this, SLOT(enableDeleteMenuBtn(const QString &)));
+	connect(menuBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
+			this, &CustomActionDialog::enableDeleteMenuBtn);
 
 	connect(buttonSave, &QAbstractButton::clicked, this, &CustomActionDialog::saveCurrentAction);
 	connect(buttonAdd, &QAbstractButton::clicked, this, &CustomActionDialog::addAction);
@@ -158,7 +158,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
 	connect(iconBtn, &QAbstractButton::clicked, this, &CustomActionDialog::chooseIcon);
 	connect(fileBtn, &QAbstractButton::clicked, this, &CustomActionDialog::chooseFile);
 	connect(folderBtn, &QAbstractButton::clicked, this, &CustomActionDialog::chooseFolder);
-	connect(itemsList, SIGNAL(currentRowChanged(int)), this, SLOT(setCurrentAction(int)));
+	connect(itemsList, &QListWidget::currentRowChanged, this, &CustomActionDialog::setCurrentAction);
 }
 
 void CustomActionDialog::init()

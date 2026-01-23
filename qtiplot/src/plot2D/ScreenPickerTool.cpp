@@ -251,7 +251,7 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 		double yVal = 0.5*(m->yStart() + m->yEnd());
 		if (d_graph){
 			connect(d_matrix, &QObject::destroyed, d_graph, &Graph::disableImageProfilesTool);
-			connect(d_matrix, &Matrix::modifiedData, this, &ScreenPickerTool::modifiedMatrix);
+			connect(d_matrix, &Matrix::modifiedData, this, &ImageProfilesTool::modifiedMatrix);
 
 			averageBox = new QSpinBox;
 			averageBox->setMinimum(1);
@@ -275,9 +275,9 @@ ImageProfilesTool::ImageProfilesTool(ApplicationWindow *app, Graph *graph, Matri
 
 			append(QPointF(xVal, yVal));
 
-			connect(averageBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &ScreenPickerTool::updateCursorWidth);
-			connect(horSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ScreenPickerTool::updateCursorPosition);
-			connect(vertSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ScreenPickerTool::updateCursorPosition);
+			connect(averageBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &ImageProfilesTool::updateCursorWidth);
+			connect(horSpinBox, &DoubleSpinBox::valueChanged, this, [this](double){ updateCursorPosition(); });
+			connect(vertSpinBox, &DoubleSpinBox::valueChanged, this, [this](double){ updateCursorPosition(); });
 
 			MultiLayer *plot = d_graph->multiLayer();
 			if (plot){

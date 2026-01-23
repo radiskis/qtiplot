@@ -96,7 +96,7 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags 
 
 	setGraph(g);
 
-	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &IntegrationDialog::activateCurve);
+	connect(boxName, &QComboBox::textActivated, this, &IntegrationDialog::activateCurve);
 	connect(buttonFit, &QAbstractButton::clicked, this, &IntegrationDialog::integrate);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &IntegrationDialog::close);
 }

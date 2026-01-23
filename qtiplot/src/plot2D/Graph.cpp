@@ -2222,7 +2222,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
         for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-                connect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
+                connect(scale, &QwtScaleWidget::scaleDivChanged, this, [this](){ updateMarkersBoundingRect(); });
 		}
         updatePlot();
     }
@@ -4175,7 +4175,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				connect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
+				connect(scale, &QwtScaleWidget::scaleDivChanged, this, [this](){ updateMarkersBoundingRect(); });
 		}
 
 		d_panner = new QwtPlotPanner(cnvs);
@@ -4207,7 +4207,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				disconnect(scale, &QwtScaleWidget::scaleDivChanged, this, &Graph::updateMarkersBoundingRect);
+				disconnect(scale, &QwtScaleWidget::scaleDivChanged, this, nullptr);
 		}
 
 		cnvs->setCursor(Qt::ArrowCursor);

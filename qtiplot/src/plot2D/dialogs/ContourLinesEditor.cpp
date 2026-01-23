@@ -63,7 +63,7 @@ ContourLinesEditor::ContourLinesEditor(const QLocale& locale, int precision, QWi
 	table->setMinimumHeight(6*table->horizontalHeader()->height() + 2);
 	table->installEventFilter(this);
 
-	connect(table, SIGNAL(cellClicked (int, int)), this, SLOT(showPenDialog(int, int)));
+	connect(table, &QTableWidget::cellClicked, this, &ContourLinesEditor::showPenDialog);
 
 	insertBtn = new QPushButton(tr("&Insert"));
 	insertBtn->setEnabled(false);
@@ -137,7 +137,7 @@ void ContourLinesEditor::updateContents()
 		sb->setDecimals(d_precision);
 		sb->setValue(levels[i]);
 		sb->setRange(range.minValue (), range.maxValue ());
-		connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
+		connect(sb, &DoubleSpinBox::activated, this, &ContourLinesEditor::spinBoxActivated);
     	table->setCellWidget(i, 0, sb);
 
 		QPen pen = d_spectrogram->defaultContourPen();
@@ -191,7 +191,7 @@ void ContourLinesEditor::insertLevel()
 	sb->setDecimals(d_precision);
 	sb->setValue(val);
 	sb->setRange(range.minValue (), range.maxValue ());
-	connect(sb, SIGNAL(activated(DoubleSpinBox *)), this, SLOT(spinBoxActivated(DoubleSpinBox *)));
+	connect(sb, &DoubleSpinBox::activated, this, &ContourLinesEditor::spinBoxActivated);
     table->setCellWidget(row, 0, sb);
 
 	QPen pen = d_spectrogram->defaultContourPen();
@@ -272,7 +272,7 @@ void ContourLinesEditor::showPenDialog(int row, int col)
 		connect(acceptPenBtn, &QPushButton::clicked, this, &ContourLinesEditor::updatePen);
 
 		QPushButton *closeBtn = new QPushButton(tr("&Close"));
-		connect(closeBtn, &QPushButton::clicked, penDialog, &ContourLinesEditor::reject);
+		connect(closeBtn, &QPushButton::clicked, penDialog, &QDialog::reject);
 
 		QHBoxLayout *hl2 = new QHBoxLayout();
 		hl2->addStretch();

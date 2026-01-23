@@ -123,7 +123,7 @@ PlotWizard::PlotWizard( QWidget* parent, Qt::WindowFlags fl )
 	vlayout->addLayout( bottomLayout );
 
 	// signals and slots connections
-	connect(boxTables, QOverload<const QString&>::of(&QComboBox::activated), this, &PlotWizard::changeColumnsList);
+	connect(boxTables, &QComboBox::textActivated, this, &PlotWizard::changeColumnsList);
 	connect(buttonOk, &QAbstractButton::clicked, this, &PlotWizard::accept);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &PlotWizard::reject);
 	connect(buttonNew, &QAbstractButton::clicked, this, &PlotWizard::addCurve);

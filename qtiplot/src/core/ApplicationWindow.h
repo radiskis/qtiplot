@@ -1197,6 +1197,7 @@ private slots:
 
 	//! \name Font Format Functions
 	//@{
+	public slots:
 	void enableTextEditor(Graph *g);
 	void setFontSize(int);
 	void setFontFamily(const QFont &);

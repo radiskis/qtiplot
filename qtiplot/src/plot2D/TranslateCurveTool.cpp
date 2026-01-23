@@ -91,7 +91,7 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	if (d_dir == Horizontal)
 		moveRestriction = ScreenPickerTool::Horizontal;
 	((ScreenPickerTool*)d_sub_tool)->setMoveRestriction(moveRestriction);
-	connect((ScreenPickerTool*)d_sub_tool, &ScreenPickerTool::selected, this, &TranslateCurveTool::selectDestination);
+	connect((ScreenPickerTool*)d_sub_tool, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &TranslateCurveTool::selectDestination);
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));
 }
 

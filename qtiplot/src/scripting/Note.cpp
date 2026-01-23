@@ -167,9 +167,9 @@ void Note::addTab()
 
 	d_tab_widget->setCurrentIndex(d_tab_widget->addTab(frame, tr("untitled")));
 
-	connect(editor, &NoteEditor::textChanged, this, SLOT(modifiedNote()));
-	connect(editor, &NoteEditor::textChanged, this, SIGNAL(currentEditorChanged()));
-	connect(editor, &NoteEditor::dirPathChanged, this, &Note::dirPathChanged);
+	connect(editor, &ScriptEdit::textChanged, this, &Note::modifiedNote);
+	connect(editor, &ScriptEdit::textChanged, this, &Note::currentEditorChanged);
+	connect(editor, &ScriptEdit::dirPathChanged, this, &Note::dirPathChanged);
 }
 
 int Note::indexOf(ScriptEdit* editor)

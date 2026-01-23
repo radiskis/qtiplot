@@ -162,7 +162,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WindowFlags fl )
 	languageChange();
 
 	// signals and slots connections
-	connect( itemsList, SIGNAL(currentRowChanged(int)), this, SLOT(setCurrentPage(int)));
+	connect( itemsList, &QListWidget::currentRowChanged, this, &ConfigDialog::setCurrentPage);
 	connect(buttonOk, &QAbstractButton::clicked, this, &ConfigDialog::accept);
 	connect(buttonApply, &QAbstractButton::clicked, this, &ConfigDialog::apply);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &ConfigDialog::reject);
@@ -339,8 +339,8 @@ void ConfigDialog::initPlotsPage()
 	bkgOpacitySlider->setRange(0, 100);
 	bkgOpacitySlider->setValue(app->d_graph_background_opacity);
 
-	connect(bkgOpacitySlider, SIGNAL(valueChanged(int)), boxBackgroundTransparency, SLOT(setValue(int)));
-	connect(boxBackgroundTransparency, SIGNAL(valueChanged(int)), bkgOpacitySlider, SLOT(setValue(int)));
+	connect(bkgOpacitySlider, &QSlider::valueChanged, boxBackgroundTransparency, &QSpinBox::setValue);
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), bkgOpacitySlider, &QSlider::setValue);
 
 	QHBoxLayout* hb = new QHBoxLayout();
 	hb->addWidget(bkgOpacitySlider);
@@ -367,8 +367,8 @@ void ConfigDialog::initPlotsPage()
 	canvasOpacitySlider->setRange(0, 100);
 	canvasOpacitySlider->setValue(app->d_graph_canvas_opacity);
 
-	connect(canvasOpacitySlider, SIGNAL(valueChanged(int)), boxCanvasTransparency, SLOT(setValue(int)));
-	connect(boxCanvasTransparency, SIGNAL(valueChanged(int)), canvasOpacitySlider, SLOT(setValue(int)));
+	connect(canvasOpacitySlider, &QSlider::valueChanged, boxCanvasTransparency, &QSpinBox::setValue);
+	connect(boxCanvasTransparency, QOverload<int>::of(&QSpinBox::valueChanged), canvasOpacitySlider, &QSlider::setValue);
 
 	QHBoxLayout* hb1 = new QHBoxLayout();
 	hb1->addWidget(canvasOpacitySlider);
@@ -851,7 +851,7 @@ void ConfigDialog::initAppPage()
 
 	connect(boxLanguage, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::switchToLanguage);
 	connect(fontsBtn, &QAbstractButton::clicked, this, &ConfigDialog::pickApplicationFont);
-	connect( boxSave, SIGNAL( toggled(bool) ), boxMinutes, SLOT( setEnabled(bool) ) );
+	connect( boxSave, &QAbstractButton::toggled, boxMinutes, &QWidget::setEnabled );
 }
 
 void ConfigDialog::initNotesPage()
@@ -878,7 +878,7 @@ void ConfigDialog::initNotesPage()
 
     boxFontFamily = new QFontComboBox();
     boxFontFamily->setCurrentFont(app->d_notes_font);
-    connect(boxFontFamily, SIGNAL(activated(int)), this, SLOT(customizeNotes()));
+    connect(boxFontFamily, QOverload<int>::of(&QFontComboBox::activated), this, &ConfigDialog::customizeNotes);
     gl1->addWidget(boxFontFamily, 1, 1);
 
     boxFontSize = new QSpinBox();
@@ -922,7 +922,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonCommentColor = new ColorButton();
 	buttonCommentColor->setColor(app->d_comment_highlight_color);
-	connect(buttonCommentColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonCommentColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonCommentColor, 0, 1);
 	buttonCommentLabel->setBuddy (buttonCommentColor);
 
@@ -931,7 +931,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonKeywordColor = new ColorButton();
 	buttonKeywordColor->setColor(app->d_keyword_highlight_color);
-	connect(buttonKeywordColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonKeywordColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonKeywordColor, 1, 1);
 	buttonKeywordLabel->setBuddy (buttonKeywordColor);
 
@@ -940,7 +940,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonQuotationColor = new ColorButton();
 	buttonQuotationColor->setColor(app->d_quotation_highlight_color);
-	connect(buttonQuotationColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonQuotationColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonQuotationColor, 2, 1);
 	buttonQuotationLabel->setBuddy (buttonQuotationColor);
 
@@ -949,7 +949,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonNumericColor = new ColorButton();
 	buttonNumericColor->setColor(app->d_numeric_highlight_color);
-	connect(buttonNumericColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonNumericColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonNumericColor, 3, 1);
 	buttonNumericLabel->setBuddy (buttonNumericColor);
 
@@ -958,7 +958,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonFunctionColor = new ColorButton();
 	buttonFunctionColor->setColor(app->d_function_highlight_color);
-	connect(buttonFunctionColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonFunctionColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonFunctionColor, 4, 1);
 	buttonFunctionLabel->setBuddy (buttonFunctionColor);
 
@@ -967,7 +967,7 @@ void ConfigDialog::initNotesPage()
 
 	buttonClassColor = new ColorButton();
 	buttonClassColor->setColor(app->d_class_highlight_color);
-	connect(buttonClassColor, SIGNAL(colorChanged()), this, SLOT(rehighlight()));
+	connect(buttonClassColor, &ColorButton::colorChanged, this, &ConfigDialog::rehighlight);
 	gl->addWidget(buttonClassColor, 5, 1);
 	buttonClassLabel->setBuddy (buttonClassColor);
 	gl->setRowStretch(6, 1);
@@ -1073,8 +1073,8 @@ void ConfigDialog::initLayerSpeedPage()
 	curveSizeBox->setMaximum(INT_MAX);
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 
-	connect(disableAntialiasingBox, SIGNAL(toggled(bool)), curveSizeBox, SLOT(setEnabled(bool)));
-	connect(antialiasingGroupBox, &QAbstractButton::toggled, this, &ConfigDialog::enableCurveAntialiasingSizeBox);
+	connect(disableAntialiasingBox, &QAbstractButton::toggled, curveSizeBox, &QWidget::setEnabled);
+	connect(antialiasingGroupBox, &QGroupBox::toggled, this, &ConfigDialog::enableCurveAntialiasingSizeBox);
 
 	QGridLayout * gl = new QGridLayout(antialiasingGroupBox);
 	gl->addWidget(disableAntialiasingBox, 0, 0);
@@ -1157,7 +1157,7 @@ void ConfigDialog::initLayerGeometryPage()
 	boxCanvasWidth->setLocale(locale);
 	boxCanvasWidth->setDecimals(6);
 	//boxCanvasWidth->setValue(convertFromPixels(app->d_layer_canvas_width, unit,0));
-	connect(boxCanvasWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::adjustCanvasHeight);
+	connect(boxCanvasWidth, &DoubleSpinBox::valueChanged, this, &ConfigDialog::adjustCanvasHeight);
 	gl->addWidget(boxCanvasWidth, 1, 1);
 
 	canvasHeightLabel = new QLabel();
@@ -1168,7 +1168,7 @@ void ConfigDialog::initLayerGeometryPage()
 	boxCanvasHeight->setLocale(locale);
 	boxCanvasHeight->setDecimals(6);
 	//boxCanvasHeight->setValue(convertFromPixels(app->d_layer_canvas_height, unit, 1));
-	connect(boxCanvasHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::adjustCanvasWidth);
+	connect(boxCanvasHeight, &DoubleSpinBox::valueChanged, this, &ConfigDialog::adjustCanvasWidth);
 	gl->addWidget(boxCanvasHeight, 2, 1);
 
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
@@ -1236,8 +1236,8 @@ void ConfigDialog::initCurvesPage()
 	curveAlphaBox->setSuffix(" %");
 	curveAlphaBox->setValue(app->defaultCurveAlpha);
 
-	connect(curveOpacitySlider, SIGNAL(valueChanged(int)), curveAlphaBox, SLOT(setValue(int)));
-	connect(curveAlphaBox, SIGNAL(valueChanged(int)), curveOpacitySlider, SLOT(setValue(int)));
+	connect(curveOpacitySlider, &QSlider::valueChanged, curveAlphaBox, &QSpinBox::setValue);
+	connect(curveAlphaBox, QOverload<int>::of(&QSpinBox::valueChanged), curveOpacitySlider, &QSlider::setValue);
 
 	QHBoxLayout* hb1 = new QHBoxLayout();
 	hb1->addWidget(curveOpacitySlider);
@@ -1299,8 +1299,8 @@ void ConfigDialog::initCurvesPage()
 	colorsList->horizontalHeader()->setSectionResizeMode (1, QHeaderView::Stretch);
 	colorsList->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-	connect(colorsList, SIGNAL(cellClicked(int, int)), this, SLOT(showColorDialog(int, int)));
-	connect(colorsList, SIGNAL(cellChanged(int, int)), this, SLOT(changeColorName(int, int)));
+	connect(colorsList, &QTableWidget::cellClicked, this, &ConfigDialog::showColorDialog);
+	connect(colorsList, &QTableWidget::cellChanged, this, &ConfigDialog::changeColorName);
 
 	d_indexed_colors = app->indexedColors();
 	d_indexed_color_names = app->indexedColorNames();
@@ -1348,7 +1348,7 @@ void ConfigDialog::initCurvesPage()
 	groupIndexedSymbols = new QGroupBox();
 	groupIndexedSymbols->setCheckable(true);
 	groupIndexedSymbols->setChecked(app->d_indexed_symbols);
-	connect(groupIndexedSymbols, SIGNAL(clicked(bool)), symbolBox, SLOT(setDisabled(bool)));
+	connect(groupIndexedSymbols, &QGroupBox::clicked, symbolBox, &QWidget::setDisabled);
 
 	QVBoxLayout *vl2 = new QVBoxLayout(groupIndexedSymbols);
 	vl2->addWidget(symbolsList);
@@ -1386,7 +1386,7 @@ void ConfigDialog::setSymbolsList(const QList<int>& symbList)
 	for (int i = 0; i < rows; i++){
 		SymbolBox *sb = new SymbolBox(false);
 		sb->setCurrentIndex(symbList[i]);
-		connect(sb, SIGNAL(activated(SymbolBox *)), this, SLOT(setCurrentSymbol(SymbolBox *)));
+		connect(sb, &SymbolBox::activated, this, &ConfigDialog::setCurrentSymbol);
 		connect(sb, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::updateSymbolsList);
 		symbolsList->setCellWidget(i, 0, sb);
 	}
@@ -1620,7 +1620,7 @@ void ConfigDialog::initAxesPage()
 		box2->setChecked(app->d_show_axes_labels[i]);
 		box2->setEnabled(enabledAxis);
 
-		connect(box1, SIGNAL(toggled(bool)), box2, SLOT(setEnabled(bool)));
+		connect(box1, &QAbstractButton::toggled, box2, &QWidget::setEnabled);
 	}
 	enabledAxesGrid->setColumnStretch (0, 0);
 	enabledAxesGrid->setColumnStretch (1, 1);
@@ -1707,16 +1707,16 @@ void ConfigDialog::initGridPage()
 	showGridOptions(0);
 
 	//grid page slot connections
-	connect(axesGridList, SIGNAL(currentRowChanged(int)), this, SLOT(showGridOptions(int)));
+	connect(axesGridList, &QListWidget::currentRowChanged, this, &ConfigDialog::showGridOptions);
 	connect(boxMajorGrid, &QAbstractButton::toggled, this, &ConfigDialog::majorGridEnabled);
 	connect(boxMinorGrid, &QAbstractButton::toggled, this, &ConfigDialog::minorGridEnabled);
 	connect(boxAntialiseGrid, &QAbstractButton::toggled, this, &ConfigDialog::updateGrid);
-	connect(boxColorMajor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
-	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
-	connect(boxTypeMajor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxTypeMinor,SIGNAL(activated(int)),this, SLOT(updateGrid()));
-	connect(boxWidthMajor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::updateGrid);
-	connect(boxWidthMinor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ConfigDialog::updateGrid);
+	connect(boxColorMajor, &QtColorPicker::colorChanged, this, &ConfigDialog::updateGrid);
+	connect(boxColorMinor, &QtColorPicker::colorChanged, this, &ConfigDialog::updateGrid);
+	connect(boxTypeMajor, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::updateGrid);
+	connect(boxTypeMinor, QOverload<int>::of(&QComboBox::activated), this, &ConfigDialog::updateGrid);
+	connect(boxWidthMajor, &DoubleSpinBox::valueChanged, this, &ConfigDialog::updateGrid);
+	connect(boxWidthMinor, &DoubleSpinBox::valueChanged, this, &ConfigDialog::updateGrid);
 }
 
 void ConfigDialog::initConfirmationsPage()
@@ -1818,7 +1818,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	texCompilerPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_latex_compiler_path));
 	texCompilerPathBox->setCompleter(completer);
-	connect(texCompilerPathBox, SIGNAL(editingFinished ()), this, SLOT(validateTexCompiler()));
+	connect(texCompilerPathBox, &QLineEdit::editingFinished, this, &ConfigDialog::validateTexCompiler);
 
 	gl->addWidget(texCompilerPathBox, 2, 1);
 
@@ -1834,7 +1834,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	sofficePathBox = new QLineEdit(QDir::toNativeSeparators(app->d_soffice_path));
 	sofficePathBox->setCompleter(completer);
-	connect(sofficePathBox, SIGNAL(editingFinished ()), this, SLOT(validateOffice()));
+	connect(sofficePathBox, &QLineEdit::editingFinished, this, &ConfigDialog::validateOffice);
 	gl->addWidget(sofficePathBox, 3, 1);
 
 	browseOfficeBtn = new QPushButton;
@@ -1848,7 +1848,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	javaPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_java_path));
 	javaPathBox->setCompleter(completer);
-	connect(javaPathBox, SIGNAL(editingFinished ()), this, SLOT(validateJava()));
+	connect(javaPathBox, &QLineEdit::editingFinished, this, &ConfigDialog::validateJava);
 	gl->addWidget(javaPathBox, 4, 1);
 
 	browseJavaBtn = new QPushButton;
@@ -1862,7 +1862,7 @@ void ConfigDialog::initFileLocationsPage()
 
 	jodconverterPathBox = new QLineEdit(QDir::toNativeSeparators(app->d_jodconverter_path));
 	jodconverterPathBox->setCompleter(completer);
-	connect(jodconverterPathBox, SIGNAL(editingFinished ()), this, SLOT(validateJODConverter()));
+	connect(jodconverterPathBox, &QLineEdit::editingFinished, this, &ConfigDialog::validateJODConverter);
 	gl->addWidget(jodconverterPathBox, 5, 1);
 
 	browseJODConverterBtn = new QPushButton;
@@ -1902,7 +1902,7 @@ void ConfigDialog::initFileLocationsPage()
 	gl->addWidget(browsePythonScriptsBtn, 7, 2);
 	gl->setRowStretch(8, 1);
 
-	connect(boxScriptingLanguage, QOverload<const QString&>::of(&QComboBox::activated), this, &ConfigDialog::showStartupScriptsFolder);
+	connect(boxScriptingLanguage, &QComboBox::textActivated, this, &ConfigDialog::showStartupScriptsFolder);
 #endif
 
 	QVBoxLayout *vl = new QVBoxLayout(fileLocationsPage);
@@ -3618,7 +3618,7 @@ void ConfigDialog::resetDefaultSettings()
 
 	QString msg = tr("You need to restart QtiPlot before your changes become effective, would you like to do it now?");
 	if (QMessageBox::question(this, tr("QtiPlot"), msg, QMessageBox::Ok, QMessageBox::No) == QMessageBox::Ok){
-		connect(this, SIGNAL(destroyed()), app, SLOT(newProject()));
+		connect(this, &QObject::destroyed, app, &ApplicationWindow::newProject);
 		close();
 	}
 }

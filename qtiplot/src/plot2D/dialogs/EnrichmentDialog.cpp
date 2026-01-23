@@ -119,13 +119,13 @@ EnrichmentDialog::EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *a
 		layout->addWidget(buttonBox);
     setLayout(layout);
 
-	connect(tabWidget, SIGNAL(currentChanged (QWidget *)), this, SLOT(customButtons(QWidget *)));
+	connect(tabWidget, &QTabWidget::currentChanged, this, [this](int index){ customButtons(tabWidget->widget(index)); });
 }
 
 void EnrichmentDialog::initEditorPage()
 {
 	d_network_manager = new QNetworkAccessManager(this);
-    connect(d_network_manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(updateForm(QNetworkReply *)));
+    connect(d_network_manager, &QNetworkAccessManager::finished, this, &EnrichmentDialog::updateForm);
 
 	compileProcess = NULL;
 	dvipngProcess = NULL;
@@ -191,8 +191,8 @@ void EnrichmentDialog::initTextPage()
 	transparencySlider->setOrientation(Qt::Horizontal);
 	transparencySlider->setRange(0, 100);
 
-	connect(transparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxBackgroundTransparency, &EnrichmentDialog::setValue);
-	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), transparencySlider, &EnrichmentDialog::setValue);
+	connect(transparencySlider, &QSlider::valueChanged, boxBackgroundTransparency, &QSpinBox::setValue);
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), transparencySlider, &QSlider::setValue);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(transparencySlider);
@@ -281,7 +281,7 @@ void EnrichmentDialog::initImagePage()
 	gl->addWidget(imagePathBox, 0, 1);
 
 	QPushButton *browseBtn = new QPushButton();
-	connect(browseBtn, &QPushButton::clicked, this, &EnrichmentDialog::chooseImageFile);
+	connect(browseBtn, &QPushButton::clicked, this, [this](bool){ chooseImageFile(); });
 	browseBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseBtn, 0, 2);
 
@@ -352,7 +352,7 @@ void EnrichmentDialog::initFramePage()
 	l4->setBuddy(boxFrameWidth);
 	gl->addWidget(l4, 3, 0);
 
-	connect(boxFrameWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::frameApplyTo);
+	connect(boxFrameWidth, &DoubleSpinBox::valueChanged, this, [this](double){ frameApplyTo(); });
 	gl->addWidget(boxFrameWidth, 3, 1);
 	gl->setRowStretch(4, 1);
 	gl->setColumnStretch(2, 1);
@@ -407,8 +407,8 @@ void EnrichmentDialog::initPatternPage()
 	fillTransparencySlider->setRange(0, 100);
 	gl->addWidget(fillTransparencySlider, 2, 1);
 
-	connect(fillTransparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxTransparency, &EnrichmentDialog::setValue);
-	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), fillTransparencySlider, &EnrichmentDialog::setValue);
+	connect(fillTransparencySlider, &QSlider::valueChanged, boxTransparency, &QSpinBox::setValue);
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), fillTransparencySlider, &QSlider::setValue);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(fillTransparencySlider);
@@ -552,8 +552,8 @@ void EnrichmentDialog::initGeometryPage()
     vl->addLayout(bl2);
 
 	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &EnrichmentDialog::displayCoordinates);
-	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::adjustHeight);
-	connect(heightBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &EnrichmentDialog::adjustWidth);
+	connect(widthBox, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustHeight(val); });
+	connect(heightBox, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustWidth(val); });
 	connect(bestSizeButton, &QPushButton::clicked, this, &EnrichmentDialog::setBestSize);
 
 	tabWidget->addTab(geometryPage, tr( "&Geometry" ) );
@@ -765,9 +765,9 @@ void EnrichmentDialog::fetchImage()
 
 		compileProcess = new QProcess(this);
 		connect(compileProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-			this, SLOT(finishedCompiling(int, QProcess::ExitStatus)));
-		connect(compileProcess, &QProcess::errorOccurrence,
-			this, SLOT(displayCompileError(QProcess::ProcessError)));
+			this, &EnrichmentDialog::finishedCompiling);
+		connect(compileProcess, &QProcess::errorOccurred,
+			this, &EnrichmentDialog::displayCompileError);
 
 		compileProcess->setWorkingDirectory(QDir::tempPath());
 
@@ -1330,10 +1330,10 @@ void EnrichmentDialog::finishedCompiling(int exitCode, QProcess::ExitStatus exit
 	compileProcess = NULL;
 
 	dvipngProcess = new QProcess(this);
-	connect(dvipngProcess, &QProcess::errorOccurrence,
-		this, SLOT(displayCompileError(QProcess::ProcessError)));
+	connect(dvipngProcess, &QProcess::errorOccurred,
+		this, &EnrichmentDialog::displayCompileError);
 	connect(dvipngProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-		this, SLOT(createImage()));
+		this, &EnrichmentDialog::createImage);
 
 	dvipngProcess->setWorkingDirectory (QDir::tempPath());
 

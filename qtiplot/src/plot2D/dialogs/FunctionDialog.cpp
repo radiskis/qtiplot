@@ -101,7 +101,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 
 	boxFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxFunction->enableShortcuts();
-	connect(boxFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
+	connect(boxFunction, &ScriptEdit::textChanged, this, &FunctionDialog::guessConstants);
 	gl1->addWidget(boxFunction, 0, 1);
 
 	gl1->addWidget(new QLabel(tr( "From x= " )), 1, 0);
@@ -151,8 +151,8 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxXFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxXFunction->setMaximumHeight(maxH);
 	boxXFunction->enableShortcuts();
-	connect(boxXFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
-	connect(boxXFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
+	connect(boxXFunction, &ScriptEdit::activated, this, &FunctionDialog::setActiveEditor);
+	connect(boxXFunction, &ScriptEdit::textChanged, this, &FunctionDialog::guessConstants);
 	gl2->addWidget(boxXFunction, 1, 1);
 
 	buttonXParLog = new QPushButton(recentBtnText);
@@ -168,8 +168,8 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxYFunction = new ScriptEdit(d_app->scriptingEnv());
 	boxYFunction->setMaximumHeight(maxH);
 	boxYFunction->enableShortcuts();
-	connect(boxYFunction, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
-	connect(boxYFunction, SIGNAL(textChanged()), this, SLOT(guessConstants()));
+	connect(boxYFunction, &ScriptEdit::activated, this, &FunctionDialog::setActiveEditor);
+	connect(boxYFunction, &ScriptEdit::textChanged, this, &FunctionDialog::guessConstants);
 	gl2->addWidget(boxYFunction, 2, 1);
 
 	buttonYParLog = new QPushButton(recentBtnText);
@@ -216,8 +216,8 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxPolarRadius = new ScriptEdit(d_app->scriptingEnv());
 	boxPolarRadius->setMaximumHeight(maxH);
 	boxPolarRadius->enableShortcuts();
-	connect(boxPolarRadius, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
-	connect(boxPolarRadius, SIGNAL(textChanged()), this, SLOT(guessConstants()));
+	connect(boxPolarRadius, &ScriptEdit::activated, this, &FunctionDialog::setActiveEditor);
+	connect(boxPolarRadius, &ScriptEdit::textChanged, this, &FunctionDialog::guessConstants);
 	gl3->addWidget(boxPolarRadius, 1, 1);
 
 	buttonPolarRadiusLog = new QPushButton(recentBtnText);
@@ -233,8 +233,8 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	boxPolarTheta = new ScriptEdit(d_app->scriptingEnv());
 	boxPolarTheta->setMaximumHeight(maxH);
 	boxPolarTheta->enableShortcuts();
-	connect(boxPolarTheta, SIGNAL(activated(ScriptEdit *)), this, SLOT(setActiveEditor(ScriptEdit *)));
-	connect(boxPolarTheta, SIGNAL(textChanged()), this, SLOT(guessConstants()));
+	connect(boxPolarTheta, &ScriptEdit::activated, this, &FunctionDialog::setActiveEditor);
+	connect(boxPolarTheta, &ScriptEdit::textChanged, this, &FunctionDialog::guessConstants);
 	gl3->addWidget(boxPolarTheta, 2, 1);
 
 	buttonPolarRThetaLog = new QPushButton(recentBtnText);
@@ -343,7 +343,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	if (standAlone){
 		buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Apply | QDialogButtonBox::Cancel);
 		buttonBox->setCenterButtons(true);
-		connect(buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
+		connect(buttonBox, &QDialogButtonBox::clicked, this, &FunctionDialog::buttonClicked);
 		vbox1->addWidget(buttonBox);
 
 		setSizeGripEnabled(true);
@@ -417,7 +417,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 			sb->setLocale(QLocale());
 			sb->setValue(i.value());
         	boxConstants->setCellWidget(row, 1, sb);
-			connect(sb, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &FunctionDialog::apply);
+			connect(sb, &DoubleSpinBox::valueChanged, this, [this](double){ apply(); });
 			row++;
  		}
 	} else
@@ -825,7 +825,7 @@ void FunctionDialog::insertFunction()
 	QString formula;
 	if (fit){
 		formula = fit->formula();
-		connect(this, SIGNAL(constantsGuessingEnded()), this, SLOT(setUserFunctionParameters()));
+		connect(this, &FunctionDialog::constantsGuessingEnded, this, &FunctionDialog::setUserFunctionParameters);
 	}
 
 	QString fname = builtInFunc ? boxMathFunctions->currentText().remove("(").remove(")").remove(",").remove(";") : formula;
@@ -973,7 +973,7 @@ void FunctionDialog::guessConstants()
 				sb->setValue(values[index]);
 		}
 		if (!d_stand_alone)
-			connect(sb, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &FunctionDialog::apply);
+			connect(sb, &DoubleSpinBox::valueChanged, this, [this](double){ apply(); });
 		row++;
 	}
 
@@ -1021,7 +1021,7 @@ void FunctionDialog::setUserFunctionParameters()
 			((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->setValue(fit->initialGuess(index));
 	}
 
-	disconnect(this, SIGNAL(constantsGuessingEnded()), this, SLOT(setUserFunctionParameters()));
+	disconnect(this, &FunctionDialog::constantsGuessingEnded, this, &FunctionDialog::setUserFunctionParameters);
 }
 
 void FunctionDialog::loadUserFunctions()

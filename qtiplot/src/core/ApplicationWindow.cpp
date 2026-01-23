@@ -14344,7 +14344,7 @@ void ApplicationWindow::createActions()
 
 	actionAbout = new QAction(tr("&About QtiPlot"), this);
 	actionAbout->setShortcut( tr("F1") );
-	connect(actionAbout, &QAction::triggered, this, &ApplicationWindow::about);
+	connect(actionAbout, &QAction::triggered, this, [this](){ about(); });
 
 	actionShowHelp = new QAction(tr("&Help"), this);
 	actionShowHelp->setShortcut( tr("Ctrl+H") );

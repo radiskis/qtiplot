@@ -88,10 +88,10 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WindowFlags fl )
 	vl->addWidget(generalDialog);
 	vl->addLayout(hbox);
 
-	connect(buttonOk, &QAbstractButton::clicked, this, &Plot3DDialog::accept);
-	connect(buttonCancel, &QAbstractButton::clicked, this, &Plot3DDialog::reject);
-	connect(buttonApply, &QAbstractButton::clicked, this, &Plot3DDialog::updatePlot);
-	connect(btnTable, &QAbstractButton::clicked, this, &Plot3DDialog::worksheet);
+	connect(buttonOk, &QPushButton::clicked, this, [this](){ accept(); });
+	connect(buttonCancel, &QPushButton::clicked, this, [this](){ reject(); });
+	connect(buttonApply, &QPushButton::clicked, this, [this](){ updatePlot(); });
+	connect(btnTable, &QPushButton::clicked, this, [this](){ worksheet(); });
 }
 
 void Plot3DDialog::initPrintPage()
@@ -288,7 +288,7 @@ void Plot3DDialog::initColorsPage()
 	linearColorMapGroupBox = new QGroupBox(tr( "Linea&r color map" ));
 	linearColorMapGroupBox->setCheckable(true);
 	connect(linearColorMapGroupBox, &QGroupBox::clicked,
-			this, SLOT(updateColorMapFileGroupBox(bool)));
+			this, &Plot3DDialog::updateColorMapFileGroupBox);
 
 	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
 
@@ -299,7 +299,7 @@ void Plot3DDialog::initColorsPage()
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
 	colorMapFileGroupBox->setCheckable(true);
 	connect(colorMapFileGroupBox, &QGroupBox::clicked, this,
-			SLOT(updateLinearColorMapGroupBox(bool)));
+			&Plot3DDialog::updateLinearColorMapGroupBox);
 
 	QGridLayout* layout = new QGridLayout(colorMapFileGroupBox);
 
@@ -391,8 +391,8 @@ void Plot3DDialog::initColorsPage()
 
 	connect(btnColorMap, &QAbstractButton::clicked, this, &Plot3DDialog::pickDataColorMap);
 	connect(transparencySlider, &QSlider::valueChanged, boxTransparency, &QSpinBox::setValue);
-	connect(boxTransparency, &QSlider::valueChanged, transparencySlider, &QSpinBox::setValue);
-	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &Plot3DDialog::changeTransparency);
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), transparencySlider, &QSlider::setValue);
+	connect(boxTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int val){ changeTransparency(val); });
 }
 
 void Plot3DDialog::initGeneralPage()
@@ -886,11 +886,11 @@ void Plot3DDialog::initConnections()
 	connect(btnNumbers, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
 	connect(btnMesh, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
 	connect(btnBackground, &ColorButton::colorChanged, this, &Plot3DDialog::updatePlot);
-	connect(d_color_map_editor, &Plot3DColorMap::scalingChanged, this, &Plot3DDialog::updatePlot);
+	connect(d_color_map_editor, &ColorMapEditor::scalingChanged, this, [this](){ updatePlot(); });
 
-	connect(boxMeshLineWidth, QOverload<double>::of(&DoubleSpinBox::valueChanged), d_plot, &Graph3D::setMeshLineWidth);
-	connect(boxOrthogonal, &QAbstractButton::toggled, d_plot, &Graph3D::setOrthogonal);
-	connect(boxLegend, &QAbstractButton::toggled, d_plot, &Graph3D::showColorLegend);
+	connect(boxMeshLineWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), d_plot, &Graph3D::setMeshLineWidth);
+	connect(boxOrthogonal, &QCheckBox::toggled, d_plot, &Graph3D::setOrthogonal);
+	connect(boxLegend, &QCheckBox::toggled, d_plot, &Graph3D::showColorLegend);
     connect(boxResolution, QOverload<int>::of(&QSpinBox::valueChanged), d_plot, &Graph3D::setResolution);
 	connect(boxDistance, QOverload<int>::of(&QSpinBox::valueChanged), d_plot, &Graph3D::setLabelsDistance);
 

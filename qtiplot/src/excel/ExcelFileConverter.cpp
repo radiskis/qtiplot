@@ -56,8 +56,8 @@ void ExcelFileConverter::startOpenOfficeServer()
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	soffice = new QProcess(app);
 	connect(soffice, SIGNAL(started()), this, SLOT(startConvertion()));
-	connect(soffice, &QProcess::errorOccurrence,
-			this, SLOT(displayOfficeError(QProcess::ProcessError)));
+	connect(soffice, &QProcess::errorOccurred,
+			this, &ExcelFileConverter::displayOfficeError);
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -90,9 +90,9 @@ void ExcelFileConverter::startConvertion()
 
 	java = new QProcess(app);
 	connect(java, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-			this, SLOT(finish(int, QProcess::ExitStatus)));
-	connect(java, &QProcess::errorOccurrence,
-			this, SLOT(displayJavaError(QProcess::ProcessError)));
+			this, &ExcelFileConverter::finish);
+	connect(java, &QProcess::errorOccurred,
+			this, &ExcelFileConverter::displayJavaError);
 
 	QString compiler = app->d_java_path;
 

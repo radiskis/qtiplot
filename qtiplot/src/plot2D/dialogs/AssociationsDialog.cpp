@@ -91,7 +91,7 @@ AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	active_table = 0;
 
-	connect(associations, SIGNAL(currentRowChanged(int)), this, SLOT(updateTable(int)));
+	connect(associations, &QListWidget::currentRowChanged, this, &AssociationsDialog::updateTable);
 	connect(btnOK, &QPushButton::clicked, this, &AssociationsDialog::accept);
 	connect(btnCancel, &QPushButton::clicked, this, &AssociationsDialog::close);
 	connect(btnApply, &QPushButton::clicked, this, &AssociationsDialog::updateCurves);

@@ -84,7 +84,7 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WindowFlags fl)
 		topLayout->addWidget(new QLabel(tr("Distance to axis")), 2, 0);
 		distanceBox = new QSpinBox();
 		distanceBox->setRange(0, 1000);
-		connect(distanceBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &TextDialog::apply);
+		connect(distanceBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ apply(); });
 
 		topLayout->addWidget(distanceBox, 2, 1);
 		invertTitleBox = new QCheckBox(tr("&Inverted"));

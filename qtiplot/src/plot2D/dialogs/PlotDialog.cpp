@@ -53,6 +53,7 @@ Description          : Custom curves dialog
 #include <EnrichmentDialog.h>
 #include <ImageSymbol.h>
 #include <CurveRangeDialog.h>
+#include <AssociationsDialog.h>
 
 #include <QTreeWidget>
 #include <QLineEdit>
@@ -188,17 +189,17 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WindowFlags fl )
 	connect(btnUp, &QPushButton::clicked, this, &PlotDialog::raiseCurve);
 	connect(btnDown, &QPushButton::clicked, this, &PlotDialog::shiftCurveBy);
 
-	connect(buttonOk, &QPushButton::clicked, this, &PlotDialog::quit);
-	connect(buttonCancel, &QPushButton::clicked, this, &PlotDialog::close);
-	connect(buttonApply, &QPushButton::clicked, this, &PlotDialog::acceptParams);
-	connect(btnWorksheet, &QPushButton::clicked, this, &PlotDialog::showWorksheet);
-	connect(btnEditCurve, &QPushButton::clicked, this, &PlotDialog::editCurve);
-	connect(btnEditCurveRange, &QPushButton::clicked, this, &PlotDialog::editCurveRange);
-	connect(listBox, SIGNAL(currentItemChanged (QTreeWidgetItem *, QTreeWidgetItem *)),
-            this, SLOT(updateTabWindow(QTreeWidgetItem *, QTreeWidgetItem *)));
-	connect(listBox, SIGNAL(itemCollapsed(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
-	connect(listBox, SIGNAL(itemExpanded(QTreeWidgetItem *)), this, SLOT(updateTreeWidgetItem(QTreeWidgetItem *)));
-	connect(listBox, &QTreeWidget::itemChanged, this, &PlotDialog::updateVisibility);
+	connect(buttonOk, &QPushButton::clicked, this, [this](){ quit(); });
+	connect(buttonCancel, &QPushButton::clicked, this, [this](){ close(); });
+	connect(buttonApply, &QPushButton::clicked, this, [this](){ acceptParams(); });
+	connect(btnWorksheet, &QPushButton::clicked, this, [this](){ showWorksheet(); });
+	connect(btnEditCurve, &QPushButton::clicked, this, [this](){ editCurve(); });
+	connect(btnEditCurveRange, &QPushButton::clicked, this, [this](){ editCurveRange(); });
+	connect(listBox, &QTreeWidget::currentItemChanged,
+            this, &PlotDialog::updateTabWindow);
+	connect(listBox, &QTreeWidget::itemCollapsed, this, &PlotDialog::updateTreeWidgetItem);
+	connect(listBox, &QTreeWidget::itemExpanded, this, &PlotDialog::updateTreeWidgetItem);
+	connect(listBox, &QTreeWidget::itemChanged, this, [this](QTreeWidgetItem *item, int column){ updateVisibility(item, column); });
 	connect(boxPlotType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PlotDialog::changePlotType);
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Delete), this);
@@ -268,7 +269,7 @@ void PlotDialog::editCurve()
 		} else {
 			AssociationsDialog* ad = app->showPlotAssociations(index);
 			if (ad)
-				connect(ad, &QObject::destroyed, this, &PlotDialog::plotAssociationsDialogClosed);
+				connect(ad, &QObject::destroyed, this, [this](QObject*){ plotAssociationsDialogClosed(); });
 		}
 	}
 }
@@ -510,14 +511,14 @@ void PlotDialog::initLayerPage()
 
 	privateTabWidget->addTab(layerPage, tr("Layer"));
 
-	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::updateBackgroundTransparency);
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int val){ updateBackgroundTransparency(val); });
 	connect(boxAntialiasing, &QCheckBox::toggled, this, &PlotDialog::applyLayerFormat);
-	connect(boxMargin, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::applyLayerFormat);
+	connect(boxMargin, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ applyLayerFormat(); });
 	connect(boxBorderColor, &ColorButton::colorChanged, this, &PlotDialog::applyLayerFormat);
 	connect(boxBackgroundColor, &ColorButton::colorChanged, this, &PlotDialog::applyLayerFormat);
-	connect(boxBorderWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::applyLayerFormat);
-	connect(bkgOpacitySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxBackgroundTransparency, &PlotDialog::setValue);
-	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), bkgOpacitySlider, &PlotDialog::setValue);
+	connect(boxBorderWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ applyLayerFormat(); });
+	connect(bkgOpacitySlider, &QSlider::valueChanged, boxBackgroundTransparency, &QSpinBox::setValue);
+	connect(boxBackgroundTransparency, QOverload<int>::of(&QSpinBox::valueChanged), bkgOpacitySlider, &QSlider::setValue);
 }
 
 
@@ -598,8 +599,8 @@ void PlotDialog::initPlotGeometryPage()
 
 	privateTabWidget->addTab(plotGeometryPage, tr("Dimensions"));
 
-	connect(boxPlotWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::adjustPlotHeight);
-	connect(boxPlotHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::adjustPlotWidth);
+	connect(boxPlotWidth, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustPlotHeight(val); });
+	connect(boxPlotHeight, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustPlotWidth(val); });
 	connect(plotUnitBox, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::displayPlotCoordinates);
 }
 
@@ -655,12 +656,12 @@ void PlotDialog::initCanvasPage()
 	gl->addWidget(imagePathBox, 0, 1);
 
 	QPushButton *browseBtn = new QPushButton();
-	connect(browseBtn, &QPushButton::clicked, this, &PlotDialog::chooseBackgroundImageFile);
+	connect(browseBtn, &QPushButton::clicked, this, [this](){ chooseBackgroundImageFile(); });
 	browseBtn->setIcon(QIcon(":/folder_open.png"));
 	gl->addWidget(browseBtn, 0, 2);
 
 	QPushButton *buttonResizeCanvas = new QPushButton(tr("&Resize layer to fit original image size"));
-	connect(buttonResizeCanvas, &QPushButton::clicked, this, &PlotDialog::resizeCanvasToFitImage);
+	connect(buttonResizeCanvas, &QPushButton::clicked, this, [this](){ resizeCanvasToFitImage(); });
 	gl->addWidget(buttonResizeCanvas, 1, 1);
 
 	gl->setColumnStretch(1, 1);
@@ -720,14 +721,14 @@ void PlotDialog::initCanvasPage()
 
 	connect(canvasDefaultBtn, &QPushButton::clicked, this, &PlotDialog::setCanvasDefaultValues);
 	connect(boxFrameColor, &ColorButton::colorChanged, this, &PlotDialog::applyCanvasFormat);
-	connect(boxFramed, &QCheckBox::toggled, this, &PlotDialog::applyCanvasFormat);
-	connect(boxFrameWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::applyCanvasFormat);
+	connect(boxFramed, &QGroupBox::toggled, this, [this](bool){ applyCanvasFormat(); });
+	connect(boxFrameWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ applyCanvasFormat(); });
 	connect(boxCanvasColor, &ColorButton::colorChanged, this, &PlotDialog::applyCanvasFormat);
-	connect(boxCanvasTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::updateCanvasTransparency);
-	connect(colorBtn, &QCheckBox::toggled, canvasColorBox, &PlotDialog::setVisible);
-	connect(imageBtn, &QCheckBox::toggled, canvasImageBox, &PlotDialog::setVisible);
-	connect(canvasOpacitySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxCanvasTransparency, &PlotDialog::setValue);
-	connect(boxCanvasTransparency, QOverload<int>::of(&QSpinBox::valueChanged), canvasOpacitySlider, &PlotDialog::setValue);
+	connect(boxCanvasTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int val){ updateCanvasTransparency(val); });
+	connect(colorBtn, &QRadioButton::toggled, canvasColorBox, &QGroupBox::setVisible);
+	connect(imageBtn, &QRadioButton::toggled, canvasImageBox, &QGroupBox::setVisible);
+	connect(canvasOpacitySlider, &QSlider::valueChanged, boxCanvasTransparency, &QSpinBox::setValue);
+	connect(boxCanvasTransparency, QOverload<int>::of(&QSpinBox::valueChanged), canvasOpacitySlider, &QSlider::setValue);
 }
 
 void PlotDialog::initLayerGeometryPage()
@@ -813,9 +814,9 @@ void PlotDialog::initLayerGeometryPage()
 
 	privateTabWidget->addTab(layerGeometryPage, tr("Geometry"));
 
-	connect(boxLayerWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::adjustLayerHeight);
-	connect(boxLayerHeight, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::adjustLayerWidth);
-	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::displayCoordinates);
+	connect(boxLayerWidth, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustLayerHeight(val); });
+	connect(boxLayerHeight, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustLayerWidth(val); });
+	connect(unitBox, QOverload<int>::of(&QComboBox::activated), this, [this](int unit){ displayCoordinates(unit); });
 	unitBox->setCurrentIndex(app->d_layer_geometry_unit);
 }
 
@@ -910,8 +911,8 @@ void PlotDialog::initLayerSpeedPage()
 	vl->addWidget(speedModeBox);
 
 	privateTabWidget->addTab(speedPage, tr("Speed"));
-	connect(speedModeBox, &QCheckBox::toggled, this, &PlotDialog::acceptParams);
-	connect(boxDouglasPeukerTolerance, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(speedModeBox, &QGroupBox::toggled, this, [this](bool){ acceptParams(); });
+	connect(boxDouglasPeukerTolerance, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 }
 
 void PlotDialog::initPiePage()
@@ -1056,11 +1057,11 @@ void PlotDialog::initPieGeometryPage()
 	privateTabWidget->addTab(pieGeometryPage, tr( "Pie Geometry" ) );
 
     connect(boxPieConterClockwise, &QCheckBox::toggled, this, &PlotDialog::acceptParams);
-    connect(boxPieViewAngle, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxPieThickness, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxPieStartAzimuth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxRadius, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxPieOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+    connect(boxPieViewAngle, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+    connect(boxPieThickness, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+    connect(boxPieStartAzimuth, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+    connect(boxRadius, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
+    connect(boxPieOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 }
 
 void PlotDialog::initPieLabelsPage()
@@ -1104,7 +1105,7 @@ void PlotDialog::initPieLabelsPage()
 
 	privateTabWidget->addTab(pieLabelsPage, tr( "Labels" ) );
 
-    connect(boxPieEdgeDist, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+    connect(boxPieEdgeDist, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 }
 
 void PlotDialog::initPrintPage()
@@ -1203,14 +1204,14 @@ void PlotDialog::initLabelsPage()
 	hlayout->addWidget(labelsGroupBox);
 	privateTabWidget->addTab(labelsPage, tr("Labels"));
 
-    connect(labelsGroupBox, &QCheckBox::toggled, this, &PlotDialog::acceptParams);
+    connect(labelsGroupBox, &QGroupBox::toggled, this, [this](bool){ acceptParams(); });
     connect(boxLabelsColumn, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
     connect(boxLabelsAlign, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
     connect(boxLabelsWhiteOut, &QCheckBox::toggled, this, &PlotDialog::acceptParams);
     connect(boxLabelsColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
-    connect(boxLabelsXOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxLabelsYOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-    connect(boxLabelsAngle, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+    connect(boxLabelsXOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
+    connect(boxLabelsYOffset, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
+    connect(boxLabelsAngle, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
     connect(btnLabelsFont, &QPushButton::clicked, this, &PlotDialog::chooseLabelsFont);
 }
 
@@ -1359,20 +1360,20 @@ void PlotDialog::initLinePage()
 	privateTabWidget->addTab(linePage, tr("Line"));
 
 	connect(lineFormatApplyToBox, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::enableBoxApplyColor);
-	connect(boxLineWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(boxLineWidth, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 	connect(boxLineColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
 	connect(boxConnect, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxLineStyle, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxAreaColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
 	connect(boxPattern, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
-	connect(fillGroupBox, &QCheckBox::toggled, this, &PlotDialog::showAreaColor);
-	connect(fillGroupBox, &QPushButton::clicked, this, &PlotDialog::acceptParams);
-	connect(boxCurveOpacity, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-	connect(curveOpacitySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxCurveOpacity, &PlotDialog::setValue);
-	connect(boxCurveOpacity, QOverload<int>::of(&QSpinBox::valueChanged), curveOpacitySlider, &PlotDialog::setValue);
-	connect(lineTransparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxLineTransparency, &PlotDialog::setValue);
-	connect(boxLineTransparency, QOverload<int>::of(&QSpinBox::valueChanged), lineTransparencySlider, &PlotDialog::setValue);
-	connect(boxLineTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(fillGroupBox, &QGroupBox::toggled, this, [this](bool val){ showAreaColor(val); });
+	connect(fillGroupBox, &QGroupBox::clicked, this, [this](){ acceptParams(); });
+	connect(boxCurveOpacity, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
+	connect(curveOpacitySlider, &QSlider::valueChanged, boxCurveOpacity, &QSpinBox::setValue);
+	connect(boxCurveOpacity, QOverload<int>::of(&QSpinBox::valueChanged), curveOpacitySlider, &QSlider::setValue);
+	connect(lineTransparencySlider, &QSlider::valueChanged, boxLineTransparency, &QSpinBox::setValue);
+	connect(boxLineTransparency, QOverload<int>::of(&QSpinBox::valueChanged), lineTransparencySlider, &QSlider::setValue);
+	connect(boxLineTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 }
 
 void PlotDialog::initSymbolsPage()
@@ -1422,8 +1423,8 @@ void PlotDialog::initSymbolsPage()
 	symbTransparencySlider->setOrientation(Qt::Horizontal);
 	symbTransparencySlider->setRange(0, 100);
 
-	connect(symbTransparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxSymbolTransparency, &PlotDialog::setValue);
-	connect(boxSymbolTransparency, QOverload<int>::of(&QSpinBox::valueChanged), symbTransparencySlider, &PlotDialog::setValue);
+	connect(symbTransparencySlider, &QSlider::valueChanged, boxSymbolTransparency, &QSpinBox::setValue);
+	connect(boxSymbolTransparency, QOverload<int>::of(&QSpinBox::valueChanged), symbTransparencySlider, &QSlider::setValue);
 
 	QLabel *l1 = new QLabel("&" + tr("Opacity"));
 	l1->setBuddy(symbTransparencySlider);
@@ -1490,11 +1491,11 @@ void PlotDialog::initSymbolsPage()
 
 	privateTabWidget->addTab(symbolPage, tr( "Symbol" ));
 
-	connect(standardSymbolBtn, &QCheckBox::toggled, standardSymbolFormatBox, &PlotDialog::setVisible);
-	connect(imageSymbolBtn, &QCheckBox::toggled, imageSymBolFormatBox, &PlotDialog::setVisible);
+	connect(standardSymbolBtn, &QRadioButton::toggled, standardSymbolFormatBox, &QGroupBox::setVisible);
+	connect(imageSymbolBtn, &QRadioButton::toggled, imageSymBolFormatBox, &QGroupBox::setVisible);
 
-	connect(boxSymbolSize, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-	connect(boxPenWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(boxSymbolSize, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
+	connect(boxPenWidth, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 	connect(boxSymbolColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
 	connect(boxSymbolStyle, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxFillColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
@@ -1623,12 +1624,12 @@ void PlotDialog::initBoxPage()
 
 	connect(boxBoxLabels, &QCheckBox::toggled, this, &PlotDialog::enableLabelsPage);
 	connect(boxWhiskerLabels, &QCheckBox::toggled, this, &PlotDialog::enableLabelsPage);
-	connect(boxWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(boxWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 	connect(boxType, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::setBoxType);
 	connect(boxType, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxRange, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::setBoxRangeType);
 	connect(boxWhiskersRange, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::setWhiskersRange);
-	connect(buttonBoxStatistics, &QPushButton::clicked, this, &PlotDialog::showBoxStatistics);
+	connect(buttonBoxStatistics, &QPushButton::clicked, this, [this](){ showBoxStatistics(); });
 }
 
 void PlotDialog::initPercentilePage()
@@ -1733,7 +1734,7 @@ void PlotDialog::initPercentilePage()
     privateTabWidget->addTab(percentilePage, tr( "Percentile" ) );
 
 	connect(boxPercSize, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-	connect(boxEdgeWidth, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(boxEdgeWidth, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 	connect(boxMeanStyle, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxMinStyle, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
 	connect(boxMaxStyle, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
@@ -1743,9 +1744,9 @@ void PlotDialog::initPercentilePage()
 	connect(boxEdgeColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
 	connect(boxPercFillColor, &ColorButton::colorChanged, this, &PlotDialog::acceptParams);
 	connect(boxFillSymbols, &QPushButton::clicked, this, &PlotDialog::fillBoxSymbols);
-	connect(percentileTransparencySlider, QOverload<int>::of(&QSpinBox::valueChanged), boxPercentileTransparency, &PlotDialog::setValue);
-	connect(boxPercentileTransparency, QOverload<int>::of(&QSpinBox::valueChanged), percentileTransparencySlider, &PlotDialog::setValue);
-	connect(boxPercentileTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(percentileTransparencySlider, &QSlider::valueChanged, boxPercentileTransparency, &QSpinBox::setValue);
+	connect(boxPercentileTransparency, QOverload<int>::of(&QSpinBox::valueChanged), percentileTransparencySlider, &QSlider::setValue);
+	connect(boxPercentileTransparency, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 }
 
 void PlotDialog::initSpectrogramValuesPage()
@@ -2010,9 +2011,9 @@ void PlotDialog::initErrorsPage()
 
     privateTabWidget->addTab( errorsPage, tr( "Error Bars" ) );
 
-	connect(boxSkipErrorBars, QOverload<int>::of(&QSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(boxSkipErrorBars, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 	connect(capBox, QOverload<int>::of(&QComboBox::activated), this, &PlotDialog::acceptParams);
-	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(widthBox, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 	connect(colorBox, &ColorButton::colorChanged, this, &PlotDialog::pickErrorBarsColor);
 	connect(xBox, &QPushButton::clicked, this, &PlotDialog::acceptParams);
 	connect(plusBox, &QPushButton::clicked, this, &PlotDialog::acceptParams);
@@ -2055,12 +2056,12 @@ void PlotDialog::initHistogramPage()
 
     privateTabWidget->addTab( histogramPage, tr( "Histogram Data" ) );
 
-	connect(binSizeBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-	connect(histogramBeginBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
-	connect(histogramEndBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &PlotDialog::acceptParams);
+	connect(binSizeBox, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+	connect(histogramBeginBox, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+	connect(histogramEndBox, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
 
-	connect(automaticBox, SIGNAL(clicked(bool)), this, SLOT(setAutomaticBinning(bool)));
-	connect(buttonStatistics, &QPushButton::clicked, this, &PlotDialog::showStatistics);
+	connect(automaticBox, &QCheckBox::clicked, this, &PlotDialog::setAutomaticBinning);
+	connect(buttonStatistics, &QPushButton::clicked, this, [this](){ showStatistics(); });
 }
 
 void PlotDialog::initSpacingPage()
@@ -2323,25 +2324,25 @@ void PlotDialog::contextMenuEvent(QContextMenuEvent *e)
 			if (it){
 				int index = ((CurveTreeItem *)item)->plotItemIndex();
 				if (index)
-					contextMenu.addAction(QPixmap(":/arrow_up.png"), tr("Move &upward"), this, SLOT(raiseCurve()));
+					contextMenu.addAction(QPixmap(":/arrow_up.png"), tr("Move &upward"), this, [this](){ raiseCurve(); });
 
 				Graph *graph = ((CurveTreeItem *)item)->graph();
 				if (graph && index < graph->curveCount() - 1)
-					contextMenu.addAction(QPixmap(":/arrow_down.png"), tr("Move do&wnward"), this, SLOT(shiftCurveBy()));
+					contextMenu.addAction(QPixmap(":/arrow_down.png"), tr("Move do&wnward"), this, [this](){ shiftCurveBy(); });
 				contextMenu.addSeparator();
 			}
 
 			if (it && it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
-				contextMenu.addAction(tr("&Plot Associations..."), this, SLOT(editCurve()));
-				contextMenu.addAction(tr("Edit &Range..."), this, SLOT(editCurveRange()));
+				contextMenu.addAction(tr("&Plot Associations..."), this, [this](){ editCurve(); });
+				contextMenu.addAction(tr("Edit &Range..."), this, [this](){ editCurveRange(); });
 				contextMenu.addSeparator();
 			}
-			contextMenu.addAction(it->isVisible() ? tr("&Hide") : tr("&Show"), this, SLOT(updateVisibility()));
+			contextMenu.addAction(it->isVisible() ? tr("&Hide") : tr("&Show"), this, [this](){ updateVisibility(); });
 		} else if (item->type() == FrameWidgetTreeItem::FrameWidgetItem){
 			FrameWidget *fw = ((FrameWidgetTreeItem *)item)->frameWidget();
-			contextMenu.addAction(fw->isVisible() ? tr("&Hide") : tr("&Show"), this, SLOT(updateVisibility()));
+			contextMenu.addAction(fw->isVisible() ? tr("&Hide") : tr("&Show"), this, [this](){ updateVisibility(); });
 		}
-		contextMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"), this, SLOT(removeSelectedObject()));
+		contextMenu.addAction(QPixmap(":/delete.png"), tr("&Delete"), this, &PlotDialog::removeSelectedObject);
 		contextMenu.exec(QCursor::pos());
 	}
 	e->accept();
@@ -4631,8 +4632,8 @@ void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool
 			ImageSymbol *symbol = new ImageSymbol(path);
 			c->setSymbol(symbol);
 			symbolImageLabel->setPixmap(symbol->pixmap());
-		} else
-			c->setSymbol(new ImageSymbol(*symbolImageLabel->pixmap(), path));
+		} else if (symbolImageLabel->pixmap())
+			c->setSymbol(new ImageSymbol(*(symbolImageLabel->pixmap()), path));
 	}
 
 	((PlotCurve *)c)->setSkipSymbolsCount(boxSkipSymbols->value());

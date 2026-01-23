@@ -386,7 +386,7 @@ void FitDialog::initFitPage()
     fitPage->setLayout(vbox1);
     tw->addWidget(fitPage);
 
-	connect(boxCurve, QOverload<const QString&>::of(&QComboBox::activated), this, &FitDialog::activateCurve);
+	connect(boxCurve, &QComboBox::textActivated, this, &FitDialog::activateCurve);
 	connect(buttonOk, &QAbstractButton::clicked, this, &FitDialog::accept);
 	connect(buttonCancel1, &QAbstractButton::clicked, this, &FitDialog::close);
 	connect(buttonEdit, &QAbstractButton::clicked, this, &FitDialog::showEditPage);

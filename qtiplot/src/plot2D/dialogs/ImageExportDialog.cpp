@@ -80,13 +80,13 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	setExtensionWidget(d_advanced_options);
 
 #if QT_VERSION >= 0x040300
-	connect(this, SIGNAL(filterSelected ( const QString & )),
-			this, SLOT(updateAdvancedOptions ( const QString & )));
+	connect(this, &QFileDialog::filterSelected,
+			this, &ImageExportDialog::updateAdvancedOptions);
 #else
 	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
 	if (combo_boxes.size() >= 2)
-		connect(combo_boxes[1], SIGNAL(currentIndexChanged ( const QString & )),
-				this, SLOT(updateAdvancedOptions ( const QString & )));
+		connect(combo_boxes[1], QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
+				this, &ImageExportDialog::updateAdvancedOptions);
 #endif
 	updateAdvancedOptions(selectedNameFilter());
 }
@@ -235,8 +235,8 @@ void ImageExportDialog::initAdvancedOptions()
 	heightBox->setValue(customSize.height());
 	size_layout->addWidget(heightBox, 2, 1);
 
-	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ImageExportDialog::adjustHeight);
-	connect(heightBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &ImageExportDialog::adjustWidth);
+	connect(widthBox, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustHeight(val); });
+	connect(heightBox, &DoubleSpinBox::valueChanged, this, [this](double val){ adjustWidth(val); });
 
 	size_layout->addWidget(new QLabel(tr("Scale Fonts Factor")), 3, 0);
 	scaleFontsBox = new DoubleSpinBox();
@@ -478,9 +478,9 @@ void ImageExportDialog::preview()
 	previewDlg->setWindowTitle(tr("QtiPlot") + " - " + tr("Export preview of window: ") + d_window->objectName());
 
 	if (d_raster_options->isVisible())
-		connect(previewDlg, SIGNAL(paintRequested(QPrinter *)), this, SLOT(drawPreview(QPrinter *)));
+		connect(previewDlg, &QPrintPreviewDialog::paintRequested, this, &ImageExportDialog::drawPreview);
 	else
-		connect(previewDlg, SIGNAL(paintRequested(QPrinter *)), this, SLOT(drawVectorPreview(QPrinter *)));
+		connect(previewDlg, &QPrintPreviewDialog::paintRequested, this, &ImageExportDialog::drawVectorPreview);
 
 	previewDlg->exec();
 }

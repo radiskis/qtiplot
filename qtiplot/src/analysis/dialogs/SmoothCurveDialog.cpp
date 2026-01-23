@@ -130,7 +130,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WindowFlag
 
 	connect(btnSmooth, &QAbstractButton::clicked, this, &SmoothCurveDialog::smooth);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &SmoothCurveDialog::close);
-	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &SmoothCurveDialog::activateCurve);
+	connect(boxName, &QComboBox::textActivated, this, &SmoothCurveDialog::activateCurve);
 }
 
 void SmoothCurveDialog::smooth()

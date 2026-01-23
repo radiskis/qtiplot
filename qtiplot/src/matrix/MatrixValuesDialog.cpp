@@ -106,7 +106,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QHBoxLayout *hbox3 = new QHBoxLayout();
 
 	commands = new ScriptEdit( scriptEnv);
-	commands->setTabStopWidth(((ApplicationWindow *)parent)->d_notes_tab_length);
+	commands->setTabStopDistance(((ApplicationWindow *)parent)->d_notes_tab_length);
     commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
 	commands->setFocus();
 	hbox3->addWidget(commands);
@@ -158,7 +158,7 @@ void MatrixValuesDialog::openPropertiesDialog()
 	if (!app)
 		return;
 
-	connect(this, &QObject::destroyed, app, &ApplicationWindow::showMatrixDialog);
+	connect(this, &QObject::destroyed, app, [app](QObject*){ app->showMatrixDialog(); });
 	this->apply();
 	this->close();
 }

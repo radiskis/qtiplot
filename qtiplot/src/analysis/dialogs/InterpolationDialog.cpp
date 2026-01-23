@@ -105,7 +105,7 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WindowFlags fl )
     hb->addWidget(gb1, 1);
     hb->addLayout(vl);
 
-	connect(boxName, QOverload<const QString&>::of(&QComboBox::activated), this, &InterpolationDialog::activateCurve);
+	connect(boxName, &QComboBox::textActivated, this, &InterpolationDialog::activateCurve);
 	connect(buttonFit, &QAbstractButton::clicked, this, &InterpolationDialog::interpolate);
 	connect(buttonCancel, &QAbstractButton::clicked, this, &InterpolationDialog::close);
 }

@@ -103,8 +103,8 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WindowFlags fl )
 
     connect(buttonOk, &QPushButton::clicked, this, &AxesDialog::accept);
     connect(buttonCancel, &QPushButton::clicked, this, &AxesDialog::reject);
-    connect(buttonApply, &QPushButton::clicked, this, &AxesDialog::updatePlot);
-	connect( generalDialog, SIGNAL( currentChanged ( QWidget * ) ), this, SLOT(pageChanged( QWidget *)));
+    connect(buttonApply, &QPushButton::clicked, this, [this](bool){ updatePlot(); });
+	connect(generalDialog, &QTabWidget::currentChanged, this, [this](int index){ pageChanged(generalDialog->widget(index)); });
 }
 
 void AxesDialog::initScalesPage()
@@ -300,11 +300,11 @@ void AxesDialog::initScalesPage()
 
 	generalDialog->addTab(scalesPage, tr( "Scale" ));
 
-	connect(btnInvert, &QPushButton::clicked, this, &AxesDialog::updatePlot);
+	connect(btnInvert, &QCheckBox::clicked, this, [this](bool){ updatePlot(); });
 	connect(axesList,SIGNAL(currentRowChanged(int)), this, SLOT(updateScale()));
 	connect(boxScaleType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateMinorTicksList);
-	connect(btnStep, &QPushButton::clicked, this, &AxesDialog::stepEnabled);
-	connect(btnMajor, &QPushButton::clicked, this, &AxesDialog::stepDisabled);
+	connect(btnStep, &QRadioButton::clicked, this, &AxesDialog::stepEnabled);
+	connect(btnMajor, &QRadioButton::clicked, this, &AxesDialog::stepDisabled);
 }
 
 void AxesDialog::initGridPage()
@@ -429,10 +429,10 @@ void AxesDialog::initGridPage()
 	connect(boxColorMinor, SIGNAL(colorChanged(const QColor &)),this, SLOT(updateGrid()));
 	connect(boxTypeMajor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
 	connect(boxTypeMinor, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updateGrid);
-	connect(boxWidthMajor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &AxesDialog::updateGrid);
-	connect(boxWidthMinor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &AxesDialog::updateGrid);
-	connect(boxXLine, &QPushButton::clicked, this, &AxesDialog::updatePlot);
-	connect(boxYLine, &QPushButton::clicked, this, &AxesDialog::updatePlot);
+	connect(boxWidthMajor, &DoubleSpinBox::valueChanged, this, [this](double){ updateGrid(); });
+	connect(boxWidthMinor, &DoubleSpinBox::valueChanged, this, [this](double){ updateGrid(); });
+	connect(boxXLine, &QCheckBox::clicked, this, [this](bool){ updatePlot(); });
+	connect(boxYLine, &QCheckBox::clicked, this, [this](bool){ updatePlot(); });
 }
 
 void AxesDialog::initAxesPage()
@@ -484,7 +484,7 @@ void AxesDialog::initAxesPage()
 
 	invertTitleBox = new QCheckBox(tr("&Inverted"));
 	invertTitleBox->hide();
-	connect(invertTitleBox, &QCheckBox::toggled, this, &AxesDialog::updatePlot);
+	connect(invertTitleBox, &QCheckBox::toggled, this, [this](bool){ updatePlot(); });
 
 	formatButtons = new TextFormatButtons(boxTitle, TextFormatButtons::AxisLabel);
 
@@ -511,7 +511,7 @@ void AxesDialog::initAxesPage()
 	boxLabelsDistance->setRange(0, 1000);
 	boxLabelsDistance->setSuffix(" " + tr("pixels"));
 	distLabel->setBuddy(boxLabelsDistance);
-	connect(boxLabelsDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
+	connect(boxLabelsDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ updatePlot(); });
 	hl->addWidget(boxLabelsDistance);
 	hl->addStretch();
 
@@ -680,17 +680,17 @@ void AxesDialog::initAxesPage()
 	connect(axesTitlesList, SIGNAL(currentRowChanged(int)), this, SLOT(showAxisSettings(int)));
 	connect(boxShowLabels, SIGNAL(clicked(bool)), this, SLOT(updateTickLabelsList(bool)));
 
-	connect(boxAxisColor, &ColorButton::colorChanged, this, &AxesDialog::updatePlot);
-	connect(boxAxisNumColor, &ColorButton::colorChanged, this, &AxesDialog::updatePlot);
-	connect(boxMajorTicksType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
-	connect(boxMinorTicksType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
-	connect(showTicksPolicyBox, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::updatePlot);
-	connect(boxBaseline, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
-	connect(boxAxisBackbone, SIGNAL(clicked(bool)), this, SLOT(updatePlot()));
-	connect(boxTickLabelDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::updatePlot);
+	connect(boxAxisColor, &ColorButton::colorChanged, this, [this](){ updatePlot(); });
+	connect(boxAxisNumColor, &ColorButton::colorChanged, this, [this](){ updatePlot(); });
+	connect(boxMajorTicksType, QOverload<int>::of(&QComboBox::activated), this, [this](int){ updatePlot(); });
+	connect(boxMinorTicksType, QOverload<int>::of(&QComboBox::activated), this, [this](int){ updatePlot(); });
+	connect(showTicksPolicyBox, QOverload<int>::of(&QComboBox::activated), this, [this](int){ updatePlot(); });
+	connect(boxBaseline, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ updatePlot(); });
+	connect(boxAxisBackbone, &QCheckBox::clicked, this, [this](bool){ updatePlot(); });
+	connect(boxTickLabelDistance, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ updatePlot(); });
 
-	connect(boxShowFormula, &QPushButton::clicked, this, &AxesDialog::showFormulaBox);
-	connect(boxShowAxis, &QPushButton::clicked, this, &AxesDialog::showAxis);
+	connect(boxShowFormula, &QCheckBox::clicked, this, &AxesDialog::showFormulaBox);
+	connect(boxShowAxis, &QGroupBox::clicked, this, [this](bool){ showAxis(); });
 	connect(boxFormat, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::setLabelsNumericFormat);
 	connect(btnAxesFont, &QPushButton::clicked, this, &AxesDialog::customAxisFont);
 	connect(boxAxisType, QOverload<int>::of(&QComboBox::activated), this, &AxesDialog::showAxisFormatOptions);
@@ -766,7 +766,7 @@ void AxesDialog::initFramePage()
 
 	connect(boxFrameColor, &ColorButton::colorChanged, this, &AxesDialog::applyCanvasFormat);
 	connect(boxBackbones, &QCheckBox::toggled, this, &AxesDialog::applyCanvasFormat);
-	connect(boxFramed, &QCheckBox::toggled, this, &AxesDialog::applyCanvasFormat);
+	connect(boxFramed, &QGroupBox::toggled, this, [this](bool){ applyCanvasFormat(); });
 	connect(boxFrameWidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::applyCanvasFormat);
 	connect(boxAxesLinewidth, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::applyCanvasFormat);
 	connect(boxMajorTicksLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &AxesDialog::changeMajorTicksLength);
@@ -812,7 +812,7 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->addItem(tr( "Scientific: 1e4" ) );
 			boxFormat->addItem(tr( "Scientific: 1x10^4" ) );
 			boxFormat->addItem(tr( "Engineering: 10k" ) );
-			boxFormat->addItem(tr( "Scientific: 1·10^4" ) );
+			boxFormat->addItem(tr( "Scientific: 1Â·10^4" ) );
 			boxFormat->setCurrentIndex(d_graph->axisLabelFormat(axis));
 
 			label3->show();

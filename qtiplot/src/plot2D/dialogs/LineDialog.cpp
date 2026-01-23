@@ -151,17 +151,17 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WindowFlags fl 
 
 	connect(colorBox, &ColorButton::colorChanged, this, &LineDialog::apply);
 	connect(styleBox, QOverload<int>::of(&QComboBox::activated), this, &LineDialog::apply);
-	connect(widthBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &LineDialog::apply);
+	connect(widthBox, &DoubleSpinBox::valueChanged, this, [this](double){ apply(); });
 	connect(startBox, &QCheckBox::toggled, this, &LineDialog::apply);
 	connect(endBox, &QCheckBox::toggled, this, &LineDialog::apply);
 
-	connect(boxHeadLength, QOverload<int>::of(&QSpinBox::valueChanged), this, &LineDialog::apply);
-	connect(boxHeadAngle, QOverload<int>::of(&QSpinBox::valueChanged), this, &LineDialog::apply);
+	connect(boxHeadLength, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ apply(); });
+	connect(boxHeadAngle, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ apply(); });
 	connect(filledBox, &QCheckBox::toggled, this, &LineDialog::apply);
 
 	connect(btnOk, &QPushButton::clicked, this, &LineDialog::accept);
 	connect(btnApply, &QPushButton::clicked, this, &LineDialog::apply);
-	connect(tw, SIGNAL(currentChanged (QWidget *)), this, SLOT(enableButtonDefault(QWidget *)));
+	connect(tw, &QTabWidget::currentChanged, this, [this](int index){ enableButtonDefault(tw->widget(index)); });
 	connect(buttonDefault, &QPushButton::clicked, this, &LineDialog::setDefaultValues);
 }
 
