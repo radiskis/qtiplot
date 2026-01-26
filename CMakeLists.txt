@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(qtiplot LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 14)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# Find Qt5
+find_package(Qt5 COMPONENTS Widgets Svg Xml OpenGL PrintSupport Concurrent Network AxContainer REQUIRED)
+
+
+
+# Find Python
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+
+# Find ZLIB (system or bundled)
+# Find ZLIB (system or bundled)
+# find_package(ZLIB REQUIRED) 
+# We will handle ZLIB via Qt or system libs manually in qtiplot/CMakeLists.txt
+
+
+# Add 3rdparty components
+add_subdirectory(3rdparty)
+
+# Add Main Application
+add_subdirectory(qtiplot)
