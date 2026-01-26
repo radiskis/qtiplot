@@ -123,12 +123,6 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 
 int main( int argc, char ** argv )
 {
-#ifdef QTIPLOT_STATIC_BUILD
-	Q_IMPORT_PLUGIN(qgif);
-	Q_IMPORT_PLUGIN(qjpeg);
-	Q_IMPORT_PLUGIN(qmng);
-	Q_IMPORT_PLUGIN(qtiff);
-#endif
 
 //	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
 //	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);

@@ -44,6 +44,11 @@ Description          : QtiPlot's main window
 #include <QPrinter>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QMimeData>
+#include <QDropEvent>
+#include "qwt3d_coordsys.h"
+#undef SOLID
+#undef DASH
 
 #include <SelectionMoveResizer.h>
 #include <SymbolBox.h>
@@ -729,6 +734,7 @@ void ApplicationWindow::setDefaultOptions()
 	d_3D_minor_grid_color = Qt::lightGray;
 	d_3D_minor_grids = true;
 	d_3D_major_grids = true;
+#pragma message("CHECKING SOLID USAGE")
 	d_3D_major_style = Qwt3D::SOLID;
 	d_3D_minor_style = Qwt3D::DASH;
 	d_3D_major_width = 1.0;
@@ -2413,7 +2419,7 @@ void ApplicationWindow::updateMatrixPlotLabels(Matrix *m)
 		Graph3D *plot3D = qobject_cast<Graph3D *>(w);
 		if (plot3D && plot3D->matrix() == m){
 			plot3D->resetAxesLabels();
-			plot3D->surface()->updateGL();
+			plot3D->surface()->update();
 		} else if (plot2D){
 			QList<Graph *> layers = plot2D->layersList();
 			for (Graph *g : layers){

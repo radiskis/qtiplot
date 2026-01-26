@@ -41,7 +41,10 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QLayout>
+#undef rad0
+#undef rad1
 #include "../../../3rdparty/alglib/src/interpolation.h"
+
 
 GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
@@ -189,7 +192,7 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	hb->addStretch();
     hb->addLayout(vl);
 
-	sp = new Plot3D();
+	sp = new SurfacePlot();
 	sp->setRotation(30, 0, 15);
 	sp->setScale(1, 1, 1);
 	sp->setShift(0.15, 0, 0);
@@ -313,7 +316,7 @@ void GriddingDialog::loadDataFromTable()
 
 	findBestLayout();
 
-	sp->updateGL();
+	sp->update();
 
 	data.clear();
 	cells.clear();
@@ -488,7 +491,7 @@ void GriddingDialog::setPlotStyle(int style)
 		d_preview_curve->setPlotStyle(WIREFRAME);
 	else
 		d_preview_curve->setPlotStyle(HIDDENLINE);
-	sp->updateGL();
+	sp->update();
 }
 
 void GriddingDialog::resetAxesLabels()

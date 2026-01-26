@@ -35,7 +35,9 @@
 #include <PenStyleBox.h>
 
 #include <QPainter>
+#include <QPainterPath>
 #include <QPaintEngine>
+
 #include <QBuffer>
 #include <QImageReader>
 #include <QFileInfo>
