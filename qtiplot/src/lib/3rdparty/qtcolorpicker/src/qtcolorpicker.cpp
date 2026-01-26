@@ -108,7 +108,7 @@
         picker->insertColor(QColor(0, 0, 255), "Blue"));
         picker->insertColor(white);
 
-        connect(colors, SIGNAL(colorChanged(const QColor &)), SLOT(setCurrentColor(const QColor &)));
+        connect(colors, &QtColorPicker::colorChanged, this, &QtColorPicker::setCurrentColor);
     }
     \endcode
 
@@ -285,12 +285,12 @@ QtColorPicker::QtColorPicker(QWidget *parent,
 
     // Create color grid popup and connect to it.
     popup = new ColorPickerPopup(cols, withColorDialog, this);
-    connect(popup, SIGNAL(selected(const QColor &)),
-	    SLOT(setCurrentColor(const QColor &)));
-    connect(popup, SIGNAL(hid()), SLOT(popupClosed()));
+    connect(popup, &ColorPickerPopup::selected,
+	    this, &QtColorPicker::setCurrentColor);
+    connect(popup, &ColorPickerPopup::hid, this, &QtColorPicker::popupClosed);
 
     // Connect this push button's pressed() signal.
-    connect(this, SIGNAL(toggled(bool)), SLOT(buttonPressed(bool)));
+    connect(this, &QPushButton::toggled, this, &QtColorPicker::buttonPressed);
 }
 
 /*!
@@ -548,7 +548,7 @@ ColorPickerPopup::ColorPickerPopup(int width, bool withColorDialog,
 	moreButton->setFixedWidth(24);
 	moreButton->setFixedHeight(21);
 	moreButton->setFrameRect(QRect(2, 2, 20, 17));
-	connect(moreButton, SIGNAL(clicked()), SLOT(getColorFromDialog()));
+	connect(moreButton, &ColorPickerButton::clicked, this, &ColorPickerPopup::getColorFromDialog);
     } else {
 	moreButton = 0;
     }
@@ -614,7 +614,7 @@ void ColorPickerPopup::insertColor(const QColor &col, const QString &text, int i
     }
     item->setFocus();
 
-    connect(item, SIGNAL(selected()), SLOT(updateSelected()));
+    connect(item, &ColorPickerItem::selected, this, &ColorPickerPopup::updateSelected);
 
     if (index == -1)
 	index = items.count();

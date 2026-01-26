@@ -67,7 +67,7 @@ void ExtensibleFileDialog::setExtensionWidget(QWidget *extension)
 		return;
 	if (d_extension) {
 		d_extension->hide();
-		d_extension_toggle->disconnect(SIGNAL(toggled(bool)));
+		disconnect(d_extension_toggle, &QPushButton::toggled, nullptr, nullptr);
 	}
 	d_extension = extension;
 	if (!d_extension) {

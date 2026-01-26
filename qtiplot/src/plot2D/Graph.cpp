@@ -270,7 +270,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	connect(scalePicker, &ScalePicker::axisTitleRightClicked, this, &Graph::showAxisTitleMenu);
 	connect(scalePicker, &ScalePicker::axisRightClicked, this, &Graph::showAxisContextMenu);
 
-	connect(d_zoomer[0], SIGNAL(zoomed(const QRectF &)), this, SLOT(zoomed(const QRectF &)));
+	connect(d_zoomer[0], &QwtPlotZoomer::zoomed, this, &Graph::zoomed);
 }
 
 MultiLayer* Graph::multiLayer() const
@@ -4207,7 +4207,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			QwtScaleWidget *scale = axisWidget(i);
 			if (scale)
-				disconnect(scale, SIGNAL(scaleDivChanged()), this, 0);
+				disconnect(scale, &QwtScaleWidget::scaleDivChanged, this, nullptr);
 		}
 
 		cnvs->setCursor(Qt::ArrowCursor);
