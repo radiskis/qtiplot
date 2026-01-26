@@ -197,7 +197,7 @@ void QwtHistogram::loadData()
 	if (d_show_labels)
 		loadLabels();
 
-	foreach(ErrorBarsCurve *err, d_error_bars)
+	for (ErrorBarsCurve *err : d_error_bars)
 		err->loadData();
 }
 

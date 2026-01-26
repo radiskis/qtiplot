@@ -880,7 +880,7 @@ void FunctionDialog::updateFunctionsList(int category)
 	if (category == 0)
 		boxMathFunctions->addItems(MyParser::functionsList());
 	else if (category == 1){
-		foreach(Fit *fit, d_fit_models)
+		for (Fit *fit : d_fit_models)
 			boxMathFunctions->addItem(fit->objectName() + "(x," + fit->parameterNames().join(",") + ")");
 
 		boxFunctionExplain->setText(d_fit_models[0]->formula());
@@ -888,7 +888,7 @@ void FunctionDialog::updateFunctionsList(int category)
 		if (d_user_functions.isEmpty())
 			return;
 
-		foreach(NonLinearFit *fit, d_user_functions)
+		for (NonLinearFit *fit : d_user_functions)
 			boxMathFunctions->addItem(fit->objectName() + "(x," + fit->parameterNames().join(",") + ")");
 
 		boxFunctionExplain->setText(d_user_functions[0]->formula());
@@ -961,7 +961,7 @@ void FunctionDialog::guessConstants()
 	boxConstants->setRowCount(lst.size());
 
 	int row = 0;
-	foreach(QString s, lst){
+	for (QString s : lst){
 		boxConstants->setItem(row, 0, new QTableWidgetItem(s));
 
 		DoubleSpinBox *sb = new DoubleSpinBox();
@@ -1054,9 +1054,9 @@ void FunctionDialog::initBuiltInFitModels()
 
 FunctionDialog::~FunctionDialog()
 {
-	foreach(Fit *f, d_fit_models)
+	for (Fit *f : d_fit_models)
 		delete f;
 
-	foreach(NonLinearFit *f, d_user_functions)
+	for (NonLinearFit *f : d_user_functions)
 		delete f;
 }

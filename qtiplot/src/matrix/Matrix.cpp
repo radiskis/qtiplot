@@ -1667,7 +1667,7 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
                 leftCol = selectedIndexes[0].column();
                 rightCol = leftCol;
             }
-            foreach(QModelIndex index, selectedIndexes){
+            for (QModelIndex index : selectedIndexes){
                 int row = index.row();
                 if (row < topRow)
                     topRow = row;
@@ -1791,7 +1791,7 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 			leftCol = selectedIndexes[0].column();
 			rightCol = leftCol;
 		}
-		foreach(QModelIndex index, selectedIndexes){
+		for (QModelIndex index : selectedIndexes){
 			int row = index.row();
 			if (row < topRow)
 				topRow = row;

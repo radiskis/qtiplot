@@ -85,7 +85,7 @@ bool QtiPlotApplication::event(QEvent *event)
 	{
 		QString file = static_cast<QFileOpenEvent *>(event)->file();
 		if (!d_windows.isEmpty()){
-			foreach(ApplicationWindow *w, d_windows){
+			for (ApplicationWindow *w : d_windows){
 				if (w->projectname == file){
 					if (!w->isActiveWindow() && d_windows.count() > 1)
 						activateWindow(w);
@@ -143,7 +143,7 @@ void QtiPlotApplication::updateDockMenu()
 	QMenu *dockMenu = new QMenu();
 
 #ifdef QT_MAC_USE_COCOA
-	foreach(ApplicationWindow *w, d_windows){
+	for (ApplicationWindow *w : d_windows){
 		QAction *a = dockMenu->addAction(w->windowTitle());
 		a->setIconVisibleInMenu(true);
 		a->setCheckable(true);

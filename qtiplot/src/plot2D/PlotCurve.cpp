@@ -437,7 +437,7 @@ void DataCurve::setRowRange(int startRow, int endRow)
 
 	loadData();
 
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->loadData();
 }
 
@@ -448,7 +448,7 @@ void DataCurve::setFullRange()
 
 	loadData();
 
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->loadData();
 }
 
@@ -655,7 +655,7 @@ void DataCurve::loadData()
 	}
 
 	setSamples(data);
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->setSamples(data);
 
 	if (xColType == Table::Text)
@@ -686,7 +686,7 @@ void DataCurve::clearErrorBars()
 	if (d_error_bars.isEmpty())
 		return;
 
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->remove();
 }
 
@@ -702,9 +702,9 @@ void DataCurve::remove()
 void DataCurve::setVisible(bool on)
 {
 	QwtPlotCurve::setVisible(on);
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->setVisible(on);
-	foreach(PlotMarker *m, d_labels_list)
+	for (PlotMarker *m : d_labels_list)
 		m->setVisible(on);
 }
 
@@ -855,7 +855,7 @@ void DataCurve::clearLabels()
 
 	d_show_labels = false;
 
-	foreach(PlotMarker *m, d_labels_list){
+	for (PlotMarker *m : d_labels_list){
 		m->detach();
 		delete m;
 	}
@@ -872,7 +872,7 @@ void DataCurve::setLabelsFont(const QFont& font)
 
     d_labels_font = font;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		t.setFont(font);
 		m->setLabel(t);
@@ -890,7 +890,7 @@ void DataCurve::setLabelsColor(const QColor& c)
 
     d_labels_color = c;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		t.setColor(c);
 		m->setLabel(t);
@@ -918,7 +918,7 @@ void DataCurve::updateLabelsPosition()
     if (!d_plot)
         return;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
         int index = m->index();
         QSize size = m->label().textSize().toSize();
         int x_axis = xAxis();
@@ -965,7 +965,7 @@ void DataCurve::setLabelsRotation(double angle)
 
     d_labels_angle = angle;
 
-    foreach(PlotMarker *m, d_labels_list)
+    for (PlotMarker *m : d_labels_list)
 		m->setAngle(angle);
 }
 
@@ -979,7 +979,7 @@ void DataCurve::setLabelsWhiteOut(bool whiteOut)
 
     d_white_out_labels = whiteOut;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		if (whiteOut)
 			t.setBackgroundBrush(QBrush(Qt::white));
@@ -1103,7 +1103,7 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 
     bool selected = false;
 	d_selected_label = nullptr;
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
         int x = d_plot->transform(xAxis(), m->xValue());
         int y = d_plot->transform(yAxis(), m->yValue());
 
@@ -1129,7 +1129,7 @@ bool DataCurve::hasSelectedLabels()
 	if (d_labels_list.isEmpty())
 		return false;
 
-	foreach(PlotMarker *m, d_labels_list){
+	for (PlotMarker *m : d_labels_list){
 		if (m->label().borderPen().color() == Qt::blue)
 			return true;
 	}
@@ -1141,7 +1141,7 @@ void DataCurve::setLabelsSelected(bool on)
 	if (!validCurveType())
 		return;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		if(t.text().isEmpty())
             continue;

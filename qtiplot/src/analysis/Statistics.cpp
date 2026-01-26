@@ -139,7 +139,7 @@ QString Statistics::logInfo(bool header)
 
 	QFontMetrics fm(app->font());
 	int width = 0;
-	foreach(QString s, lst){
+	for (QString s : lst){
 		int aw = fm.horizontalAdvance(s);
 		if (aw > width)
 			width = aw;

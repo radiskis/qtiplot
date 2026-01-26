@@ -277,7 +277,7 @@ void Fit::setDataCurve(PlotCurve *curve, double start, double end)
     if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
     {
 		QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-		foreach (ErrorBarsCurve *er, lst){
+		for (ErrorBarsCurve *er : lst){
             if (!er->xErrors()){
                 d_weighting = Instrumental;
                 for (int i=0; i<d_n; i++){
@@ -480,7 +480,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				ErrorBarsCurve *er = 0;
 				if (((PlotCurve *)d_curve)->type() != Graph::Function){
 					QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-					foreach (ErrorBarsCurve *er, lst){
+					for (ErrorBarsCurve *er : lst){
                     	if (!er->xErrors()){
                         	weighting_dataset = er->title().text();
                         	error = false;

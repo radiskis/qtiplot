@@ -304,7 +304,7 @@ void LayerDialog::update()
 		ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		multi_layer = app->multilayerPlot(1, -1, app->defaultCurveStyle, MultiLayer::AlignLayers);
 		QList<Graph *> layersList = multi_layer->layersList();
-		foreach(Graph *g, layersList)
+		for (Graph *g : layersList)
 			g->removeLegend();
 	}
 
@@ -375,7 +375,7 @@ void LayerDialog::update()
 	multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 	if (!buttonApply){
 		QList<Graph *> layersList = multi_layer->layersList();
-		foreach(Graph *g, layersList)
+		for (Graph *g : layersList)
 			g->newLegend();
 	}
 

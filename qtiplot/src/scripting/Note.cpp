@@ -91,7 +91,7 @@ void Note::showLineNumbers(bool show)
 			continue;
 
 		QObjectList lst = w->children();
-		foreach (QObject *obj, lst){
+		for (QObject *obj : lst){
 			LineNumberDisplay *display = qobject_cast<LineNumberDisplay *>(obj);
 			if (display){
 				display->setVisible(show);
@@ -183,7 +183,7 @@ int Note::indexOf(ScriptEdit* editor)
 			continue;
 
 		QObjectList lst = w->children();
-		foreach (QObject *obj, lst){
+		for (QObject *obj : lst){
 			ScriptEdit *edit = qobject_cast<ScriptEdit *>(obj);
 			if (edit && edit == editor){
 				return i;
@@ -204,7 +204,7 @@ ScriptEdit* Note::editor(int index)
 		return 0;
 
 	QObjectList lst = w->children();
-	foreach (QObject *obj, lst){
+	for (QObject *obj : lst){
 		ScriptEdit *edit = qobject_cast<ScriptEdit *>(obj);
 		if (edit)
 			return edit;
@@ -219,7 +219,7 @@ ScriptEdit* Note::currentEditor()
 		return 0;
 
 	QObjectList lst = w->children();
-	foreach (QObject *obj, lst){
+	for (QObject *obj : lst){
 		ScriptEdit *editor = qobject_cast<ScriptEdit *>(obj);
 		if (editor)
 			return editor;
@@ -235,7 +235,7 @@ void Note::setTabStopDistance(double length)
 			continue;
 
 		QObjectList lst = w->children();
-		foreach (QObject *obj, lst){
+		for (QObject *obj : lst){
 			ScriptEdit *edit = qobject_cast<ScriptEdit *>(obj);
 			if (edit){
 				edit->setTabStopDistance(length);
@@ -398,13 +398,13 @@ void Note::setFont(const QFont& f)
 		ScriptEdit *editor = 0;
 
 		QObjectList lst = w->children();
-		foreach (QObject *obj, lst){
+		for (QObject *obj : lst){
 			display = qobject_cast<LineNumberDisplay *>(obj);
 			if (display)
 				break;
 		}
 
-		foreach (QObject *obj, lst){
+		for (QObject *obj : lst){
 			editor = qobject_cast<ScriptEdit *>(obj);
 			if (editor)
 				break;

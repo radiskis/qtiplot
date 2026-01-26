@@ -65,7 +65,7 @@ MultiPeakFitTool::~MultiPeakFitTool()
 {
 	d_graph->canvas()->releaseMouse();
 
-	foreach(QwtPlotMarker *m, d_lines)
+	for (QwtPlotMarker *m : d_lines)
 		m->detach();//remove peak line markers
 	d_lines.clear();
 
@@ -164,7 +164,7 @@ void MultiPeakFitTool::finalize()
 	}
 
 	//remove peak line markers
-	foreach(QwtPlotMarker *m, d_lines)
+	for (QwtPlotMarker *m : d_lines)
 		m->detach();
 	d_lines.clear();
 

@@ -383,7 +383,7 @@ void VectorCurve::loadData()
 
 	X.resize(size); Y.resize(size); X2.resize(size); Y2.resize(size);
 	setSamples(X.data(), Y.data(), size);
-	foreach(ErrorBarsCurve *c, d_error_bars)
+	for (ErrorBarsCurve *c : d_error_bars)
 		c->setSamples(X.data(), Y.data(), size);
 	setVectorEnd(X2, Y2);
 }

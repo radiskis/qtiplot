@@ -297,7 +297,7 @@ void IntegrationDialog::integrateTable()
 	}
 
 	int aux = 0;
-	foreach (QString yCol, lst){
+	for (QString yCol : lst){
 		int xCol = d_table->colX(d_table->colIndex(yCol));
 		Integration *i = new Integration(app, d_table, d_table->colName(xCol), yCol, from, to, sortData);
 		i->enableGraphicsDisplay(boxShowPlot->isChecked());

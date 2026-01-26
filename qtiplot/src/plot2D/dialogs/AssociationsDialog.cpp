@@ -201,7 +201,7 @@ Table * AssociationsDialog::findTable(int index)
 {
 	QString text = associations->item(index)->text();
 	QStringList lst= text.split(":", Qt::SkipEmptyParts);
-	foreach(MdiSubWindow *w, tables){
+	for (MdiSubWindow *w : tables){
 		if (w->objectName() == lst[0])
 			return (Table *)w;
 	}

@@ -275,7 +275,7 @@ void PolarGraph::save(const QString &fn, const QString &geometry, bool)
     }
     
     // Curves
-    foreach(QwtPolarCurve* c, d_curves.keys()){
+    for (QwtPolarCurve* c : d_curves.keys()){
         PolarCurveInfo info = d_curves.value(c);
         t << "<Curve>\n";
         t << "\t<Table>" + info.tableName + "</Table>\n";
@@ -303,7 +303,7 @@ void PolarGraph::save(const QString &fn, const QString &geometry, bool)
 PolarGraph* PolarGraph::restore(ApplicationWindow* app, const QStringList& lst)
 {
     QString name;
-    foreach(QString s, lst){
+    for (QString s : lst){
         if (s.contains("<Name>"))
             name = s.remove("<Name>").remove("</Name>").trimmed();
     }
@@ -362,7 +362,7 @@ PolarGraph* PolarGraph::restore(ApplicationWindow* app, const QStringList& lst)
                      // Easier: w->d_plot->itemList().last() dynamic_cast to QwtPolarCurve.
                      
                      QList<QwtPolarItem*> items = w->plot()->itemList();
-                     foreach(QwtPolarItem* item, items){
+                     for (QwtPolarItem* item : items){
                          if (item->rtti() == QwtPolarItem::Rtti_PolarCurve){
                              if (QwtPolarCurve *c = static_cast<QwtPolarCurve*>(item)){
                                  // Check if it matches our data

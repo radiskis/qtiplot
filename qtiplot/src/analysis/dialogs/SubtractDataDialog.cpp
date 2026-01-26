@@ -140,7 +140,7 @@ void SubtractDataDialog::setCurrentFolder(bool on)
 		Folder *f = app->currentFolder();
 		if (f){
 			QStringList tables;
-			foreach (MdiSubWindow *w, f->windowsList()){
+			for (MdiSubWindow *w : f->windowsList()){
 				if (w->inherits("Table"))
 					tables << w->objectName();
 			}

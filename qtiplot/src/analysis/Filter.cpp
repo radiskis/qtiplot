@@ -254,7 +254,7 @@ void Filter::showLegend()
 		return;
 
 	QList <FrameWidget *> lst = d_output_graph->enrichmentsList();
-	foreach(FrameWidget *fw, lst){
+	for (FrameWidget *fw : lst){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled()){
 			l->setText(l->text() + "\n" + legendInfo());

@@ -978,7 +978,7 @@ void EnrichmentDialog::frameApplyTo()
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
-			foreach(FrameWidget *fw, lst)
+			for (FrameWidget *fw : lst)
 				setFrameTo(fw);
 		}
 		break;
@@ -986,9 +986,9 @@ void EnrichmentDialog::frameApplyTo()
 		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
-			foreach(Graph *g, layersLst){
+			for (Graph *g : layersLst){
 				QList <FrameWidget *> lst = g->enrichmentsList();
-				foreach(FrameWidget *fw, lst)
+				for (FrameWidget *fw : lst)
 					setFrameTo(fw);
 			}
 		}
@@ -997,14 +997,14 @@ void EnrichmentDialog::frameApplyTo()
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = d_app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst){
+				for (Graph *g : layersLst){
 					QList <FrameWidget *> lst = g->enrichmentsList();
-					foreach(FrameWidget *fw, lst)
+					for (FrameWidget *fw : lst)
 						setFrameTo(fw);
 				}
 			}
@@ -1056,7 +1056,7 @@ void EnrichmentDialog::patternApplyTo()
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
-			foreach(FrameWidget *fw, lst)
+			for (FrameWidget *fw : lst)
 				setPatternTo(fw);
 		}
 		break;
@@ -1064,9 +1064,9 @@ void EnrichmentDialog::patternApplyTo()
 		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
-			foreach(Graph *g, layersLst){
+			for (Graph *g : layersLst){
 				QList <FrameWidget *> lst = g->enrichmentsList();
-				foreach(FrameWidget *fw, lst)
+				for (FrameWidget *fw : lst)
 						setPatternTo(fw);
 			}
 		}
@@ -1075,14 +1075,14 @@ void EnrichmentDialog::patternApplyTo()
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = d_app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst){
+				for (Graph *g : layersLst){
 					QList <FrameWidget *> lst = g->enrichmentsList();
-					foreach(FrameWidget *fw, lst)
+					for (FrameWidget *fw : lst)
 						setPatternTo(fw);
 				}
 			}
@@ -1167,7 +1167,7 @@ void EnrichmentDialog::textFormatApplyTo()
 		case 1://this layer
 		{
 			QList <FrameWidget *> lst = d_plot->enrichmentsList();
-			foreach(FrameWidget *fw, lst){
+			for (FrameWidget *fw : lst){
 				LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 				if (l)
 					setTextFormatTo(l);
@@ -1178,9 +1178,9 @@ void EnrichmentDialog::textFormatApplyTo()
 		case 2://this window
 		{
 			QList<Graph *> layersLst = d_plot->multiLayer()->layersList();
-			foreach(Graph *g, layersLst){
+			for (Graph *g : layersLst){
 				QList <FrameWidget *> lst = g->enrichmentsList();
-				foreach(FrameWidget *fw, lst){
+				for (FrameWidget *fw : lst){
 					LegendWidget *l = qobject_cast<LegendWidget *>(fw);
                     if (l)
                         setTextFormatTo(l);
@@ -1192,14 +1192,14 @@ void EnrichmentDialog::textFormatApplyTo()
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = d_app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst){
+				for (Graph *g : layersLst){
 					QList <FrameWidget *> lst = g->enrichmentsList();
-					foreach(FrameWidget *fw, lst){
+					for (FrameWidget *fw : lst){
 						LegendWidget *l = qobject_cast<LegendWidget *>(fw);
                         if (l)
                             setTextFormatTo(l);

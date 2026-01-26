@@ -88,7 +88,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 		}
 
 		QStringList lst = t->selectedColumns();
-		foreach(QString text, lst){
+		for (QString text : lst){
 			QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(text));
 			selectedSamples->addTopLevelItem(item);
 			QComboBox *box = new QComboBox();
@@ -107,7 +107,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 
 		selectedSamples->setHeaderHidden(true);
 		QStringList lst = t->selectedColumns();
-		foreach(QString text, lst)
+		for (QString text : lst)
 			selectedSamples->addTopLevelItem(new QTreeWidgetItem(QStringList(text)));
 	}
 
@@ -261,7 +261,7 @@ void AnovaDialog::showCurrentFolder(bool currentFolder)
 	if (currentFolder){
 		QStringList list;
 		QList<MdiSubWindow *> windows = app->currentFolder()->windowsList();
-		foreach(MdiSubWindow *w, windows){
+		for (MdiSubWindow *w : windows){
 			if (!w->inherits("Table"))
 				continue;
 
@@ -307,7 +307,7 @@ void AnovaDialog::addData()
 		return;
 
 	if (d_two_way){
-		foreach(QListWidgetItem *item, items){
+		for (QListWidgetItem *item : items){
 			QString s = item->text();
 			if (selectedSamples->findItems(s, Qt::MatchExactly).isEmpty()){
 				QTreeWidgetItem *it = new QTreeWidgetItem(QStringList(s));
@@ -322,7 +322,7 @@ void AnovaDialog::addData()
 		}
 		updateLevelBoxes();
 	} else {
-		foreach(QListWidgetItem *item, items){
+		for (QListWidgetItem *item : items){
 			QString s = item->text();
 			if (selectedSamples->findItems(s, Qt::MatchExactly).isEmpty())
 				selectedSamples->addTopLevelItem(new QTreeWidgetItem(QStringList(s)));
@@ -336,7 +336,7 @@ void AnovaDialog::removeData()
 	if (items.isEmpty())
 		return;
 
-	foreach(QTreeWidgetItem *item, items)
+	for (QTreeWidgetItem *item : items)
 		selectedSamples->takeTopLevelItem(selectedSamples->indexOfTopLevelItem(item));
 
 	if (d_two_way)

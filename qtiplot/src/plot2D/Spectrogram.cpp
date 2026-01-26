@@ -355,7 +355,7 @@ if (contourLines){
 		s += "\t\t\t<xOffset>" + QString::number(d_labels_x_offset) + "</xOffset>\n";
 		s += "\t\t\t<yOffset>" + QString::number(d_labels_y_offset) + "</yOffset>\n";
 		s += "\t\t\t<Font>" + d_labels_font.toString() + "</Font>\n";
-		foreach(PlotMarker *m, d_labels_list){
+		for (PlotMarker *m : d_labels_list){
 			if (m->xLabelOffset() != 0.0 || m->xLabelOffset() != 0.0){
 				s += "\t\t\t<offset>" + QString::number(m->index()) + ",";
 				s += QString::number(m->xLabelOffset()) + ",";
@@ -417,7 +417,7 @@ void Spectrogram::showContourLineLabels(bool show)
 
     d_show_labels = show;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
     	if (d_show_labels)
 			m->attach(d_graph);
 		else
@@ -498,7 +498,7 @@ void Spectrogram::setLabelsFont(const QFont& font)
 
     d_labels_font = font;
 
-    foreach(QwtPlotMarker *m, d_labels_list){
+    for (QwtPlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		t.setFont(font);
 		m->setLabel(t);
@@ -512,7 +512,7 @@ void Spectrogram::setLabelsColor(const QColor& c)
 
     d_labels_color = c;
 
-    foreach(QwtPlotMarker *m, d_labels_list){
+    for (QwtPlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		t.setColor(c);
 		m->setLabel(t);
@@ -526,7 +526,7 @@ void Spectrogram::setLabelsWhiteOut(bool whiteOut)
 
     d_white_out_labels = whiteOut;
 
-    foreach(QwtPlotMarker *m, d_labels_list){
+    for (QwtPlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		if (whiteOut)
 			t.setBackgroundBrush(QBrush(Qt::white));
@@ -564,7 +564,7 @@ void Spectrogram::setLabelsRotation(double angle)
 
     d_labels_angle = angle;
 
-    foreach(PlotMarker *m, d_labels_list)
+    for (PlotMarker *m : d_labels_list)
 		m->setAngle(angle);
 }
 
@@ -575,7 +575,7 @@ bool Spectrogram::selectedLabels(const QPoint& pos)
 	if (d_graph->hasActiveTool())
 		return false;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
         int x = d_graph->transform(xAxis(), m->xValue());
         int y = d_graph->transform(yAxis(), m->yValue());
 
@@ -601,7 +601,7 @@ void Spectrogram::selectLabel(bool on)
 		d_graph->notifyColorChange(d_labels_color);
 	}
 
-	foreach(PlotMarker *m, d_labels_list){
+	for (PlotMarker *m : d_labels_list){
 		QwtText t = m->label();
 		if(t.text().isEmpty())
 			return;
@@ -622,7 +622,7 @@ bool Spectrogram::hasSelectedLabels()
     /*if (d_labels_list.isEmpty())
         return false;
 
-    foreach(PlotMarker *m, d_labels_list){
+    for (PlotMarker *m : d_labels_list){
         if (m->label().backgroundPen() == QPen(Qt::blue))
             return true;
         else
@@ -662,7 +662,7 @@ void Spectrogram::moveLabel(const QPoint& pos)
 
 void Spectrogram::clearLabels()
 {
-	foreach(PlotMarker *m, d_labels_list){
+	for (PlotMarker *m : d_labels_list){
 		m->detach();
 		delete m;
 	}
@@ -672,7 +672,7 @@ void Spectrogram::clearLabels()
 void Spectrogram::setVisible(bool on)
 {
 	QwtPlotItem::setVisible(on);
-	foreach(PlotMarker *m, d_labels_list)
+	for (PlotMarker *m : d_labels_list)
 		m->setVisible(on);
 }
 

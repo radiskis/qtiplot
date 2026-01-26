@@ -48,7 +48,7 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
 	keywordFormat.setForeground(app->d_keyword_highlight_color);
     keywordFormat.setFontWeight(QFont::Bold);
 
-	foreach (QString pattern, d_keywords) {
+	for (QString pattern : d_keywords) {
         rule.pattern = QRegExp("\\b" + pattern + "\\b");
         rule.format = keywordFormat;
         pythonHighlightingRules.append(rule);
@@ -67,7 +67,7 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 	QRegExp comment = QRegExp("\"{3}");
 	s.replace(comment, "   ");
 
-    foreach (HighlightingRule rule, pythonHighlightingRules) {
+    for (HighlightingRule rule : pythonHighlightingRules) {
         QRegExp expression(rule.pattern);
         int index = s.indexOf(expression);
         while (index >= 0) {
@@ -148,11 +148,11 @@ SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(p
 	highlightingRules.append(rule);
 }
 
-//! Parentheses matching code taken from Qt Quarterly Issue 31 · Q3 2009
+//! Parentheses matching code taken from Qt Quarterly Issue 31 Â· Q3 2009
 void SyntaxHighlighter::highlightBlock(const QString &text)
 {
 	QString s = text;
-	foreach (HighlightingRule rule, highlightingRules) {
+	for (HighlightingRule rule : highlightingRules) {
 		QRegExp expression(rule.pattern);
 		int index = s.indexOf(expression);
 		while (index >= 0) {

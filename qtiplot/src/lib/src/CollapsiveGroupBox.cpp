@@ -36,7 +36,7 @@ CollapsiveGroupBox::CollapsiveGroupBox(const QString & title, QWidget *parent) :
 
 void CollapsiveGroupBox::setCollapsed(bool collapsed)
 {
-	foreach (QObject *o, children()){
+	for (QObject *o : children()){
 		if (o->isWidgetType())
 			((QWidget *)o)->setVisible(collapsed);
 	}
@@ -46,7 +46,7 @@ void CollapsiveGroupBox::setCollapsed(bool collapsed)
 
 void CollapsiveGroupBox::setExpanded(bool expanded)
 {
-	foreach (QObject *o, children()){
+	for (QObject *o : children()){
 		if (o->isWidgetType())
 			((QWidget *)o)->setVisible(expanded);
 	}

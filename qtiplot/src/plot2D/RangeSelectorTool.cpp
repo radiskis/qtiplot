@@ -480,7 +480,7 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 			d_selection_lst << box;
 
 			QList<ErrorBarsCurve *> errorBars = ((DataCurve *)curve)->errorBarsList();
-			foreach(ErrorBarsCurve *err, errorBars){
+			for (ErrorBarsCurve *err : errorBars){
 				box = new QCheckBox(err->title().text());
 				box->setChecked(true);
 				vb->addWidget(box);

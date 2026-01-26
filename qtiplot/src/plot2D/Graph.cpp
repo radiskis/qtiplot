@@ -335,7 +335,7 @@ void Graph::enableTextEditor()
 QList <LegendWidget *> Graph::textsList()
 {
 	QList <LegendWidget *> texts;
-	foreach(FrameWidget *f, d_enrichments){
+	for (FrameWidget *f : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(f);
 		if (l)
 			texts << l;
@@ -355,7 +355,7 @@ QList <FrameWidget *> Graph::increasingAreaEnrichmentsList()
 		return d_enrichments;
 
 	QList <FrameWidget *> lst;
-	foreach(FrameWidget *f, d_enrichments)
+	for (FrameWidget *f : d_enrichments)
 		lst << f;
 
 	std::sort(lst.begin(), lst.end(), areaLessThan);
@@ -1348,7 +1348,7 @@ void Graph::setAxisTitle(int axis, const QString& text)
 
 void Graph::updateSecondaryAxis(int axis, bool changeFormat)
 {
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 			Spectrogram *sp = (Spectrogram *)it;
 			if (sp->colorScaleAxis() == axis)
@@ -1536,7 +1536,7 @@ void Graph::setCanvasCoordinates(const QRectF& r)
 QStringList Graph::analysableCurvesList()
 {
 	QStringList cList;
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
 			if (c->type() == ErrorBars)
@@ -1569,7 +1569,7 @@ QString Graph::curveRange(QwtPlotCurve *c)
 QStringList Graph::curveNamesList()
 {
 	QStringList cList;
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
     	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 			cList << it->title().text();
 	}
@@ -1582,7 +1582,7 @@ QStringList Graph::plotItemsList()
 		return QStringList();
 
   	QStringList cList;
-	foreach(QwtPlotItem *it, d_curves)
+	for (QwtPlotItem *it : d_curves)
     	cList << it->title().text();
 	return cList;
 }
@@ -1963,7 +1963,7 @@ void Graph::removeMarker()
 		remove(d_selected_arrow);
 	else if (d_markers_selector){
 		QList <QWidget *> lst = d_markers_selector->widgetsList();
-		foreach(QWidget *w, lst){
+		for (QWidget *w : lst){
 			FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 			if (fw)
 				remove(fw);
@@ -2041,7 +2041,7 @@ void Graph::deselect()
 void Graph::deselectCurves()
 {
 	QList<QwtPlotItem *> curves = curvesList();
-	foreach(QwtPlotItem *i, curves){
+	for (QwtPlotItem *i : curves){
 		if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram &&
 			((Spectrogram *)i)->hasSelectedLabels()){
 			((Spectrogram *)i)->selectLabel(false);
@@ -2054,7 +2054,7 @@ void Graph::deselectCurves()
 QwtPlotItem* Graph::selectedCurveLabels()
 {
 	QList<QwtPlotItem *> curves = curvesList();
-	foreach(QwtPlotItem *i, curves){
+	for (QwtPlotItem *i : curves){
 		if(i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)i)->hasSelectedLabels())
 			return i;
 
@@ -2208,7 +2208,7 @@ QString Graph::pieLegendText()
 void Graph::updateCurvesData(Table* w, const QString& yColName)
 {
 	int updated_curves = 0;
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
     	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
 			if (c->type() == Function)
@@ -2230,7 +2230,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
 
 void Graph::reloadCurvesData()
 {
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
 			if (c->type() == Function)
@@ -2729,7 +2729,7 @@ QString Graph::saveCurves()
 		s += savePieCurveLayout();
 	else {
 		int i = -1;
-		foreach (QwtPlotItem *it, d_curves){
+		for (QwtPlotItem *it : d_curves){
 			i++;
 			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 				s += ((Spectrogram *)it)->saveToString();
@@ -2776,7 +2776,7 @@ QString Graph::saveCurves()
 
 LegendWidget* Graph::legend()
 {
-	foreach (FrameWidget *w, d_enrichments){
+	for (FrameWidget *w : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(w);
 		if (l && l->isAutoUpdateEnabled())
 			return l;
@@ -2993,7 +2993,7 @@ LegendWidget* Graph::addText(LegendWidget* t)
 QString Graph::saveMarkers()
 {
 	QString s;
-	foreach (QwtPlotMarker *i, d_lines){
+	for (QwtPlotMarker *i : d_lines){
 		ArrowMarker* mrkL = (ArrowMarker*)i;
 		s+="<line>\t";
 
@@ -3016,7 +3016,7 @@ QString Graph::saveMarkers()
 		s+=QString::number(mrkL->attachPolicy())+"</line>\n";
 	}
 
-	foreach(FrameWidget *f, d_enrichments)
+	for (FrameWidget *f : d_enrichments)
 		s += f->saveToString();
 
 	return s;
@@ -3073,7 +3073,7 @@ int Graph::curveIndex(const QString &title)
 {
 	if (title.contains("[") && title.endsWith("]")){
 		int index = -1;
-		foreach(QwtPlotItem *it, d_curves){
+		for (QwtPlotItem *it : d_curves){
 			index++;
 			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 				continue;
@@ -3107,7 +3107,7 @@ DataCurve * Graph::dataCurve(const QString &s)
 		endRow = range[1].toInt() - 1;
 	}
 
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
 			continue;
 		if (((PlotCurve *)it)->type() == Function)
@@ -3369,7 +3369,7 @@ void Graph::updateErrorBars(ErrorBarsCurve *er, bool xErr, double width, double 
 ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, const QString& errColName,
 		int type, double width, double cap, const QColor& color, bool through, bool minus, bool plus)
 {
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 		if (((PlotCurve *)it)->type() == ErrorBars || ((PlotCurve *)it)->type() == Function)
@@ -3526,7 +3526,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 		}
 		int errCurves = errLst.size();
 		QStringList lst = QStringList(masterCurvesLst);
-		foreach(QString s, errLst)
+		for (QString s : errLst)
 			lst.append(s);
 
 		for (int i = 0; i < curves; i++){
@@ -3924,7 +3924,7 @@ void Graph::setBarsGap(int curve, int gapPercent, int offset)
 void Graph::removePie()
 {
 	QList <PieLabel *> labels = ((PieCurve *)curve(0))->labelsList();
-	foreach(PieLabel *l, labels)
+	for (PieLabel *l : labels)
 		l->setPieCurve(0);
 
 	removeCurve(0);
@@ -3935,7 +3935,7 @@ void Graph::removePie()
 
 void Graph::removeCurves(const QString& s)
 {
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
         if (it->title().text() == s){
             removeCurve(d_curves.indexOf(it));
             continue;
@@ -4021,7 +4021,7 @@ void Graph::removeLegendItem(int index)
 	if (((PlotCurve *)it)->type() == ErrorBars)
 		return;
 
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled()){
 			QString text = l->text();
@@ -4073,7 +4073,7 @@ void Graph::removeLegendItem(int index)
 
 void Graph::addLegendItem()
 {
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled()){
 			QString text = l->text();
@@ -4132,7 +4132,7 @@ void Graph::zoom(bool on)
 {
 	d_zoomer[0]->setEnabled(on);
 	d_zoomer[1]->setEnabled(on);
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
   	    if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->hasColorScale()){
   	     	if (((Spectrogram *)it)->colorScaleAxis() == QwtPlot::xBottom ||
 				((Spectrogram *)it)->colorScaleAxis() == QwtPlot::yLeft)
@@ -4181,7 +4181,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		d_panner = new QwtPlotPanner(cnvs);
 		connect(d_panner, &QwtPlotPanner::panned, multiLayer(), &MultiLayer::notifyChanges);
 
-		foreach (QwtPlotItem *it, d_curves){
+		for (QwtPlotItem *it : d_curves){
 			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 				Spectrogram *sp = (Spectrogram *)it;
 				int axis = sp->colorScaleAxis();
@@ -4326,7 +4326,7 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 		return;
 	}
 
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled()){//update legends
 			QString text = (l->text()).replace(oldLegend, c->legend());
@@ -4343,7 +4343,7 @@ QString Graph::generateFunctionName(const QString& name)
   	QString newName = name + QString::number(index);
 
   	QStringList lst;
-  	foreach(QwtPlotItem *it, d_curves){
+  	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -4595,7 +4595,7 @@ void Graph::restoreBackgroundImage(const QStringList& lst)
 
 void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 {
-	foreach(FrameWidget *f, d_enrichments){
+	for (FrameWidget *f : d_enrichments){
 		if (!rescaleEvent && qobject_cast<LegendWidget *>(f)){
 			f->resetOrigin();
 			continue;
@@ -4611,7 +4611,7 @@ void Graph::updateMarkersBoundingRect(bool rescaleEvent)
 	if (!d_lines.size())
 		return;
 
-	foreach (QwtPlotMarker *i, d_lines)
+	for (QwtPlotMarker *i : d_lines)
 		((ArrowMarker*)i)->updateBoundingRect();
 
 	replot();
@@ -4628,7 +4628,7 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	updateCurveLabels();
 
 	bool layerSelected = multiLayer()->hasSelectedLayers();
-	foreach(FrameWidget *f, d_enrichments){
+	for (FrameWidget *f : d_enrichments){
 		if (layerSelected && f->attachPolicy() == FrameWidget::Page)
 			f->updateCoordinates();
 		else {
@@ -4666,7 +4666,7 @@ void Graph::scaleFonts(double factor)
 	setTitle(t);
 
 	QList<QwtPlotItem *> curves = curvesList();
-	foreach(QwtPlotItem *i, curves){
+	for (QwtPlotItem *i : curves){
 		if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
 		  ((PlotCurve *)i)->type() != Graph::Function &&
 		  ((DataCurve *)i)->hasLabels()){
@@ -4678,7 +4678,7 @@ void Graph::scaleFonts(double factor)
 		}
 	}
 
-    foreach(FrameWidget *f, d_enrichments){
+    for (FrameWidget *f : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(f);
 		if (!l)
 			continue;
@@ -5000,7 +5000,7 @@ void Graph::copyEnrichments(Graph* g)
 		return;
 
 	QList<FrameWidget *> enrichements = g->enrichmentsList();
-	foreach (FrameWidget *e, enrichements){
+	for (FrameWidget *e : enrichements){
 		PieLabel *l = qobject_cast<PieLabel *>(e);
 		if (l)
 			continue;
@@ -5008,7 +5008,7 @@ void Graph::copyEnrichments(Graph* g)
 	}
 
 	QList<ArrowMarker *> lines = g->arrowsList();
-	foreach (ArrowMarker *a, lines)
+	for (ArrowMarker *a : lines)
 		addArrow(a);
 }
 
@@ -5068,7 +5068,7 @@ void Graph::copyCurves(Graph* g)
 		return;
 	
 	QList<QwtPlotItem *> curvesList = g->curvesList();
-	foreach (QwtPlotItem *it, curvesList){
+	for (QwtPlotItem *it : curvesList){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
 			DataCurve *cv = (DataCurve *)it;
 			int n = cv->dataSize();
@@ -5210,7 +5210,7 @@ void Graph::plotBox(Table *w, const QStringList& names, int startRow, int endRow
 		c->setSymbol(new QwtSymbol(QwtSymbol::NoSymbol, QBrush(), QPen(color, 1), QSize(7, 7)));
 	}
 
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 		if (l && l->isAutoUpdateEnabled())
 			l->setText(legendText());
@@ -5404,7 +5404,7 @@ void Graph::guessUniqueCurveLayout(int& colorIndex, int& symbolIndex)
 		}
 	}
 
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve){
 			const QwtPlotCurve *c = (QwtPlotCurve *)it;
 			int index = indexedColors.indexOf(c->pen().color());
@@ -5439,7 +5439,7 @@ void Graph::addFitCurve(QwtPlotCurve *c)
 
 void Graph::deleteFitCurves()
 {
-	foreach(QwtPlotCurve *c, d_fit_curves)
+	for (QwtPlotCurve *c : d_fit_curves)
 		removeCurve(c);
 
 	replot();
@@ -5451,7 +5451,7 @@ Spectrogram* Graph::spectrogram(Matrix *m)
 	if (!m)
 		return nullptr;
 
-	foreach (QwtPlotItem *item, d_curves){
+	for (QwtPlotItem *item : d_curves){
 		if(item && item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 			Spectrogram *s = (Spectrogram *)item;
 			if (s && s->matrix() == m)
@@ -5653,7 +5653,7 @@ bool Graph::validCurvesDataSize()
 		QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("There are no curves available on this plot!"));
 		return false;
 	} else {
-		foreach (QwtPlotItem *item, d_curves){
+		for (QwtPlotItem *item : d_curves){
   	         if(item && item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
   	             QwtPlotCurve *c = (QwtPlotCurve *)item;
   	             if (c->dataSize() >= 2)
@@ -5687,7 +5687,7 @@ Graph::~Graph()
 
 	disableImageProfilesTool();
 
-	foreach(FrameWidget *fw, d_enrichments)
+	for (FrameWidget *fw : d_enrichments)
 		fw->close();
 }
 
@@ -5699,9 +5699,9 @@ void Graph::setAntialiasing(bool on, bool update)
 	d_antialiasing = on;
 
 	if (update){
-		foreach(QwtPlotItem *it, d_curves)
+		for (QwtPlotItem *it : d_curves)
 			it->setRenderHint(QwtPlotItem::RenderAntialiased, isCurveAntialiasingEnabled(it));
-		foreach (QwtPlotMarker *i, d_lines)
+		for (QwtPlotMarker *i : d_lines)
 			i->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
 		replot();
 	}
@@ -5735,7 +5735,7 @@ void Graph::disableCurveAntialiasing(bool disable, int maxPoints)
 	if (d_curves.isEmpty())
 		return;
 
-	foreach(QwtPlotItem *it, d_curves)
+	for (QwtPlotItem *it : d_curves)
 		it->setRenderHint(QwtPlotItem::RenderAntialiased, isCurveAntialiasingEnabled(it));
 	replot();
 }
@@ -5801,7 +5801,7 @@ QString Graph::axisFormatInfo(int axis)
 void Graph::updateCurveNames(const QString& oldName, const QString& newName, bool updateTableName)
 {
     //update plotted curves list
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
         if (it->rtti() != QwtPlotItem::Rtti_PlotCurve)
             continue;
 
@@ -5882,7 +5882,7 @@ void Graph::setGrayScale()
 	int i = 0;
 	QColor color = Qt::black;
 	int hue = color.hue();
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
 			((Spectrogram *)it)->setGrayScale();
 			continue;
@@ -5921,7 +5921,7 @@ void Graph::setGrayScale()
 		i++;
 	}
 
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -5948,7 +5948,7 @@ void Graph::setIndexedColors()
 		colors = ColorBox::defaultColors();
 
 	int i = 0;
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -5980,7 +5980,7 @@ void Graph::setIndexedColors()
 		i++;
 	}
 
-	foreach (QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -5999,7 +5999,7 @@ void Graph::setIndexedColors()
 
 DataCurve* Graph::masterCurve(ErrorBarsCurve *er)
 {
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 		if (((PlotCurve *)it)->type() == Function)
@@ -6017,7 +6017,7 @@ DataCurve* Graph::masterCurve(ErrorBarsCurve *er)
 DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
 {
 	QString master_curve = xColName + "(X)," + yColName + "(Y)";
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 		if (((PlotCurve *)it)->type() == Function)
@@ -6043,7 +6043,7 @@ void Graph::showCurve(int index, bool visible)
 int Graph::visibleCurves()
 {
     int c = 0;
-	foreach(QwtPlotItem *it, d_curves){
+	for (QwtPlotItem *it : d_curves){
     	if (it->isVisible())
             c++;
 	}
@@ -6096,7 +6096,7 @@ void Graph::setCurrentFont(const QFont& f)
 		updateMarkersBoundingRect();
 	} else {
 	    QList<QwtPlotItem *> curves = curvesList();
-	    foreach(QwtPlotItem *i, curves){
+	    for (QwtPlotItem *i : curves){
 	        if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
 	          ((PlotCurve *)i)->type() != Graph::Function){
                 if(((DataCurve *)i)->hasSelectedLabels()){
@@ -6138,7 +6138,7 @@ void Graph::setCurrentColor(const QColor& c)
 		emit modifiedGraph();
 	} else {
 		QList<QwtPlotItem *> curves = curvesList();
-		foreach(QwtPlotItem *i, curves){
+		for (QwtPlotItem *i : curves){
 			if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
 			  ((PlotCurve *)i)->type() != Graph::Function){
 				if(((DataCurve *)i)->hasSelectedLabels()){
@@ -6558,7 +6558,7 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 	double dmin = DBL_MAX;
 	QPoint p = QPoint(xpos, ypos);
 	QwtPlotItem *curve = nullptr;
-	foreach (QwtPlotItem *item, d_curves){
+	for (QwtPlotItem *item : d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -6598,7 +6598,7 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 	for (int axis = 0; axis < QwtPlot::axisCnt; axis++)
 		map[axis] = canvasMap(axis);
 
-	foreach (QwtPlotItem *item, d_curves){
+	for (QwtPlotItem *item : d_curves){
 		if(item->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -6799,7 +6799,7 @@ const QColor & Graph::paletteBackgroundColor() const
 void Graph::updateCurveLabels()
 {
     QList<QwtPlotItem *> curves = curvesList();
-    foreach(QwtPlotItem *i, curves){
+    for (QwtPlotItem *i : curves){
         if(i->rtti() != QwtPlotItem::Rtti_PlotSpectrogram &&
         ((PlotCurve *)i)->type() != Graph::Function &&
         ((DataCurve *)i)->hasLabels())
@@ -6909,12 +6909,12 @@ LegendWidget* Graph::activeText()
 void Graph::raiseEnrichements()
 {
 	QList<Graph *> lst = multiLayer()->layersList();
-	foreach(Graph *g, lst){
+	for (Graph *g : lst){
 		if (g == this)
 			continue;
 
 		QList<FrameWidget *> eLst = g->enrichmentsList();
-		foreach(FrameWidget *fw, eLst){
+		for (FrameWidget *fw : eLst){
 			if (fw->isOnTop())
 				fw->raise();
 			else
@@ -6922,7 +6922,7 @@ void Graph::raiseEnrichements()
 		}
 	}
 
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		if (fw->isOnTop())
 			fw->raise();
 		else
@@ -6934,7 +6934,7 @@ QRect Graph::boundingRect()
 {
 	QRect r = rect();
 
-	foreach(FrameWidget *fw, d_enrichments){
+	for (FrameWidget *fw : d_enrichments){
 		if (fw->isHidden() || fw->visibleRegion().isEmpty())//pie labels can be hidden
 			continue;
 
@@ -7083,7 +7083,7 @@ void Graph::changeCurveIndex(int fromIndex, int toIndex)
 	d_curves.move ( fromIndex, toIndex );
 
 	int z = 0;
-	foreach(QwtPlotItem *c, d_curves){
+	for (QwtPlotItem *c : d_curves){
 		c->setZ(z);
 		z++;
 	}
@@ -7152,7 +7152,7 @@ void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool u
 	if (!update)
 		return;
 
-	foreach (QwtPlotItem *item, d_curves){
+	for (QwtPlotItem *item : d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 		PlotCurve *c = (PlotCurve *)item;
@@ -7171,7 +7171,7 @@ QList<FrameWidget*> Graph::stackingOrderEnrichmentsList() const
 
 	QList<FrameWidget*> enrichements;
 	QObjectList lst = ml->canvas()->children();
-	foreach(QObject *o, lst){
+	for (QObject *o : lst){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(o);
 		if (fw && fw->plot() == this)
 			enrichements << fw;
@@ -7184,7 +7184,7 @@ bool Graph::mousePressed(QEvent *e)
 	const QMouseEvent *me = (const QMouseEvent *)e;
 
 	QList<FrameWidget*> lst = stackingOrderEnrichmentsList();
-	foreach(FrameWidget *o, lst){
+	for (FrameWidget *o : lst){
 		QPoint pos = o->mapFromGlobal(me->globalPos());
 		if (o->rect().contains(pos))
 			return QCoreApplication::sendEvent(o, e);

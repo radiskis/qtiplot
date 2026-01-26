@@ -226,7 +226,7 @@ void CurvesDialog::showCurveRangeDialog()
 {
 	QList<QListWidgetItem *> lst = contents->selectedItems();
 	QList<int> indexes;
-	foreach(QListWidgetItem *it, lst)
+	for (QListWidgetItem *it : lst)
 		indexes << contents->row(it);
 
 	CurveRangeDialog* crd = new CurveRangeDialog(this);
@@ -272,7 +272,7 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 	{
        QList<QTreeWidgetItem *> lst = available->selectedItems();
        int count = 0;
-	   foreach (QTreeWidgetItem *item, lst){
+	   for (QTreeWidgetItem *item : lst){
 			if (item->type() == FolderItem)
 				continue;
 
@@ -367,7 +367,7 @@ void CurvesDialog::addCurves()
 
 	QStringList emptyColumns;
 	QList<QTreeWidgetItem *> lst = available->selectedItems();
-	foreach (QTreeWidgetItem *item, lst){
+	for (QTreeWidgetItem *item : lst){
 		QString text = item->text(0);
 		switch(item->type()){
 			case ColumnItem:
@@ -532,7 +532,7 @@ void CurvesDialog::removeCurves()
 	for (int i = 0; i < lst.size(); ++i)
 		curvesList << d_graph->curve(contents->row(lst.at(i)));
 
-	foreach(QwtPlotItem *c, curvesList)
+	for (QwtPlotItem *c : curvesList)
 		d_graph->removeCurve(c);
 
 	showCurveRange(boxShowRange->isChecked());
@@ -600,7 +600,7 @@ int CurvesDialog::curveStyle()
 void CurvesDialog::showCurveRange(bool on)
 {
 	QList<int> selectedRows;
-	foreach(QListWidgetItem *it, contents->selectedItems())
+	for (QListWidgetItem *it : contents->selectedItems())
 		selectedRows << contents->row(it);
 
 	contents->clear();
@@ -621,7 +621,7 @@ void CurvesDialog::showCurveRange(bool on)
 	} else
 		contents->addItems(d_graph->plotItemsList());
 
-	foreach(int row, selectedRows){//restore selection
+	for (int row : selectedRows){//restore selection
 		QListWidgetItem *it = contents->item(row);
 		if (it)
 			it->setSelected(true);
@@ -682,7 +682,7 @@ void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
 	if (!f)
 		return;
 
-	foreach (MdiSubWindow *w, f->windowsList()){
+	for (MdiSubWindow *w : f->windowsList()){
 		if (w->inherits("Table")){
 			Table *t = (Table *)w;
 

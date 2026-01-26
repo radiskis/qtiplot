@@ -69,7 +69,7 @@ QWidget* PolarSettingsDialog::initFormatTab()
     layout->addLayout(curveLayout);
 
     QList<QwtPolarCurve*> curves = d_graph->curves();
-    foreach(QwtPolarCurve *c, curves){
+    for (QwtPolarCurve *c : curves){
         boxCurve->addItem(c->title().text());
     }
     connect(boxCurve, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PolarSettingsDialog::setActiveCurve);

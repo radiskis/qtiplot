@@ -99,7 +99,7 @@ void CurveRangeDialog::accept()
 				c->setRowRange(qMin(start, end), qMax(start, end));
 		}
 	} else if (!d_curves.isEmpty()){
-		foreach(DataCurve *c, d_curves)
+		for (DataCurve *c : d_curves)
 			c->setRowRange(qMin(start, end), qMax(start, end));
 	}
 
@@ -139,7 +139,7 @@ void CurveRangeDialog::setCurvesToModify(Graph *g, const QList<int>& indexes)
 	d_graph = g;
 
 	QStringList curveNames;
-	foreach(int i, indexes){
+	for (int i : indexes){
 		DataCurve *c = (DataCurve *)d_graph->curve(i);
 		if (c){
 			d_curves << c;

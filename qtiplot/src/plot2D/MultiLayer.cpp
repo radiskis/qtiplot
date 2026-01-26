@@ -216,7 +216,7 @@ Graph *MultiLayer::layer(int num)
 
 LayerButton* MultiLayer::addLayerButton()
 {
-	foreach(LayerButton *btn, buttonsList)
+	for (LayerButton *btn : buttonsList)
 		btn->setChecked(false);
 
 	LayerButton *button = new LayerButton(QString::number(graphsList.size() + 1));
@@ -297,7 +297,7 @@ Graph* MultiLayer::clickedLayer(Graph* g)
 		return 0;
 
 	QRect ar = g->frameGeometry();
-	foreach (Graph *gr, graphsList){
+	for (Graph *gr : graphsList){
 		if (gr == g)
 			continue;
 
@@ -352,7 +352,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 QRect MultiLayer::canvasChildrenRect()
 {
 	QRect r = QRect();
-	foreach (Graph *g, graphsList)
+	for (Graph *g : graphsList)
 		r = r.united(g->boundingRect());
 
 	return r.adjusted(0, 0, right_margin, bottom_margin);
@@ -360,7 +360,7 @@ QRect MultiLayer::canvasChildrenRect()
 
 void MultiLayer::adjustLayersToCanvasSize()
 {
-	foreach (Graph *g, graphsList){
+	for (Graph *g : graphsList){
 		QRectF rf = g->pageGeometry();
 		if (rf.isNull())
 			continue;
@@ -406,7 +406,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 
 	if (d_common_axes_layout && !invalidOldSize){
 		arrangeLayers(false, false);
-		foreach (Graph *g, graphsList){
+		for (Graph *g : graphsList){
 			if (g->autoscaleFonts())
 				g->scaleFonts(h_ratio);
 		}
@@ -464,7 +464,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 		}
 	}
 
-	foreach (Graph *g, graphsList)
+	for (Graph *g : graphsList)
 		g->setPageGeometry(QRectF((double)g->x()/w, (double)g->y()/h, (double)g->width()/w, (double)g->height()/h));
 
 	if (d_is_waterfall_plot)
@@ -519,7 +519,7 @@ bool MultiLayer::removeLayer(Graph *g)
 	buttonsList.removeAt(index);
 
 	int i = 0;
-	foreach(LayerButton* btn, buttonsList){
+	for (LayerButton* btn : buttonsList){
 		btn->setText(QString::number(++i));//update the texts of the buttons
 		btn->setChecked(false);
 	}
@@ -1010,7 +1010,7 @@ QList<Graph*> MultiLayer::stackOrderedLayersList()
 {
 	QList<Graph*> gLst;
 	QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
-	foreach (QObject *o, lst){
+	for (QObject *o : lst){
 		Graph *g = qobject_cast<Graph *>(o);
 		if (g)
 			gLst << g;
@@ -1029,7 +1029,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		QPainter p(&pic);
 
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst)
+		for (Graph *g : lst)
 			g->print(&p, g->geometry(), ScaledFontsPrintFilter(1.0));
 
 		p.end();
@@ -1051,7 +1051,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor, yScale);
 
 	QList<Graph*> lst = stackOrderedLayersList();
-	foreach (Graph *g, lst){
+	for (Graph *g : lst){
 		int gx = qRound(g->x()*xScale);
 		int gy = qRound(g->y()*yScale);
 		int gw = qRound(g->width()*xScale);
@@ -1218,7 +1218,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 		printer->setPageSize(QPageSize(QSizeF(size) / printer->resolution(), QPageSize::Inch));
 		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst){
+		for (Graph *g : lst){
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
@@ -1238,7 +1238,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 		printer->setPageSize(QPageSize(QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor) / printer->resolution(), QPageSize::Inch));
 		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst){
+		for (Graph *g : lst){
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
@@ -1249,7 +1249,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 		printer->setPageSize(QPageSize(QSizeF(d_canvas->width(), d_canvas->height()) / printer->resolution(), QPageSize::Inch));
 		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst)
+		for (Graph *g : lst)
 			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
 		paint.end();
 	}
@@ -1280,7 +1280,7 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 	if (customSize.isValid()){
 		QSize size = Graph::customPrintSize(customSize, unit, res);
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst){
+		for (Graph *g : lst){
 			QRect r = g->geometry();
 			double wfactor = (double)size.width()/(double)d_canvas->width();
 			double hfactor = (double)size.height()/(double)d_canvas->height();
@@ -1294,7 +1294,7 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 		}
 	} else {
 		QList<Graph*> lst = stackOrderedLayersList();
-		foreach (Graph *g, lst)
+		for (Graph *g : lst)
 			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
 	}
 	paint.end();
@@ -1345,7 +1345,7 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 	if (!color)
 		tex.setColorMode(QPrinter::GrayScale);
 
-	foreach (Graph* g, graphsList){
+	for (Graph* g : graphsList){
 		g->setTeXExportingMode();
 		g->setEscapeTeXStringsMode(escapeStrings);
 	}
@@ -1355,7 +1355,7 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 
 	draw(&tex, customSize, unit, res, fontsFactor);
 
-	foreach (Graph* g, graphsList)
+	for (Graph* g : graphsList)
 		g->setTeXExportingMode(false);
 #endif
 }
@@ -1368,7 +1368,7 @@ void MultiLayer::copyAllLayers()
 		selectionOn = true;
 	}
 
-	foreach (Graph* g, graphsList)
+	for (Graph* g : graphsList)
 		g->deselectMarker();
 
 #ifdef Q_OS_WIN
@@ -1465,7 +1465,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 			cr.setHeight(int(cr.height()*scaleFactorY));
 		}
 
-		foreach (Graph *g, graphsList){
+		for (Graph *g : graphsList){
 			QPoint pos = g->pos();
 			pos = QPoint(margin + int(pos.x()*scaleFactorX), margin + int(pos.y()*scaleFactorY));
 
@@ -1485,7 +1485,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 		if (d_print_cropmarks)
 			cr.moveTo(x_margin, y_margin);
 
-		foreach (Graph *g, graphsList){
+		for (Graph *g : graphsList){
 			QPoint pos = g->pos();
 			pos = QPoint(x_margin + pos.x(), y_margin + pos.y());
 			g->print(painter, QRect(pos, g->size()), ScaledFontsPrintFilter(1.0));
@@ -1507,7 +1507,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		const QFont& numbersFnt, const QFont& legendFnt)
 {
-	foreach (Graph *g, graphsList){
+	for (Graph *g : graphsList){
 		QwtText text = g->title();
   	    text.setFont(titleFnt);
   	    g->setTitle(text);
@@ -1520,7 +1520,7 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 		}
 
 		QList <LegendWidget *> texts = g->textsList();
-		foreach (LegendWidget *l, texts)
+		for (LegendWidget *l : texts)
 			l->setFont(legendFnt);
 
 		g->replot();
@@ -1629,7 +1629,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		if (d_layers_selector)
 			delete d_layers_selector;
 		else {
-			foreach (Graph *g, graphsList)
+			for (Graph *g : graphsList)
 				g->deselect();
 		}
 		return;
@@ -1727,7 +1727,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "<AlignPolicy>" + QString::number(d_align_policy) + "</AlignPolicy>\n";
 	t << "<CommonAxes>" + QString::number(d_common_axes_layout) + "</CommonAxes>\n";
 
-	foreach (Graph *g, graphsList)
+	for (Graph *g : graphsList)
 		t << g->saveToString(saveAsTemplate);
 
 	if (d_is_waterfall_plot)
@@ -1836,7 +1836,7 @@ void MultiLayer::copy(MultiLayer* ml)
 	d_print_cropmarks = ml->printCropmarksEnabled();
 
 	QList<Graph*> lst = ml->layersList();
-	foreach (Graph *g, lst){
+	for (Graph *g : lst){
 		Graph* g2 = addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		g2->setAutoscaleFonts(false);
 		g2->copy(g);
@@ -1846,7 +1846,7 @@ void MultiLayer::copy(MultiLayer* ml)
 	if (ml->isWaterfallPlot())
 		setWaterfallLayout(true);
 
-	foreach (Graph *g, lst){
+	for (Graph *g : lst){
 		ImageProfilesTool *ipt = g->imageProfilesTool();
 		if (ipt){
 			Graph *g2 = layer(ml->layerIndex(g) + 1);
@@ -1886,9 +1886,9 @@ QString MultiLayer::sizeToString()
 {
 	int layers = graphsList.size();
 	int size = sizeof(MultiLayer) + layers*sizeof(Graph);
-	foreach(Graph *g, graphsList){
+	for (Graph *g : graphsList){
 		QList<QwtPlotItem *> items = g->curvesList();
-		foreach(QwtPlotItem *i, items){
+		for (QwtPlotItem *i : items){
 			if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
             	Spectrogram *sp = (Spectrogram *)i;
 				int cells = sp->matrix()->numRows() * sp->matrix()->numCols();
@@ -1902,7 +1902,7 @@ QString MultiLayer::sizeToString()
 
 Graph* MultiLayer::layerAt(const QPoint& pos)
 {
-    foreach(Graph *g, graphsList){
+    for (Graph *g : graphsList){
 		if (g->geometry().contains(pos))
             return g;
 	}
@@ -1960,7 +1960,7 @@ void MultiLayer::updateWaterfalls()
 	if (!d_is_waterfall_plot || graphsList.isEmpty())
 		return;
 
-	foreach(Graph *g, graphsList){
+	for (Graph *g : graphsList){
 		if (g->isWaterfallPlot())
 			g->updateDataCurves();
 	}
@@ -2170,7 +2170,7 @@ void MultiLayer::plotProfiles(Matrix* m)
 
 	QColor color = Qt::white;
 	color.setAlpha(0);
-	foreach(Graph *g, graphsList)
+	for (Graph *g : graphsList)
 		g->setBackgroundColor(color);
 }
 
@@ -2179,10 +2179,10 @@ void MultiLayer::linkXLayerAxes(bool link)
 	d_link_x_axes = link;
 
 	if (link){
-		foreach(Graph *g, graphsList)
+		for (Graph *g : graphsList)
 			connect(g, &Graph::axisDivChanged, this, &MultiLayer::updateLayerAxes);
 	} else {
-		foreach(Graph *g, graphsList)
+		for (Graph *g : graphsList)
 			disconnect(g, &Graph::axisDivChanged, this, &MultiLayer::updateLayerAxes);
 	}
 }
@@ -2209,7 +2209,7 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 	if (this->applicationWindow())
 		synchronizeScales = this->applicationWindow()->d_synchronize_graph_scales;
 
-	foreach(Graph *l, graphsList){
+	for (Graph *l : graphsList){
 		if (l == g)
 			continue;
 
@@ -2250,7 +2250,7 @@ void MultiLayer::updateLayersLayout(Graph *g)
 
 	disconnect (g, &Graph::updatedLayout, this, &MultiLayer::updateLayersLayout);
 	arrangeLayers(false, true);
-	foreach(Graph *ag, graphsList){
+	for (Graph *ag : graphsList){
 		if (ag->curveCount())
 			ag->newLegend();
 	}
@@ -2266,6 +2266,6 @@ MultiLayer::~MultiLayer()
 {
 	deselect();
 
-	foreach(Graph *g, graphsList)
+	for (Graph *g : graphsList)
 		delete g;
 }

@@ -2444,7 +2444,7 @@ void ConfigDialog::apply()
 	palette.setColor(QPalette::Text, buttonText->color());
 
 	QList<MdiSubWindow *> windows = app->windowsList();
-	foreach(MdiSubWindow *w, windows){
+	for (MdiSubWindow *w : windows){
 		if (w->inherits("Table")){
 			Table *t = (Table*)w;
 			w->setPalette(palette);
@@ -2543,12 +2543,12 @@ void ConfigDialog::apply()
 	app->setDouglasPeukerTolerance(speedModeBox->isChecked() ? boxDouglasPeukerTolerance->value() : 0.0);
 	app->setSpeedModeExport(applySpeedExportBox->isChecked());
 
-	foreach (MdiSubWindow *w, windows){
+	for (MdiSubWindow *w : windows){
 		MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 		if (ml){
 			ml->setScaleLayersOnPrint(boxScaleLayersOnPrint->isChecked());
 			ml->printCropmarks(boxPrintCropmarks->isChecked()); 
-			foreach(Graph *g, ml->layersList()){
+			for (Graph *g : ml->layersList()){
 				g->setSynchronizedScaleDivisions(app->d_synchronize_graph_scales);
 				g->setAxisTitlePolicy(app->d_graph_axis_labeling);
 				g->disableCurveAntialiasing(app->d_disable_curve_antialiasing, app->d_curve_max_antialising_size);
@@ -2599,7 +2599,7 @@ void ConfigDialog::apply()
 		appTabWidget->currentWidget() == numericFormatPage){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		QList<MdiSubWindow *> windows = app->windowsList();
-		foreach(MdiSubWindow *w, windows){
+		for (MdiSubWindow *w : windows){
 			w->setLocale(locale);
 
 			if(w->inherits("Table"))
@@ -3047,7 +3047,7 @@ void ConfigDialog::rehighlight()
 	app->d_class_highlight_color = buttonClassColor->color();
 
     QList<MdiSubWindow *> windows = app->windowsList();
-    foreach(MdiSubWindow *w, windows){
+    for (MdiSubWindow *w : windows){
         Note *n = qobject_cast<Note *>(w);
         if (n){
         	for (int i = 0; i < n->tabs(); i++)
@@ -3072,7 +3072,7 @@ void ConfigDialog::customizeNotes()
     f.setItalic(buttonItalicFont->isChecked());
     app->d_notes_font = f;
     QList<MdiSubWindow *> windows = app->windowsList();
-    foreach(MdiSubWindow *w, windows){
+    for (MdiSubWindow *w : windows){
         Note *n = qobject_cast<Note *>(w);
         if (n){
             n->showLineNumbers(app->d_note_line_numbers);

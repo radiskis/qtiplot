@@ -89,7 +89,7 @@ void PieCurve::clone(PieCurve* c)
 	d_table_rows = c->d_table_rows;
 
 	QList <PieLabel *> lst = c->labelsList();
-	foreach(PieLabel *t, lst){
+	for (PieLabel *t : lst){
 		PieLabel *nl = addLabel(t, true);
 		if (nl && t->isHidden())
             nl->hide();
@@ -478,7 +478,7 @@ void PieCurve::initLabels()
 void PieCurve::clearLabels()
 {
 	d_auto_labeling = false;
-	foreach(PieLabel * l, d_texts_list)
+	for (PieLabel * l : d_texts_list)
 		l->setText("");
 }
 

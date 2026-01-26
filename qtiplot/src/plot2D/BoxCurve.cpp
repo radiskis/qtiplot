@@ -717,7 +717,7 @@ void BoxCurve::updateLabels(bool updateText)
 
 	QLocale locale = d_plot->locale();
 
-	foreach(PlotMarker *m, d_labels_list){
+	for (PlotMarker *m : d_labels_list){
 		int index = m->index();
 		double val = v[index];
 		if (updateText){

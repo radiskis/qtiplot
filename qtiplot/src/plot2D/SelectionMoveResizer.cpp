@@ -77,7 +77,7 @@ void SelectionMoveResizer::init()
 
 SelectionMoveResizer::~SelectionMoveResizer()
 {
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
 		if (canvas){
 			((Graph*)canvas->parent())->raiseEnrichements();
@@ -165,7 +165,7 @@ int SelectionMoveResizer::removeAll(QWidget *target)
 
 void SelectionMoveResizer::raiseTargets(bool on)
 {
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw)
 			fw->setOnTop(on);
@@ -181,13 +181,13 @@ void SelectionMoveResizer::alignTargetsLeft()
 		return;
 
 	int left = d_widgets.first()->x();
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && fw->x() < left)
 			left = fw->x();
 	}
 
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && fw->x() != left)
 			fw->move(QPoint(left, fw->y()));
@@ -204,7 +204,7 @@ void SelectionMoveResizer::alignTargetsRight()
 		return;
 
 	int right = d_widgets.first()->x() + d_widgets.first()->width();
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw){
 			int r = fw->x() + fw->width();
@@ -213,7 +213,7 @@ void SelectionMoveResizer::alignTargetsRight()
 		}
 	}
 
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && (fw->x() + fw->width()) != right)
 			fw->move(QPoint(right - fw->width(), fw->y()));
@@ -230,13 +230,13 @@ void SelectionMoveResizer::alignTargetsTop()
 		return;
 
 	int top = d_widgets.first()->y();
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && fw->y() < top)
 			top = fw->y();
 	}
 
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && fw->y() != top)
 			fw->move(QPoint(fw->x(), top));
@@ -253,7 +253,7 @@ void SelectionMoveResizer::alignTargetsBottom()
 		return;
 
 	int bottom = d_widgets.first()->y() + d_widgets.first()->height();
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw){
 			int b = fw->y() + fw->height();
@@ -262,7 +262,7 @@ void SelectionMoveResizer::alignTargetsBottom()
 		}
 	}
 
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *fw = qobject_cast<FrameWidget *>(w);
 		if (fw && (fw->y() + fw->height()) != bottom)
 			fw->move(QPoint(fw->x(), bottom - fw->height()));
@@ -277,14 +277,14 @@ void SelectionMoveResizer::recalcBoundingRect()
 {
 	d_bounding_rect = QRect(0, 0, -1, -1);
 
-	foreach(ArrowMarker *i, d_line_markers){
+	for (ArrowMarker *i : d_line_markers){
 		if(d_bounding_rect.isValid())
 			d_bounding_rect |= boundingRectOf(i);
 		else
 			d_bounding_rect = boundingRectOf(i);
 	}
 
-	foreach(QWidget *i, d_widgets){
+	for (QWidget *i : d_widgets){
 		QRect r = i->frameGeometry();
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
 		if (canvas)
@@ -383,7 +383,7 @@ QRect SelectionMoveResizer::operateOn(const QRect in)
 
 void SelectionMoveResizer::operateOnTargets()
 {
-	foreach(ArrowMarker *i, d_line_markers){
+	for (ArrowMarker *i : d_line_markers){
 		QPoint p1 = i->startPoint();
 		QPoint p2 = i->endPoint();
 		QRect new_rect = operateOn(i->rect());
@@ -395,7 +395,7 @@ void SelectionMoveResizer::operateOnTargets()
 					p2.y()<p1.y() ? new_rect.top() : new_rect.bottom() ));
 	}
 
-	foreach(QWidget *i, d_widgets){
+	for (QWidget *i : d_widgets){
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
 		if (canvas){
 			((Graph *)canvas->plot())->setCanvasGeometry(operateOn(d_bounding_rect));
@@ -454,7 +454,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 {
 	if (me->button() == Qt::RightButton){
 		// If one of the parents' event handlers deletes me, Qt crashes while trying to send the QContextMenuEvent.
-		foreach(QWidget *w, d_widgets){
+		for (QWidget *w : d_widgets){
 			FrameWidget *l = qobject_cast<FrameWidget *>(w);
 			if (!l){
 				QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
@@ -475,7 +475,7 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widgets[0]);
 		if (fw && fw->plot()){
 			QList <FrameWidget *> lst = fw->plot()->increasingAreaEnrichmentsList();
-			foreach(FrameWidget *f, lst){
+			for (FrameWidget *f : lst){
 				if(!d_widgets.contains(f) && f->geometry().contains(me->pos()) && !fw->geometry().contains(me->pos()))
 					return fw->plot()->select(f, me->modifiers() & Qt::ShiftModifier);
 			}
@@ -526,7 +526,7 @@ void SelectionMoveResizer::mouseMoveEvent(QMouseEvent *me)
 
 void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	foreach(QWidget *w, d_widgets){
+	for (QWidget *w : d_widgets){
 		FrameWidget *l = qobject_cast<FrameWidget *>(w);
 		if (!l){
 			QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
@@ -567,7 +567,7 @@ void SelectionMoveResizer::keyPressEvent(QKeyEvent *ke)
 		case Qt::Key_Enter:
 		case Qt::Key_Return:
 			if (d_op == None) {
-			    foreach(QWidget *w, d_widgets){
+			    for (QWidget *w : d_widgets){
                     FrameWidget *l = qobject_cast<FrameWidget *>(w);
                     if (l){
                         l->showPropertiesDialog();
@@ -583,7 +583,7 @@ void SelectionMoveResizer::keyPressEvent(QKeyEvent *ke)
 			ke->accept();
 			break;
 		case Qt::Key_Escape:
-			foreach(QWidget *w, d_widgets){
+			for (QWidget *w : d_widgets){
 				FrameWidget *l = qobject_cast<FrameWidget *>(w);
 				if (l && !l->isOnTop())
 					l->lower();

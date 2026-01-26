@@ -48,7 +48,7 @@ Folder::Folder( Folder *parent, const QString &name )
 QList<Folder*> Folder::folders()
 {
 	QList<Folder*> lst;
-	foreach(QObject *f, children())
+	for (QObject *f : children())
 		lst.append((Folder*) f);
 	return lst;
 }
@@ -59,7 +59,7 @@ QStringList Folder::subfolders()
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
 		QObject * f;
-		foreach(f,folderList)
+		for (auto f : folderList)
 			list << static_cast<Folder *>(f)->objectName();
 	}
 	return list;
@@ -112,7 +112,7 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
 		QObject * f;
-		foreach(f,folderList){
+		for (auto f : folderList){
 			QString name = static_cast<Folder *>(f)->objectName();
 			if (partialMatch){
 				if (caseSensitive && name.startsWith(s,Qt::CaseSensitive))
@@ -138,7 +138,7 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 							 bool caseSensitive, bool partialMatch)
 {
 	MdiSubWindow* w;
-	foreach(w,lstWindows){
+	for (auto w : lstWindows){
 		if (windowNames){
 			QString name = w->objectName();
 			if (partialMatch && name.contains(s, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
@@ -170,13 +170,13 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 
 MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursive)
 {
-	foreach (MdiSubWindow *w, lstWindows){
+	for (MdiSubWindow *w : lstWindows){
 		if (w->inherits(cls) && name == w->objectName())
 			return w;
 	}
 
 	if (!recursive) return nullptr;
-	foreach (QObject *f, children()){
+	for (QObject *f : children()){
 		MdiSubWindow *w = ((Folder*)f)->window(name, cls, true);
 		if (w) return w;
 	}
@@ -217,12 +217,12 @@ QString Folder::sizeToString()
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
 		QObject *f;
-		foreach(f,folderList)
+		for (auto f : folderList)
 			size +=  sizeof(static_cast<Folder *>(f)); // FIXME: Doesn't this function add the size of pointers together? For what?
 	}
 
 	MdiSubWindow * w;
-	foreach(w, lstWindows)
+	for (auto w : lstWindows)
 		size += sizeof(w);
 
 	return QString::number(8*size/1024.0,'f',1)+" "+tr("kB")+" ("+QString::number(8*size)+" "+tr("bytes")+")";

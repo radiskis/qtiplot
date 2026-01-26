@@ -2188,7 +2188,7 @@ void PlotDialog::setMultiLayer(MultiLayer *ml)
 	listBox->blockSignals(true);
 	QList<Graph *> layers = ml->layersList();
 	int i = 0;
-	foreach(Graph *g, layers){
+	for (Graph *g : layers){
 		LayerItem *layer = new LayerItem(g, item, tr("Layer") + QString::number(++i));
 		item->addChild(layer);
 
@@ -3390,7 +3390,7 @@ void PlotDialog::updateEndPointColumns(const QString& text)
 	QStringList aux = cols[0].split(": ", Qt::SkipEmptyParts);
 	QString table = aux[0];
 	QStringList list;
-	foreach(QString s, columnNames){
+	for (QString s : columnNames){
 		if (s.contains(table))
 			list << s;
 	}
@@ -3415,7 +3415,7 @@ void PlotDialog::applyCanvasSize()
 		{
 			QSize size = QSize();
 			QList<Graph *> layersLst = d_ml->layersList();
-			foreach(Graph *g, layersLst){
+			for (Graph *g : layersLst){
 				size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 									   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
 				g->setCanvasSize(size);
@@ -3428,14 +3428,14 @@ void PlotDialog::applyCanvasSize()
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QSize size = QSize();
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst){
+				for (Graph *g : layersLst){
 					size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
 										   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
 					g->setCanvasSize(size);
@@ -3479,20 +3479,20 @@ void PlotDialog::resizeCanvasToFitImage()
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_ml->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				resizeLayerToFitImage(g);
 		}
 		break;
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					resizeLayerToFitImage(g);
 			}
 		}
@@ -3545,7 +3545,7 @@ void PlotDialog::applyCanvasFormat()
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_ml->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyCanvasFormatToLayer(g);
 		}
 		break;
@@ -3553,13 +3553,13 @@ void PlotDialog::applyCanvasFormat()
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyCanvasFormatToLayer(g);
 			}
 		}
@@ -3590,7 +3590,7 @@ void PlotDialog::applyLayerFormat()
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_ml->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyFormatToLayer(g);
 		}
 		break;
@@ -3598,13 +3598,13 @@ void PlotDialog::applyLayerFormat()
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyFormatToLayer(g);
 			}
 		}
@@ -3663,7 +3663,7 @@ bool PlotDialog::acceptParams()
 			ApplicationWindow *app = (ApplicationWindow *)this->parent();
 			if (app){
 				QList<MdiSubWindow *> windows = app->windowsList();
-				foreach(MdiSubWindow *w, windows){
+				for (MdiSubWindow *w : windows){
 					MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 					if (ml)
 						ml->linkXLayerAxes(boxLinkXAxes->isChecked());
@@ -4304,7 +4304,7 @@ void PlotDialog::setLabelsFontToLayer(const QFont& font, Graph *g)
 		return;
 
 	QList<QwtPlotItem *> lst = g->curvesList();
-	foreach (QwtPlotItem *it, lst)
+	for (QwtPlotItem *it : lst)
 		setLabelsFontToPlotItem(font, it);
 
 	g->replot();
@@ -4324,20 +4324,20 @@ void PlotDialog::setLabelsFont(const QFont& font, Graph *plot, const QwtPlotItem
 		case 2://this window
 		{
 			QList<Graph *> layersLst = plot->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				setLabelsFontToLayer(font, g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					setLabelsFontToLayer(font, g);
 			}
 		}
@@ -4533,7 +4533,7 @@ void PlotDialog::applyLineFormatToLayer(Graph *g)
 
 	QList<QwtPlotItem *> lst = g->curvesList();
 	int i = -1;
-	foreach (QwtPlotItem *it, lst){
+	for (QwtPlotItem *it : lst){
 		i++;
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
@@ -4572,20 +4572,20 @@ void PlotDialog::applyLineFormat(QwtPlotCurve *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyLineFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyLineFormatToLayer(g);
 			}
 		}
@@ -4645,7 +4645,7 @@ void PlotDialog::applySymbolsFormatToLayer(Graph *g)
 		return;
 
 	QList<QwtPlotItem *> lst = g->curvesList();
-	foreach (QwtPlotItem *it, lst){
+	for (QwtPlotItem *it : lst){
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -4673,20 +4673,20 @@ void PlotDialog::applySymbolsFormat(QwtPlotCurve *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applySymbolsFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applySymbolsFormatToLayer(g);
 			}
 		}
@@ -4723,7 +4723,7 @@ void PlotDialog::applyErrorBarFormatToLayer(Graph *g)
 
 	QList<QwtPlotItem *> lst = g->curvesList();
 	int i = -1;
-	foreach (QwtPlotItem *it, lst){
+	for (QwtPlotItem *it : lst){
 		i++;
 		if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
@@ -4755,20 +4755,20 @@ void PlotDialog::applyErrorBarFormat(ErrorBarsCurve *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyErrorBarFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyErrorBarFormatToLayer(g);
 			}
 		}
@@ -4835,20 +4835,20 @@ void PlotDialog::applyBoxWhiskersFormat(BoxCurve *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyBoxWhiskersFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyBoxWhiskersFormatToLayer(g);
 			}
 		}
@@ -4918,20 +4918,20 @@ void PlotDialog::applyPercentileFormat(BoxCurve *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyPercentileFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyPercentileFormatToLayer(g);
 			}
 		}
@@ -4973,7 +4973,7 @@ void PlotDialog::applyLabelsFormatToLayer(Graph *g)
 		return;
 
 	QList<QwtPlotItem *> lst = g->curvesList();
-	foreach (QwtPlotItem *it, lst)
+	for (QwtPlotItem *it : lst)
 		applyLabelsFormatToItem(it);
 
 	g->replot();
@@ -4999,20 +4999,20 @@ void PlotDialog::applyLabelsFormat(QwtPlotItem *c)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = layer->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyLabelsFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyLabelsFormatToLayer(g);
 			}
 		}
@@ -5127,7 +5127,7 @@ void PlotDialog::applyGap(Graph *g)
 		case 2://this window
 		{
 			QList<Graph *> layersLst = d_ml->layersList();
-			foreach(Graph *g, layersLst){
+			for (Graph *g : layersLst){
 				applyGapToLayer(g);
 				g->replot();
 			}
@@ -5137,13 +5137,13 @@ void PlotDialog::applyGap(Graph *g)
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst){
+				for (Graph *g : layersLst){
 					applyGapToLayer(g);
 					g->replot();
 				}
@@ -5219,7 +5219,7 @@ void LayerItem::insertCurvesList()
 void LayerItem::insertEnrichmentsList()
 {
 	QList <FrameWidget *> lst = d_graph->enrichmentsList();
-	foreach (FrameWidget *w, lst){
+	for (FrameWidget *w : lst){
 		addChild(new FrameWidgetTreeItem(w, this, w->objectName()));
 	}
 }

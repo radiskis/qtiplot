@@ -60,7 +60,7 @@ MyParser::MyParser()
 QLocale MyParser::getLocale()
 {
 	bool cLocale = true;
-	foreach (QWidget *w, QApplication::allWidgets()){
+	for (QWidget *w : QApplication::allWidgets()){
 		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(w);
 		if (app){
 			cLocale = app->d_muparser_c_locale;

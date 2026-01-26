@@ -84,7 +84,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				if (!g->zoomOn()){
 					QList<FrameWidget *> eLst = g->increasingAreaEnrichmentsList();
-					foreach(FrameWidget *fw, eLst){
+					for (FrameWidget *fw : eLst){
 						QPoint p = plot()->canvas()->mapTo(plot()->multiLayer()->canvas(), me->pos());
 						if (fw->frameGeometry().contains(p)){
 							fw->mousePressEvent((QMouseEvent *)e);
@@ -258,7 +258,7 @@ bool CanvasPicker::selectMarker(const QMouseEvent *e)
 	Graph *g = plot();
 	const QPoint point = e->pos();
 	QList<ArrowMarker *> lines = g->arrowsList();
-	foreach(ArrowMarker *i, lines){
+	for (ArrowMarker *i : lines){
 		double dist = i->dist(point.x(), point.y());
 		if (dist <= i->arrowWidth()){
 			disableEditing();

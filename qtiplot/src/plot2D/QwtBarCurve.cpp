@@ -176,10 +176,10 @@ double QwtBarCurve::stackOffset(int i, QList <QwtBarCurve *> stack) const
 
 	double stackOffset = 0.0;
 	if (bar_style == Vertical){
-		foreach(QwtBarCurve *bc, stack)
+		for (QwtBarCurve *bc : stack)
 			stackOffset += bc->y(i);
 	} else {
-		foreach(QwtBarCurve *bc, stack)
+		for (QwtBarCurve *bc : stack)
 			stackOffset += bc->x(i);
 	}
 	return stackOffset;

@@ -137,7 +137,7 @@ bool Anova::twoWayANOVA()
 	}
 
 	unsigned int n = d_n;
-	foreach(Statistics *sample, d_data_samples)
+	for (Statistics *sample : d_data_samples)
 		n += sample->dataSize();
 
 	double *data = (double *)malloc(n*sizeof(double));
@@ -158,7 +158,7 @@ bool Anova::twoWayANOVA()
 
 	int aux = d_n;
 	int s = 1;
-	foreach(Statistics *sample, d_data_samples){
+	for (Statistics *sample : d_data_samples){
 		int size = sample->dataSize();
 		double *sampleData = sample->data();
 		for (int i = 0; i < size; i++){
@@ -181,7 +181,7 @@ bool Anova::twoWayANOVA()
 bool Anova::oneWayANOVA()
 {
 	unsigned int n = d_n;
-	foreach(Statistics *sample, d_data_samples)
+	for (Statistics *sample : d_data_samples)
 		n += sample->dataSize();
 
 	long *factor = (long *)malloc(n*sizeof(long));
@@ -199,7 +199,7 @@ bool Anova::oneWayANOVA()
 
 	int aux = d_n;
 	int samples = 1;
-	foreach(Statistics *sample, d_data_samples){
+	for (Statistics *sample : d_data_samples){
 		int size = sample->dataSize();
 		samples++;
 		double *sampleData = sample->data();
@@ -255,7 +255,7 @@ QString Anova::logInfo()
 
 	if (d_descriptive_statistics){
 		s += Statistics::logInfo();
-		foreach(Statistics *sample, d_data_samples)
+		for (Statistics *sample : d_data_samples)
 			s += sample->logInfo(false);
 	}
 
@@ -265,7 +265,7 @@ QString Anova::logInfo()
 		s += sep1;
 		s += sampleName() + sep + levelName(d_factorA_levels[0]) + sep + levelName(d_factorB_levels[0], true) + "\n";
 		int i = 1;
-		foreach(Statistics *sample, d_data_samples){
+		for (Statistics *sample : d_data_samples){
 			s += sample->sampleName() + sep + levelName(d_factorA_levels[i]) + sep + levelName(d_factorB_levels[i], true) + "\n";
 			i++;
 		}
@@ -464,6 +464,6 @@ Table * Anova::resultTable(const QString& name)
 void Anova::freeMemory()
 {
 	Statistics::freeMemory();
-	foreach(Statistics *sample, d_data_samples)
+	for (Statistics *sample : d_data_samples)
 		delete sample;
 }

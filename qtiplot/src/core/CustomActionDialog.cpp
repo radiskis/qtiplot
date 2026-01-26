@@ -171,7 +171,7 @@ void CustomActionDialog::init()
 	QList<QMenu *> d_app_menus = app->menusList();
 
 	QStringList toolBars, menus;
-	foreach (QMenu *m, d_menus + app->customMenusList()){
+	for (QMenu *m : d_menus + app->customMenusList()){
 		if (!m->title().isEmpty()){
 			menus << m->title().remove("&");
 	   }
@@ -180,19 +180,19 @@ void CustomActionDialog::init()
 	menuBox->addItems(menus);
 
 	//Build the list of shortcut key sequences and keep it to memory to improve speed!
-	foreach (QMenu *m, d_app_menus){
+	for (QMenu *m : d_app_menus){
 		QList<QAction *> actionsList = m->actions();
-		foreach (QAction *a, actionsList){
+		for (QAction *a : actionsList){
 			QString shortcut = a->shortcut().toString();
 	    	if (!shortcut.isEmpty() && !d_app_shortcut_keys.contains(shortcut))
 				d_app_shortcut_keys << shortcut;
 	   }
     }
 
-	foreach (QToolBar *t, d_app_toolbars){
+	for (QToolBar *t : d_app_toolbars){
 		toolBars << t->windowTitle();
 		QList<QAction *> actionsList = t->actions();
-		foreach (QAction *a, actionsList){
+		for (QAction *a : actionsList){
 			QString shortcut = a->shortcut().toString();
 	    	if (!shortcut.isEmpty() && !d_app_shortcut_keys.contains(shortcut))
 				d_app_shortcut_keys << shortcut;
@@ -210,7 +210,7 @@ void CustomActionDialog::updateDisplayList()
 	itemsList->clear();
 
 	QList<QAction *> actionsList = ((ApplicationWindow *)parentWidget())->customActionsList();
-	foreach(QAction *action, actionsList){//add existing actions to the list widget
+	for (QAction *action : actionsList){//add existing actions to the list widget
 	    QString text = action->text();
         QString shortcut = action->shortcut().toString();
 	    if (!shortcut.isEmpty())
@@ -237,14 +237,14 @@ QAction* CustomActionDialog::addAction()
 		customizeAction(action);
 
         if (toolBarBtn->isChecked()){
-            foreach (QToolBar *t, d_app_toolbars){
+            for (QToolBar *t : d_app_toolbars){
                 if (t->windowTitle() == toolBarBox->currentText()){
                     app->addCustomAction(action, t->objectName());
                     break;
                 }
             }
         } else {
-            foreach (QMenu *m, d_menus + app->customMenusList()){
+            for (QMenu *m : d_menus + app->customMenusList()){
                 if (m->title().remove("&") == menuBox->currentText()){
                     action->setStatusTip(m->objectName());
                     app->addCustomAction(action, m->objectName());
@@ -294,7 +294,7 @@ bool CustomActionDialog::validUserInput()
     }
 
     QString text = textBox->text().remove(".").simplified();
-    foreach(QAction *action, actions){
+    for (QAction *action : actions){
         if(action->text() == text){
             QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
             tr("You have already defined an action having description: %1 <br>Please provide a different description text!").arg(textBox->text()));
@@ -323,7 +323,7 @@ bool CustomActionDialog::validUserInput()
     }
 
 	QStringList shortcuts = d_app_shortcut_keys;
-	foreach (QAction *a, actions){
+	for (QAction *a : actions){
 		QString shortcut = a->shortcut().toString();
 	    if (!shortcut.isEmpty() && !shortcuts.contains(shortcut))
 			shortcuts << shortcut;
@@ -414,14 +414,14 @@ void CustomActionDialog::saveCurrentAction()
 		QAction *newAction = new QAction(app);
 		customizeAction(newAction);
 		if (toolBarBtn->isChecked()){
-            foreach (QToolBar *t, d_app_toolbars){
+            for (QToolBar *t : d_app_toolbars){
                 if (t->windowTitle() == toolBarBox->currentText()){
                     app->addCustomAction(newAction, t->objectName(), row);
                     break;
                 }
             }
         } else {
-            foreach (QMenu *m, d_menus + app->customMenusList()){
+            for (QMenu *m : d_menus + app->customMenusList()){
                 if (m->title().remove("&") == menuBox->currentText()){
                     newAction->setStatusTip(m->objectName());
                     app->addCustomAction(newAction, m->objectName(), row);
@@ -501,7 +501,7 @@ void CustomActionDialog::chooseFolder()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Choose the custom actions folder"), app->customActionsDirPath);
     if (!dir.isEmpty() && QFileInfo(dir).isReadable()){
 		QList<QAction *> actionsList = app->customActionsList();
-    	foreach (QAction *a, actionsList)
+    	for (QAction *a : actionsList)
             app->removeCustomAction(a);
 
         app->customActionsDirPath = dir;
@@ -564,7 +564,7 @@ void CustomActionDialog::addMenu()
 								tr("Menu title:"), QLineEdit::Normal, QString(), &ok);
 	if (ok && !text.isEmpty() && menuBox->findText(text) == -1){
 		QStringList menus;
-		foreach (QMenu *m, d_menus)
+		for (QMenu *m : d_menus)
 			menus << m->title().remove("&");
 
 		menus.sort();
@@ -576,7 +576,7 @@ void CustomActionDialog::addMenu()
 			if (parentName == tr("Menu Bar"))
 				parentName = app->menuBar()->objectName();
 			else {
-				foreach (QMenu *m, d_menus){
+				for (QMenu *m : d_menus){
 					if (m->title().remove("&") == parentName)
 						parentName = m->objectName();
 				}
@@ -603,7 +603,7 @@ void CustomActionDialog::removeMenu()
 
 		QMenu *menu = nullptr;
 		QList<QMenu *> userMenus = app->customMenusList();
-		foreach(QMenu *m, userMenus){
+		for (QMenu *m : userMenus){
 			if(m->title().remove("&") == title){
 				menu = m;
 				break;
@@ -614,13 +614,13 @@ void CustomActionDialog::removeMenu()
 			return;
 
 		QList<QAction *> actionsList = app->customActionsList();
-		foreach (QAction *a, actionsList){
+		for (QAction *a : actionsList){
 			if (a->statusTip() == menu->objectName()){
 				QFile f(app->customActionsDirPath + "/" + a->text() + ".qca");
 				f.remove();
 
 				QList<QListWidgetItem *> lst = itemsList->findItems(a->text(), Qt::MatchExactly | Qt::MatchCaseSensitive);
-				foreach(QListWidgetItem * item, lst){
+				for (QListWidgetItem * item : lst){
 					itemsList->takeItem(itemsList->row(item));
 					itemsList->removeItemWidget(item);
 				}
@@ -641,7 +641,7 @@ void CustomActionDialog::removeMenu()
 void CustomActionDialog::enableDeleteMenuBtn(const QString & title)
 {
 	bool userMenu = true;
-	foreach (QMenu *m, d_menus){
+	for (QMenu *m : d_menus){
 		if (m->title().remove("&") == title){
 			userMenu = false;
 			break;

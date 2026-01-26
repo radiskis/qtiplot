@@ -114,7 +114,7 @@ bool ScalePicker::labelClicked(const QwtScaleWidget *scale, const QPoint &pos)
 	const QwtScaleDiv &div = g->axisScaleDiv(axis);
 	const QwtScaleDraw *scDraw = scale->scaleDraw();
 	QList<double> ticks = div.ticks(QwtScaleDiv::MajorTick);
-	foreach(double val, ticks){
+	for (double val : ticks){
 		QRect r = scDraw->boundingLabelRect(font, val);
 		if (r.contains(pos))
 			return true;

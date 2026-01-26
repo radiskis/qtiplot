@@ -999,7 +999,7 @@ void AxesDialog::updateGrid()
                 return;
 
             QList<Graph *> layers = plot->layersList();
-			foreach(Graph *g, layers){
+			for (Graph *g : layers){
                 if (g->isPiePlot())
                     continue;
 
@@ -1017,10 +1017,10 @@ void AxesDialog::updateGrid()
                 return;
 
             QList<MdiSubWindow *> windows = app->windowsList();
-            foreach(MdiSubWindow *w, windows){
+            for (MdiSubWindow *w : windows){
                 if (w->inherits("MultiLayer")){
                     QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-                    foreach(Graph *g, layers){
+                    for (Graph *g : layers){
                         if (g->isPiePlot())
                             continue;
                         applyChangesToGrid(g->grid());
@@ -1746,7 +1746,7 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 
 	int functions = 0;
 	QList<QwtPlotItem *> cvs = d_graph->curvesList();
-	foreach(QwtPlotItem *item, cvs){
+	for (QwtPlotItem *item : cvs){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
 
@@ -1809,7 +1809,7 @@ void AxesDialog::applyCanvasFormat()
 		case 1://this window
 		{
 			QList<Graph *> layersLst = d_graph->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyCanvasFormatTo(g);
 		}
 		break;
@@ -1817,13 +1817,13 @@ void AxesDialog::applyCanvasFormat()
 		case 2://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyCanvasFormatTo(g);
 			}
 		}
@@ -1906,20 +1906,20 @@ void AxesDialog::applyAxisFormat()
 		case 2://this window
 		{
 			QList<Graph *> layersLst = d_graph->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
 				applyAxisFormatToLayer(g);
 		}
 		break;
 		case 3://all windows
 		{
 			QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
 					applyAxisFormatToLayer(g);
 			}
 		}

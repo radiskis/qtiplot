@@ -1140,7 +1140,7 @@ void FitDialog::showFunctionsList(int category)
 				boxUseBuiltIn->setEnabled(true);
 
                 QStringList lst;
-                foreach(Fit *fit, d_user_functions)
+                for (Fit *fit : d_user_functions)
                     lst << fit->objectName();
                 funcBox->addItems(lst);
 			}
@@ -1169,7 +1169,7 @@ void FitDialog::showFunctionsList(int category)
 			boxUseBuiltIn->show();
             boxUseBuiltIn->setEnabled(d_plugins.size() > 0);
             QStringList lst;
-            foreach(Fit *fit, d_plugins)
+            for (Fit *fit : d_plugins)
                 lst << fit->objectName();
             funcBox->addItems(lst);
         break;
@@ -1209,7 +1209,7 @@ void FitDialog::chooseFitModelsFolder()
 		loadUserFunctions();
 
 		QString path = app->fitModelsPath + "/";
-		foreach(Fit *fit, d_built_in_functions)
+		for (Fit *fit : d_built_in_functions)
 			fit->setFileName(path + fit->objectName() + ".fit");
 	}
 }
@@ -1533,7 +1533,7 @@ void FitDialog::setSrcTables(QList<MdiSubWindow*> tables)
 
 	srcTables = tables;
 	tableNamesBox->clear();
-	foreach(MdiSubWindow *w, srcTables)
+	for (MdiSubWindow *w : srcTables)
 		tableNamesBox->addItem(w->objectName());
 
 	tableNamesBox->setCurrentIndex(tableNamesBox->findText(boxCurve->currentText().split("_", Qt::SkipEmptyParts)[0]));
@@ -1583,7 +1583,7 @@ void FitDialog::enableApplyChanges(int)
 
 void FitDialog::deleteFitCurves()
 {
-	foreach(PlotCurve *c, d_result_curves){
+	for (PlotCurve *c : d_result_curves){
 		if (((PlotCurve *)c)->type() != Graph::Function){
 			Table *t = ((DataCurve *)c)->table();
 			if (t){
@@ -1639,7 +1639,7 @@ void FitDialog::initBuiltInFunctions()
 	d_built_in_functions << new PolynomialFit(app, d_graph, 1);
 
     QString path = app->fitModelsPath + "/";
-    foreach(Fit *fit, d_built_in_functions)
+    for (Fit *fit : d_built_in_functions)
         fit->setFileName(path + fit->objectName() + ".fit");
 }
 
@@ -1656,7 +1656,7 @@ void FitDialog::setNumPeaks(int peaks)
 QStringList FitDialog::builtInFunctionNames()
 {
 	QStringList lst;
-	foreach(Fit *fit, d_built_in_functions)
+	for (Fit *fit : d_built_in_functions)
 		lst << fit->objectName();
 	return lst;
 }
@@ -1709,7 +1709,7 @@ void FitDialog::loadUserFunctions()
 QStringList FitDialog::userFunctionNames()
 {
 	QStringList lst;
-	foreach(Fit *fit, d_user_functions)
+	for (Fit *fit : d_user_functions)
 		lst << fit->objectName();
 	return lst;
 }
@@ -1796,7 +1796,7 @@ void FitDialog::guessInitialValues()
 QStringList FitDialog::plugInNames()
 {
 	QStringList lst;
-	foreach(Fit *fit, d_plugins)
+	for (Fit *fit : d_plugins)
 		lst << fit->objectName();
 	return lst;
 }

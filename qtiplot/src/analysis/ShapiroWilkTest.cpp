@@ -91,7 +91,7 @@ QString ShapiroWilkTest::infoString(bool header)
 
 	QFontMetrics fm(app->font());
 	int width = 0;
-	foreach(QString aux, lst){
+	for (QString aux : lst){
 		int aw = fm.horizontalAdvance(aux);
 		if (aw > width)
 			width = aw;

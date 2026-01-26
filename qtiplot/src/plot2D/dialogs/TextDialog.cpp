@@ -261,7 +261,7 @@ void TextDialog::apply()
 		case 2://this window
 		{
             QList<Graph *> layersLst = d_graph->multiLayer()->layersList();
-			foreach(Graph *g, layersLst)
+			for (Graph *g : layersLst)
                 formatLayerLabels(g);
 		}
 		break;
@@ -270,13 +270,13 @@ void TextDialog::apply()
 		{
             ApplicationWindow *app = (ApplicationWindow *)this->parent();
 		    QList<MdiSubWindow *> windows = app->windowsList();
-			foreach(MdiSubWindow *w, windows){
+			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
 				if (!ml)
 					continue;
 
 				QList<Graph *> layersLst = ml->layersList();
-				foreach(Graph *g, layersLst)
+				for (Graph *g : layersLst)
                     formatLayerLabels(g);
 			}
 		}
