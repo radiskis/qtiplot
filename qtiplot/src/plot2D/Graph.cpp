@@ -135,12 +135,12 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	d_waterfall_offset_x = 0.0;
 	d_waterfall_offset_y = 0.0;
 
-	d_active_tool = NULL;
-	d_image_profiles_tool = NULL;
-	d_range_selector = NULL;
-	d_peak_fit_tool = NULL;
-	d_active_enrichment = NULL;
-	d_selected_arrow = NULL;
+	d_active_tool = nullptr;
+	d_image_profiles_tool = nullptr;
+	d_range_selector = nullptr;
+	d_peak_fit_tool = nullptr;
+	d_active_enrichment = nullptr;
+	d_selected_arrow = nullptr;
 	drawLineOn = false;
 	drawArrowOn = false;
 	drawAxesBackbone = true;
@@ -249,8 +249,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	d_zoomer[1] = new QwtPlotZoomer(QwtPlot::xTop, QwtPlot::yRight, canvas());
 	zoom(false);
 
-	d_magnifier = NULL;
-	d_panner = NULL;
+	d_magnifier = nullptr;
+	d_panner = nullptr;
 
 	connect(cp, &CanvasPicker::viewLineDialog, this, &Graph::viewLineDialog);
 	connect(cp, &CanvasPicker::showPlotDialog, this, &Graph::showPlotDialog);
@@ -276,7 +276,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 MultiLayer* Graph::multiLayer() const
 {
 	if (!parent())
-		return NULL;
+		return nullptr;
 
 	return (MultiLayer *)(this->parent()->parent()->parent());
 }
@@ -304,15 +304,15 @@ void Graph::deselectMarker()
 		d_selected_arrow->setEditable(false);
 
 	deselect(d_active_enrichment);
-	d_active_enrichment = NULL;
-	d_selected_arrow = NULL;
+	d_active_enrichment = nullptr;
+	d_selected_arrow = nullptr;
 
 	if (d_markers_selector){
 		delete d_markers_selector;
-		d_markers_selector = NULL;
+		d_markers_selector = nullptr;
 	}
 
-	emit enableTextEditor(NULL);
+	emit enableTextEditor(nullptr);
 
 	cp->disableEditing();
 	setFocus();
@@ -365,15 +365,15 @@ QList <FrameWidget *> Graph::increasingAreaEnrichmentsList()
 
 void Graph::selectorDeleted()
 {
-	d_markers_selector = NULL;
-	selectionChanged(NULL);
+	d_markers_selector = nullptr;
+	selectionChanged(nullptr);
 }
 
 void Graph::select(QWidget *l, bool add)
 {
     if (!l){
-        d_active_enrichment = NULL;
-		selectionChanged(NULL);
+        d_active_enrichment = nullptr;
+		selectionChanged(nullptr);
         return;
     }
 
@@ -1200,7 +1200,7 @@ QString Graph::parseAxisTitle(int axis)
 	QString name = QString();
 	QString comment = QString();
 	if (s.contains("%(?Y)", Qt::CaseInsensitive)){// parse Origin tag
-		PlotCurve *c = NULL;
+		PlotCurve *c = nullptr;
 		int index = -1;
 		for (int i = 0; i < d_curves.size(); i++){
 			PlotCurve *cv = curve(i);
@@ -1988,7 +1988,7 @@ void Graph::remove(ArrowMarker* arrow)
 	}
 
 	if (arrow == d_selected_arrow)
-		d_selected_arrow = NULL;
+		d_selected_arrow = nullptr;
 
 	arrow->detach();
 	replot();
@@ -2008,7 +2008,7 @@ void Graph::remove(FrameWidget* f)
             d_enrichments.removeAt(index);
 
         if (f == d_active_enrichment)
-            d_active_enrichment = NULL;
+            d_active_enrichment = nullptr;
     }
 
 	emit modifiedGraph();
@@ -2062,7 +2062,7 @@ QwtPlotItem* Graph::selectedCurveLabels()
 		  ((DataCurve *)i)->hasSelectedLabels())
 			return i;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool Graph::titleSelected()
@@ -2781,7 +2781,7 @@ LegendWidget* Graph::legend()
 		if (l && l->isAutoUpdateEnabled())
 			return l;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Graph::setLegend(const QString& s)
@@ -2802,7 +2802,7 @@ LegendWidget* Graph::newLegend(const QString& text)
 {
 	LegendWidget* l = new LegendWidget(this);
 	if (!l)
-		return NULL;
+		return nullptr;
 
 	QString s = text;
 	if (s.isEmpty()){
@@ -2847,7 +2847,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 {
 	QStringList fList = list;
 	bool pieLabel = (list[0] == "<PieLabel>") ? true : false;
-	LegendWidget* l = NULL;
+	LegendWidget* l = nullptr;
 	if (pieLabel)
 		l = new PieLabel(this);
 	else {
@@ -3378,7 +3378,7 @@ ErrorBarsCurve* Graph::addErrorBars(const QString& yColName, Table *errTable, co
 		if (it->title().text() == yColName)
 			return addErrorBars((DataCurve*)it, errTable, errColName, type, width, cap, color, through, minus, plus);
 	}
-	return NULL;
+	return nullptr;
 }
 
 ErrorBarsCurve* Graph::addErrorBars(const QString& xColName, const QString& yColName,
@@ -3531,14 +3531,14 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 
 		for (int i = 0; i < curves; i++){
 			int j = w->colIndex(lst[i]);
-			PlotCurve *c = NULL;
+			PlotCurve *c = nullptr;
 			if (w->colPlotDesignation(j) == Table::xErr || w->colPlotDesignation(j) == Table::yErr){
 				int xcol = w->colX(j);
 				int ycol = w->colY(j, xcol, masterCurvesLst);
 				if (!masterCurvesLst.isEmpty() && ((style == Histogram && ycol < 0) || (style != Histogram && (xcol < 0 || ycol < 0))))
 					return false;
 
-				ErrorBarsCurve *er = NULL;
+				ErrorBarsCurve *er = nullptr;
 				if (w->colPlotDesignation(j) == Table::xErr)
 					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i], (int)ErrorBarsCurve::Horizontal);
 				else
@@ -3630,7 +3630,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 	int xcol = w->colIndex(xColName);
 	int ycol = w->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
-		return NULL;
+		return nullptr;
 
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
@@ -3647,7 +3647,7 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 		}
 	}
 	if (!size)
-		return NULL;
+		return nullptr;
 
 	DataCurve *c = 0;
 	if (style == VerticalBars || style == StackColumn){
@@ -3687,12 +3687,12 @@ DataCurve* Graph::insertCurve(Table* w, const QString& xColName, const QString& 
 DataCurve* Graph::insertCurve(Table* xt, const QString& xColName, Table* yt, const QString& yColName, int style, int startRow, int endRow)
 {
 	if (!xt || !yt)
-		return NULL;
+		return nullptr;
 
 	int xcol = xt->colIndex(xColName);
 	int ycol = yt->colIndex(yColName);
 	if (xcol < 0 || ycol < 0)
-		return NULL;
+		return nullptr;
 
 	if (endRow < 0)
 		endRow = yt->numRows() - 1;
@@ -3709,7 +3709,7 @@ DataCurve* Graph::insertCurve(Table* xt, const QString& xColName, Table* yt, con
 		}
 	}
 	if (!size)
-		return NULL;
+		return nullptr;
 
 	DataCurve *c = new DataCurve(xt, xColName, yt, yColName, startRow, endRow);
 	insertCurve(c);
@@ -3766,7 +3766,7 @@ QwtHistogram* Graph::addHistogram(Table* w, const QString& colName, int startRow
 QwtHistogram* Graph::addHistogram(Matrix *m)
 {
 	if (!m)
-		return NULL;
+		return nullptr;
 
 	QwtHistogram *c = new QwtHistogram(m);
     c->setStyle(QwtPlotCurve::UserCurve);
@@ -3783,7 +3783,7 @@ QwtHistogram* Graph::addHistogram(Matrix *m)
 QwtHistogram* Graph::restoreHistogram(Matrix *m, const QStringList& l)
 {
 	if (!m)
-		return NULL;
+		return nullptr;
 
     QwtHistogram *h = new QwtHistogram(m);
     h->setBinning(l[17].toInt(), l[18].toDouble(), l[19].toDouble(), l[20].toDouble());
@@ -3800,7 +3800,7 @@ QwtHistogram* Graph::restoreHistogram(Matrix *m, const QStringList& l)
 VectorCurve* Graph::plotVectors(Table* w, const QStringList& colList, int style, int startRow, int endRow)
 {
 	if (colList.count() != 4)
-		return NULL;
+		return nullptr;
 
 	if (endRow < 0)
 		endRow = w->numRows() - 1;
@@ -3812,7 +3812,7 @@ VectorCurve* Graph::plotVectors(Table* w, const QStringList& colList, int style,
 		v = new VectorCurve(VectorCurve::XYXY, w, colList[0], colList[1].toLatin1().constData(), colList[2], colList[3], startRow, endRow);
 
 	if (!v)
-		return NULL;
+		return nullptr;
 
 	insertCurve(v);
 	v->setPlotStyle(style);
@@ -3875,7 +3875,7 @@ void Graph::updateAxisTitle(int axis)
 
 void Graph::updatePlot()
 {
-	if (d_auto_scale && !zoomOn() && d_active_tool == NULL){
+	if (d_auto_scale && !zoomOn() && d_active_tool == nullptr){
 		for (int i = 0; i < QwtPlot::axisCnt; i++){
 			setAxisAutoScale(i);
 			d_user_step[i] = 0.0;
@@ -4211,8 +4211,8 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 		}
 
 		cnvs->setCursor(Qt::ArrowCursor);
-		d_magnifier = NULL;
-		d_panner = NULL;
+		d_magnifier = nullptr;
+		d_panner = nullptr;
 	}
 }
 
@@ -5151,7 +5151,7 @@ void Graph::copyCurves(Graph* g)
 			if (cv->symbol())
 				c->setSymbol(new QwtSymbol(cv->symbol()->style(), cv->symbol()->brush(), cv->symbol()->pen(), cv->symbol()->size()));
 			else
-				c->setSymbol(NULL);
+				c->setSymbol(nullptr);
 
 			if (cv->testCurveAttribute (QwtPlotCurve::Fitted)){
 				c->setCurveAttribute(QwtPlotCurve::Fitted, true);
@@ -5270,7 +5270,7 @@ void Graph::setCurveStyle(int index, int s)
 BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
 {
     if (!w)
-        return NULL;
+        return nullptr;
 
     int startRow = 0;
     int endRow = w->numRows()-1;
@@ -5302,7 +5302,7 @@ void Graph::setActiveTool(PlotToolInterface *tool)
 {
 	if (!tool && d_peak_fit_tool){
 		delete d_peak_fit_tool;
-		d_peak_fit_tool = NULL;
+		d_peak_fit_tool = nullptr;
 		return;
 	}
 
@@ -5337,11 +5337,11 @@ void Graph::disableTools()
 
 	if(d_active_tool)
 		delete d_active_tool;
-	d_active_tool = NULL;
+	d_active_tool = nullptr;
 
 	if (d_peak_fit_tool)
 		delete d_peak_fit_tool;
-	d_peak_fit_tool = NULL;
+	d_peak_fit_tool = nullptr;
 
 	if (d_range_selector)
 		d_range_selector->setVisible(false);
@@ -5445,11 +5445,11 @@ void Graph::deleteFitCurves()
 	replot();
 }
 
-//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be NULL)
+//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be nullptr)
 Spectrogram* Graph::spectrogram(Matrix *m)
 {
 	if (!m)
-		return NULL;
+		return nullptr;
 
 	foreach (QwtPlotItem *item, d_curves){
 		if(item && item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
@@ -5458,7 +5458,7 @@ Spectrogram* Graph::spectrogram(Matrix *m)
 				return s;
 		 }
 	}
-	return NULL;
+	return nullptr;
 }
 
 Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
@@ -6028,7 +6028,7 @@ DataCurve* Graph::masterCurve(const QString& xColName, const QString& yColName)
 			(c->type() != Histogram && c->xColumnName() == xColName && it->title().text() == yColName))
 			return c;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Graph::showCurve(int index, bool visible)
@@ -6557,7 +6557,7 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 {
 	double dmin = DBL_MAX;
 	QPoint p = QPoint(xpos, ypos);
-	QwtPlotItem *curve = NULL;
+	QwtPlotItem *curve = nullptr;
 	foreach (QwtPlotItem *item, d_curves){
 		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 			continue;
@@ -6619,7 +6619,7 @@ QwtPlotItem* Graph::closestCurve(int xpos, int ypos, int &dist, int &point)
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Graph::insertMarker(QwtPlotMarker *m)
@@ -6853,7 +6853,7 @@ TexWidget* Graph::addTexFormula(const QString& s, const QPixmap& pix)
 FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 {
 	if (!fw)
-		return NULL;
+		return nullptr;
 
 	if (!copy){
 		d_enrichments << fw;
@@ -6861,7 +6861,7 @@ FrameWidget* Graph::add(FrameWidget* fw, bool copy)
 		return fw;
 	}
 
-	FrameWidget *aux = NULL;
+	FrameWidget *aux = nullptr;
 	LegendWidget *l = qobject_cast<LegendWidget *>(fw);
 	if (l){
 		aux = new LegendWidget(this);

@@ -292,7 +292,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 	QStringList::const_iterator line;
 	QString fn;
 	bool save_xpm = false;
-	ImageWidget *i = NULL;
+	ImageWidget *i = nullptr;
 	AttachPolicy attachTo = FrameWidget::Page;
 	bool onTop = true;
 	for (line = lst.begin(); line != lst.end(); line++){

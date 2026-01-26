@@ -39,8 +39,8 @@
 Grid::Grid() : QwtPlotGrid(),
 d_maj_pen_y(QPen(Qt::blue, 0.5, Qt::SolidLine)),
 d_min_pen_y(QPen(Qt::gray, 0.4, Qt::DotLine)),
-mrkX(NULL),
-mrkY(NULL)
+mrkX(nullptr),
+mrkY(nullptr)
 {
 	setMajorPen(QPen(Qt::blue, 0.5, Qt::SolidLine));
 	setMinorPen(QPen(Qt::gray, 0.4, Qt::DotLine));
@@ -236,7 +236,7 @@ void Grid::enableZeroLineX(bool enable)
 	} else if (mrkX && !enable) {
 		mrkX->detach();
 		d_plot->replot();
-		mrkX = NULL;
+		mrkX = nullptr;
 	}
 }
 
@@ -264,7 +264,7 @@ void Grid::enableZeroLineY(bool enable)
 	} else if (mrkY && !enable){
 		mrkY->detach();
 		d_plot->replot();
-		mrkY = NULL;
+		mrkY = nullptr;
 	}
 }
 

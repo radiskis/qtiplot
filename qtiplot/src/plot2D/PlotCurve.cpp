@@ -399,7 +399,7 @@ DataCurve::DataCurve(Table *t, const QString& xColName, const QString& name, int
 	d_labels_align(Qt::AlignHCenter),
 	d_labels_x_offset(0),
 	d_labels_y_offset(50),
-	d_selected_label(NULL)
+	d_selected_label(nullptr)
 {
 	if (t && d_end_row < 0)
 		d_end_row = t->numRows() - 1;
@@ -421,7 +421,7 @@ DataCurve::DataCurve(Table *xt, const QString& xColName, Table *yt, const QStrin
 	d_labels_align(Qt::AlignHCenter),
 	d_labels_x_offset(0),
 	d_labels_y_offset(50),
-	d_selected_label(NULL)
+	d_selected_label(nullptr)
 {
 	if (yt && d_end_row < 0)
 		d_end_row = yt->numRows() - 1;
@@ -511,7 +511,7 @@ void DataCurve::setDataSource(Table *yt, int ycol, Table *xt, int xcol)
 		return;
 
 	d_table = yt;
-	d_x_table = (xt != NULL) ? xt : yt;
+	d_x_table = (xt != nullptr) ? xt : yt;
 	d_x_column = d_x_table->colName(xcol);
 	setTitle(yt->colName(ycol));
 
@@ -1102,7 +1102,7 @@ bool DataCurve::selectedLabels(const QPoint& pos)
         return false;
 
     bool selected = false;
-	d_selected_label = NULL;
+	d_selected_label = nullptr;
     foreach(PlotMarker *m, d_labels_list){
         int x = d_plot->transform(xAxis(), m->xValue());
         int y = d_plot->transform(yAxis(), m->yValue());

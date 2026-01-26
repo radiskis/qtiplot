@@ -178,7 +178,7 @@ void FFTDialog::accept()
 	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	FFT *fft = NULL;
+	FFT *fft = nullptr;
 	if (graph)
 		fft = new FFT(app, graph->curve(boxName->currentText()));
 	else if (d_table){

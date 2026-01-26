@@ -80,7 +80,7 @@ void Interpolation::init(int m)
     }
 
 	d_method = m;
-	const gsl_interp_type *method = NULL;
+	const gsl_interp_type *method = nullptr;
 	switch(d_method)
 	{
 		case 0:
@@ -120,7 +120,7 @@ void Interpolation::setMethod(int m)
     	return;
     }
 	int min_points = m + 3;
-	const gsl_interp_type *method = NULL;
+	const gsl_interp_type *method = nullptr;
 	switch(m){
 		case 0:
 			method = gsl_interp_linear;
@@ -166,7 +166,7 @@ void Interpolation::setMethod(int m)
 void Interpolation::calculateOutputData(double *x, double *y)
 {
 	gsl_interp_accel *acc = gsl_interp_accel_alloc ();
-	const gsl_interp_type *method = NULL;
+	const gsl_interp_type *method = nullptr;
 	switch(d_method)
 	{
 		case 0:

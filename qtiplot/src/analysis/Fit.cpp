@@ -87,7 +87,7 @@ void Fit::init()
 	is_non_linear = true;
 	d_results = 0;
 	d_errors = 0;
-	d_residuals = NULL;
+	d_residuals = nullptr;
 	d_init_err = false;
 	chi_2 = -1;
 	d_rss = 0.0;
@@ -653,7 +653,7 @@ double* Fit::residuals()
 {
 	if (!d_residuals){
 		if (!d_n || error())
-			return NULL;
+			return nullptr;
 
 		d_residuals = new double[d_n];
 		for (int i=0; i<d_n; i++)
@@ -667,16 +667,16 @@ PlotCurve* Fit::showResiduals()
 	if (!d_residuals){
 		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
 				tr("Please perform a fit first!"));
-		return NULL;
+		return nullptr;
 	}
 
 	if (!d_graphics_display)
-		return NULL;
+		return nullptr;
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	Table *outputTable = app->newTable(d_n, 2, app->generateUniqueName(tr("FitResiduals"), true), tr("Residuals of %1").arg(d_explanation));
 	if (!outputTable)
-		return NULL;
+		return nullptr;
 
 	outputTable->setColName(1, tr("residue"));
 	for (int i = 0; i < d_n; i++){
@@ -712,7 +712,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = NULL;
+	double *X = nullptr;
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
@@ -834,7 +834,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = NULL;
+	double *X = nullptr;
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
@@ -1004,7 +1004,7 @@ void Fit::generateFitCurve()
 	if (!d_gen_function)
 		d_points = d_n;
 
-	double *X = NULL, *Y = NULL;
+	double *X = nullptr, *Y = nullptr;
 	if (d_graphics_display && !d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
@@ -1205,32 +1205,32 @@ void Fit::freeWorkspace()
 {
 	if (d_param_init){
 		gsl_vector_free(d_param_init);
-		d_param_init = NULL;
+		d_param_init = nullptr;
 	}
 
 	if (covar){
 		gsl_matrix_free (covar);
-		covar = NULL;
+		covar = nullptr;
 	}
 
 	if (d_results){
 		delete[] d_results;
-		d_results = NULL;
+		d_results = nullptr;
 	}
 
 	if (d_errors){
 		delete[] d_errors;
-		d_errors = NULL;
+		d_errors = nullptr;
 	}
 
 	if (d_param_range_left){
 		delete[] d_param_range_left;
-		d_param_range_left = NULL;
+		d_param_range_left = nullptr;
 	}
 
 	if (d_param_range_right){
 		delete[] d_param_range_right;
-		d_param_range_right = NULL;
+		d_param_range_right = nullptr;
 	}
 }
 
@@ -1239,12 +1239,12 @@ void Fit::freeMemory()
 	Filter::freeMemory();
 	if (d_w){
 		free(d_w);
-		d_w = NULL;
+		d_w = nullptr;
 	}
 
     if (d_residuals) {
 		delete[] d_residuals;
-		d_residuals = NULL;
+		d_residuals = nullptr;
     }
 }
 

@@ -325,9 +325,9 @@ public slots:
 	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
 
 	void copy(Matrix *m);
-	//! Tries to allocate memory for the workspace. Returns a NULL pointer if failure.
+	//! Tries to allocate memory for the workspace. Returns a nullptr pointer if failure.
 	double *initWorkspace(int size);
-	void freeWorkspace(){free(d_workspace); d_workspace = NULL;};
+	void freeWorkspace(){free(d_workspace); d_workspace = nullptr;};
 
 	bool canCalculate(bool useMuParser = true);
 	void notifyModifiedData(){emit modifiedData(this);};

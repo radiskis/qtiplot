@@ -201,7 +201,7 @@ void ErrDialog::add()
 
 	int direction = xErrBox->isChecked() ? 0 : 1;
 
-	ErrorBarsCurve *er = NULL;
+	ErrorBarsCurve *er = nullptr;
 	if (columnBox->isChecked()){
 		QString errColumnName = tableNamesBox->currentText() + "_" + colNamesBox->currentText();
 		Table *errTable = app->table(errColumnName);

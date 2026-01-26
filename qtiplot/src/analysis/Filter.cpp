@@ -97,7 +97,7 @@ void Filter::init()
 	d_graphics_display = true;
 	d_update_output_graph = true;
 	d_y_col_name = QString();
-	d_matrix = NULL;
+	d_matrix = nullptr;
 }
 
 void Filter::setInterval(double from, double to)
@@ -502,7 +502,7 @@ MultiLayer * Filter::createOutputGraph()
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent();
 	if (!app)
-		return NULL;
+		return nullptr;
 
 	MultiLayer *ml = app->newGraph(tr("Plot") + objectName());
 	if (ml)
@@ -617,11 +617,11 @@ void Filter::freeMemory()
 {
 	if (d_x){
 		free(d_x);
-		d_x = NULL;
+		d_x = nullptr;
 	}
 	if (d_y) {
 		free(d_y);
-		d_y = NULL;
+		d_y = nullptr;
 	}
 }
 

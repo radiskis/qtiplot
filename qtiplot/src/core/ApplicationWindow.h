@@ -1009,7 +1009,7 @@ public slots:
 	Folder* currentFolder(){return current_folder;};
 	//! Adds a new folder to the project
 	void addFolder();
-	Folder* addFolder(QString name, Folder* parent = NULL);
+	Folder* addFolder(QString name, Folder* parent = nullptr);
 	//! Deletes the current folder
 	void deleteFolder();
 
@@ -1158,7 +1158,7 @@ private:
 	void translateActionsStrings();
 	//@}
 public:
-	virtual QMenu * createPopupMenu(){return NULL;};
+	virtual QMenu * createPopupMenu(){return nullptr;};
 private:
 
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString());
@@ -1217,7 +1217,7 @@ private slots:
 
 	void hideSelectedColumns();
 	void showAllColumns();
-	void closedLastCopiedLayer(){lastCopiedLayer = NULL;};
+	void closedLastCopiedLayer(){lastCopiedLayer = nullptr;};
 
 	void increasePrecision();
 	void decreasePrecision();

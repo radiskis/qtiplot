@@ -130,7 +130,7 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QVBoxLayout* vbox3 = new QVBoxLayout(this);
 	vbox3->addLayout(hbox2);
 #ifdef SCRIPTING_PYTHON
-	boxMuParser = NULL;
+	boxMuParser = nullptr;
 	if (scriptEnv->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
 		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);

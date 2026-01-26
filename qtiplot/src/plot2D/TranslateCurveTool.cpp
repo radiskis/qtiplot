@@ -69,13 +69,13 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("The column '%1' is read-only! Operation aborted!").arg(c->xColumnName()));
 			delete d_sub_tool;
-			d_graph->setActiveTool(NULL);
+			d_graph->setActiveTool(nullptr);
 			return;
         } else if (d_dir == Vertical && t->isReadOnlyColumn(t->colIndex(c->title().text()))){
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("The column '%1' is read-only! Operation aborted!").arg(c->title().text()));
 			delete d_sub_tool;
-			d_graph->setActiveTool(NULL);
+			d_graph->setActiveTool(nullptr);
 			return;
         }
 	}
@@ -121,7 +121,7 @@ void TranslateCurveTool::selectDestination(const QPointF &point)
                 func->loadData();
             }
         }
-	    d_graph->setActiveTool(NULL);
+	    d_graph->setActiveTool(nullptr);
 	    return;
     } else {
     	DataCurve *c = (DataCurve *)d_selected_curve;
@@ -166,6 +166,6 @@ void TranslateCurveTool::selectDestination(const QPointF &point)
 		}
 		d_app->updateCurves(tab, col_name);
 		d_app->modifiedProject();
-		d_graph->setActiveTool(NULL);// attention: I'm now deleted. Maybe there is a cleaner solution...*/
+		d_graph->setActiveTool(nullptr);// attention: I'm now deleted. Maybe there is a cleaner solution...*/
     }
 }

@@ -247,7 +247,7 @@ void ApplicationWindow::init(bool factorySettings)
 	explorerWindow->setMinimumHeight(150);
 	addDockWidget( Qt::BottomDockWidgetArea, explorerWindow );
 
-	actionSaveProject = NULL;
+	actionSaveProject = nullptr;
 	folders = new FolderListView(this);
 	folders->setHeaderLabels( QStringList() << tr("Folder") );
 	folders->setRootIsDecorated( true );
@@ -344,7 +344,7 @@ void ApplicationWindow::init(bool factorySettings)
 	hiddenWindows = new QList<QWidget*>();
 
 	scriptWindow = 0;
-    d_text_editor = NULL;
+    d_text_editor = nullptr;
 
 	d_default_2D_grid = new Grid();
 
@@ -484,13 +484,13 @@ void ApplicationWindow::setDefaultOptions()
 	d_quotation_highlight_color = Qt::darkYellow;
 
     d_notes_tab_length = 20;
-    d_completer = NULL;
+    d_completer = nullptr;
     d_completion = true;
     d_note_line_numbers = true;
 
 	d_auto_update_table_values = true;
 	d_show_table_paste_dialog = true;
-	d_active_window = NULL;
+	d_active_window = nullptr;
     d_matrix_undo_stack_size = 10;
 
 	d_opening_file = false;
@@ -512,8 +512,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_app_rect = QRect();
 
 	lastCopiedLayer = 0;
-	d_enrichement_copy = NULL;
-	d_arrow_copy = NULL;
+	d_enrichement_copy = nullptr;
+	d_arrow_copy = nullptr;
 
 	savingTimerId = 0;
 
@@ -2249,6 +2249,8 @@ void ApplicationWindow::setListView(const QString& caption,const QString& view)
 
 void ApplicationWindow::setListViewSize(const QString& caption,const QString& size)
 {
+	Q_UNUSED(caption);
+	Q_UNUSED(size);
 	/*Q3ListViewItem *it=lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
 	if (it)
 		it->setText(3, size);*/
@@ -2666,6 +2668,8 @@ void ApplicationWindow::plotPolar()
 
 MdiSubWindow* ApplicationWindow::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
 {
+    Q_UNUSED(startRow);
+    Q_UNUSED(endRow);
     if (!table || colList.size() < 2) return 0;
     
     PolarGraph* w = (PolarGraph*)newPolarPlot();
@@ -2772,7 +2776,7 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MdiSubWindow *w = activeWindow(MatrixWindow);
-	Matrix* m = NULL;
+	Matrix* m = nullptr;
 	if (w && !newWindow){
 		m = (Matrix *)w;
 		m->importImage(image);
@@ -3500,7 +3504,7 @@ Table* ApplicationWindow::matrixToTable(Matrix* m, MatrixToTableConversion conve
 	int cols = m->numCols();
 	MatrixModel *mModel = m->matrixModel();
 
-	Table* w = NULL;
+	Table* w = nullptr;
 	if (conversionType == Direct){
 		w = new Table(scriptEnv, rows, cols, "", this, 0);
 		for (int i = 0; i<rows; i++){
@@ -3581,7 +3585,7 @@ void ApplicationWindow::showBinMatrixDialog()
 	if (!t)
 		return;
 
-		QTableWidgetSelectionRange sel = t->getSelection();
+	QTableWidgetSelectionRange sel = t->getSelection();
 	if (t->selectedYColumns().size() != 1 || fabs(sel.topRow() - sel.bottomRow()) < 2){
         QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
 			tr("You must select a single Y column that has an associated X column!"));
@@ -3914,7 +3918,7 @@ MdiSubWindow* ApplicationWindow::window(const QString& name, bool label)
 				return w;
 		}
 	}
-	return  NULL;
+	return  nullptr;
 }
 
 Table* ApplicationWindow::table(const QString& name)
@@ -3958,7 +3962,7 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 		if (!current_folder->activeWindow() && windows.size() > 0){
 			d_active_window = windows[0];
 		} else
-			return NULL;
+			return nullptr;
 	}
 
 	switch(type){
@@ -3989,7 +3993,7 @@ MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
 		default:
 			return d_active_window;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ApplicationWindow::windowActivated(QMdiSubWindow *w)
@@ -4254,7 +4258,7 @@ ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
         Table* t = app->newTable();
         if (!t) {
             QApplication::restoreOverrideCursor();
-            return NULL;
+            return nullptr;
         }
         t->importASCII(fn, app->columnSeparator, 0, app->renameColumns, app->strip_spaces, app->simplify_spaces,
                 app->d_ASCII_import_comments, app->d_ASCII_comment_string,
@@ -4275,7 +4279,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	if (fn.isEmpty()){
 		fn = getFileName(this, tr("Open ODF Spreadsheet File"), QString(), "*.ods", 0, false);
 		if (fn.isEmpty())
-			return NULL;
+			return nullptr;
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
@@ -4346,7 +4350,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 
 		fn = getFileName(this, tr("Open Excel File"), QString(), filter, 0, false);
 		if (fn.isEmpty())
-			return NULL;
+			return nullptr;
 	}
 
 	if (d_excel_import_method == LocalOpenOffice){
@@ -4399,7 +4403,7 @@ Table * ApplicationWindow::importWaveFile()
 {
 	QString fn = getFileName(this, tr("Open File"), QString(), "*.wav", 0, false);
 	if (fn.isEmpty())
-		return NULL;
+		return nullptr;
 
 	QString log = QDateTime::currentDateTime ().toString(Qt::LocalDate) + " - ";
 	log += tr("Imported sound file") + ": " + fn + "\n";
@@ -4421,7 +4425,7 @@ Table * ApplicationWindow::importWaveFile()
 		tr("This is not a PCM type WAV file, operation aborted!"));
 		log +=  QString::number(format) + "\n";
 		showResults(log, true);
-		return NULL;
+		return nullptr;
 	} else
 		log += tr("PCM") + "\n";
 
@@ -4455,7 +4459,7 @@ Table * ApplicationWindow::importWaveFile()
 	int rows = (chunkSize - 36)/blockAlign;
 	Table *t = newTable(rows, int(channels + 1), QFileInfo(fn).baseName(), fn);
 	if (!t)
-		return NULL;
+		return nullptr;
 
 	t->setHeader(header);
 
@@ -4772,7 +4776,7 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 			recentProjects.removeAll(fn);
 			updateRecentProjectsList();
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	if (fn.endsWith(".opj", Qt::CaseInsensitive) || fn.endsWith(".ogm", Qt::CaseInsensitive) ||
@@ -6567,7 +6571,7 @@ void ApplicationWindow::exportLayer()
 #if QT_VERSION >= 0x040500
 void ApplicationWindow::exportPresentationODF()
 {
-	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(nullptr, this, d_extended_export_dialog);
 	ied->setDirectory(imagesDirPath);
 	ied->setNameFilter("*.odf");
 
@@ -6624,7 +6628,7 @@ void ApplicationWindow::exportPresentationODF()
 
 void ApplicationWindow::exportAllGraphs()
 {
-	ImageExportDialog *ied = new ImageExportDialog(NULL, this, d_extended_export_dialog);
+	ImageExportDialog *ied = new ImageExportDialog(nullptr, this, d_extended_export_dialog);
 	ied->setWindowTitle(tr("Choose a directory to export the graphs to"));
 	QStringList tmp = ied->nameFilters();
 	ied->setFileMode(QFileDialog::Directory);
@@ -7030,7 +7034,7 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	f.close();
 
 	if (compress)
-		file_compress((char*)fn.toLocal8Bit().constData(), "wb9");
+		file_compress((char*)fn.toLocal8Bit().constData(), (char*)"wb9");
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -8150,7 +8154,7 @@ void ApplicationWindow::showMatrixSizeDialog()
 
 void ApplicationWindow::showMatrixValuesDialog()
 {
-	Matrix *m = NULL;
+	Matrix *m = nullptr;
 	MultiLayer *ml = (MultiLayer*)activeWindow(MultiLayerWindow);
 	if (ml){
 		int curveIndex = actionSetMatrixValues->data().toInt();
@@ -8168,8 +8172,8 @@ void ApplicationWindow::showMatrixValuesDialog()
 
 	MatrixValuesDialog* md = new MatrixValuesDialog(scriptEnv, this);
 	md->setMatrix(m);
-    if (d_completion)
-        md->setCompleter(d_completer);
+	if (d_completion)
+		md->setCompleter(d_completer);
 	md->exec();
 }
 
@@ -9408,7 +9412,7 @@ void ApplicationWindow::cutSelection()
 
 void ApplicationWindow::copyMarker()
 {
-    lastCopiedLayer = NULL;
+    lastCopiedLayer = nullptr;
 
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
@@ -9416,8 +9420,8 @@ void ApplicationWindow::copyMarker()
 
 	Graph* g = plot->activeLayer();
 	if (g && g->markerSelected()){
-		d_enrichement_copy = NULL;
-		d_arrow_copy = NULL;
+		d_enrichement_copy = nullptr;
+		d_arrow_copy = nullptr;
 		if (g->activeEnrichment())
 			d_enrichement_copy = g->activeEnrichment();
 		else if (g->arrowMarkerSelected())
@@ -9652,7 +9656,7 @@ void ApplicationWindow::resizeActiveWindow()
 	if (!w)
 		return;
 
-	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this, this);
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, nullptr, this, this);
     ed->setWidget(w);
     ed->exec();
 }
@@ -9666,7 +9670,7 @@ void ApplicationWindow::resizeWindow()
 
 	d_workspace->setActiveSubWindow(w);
 
-	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, NULL, this, this);
+	EnrichmentDialog *ed = new EnrichmentDialog(EnrichmentDialog::MDIWindow, nullptr, this, this);
     ed->setWidget(w);
     ed->exec();
 }
@@ -9777,7 +9781,7 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 		return;
 
 	if (d_active_window == window)
-		d_active_window = NULL;
+		d_active_window = nullptr;
 
 	removeWindowFromLists(window);
 	Folder *f = window->folder();
@@ -9840,7 +9844,7 @@ QMessageBox * ApplicationWindow::about(bool dialog)
 		printf("%s\n", (tr("Released") + ": " + QString(release_date)).toLocal8Bit().constData());
 		exit(0);
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ApplicationWindow::scriptingMenuAboutToShow()
@@ -10532,7 +10536,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 	if (!e->mimeData()->hasImage() && !e->mimeData()->hasUrls())
 		return;
 
-	MdiSubWindow *destWindow = NULL;
+	MdiSubWindow *destWindow = nullptr;
 	QList<QMdiSubWindow *> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
 	QListIterator<QMdiSubWindow *> it(windows);
 	it.toBack();
@@ -12698,7 +12702,7 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			int size = curve.count();
 			Table *w = app->table(curve[2]);
 			Table *xt = app->table(curve[1]);
-			PlotCurve *c = NULL;
+			PlotCurve *c = nullptr;
 			if (xt && w && xt != w){
 				c = (PlotCurve *)ag->insertCurve(xt, curve[1], w, curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				ag->updateCurveLayout(c, &cl);
@@ -13431,7 +13435,7 @@ void ApplicationWindow::differentiate()
 			return;
 		}
 
-		Differentiation *diff = new Differentiation(this, NULL, "", "");
+		Differentiation *diff = new Differentiation(this, nullptr, "", "");
 		diff->setUpdateOutputGraph(false);
 		int aux = 0;
 		foreach (QString yCol, lst){
@@ -16786,7 +16790,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	f.close();
 
 	if (compress)
-		file_compress(fn.toUtf8().data(), "wb9");
+		file_compress(fn.toUtf8().data(), (char*)"wb9");
 
 	QApplication::restoreOverrideCursor();
 }
@@ -17125,8 +17129,8 @@ Folder* ApplicationWindow::addFolder(QString name, Folder* parent)
 
 bool ApplicationWindow::deleteFolder(Folder *f)
 {
-    if (!f)
-        return false;
+	if (!f)
+		return false;
 
 	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
 				tr("Delete folder '%1' and all the windows it contains?").arg(f->objectName()),
@@ -18424,7 +18428,7 @@ void ApplicationWindow::enableTextEditor(Graph *g)
         formatToolBar->setEnabled(false);
 	    if (d_text_editor){
             d_text_editor->close();
-            d_text_editor = NULL;
+            d_text_editor = nullptr;
 	    }
 	} else if (g) {
 	    if (!g->activeText() && !g->selectedScale() && !g->titleSelected())
@@ -18912,15 +18916,15 @@ Note * ApplicationWindow::newStemPlot()
 {
 	Table *t = (Table *)activeWindow(TableWindow);
 	if (!t)
-		return NULL;
+		return nullptr;
 
     int ts = t->table()->currentSelection();
     if (ts < 0)
-		return NULL;
+		return nullptr;
 
 	Note *n = newNote();
 	if (!n)
-		return NULL;
+		return nullptr;
 	n->hide();
 
 	ScriptEdit* editor = n->currentEditor();
@@ -19051,7 +19055,7 @@ QMenu* ApplicationWindow::addCustomMenu(const QString& title, const QString& par
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ApplicationWindow::removeCustomMenu(const QString& title)

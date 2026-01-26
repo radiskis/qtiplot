@@ -227,7 +227,7 @@ void CustomActionDialog::updateDisplayList()
 
 QAction* CustomActionDialog::addAction()
 {
-	QAction *action = NULL;
+	QAction *action = nullptr;
     ApplicationWindow *app = (ApplicationWindow *)parentWidget();
     if (!app)
         return action;
@@ -534,7 +534,7 @@ void CustomActionDialog::setCurrentAction(int row)
     shortcutBox->setText(action->shortcut().toString());
 
     QList<QWidget *> list = action->associatedWidgets();
-    QWidget *w = NULL;
+    QWidget *w = nullptr;
     if (!list.isEmpty())
         w = list[0];
 	if (!w)
@@ -601,7 +601,7 @@ void CustomActionDialog::removeMenu()
 		tr("Are you sure you want to remove menu '%1' and all its actions?").arg(title),
 		QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Yes){
 
-		QMenu *menu = NULL;
+		QMenu *menu = nullptr;
 		QList<QMenu *> userMenus = app->customMenusList();
 		foreach(QMenu *m, userMenus){
 			if(m->title().remove("&") == title){

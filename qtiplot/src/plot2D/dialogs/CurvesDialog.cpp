@@ -428,7 +428,7 @@ bool CurvesDialog::addCurveFromMatrix(Matrix *m)
 	if (!m)
 		return false;
 
-	QwtPlotItem* it = NULL;
+	QwtPlotItem* it = nullptr;
 	switch (boxMatrixStyle->currentIndex()){
 		case 0:
 			it = d_graph->plotSpectrogram(m, Graph::ColorMap);
@@ -453,7 +453,7 @@ bool CurvesDialog::addCurveFromMatrix(Matrix *m)
 bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QString& name)
 {
 	int style = curveStyle();
-	DataCurve *c = NULL;
+	DataCurve *c = nullptr;
 	if (style == Graph::Histogram){
 		c = new QwtHistogram(t, name);
 		if (c){
@@ -653,7 +653,7 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 		addFolderItems(f);
 
 		f = f->folderBelow();
-		TreeWidgetFolderItem *folderItem = NULL;
+		TreeWidgetFolderItem *folderItem = nullptr;
 		while (f){
 			if (f->depth() > 1){
 				Folder *parentFolder = (Folder *)f->parent();

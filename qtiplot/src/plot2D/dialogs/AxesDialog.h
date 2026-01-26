@@ -96,7 +96,7 @@ private slots:
 	void pickAxisLabelColor();
 
 	void updateAxisType(int);
-	bool updatePlot(QWidget *page = NULL);
+	bool updatePlot(QWidget *page = nullptr);
 	void updateScale();
 	void stepEnabled();
 	void stepDisabled();

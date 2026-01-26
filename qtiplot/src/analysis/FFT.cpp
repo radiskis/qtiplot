@@ -99,10 +99,10 @@ void FFT::init()
     d_imag_col = -1;
 	d_sampling = 1.0;
 	d_output_graph = 0;
-	d_im_matrix = NULL;
-	d_re_out_matrix = NULL;
-	d_im_out_matrix = NULL;
-	d_amp_matrix = NULL;
+	d_im_matrix = nullptr;
+	d_re_out_matrix = nullptr;
+	d_im_out_matrix = nullptr;
+	d_amp_matrix = nullptr;
 }
 
 void FFT::fftCurve()
@@ -464,7 +464,7 @@ void FFT::fftMatrix()
 				x_int_im[i][j] = d_im_matrix->cell(i, j);
 	}
 
-	double **x_fin_re = NULL, **x_fin_im = NULL;
+	double **x_fin_re = nullptr, **x_fin_im = nullptr;
 	if (d_inverse){
 		x_fin_re = Matrix::allocateMatrixData(rows, cols);
 		x_fin_im = Matrix::allocateMatrixData(rows, cols);

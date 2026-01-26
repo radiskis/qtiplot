@@ -47,7 +47,7 @@ AddWidgetTool::AddWidgetTool(WidgetType type, Graph *graph, QAction *action)
 	PlotToolInterface(graph),
 	d_action(action),
 	d_widget_type(type),
-	d_fw(NULL)
+	d_fw(nullptr)
 {
 	graph->disableTools();
 	graph->multiLayer()->applicationWindow()->pickPointerCursor();
@@ -117,7 +117,7 @@ void AddWidgetTool::addEquation(const QPoint& point)
 
 	d_graph->add(t, false);
 	t->showPropertiesDialog();
-	d_graph->setActiveTool(NULL);
+	d_graph->setActiveTool(nullptr);
 	d_graph->notifyChanges();
 }
 
@@ -141,7 +141,7 @@ void AddWidgetTool::addText(const QPoint& point)
 		l->setAngle(app->d_legend_default_angle);
 	}
     l->showPropertiesDialog();
-    d_graph->setActiveTool(NULL);
+    d_graph->setActiveTool(nullptr);
 	d_graph->notifyChanges();
 }
 
@@ -232,9 +232,9 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 
 				d_fw->updateCoordinates();
                 d_fw->repaint();
-                d_fw = NULL;
+                d_fw = nullptr;
                 emit statusText("");
-                d_graph->setActiveTool(NULL);
+                d_graph->setActiveTool(nullptr);
             }
         break;
 

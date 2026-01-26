@@ -199,5 +199,5 @@ void LineProfileTool::mouseMoveEvent(QMouseEvent *e)
 void LineProfileTool::mouseReleaseEvent(QMouseEvent *e)
 {
 	calculateLineProfile(d_op_start, e->pos());
-	d_graph->setActiveTool(NULL);// attention: I'm now deleted
+	d_graph->setActiveTool(nullptr);// attention: I'm now deleted
 }

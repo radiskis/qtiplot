@@ -46,9 +46,9 @@
 FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ),
     d_source_table(t),
-    d_result_table(NULL),
+    d_result_table(nullptr),
     d_col_name(""),
-    d_col_values(NULL),
+    d_col_values(nullptr),
 	d_bins(10)
 {
 	setObjectName( "FrequencyCountDialog" );

@@ -429,7 +429,7 @@ void PlotWizard::plot2D(const QStringList& colList)
 		int posY = s.indexOf("(Y)", posX);
 		QString yColName = caption+s.mid(posX+2, posY-posX-2);
 
-		PlotCurve *c = NULL;
+		PlotCurve *c = nullptr;
 		if (s.contains("(yErr)") || s.contains("(xErr)")){
 			posY = s.indexOf(",", posY);
 			int posErr, errType;

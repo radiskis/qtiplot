@@ -40,7 +40,7 @@
 
 TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets, int start, int end)
 	: Table(env, 1, 1, "", parent, ""),
-	d_base(NULL), d_type(t), d_targets(targets), d_start(start), d_end(end)
+	d_base(nullptr), d_type(t), d_targets(targets), d_start(start), d_end(end)
 {
 	d_table->setReadOnly(true);
 	setCaptionPolicy(MdiSubWindow::Both);
@@ -176,7 +176,7 @@ void TableStatistics::addCol(PlotDesignation pd)
 
 void TableStatistics::closedBase()
 {
-	d_base = NULL;
+	d_base = nullptr;
 }
 
 void TableStatistics::update()

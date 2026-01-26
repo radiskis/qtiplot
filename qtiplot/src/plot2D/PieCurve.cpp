@@ -537,7 +537,7 @@ QString PieLabel::saveToString()
 
 void PieLabel::restore(Graph *g, const QStringList& lst)
 {
-	PieLabel *l = NULL;
+	PieLabel *l = nullptr;
 	QStringList::const_iterator line;
 	QColor backgroundColor = Qt::white, textColor = Qt::black;
 	QFont f = QFont();

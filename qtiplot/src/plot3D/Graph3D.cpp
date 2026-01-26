@@ -162,9 +162,9 @@ void Graph3D::initPlot()
 {
 	setAcceptDrops(true);
 
-	d_active_curve = NULL;
-	d_const_curve = NULL;
-	d_const_func = NULL;
+	d_active_curve = nullptr;
+	d_const_curve = nullptr;
+	d_const_func = nullptr;
 
 	d_table = 0;
 	d_table_plot_type = NoTable;
@@ -515,7 +515,7 @@ void Graph3D::addMatrixData(Matrix* m)
 	if (!m || d_matrix == m || m->isEmpty())
 			return;
 
-	d_table = NULL;
+	d_table = nullptr;
 
 	bool first_time = false;
 	if(!d_matrix)
@@ -554,7 +554,7 @@ void Graph3D::addMatrixData(Matrix* m, double xl, double xr, double yl, double y
 		return;
 
 	d_matrix = m;
-	d_table = NULL;
+	d_table = nullptr;
 	plotAssociation = "matrix<" + QString(m->objectName()) + ">";
 
 	updateScalesFromMatrix(xl, xr, yl, yr, zl, zr);
@@ -629,7 +629,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		return;
 
 	d_table = table;
-	d_matrix = NULL;
+	d_matrix = nullptr;
 
 	plotAssociation = table->colName(xCol) + "(X),";
 	plotAssociation += table->colName(yCol) + "(Y),";

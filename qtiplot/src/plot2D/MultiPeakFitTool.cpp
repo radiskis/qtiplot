@@ -117,7 +117,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 
 void MultiPeakFitTool::finalize()
 {
-	delete d_picker_tool; d_picker_tool = NULL;
+	delete d_picker_tool; d_picker_tool = nullptr;
 	d_graph->canvas()->releaseMouse();
 
 	if (d_fit->setDataFromCurve(d_curve->title().text())){
@@ -159,7 +159,7 @@ void MultiPeakFitTool::finalize()
 		}
 
 		d_fit->fit();
-		delete d_fit; d_fit = NULL;
+		delete d_fit; d_fit = nullptr;
 		QApplication::restoreOverrideCursor();
 	}
 
@@ -174,5 +174,5 @@ void MultiPeakFitTool::finalize()
     } else
         d_graph->canvas()->unsetCursor();
 
-	d_graph->setActiveTool(NULL);
+	d_graph->setActiveTool(nullptr);
 }

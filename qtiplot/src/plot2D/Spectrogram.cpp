@@ -52,7 +52,7 @@ Spectrogram::Spectrogram(Graph *graph, Matrix *m):
 	d_labels_angle(0.0),
 	d_labels_x_offset(0),
 	d_labels_y_offset(0),
-	d_selected_label(NULL),
+	d_selected_label(nullptr),
 	d_use_matrix_formula(false),
 	d_color_map_pen(false)
 {
@@ -570,7 +570,7 @@ void Spectrogram::setLabelsRotation(double angle)
 
 bool Spectrogram::selectedLabels(const QPoint& pos)
 {
-	d_selected_label = NULL;
+	d_selected_label = nullptr;
 
 	if (d_graph->hasActiveTool())
 		return false;

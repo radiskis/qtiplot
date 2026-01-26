@@ -115,7 +115,7 @@ class ScriptingLangManager
   public:
     //! Return an instance of the first implementation we can find.
     static ScriptingEnv *newEnv(ApplicationWindow *parent);
-    //! Return an instance of the implementation specified by name, NULL on failure.
+    //! Return an instance of the implementation specified by name, nullptr on failure.
     static ScriptingEnv *newEnv(const char *name, ApplicationWindow *parent);
     //! Return the names of available implementations.
     static QStringList languages();

@@ -54,9 +54,9 @@
 
 BaselineDialog::BaselineDialog( QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
-	d_baseline(NULL),
-	d_table(NULL),
-	d_picker_tool(NULL)
+	d_baseline(nullptr),
+	d_table(nullptr),
+	d_picker_tool(nullptr)
 {
 	setObjectName( "BaselineDialog" );
 	setWindowTitle(tr("QtiPlot") + " - " + tr("Baseline"));
@@ -166,8 +166,8 @@ void BaselineDialog::enableBaselineOptions()
 void BaselineDialog::disableBaselineTool()
 {
 	if (d_picker_tool){
-		graph->setActiveTool(NULL);
-		d_picker_tool = NULL;
+		graph->setActiveTool(nullptr);
+		d_picker_tool = nullptr;
 		buttonModify->setChecked(false);
 	}
 }
@@ -214,12 +214,12 @@ void BaselineDialog::createBaseline()
 		pen = d_baseline->pen();
 		graph->removeCurve(d_baseline->title().text());
 		delete d_baseline;
-		d_baseline = NULL;
+		d_baseline = nullptr;
 
 		if (d_table){
 			d_table->askOnCloseEvent(false);
 			app->closeWindow(d_table);
-			d_table = NULL;
+			d_table = nullptr;
 		}
 	}
 

@@ -47,7 +47,7 @@ class ApplicationWindow;
  * while selection of the line is in progress. Once the line is selected (mouse button is
  * released), the profile is calculate and displayed, a new LineMarker denoting the selected
  * profile line is added to the Graph and the LineProfileTool deletes itself by setting the
- * Graph's active tool to NULL.
+ * Graph's active tool to nullptr.
  *
  * \section future Future Plans
  * Actually, image analysis doesn't fit terribly well into the Graph framework.

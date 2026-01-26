@@ -2463,7 +2463,7 @@ void Table::setRandomValues(int col, int startRow, int endRow)
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
-	srand(time(NULL) + col);
+	srand(time(nullptr) + col);
 	for (int i = startRow; i <= endRow; i++)
 		d_table->setText(i, col, locale().toString(double(rand())/double(RAND_MAX), f, prec));
 
@@ -2508,7 +2508,7 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
-	gsl_rng_set(r, time(NULL) + col);
+	gsl_rng_set(r, time(nullptr) + col);
 	for (int i = startRow; i <= endRow; i++)
 		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec));
 	gsl_rng_free (r);

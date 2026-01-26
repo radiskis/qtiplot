@@ -446,7 +446,7 @@ double muParserScript::evalSingleLine()
     return val;
 }
 
-muParserScript *muParserScript::current = NULL;
+muParserScript *muParserScript::current = nullptr;
 
 QVariant muParserScript::eval()
 {

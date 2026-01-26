@@ -87,7 +87,7 @@ PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const ch
 		args = argDict;
 	else
 		args = globals;
-	PyObject *ret=NULL;
+	PyObject *ret=nullptr;
 	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_eval_input);
 	if (co)
 	{
@@ -107,7 +107,7 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 	else
 		// "local" variable assignments automatically become global:
 		args = globals;
-	PyObject *tmp = NULL;
+	PyObject *tmp = nullptr;
 	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_file_input);
 	if (co)
 	{
@@ -186,9 +186,9 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 	: ScriptingEnv(parent, langName)
 {
 	PyGILState_STATE state;
-	PyObject *mainmod=NULL, *qtimod=NULL, *sysmod=NULL;
-	math = NULL;
-	sys = NULL;
+	PyObject *mainmod=nullptr, *qtimod=nullptr, *sysmod=nullptr;
+	math = nullptr;
+	sys = nullptr;
 	d_initialized = false;
 	if (Py_IsInitialized())
 	{
@@ -313,7 +313,7 @@ bool PythonScripting::loadInitFile(const QString &path)
 				PyObject *tmp = PyObject_CallFunctionObjArgs(compile,
 						PyString_FromString(pyFile.filePath().toUtf8().constData()),
 						PyString_FromString(pycFile.filePath().toUtf8().constData()),
-						NULL);
+						nullptr);
 				if (tmp)
 					Py_DECREF(tmp);
 				else
@@ -360,11 +360,11 @@ extern const sipAPIDef *sipAPI_qti;
 bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 {
 	if(!val) return false;
-	PyObject *pyobj=NULL;
+	PyObject *pyobj=nullptr;
 
 	PyGILState_STATE state = PyGILState_Ensure();
 	const auto klass = sipAPI_qti->api_find_type(val->metaObject()->className());
-	if (klass) pyobj = sipAPI_qti->api_convert_from_type(val, klass, NULL);
+	if (klass) pyobj = sipAPI_qti->api_convert_from_type(val, klass, nullptr);
 
 	if (pyobj) {
 		if (dict)

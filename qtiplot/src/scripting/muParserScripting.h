@@ -84,7 +84,7 @@ class muParserScripting: public ScriptingEnv
 
   private:
 	static double rnd(double x){
-		gsl_rng_default_seed = (unsigned int)x*time(NULL);
+		gsl_rng_default_seed = (unsigned int)x*time(nullptr);
 		const gsl_rng_type * T = gsl_rng_default;
 		gsl_rng * r = gsl_rng_alloc (T);
 		double u = gsl_rng_uniform (r);
@@ -97,7 +97,7 @@ class muParserScripting: public ScriptingEnv
 		gsl_rng * r = gsl_rng_alloc (T);
 		if (!r)
 			return 0.0;
-		gsl_rng_set(r, (unsigned int)x*time(NULL));
+		gsl_rng_set(r, (unsigned int)x*time(nullptr));
 		double u = gsl_ran_ugaussian(r);
 		gsl_rng_free (r);
 		return u;

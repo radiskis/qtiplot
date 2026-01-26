@@ -59,19 +59,19 @@ class PythonScripting: public ScriptingEnv
 		//! evaluate a Python expression
 		/**
 		 * Evaluates code, using argDict (borrowed reference) as local dictionary
-		 * or an empty one if argDict==NULL. name is the filename Python uses when
-		 * reporting errors. Returns a new reference; NULL means caller has to do
+		 * or an empty one if argDict==nullptr. name is the filename Python uses when
+		 * reporting errors. Returns a new reference; nullptr means caller has to do
 		 * exception handling.
 		 */
-		PyObject* eval(const QString &code, PyObject *argDict=NULL, const char *name="<qtiplot>");
+		PyObject* eval(const QString &code, PyObject *argDict=nullptr, const char *name="<qtiplot>");
 		//! execute a sequence of Python statements
 		/**
 		 * Executes code, using argDict (borrowed reference) as local dictionary
-		 * or an empty one if argDict==NULL. name is the filename Python uses when
+		 * or an empty one if argDict==nullptr. name is the filename Python uses when
 		 * reporting errors. A false return value means caller has to do exception
 		 * handling.
 		 */
-		bool exec(const QString &code, PyObject *argDict=NULL, const char *name="<qtiplot>");
+		bool exec(const QString &code, PyObject *argDict=nullptr, const char *name="<qtiplot>");
 		QString errorMsg();
 
 		bool isRunning() const;
@@ -81,9 +81,9 @@ class PythonScripting: public ScriptingEnv
 		}
 
 		bool setQObject(QObject*, const char*, PyObject *dict);
-		bool setQObject(QObject *val, const char *name) { return setQObject(val,name,NULL); }
-		bool setInt(int, const char*, PyObject *dict=NULL);
-		bool setDouble(double, const char*, PyObject *dict=NULL);
+		bool setQObject(QObject *val, const char *name) { return setQObject(val,name,nullptr); }
+		bool setInt(int, const char*, PyObject *dict=nullptr);
+		bool setDouble(double, const char*, PyObject *dict=nullptr);
 
 		const QStringList mathFunctions() const;
 		const QString mathFunctionDoc (const QString &name) const;

@@ -77,19 +77,19 @@ public:
 	//! get a window by name
 	  /**
 	   * Returns the first window with given name that inherits class cls;
-	   * NULL on failure. If recursive is true, do a depth-first recursive
+	   * nullptr on failure. If recursive is true, do a depth-first recursive
 	   * search.
 	   */
 	MdiSubWindow *window(const QString &name, const char *cls="MdiSubWindow", bool recursive=false);
-	//! Return table named name or NULL
+	//! Return table named name or nullptr
 	Table *table(const QString &name, bool recursive=false) { return (Table*) window(name, "Table", recursive); }
-	//! Return matrix named name or NULL
+	//! Return matrix named name or nullptr
 	Matrix *matrix(const QString &name, bool recursive=false) { return (Matrix*) window(name, "Matrix", recursive); }
-	//! Return graph named name or NULL
+	//! Return graph named name or nullptr
 	MultiLayer *graph(const QString &name, bool recursive=false) { return (MultiLayer*) window(name, "MultiLayer", recursive); }
-	//! Return note named name or NULL
+	//! Return note named name or nullptr
 	Note *note(const QString &name, bool recursive=false) { return (Note*) window(name, "Note", recursive); }
-	//! Return plot 3D named name or NULL
+	//! Return plot 3D named name or nullptr
 	Graph3D *plot3D(const QString &name, bool recursive=false) { return (Graph3D*) window(name, "Graph3D", recursive); }
 
 	//! The complete path of the folder in the project tree

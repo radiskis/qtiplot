@@ -87,9 +87,9 @@ void Matrix::initGlobals()
 {
 	setGeometry(0, 0, 500, 500);
 
-	d_workspace = NULL;
-	d_table_view = NULL;
-	imageLabel = NULL;
+	d_workspace = nullptr;
+	d_table_view = nullptr;
+	imageLabel = nullptr;
 
 	d_header_view_type = ColumnRow;
 	d_color_map_type = Default;
@@ -555,9 +555,9 @@ void Matrix::rotate90(bool clockwise)
 		return;
 
 	if (clockwise)
-		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateClockwise, tr("Rotate 90°")));
+		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateClockwise, tr("Rotate 90Â°")));
 	else
-		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateCounterClockwise, tr("Rotate -90°")));
+		d_undo_stack->push(new MatrixSymmetryOperation(d_matrix_model, RotateCounterClockwise, tr("Rotate -90Â°")));
 }
 
 void Matrix::resample(int rows, int cols, const ResamplingMethod& method)
@@ -1289,7 +1289,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 	if(!data){
 		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
-		return NULL;
+		return nullptr;
 	}
 
 	if (init){
@@ -1302,7 +1302,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 
 				QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 				tr("Not enough memory, operation aborted!"));
-				return NULL;
+				return nullptr;
 			}
 		}
 		return data;
@@ -1317,7 +1317,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 
 			QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 			tr("Not enough memory, operation aborted!"));
-			return NULL;
+			return nullptr;
 		}
 	}
 	return data;

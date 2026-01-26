@@ -84,7 +84,7 @@ void SubtractLineTool::selectPoint(const QPointF &pos)
 
 void SubtractLineTool::finalize()
 {
-	delete d_picker_tool; d_picker_tool = NULL;
+	delete d_picker_tool; d_picker_tool = nullptr;
 	d_graph->canvas()->releaseMouse();
 	d_first_point_marker->detach();
 	delete d_first_point_marker;
@@ -122,5 +122,5 @@ void SubtractLineTool::finalize()
 		}
 		t->notifyChanges(c->title().text());
 	}
-	d_graph->setActiveTool(NULL);
+	d_graph->setActiveTool(nullptr);
 }

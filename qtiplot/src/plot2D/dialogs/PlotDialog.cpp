@@ -159,7 +159,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WindowFlags fl )
 	initFunctionPage();
 	initPlotGeometryPage();
 
-	enrichmentDialog = NULL;
+	enrichmentDialog = nullptr;
 	clearTabWidget();
 
     QHBoxLayout* hb2 = new QHBoxLayout();
@@ -2354,11 +2354,11 @@ void PlotDialog::removeSelectedObject()
 	if (!item)
 		return;
 
-	Graph *graph = NULL;
+	Graph *graph = nullptr;
 	switch (item->type()){
 		case FrameWidgetTreeItem::FrameWidgetItem:
 			enrichmentDialog->close();
-			enrichmentDialog = NULL;
+			enrichmentDialog = nullptr;
 			graph = ((FrameWidgetTreeItem *)item)->graph();
 			if (graph)
 				graph->remove(((FrameWidgetTreeItem *)item)->frameWidget());
@@ -2706,7 +2706,7 @@ void PlotDialog::clearTabWidget()
 
 	if (enrichmentDialog){
 		enrichmentDialog->close();
-		enrichmentDialog = NULL;
+		enrichmentDialog = nullptr;
 	}
 
 	privateTabWidget->show();

@@ -57,8 +57,8 @@ TextDialog::TextDialog(TextType type, QWidget* parent, Qt::WindowFlags fl)
 	setWindowTitle( tr( "QtiPlot - Text options" ) );
 	setSizeGripEnabled( true );
 
-	d_graph = NULL;
-	d_scale = NULL;
+	d_graph = nullptr;
+	d_scale = nullptr;
 
 	d_text_type = type;
 

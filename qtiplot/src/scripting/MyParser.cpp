@@ -45,11 +45,11 @@ MyParser::MyParser()
 	DefineConst("PI", M_PI);
 
 	for (const muParserScripting::mathFunction *i=muParserScripting::math_functions; i->name; i++){
-		if (i->numargs == 1 && i->fun1 != NULL)
+		if (i->numargs == 1 && i->fun1 != nullptr)
 			DefineFun(i->name, i->fun1);
-		else if (i->numargs == 2 && i->fun2 != NULL)
+		else if (i->numargs == 2 && i->fun2 != nullptr)
 			DefineFun(i->name, i->fun2);
-		else if (i->numargs == 3 && i->fun3 != NULL)
+		else if (i->numargs == 3 && i->fun3 != nullptr)
 			DefineFun(i->name, i->fun3);
 	}
 	gsl_set_error_handler_off();

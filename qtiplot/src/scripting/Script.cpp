@@ -47,13 +47,13 @@ ScriptingLangManager::ScriptingLang ScriptingLangManager::langs[] = {
 #ifdef SCRIPTING_PYTHON
 	{ PythonScripting::langName, PythonScripting::constructor },
 #endif
-	{ NULL, NULL }
+	{ nullptr, nullptr }
 };
 
 ScriptingEnv *ScriptingLangManager::newEnv(ApplicationWindow *parent)
 {
 	if (!langs[0].constructor)
-		return NULL;
+		return nullptr;
 	else
 		return langs[0].constructor(parent);
 }
@@ -63,7 +63,7 @@ ScriptingEnv *ScriptingLangManager::newEnv(const char *name, ApplicationWindow *
 	for (ScriptingLang *i = langs; i->constructor; i++)
 		if (!strcmp(name, i->name))
 			return i->constructor(parent);
-	return NULL;
+	return nullptr;
 }
 
 QStringList ScriptingLangManager::languages()

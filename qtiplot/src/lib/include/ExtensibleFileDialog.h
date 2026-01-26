@@ -57,7 +57,7 @@ class ExtensibleFileDialog : public QFileDialog
 		void setExtensionWidget(QWidget *extension);
 	
 		//! Tells weather the dialog has a valid extension widget
-		bool isExtendable(){return d_extension != NULL;};
+		bool isExtendable(){return d_extension != nullptr;};
 		bool isExtended(){return d_extension_toggle->isChecked();};
 		//! Toggle extension widget on/off
 		void setExtended(bool extended);

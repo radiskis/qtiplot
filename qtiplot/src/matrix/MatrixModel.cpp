@@ -85,9 +85,9 @@ void MatrixModel::init()
 	d_txt_format = 'g';
 	d_num_precision = 6;
 	d_locale = QLocale();
-	d_direct_matrix = NULL;
-	d_inv_matrix = NULL;
-	d_inv_perm = NULL;
+	d_direct_matrix = nullptr;
+	d_inv_matrix = nullptr;
+	d_inv_perm = nullptr;
 
 	d_rows = 1;
 	d_cols = 1;
@@ -750,9 +750,9 @@ void MatrixModel::invert()
 	gsl_linalg_LU_invert(d_direct_matrix, d_inv_perm, d_inv_matrix);
 
 	gsl_matrix_free(d_direct_matrix);
-	d_direct_matrix = NULL;
+	d_direct_matrix = nullptr;
 	gsl_permutation_free(d_inv_perm);
-	d_inv_perm = NULL;
+	d_inv_perm = nullptr;
 
 	aux = 0;
 	for(int i=0; i<d_rows; i++){
@@ -760,7 +760,7 @@ void MatrixModel::invert()
 			d_data[aux++] = gsl_matrix_get(d_inv_matrix, i, j);
 	}
 	gsl_matrix_free(d_inv_matrix);
-	d_inv_matrix = NULL;
+	d_inv_matrix = nullptr;
 	QApplication::restoreOverrideCursor();
 }
 
@@ -791,7 +791,7 @@ double * MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCo
 
 	double *buffer = (double *)malloc((endRow - startRow + 1)*(endCol - startCol + 1) * sizeof (double));
 	if (!buffer)
-		return NULL;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

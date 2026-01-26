@@ -183,7 +183,7 @@ void Statistics::freeMemory()
 {
 	if (d_data && d_n > 0) {
 		free(d_data);
-		d_data = NULL;
+		d_data = nullptr;
 		d_n = 0;
 	}
 }

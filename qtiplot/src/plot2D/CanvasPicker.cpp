@@ -222,7 +222,7 @@ void CanvasPicker::disableEditing()
 {
 	if (d_editing_marker) {
 		d_editing_marker->setEditable(false);
-		d_editing_marker = NULL;
+		d_editing_marker = nullptr;
 	}
 }
 

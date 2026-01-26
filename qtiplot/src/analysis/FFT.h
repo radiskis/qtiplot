@@ -41,7 +41,7 @@ public:
 	FFT(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 	FFT(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
-	FFT(ApplicationWindow *parent, Matrix *re, Matrix *im = NULL, bool inverse = false, bool shift = true, bool norm = false, bool outputPower2Sizes = true);
+	FFT(ApplicationWindow *parent, Matrix *re, Matrix *im = nullptr, bool inverse = false, bool shift = true, bool norm = false, bool outputPower2Sizes = true);
 
     void setInverseFFT(bool inverse = true){d_inverse = inverse;};
     void setSampling(double sampling){d_sampling = sampling;};

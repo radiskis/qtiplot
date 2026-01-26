@@ -43,7 +43,7 @@ QwtHistogram::QwtHistogram(Table *t, const QString& name, int startRow, int endR
 }
 
 QwtHistogram::QwtHistogram(Matrix *m):
-    QwtBarCurve(QwtBarCurve::Vertical, NULL, "matrix", m->objectName(), 0, 0)
+    QwtBarCurve(QwtBarCurve::Vertical, nullptr, "matrix", m->objectName(), 0, 0)
 {
 	if (m){
 		init();

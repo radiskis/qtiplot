@@ -277,6 +277,6 @@ void tTest::freeMemory()
 	Statistics::freeMemory();
 	if (d_sample2){
 		delete d_sample2;
-		d_sample2 = NULL;
+		d_sample2 = nullptr;
 	}
 }

@@ -104,7 +104,7 @@ Folder* Folder::folderBelow()
 		childFolder = parentFolder;
 		parentFolder = (Folder *)parentFolder->parent();
 	}
-	return NULL;
+	return nullptr;
 }
 
 Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partialMatch)
@@ -175,12 +175,12 @@ MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursiv
 			return w;
 	}
 
-	if (!recursive) return NULL;
+	if (!recursive) return nullptr;
 	foreach (QObject *f, children()){
 		MdiSubWindow *w = ((Folder*)f)->window(name, cls, true);
 		if (w) return w;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Folder::addWindow( MdiSubWindow *w )
@@ -206,7 +206,7 @@ void Folder::removeWindow( MdiSubWindow *w )
 		if (!lstWindows.isEmpty())
 			d_active_window = lstWindows.first();
 		else
-			d_active_window = NULL;
+			d_active_window = nullptr;
 	}
 }
 

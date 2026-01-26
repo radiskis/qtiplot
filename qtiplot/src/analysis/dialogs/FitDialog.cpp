@@ -81,7 +81,7 @@ FitDialog::FitDialog(Graph *g, QWidget* parent)
 
 	d_param_table = 0;
 	d_current_fit = 0;
-	d_preview_curve = NULL;
+	d_preview_curve = nullptr;
 
 	tw = new QStackedWidget();
 

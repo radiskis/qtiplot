@@ -185,7 +185,7 @@ class Graph: public QwtPlot
 
 		//! Change the active tool, deleting the old one if it exists.
 		void setActiveTool(PlotToolInterface *tool);
-		//! Return the active tool, or NULL if none is active.
+		//! Return the active tool, or nullptr if none is active.
 		PlotToolInterface* activeTool() const { return d_active_tool; }
 		//! Returns true if a plot/data tool is enabled.
 		bool hasActiveTool();
@@ -813,7 +813,7 @@ class Graph: public QwtPlot
 		void showAxisDialog();
 		void showScaleDialog();
 
-		//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be NULL)
+		//! Returns a pointer to the spectrogram which data source is matrix m (the pointer can be nullptr)
 		Spectrogram* spectrogram(Matrix *m);
 		//! Add a spectrogram to the graph
   		Spectrogram* plotSpectrogram(Matrix *m, CurveType type);
@@ -953,12 +953,12 @@ signals:
 		QList<ArrowMarker*> d_lines;
 		//! Pointer to the currently selected line/image
 		ArrowMarker* d_selected_arrow;
-		//! The markers selected for move/resize operations or NULL if none are selected.
+		//! The markers selected for move/resize operations or nullptr if none are selected.
 		QPointer<SelectionMoveResizer> d_markers_selector;
-		//! The current curve selection, or NULL if none is active.
+		//! The current curve selection, or nullptr if none is active.
 		QPointer<RangeSelectorTool> d_range_selector;
 		QPointer<ImageProfilesTool> d_image_profiles_tool;
-		//! The currently active tool, or NULL for default (pointer).
+		//! The currently active tool, or nullptr for default (pointer).
 		PlotToolInterface *d_active_tool, *d_peak_fit_tool;
 		//! Pointer to the currently selected text/legend
 		FrameWidget *d_active_enrichment;

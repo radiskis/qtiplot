@@ -51,14 +51,14 @@ RangeSelectorTool::RangeSelectorTool(Graph *graph)
 	: QwtPlotPicker(graph->canvas()),
 	PlotToolInterface(graph)
 {
-	d_selection_dialog = NULL;
-	d_selected_curve = NULL;
+	d_selection_dialog = nullptr;
+	d_selected_curve = nullptr;
 	for (int i = 0; i < d_graph->curveCount(); i++) {
 		d_selected_curve = d_graph->curve(i);
 		if (d_selected_curve && d_selected_curve->rtti() == QwtPlotItem::Rtti_PlotCurve
 				&& d_selected_curve->dataSize() > 0)
 			break;
-		d_selected_curve = NULL;
+		d_selected_curve = nullptr;
 	}
 	if (!d_selected_curve) {
 		QMessageBox::critical(d_graph, tr("QtiPlot - Warning"),

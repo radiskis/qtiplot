@@ -41,8 +41,8 @@ ScalePicker::ScalePicker(Graph *plot):
     QObject(plot),
 	d_title_selected(false),
 	d_labels_selected(false),
-    d_selected_axis(NULL),
-	d_current_axis(NULL)
+    d_selected_axis(nullptr),
+	d_current_axis(nullptr)
 {
 	refresh();
 }
@@ -305,5 +305,5 @@ void ScalePicker::deselect()
 	sc_draw->setSelected(false);
 
     d_selected_axis->repaint();
-	d_selected_axis = NULL;
+	d_selected_axis = nullptr;
 }

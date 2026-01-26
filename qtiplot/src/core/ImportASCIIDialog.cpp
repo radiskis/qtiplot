@@ -241,8 +241,8 @@ void ImportASCIIDialog::initAdvancedOptions()
 	btnsLayout->addWidget(d_help_button);
 	advanced_layout->addLayout(btnsLayout, 6, 2);
 
-	d_preview_table = NULL;
-	d_preview_matrix = NULL;
+	d_preview_table = nullptr;
+	d_preview_matrix = nullptr;
 	d_preview_stack = new QStackedWidget();
 	main_layout->addWidget(d_preview_stack);
 }
@@ -266,12 +266,12 @@ void ImportASCIIDialog::initPreview(int previewMode)
 
 	if (d_preview_table){
 		delete d_preview_table;
-		d_preview_table = NULL;
+		d_preview_table = nullptr;
 	}
 
 	if (d_preview_matrix){
 		delete d_preview_matrix;
-		d_preview_matrix = NULL;
+		d_preview_matrix = nullptr;
 	}
 
 	switch(previewMode){

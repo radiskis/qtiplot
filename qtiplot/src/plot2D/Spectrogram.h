@@ -185,7 +185,7 @@ public:
 		y_start = d_matrix->yStart();
 		dy = d_matrix->dy();
 
-		d_mup = NULL;
+		d_mup = nullptr;
 		if (useMatrixFormula && d_matrix->canCalculate()){
 			d_mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
 					d_matrix, QString("<%1>").arg(d_matrix->objectName()));
@@ -199,7 +199,7 @@ public:
 
 			if (!d_mup->compile()){
 				delete d_mup;
-				d_mup = NULL;
+				d_mup = nullptr;
 			}
 
 			if (d_mup){//calculate z range
