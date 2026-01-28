@@ -1,6 +1,6 @@
 /*
 #
-#   Copyright © 2011 Stephan Zevenhuizen,
+#   Copyright Â© 2011 Stephan Zevenhuizen,
 #   Condensed Matter and Interfaces, Debye Institute, Utrecht University.
 #   OriginPlugin, plugin for QtiPlot 0.9.8.8, (06-11-2011).
 #
@@ -31,6 +31,9 @@ class OriginPlugin : public QObject, ImportExportPlugin
 {
 	Q_OBJECT
     Q_INTERFACES(ImportExportPlugin)
+#if QT_VERSION >= 0x050000
+	Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtiPlot.ImportExportPlugin")
+#endif
 public:
 	QStringList importFormats();
 	Table * import(const QString & fname, int sheet);

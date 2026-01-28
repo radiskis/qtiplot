@@ -2,7 +2,7 @@
     File                 : importOPJ.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
-	Copyright © 2011 Stephan Zevenhuizen
+	Copyright Â© 2011 Stephan Zevenhuizen
 	Copyright            : (C) 2006-2010 by Ion Vasilief, Alex Kargovsky
     Email (use @ for *)  : ion_vasilief*yahoo.fr, kargovsky*yumr.phys.msu.su
     Description          : Origin project import class
@@ -189,9 +189,9 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 	tree<Origin::ProjectNode>::iterator root = projectTree->begin(projectTree->begin());
 	if(!root.node)
 		return false;
-	FolderListItem* item = (FolderListItem*)mw->folders->firstChild();
+	FolderListItem* item = (FolderListItem*)mw->folders->invisibleRootItem()->child(0);
 	item->setText(0, root->name.c_str());
-	item->folder()->setName(root->name.c_str());
+	item->folder()->setObjectName(root->name.c_str());
 	Folder* projectFolder = mw->projectFolder();
 	QHash<tree<Origin::ProjectNode>::iterator, Folder*> parent;
 	parent[root] = projectFolder;
@@ -209,7 +209,7 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 					name = rx.cap(1);
 			}
 
-			MdiSubWindow* w = projectFolder->window(name, classes[sib->type]);
+			MdiSubWindow* w = projectFolder->window(name, classes[sib->type].toLatin1().constData());
 			if(w){
 				Folder *f = parent.value(projectTree->parent(sib));
 				if (f){
@@ -621,7 +621,7 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 		if(!note)
 			return false;
 
-		note->setName(name);
+		note->setObjectName(name); note->setWindowTitle(name);
 
 		note->setWindowLabel(_note.label.c_str());
 		note->setText(QString(_note.text.c_str()));
@@ -698,7 +698,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 3*yOffset);
 
 		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-		double fWindowFactor =  QMIN((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
+		double fWindowFactor =  qMin((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
 		double fFontScaleFactor = 0.4;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
@@ -813,7 +813,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				PlotCurve* curve = NULL;
 				Origin::Function function;
 
-				switch(data[0].toAscii()){
+				switch(data[0].toLatin1()){
 				case 'T':{
 					tableName = data.right(data.length()-2);
 					Table* table = mw->table(tableName);
@@ -1192,7 +1192,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			grid->setMinPenY(QPen(ColorBox::defaultColor(layer.yAxis.minorGrid.color), ceil(layer.yAxis.minorGrid.width),
 							lineStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style]));
 
-			grid->setAxis(2, 0);
+			grid->setAxes(2, 0);
 			grid->enableZeroLineX(0);
 			grid->enableZeroLineY(0);
 
@@ -1232,7 +1232,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				int prec = ticks[i].decimalPlaces;
 				int precisionNeeded = 0;
 				if(prec == -1){
-					foreach(double value, graph->axisScaleDiv(i)->ticks(QwtScaleDiv::MajorTick)){
+					foreach(double value, graph->axisScaleDiv(i).ticks(QwtScaleDiv::MajorTick)){
 						QStringList decimals = QString::number(value).split(".");
 						if(decimals.size() > 1){
 							int p = decimals[1].length();
@@ -1332,7 +1332,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				QwtScaleWidget *scale = graph->axisWidget(i);
 				if (scale)
-					scale->setPenWidth((int)formats[i].thickness);
+					scale->scaleDraw()->setPenWidthF((int)formats[i].thickness);
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;
@@ -1361,7 +1361,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				for(int i = 0; i < QwtPlot::axisCnt; ++i){
 					QwtScaleWidget *scale = graph->axisWidget(i);
 					if (scale)
-						scale->scaleDraw()->enableComponent(QwtAbstractScaleDraw::Backbone, (scale->penWidth() - cfw > 0));
+						scale->scaleDraw()->enableComponent(QwtAbstractScaleDraw::Backbone, (scale->scaleDraw()->penWidthF() - cfw > 0));
 				}
 			}
 
@@ -1435,7 +1435,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 			for(unsigned int i = 0; i < layer.bitmaps.size(); ++i){
 				QPixmap bmp;
-				QString windowName = QString::null;
+				QString windowName = QString();
 				if (layer.bitmaps[i].size > 0)
 					bmp.loadFromData(layer.bitmaps[i].data, layer.bitmaps[i].size, "BMP");
 				else {
@@ -1484,7 +1484,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					Table *t = box->table();
 					if (t)
 						curveNames << box->title().text().remove(t->objectName() + "_");
-					box->setData(QwtSingleArrayData(double(i + 1), QwtArray<double>(), 0));
+					box->setData(new QwtSingleArrayData(double(i + 1), QVector<double>(), 0));
 
 					int b_style = 0;
 					if (layer.percentile.diamondBox)
@@ -1575,7 +1575,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if (color.isValid() && layer.percentile.symbolColor.type != Origin::Color::Automatic)
 						pen = QPen(color, 1);
 
-					box->setSymbol(QwtSymbol(QwtSymbol::NoSymbol, brush, pen, QSize(size, size)));
+					box->setSymbol(new QwtSymbol(QwtSymbol::NoSymbol, brush, pen, QSize(size, size)));
 					box->setP99Style(originToQwtSymbolStyle(layer.percentile.p99SymbolType));
 					box->setMeanStyle(originToQwtSymbolStyle(layer.percentile.meanSymbolType));
 					box->setMaxStyle(originToQwtSymbolStyle(layer.percentile.maxSymbolType));
@@ -1629,7 +1629,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					Origin::GraphLayer& layer = _graph.layers[0];
 					double x = layer.vLine * (layer.xAxis.max - layer.xAxis.min) + layer.xAxis.min;
 					double y = layer.hLine * (layer.yAxis.max - layer.yAxis.min) + layer.yAxis.min;
-					tool->append(QwtDoublePoint(x, y));
+					tool->append(QPointF(x, y));
 				}
 			}
 		}
@@ -1681,17 +1681,17 @@ void ImportOPJ::importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::G
 		double vmax = it->first;
 		graph->enableAxis(QwtPlot::yRight);
 
-		QwtValueList ticksList;
+		QList<double> ticksList;
 		for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin(); it != _curve.colorMap.levels.end(); ++it)
 			ticksList << it->first;
 		if (ticksList.size() >= 2){
 			vmax += (ticksList[1] - ticksList[0]);
 			ticksList << vmax;
 		}
-		QwtValueList ticks[QwtScaleDiv::NTickTypes];
+		QList<double> ticks[QwtScaleDiv::NTickTypes];
 		ticks[QwtScaleDiv::MajorTick] = ticksList;
-		ticks[QwtScaleDiv::MediumTick] = QwtValueList();
-		ticks[QwtScaleDiv::MinorTick] = QwtValueList();
+		ticks[QwtScaleDiv::MediumTick] = QList<double>();
+		ticks[QwtScaleDiv::MinorTick] = QList<double>();
 
 		QwtScaleDiv div(vmin, vmax, ticks);
 		if (!layer.colorScale.reverseOrder)
@@ -1700,7 +1700,7 @@ void ImportOPJ::importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::G
 	}
 	sp->setCustomColorMap(qwtColorMap(_curve.colorMap));
 
-	QwtValueList levels;
+	QList<double> levels;
 	QList<QPen> penList;
 	bool labelsOn = false;
 	for(Origin::ColorMapVector::const_iterator it = _curve.colorMap.levels.begin() + 1; it != _curve.colorMap.levels.end(); ++it){
@@ -1773,7 +1773,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		if (!plot)
 			return false;
 
-		plot->setName(_graph.name.c_str());
+		plot->setObjectName(_graph.name.c_str()); plot->setWindowTitle(_graph.name.c_str());
 		plot->setWindowLabel(_graph.label.c_str());
 
 		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
@@ -1918,7 +1918,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		}
 		plot->setDotOptions(ceil(_curve.symbolSize), smooth);
 
-		switch(data[0].toAscii()){
+		switch(data[0].toLatin1()){
 			case 'T':{
 				Table* t = mw->table(data.right(data.length()-2));
 				if (_curve.zColumnName.empty()){
@@ -1949,7 +1949,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end() - 1; ++it)
 							colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
+						plot->setDataColorMap(colors);
 
 						if(_curve.surface.bottomContour.fill)
 							plot->setFloorData();
@@ -1979,7 +1979,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 						ColorVector colors;
 						for(Origin::ColorMapVector::const_iterator it = _curve.surface.colorMap.levels.begin() + 1; it != _curve.surface.colorMap.levels.end(); ++it)
 								colors.push_back(Qt2GL(originToQtColor(it->second.fillColor)));
-						plot->setDataColorMap(colors, qwtColorMap(_curve.surface.colorMap));
+						plot->setDataColorMap(colors);
 					}
 					break;
 					default:
@@ -2140,7 +2140,7 @@ void ImportOPJ::parseXYZContourPlotAxisTitles(Graph *g, Table *t, const Origin::
 		if (s.trimmed().isEmpty())
 			continue;
 
-		QString comment = QString::null;
+		QString comment = QString();
 		if (s.contains("%(?Y)", Qt::CaseInsensitive)){
 			QString name = QString(curve.yColumnName.c_str());
 			if (d_axis_title_policy > 1)

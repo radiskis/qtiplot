@@ -1,6 +1,6 @@
 /*
 #
-#   Copyright © 2011 Stephan Zevenhuizen,
+#   Copyright Â© 2011 Stephan Zevenhuizen,
 #   Condensed Matter and Interfaces, Debye Institute, Utrecht University.
 #   OriginPlugin, plugin for QtiPlot 0.9.8.8, (06-11-2011).
 #
@@ -39,4 +39,6 @@ Table * OriginPlugin::import(const QString & fname, int sheet)
 	return  0;
 }
 
+#if QT_VERSION < 0x050000
 Q_EXPORT_PLUGIN2(FreeSoftwareQtiPlotImportOPJ, OriginPlugin);
+#endif

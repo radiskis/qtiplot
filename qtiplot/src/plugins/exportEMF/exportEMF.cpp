@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 #
-#   Copyright © 2011 Stephan Zevenhuizen,
+#   Copyright c 2011 Stephan Zevenhuizen,
 #   Condensed Matter and Interfaces, Debye Institute, Utrecht University.
 #   exportEMF plugin for QtiPlot 0.9.8.8, (26-10-2011).
 #
@@ -50,8 +50,9 @@ bool exportEMF::exportGraph(Graph * g, const QString & fname, const QSizeF & cus
 	//std::cout << "In exportGraph.\n";
 	int res = g -> logicalDpiX();
 	QSize size = g -> boundingRect().size();
-	if (customSize.isValid())
-		size = Graph::customPrintSize(customSize, unit, res);
+	if (customSize.isValid()) {
+		// size = Graph::customPrintSize(customSize, unit, res); 
+    }
 	EmfPaintDevice emf(size, fname);
 	g -> draw(& emf, size, fontsFactor);
 	return true;
@@ -62,11 +63,14 @@ bool exportEMF::exportMultiLayerPlot(MultiLayer * m, const QString & fname, cons
 	//std::cout << "In exportMultiLayerPlot.\n";
 	int res = m -> logicalDpiX();
 	QSize size = m -> canvas() -> size();
-	if (customSize.isValid())
-		size = Graph::customPrintSize(customSize, unit, res);
+	if (customSize.isValid()) {
+		// size = Graph::customPrintSize(customSize, unit, res); 
+    }
 	EmfPaintDevice emf(size, fname);
 	m -> draw(& emf, customSize, unit, res, fontsFactor);		
 	return true;
 }
 
+#if QT_VERSION < 0x050000
 Q_EXPORT_PLUGIN2(FreeSoftwareQtiPlotExportEMF, exportEMF);
+#endif

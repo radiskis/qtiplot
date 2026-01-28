@@ -27,6 +27,10 @@
  *                                                                         *
  ***************************************************************************/
 #include "EmfEngine.h"
+#include <QtWinExtras/QtWin>
+#include <QPainterPath>
+#include <QPainter>
+#include <QTransform>
 
 EmfPaintEngine::EmfPaintEngine(const QString& f) : QPaintEngine(QPaintEngine::AllFeatures)
 {
@@ -42,9 +46,10 @@ bool EmfPaintEngine::begin(QPaintDevice* p)
 
 	HWND desktop = GetDesktopWindow();
 	HDC dc = GetDC(desktop);
-	PCSTR description = "Metafile created\0with EmfEngine\0";
+	// Double null-terminated wide string for description
+	const wchar_t description[] = L"Metafile created\0with EmfEngine\0";
 
-	metaDC = CreateEnhMetaFileA(dc, fname.toLocal8Bit().data(), &d_rect, description);//create null rectangle metafile
+	metaDC = CreateEnhMetaFileW(dc, (LPCWSTR)fname.constData(), &d_rect, (LPCWSTR)description);//create null rectangle metafile
 
 	d_rect.left = 0;
 	d_rect.top = 0;
@@ -53,7 +58,8 @@ bool EmfPaintEngine::begin(QPaintDevice* p)
 
 	end();//delete the dummy metafile
 
-	metaDC = CreateEnhMetaFileA(dc, fname.toLocal8Bit().data(), &d_rect, description);
+	metaDC = CreateEnhMetaFileW(dc, (LPCWSTR)fname.constData(), &d_rect, (LPCWSTR)description);
+    SetGraphicsMode(metaDC, GM_ADVANCED); // Essential for rotation and scaling
 
 	SetWindowExtEx(metaDC, p->width(), p->height(), 0);
 	SetViewportExtEx(metaDC, p->width(), p->height(), 0);
@@ -78,7 +84,7 @@ void EmfPaintEngine::drawPoints ( const QPointF * points, int pointCount )
 	SelectObject(metaDC, wbrush);
 
 	int lw = painter()->pen().width();
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < pointCount; i++){
 		QPointF p = m.map(points[i]);
 		int x = qRound(p.x());
@@ -97,7 +103,7 @@ void EmfPaintEngine::drawLines ( const QLineF * lines, int lineCount )
 	HPEN wpen = convertPen(painter()->pen());
 	SelectObject(metaDC, wpen);
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 
 	for (int i = 0; i < lineCount; i++) {
 		POINT *pts = new POINT[2];
@@ -127,7 +133,7 @@ void EmfPaintEngine::drawPolygon ( const QPointF * points, int pointCount, Polyg
 	SelectObject(metaDC, wbrush);
 
 	POINT *pts = new POINT[pointCount];
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < pointCount; i++){
 		QPointF p = m.map (points[i]);
 		pts[i].x = qRound(p.x());
@@ -155,10 +161,19 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 
 	QFont f = textItem.font();
 	QFontMetrics fm(f);
-	HFONT wfont = CreateFontA(fm.height() - 1, fm.averageCharWidth(), 0, 0,
+    
+	QString family = f.family();
+    if (family == "Sans Serif")
+        family = "Arial";
+    else if (family == "Serif")
+        family = "Times New Roman";
+    else if (family == "TypeWriter" || family == "Monospace")
+        family = "Courier New";
+
+	HFONT wfont = CreateFontW(fm.height() - 1, fm.averageCharWidth(), 0, 0,
 				10*f.weight(), f.italic(), f.underline (), f.strikeOut(),
 				DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
-				DEFAULT_QUALITY, DEFAULT_PITCH, f.family().toAscii().data());
+				DEFAULT_QUALITY, DEFAULT_PITCH, (LPCWSTR)family.constData());
 	SelectObject( metaDC, wfont);
 
 	QColor colour = painter()->pen().color();
@@ -167,7 +182,7 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	QString text = textItem.text();
 	int size = text.size();
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 
 	XFORM xf;
 	xf.eM11 = m.m11();
@@ -178,7 +193,7 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	xf.eDy = m.dy();
 	SetWorldTransform(metaDC, &xf);
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	wchar_t *wtext = (wchar_t *)malloc(size*sizeof(wchar_t));
 	if (!wtext){
 		qWarning("EmfEngine: Not enough memory in drawTextItem().");
@@ -213,7 +228,7 @@ void EmfPaintEngine::drawRects ( const QRectF * rects, int rectCount )
 	HBRUSH wbrush = convertBrush(painter()->brush());
 	SelectObject(metaDC, wbrush);
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < rectCount; i++){
 		QRectF r = m.mapRect(rects[i]);
 		Rectangle(metaDC, qRound(r.left()), qRound(r.top()), qRound(r.right()), qRound(r.bottom()));
@@ -233,7 +248,7 @@ void EmfPaintEngine::drawEllipse ( const QRectF & rect )
 	HBRUSH wbrush = convertBrush(painter()->brush());
 	SelectObject(metaDC, wbrush);
 
-	QRectF r = painter()->worldMatrix().mapRect(rect);
+	QRectF r = painter()->worldTransform().mapRect(rect);
 	Ellipse(metaDC, qRound(r.left()), qRound(r.top()), qRound(r.right()), qRound(r.bottom()));
 
 	resetClipping();
@@ -254,7 +269,7 @@ void EmfPaintEngine::drawPath ( const QPainterPath & path )
 
 	BeginPath(metaDC);
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < points; i++){
 		QPainterPath::Element el = path.elementAt(i);
 		QPointF p = m.map(QPointF(el.x, el.y));
@@ -266,21 +281,21 @@ void EmfPaintEngine::drawPath ( const QPainterPath & path )
 		switch(el.type){
 			case QPainterPath::MoveToElement:
 				types[i] = PT_MOVETO;
-			#ifndef Q_WS_WIN
+			#ifndef Q_OS_WIN
 				MoveToEx (metaDC, x, y, 0);
 			#endif
 			break;
 
 			case QPainterPath::LineToElement:
 				types[i] = PT_LINETO;
-			#ifndef Q_WS_WIN
+			#ifndef Q_OS_WIN
 				LineTo(metaDC, x, y);
 			#endif
 			break;
 
 			case QPainterPath::CurveToElement:
 				types[i] = PT_BEZIERTO;
-			#ifndef Q_WS_WIN
+			#ifndef Q_OS_WIN
 				bzs[bez] = pts[i];
 				bez++;
 			#endif
@@ -288,7 +303,7 @@ void EmfPaintEngine::drawPath ( const QPainterPath & path )
 
 			case QPainterPath::CurveToDataElement:
 				types[i] = PT_BEZIERTO;
-			#ifndef Q_WS_WIN
+			#ifndef Q_OS_WIN
 				bzs[bez] = pts[i];
 				if (bez == 2){
 					PolyBezierTo(metaDC, bzs, 3);
@@ -302,7 +317,7 @@ void EmfPaintEngine::drawPath ( const QPainterPath & path )
 
 	HPEN wpen = convertPen(painter()->pen());
 	SelectObject(metaDC, wpen);
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	PolyDraw(metaDC, pts, types, points);
 #else
 	StrokePath(metaDC);
@@ -317,7 +332,7 @@ void EmfPaintEngine::drawPath ( const QPainterPath & path )
 		StrokeAndFillPath(metaDC);
 	else {
 		FillPath(metaDC);
-	#ifdef Q_WS_WIN
+	#ifdef Q_OS_WIN
 		PolyDraw(metaDC, pts, types, points);
 	#else
 		StrokePath(metaDC);
@@ -335,23 +350,23 @@ void EmfPaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF
 {
 	setClipping();
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	QPointF p = m.map(r.topLeft());
 	int x = qRound(p.x());
 	int y = qRound(p.y());
 	int width = qRound(r.width());
 	int height = qRound(r.height());
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	HBITMAP hbtmp = NULL;
 	DWORD op = SRCCOPY;
 	if (pm.hasAlpha()){
 		QImage image = pm.scaled(width, height).toImage();
 		image.invertPixels();
-		hbtmp = QPixmap::fromImage (image).toWinHBITMAP();
+		hbtmp = QtWin::toHBITMAP(QPixmap::fromImage(image));
 		op = SRCINVERT;
 	} else
-		hbtmp = pm.scaled(width, height).toWinHBITMAP();
+		hbtmp = QtWin::toHBITMAP(pm.scaled(width, height));
 
 	HDC hDC = CreateCompatibleDC(metaDC);
     SelectObject(hDC, hbtmp);
@@ -376,11 +391,11 @@ void EmfPaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap & pix, const
 {
 	setClipping();
 
-#ifdef Q_WS_WIN
-	HBITMAP hBmp = pix.toWinHBITMAP();
+#ifdef Q_OS_WIN
+	HBITMAP hBmp = QtWin::toHBITMAP(pix);
 	HBRUSH wbrush = CreatePatternBrush(hBmp);
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	QRectF dr = m.mapRect(r);
 
 	RECT rect;
@@ -410,18 +425,18 @@ void EmfPaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap & pix, const
 
 void EmfPaintEngine::drawImage(const QRectF & r, const QImage & image, const QRectF &, Qt::ImageConversionFlags flags)
 {
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	QPointF p = m.map(r.topLeft());
 	int x = qRound(p.x());
 	int y = qRound(p.y());
 	int width = qRound(r.width());
 	int height = qRound(r.height());
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	setClipping();
 	QPixmap pix = QPixmap::fromImage (image.scaled(width, height), flags);
 
-	HBITMAP hbtmp = pix.toWinHBITMAP();
+	HBITMAP hbtmp = QtWin::toHBITMAP(pix);
 	HDC hDC = CreateCompatibleDC(metaDC);
     SelectObject(hDC, hbtmp);
     BitBlt(metaDC, x, y, width, height, hDC, 0, 0, SRCCOPY);
@@ -443,7 +458,7 @@ void EmfPaintEngine::drawImage(const QRectF & r, const QImage & image, const QRe
 
 void EmfPaintEngine::setClipping()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	if (painter()->hasClipping()) {
 		QRect rect = painter()->clipRegion().boundingRect();
 		HRGN hrgn = CreateRectRgn(rect.left(), rect.top(), rect.right(), rect.bottom());
@@ -455,7 +470,7 @@ void EmfPaintEngine::setClipping()
 
 void EmfPaintEngine::resetClipping()
 {
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 	if (painter()->hasClipping())
 		SelectClipRgn(metaDC, NULL);
 #endif
@@ -541,7 +556,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 	if (brush.color().alpha() < 255){//semi-transparent brush color
 		qWarning ("Semi-transparent brushes are not supported by EmfEngine.");
 
-		#ifdef Q_WS_WIN
+		#ifdef Q_OS_WIN
 		QPixmap pix(4, 4);
 		pix.fill(Qt::white);
 		QPainter p;
@@ -551,14 +566,14 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 		p.drawRect(QRect(0, 0, 4, 4));
 		p.end();
 
-		HBITMAP hBmp = pix.toWinHBITMAP();
+		HBITMAP hBmp = QtWin::toHBITMAP(pix);
 		HBRUSH wbrush = CreatePatternBrush(hBmp);
 		DeleteObject(hBmp);
 		return wbrush;
 		#endif
 	}
 
-	LONG lbHatch = HS_HORIZONTAL;
+	ULONG_PTR lbHatch = (ULONG_PTR)HS_HORIZONTAL;
 	UINT lbStyle = BS_HATCHED;
 	switch(brush.style()){
 		case Qt::NoBrush:
@@ -577,7 +592,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 		case Qt::Dense6Pattern:
 		case Qt::Dense7Pattern:
 		{
-		#ifdef Q_WS_WIN
+		#ifdef Q_OS_WIN
 			QPixmap pix(4, 4);
 			pix.fill(Qt::white);
 			QPainter p;
@@ -587,7 +602,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 			p.drawRect(QRect(0, 0, 4, 4));
 			p.end();
 
-			HBITMAP hbm = pix.toWinHBITMAP();
+			HBITMAP hbm = QtWin::toHBITMAP(pix);
 			HBRUSH wbrush = CreatePatternBrush(hbm);
 			DeleteObject(hbm);
 			return wbrush;
@@ -639,9 +654,9 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 		}
 
 		case Qt::TexturePattern:
-		#ifdef Q_WS_WIN
+		#ifdef Q_OS_WIN
 		{
-			HBITMAP hbm = brush.texture().toWinHBITMAP();
+			HBITMAP hbm = QtWin::toHBITMAP(brush.texture());
 			HBRUSH wbrush = CreatePatternBrush(hbm);
 			DeleteObject(hbm);
 			return wbrush;

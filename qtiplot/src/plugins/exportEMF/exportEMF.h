@@ -1,6 +1,6 @@
-/*
+ï»¿/*
 #
-#   Copyright © 2011 Stephan Zevenhuizen,
+#   Copyright c 2011 Stephan Zevenhuizen,
 #   Condensed Matter and Interfaces, Debye Institute, Utrecht University.
 #   exportEMF plugin for QtiPlot 0.9.8.8, (26-10-2011).
 #
@@ -31,6 +31,9 @@ class exportEMF : public QObject, ImportExportPlugin
 {
 	Q_OBJECT
     Q_INTERFACES(ImportExportPlugin)
+#if QT_VERSION >= 0x050000
+	Q_PLUGIN_METADATA(IID "com.ProIndependent.QtiPlot.ImportExportPlugin/1.0")
+#endif
 public:
 	QStringList exportFormats() const;
 	bool exportMatrix(Matrix *, const QString & fname, bool exportSelection);

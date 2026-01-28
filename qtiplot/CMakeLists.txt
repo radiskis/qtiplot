@@ -8,9 +8,11 @@ list(APPEND SOURCES "${PROJECT_SOURCE_DIR}/3rdparty/zlib/minigzip.c")
 file(GLOB_RECURSE HEADERS "src/*.h")
 file(GLOB_RECURSE UI_FILES "src/*.ui")
 
-# Exclude redundant/duplicate files
+# Exclude redundant/duplicate files and plugins
 list(FILTER SOURCES EXCLUDE REGEX "src/core/MultiPeakFitTool")
 list(FILTER HEADERS EXCLUDE REGEX "src/core/MultiPeakFitTool")
+list(FILTER SOURCES EXCLUDE REGEX "src/plugins")
+list(FILTER HEADERS EXCLUDE REGEX "src/plugins")
 
 
 # Resources
@@ -68,7 +70,7 @@ target_compile_definitions(qtiplot PRIVATE
 
     SCRIPTING_PYTHON 
     MUPARSER_STATIC
-    QTIPLOT_STATIC_BUILD # If we want static? Or maybe NOT.
+    # QTIPLOT_STATIC_BUILD # Disabled to allow plugin linkage
     QWT_DLL # Assuming we are linking against Qwt DLL
     # Legacy defines from .pro
 
@@ -99,3 +101,16 @@ target_link_libraries(qtiplot PRIVATE
 
 # --- Installation ---
 install(TARGETS qtiplot RUNTIME DESTINATION bin)
+
+
+set_target_properties(qtiplot PROPERTIES
+    ENABLE_EXPORTS ON
+    OUTPUT_NAME "qtiplot"
+)
+if(MINGW)
+    target_link_options(qtiplot PRIVATE "-Wl,--export-all-symbols")
+endif()
+
+# --- Plugins ---
+add_subdirectory(src/plugins/exportEMF)
+add_subdirectory(src/plugins/OriginPlugin)

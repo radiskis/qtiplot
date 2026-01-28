@@ -32,8 +32,11 @@
 
 #include <QPaintDevice>
 #include <QPaintEngine>
+#include <QPainterPath>
+#include <QPainter>
+#include <QTransform>
 
-#ifdef Q_WS_WIN
+#if defined(Q_OS_WIN) || defined(_WIN32)
 	#include <windows.h>
 #endif
 
@@ -51,11 +54,11 @@
 	#include <gdiplus.h>
 	using namespace Gdiplus;
 #else
-	#ifdef Q_WS_X11
+	#ifdef Q_OS_LINUX
 		#include <emf.h>
 	#endif
 
-	#ifdef Q_WS_MAC
+	#ifdef Q_OS_MAC
 		#include <emf.h>
 	#endif
 

@@ -19397,10 +19397,8 @@ QAXFACTORY_END()
 
 void ApplicationWindow::showProVersionMessage()
 {
-	QMessageBox::critical(this, tr("QtiPlot Pro feature"),
-	tr("This functionality is only available in QtiPlot Pro version, please subscribe for a maintenance contract!"));
-
-	QDesktopServices::openUrl(QUrl("http://soft.proindependent.com/pricing.html"));
+	QMessageBox::critical(this, tr("Feature not available"),
+	tr("The requested functionality is not available because the required plugin could not be loaded."));
 }
 
 ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
@@ -19441,6 +19439,12 @@ void ApplicationWindow::loadPlugins()
 	for (QString fileName : pluginsDir.entryList(QDir::Files)){
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
+		if (!plugin) {
+			QMessageBox::critical(this, "Plugin Load Error", 
+				QString("Failed to load plugin: %1\nError: %2")
+				.arg(fileName)
+				.arg(loader.errorString()));
+		}
 		if (plugin){
 			ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
 			if (p){
