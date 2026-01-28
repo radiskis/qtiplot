@@ -34,6 +34,8 @@
 #include "MultiLayer.h"
 #include <ApplicationWindow.h>
 #include <PenStyleBox.h>
+#include "LegendCommand.h"
+#include "MultiLayer.h"
 
 #ifdef TEX_OUTPUT
 	#include <QTeXEngine.h>
@@ -168,25 +170,52 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
     d_frame_pen = pen; // Restore pen
 }
 
-void LegendWidget::setText(const QString& s)
+void LegendWidget::setText(const QString& s, bool pushUndo)
 {
+	if (d_text->text() == s)
+		return;
+
+	if (pushUndo && d_plot && d_plot->multiLayer()){
+		d_plot->multiLayer()->undoStack()->push(new LegendSetTextCommand(this, d_text->text(), s, tr("Set Legend Text")));
+		return;
+	}
+
 	d_text->setText(s);
+	repaint();
+	if (d_plot->multiLayer())
+		d_plot->multiLayer()->notifyChanges();
 }
 
-void LegendWidget::setTextColor(const QColor& c)
+void LegendWidget::setTextColor(const QColor& c, bool pushUndo)
 {
-	if ( c == d_text->color() )
+	if (d_text->color() == c)
 		return;
+
+	if (pushUndo && d_plot && d_plot->multiLayer()){
+		d_plot->multiLayer()->undoStack()->push(new LegendSetColorCommand(this, d_text->color(), c, tr("Set Legend Color")));
+		return;
+	}
 
 	d_text->setColor(c);
+	repaint();
+	if (d_plot->multiLayer())
+		d_plot->multiLayer()->notifyChanges();
 }
 
-void LegendWidget::setFont(const QFont& font)
+void LegendWidget::setFont(const QFont& font, bool pushUndo)
 {
-	if ( font == d_text->font() )
+	if (d_text->font() == font)
 		return;
 
+	if (pushUndo && d_plot && d_plot->multiLayer()){
+		d_plot->multiLayer()->undoStack()->push(new LegendSetFontCommand(this, d_text->font(), font, tr("Set Legend Font")));
+		return;
+	}
+
 	d_text->setFont(font);
+	repaint();
+	if (d_plot->multiLayer())
+		d_plot->multiLayer()->notifyChanges();
 }
 
 void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)

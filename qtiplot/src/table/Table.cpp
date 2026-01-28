@@ -26,6 +26,7 @@ Description          : Table worksheet class
  *                                                                         *
  ***************************************************************************/
 #include "Table.h"
+#include "TableCommand.h"
 #include "SortDialog.h"
 #include <ImportASCIIDialog.h>
 #include <muParserScript.h>
@@ -73,6 +74,12 @@ Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationW
 {
 	init(r,c);
 }
+
+Table::~Table()
+{
+	delete d_undo_stack;
+}
+
 
 void Table::init(int rows, int cols)
 {
@@ -137,6 +144,10 @@ void Table::init(int rows, int cols)
 	connect(accelAll, &QShortcut::activated, this, &Table::selectAllTable);
 
 	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
+	connect(d_table, &QTableWidget::cellDoubleClicked, this, &Table::cellDoubleClicked);
+
+	d_undo_stack = new QUndoStack(this);
+	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());
 
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
@@ -311,12 +322,20 @@ void Table::print(const QString& fileName)
 	print(&printer);
 }
 
+void Table::cellDoubleClicked(int row, int col)
+{
+	d_old_cell_text = d_table->text(row, col);
+}
+
 void Table::cellEdited(int row, int col)
 {
 	QString text = d_table->text(row,col).remove(QRegExp("\\s"));
+	QString newText = d_table->text(row,col);
+	if (newText == d_old_cell_text)
+		return;
+
 	if (columnType(col) != Numeric || text.isEmpty()){
-		emit modifiedData(this, colName(col));
-		emit modifiedWindow(this);
+		d_undo_stack->push(new TableEditCellCommand(this, row, col, d_old_cell_text, newText, tr("Edit Cell")));
 		return;
 	}
 
@@ -326,7 +345,7 @@ void Table::cellEdited(int row, int col)
   	bool ok = true;
   	double res = locale().toDouble(text, &ok);
   	if (ok)
-  		d_table->setText(row, col, locale().toString(res, f, precision));
+  		newText = locale().toString(res, f, precision);
   	else {
   		Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
   		connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
@@ -335,15 +354,14 @@ void Table::cellEdited(int row, int col)
   		script->setInt(col+1, "j");
   		QVariant ret = script->eval();
   		if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
-  			d_table->setText(row, col, ret.toString());
+  			newText = ret.toString();
   		else if(ret.canConvert<double>())
-  			d_table->setText(row, col, locale().toString(ret.toDouble(), f, precision));
+  			newText = locale().toString(ret.toDouble(), f, precision);
   		else
-  			d_table->setText(row, col, "");
+  			newText = "";
   	}
 
-  	emit modifiedData(this, colName(col));
-	emit modifiedWindow(this);
+	d_undo_stack->push(new TableEditCellCommand(this, row, col, d_old_cell_text, newText, tr("Edit Cell")));
 }
 
 int Table::colX(int col)
@@ -431,10 +449,15 @@ void Table::setPlotDesignation(PlotDesignation pd, bool rightColumns)
 	emit modifiedWindow(this);
 }
 
-void Table::setColPlotDesignation(int col, PlotDesignation pd)
+void Table::setColPlotDesignation(int col, PlotDesignation pd, bool pushUndo)
 {
 	if (col < 0 || col >= d_table->numCols() || col_plot_type[col] == pd)
 		return;
+
+	if (pushUndo){
+		d_undo_stack->push(new TableSetPlotDesignationCommand(this, col, (PlotDesignation)col_plot_type[col], pd, tr("Set Plot Designation")));
+		return;
+	}
 
 	col_plot_type[col] = pd;
 }
@@ -513,6 +536,13 @@ void Table::setColumnTypes(const QStringList& ctl)
 	}
 }
 
+void Table::setColumnTypes(const QList<int>& ctl)
+{
+	int n = qMin((int)ctl.count(), numCols());
+	for (int i=0; i<n; i++)
+		colTypes[i] = ctl[i];
+}
+
 void Table::clearCommands()
 {
 	int count = (int)commands.size();
@@ -544,9 +574,11 @@ bool Table::calculate()
 {
 	QTableWidgetSelectionRange sel = getSelection();
 	bool success = true;
+	d_undo_stack->beginMacro(tr("Calculate"));
 	for (int col = sel.leftColumn(); col <= sel.rightColumn(); col++)
 		if (!calculate(col, sel.topRow(), sel.bottomRow()))
 			success = false;
+	d_undo_stack->endMacro();
 	return success;
 }
 
@@ -590,6 +622,10 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 
 	setAutoUpdateValues(false);
 
+	QStringList oldData, newData;
+	for (int i = startRow; i <= endRow; i++)
+		oldData << d_table->text(i, col);
+
     if (mup->codeLines() == 1){
 		if (colType == Date || colType == Time){
 			QString fmt = col_format[col];
@@ -597,7 +633,9 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 				*r = i + 1.0;
 				double val = mup->evalSingleLine();
 				if (finite(val))
-					d_table->setText(i, col, dateTime(val).toString(fmt));
+					newData << dateTime(val).toString(fmt);
+				else
+					newData << "";
 			}
 		} else if (colType == Numeric){
 			QLocale loc = locale();
@@ -606,7 +644,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			columnNumericFormat(col, &f, &prec);
 			for (int i = startRow; i <= endRow; i++){
 				*r = i + 1.0;
-				d_table->setText(i, col, mup->evalSingleLineToString(loc, f, prec));
+				newData << mup->evalSingleLineToString(loc, f, prec);
 			}
 		}
 	} else {
@@ -618,7 +656,9 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 				if (ret.type() == QVariant::Double){
 					double val = ret.toDouble();
 					if (finite(val))
-						d_table->setText(i, col, dateTime(val).toString(fmt));
+						newData << dateTime(val).toString(fmt);
+					else
+						newData << "";
 				} else {
 					QApplication::restoreOverrideCursor();
 					return false;
@@ -634,9 +674,9 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 				*r = i + 1.0;
 				QVariant ret = mup->eval();
 				if (ret.type() == QVariant::Double)
-					d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+					newData << loc.toString(ret.toDouble(), f, prec);
 				else if(ret.canConvert(QVariant::String))
-					d_table->setText(i, col, ret.toString());
+					newData << ret.toString();
 				else {
 					QApplication::restoreOverrideCursor();
 					return false;
@@ -644,6 +684,11 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			}
 		}
 	}
+
+	if (!newData.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+							QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Calculate Column")));
+
 	if (notifyChanges)
         emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -699,6 +744,10 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	colscript->setDouble(startRow + 1.0, "sr");
 	colscript->setDouble(endRow + 1.0, "er");
 
+	QStringList oldData, newData;
+	for (int i = startRow; i <= endRow; i++)
+		oldData << d_table->text(i, col);
+
 	int colType = colTypes[col];
 	if (colType == Date || colType == Time){
 		QString fmt = col_format[col];
@@ -708,7 +757,9 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 			if (ret.type() == QVariant::Double){
 				double val = ret.toDouble();
 				if (finite(val))
-					d_table->setText(i, col, dateTime(val).toString(fmt));
+					newData << dateTime(val).toString(fmt);
+				else
+					newData << "";
 			} else {
 				QApplication::restoreOverrideCursor();
 				return false;
@@ -724,15 +775,19 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
 			if (ret.type() == QVariant::Double)
-				d_table->setText(i, col, loc.toString(ret.toDouble(), f, prec));
+				newData << loc.toString(ret.toDouble(), f, prec);
 			else if(ret.canConvert(QVariant::String))
-				d_table->setText(i, col, ret.toString());
+				newData << ret.toString();
 			else {
 				QApplication::restoreOverrideCursor();
 				return false;
 			}
 		}
 	}
+
+	if (!newData.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+							QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Calculate Column")));
 
 	if (notifyChanges)
 		emit modifiedData(this, colName(col));
@@ -992,13 +1047,18 @@ QString Table::comment(int col)
 	return comments[col];
 }
 
-void Table::setColComment(int col, const QString& s)
+void Table::setColComment(int col, const QString& s, bool pushUndo)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return;
 
 	if (comments[col] == s)
 		return;
+
+	if (pushUndo){
+		d_undo_stack->push(new TableSetColCommentCommand(this, col, comments[col], s, tr("Set Column Comment")));
+		return;
+	}
 
 	comments[col] = s;
 
@@ -1008,25 +1068,35 @@ void Table::setColComment(int col, const QString& s)
 	emit modifiedWindow(this);
 }
 
+void Table::setColumnType(int col, ColType val, bool pushUndo)
+{
+	Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols() || colTypes[col] == val)
+		return;
+
+	// TODO: Push TableSetColTypeCommand if pushUndo is true
+	// For now, just apply it
+	colTypes[col] = val;
+}
+
 void Table::setColumnWidth(int width, bool allCols)
 {
-	int cols=d_table->numCols();
 	if (allCols)
 	{
-		for (int i=0;i<cols;i++)
-			d_table->setColumnWidth (i, width);
-
-		emit modifiedWindow(this);
+		for(int i=0; i<d_table->numCols(); i++)
+			d_table->setColumnWidth(i, width);
 	}
 	else
 	{
 		if (d_table->columnWidth(selectedCol) == width)
 			return;
 
-		d_table->setColumnWidth (selectedCol, width);
-		emit modifiedWindow(this);
+		d_table->setColumnWidth(selectedCol, width);
 	}
+	emit modifiedWindow(this);
 }
+
+
 
 void Table::adjustColumnsWidth(bool selection)
 {
@@ -1045,8 +1115,10 @@ void Table::adjustColumnsWidth(bool selection)
 	emit modifiedWindow(this);
 }
 
-void Table::setColumnWidth(int col, int width)
+void Table::setColumnWidth(int col, int width, bool)
 {
+	if (col < 0 || col >= d_table->numCols())
+		return;
 
 	if (d_table->columnWidth(col) == width)
 		return;
@@ -1072,7 +1144,6 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
         return;
 
     QString caption = objectName();
-	QString oldLabel = col_label[col];
 	int cols = col + 1;
 	if (enumerateRight)
         cols = (int)d_table->numCols();
@@ -1093,20 +1164,39 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
 		n++;
 	}
 
+	QStringList oldNames, newNames;
     n = 1;
-    caption += "_";
 	for (int i = col; i<cols; i++){
+		oldNames << col_label[i];
 		QString newLabel = text;
 		if (enumerateRight)
             newLabel += QString::number(n);
-
-        commands.replaceInStrings("\"" + col_label[i] + "\"", "\"" + newLabel + "\"");
-		emit changedColHeader(caption + col_label[i], caption + newLabel);
-        col_label[i] = newLabel;
+		newNames << newLabel;
 		n++;
 	}
 
-    setHeaderColType();
+	d_undo_stack->push(new TableSetColNamesCommand(this, col, oldNames, newNames, tr("Set Column Names")));
+}
+
+void Table::setColNames(int startCol, const QStringList& names)
+{
+	int cols = names.count();
+	if (startCol < 0 || startCol + cols > d_table->numCols())
+		return;
+
+	QString caption = objectName() + "_";
+	for (int i = 0; i < cols; i++){
+		int col = startCol + i;
+		QString newLabel = names[i];
+		if (col_label[col] == newLabel)
+			continue;
+
+		commands.replaceInStrings("\"" + col_label[col] + "\"", "\"" + newLabel + "\"");
+		emit changedColHeader(caption + col_label[col], caption + newLabel);
+		col_label[col] = newLabel;
+	}
+
+	setHeaderColType();
 	emit modifiedWindow(this);
 }
 
@@ -1269,24 +1359,34 @@ void Table::columnRange(int c, double *min, double *max)
 	*max = d_max;
 }
 
-void Table::insertCols(int start, int count)
+void Table::insertCols(int start, int count, bool pushUndo)
 {
-    if (start < 0)
+	if (start < 0)
         start = 0;
 
     int max = 0;
 	int cols = d_table->numCols();
-	QList<bool> hiddenCols;
-
 	for (int i = 0; i<cols; i++){
 		if (!col_label[i].contains(QRegExp ("\\D"))){
 			int id = col_label[i].toInt();
 			if (id > max)
 				max = id;
 		}
-		hiddenCols << d_table->isColumnHidden(i);
 	}
     max++;
+
+	QStringList names;
+	for(int i = 0; i<count; i++ )
+		names << QString::number(max + i);
+
+	if (pushUndo){
+		d_undo_stack->push(new TableAddColsCommand(this, start, count, names, tr("Insert Columns")));
+		return;
+	}
+
+	QList<bool> hiddenCols;
+	for (int i = 0; i<cols; i++)
+		hiddenCols << d_table->isColumnHidden(i);
 
     d_table->insertColumns(start, count);
 
@@ -1295,7 +1395,7 @@ void Table::insertCols(int start, int count)
 		commands.insert(j, QString());
 		col_format.insert(j, "0/" + QString::number(d_numeric_precision));
 		comments.insert(j, QString());
-		col_label.insert(j, QString::number(max + i));
+		col_label.insert(j, names[i]);
 		colTypes.insert(j, Numeric);
 		col_plot_type.insert(j, Y);
 		hiddenCols.insert(j, false);
@@ -1323,6 +1423,16 @@ void Table::insertRow()
 	}
 }
 
+void Table::insertRow(int row, bool pushUndo)
+{
+	insertRows(row, 1, pushUndo);
+}
+
+void Table::insertColumn(int col, bool pushUndo)
+{
+	insertCols(col, 1, pushUndo);
+}
+
 void Table::addCol(PlotDesignation pd)
 {
 	d_table->clearSelection();
@@ -1334,19 +1444,14 @@ void Table::addCol(PlotDesignation pd)
 				max = index;
 		}
 	}
-	d_table->insertColumns(cols);
-	d_table->ensureCellVisible ( 0, cols );
+	max++;
 
-	comments << QString();
-	commands << "";
-	colTypes << Numeric;
-	col_format << "0/" + QString::number(d_numeric_precision);
-	col_label << QString::number(max+1);
-	col_plot_type << pd;
-
-	setHeaderColType();
-	emit addedCol(objectName() + "_" + QString::number(max+1));
-	emit modifiedWindow(this);
+	QString label = QString::number(max);
+	d_undo_stack->push(new TableAddColsCommand(this, cols, 1, QStringList() << label, tr("Add Column")));
+	
+	// Apply PlotDesignation (this will push another command if we use setColPlotDesignation)
+	// But TableAddColsCommand only inserts. We might need a combined command or just set it manually here.
+	setColPlotDesignation(cols, pd, false);
 }
 
 void Table::addColumns(int c)
@@ -1360,17 +1465,12 @@ void Table::addColumns(int c)
 		}
 	}
 	max++;
-	d_table->insertColumns(cols, c);
-	for (int i=0; i<c; i++){
-		comments << QString();
-		commands << "";
-		colTypes << Numeric;
-		col_format << "0/" + QString::number(d_numeric_precision);
-		QString label = QString::number(max + i);
-		col_label << label;
-		col_plot_type << Y;
-		emit addedCol(objectName() + "_" + label);
-	}
+
+	QStringList names;
+	for (int i=0; i<c; i++)
+		names << QString::number(max + i);
+
+	d_undo_stack->push(new TableAddColsCommand(this, cols, c, names, tr("Add Columns")));
 }
 
 void Table::clearCol()
@@ -1408,7 +1508,7 @@ void Table::deleteSelectedRows()
 	deleteRows(sel.topRow() + 1, sel.bottomRow() + 1);
 }
 
-void Table::deleteRows(int startRow, int endRow)
+void Table::deleteRows(int startRow, int endRow, bool pushUndo)
 {
 	for(int i=0; i<d_table->numCols(); i++){
         if (d_table->isColumnReadOnly(i)){
@@ -1429,11 +1529,35 @@ void Table::deleteRows(int startRow, int endRow)
         end = d_table->numRows() - 1;
 
     int rows = abs(end - start) + 1;
+	if (pushUndo){
+		QList<QStringList> data;
+		for (int i = start; i <= end; i++){
+			QStringList rowData;
+			for (int j = 0; j < d_table->numCols(); j++)
+				rowData << d_table->text(i, j);
+			data << rowData;
+		}
+		d_undo_stack->push(new TableDeleteRowsCommand(this, start + 1, end + 1, data, tr("Delete Rows")));
+		return;
+	}
+
 	QVector<int> rowsToDelete(rows);
 	for (int i=0; i<rows; i++)
 		rowsToDelete[i] = start + i;
 
 	d_table->removeRows(rowsToDelete);
+	notifyChanges();
+}
+
+void Table::insertRows(int row, int count, bool pushUndo)
+{
+	if (pushUndo){
+		d_undo_stack->push(new TableInsertRowCommand(this, row, tr("Insert Rows"))); // Need to support count in command if needed
+		return;
+	}
+
+	for (int i=0; i<count; i++)
+		d_table->insertRow(row - 1);
 	notifyChanges();
 }
 
@@ -1736,10 +1860,10 @@ void Table::pasteSelection()
 
 void Table::removeCol()
 {
-	removeCol(selectedColumns());
+	deleteColumns(selectedColumns());
 }
 
-void Table::removeCol(const QStringList& list)
+void Table::deleteColumns(const QStringList& list, bool pushUndo)
 {
 	QStringList lstReadOnly;
 	for (int i = 0; i < list.count(); i++){
@@ -1753,6 +1877,40 @@ void Table::removeCol(const QStringList& list)
 		QMessageBox::warning(this, tr("QtiPlot - Error"),
 		tr("The folowing columns") + ":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
+
+	if (pushUndo){
+		QList<QStringList> cellData;
+		QStringList names, comments, formats, widths, columnCommands;
+		QList<int> types, plotTypes;
+		int startCol = -1;
+
+		for (int i = 0; i < list.count(); i++){
+			int id = colIndex(list[i]);
+			if (id < 0 || d_table->isColumnReadOnly(id))
+				continue;
+			
+			if (startCol == -1 || id < startCol)
+				startCol = id;
+
+			names << col_label[id];
+			comments << this->comments[id];
+			formats << col_format[id];
+			types << (int)colTypes[id];
+			plotTypes << (int)col_plot_type[id];
+			widths << QString::number(d_table->columnWidth(id));
+			columnCommands << commands[id];
+
+			QStringList data;
+			for (int row = 0; row < d_table->numRows(); row++)
+				data << d_table->text(row, id);
+			cellData << data;
+		}
+		
+		if (startCol != -1)
+			d_undo_stack->push(new TableDeleteColsCommand(this, startCol, startCol + names.count() - 1,
+								cellData, names, comments, formats, types, plotTypes, widths, columnCommands, tr("Delete Columns")));
+		return;
+	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for (int i = 0; i < list.count(); i++){
@@ -1795,8 +1953,10 @@ void Table::normalizeSelection()
 	if (lst.isEmpty())
 		return;
 
+	d_undo_stack->beginMacro(tr("Normalize"));
 	for (int i = 0; i < lst.count(); i++)
 		normalizeCol(colIndex(lst[i]));
+	d_undo_stack->endMacro();
 
 	emit modifiedWindow(this);
 }
@@ -1814,8 +1974,10 @@ void Table::normalize()
         tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     }
 
+	d_undo_stack->beginMacro(tr("Normalize"));
 	for (int i = 0; i < d_table->numCols(); i++)
 		normalizeCol(i);
+	d_undo_stack->endMacro();
 
 	emit modifiedWindow(this);
 }
@@ -1828,24 +1990,33 @@ void Table::normalizeCol(int col)
 
 	int rows = d_table->numRows();
 	gsl_vector *data = gsl_vector_alloc(rows);
-	for (int i=0; i<rows; i++)
+	QStringList oldData;
+	for (int i=0; i<rows; i++){
+		oldData << d_table->text(i, col);
 		gsl_vector_set(data, i, cell(i, col));
+	}
 
 	double max = gsl_vector_max(data);
-	if (max == 1.0)
+	if (max == 1.0){
+		gsl_vector_free(data);
 		return;
+	}
 
     int prec;
     char f;
     columnNumericFormat(col, &f, &prec);
 
+	QStringList newData;
 	for (int i=0; i<rows; i++){
-		if ( !d_table->text(i, col).isEmpty() )
-			d_table->setText(i, col, locale().toString(gsl_vector_get(data, i)/max, f, prec));
+		if ( !oldData[i].isEmpty() )
+			newData << locale().toString(gsl_vector_get(data, i)/max, f, prec);
+		else
+			newData << "";
 	}
-
 	gsl_vector_free(data);
-	emit modifiedData(this, colName(col));
+
+	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col,
+					QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Normalize") + " " + colName(col)));
 }
 
 void Table::sortColumnsDialog()
@@ -1888,8 +2059,10 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 {
 	int cols = s.count();
 	if(!type){//Sort columns separately
+		d_undo_stack->beginMacro(tr("Sort"));
 		for(int i = 0; i < cols; i++)
 			sortColumn(colIndex(s[i]), order);
+		d_undo_stack->endMacro();
 	} else {
 		int leadcol = colIndex(leadCol);
 		if (leadcol < 0){
@@ -1937,48 +2110,61 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		else
 			gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
 
-		setAutoUpdateValues(false);
+		QList<int> colIndices;
+		QList<QStringList> oldDataList, newDataList;
 
 		for(int i = 0; i < cols; i++){// Since we have the permutation index, sort all the columns
 			int col = colIndex(s[i]);
 			if (d_table->isColumnReadOnly(col))
 				continue;
 
+			colIndices << col;
+			QStringList oldData;
+			for(int r=0; r<rows; r++) oldData << d_table->text(r, col);
+			oldDataList << oldData;
+			QStringList newData = oldData; // initialize with copy
+
 			int type = columnType(col);
 			if (type == Text){
 				for (int j = 0; j<non_empty_cells; j++)
-					strings[j] = text(valid_cell[j], col);
+					strings[j] = oldData[valid_cell[j]];
 				if(!order)
 					for (int j = 0; j < non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, strings[p[j]]);
+						newData[valid_cell[j]] = strings[p[j]];
 				else
 					for (int j = 0; j < non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, strings[p[non_empty_cells - j - 1]]);
+						newData[valid_cell[j]] = strings[p[non_empty_cells - j - 1]];
 			} else if (type == Date || type == Time){
 				QString format = col_format[col];
+				QVarLengthArray<double> col_data_double(non_empty_cells);
 				for (int j = 0; j<non_empty_cells; j++)
-					data_double[j] = fromDateTime(QDateTime::fromString(d_table->text(valid_cell[j], col), format));
+					col_data_double[j] = fromDateTime(QDateTime::fromString(oldData[valid_cell[j]], format));
 				if(!order)
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, dateTime(data_double[p[j]]).toString(format));
+						newData[valid_cell[j]] = dateTime(col_data_double[p[j]]).toString(format);
 				else
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, dateTime(data_double[p[non_empty_cells - j - 1]]).toString(format));
+						newData[valid_cell[j]] = dateTime(col_data_double[p[non_empty_cells - j - 1]]).toString(format);
 			} else if (type == Numeric) {
+				QVarLengthArray<double> col_data_double(non_empty_cells);
 				for (int j = 0; j<non_empty_cells; j++)
-					data_double[j] = cell(valid_cell[j], col);
+					col_data_double[j] = cell(valid_cell[j], col);
 				int prec;
 				char f;
 				columnNumericFormat(col, &f, &prec);
 				if(!order)
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, locale().toString(data_double[p[j]], f, prec));
+						newData[valid_cell[j]] = locale().toString(col_data_double[p[j]], f, prec);
 				else
 					for (int j=0; j<non_empty_cells; j++)
-						d_table->setText(valid_cell[j], col, locale().toString(data_double[p[non_empty_cells-j-1]], f, prec));
+						newData[valid_cell[j]] = locale().toString(col_data_double[p[non_empty_cells-j-1]], f, prec);
 			}
+			newDataList << newData;
 		}
 		delete[] p;
+		
+		if (!colIndices.isEmpty())
+			d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, colIndices, oldDataList, newDataList, tr("Sort")));
 	}
 
 	for(int i = 0; i < cols; i++){// notify changes
@@ -2006,15 +2192,18 @@ void Table::sortColumn(int col, int order)
 	QVarLengthArray<double> r(rows);
 	QStringList text_cells;
 	QString format = col_format[col];
+	QStringList oldData;
 	for (int i = 0; i <rows; i++){
-		if (!d_table->text(i, col).isEmpty()){
+		QString s = d_table->text(i, col);
+		oldData << s;
+		if (!s.isEmpty()){
 			switch(columnType(col)){
 				case Table::Text:
-					text_cells << d_table->text(i, col);
+					text_cells << s;
 				break;
 				case Table::Date:
 				case Table::Time:
-					r[non_empty_cells] = fromDateTime(QDateTime::fromString(d_table->text(i, col), format));
+					r[non_empty_cells] = fromDateTime(QDateTime::fromString(s, format));
 				break;
 				case Table::Numeric:
 					r[non_empty_cells] = cell(i, col);
@@ -2041,23 +2230,22 @@ void Table::sortColumn(int col, int order)
 		gsl_sort(r.data(), 1, non_empty_cells);
 	}
 
-	blockSignals(true);
-
+	QStringList newData = oldData; // copy
 	if (type == Table::Text){
 		if (!order){
 			for (int i=0; i<non_empty_cells; i++)
-				d_table->setText(valid_cell[i], col, text_cells[i]);
+				newData[valid_cell[i]] = text_cells[i];
 		} else {
 			for (int i=0; i<non_empty_cells; i++)
-				d_table->setText(valid_cell[i], col, text_cells[non_empty_cells-i-1]);
+				newData[valid_cell[i]] = text_cells[non_empty_cells-i-1];
 		}
 	} else if (type == Table::Date || type == Table::Time){
 		if (!order) {
 			for (int i=0; i<non_empty_cells; i++)
-				d_table->setText(valid_cell[i], col, dateTime(r[i]).toString(format));
+				newData[valid_cell[i]] = dateTime(r[i]).toString(format);
 		 } else {
 			 for (int i=0; i<non_empty_cells; i++)
-				 d_table->setText(valid_cell[i], col, dateTime(r[non_empty_cells-i-1]).toString(format));
+				 newData[valid_cell[i]] = dateTime(r[non_empty_cells-i-1]).toString(format);
 		 }
 	} else if (type == Table::Numeric){
 		int prec;
@@ -2065,14 +2253,14 @@ void Table::sortColumn(int col, int order)
 		columnNumericFormat(col, &f, &prec);
 		if (!order) {
 			for (int i=0; i<non_empty_cells; i++)
-				d_table->setText(valid_cell[i], col, locale().toString(r[i], f, prec));
+				newData[valid_cell[i]] = locale().toString(r[i], f, prec);
 		} else {
 			for (int i=0; i<non_empty_cells; i++)
-				d_table->setText(valid_cell[i], col, locale().toString(r[non_empty_cells-i-1], f, prec));
+				newData[valid_cell[i]] = locale().toString(r[non_empty_cells-i-1], f, prec);
 		}
 	}
 
-	blockSignals(false);
+	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col, QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Sort Column") + " " + colName(col)));
 
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -2212,22 +2400,25 @@ void Table::freeMemory()
 	d_saved_cells = 0;
 }
 
-void Table::setTextFormat(int col)
+void Table::setTextFormat(int col, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
 	if (col >= 0 && col < colTypes.count() && colTypes[col] != Text)
 		colTypes[col] = Text;
 }
 
-void Table::setColNumericFormat(int col)
+void Table::setColNumericFormat(int col, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
 	if (colTypes[col] == Numeric || (col < 0 && col >= colTypes.count()))
 		return;
 
 	colTypes[col] = Numeric;
 }
 
-void Table::setColNumericFormat(int f, int prec, int col, bool updateCells)
+void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
 	if (prec < 0)
 		prec = 0;
 	else if (prec > 14)
@@ -2293,8 +2484,9 @@ double Table::fromTime(const QTime& t)
 	return (double)QTime(0, 0).msecsTo(t)/864.0e5;
 }
 
-bool Table::setDateFormat(const QString& format, int col, bool updateCells)
+bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
 	if (colTypes[col] == Date && col_format[col] == format)
 		return true;
 
@@ -2329,8 +2521,9 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells)
 	return true;
 }
 
-bool Table::setTimeFormat(const QString& format, int col, bool updateCells)
+bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
 	if (colTypes[col] == Time && col_format[col] == format)
 		return true;
 
@@ -2367,8 +2560,9 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells)
 	return true;
 }
 
-void Table::setMonthFormat(const QString& format, int col, bool updateCells)
+void Table::setMonthFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
     if (colTypes[col] == Month && col_format[col] == format)
         return;
 
@@ -2400,8 +2594,9 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells)
 	emit modifiedData(this, colName(col));
 }
 
-void Table::setDayFormat(const QString& format, int col, bool updateCells)
+void Table::setDayFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
+    Q_UNUSED(pushUndo);
     if (colTypes[col] == Day && col_format[col] == format)
         return;
 
@@ -2433,18 +2628,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells)
 	emit modifiedData(this, colName(col));
 }
 
-void Table::setRandomValues()
-{
-	QStringList list = writableSelectedColumns();
-	if (list.isEmpty())
-		return;
-
-	QTableWidgetSelectionRange selection = getSelection();
-	for (int i = 0; i < list.count(); i++)
-		setRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
-
-	emit modifiedWindow(this);
-}
+// Replaced by new implementation below
 
 void Table::setRandomValues(int col, int startRow, int endRow)
 {
@@ -2463,27 +2647,35 @@ void Table::setRandomValues(int col, int startRow, int endRow)
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
+<<<<<<< Updated upstream
 	srand(time(nullptr) + col);
 	for (int i = startRow; i <= endRow; i++)
 		d_table->setText(i, col, locale().toString(double(rand())/double(RAND_MAX), f, prec));
 
-	emit modifiedData(this, colName(col));
+	QStringList oldData, newData;
+	srand(time(NULL) + col);
+	for (int i = startRow; i <= endRow; i++){
+		oldData << d_table->text(i, col);
+		newData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
+	}
+
+
+=======
+	QStringList oldData, newData;
+	srand(time(NULL) + col);
+	for (int i = startRow; i <= endRow; i++){
+		oldData << d_table->text(i, col);
+		newData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
+	}
+
+>>>>>>> Stashed changes
+	d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Random Values")));
 
 	QApplication::restoreOverrideCursor();
 }
 
-void Table::setNormalRandomValues()
-{
-	QStringList list = writableSelectedColumns();
-	if (list.isEmpty())
-		return;
-
-	QTableWidgetSelectionRange selection = getSelection();
-	for (int i = 0; i < list.count(); i++)
-		setNormalRandomValues(colIndex(list[i]), selection.topRow(), selection.bottomRow());
-
-	emit modifiedWindow(this);
-}
+// Replaced by new implementation below
 
 void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigma)
 {
@@ -2511,10 +2703,105 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 	gsl_rng_set(r, time(nullptr) + col);
 	for (int i = startRow; i <= endRow; i++)
 		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec));
+
+	QStringList oldData, newData;
+	gsl_rng_set(r, time(NULL) + col);
+	for (int i = startRow; i <= endRow; i++){
+		oldData << d_table->text(i, col);
+		newData << locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec);
+	}
+
 	gsl_rng_free (r);
 
-	emit modifiedData(this, colName(col));
+	d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Normal Random Values")));
+
 	QApplication::restoreOverrideCursor();
+}
+
+void Table::setRandomValues()
+{
+	QStringList list = writableSelectedColumns();
+	if (list.isEmpty())
+		return;
+
+	QTableWidgetSelectionRange selection = getSelection();
+	int startRow = selection.topRow();
+	int endRow = selection.bottomRow();
+
+	QList<int> cols;
+	QList<QStringList> oldData, newData;
+
+	for (int i = 0; i < list.count(); i++){
+		int col = colIndex(list[i]);
+		if (d_table->isColumnReadOnly(col))
+			continue;
+
+		cols << col;
+		int prec;
+		char f;
+		columnNumericFormat(col, &f, &prec);
+
+		QStringList oldColData, newColData;
+		srand(time(NULL) + col);
+		for (int r = startRow; r <= endRow; r++){
+			oldColData << d_table->text(r, col);
+			newColData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
+		}
+		oldData << oldColData;
+		newData << newColData;
+	}
+
+	if (!cols.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Random Values")));
+
+	emit modifiedWindow(this);
+}
+
+void Table::setNormalRandomValues()
+{
+	QStringList list = writableSelectedColumns();
+	if (list.isEmpty())
+		return;
+
+	QTableWidgetSelectionRange selection = getSelection();
+	int startRow = selection.topRow();
+	int endRow = selection.bottomRow();
+
+	QList<int> cols;
+	QList<QStringList> oldData, newData;
+
+	gsl_rng_env_setup();
+	const gsl_rng_type * T = gsl_rng_default;
+	gsl_rng * r = gsl_rng_alloc (T);
+	if (!r)
+		return;
+
+	for (int i = 0; i < list.count(); i++){
+		int col = colIndex(list[i]);
+		if (d_table->isColumnReadOnly(col))
+			continue;
+
+		cols << col;
+		int prec;
+		char f;
+		columnNumericFormat(col, &f, &prec);
+
+		QStringList oldColData, newColData;
+		gsl_rng_set(r, time(NULL) + col);
+		for (int row = startRow; row <= endRow; row++){
+			oldColData << d_table->text(row, col);
+			newColData << locale().toString(gsl_ran_gaussian_ziggurat(r, 1.0), f, prec);
+		}
+		oldData << oldColData;
+		newData << newColData;
+	}
+	gsl_rng_free (r);
+
+	if (!cols.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Normal Random Values")));
+
+	emit modifiedWindow(this);
 }
 
 void Table::loadHeader(QStringList header)
@@ -2690,27 +2977,40 @@ void Table::setAscValues()
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QTableWidgetSelectionRange selection = getSelection();
+	int startRow = selection.topRow();
+	int endRow = selection.bottomRow();
+
+	QList<int> cols;
+	QList<QStringList> oldData, newData;
+
 	for (int j = 0; j < list.count(); j++){
-		QString name = list[j];
-		selectedCol = colIndex(name);
+		int col = colIndex(list[j]);
+		if (d_table->isColumnReadOnly(col))
+			continue;
 
-        if (d_table->isColumnReadOnly(selectedCol))
-            continue;
+		cols << col;
 
-		if (columnType(selectedCol) != Numeric){
-			colTypes[selectedCol] = Numeric;
-			col_format[selectedCol] = "0/6";
+		if (columnType(col) != Numeric){
+			colTypes[col] = Numeric;
+			col_format[col] = "0/6";
 		}
 
 		int prec;
 		char f;
-		columnNumericFormat(selectedCol, &f, &prec);
+		columnNumericFormat(col, &f, &prec);
 
-		for (int i = selection.topRow(); i <= selection.bottomRow(); i++)
-			setText(i, selectedCol, QString::number(i + 1, f, prec));
-
-		emit modifiedData(this, name);
+		QStringList oldColData, newColData;
+		for (int i = startRow; i <= endRow; i++){
+			oldColData << d_table->text(i, col);
+			newColData << QString::number(i + 1, f, prec);
+		}
+		oldData << oldColData;
+		newData << newColData;
 	}
+
+	if (!cols.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Row Numbers")));
+
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 }

@@ -227,7 +227,7 @@ void MatrixSetViewCommand::redo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setViewType(d_new_view);
+	d_matrix->setViewType(d_new_view, true, false);
 }
 
 void MatrixSetViewCommand::undo()
@@ -235,7 +235,7 @@ void MatrixSetViewCommand::undo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setViewType(d_old_view);
+	d_matrix->setViewType(d_old_view, true, false);
 }
 
 /*************************************************************************/
@@ -256,7 +256,7 @@ void MatrixSetHeaderViewCommand::redo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setHeaderViewType(d_new_view);
+	d_matrix->setHeaderViewType(d_new_view, false);
 }
 
 void MatrixSetHeaderViewCommand::undo()
@@ -264,36 +264,10 @@ void MatrixSetHeaderViewCommand::undo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setHeaderViewType(d_old_view);
+	d_matrix->setHeaderViewType(d_old_view, false);
 }
 
-/*************************************************************************/
-/*           Class MatrixSetColWidthCommand                              */
-/*************************************************************************/
-MatrixSetColWidthCommand::MatrixSetColWidthCommand(Matrix *m, int oldWidth, int newWidth, const QString & text):
-QUndoCommand(text),
-d_matrix(m),
-d_old_width(oldWidth),
-d_new_width(newWidth)
-{
-	setText(m->objectName() + ": " + text);
-}
 
-void MatrixSetColWidthCommand::redo()
-{
-	if (!d_matrix)
-		return;
-
-	d_matrix->setColumnsWidth(d_new_width);
-}
-
-void MatrixSetColWidthCommand::undo()
-{
-	if (!d_matrix)
-		return;
-
-	d_matrix->setColumnsWidth(d_old_width);
-}
 
 /*************************************************************************/
 /*           Class MatrixSetPrecisionCommand                             */
@@ -315,7 +289,7 @@ void MatrixSetPrecisionCommand::redo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setNumericFormat(d_new_format, d_new_prec);
+	d_matrix->setNumericFormat(d_new_format, d_new_prec, false);
 }
 
 void MatrixSetPrecisionCommand::undo()
@@ -323,7 +297,7 @@ void MatrixSetPrecisionCommand::undo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setNumericFormat(d_old_format, d_old_prec);
+	d_matrix->setNumericFormat(d_old_format, d_old_prec, false);
 }
 
 /*************************************************************************/
@@ -350,7 +324,7 @@ void MatrixSetCoordinatesCommand::redo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setCoordinates(d_new_xs, d_new_xe, d_new_ys, d_new_ye);
+	d_matrix->setCoordinates(d_new_xs, d_new_xe, d_new_ys, d_new_ye, false);
 }
 
 void MatrixSetCoordinatesCommand::undo()
@@ -358,7 +332,7 @@ void MatrixSetCoordinatesCommand::undo()
 	if (!d_matrix)
 		return;
 
-	d_matrix->setCoordinates(d_old_xs, d_old_xe, d_old_ys, d_old_ye);
+	d_matrix->setCoordinates(d_old_xs, d_old_xe, d_old_ys, d_old_ye, false);
 }
 
 /*************************************************************************/
@@ -389,15 +363,15 @@ void MatrixSetColorMapCommand::redo()
 		break;
 
 		case Matrix::GrayScale:
-			d_matrix->setGrayScale();
+			d_matrix->setGrayScale(false);
 		break;
 
 		case Matrix::Rainbow:
-			d_matrix->setRainbowColorMap();
+			d_matrix->setRainbowColorMap(false);
 		break;
 
 		case Matrix::Custom:
-			d_matrix->setColorMap(d_map_after);
+			d_matrix->setColorMap(d_map_after, false);
 		break;
 	}
 }
@@ -413,15 +387,15 @@ void MatrixSetColorMapCommand::undo()
 		break;
 
 		case Matrix::GrayScale:
-			d_matrix->setGrayScale();
+			d_matrix->setGrayScale(false);
 		break;
 
 		case Matrix::Rainbow:
-			d_matrix->setRainbowColorMap();
+			d_matrix->setRainbowColorMap(false);
 		break;
 
 		case Matrix::Custom:
-			d_matrix->setColorMap(d_map_before);
+			d_matrix->setColorMap(d_map_before, false);
 		break;
 	}
 }

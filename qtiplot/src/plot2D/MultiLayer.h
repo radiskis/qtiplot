@@ -35,6 +35,7 @@
 #include <QLayout>
 #include <QtPrintSupport/QPrinter>
 #include <QPointer>
+#include <QUndoStack>
 
 class QTextDocument;
 class QLabel;
@@ -65,6 +66,7 @@ class Matrix;
 class MultiLayer: public MdiSubWindow
 {
 	Q_OBJECT
+	friend class ResizeLayersCommand;
 
 public:
     MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f= {});
@@ -98,6 +100,7 @@ public:
 	QRect canvasRect(){return d_canvas->rect();};
 	QRect canvasChildrenRect();
 	virtual QString sizeToString();
+	QUndoStack *undoStack() const override {return d_undo_stack;};
 
 	void setWaterfallLayout(bool on = true);
 
@@ -222,6 +225,7 @@ public slots:
     //@}
 
 	void updateLayerAxes(Graph *g, int axis);
+	void notifyChanges(){ emit modifiedPlot(); };
 
 signals:
 	void showEnrichementDialog();
@@ -241,6 +245,7 @@ private:
 	//@{
 	protected:
 	void mouseReleaseEvent(QMouseEvent *);
+	void resizeEvent(QResizeEvent *);
 	void showEvent(QShowEvent *);
 	void dropEvent(QDropEvent*);
 	void dragEnterEvent(QDragEnterEvent*);
@@ -286,6 +291,27 @@ private:
 	bool d_common_axes_layout;
 
 	QVector<QRectF> d_layer_coordinates;
+
+	QUndoStack *d_undo_stack;
+	bool d_block_undo;
+};
+
+class ResizeLayersCommand : public QUndoCommand
+{
+public:
+	ResizeLayersCommand(MultiLayer *m, const QSize& oldSize, const QSize& newSize,
+		const QList<QRect>& oldCanvas, const QList<QRectF>& oldPage,
+		const QList<QRect>& newCanvas, const QList<QRectF>& newPage, const QString& text);
+	virtual void redo();
+	virtual void undo();
+	int id() const override {return 100;};
+	bool mergeWith(const QUndoCommand *other) override;
+
+private:
+	MultiLayer *d_ml;
+	QSize d_old_size, d_new_size;
+	QList<QRect> d_old_canvas_geometries, d_new_canvas_geometries;
+	QList<QRectF> d_old_page_geometries, d_new_page_geometries;
 };
 
 //! Button with layer number
@@ -305,6 +331,9 @@ signals:
 	void showCurvesDialog();
 	void clicked(LayerButton*);
 	void showLayerContextMenu();
+
+private:
+	QUndoStack *d_undo_stack;
 };
 
 #endif

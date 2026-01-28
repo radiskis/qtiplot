@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
 	File                 : Matrix.cpp
 	Project              : QtiPlot
 	--------------------------------------------------------------------
@@ -169,10 +169,14 @@ void Matrix::setText (int row, int col, const QString & new_text )
 	d_matrix_model->setText(row, col, new_text);
 }
 
-void Matrix::setCoordinates(double xs, double xe, double ys, double ye)
+void Matrix::setCoordinates(double xs, double xe, double ys, double ye, bool pushUndo)
 {
 	if (x_start == xs && x_end == xe &&	y_start == ys && y_end == ye)
 		return;
+
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetCoordinatesCommand(this, x_start, x_end, y_start, y_end,
+					xs, xe, ys, ye, tr("Set Coordinates")));
 
 	x_start = xs;
 	x_end = xe;
@@ -384,20 +388,29 @@ void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplat
 	}
 }
 
-void Matrix::setNumericPrecision(int prec)
+void Matrix::setNumericPrecision(int prec, bool pushUndo)
 {
 	if (prec < 0)
 		prec = 0;
 	else if (prec > 13)
 		prec = 13;
 
+    if (num_precision == prec)
+        return;
+
+    if (pushUndo)
+        d_undo_stack->push(new MatrixSetPrecisionCommand(this, txt_format, txt_format, num_precision, prec, tr("Set Numeric Precision")));
+
 	num_precision = prec;
 }
 
-void Matrix::setNumericFormat(const QChar& f, int prec)
+void Matrix::setNumericFormat(const QChar& f, int prec, bool pushUndo)
 {
 	if (txt_format == f && num_precision == prec)
 		return;
+
+    if (pushUndo)
+        d_undo_stack->push(new MatrixSetPrecisionCommand(this, txt_format, f, num_precision, prec, tr("Set Numeric Format")));
 
 	txt_format = f;
 	num_precision = prec;
@@ -407,8 +420,14 @@ void Matrix::setNumericFormat(const QChar& f, int prec)
 	QApplication::restoreOverrideCursor();
 }
 
-void Matrix::setTextFormat(const QChar &format, int precision)
+void Matrix::setTextFormat(const QChar &format, int precision, bool pushUndo)
 {
+    if (txt_format == format && num_precision == precision)
+        return;
+
+    if (pushUndo)
+        d_undo_stack->push(new MatrixSetPrecisionCommand(this, txt_format, format, num_precision, precision, tr("Set Text Format")));
+
 	txt_format = format;
 	num_precision = precision;
 }
@@ -1427,10 +1446,13 @@ void Matrix::displayImage(const QImage& image)
     imageLabel->setPixmap(QPixmap::fromImage(im));
 }
 
-void Matrix::setViewType(ViewType type, bool renderImage)
+void Matrix::setViewType(ViewType type, bool renderImage, bool pushUndo)
 {
 	if (d_view_type == type)
 		return;
+
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetViewCommand(this, d_view_type, type, tr("Set View Type")));
 
 	d_view_type = type;
 
@@ -1547,8 +1569,11 @@ void Matrix::importImage(const QImage& image)
 	}
 }
 
-void Matrix::setDefaultColorMap()
+void Matrix::setDefaultColorMap(bool pushUndo)
 {
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetColorMapCommand(this, d_color_map_type, d_color_map, Default, applicationWindow()->d_3D_color_map, tr("Set Default Color Map")));
+
 	d_color_map_type = Default;
 	d_color_map = applicationWindow()->d_3D_color_map;
 	if (d_view_type == ImageView)
@@ -1556,8 +1581,11 @@ void Matrix::setDefaultColorMap()
 	emit modifiedWindow(this);
 }
 
-void Matrix::setGrayScale()
+void Matrix::setGrayScale(bool pushUndo)
 {
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetColorMapCommand(this, d_color_map_type, d_color_map, GrayScale, LinearColorMap(Qt::black, Qt::white), tr("Set Gray Scale")));
+
 	d_color_map_type = GrayScale;
 	d_color_map = LinearColorMap(Qt::black, Qt::white);
 	if (d_view_type == ImageView)
@@ -1565,8 +1593,11 @@ void Matrix::setGrayScale()
 	emit modifiedWindow(this);
 }
 
-void Matrix::setRainbowColorMap()
+void Matrix::setRainbowColorMap(bool pushUndo)
 {
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetColorMapCommand(this, d_color_map_type, d_color_map, Rainbow, LinearColorMap::rainbow(), tr("Set Rainbow")));
+
 	d_color_map_type = Rainbow;
 	d_color_map = LinearColorMap::rainbow();
 
@@ -1575,8 +1606,11 @@ void Matrix::setRainbowColorMap()
 	emit modifiedWindow(this);
 }
 
-void Matrix::setColorMap(const LinearColorMap& map)
+void Matrix::setColorMap(const LinearColorMap& map, bool pushUndo)
 {
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetColorMapCommand(this, d_color_map_type, d_color_map, Custom, map, tr("Set Color Map")));
+
 	d_color_map_type = Custom;
 	d_color_map = map;
 	if (d_view_type == ImageView)
@@ -1585,14 +1619,14 @@ void Matrix::setColorMap(const LinearColorMap& map)
 	emit modifiedWindow(this);
 }
 
-void Matrix::setColorMapType(ColorMapType mapType)
+void Matrix::setColorMapType(ColorMapType mapType, bool pushUndo)
 {
 	d_color_map_type = mapType;
 
 	if (d_color_map_type == GrayScale)
-        setGrayScale();
+        setGrayScale(pushUndo);
     else if (d_color_map_type == Rainbow)
-        setRainbowColorMap();
+        setRainbowColorMap(pushUndo);
 }
 
 void Matrix::resetView()
@@ -1610,10 +1644,13 @@ void Matrix::resetView()
     }
 }
 
-void Matrix::setHeaderViewType(HeaderViewType type)
+void Matrix::setHeaderViewType(HeaderViewType type, bool pushUndo)
 {
     if (d_header_view_type == type)
         return;
+
+	if (pushUndo)
+		d_undo_stack->push(new MatrixSetHeaderViewCommand(this, d_header_view_type, type, tr("Set Header View Type")));
 
     d_header_view_type = type;
 

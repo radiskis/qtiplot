@@ -92,11 +92,11 @@ public:
 	};
 	enum ResamplingMethod{Bilinear, Bicubic};
 
-	void setViewType(ViewType, bool renderImage = true);
+	void setViewType(ViewType, bool renderImage = true, bool pushUndo = true);
 	ViewType viewType(){return d_view_type;};
 
 	HeaderViewType headerViewType(){return d_header_view_type;};
-	void setHeaderViewType(HeaderViewType type);
+	void setHeaderViewType(HeaderViewType type, bool pushUndo = true);
 
 	QImage image();
 	void displayImage(const QImage& image);
@@ -110,7 +110,7 @@ public:
 	void exportEMF(const QString& fileName);
 
 	MatrixModel * matrixModel(){return d_matrix_model;};
-	QUndoStack *undoStack(){return d_undo_stack;};
+	QUndoStack *undoStack() const override {return d_undo_stack;};
 
 	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
 
@@ -141,15 +141,15 @@ public:
 	void fft(bool inverse = false);
 
 	ColorMapType colorMapType(){return d_color_map_type;};
-	void setColorMapType(ColorMapType mapType);
+	void setColorMapType(ColorMapType mapType, bool pushUndo = true);
 
 	LinearColorMap colorMap(){return d_color_map;};
 	LinearColorMap *colorMapPointer(){return &d_color_map;};
-	void setColorMap(const LinearColorMap& map);
+	void setColorMap(const LinearColorMap& map, bool pushUndo = true);
 	//! Resets the color map to the one defined by the user in the Preferences dialog (3D plots tab)
-	void setDefaultColorMap();
-	void setGrayScale();
-	void setRainbowColorMap();
+	void setDefaultColorMap(bool pushUndo = true);
+	void setGrayScale(bool pushUndo = true);
+	void setRainbowColorMap(bool pushUndo = true);
 	//! Calculate the volume integral
 	double integrate();
 	//! Calculate the determinant of the matrix
@@ -237,7 +237,7 @@ public slots:
 	 *
 	 * \sa precision(), setNumericFormat(), setTextFormat()
 	 */
-	void setNumericPrecision(int prec);
+	void setNumericPrecision(int prec, bool pushUndo = true);
 
 	/*!
 	 * \brief Set the number format for the cells
@@ -247,8 +247,8 @@ public slots:
 	 * want to change it from a dialog.
 	 * \sa setTextFormat()
 	 */
-	void setTextFormat(const QChar &format, int precision);
-	void setNumericFormat(const QChar & f, int prec);
+	void setTextFormat(const QChar &format, int precision, bool pushUndo = true);
+	void setNumericFormat(const QChar & f, int prec, bool pushUndo = true);
 
 	//! Return the matrix formula
 	QString formula(){return formula_str;};
@@ -302,7 +302,7 @@ public slots:
 	//! Returns the bounding rect of the matrix coordinates
 	QRectF boundingRect();
 	//! Set the X and Y coordinate intervals
-	void setCoordinates(double xs, double xe, double ys, double ye);
+	void setCoordinates(double xs, double xe, double ys, double ye, bool pushUndo = true);
 
 	//! Min and max values of the matrix.
 	void range(double *min, double *max);

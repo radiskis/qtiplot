@@ -32,10 +32,9 @@ Description          : MDI sub window
 #include <QtPrintSupport/QPrinter>
 
 class QEvent;
-class QCloseEvent;
-class QString;
 class Folder;
 class ApplicationWindow;
+class QUndoStack;
 
 /**
  * \brief Base class of all MDI client windows.
@@ -146,6 +145,8 @@ public:
 
 	//! Returns the size the window had before a change state event to minimized/maximized.
 	QSize restoreSize(){return d_restore_size;};
+
+	virtual QUndoStack* undoStack() const { return 0; }
 
 	//! Static function used as a workaround for ASCII files having end line char != '\n'.
 	/*

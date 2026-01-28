@@ -103,6 +103,9 @@ class ScriptEdit;
 class ExportDialog;
 class Grid;
 class ImportExportPlugin;
+class QPrinter;
+class QUndoGroup;
+class QUndoStack;
 
 /**
  * \brief QtiPlot's main window.
@@ -1611,6 +1614,7 @@ private:
 
 	QList<QAction *> d_user_actions;
 	QUndoView *d_undo_view;
+	QUndoGroup *d_undo_group;
 	QList<QMenu *> d_user_menus;
 
 	QList<QColor> d_indexed_colors;

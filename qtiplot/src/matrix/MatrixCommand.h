@@ -104,18 +104,7 @@ private:
 	Matrix::HeaderViewType d_new_view;
 };
 
-class MatrixSetColWidthCommand: public QUndoCommand
-{
-public:
-	MatrixSetColWidthCommand(Matrix *m, int oldWidth, int newWidth, const QString & text);
-	virtual void redo();
-	virtual void undo();
 
-private:
-	Matrix *d_matrix;
-	int d_old_width;
-	int d_new_width;
-};
 
 class MatrixSetPrecisionCommand: public QUndoCommand
 {

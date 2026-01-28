@@ -19,6 +19,7 @@
 			   src/plot2D/ImageSymbol.h \
 			   src/plot2D/ImageWidget.h \
 			   src/plot2D/LegendWidget.h \
+			   src/plot2D/LegendCommand.h \
 			   src/plot2D/LineProfileTool.h \
 			   src/plot2D/LnScaleEngine.h \
 			   src/plot2D/Log2ScaleEngine.h \
@@ -61,6 +62,7 @@
 			   src/plot2D/ImageSymbol.cpp \
 			   src/plot2D/ImageWidget.cpp \
 			   src/plot2D/LegendWidget.cpp \
+			   src/plot2D/LegendCommand.cpp \
 			   src/plot2D/LineProfileTool.cpp \
 			   src/plot2D/LnScaleEngine.cpp \
 			   src/plot2D/Log2ScaleEngine.cpp \

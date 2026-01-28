@@ -326,6 +326,8 @@ void ApplicationWindow::init(bool factorySettings)
 	undoStackWindow->setWindowTitle(tr("Undo Stack"));
 	addDockWidget(Qt::RightDockWidgetArea, undoStackWindow);
 
+	d_undo_group = new QUndoGroup(this);
+
 	d_undo_view = new QUndoView(undoStackWindow);
 	d_undo_view->setCleanIcon(QIcon(":/filesave.png"));
 	undoStackWindow->setWidget(d_undo_view);
@@ -3196,6 +3198,9 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
 	w->setObjectName(name);
 	w->setWindowIcon(QPixmap(":/worksheet.png") );
 	addListViewItem(w);
+
+	if (d_undo_group)
+		d_undo_group->addStack(w->undoStack());
 }
 
 /*
@@ -3569,10 +3574,9 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 		m->setParent(0);
 
 	addListViewItem(m);
+	if (d_undo_group)
+		d_undo_group->addStack(m->undoStack());
 
-	QUndoStack *stack = m->undoStack();
-	connect(stack, &QUndoStack::canUndoChanged, actionUndo, &QAction::setEnabled);
-	connect(stack, &QUndoStack::canRedoChanged, actionRedo, &QAction::setEnabled);
 	connect(m, &Matrix::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
 	connect(m, &Matrix::modifiedLabel, this, &ApplicationWindow::updateMatrixPlotLabels);
 	connect(m, &Matrix::modifiedData, this, &ApplicationWindow::updateMatrixPlots);
@@ -4033,6 +4037,13 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	d_workspace->setActiveSubWindow(0);
 	d_workspace->setActiveSubWindow(window);
 	window->raise();
+
+	QUndoStack *stack = window->undoStack();
+	if (d_undo_group)
+		d_undo_group->setActiveStack(stack);
+	if (d_undo_view)
+		d_undo_view->setStack(stack);
+
 	emit modified();
 }
 
@@ -9584,11 +9595,9 @@ void ApplicationWindow::undo()
 
 	if (qobject_cast<Note*>(w))
 		((Note*)w)->currentEditor()->undo();
-	else if (qobject_cast<Matrix*>(w)){
-	    QUndoStack *stack = ((Matrix *)w)->undoStack();
-	    if (stack && stack->canUndo())
-			stack->undo();
-	}
+	else if (d_undo_group)
+		d_undo_group->undo();
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -9599,13 +9608,12 @@ void ApplicationWindow::redo()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
 	if (qobject_cast<Note*>(w))
 		((Note*)w)->currentEditor()->redo();
-	else if (qobject_cast<Matrix*>(w)){
-	    QUndoStack *stack = ((Matrix *)w)->undoStack();
-	    if (stack && stack->canRedo())
-			stack->redo();
-	}
+	else if (d_undo_group)
+		d_undo_group->redo();
+
 	QApplication::restoreOverrideCursor();
 }
 
@@ -11297,7 +11305,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 			moveRow.addAction(actionMoveRowDown);
 			moveRow.setTitle(tr("Move Row"));
 			cm.addMenu (&moveRow);
-			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), static_cast<Table *>(t), &Table::insertRow);
+			cm.addAction(QPixmap(":/insert_row.png"), tr("&Insert Row"), static_cast<Table *>(t), static_cast<void (Table::*)()>(&Table::insertRow));
 			cm.addAction(QPixmap(":/delete_row.png"), tr("&Delete Row"), static_cast<Table *>(t), &Table::deleteSelectedRows);
 			cm.addAction(QPixmap(":/erase.png"), tr("Clea&r Row"), static_cast<Table *>(t), &Table::clearSelection);
 		} else if (t->numSelectedRows() > 1) {
@@ -13803,6 +13811,9 @@ void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 	connect (g, &MultiLayer::currentColorChanged, this, &ApplicationWindow::setFormatBarColor);
 
 	g->askOnCloseEvent(confirmClosePlot2D);
+
+	if (d_undo_group)
+		d_undo_group->addStack(g->undoStack());
 }
 
 void ApplicationWindow::connectTable(Table* w)
@@ -13955,11 +13966,13 @@ void ApplicationWindow::createActions()
 	actionImportDatabase = new QAction(tr("&Database..."), this);
 	connect(actionImportDatabase, &QAction::triggered, this, [this]{importDatabase();});
 
-	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
+	actionUndo = d_undo_group->createUndoAction(this, tr("&Undo"));
+	actionUndo->setIcon(QIcon(":/undo.png"));
 	actionUndo->setShortcut( tr("Ctrl+Z") );
 	connect(actionUndo, &QAction::triggered, this, &ApplicationWindow::undo);
 
-	actionRedo = new QAction(QIcon(":/redo.png"), tr("&Redo"), this);
+	actionRedo = d_undo_group->createRedoAction(this, tr("&Redo"));
+	actionRedo->setIcon(QIcon(":/redo.png"));
 	actionRedo->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Z));
 	connect(actionRedo, &QAction::triggered, this, &ApplicationWindow::redo);
 

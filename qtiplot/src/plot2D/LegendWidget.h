@@ -50,13 +50,13 @@ public:
 	void clone(LegendWidget* t);
 
 	QString text(){return d_text->text();};
-	void setText(const QString& s);
+	void setText(const QString& s, bool pushUndo = true);
 
 	QColor textColor(){return d_text->color();};
-	void setTextColor(const QColor& c);
+	void setTextColor(const QColor& c, bool pushUndo = true);
 
 	QFont font(){return d_text->font();};
-	void setFont(const QFont& font);
+	void setFont(const QFont& font, bool pushUndo = true);
 
 	void showTextEditor();
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);

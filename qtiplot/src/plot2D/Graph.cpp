@@ -4642,7 +4642,7 @@ void Graph::resizeEvent ( QResizeEvent *e )
 	}
 }
 
-void Graph::scaleFonts(double factor)
+void Graph::scaleFonts(double factor, bool pushUndo)
 {
 	if (factor == 1.0 || factor <= 0.0)
 		return;
@@ -4684,7 +4684,7 @@ void Graph::scaleFonts(double factor)
 			continue;
 		QFont font = l->font();
 		font.setPointSizeF(factor*font.pointSizeF());
-		l->setFont(font);
+		l->setFont(font, pushUndo);
 		l->resetOrigin();
 	}
 }

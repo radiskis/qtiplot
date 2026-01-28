@@ -132,11 +132,8 @@ void MatrixDialog::showPrecisionBox(int item)
 void MatrixDialog::apply()
 {
     int width = boxColWidth->value();
-    if (d_matrix->columnsWidth() != width){
-        d_matrix->undoStack()->push(new MatrixSetColWidthCommand(d_matrix, d_matrix->columnsWidth(),
-                        width, tr("Set Columns Width") + " " + QString::number(width)));
+    if (d_matrix->columnsWidth() != width)
         d_matrix->setColumnsWidth(width);
-    }
 
     int prec = boxPrecision->value();
     QChar format = 'f';

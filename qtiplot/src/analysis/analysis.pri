@@ -2,8 +2,8 @@
 ################# Module: Analysis ##############################
 ###############################################################
 
-INCLUDEPATH += src/analysis/
-INCLUDEPATH += src/analysis/dialogs/
+INCLUDEPATH += $$PWD
+INCLUDEPATH += $$PWD/dialogs
 
 	HEADERS += src/analysis/ChiSquareTest.h \
 			   src/analysis/Convolution.h \

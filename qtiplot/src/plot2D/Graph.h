@@ -769,7 +769,7 @@ class Graph: public QwtPlot
 		//! \name Resizing
 		//@{
 		void resizeEvent(QResizeEvent *e);
-		void scaleFonts(double factor);
+		void scaleFonts(double factor, bool pushUndo = true);
 		//@}
 
 		void notifyChanges();

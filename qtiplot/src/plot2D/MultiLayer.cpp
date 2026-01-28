@@ -141,6 +141,8 @@ d_size_policy(UserSize),
 d_link_x_axes(false),
 d_common_axes_layout(false)
 {
+	d_undo_stack = new QUndoStack(this);
+	d_block_undo = false;
 	d_layer_coordinates.resize(0);
 
 	layerButtonsBox = new QHBoxLayout();
@@ -408,7 +410,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 		arrangeLayers(false, false);
 		for (Graph *g : graphsList){
 			if (g->autoscaleFonts())
-				g->scaleFonts(h_ratio);
+				g->scaleFonts(h_ratio, false);
 		}
 	} else {
 		Graph *g0 = graphsList[0];
@@ -439,7 +441,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 						qRound(g0->width()*w_ratio), qRound(g0->height()*h_ratio));
 
 		if (g0->autoscaleFonts())
-			g0->scaleFonts(h_ratio);
+			g0->scaleFonts(h_ratio, false);
 		g0->updateLayout();
 
 		for(int i = 1; i < l; i++){
@@ -458,7 +460,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 			QPoint br = canvas0->mapTo(d_canvas, QPoint(xr, yb));
 
 			if (g->autoscaleFonts())
-				g->scaleFonts(h_ratio);
+				g->scaleFonts(h_ratio, false);
 
 			g->setCanvasGeometry(QRect(tl, br));
 		}
@@ -1617,6 +1619,33 @@ void MultiLayer::mouseReleaseEvent( QMouseEvent * e)
 	return QMdiSubWindow::mouseReleaseEvent(e);
 }
 
+void MultiLayer::resizeEvent(QResizeEvent *e)
+{
+	if (d_block_undo || !d_undo_stack || !e->oldSize().isValid()){
+		QMdiSubWindow::resizeEvent(e);
+		return;
+	}
+
+	QList<QRect> oldCanvasGeometries;
+	QList<QRectF> oldPageGeometries;
+	foreach(Graph *g, layersList()){
+		oldCanvasGeometries << g->canvas()->geometry();
+		oldPageGeometries << g->pageGeometry();
+	}
+
+	QMdiSubWindow::resizeEvent(e);
+
+	QList<QRect> newCanvasGeometries;
+	QList<QRectF> newPageGeometries;
+	foreach(Graph *g, layersList()){
+		newCanvasGeometries << g->canvas()->geometry();
+		newPageGeometries << g->pageGeometry();
+	}
+
+	d_undo_stack->push(new ResizeLayersCommand(this, e->oldSize(), e->size(),
+		oldCanvasGeometries, oldPageGeometries, newCanvasGeometries, newPageGeometries, tr("Resize Plot")));
+}
+
 void MultiLayer::showEvent (QShowEvent * e)
 {
 	d_layer_coordinates.clear();
@@ -2268,4 +2297,62 @@ MultiLayer::~MultiLayer()
 
 	for (Graph *g : graphsList)
 		delete g;
+
+	delete d_undo_stack;
+}
+
+ResizeLayersCommand::ResizeLayersCommand(MultiLayer *m, const QSize& oldSize, const QSize& newSize,
+		const QList<QRect>& oldCanvas, const QList<QRectF>& oldPage,
+		const QList<QRect>& newCanvas, const QList<QRectF>& newPage, const QString& text)
+: QUndoCommand(text),
+d_ml(m),
+d_old_size(oldSize),
+d_new_size(newSize),
+d_old_canvas_geometries(oldCanvas),
+d_old_page_geometries(oldPage),
+d_new_canvas_geometries(newCanvas),
+d_new_page_geometries(newPage)
+{
+}
+
+void ResizeLayersCommand::redo()
+{
+	if (d_ml->size() == d_new_size)
+		return;
+
+	d_ml->d_block_undo = true;
+	d_ml->resize(d_new_size);
+	QList<Graph *> layers = d_ml->layersList();
+	for (int i = 0; i < layers.size() && i < d_new_canvas_geometries.size(); i++){
+		layers[i]->setCanvasGeometry(d_new_canvas_geometries[i]);
+		layers[i]->setPageGeometry(d_new_page_geometries[i]);
+	}
+	d_ml->d_block_undo = false;
+}
+
+void ResizeLayersCommand::undo()
+{
+	d_ml->d_block_undo = true;
+	d_ml->resize(d_old_size);
+	QList<Graph *> layers = d_ml->layersList();
+	for (int i = 0; i < layers.size() && i < d_old_canvas_geometries.size(); i++){
+		layers[i]->setCanvasGeometry(d_old_canvas_geometries[i]);
+		layers[i]->setPageGeometry(d_old_page_geometries[i]);
+	}
+	d_ml->d_block_undo = false;
+}
+
+bool ResizeLayersCommand::mergeWith(const QUndoCommand *other)
+{
+	if (other->id() != id())
+		return false;
+
+	const ResizeLayersCommand *cmd = static_cast<const ResizeLayersCommand *>(other);
+	if (cmd->d_ml != d_ml)
+		return false;
+
+	d_new_size = cmd->d_new_size;
+	d_new_canvas_geometries = cmd->d_new_canvas_geometries;
+	d_new_page_geometries = cmd->d_new_page_geometries;
+	return true;
 }

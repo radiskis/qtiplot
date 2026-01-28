@@ -41,6 +41,7 @@
 #include <MdiSubWindow.h>
 #include <ScriptingEnv.h>
 #include <Script.h>
+#include <QUndoStack>
 
 
 class MyTable : public QTableWidget
@@ -224,6 +225,7 @@ public:
 	};
 
 	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
+	~Table();
 
 	QTableWidgetSelectionRange getSelection();
 
@@ -245,6 +247,7 @@ public:
 
 public slots:
 	MyTable* table(){return d_table;};
+	QUndoStack *undoStack() const override {return d_undo_stack;};
 	void copy(Table *m, bool values = true);
 	int numRows();
 	int numCols();
@@ -262,11 +265,12 @@ public slots:
 	QStringList colNames(){return col_label;}
 	QString colName(int col);
 	void setColName(int col, const QString& text, bool enumerateRight = false, bool warn = true);
+	void setColNames(int startCol, const QStringList& names);
 	QString colLabel(int col);
 	int colIndex(const QString& name);
 
 	int colPlotDesignation(int col){return col_plot_type[col];};
-	void setColPlotDesignation(int col, PlotDesignation pd);
+	void setColPlotDesignation(int col, PlotDesignation pd, bool pushUndo = true);
 	void setPlotDesignation(PlotDesignation pd, bool rightColumns = false);
 	QList<int> plotDesignations(){return col_plot_type;};
 
@@ -281,6 +285,7 @@ public slots:
 	void setAscValues();
 
 	void cellEdited(int,int col);
+	void cellDoubleClicked(int, int);
 	void moveCurrentCell();
 	void clearCell(int row, int col);
 	bool isEmptyRow(int row);
@@ -301,9 +306,10 @@ public slots:
 	//! \name Column Operations
 	//@{
 	void removeCol();
-	void removeCol(const QStringList& list);
+	void deleteColumns(const QStringList& list, bool pushUndo = true);
 	void insertCol();
-	virtual void insertCols(int start, int count);
+	virtual void insertColumn(int col, bool pushUndo = true);
+	virtual void insertCols(int start, int count, bool pushUndo = true);
 	virtual void addCol(PlotDesignation pd = Y);
 	void addColumns(int c);
 	virtual void moveColumn(int, int, int);
@@ -392,8 +398,10 @@ public slots:
 	//! \name Row Operations
 	//@{
 	void deleteSelectedRows();
-	void deleteRows(int startRow, int endRow);
+	void deleteRows(int startRow, int endRow, bool pushUndo = true);
 	void insertRow();
+	void insertRow(int row, bool pushUndo = true);
+	void insertRows(int row, int count, bool pushUndo = true);
 	void moveRow(bool up = true);
 	//@}
 
@@ -419,7 +427,7 @@ public slots:
 	int selectedColsNumber();
 
 	void setColumnWidth(int width, bool allCols);
-	void setColumnWidth(int col, int width);
+	void setColumnWidth(int col, int width, bool pushUndo = true);
 	int columnWidth(int col);
 	QStringList columnWidths();
 	void setColWidths(const QStringList& widths);
@@ -441,9 +449,9 @@ public slots:
 	int columnType(int col){return colTypes[col];};
 
 	QList<int> columnTypes(){return colTypes;};
-	void setColumnTypes(QList<int> ctl){colTypes = ctl;};
 	void setColumnTypes(const QStringList& ctl);
-	void setColumnType(int col, ColType val) { colTypes[col] = val; }
+	void setColumnTypes(const QList<int>& ctl);
+	void setColumnType(int col, ColType val, bool pushUndo = true);
 
     void saveToMemory(double **cells){d_saved_cells = cells;};
 	void saveToMemory();
@@ -456,13 +464,13 @@ public slots:
 	QStringList getColumnsFormat(){return col_format;};
 	void setColumnsFormat(const QStringList& lst);
 
-	void setTextFormat(int col);
-	void setColNumericFormat(int col);
-	void setColNumericFormat(int f, int prec, int col, bool updateCells = true);
-	bool setDateFormat(const QString& format, int col, bool updateCells = true);
-	bool setTimeFormat(const QString& format, int col, bool updateCells = true);
-	void setMonthFormat(const QString& format, int col, bool updateCells = true);
-	void setDayFormat(const QString& format, int col, bool updateCells = true);
+	void setTextFormat(int col, bool pushUndo = true);
+	void setColNumericFormat(int col, bool pushUndo = true);
+	void setColNumericFormat(int f, int prec, int col, bool updateCells = true, bool pushUndo = true);
+	bool setDateFormat(const QString& format, int col, bool updateCells = true, bool pushUndo = true);
+	bool setTimeFormat(const QString& format, int col, bool updateCells = true, bool pushUndo = true);
+	void setMonthFormat(const QString& format, int col, bool updateCells = true, bool pushUndo = true);
+	void setDayFormat(const QString& format, int col, bool updateCells = true, bool pushUndo = true);
 
 	bool exportExcel(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
 	bool exportOdsSpreadsheet(const QString& fname, bool withLabels, bool exportComments, bool exportSelection);
@@ -497,7 +505,7 @@ public slots:
 	int verticalHeaderWidth(){return d_table->verticalHeader()->width();};
 
 	QString comment(int col);
-	void setColComment(int col, const QString& s);
+	void setColComment(int col, const QString& s, bool pushUndo = true);
 	QStringList colComments(){return comments;};
 	void setColComments(const QStringList& lst){comments = lst;};
 	void showComments(bool on = true);
@@ -530,10 +538,13 @@ private:
 
 	bool d_show_comments;
 	QStringList commands, col_format, comments, col_label;
+	QString d_old_cell_text;
 	QList<int> colTypes, col_plot_type;
 	int selectedCol;
 	int d_numeric_precision;
 	double **d_saved_cells;
+
+	QUndoStack *d_undo_stack;
 
 	//! Internal function to change the column header
 	void setColumnHeader(int index, const QString& label);
