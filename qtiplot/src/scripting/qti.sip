@@ -409,7 +409,7 @@ public:
 	if (sipIsErr == 0){
         QStringList list;
 		list << sipCpp->colName(col);
-        sipCpp->removeCol(list);
+        sipCpp->deleteColumns(list);
     }
 %End
 
