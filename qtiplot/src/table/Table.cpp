@@ -2647,28 +2647,12 @@ void Table::setRandomValues(int col, int startRow, int endRow)
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
-<<<<<<< Updated upstream
-	srand(time(nullptr) + col);
-	for (int i = startRow; i <= endRow; i++)
-		d_table->setText(i, col, locale().toString(double(rand())/double(RAND_MAX), f, prec));
-
 	QStringList oldData, newData;
 	srand(time(NULL) + col);
 	for (int i = startRow; i <= endRow; i++){
 		oldData << d_table->text(i, col);
 		newData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
 	}
-
-
-=======
-	QStringList oldData, newData;
-	srand(time(NULL) + col);
-	for (int i = startRow; i <= endRow; i++){
-		oldData << d_table->text(i, col);
-		newData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
-	}
-
->>>>>>> Stashed changes
 	d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Random Values")));
 
