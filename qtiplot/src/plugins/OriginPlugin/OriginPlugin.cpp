@@ -22,7 +22,7 @@
     along with OriginPlugin.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "OriginPlugin.h"
-#include <importOPJ.h>
+#include "importOPJ.h"
 //#include <iostream>
 
 QStringList OriginPlugin::importFormats()

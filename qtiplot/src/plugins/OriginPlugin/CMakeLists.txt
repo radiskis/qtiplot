@@ -8,26 +8,17 @@ find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Xml OpenGL)
 
 set(ORIGINPLUGIN_SOURCES
     OriginPlugin.cpp
-    liborigin1/importOPJ.cpp
-    liborigin2/OriginFile.cpp
-    liborigin2/OriginParser.cpp
-    liborigin2/Origin410Parser.cpp
-    liborigin2/Origin500Parser.cpp
-    liborigin2/Origin610Parser.cpp
-    liborigin2/Origin700Parser.cpp
-    liborigin2/Origin750Parser.cpp
-    liborigin2/Origin800Parser.cpp
-    liborigin2/Origin810Parser.cpp
-    liborigin2/Origin850Parser.cpp
+    importOPJ.cpp
+    liborigin/OriginFile.cpp
+    liborigin/OriginParser.cpp
+    liborigin/OriginAnyParser.cpp
 )
 
 add_library(OriginPlugin MODULE ${ORIGINPLUGIN_SOURCES})
 
 target_include_directories(OriginPlugin PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/liborigin1
-    ${CMAKE_CURRENT_SOURCE_DIR}/liborigin2
-    ${CMAKE_CURRENT_SOURCE_DIR}/tree.phi-sci.com
+    ${CMAKE_CURRENT_SOURCE_DIR}/liborigin
     ${CMAKE_SOURCE_DIR}/qtiplot/src
     ${CMAKE_SOURCE_DIR}/qtiplot/src/core
     ${CMAKE_SOURCE_DIR}/qtiplot/src/table
