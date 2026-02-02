@@ -145,7 +145,7 @@ d_new_comment(newComment)
 
 void TableSetColCommentCommand::redo()
 {
-	d_table->setColComment(d_col, d_new_comment);
+	d_table->setColComment(d_col, d_new_comment, false);
 }
 
 void TableSetColCommentCommand::undo()
