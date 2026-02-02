@@ -30,7 +30,6 @@
 #define CustomActionDialog_H
 
 #include <QDialog>
-#include <QXmlDefaultHandler>
 
 class QGroupBox;
 class QPushButton;

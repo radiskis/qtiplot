@@ -43,7 +43,7 @@ class QPushButton;
 class QSpinBox;
 class QTabWidget;
 class QWidget;
-class QStringList;
+#include <QStringList>
 class QGroupBox;
 class QDoubleSpinBox;
 class QRadioButton;

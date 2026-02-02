@@ -48,6 +48,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QMenuBar>
+#include <QRegularExpression>
 
 CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
@@ -338,7 +339,7 @@ bool CustomActionDialog::validUserInput()
 		i += 5;
 	}
 
-	if (shortcuts.contains(shortcutBox->text().remove(QRegExp("\\s")))){
+	if (shortcuts.contains(shortcutBox->text().remove(QRegularExpression("\\s")))){
 		QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Error"),
         tr("Please provide a different key sequence! The following shortcut key sequences are already assigned:") +
 		"\n\n" + s);
@@ -368,7 +369,7 @@ void CustomActionDialog::customizeAction(QAction *action)
         action->setToolTip(toolTipBox->text().simplified());
 
     if (!shortcutBox->text().isEmpty())
-        action->setShortcut(shortcutBox->text().remove(QRegExp("\\s")));
+        action->setShortcut(shortcutBox->text().remove(QRegularExpression("\\s")));
 }
 
 void CustomActionDialog::removeAction()
@@ -457,7 +458,8 @@ void CustomActionDialog::saveAction(QAction *action)
 	}
 
     QTextStream out( &f );
-    out.setCodec("UTF-8");
+    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE action>\n"
          << "<action version=\"1.0\">\n";
@@ -666,7 +668,8 @@ void CustomActionDialog::saveMenu(QMenu *menu)
 	}
 
     QTextStream out( &f );
-    out.setCodec("UTF-8");
+    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE action>\n"
          << "<menu version=\"1.0\">\n";

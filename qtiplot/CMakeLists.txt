@@ -75,6 +75,7 @@ target_compile_definitions(qtiplot PRIVATE
     NOMINMAX
     UNICODE
     _UNICODE
+    _HAS_STD_BYTE=0
     SCRIPTING_CONSOLE 
     SCRIPTING_MUPARSER 
 )
@@ -92,7 +93,7 @@ target_compile_definitions(qtiplot PRIVATE
 
 # --- Linking ---
 target_link_libraries(qtiplot PRIVATE
-    Qt6::Widgets Qt6::Svg Qt6::Xml Qt6::OpenGL Qt6::PrintSupport Qt6::Concurrent Qt6::Network
+    Qt6::Widgets Qt6::Svg Qt6::Xml Qt6::OpenGL Qt6::OpenGLWidgets Qt6::PrintSupport Qt6::Concurrent Qt6::Network
 )
 if(ENABLE_PYTHON)
     target_link_libraries(qtiplot PRIVATE Python3::Python)

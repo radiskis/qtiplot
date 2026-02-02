@@ -160,7 +160,7 @@ QString tTest::logInfo()
 	int p = app->d_decimal_digits;
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
-	QString s = "[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
+	QString s = "[" + QDateTime::currentDateTime().toString(Qt::TextDate)+ " \"" + d_table->objectName() + "\"]\t";
 	if (d_sample2){
 		if (d_independent_test)
 			s += QObject::tr("Two Sample Independent t-Test") + "\n";

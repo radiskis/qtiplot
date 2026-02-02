@@ -316,7 +316,7 @@ QString Fit::logFitInfo(int iterations, int status)
 		dataSet = d_y_col_name;
 
 	QDateTime dt = QDateTime::currentDateTime ();
-	QString info = "[" + dt.toString(Qt::LocalDate)+ "\t" + tr("Plot")+ ": ";
+	QString info = "[" + dt.toString(Qt::TextDate)+ "\t" + tr("Plot")+ ": ";
 	if (!d_graphics_display)
 		info += tr("graphics display disabled") + "]\n";
 	else if (d_output_graph)
@@ -1074,7 +1074,8 @@ bool Fit::save(const QString& fileName)
 	}
 
     QTextStream out( &f );
-    out.setCodec("UTF-8");
+    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE fit>\n"
          << "<fit version=\"1.0\">\n";

@@ -49,7 +49,7 @@ class QRadioButton;
 class QSpinBox;
 class QTabWidget;
 class QWidget;
-class QStringList;
+#include <QStringList>
 class ColorButton;
 class Graph;
 class TextFormatButtons;

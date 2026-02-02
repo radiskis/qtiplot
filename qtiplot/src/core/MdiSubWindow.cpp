@@ -55,7 +55,7 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 		d_prev_status(Normal),
 		d_caption_policy(Both),
 		d_confirm_close(true),
-		d_birthdate(QDateTime::currentDateTime ().toString(Qt::LocalDate)),
+		d_birthdate(QDateTime::currentDateTime ().toString(Qt::TextDate)),
 		d_restore_size(QSize())
 {
 	setObjectName(name);

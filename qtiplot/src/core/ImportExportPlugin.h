@@ -32,7 +32,7 @@
 #include <QtPlugin>
 #include <ApplicationWindow.h>
 
-class QStringList;
+#include <QStringList>
 
 class ImportExportPlugin
 {

@@ -63,7 +63,7 @@ d_pValue(0.0)
 
 QString ShapiroWilkTest::logInfo()
 {
-	QString s = "\n[" + QDateTime::currentDateTime().toString(Qt::LocalDate)+ " \"" + d_table->objectName() + "\"]\t";
+	QString s = "\n[" + QDateTime::currentDateTime().toString(Qt::TextDate)+ " \"" + d_table->objectName() + "\"]\t";
 	s += QObject::tr("Normality Test (Shapiro - Wilk)") + "\n\n";
 	return s + infoString();
 }

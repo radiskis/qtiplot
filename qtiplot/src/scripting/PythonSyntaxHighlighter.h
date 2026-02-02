@@ -32,6 +32,7 @@
 #define PYTHON_HIGHLIGHTER_H
 
 #include <QSyntaxHighlighter>
+#include <QRegularExpression>
 #include <QHash>
 #include <QTextCharFormat>
 
@@ -53,7 +54,7 @@ protected:
 
 	struct HighlightingRule
 	{
-		QRegExp pattern;
+		QRegularExpression pattern;
 		QTextCharFormat format;
 	};
 

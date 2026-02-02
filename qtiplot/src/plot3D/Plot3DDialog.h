@@ -42,7 +42,7 @@ class QRadioButton;
 class QSpinBox;
 class QTabWidget;
 class QWidget;
-class QStringList;
+#include <QStringList>
 class QStackedWidget;
 class QDoubleSpinBox;
 class ColorButton;

@@ -41,7 +41,7 @@
 Folder::Folder( Folder *parent, const QString &name )
     : QObject(parent), d_log_info(QString()), d_active_window(0)
 {
-	birthdate = QDateTime::currentDateTime ().toString(Qt::LocalDate);
+	birthdate = QDateTime::currentDateTime ().toString(Qt::TextDate);
 	setObjectName(name);
 }
 

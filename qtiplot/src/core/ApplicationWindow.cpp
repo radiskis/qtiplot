@@ -3458,7 +3458,7 @@ void ApplicationWindow::matrixDeterminant()
 		return;
 
 	QDateTime dt = QDateTime::currentDateTime ();
-	QString info=dt.toString(Qt::LocalDate);
+	QString info=dt.toString(Qt::TextDate);
 	info+= "\n" + tr("Determinant of ") + QString(m->objectName()) + ":\t";
 	info+= "det = " + QString::number(m->determinant()) + "\n";
 	info+="-------------------------------------------------------------\n";
@@ -4422,7 +4422,7 @@ Table * ApplicationWindow::importWaveFile()
 	if (fn.isEmpty())
 		return nullptr;
 
-	QString log = QDateTime::currentDateTime ().toString(Qt::LocalDate) + " - ";
+	QString log = QDateTime::currentDateTime ().toString(Qt::TextDate) + " - ";
 	log += tr("Imported sound file") + ": " + fn + "\n";
 	ifstream file(fn.toLocal8Bit().constData(), ios::in | ios::binary);
 
@@ -13408,7 +13408,7 @@ void ApplicationWindow::integrate()
 	} else if (w->inherits("Matrix")){
 		if (!((Matrix *)w)->isEmpty()){
 			QDateTime dt = QDateTime::currentDateTime ();
-			QString info = dt.toString(Qt::LocalDate);
+			QString info = dt.toString(Qt::TextDate);
 			info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
 			info += QString::number(((Matrix *)w)->integrate()) + "\n";
 			info += "-------------------------------------------------------------\n";
@@ -17061,8 +17061,8 @@ void ApplicationWindow::projectProperties()
 	if (projectname != "untitled")
 	{
 		QFileInfo fi(projectname);
-		s += tr("Created") + ": " + fi.birthTime().toString(Qt::LocalDate) + "\n\n";
-		s += tr("Modified") + ": " + fi.lastModified().toString(Qt::LocalDate) + "\n\n";
+		s += tr("Created") + ": " + fi.birthTime().toString(Qt::TextDate) + "\n\n";
+		s += tr("Modified") + ": " + fi.lastModified().toString(Qt::TextDate) + "\n\n";
 	}
 	else
 		s += tr("Created") + ": " + current_folder->birthDate() + "\n\n";

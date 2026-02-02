@@ -16,7 +16,7 @@ if(MSVC)
 endif()
 
 # Find Qt6
-find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL PrintSupport Concurrent Network REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network REQUIRED)
 
 
 

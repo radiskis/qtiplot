@@ -2828,7 +2828,7 @@ LegendWidget* Graph::newLegend(const QString& text)
 
 LegendWidget* Graph::addTimeStamp()
 {
-	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::LocalDate));
+	LegendWidget* l = newLegend(QDateTime::currentDateTime().toString(Qt::TextDate));
 	l->setAutoUpdate(false);
 
 	QPoint p = canvas()->pos() + QPoint(canvas()->width()/2, 10);
