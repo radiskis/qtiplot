@@ -49,20 +49,26 @@ bool EmfPaintEngine::begin(QPaintDevice* p)
 	// Double null-terminated wide string for description
 	const wchar_t description[] = L"Metafile created\0with EmfEngine\0";
 
-	metaDC = CreateEnhMetaFileW(dc, (LPCWSTR)fname.constData(), &d_rect, (LPCWSTR)description);//create null rectangle metafile
-
 	d_rect.left = 0;
 	d_rect.top = 0;
-	d_rect.right = 100*p->width()*GetDeviceCaps(metaDC, HORZSIZE)/(double)GetDeviceCaps(metaDC, HORZRES);
-	d_rect.bottom = 100*p->height()*GetDeviceCaps(metaDC, VERTSIZE)/(double)GetDeviceCaps(metaDC, VERTRES);
+    // Fix: Use desktop DC for caps calculation to avoid creating dummy metafile first
+	d_rect.right = 100*p->width()*GetDeviceCaps(dc, HORZSIZE)/(double)GetDeviceCaps(dc, HORZRES);
+	d_rect.bottom = 100*p->height()*GetDeviceCaps(dc, VERTSIZE)/(double)GetDeviceCaps(dc, VERTRES);
 
-	end();//delete the dummy metafile
+    // Removed the dummy metafile creation block which was causing issues
 
 	metaDC = CreateEnhMetaFileW(dc, (LPCWSTR)fname.constData(), &d_rect, (LPCWSTR)description);
+    if (!metaDC) {
+		ReleaseDC(desktop, dc);
+        return false;
+    }
+
     SetGraphicsMode(metaDC, GM_ADVANCED); // Essential for rotation and scaling
 
 	SetWindowExtEx(metaDC, p->width(), p->height(), 0);
 	SetViewportExtEx(metaDC, p->width(), p->height(), 0);
+
+	ReleaseDC(desktop, dc);
 
 	return true;
 }
