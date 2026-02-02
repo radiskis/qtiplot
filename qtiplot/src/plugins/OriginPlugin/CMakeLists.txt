@@ -54,5 +54,5 @@ target_link_libraries(OriginPlugin PRIVATE
 
 set_target_properties(OriginPlugin PROPERTIES
     PREFIX ""
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/plugins"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qtiplot/plugins"
 )
