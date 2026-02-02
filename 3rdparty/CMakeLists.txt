@@ -13,15 +13,15 @@ add_subdirectory(muparser)
 add_subdirectory(qwtplot3d-old)
 
 
-# Qwt (Imported - Building from source proved difficult)
-# add_subdirectory(qwt)
-add_library(qwt SHARED IMPORTED GLOBAL)
-set_target_properties(qwt PROPERTIES
-    IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/qwt/lib/libqwt.a"
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/qwt/lib/qwt.dll"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/qwt/src"
-    INTERFACE_COMPILE_DEFINITIONS "QWT_DLL"
-)
+# Qwt (Building from source for Qt 6 migration)
+add_subdirectory(qwt)
+# add_library(qwt SHARED IMPORTED GLOBAL)
+# set_target_properties(qwt PROPERTIES
+#     IMPORTED_IMPLIB "${CMAKE_CURRENT_SOURCE_DIR}/qwt/lib/libqwt.a"
+#     IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/qwt/lib/qwt.dll"
+#     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/qwt/src"
+#     INTERFACE_COMPILE_DEFINITIONS "QWT_DLL"
+# )
 
 
 # GSL (Imported)
