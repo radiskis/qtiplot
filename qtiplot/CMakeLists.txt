@@ -14,12 +14,20 @@ list(FILTER HEADERS EXCLUDE REGEX "src/core/MultiPeakFitTool")
 list(FILTER SOURCES EXCLUDE REGEX "src/plugins")
 list(FILTER HEADERS EXCLUDE REGEX "src/plugins")
 
+if(NOT ENABLE_PYTHON)
+    list(FILTER SOURCES EXCLUDE REGEX "src/scripting/Python")
+    list(FILTER HEADERS EXCLUDE REGEX "src/scripting/Python")
+endif()
+
 
 # Resources
 set(RESOURCES "../manual/html/icons/icons.qrc")
 
 # --- SIP generated sources ---
-file(GLOB SIP_SOURCES "${PROJECT_SOURCE_DIR}/build/qti/*.cpp" "${PROJECT_SOURCE_DIR}/build/qti/*.c")
+set(SIP_SOURCES "")
+if(ENABLE_PYTHON)
+    file(GLOB SIP_SOURCES "${PROJECT_SOURCE_DIR}/build/qti/*.cpp" "${PROJECT_SOURCE_DIR}/build/qti/*.c")
+endif()
 
 # --- Executable ---
 add_executable(qtiplot WIN32 
@@ -28,6 +36,7 @@ add_executable(qtiplot WIN32
     ${UI_FILES} 
     ${RESOURCES}
     ${SIP_SOURCES}
+    "icons/qtiplot.rc"
 )
 
 # --- Include Directories ---
@@ -46,11 +55,12 @@ target_include_directories(qtiplot PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/plot2D/dialogs"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/excel"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/3rdparty/qtcolorpicker/src"
-    "${PROJECT_SOURCE_DIR}/build/qti"
-
+)
+if(ENABLE_PYTHON)
+    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build/qti")
+endif()
+target_include_directories(qtiplot PRIVATE
     # 3rdparty Includes
-
-
     "${PROJECT_SOURCE_DIR}/3rdparty/qwt/src"
     "${PROJECT_SOURCE_DIR}/3rdparty/qwtplot3d-old/include"
     "${PROJECT_SOURCE_DIR}/3rdparty/muparser/include"
@@ -66,9 +76,12 @@ target_compile_definitions(qtiplot PRIVATE
     UNICODE
     _UNICODE
     SCRIPTING_CONSOLE 
-
-
-    SCRIPTING_PYTHON 
+    SCRIPTING_MUPARSER 
+)
+if(ENABLE_PYTHON)
+    target_compile_definitions(qtiplot PRIVATE SCRIPTING_PYTHON)
+endif()
+target_compile_definitions(qtiplot PRIVATE
     MUPARSER_STATIC
     # QTIPLOT_STATIC_BUILD # Disabled to allow plugin linkage
     QWT_DLL # Assuming we are linking against Qwt DLL
@@ -80,9 +93,11 @@ target_compile_definitions(qtiplot PRIVATE
 # --- Linking ---
 target_link_libraries(qtiplot PRIVATE
     Qt5::Widgets Qt5::Svg Qt5::Xml Qt5::OpenGL Qt5::PrintSupport Qt5::Concurrent Qt5::Network Qt5::AxContainer
-
-    Python3::Python # Or Python3::Module
-
+)
+if(ENABLE_PYTHON)
+    target_link_libraries(qtiplot PRIVATE Python3::Python)
+endif()
+target_link_libraries(qtiplot PRIVATE
     # ZLIB::ZLIB
     # Link ZLIB manually (using Qt's bundled zlib implicitly or system)
     -lz

@@ -17,7 +17,10 @@ find_package(Qt5 COMPONENTS Widgets Svg Xml OpenGL PrintSupport Concurrent Netwo
 
 
 # Find Python
-find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+option(ENABLE_PYTHON "Enable Python scripting" ON)
+if(ENABLE_PYTHON)
+    find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+endif()
 
 # Find ZLIB (system or bundled)
 # Find ZLIB (system or bundled)
