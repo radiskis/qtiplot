@@ -19450,7 +19450,9 @@ void ApplicationWindow::loadPlugins()
 			if (p){
 				p->setApplicationWindow(this);
 				d_import_export_plugins << p;
-			}
+			} else {
+                QMessageBox::warning(this, "Plugin Cast Failed", "Loaded " + fileName + " but cast to ImportExportPlugin failed.");
+            }
 		}
 	}
 }
