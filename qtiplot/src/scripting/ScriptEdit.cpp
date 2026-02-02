@@ -28,7 +28,10 @@
  ***************************************************************************/
 #include "ScriptEdit.h"
 #include "Note.h"
+#include <QSyntaxHighlighter>
+#ifdef SCRIPTING_PYTHON
 #include "PythonSyntaxHighlighter.h"
+#endif
 #include "FindReplaceDialog.h"
 #include <ApplicationWindow.h>
 #include <MyParser.h>
@@ -665,10 +668,9 @@ void ScriptEdit::setDirPath(const QString& path)
 		return;
 	}
 
-#ifdef SCRIPTING_PYTHON
-	bool keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
-#else
 	bool keyWord = false;
+#ifdef SCRIPTING_PYTHON
+	keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
 #endif
 	QChar startChar = completion[0];
 	if (startChar.category() == QChar::Letter_Lowercase && !keyWord){
@@ -725,12 +727,13 @@ void ScriptEdit::rehighlight()
 	if (d_highlighter)
 		delete d_highlighter;
 
+	d_highlighter = 0;
 #ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
 	else
-#endif
 		d_highlighter = new SyntaxHighlighter(this);
+#endif
 }
 
 void ScriptEdit::showFindDialog(bool replace)

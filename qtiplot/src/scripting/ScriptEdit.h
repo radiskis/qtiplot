@@ -41,7 +41,7 @@ class QMenu;
 class QCompleter;
 class QPrinter;
 
-class SyntaxHighlighter;
+class QSyntaxHighlighter;
 
 /*!\brief Editor widget with support for evaluating expressions and executing code.
  *
@@ -124,7 +124,7 @@ class ScriptEdit: public QTextEdit, public scripted
 	QString d_err_message;
 
 	QCompleter *d_completer;
-	SyntaxHighlighter *d_highlighter;
+	QSyntaxHighlighter *d_highlighter;
 	QString d_file_name;
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;

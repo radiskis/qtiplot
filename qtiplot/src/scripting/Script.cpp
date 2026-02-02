@@ -96,18 +96,23 @@ bool Script::exec()
 
 scripted::scripted(ScriptingEnv *env)
 {
-	env->incref();
+	if (env)
+		env->incref();
 	scriptEnv = env;
 }
 
 scripted::~scripted()
 {
-	scriptEnv->decref();
+	if (scriptEnv)
+		scriptEnv->decref();
 }
 
 void scripted::scriptingChangeEvent(ScriptingChangeEvent *sce)
 {
-	scriptEnv->decref();
-	sce->scriptingEnv()->incref();
-	scriptEnv = sce->scriptingEnv();
+	if (scriptEnv)
+		scriptEnv->decref();
+	ScriptingEnv *env = sce->scriptingEnv();
+	if (env)
+		env->incref();
+	scriptEnv = env;
 }
