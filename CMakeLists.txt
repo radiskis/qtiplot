@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(qtiplot LANGUAGES C CXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -11,8 +11,12 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Find Qt5
-find_package(Qt5 COMPONENTS Widgets Svg Xml OpenGL PrintSupport Concurrent Network AxContainer REQUIRED)
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /FS")
+endif()
+
+# Find Qt6
+find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL PrintSupport Concurrent Network REQUIRED)
 
 
 

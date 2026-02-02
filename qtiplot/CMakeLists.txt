@@ -92,7 +92,7 @@ target_compile_definitions(qtiplot PRIVATE
 
 # --- Linking ---
 target_link_libraries(qtiplot PRIVATE
-    Qt5::Widgets Qt5::Svg Qt5::Xml Qt5::OpenGL Qt5::PrintSupport Qt5::Concurrent Qt5::Network Qt5::AxContainer
+    Qt6::Widgets Qt6::Svg Qt6::Xml Qt6::OpenGL Qt6::PrintSupport Qt6::Concurrent Qt6::Network
 )
 if(ENABLE_PYTHON)
     target_link_libraries(qtiplot PRIVATE Python3::Python)

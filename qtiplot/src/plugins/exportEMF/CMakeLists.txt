@@ -4,7 +4,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt5 REQUIRED COMPONENTS Widgets PrintSupport Svg Xml OpenGL WinExtras)
+find_package(Qt6 REQUIRED COMPONENTS Widgets PrintSupport Svg Xml OpenGL)
 
 set(EXPORTEMF_SOURCES
     exportEMF.cpp
@@ -35,12 +35,11 @@ target_include_directories(exportEMF PRIVATE
 )
 
 target_link_libraries(exportEMF PRIVATE
-    Qt5::Widgets
-    Qt5::PrintSupport
-    Qt5::Svg
-    Qt5::Xml
-    Qt5::OpenGL
-    Qt5::WinExtras
+    Qt6::Widgets
+    Qt6::PrintSupport
+    Qt6::Svg
+    Qt6::Xml
+    Qt6::OpenGL
     qtiplot
     qwt
     gdi32
