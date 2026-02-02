@@ -75,7 +75,6 @@ target_compile_definitions(qtiplot PRIVATE
     NOMINMAX
     UNICODE
     _UNICODE
-    _HAS_STD_BYTE=0
     SCRIPTING_CONSOLE 
     SCRIPTING_MUPARSER 
 )
