@@ -665,7 +665,11 @@ void ScriptEdit::setDirPath(const QString& path)
 		return;
 	}
 
+#ifdef SCRIPTING_PYTHON
 	bool keyWord = (PythonSyntaxHighlighter::keywordsList().contains(completion));
+#else
+	bool keyWord = false;
+#endif
 	QChar startChar = completion[0];
 	if (startChar.category() == QChar::Letter_Lowercase && !keyWord){
 		tc.insertText(completion.right(extra) + "()");
