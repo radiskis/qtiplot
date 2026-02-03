@@ -48,12 +48,10 @@ void Note::init(ScriptingEnv * /*env*/)
 	autoExec = false;
 
 	d_tab_widget = new QTabWidget;
-#if QT_VERSION >= 0x040500
 	d_tab_widget->setTabsClosable(true);
 	d_tab_widget->setDocumentMode(true);
 
 	connect(d_tab_widget, &QTabWidget::tabCloseRequested, this, &Note::removeTab);
-#endif
 	connect(d_tab_widget, &QTabWidget::currentChanged, this, &Note::notifyChanges);
 	connect(d_tab_widget, &QTabWidget::currentChanged, this, &Note::currentEditorChanged);
 
@@ -64,7 +62,7 @@ void Note::init(ScriptingEnv * /*env*/)
 
 	QWidget *addWidget = new QWidget;
 	QHBoxLayout *hb = new QHBoxLayout(addWidget);
-	hb->setMargin(0);
+	hb->setContentsMargins(0, 0, 0, 0);
 	hb->setSpacing(0);
 	hb->addWidget(btnAdd);
 	hb->addStretch();
@@ -125,9 +123,7 @@ void Note::removeTab(int index)
 		return;
 
 	d_tab_widget->removeTab(index);
-#if QT_VERSION >= 0x040500
 	d_tab_widget->setTabsClosable(d_tab_widget->count() != 1);
-#endif
 }
 
 void Note::addTab()
@@ -135,9 +131,7 @@ void Note::addTab()
 	ApplicationWindow *app = applicationWindow();
 	if (!app)
 		return;
-#if QT_VERSION >= 0x040500
 	d_tab_widget->setTabsClosable(d_tab_widget->count() != 0);
-#endif
 	QFont f = app->d_notes_font;
 
 	ScriptEdit *editor = new ScriptEdit(d_env, this, name());
@@ -158,7 +152,7 @@ void Note::addTab()
 	QWidget *frame = new QWidget(this);
 
 	QHBoxLayout *hbox = new QHBoxLayout(frame);
-	hbox->setMargin(0);
+	hbox->setContentsMargins(0, 0, 0, 0);
 	hbox->setSpacing(0);
 	hbox->addWidget(ln);
 	hbox->addWidget(editor);
@@ -264,7 +258,7 @@ void Note::save(const QString &fn, const QString &info, bool)
 			return;
 	}
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+
 	t << "<note>\n";
 	t << QString(name()) + "\t" + birthDate() + "\n";
 	t << info;
@@ -289,7 +283,7 @@ void Note::saveTab(int index, const QString &fn)
 		return;
 
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+
 	t << "<tab>\n";
 	if (d_tab_widget->currentIndex() == index)
 		t << "<active>1</active>\n";

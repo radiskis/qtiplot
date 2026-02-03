@@ -34,7 +34,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QGridLayout>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QFrame>
@@ -61,7 +61,7 @@ FindDialog::FindDialog( QWidget* parent, Qt::WindowFlags fl )
 	boxFind->setEditable(true);
 	boxFind->setDuplicatesEnabled(false);
 	boxFind->setInsertPolicy( QComboBox::InsertAtTop );
-	boxFind->setAutoCompletion(true);
+
 	boxFind->setMaxCount ( 10 );
 	boxFind->setMaxVisibleItems ( 10 );
 	boxFind->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed));

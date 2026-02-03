@@ -34,7 +34,7 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QLabel>
 #include <QLayout>
 #include <QGroupBox>

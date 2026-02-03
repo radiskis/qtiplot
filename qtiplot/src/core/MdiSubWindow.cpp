@@ -39,6 +39,7 @@
 #include <QMenu>
 #include <QTextStream>
 #include <QTemporaryFile>
+#include <QRegularExpression>
 
 #include <fstream>
 #include <string>
@@ -106,23 +107,22 @@ void MdiSubWindow::resizeEvent( QResizeEvent* e )
 void MdiSubWindow::closeEvent( QCloseEvent *e )
 {
 	if (d_confirm_close){
-    	switch( QMessageBox::information(this, tr("QtiPlot"),
+    	QMessageBox msgBox(QMessageBox::Information, tr("QtiPlot"),
 				tr("Do you want to hide or delete") + "<p><b>'" + objectName() + "'</b> ?",
-				tr("Delete"), tr("Hide"), tr("Cancel"), 0, 2)){
-		case 0:
+				QMessageBox::NoButton, this);
+		QPushButton *deleteButton = msgBox.addButton(tr("Delete"), QMessageBox::AcceptRole);
+		QPushButton *hideButton = msgBox.addButton(tr("Hide"), QMessageBox::AcceptRole);
+		msgBox.addButton(QMessageBox::Cancel);
+		msgBox.exec();
+
+		if (msgBox.clickedButton() == deleteButton){
 			emit closedWindow(this);
 			e->accept();
-		break;
-
-		case 1:
+		} else if (msgBox.clickedButton() == hideButton){
 			e->ignore();
 			emit hiddenWindow(this);
-		break;
-
-		case 2:
+		} else
 			e->ignore();
-		break;
-		}
     } else {
 		emit closedWindow(this);
     	e->accept();
@@ -291,15 +291,15 @@ QString MdiSubWindow::parseAsciiFile(const QString& fname, const QString &commen
 	QTextStream t(&f);
 
 	QTemporaryFile tempFile;
-	tempFile.open();
+	if (!tempFile.open())
+		return QString();
 	QTextStream temp(&tempFile);
 
 	for (int i = 0; i < ignoreFirstLines; i++)//skip first 'ignoreFirstLines' lines
 		t.readLine();
 
 	bool validCommentString = !commentString.isEmpty();
-	QRegExp rx(commentString);
-	rx.setPatternSyntax(QRegExp::Wildcard);
+	QRegularExpression rx(QRegularExpression::wildcardToRegularExpression(commentString));
 	rows = 0;
 	if (maxRows <= 0){//read all valid lines
 		while(!t.atEnd()){//count the number of valid rows
@@ -343,7 +343,8 @@ QString MdiSubWindow::parseMacAsciiFile(const QString& fname, const QString &com
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QTemporaryFile tempFile;
-	tempFile.open();
+	if (!tempFile.open())
+		return QString();
 	QTextStream temp(&tempFile);
 
 	for (int i = 0; i < ignoreFirstLines; i++){//skip first 'ignoreFirstLines' lines

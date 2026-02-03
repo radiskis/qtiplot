@@ -45,7 +45,8 @@
 ****************************************************************************/
 
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QDesktopWidget>
+#include <QScreen>
+#include <QGuiApplication>
 #include <QtGui/QPainter>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QColorDialog>
@@ -310,7 +311,7 @@ void QtColorPicker::buttonPressed(bool toggled)
     if (!toggled)
         return;
 
-    const QRect desktop = QApplication::desktop()->geometry();
+    const QRect desktop = QGuiApplication::primaryScreen()->availableGeometry();
     // Make sure the popup is inside the desktop.
     QPoint pos = mapToGlobal(rect().bottomLeft());
     if (pos.x() < desktop.left())
@@ -859,7 +860,7 @@ void ColorPickerPopup::regenerateGrid()
     // one.
     if (grid) delete grid;
     grid = new QGridLayout(this);
-    grid->setMargin(1);
+    grid->setContentsMargins(1, 1, 1, 1);
     grid->setSpacing(0);
 
     int ccol = 0, crow = 0;

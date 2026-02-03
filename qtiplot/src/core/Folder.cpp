@@ -375,7 +375,7 @@ void FolderListView::startDrag(Qt::DropActions supportedActions)
 
 void FolderListView::dropEvent( QDropEvent *e )
 {
-	QTreeWidgetItem *dest = itemAt( e->pos() );
+	QTreeWidgetItem *dest = itemAt( e->position().toPoint() );
     // Check type of dest
     FolderListItem *fItem = dynamic_cast<FolderListItem*>(dest);
 	if (dest && fItem){

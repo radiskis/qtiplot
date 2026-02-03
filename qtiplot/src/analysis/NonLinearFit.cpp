@@ -273,10 +273,10 @@ FunctionCurve * NonLinearFit::insertFitFunctionCurve(const QString& name, int pe
 	return c;
 }
 
-QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string *errMsg, const QString& var)
+QStringList NonLinearFit::guessParameters(const QString& s, bool *error, std::string *errMsg, const QString& var)
 {
 	QString text = s;
-	text.remove(QRegExp("\\s")).remove(".");
+	text.remove(QRegularExpression("\\s")).remove(".");
 
 	QStringList parList;
 	try {
@@ -297,7 +297,7 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, string 
 			bool isNumber;
 			locale.toDouble(str, &isNumber);
 
-			if (token.GetCode () == cmVAR && str.contains(QRegExp("\\D"))
+			if (token.GetCode () == cmVAR && str.contains(QRegularExpression("\\D"))
 				&& str != var && !parList.contains(str) && !isNumber){
 				if (str.endsWith("e", Qt::CaseInsensitive) &&
 					str.count("e", Qt::CaseInsensitive) == 1){

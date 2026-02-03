@@ -71,6 +71,4 @@ bool exportEMF::exportMultiLayerPlot(MultiLayer * m, const QString & fname, cons
 	return true;
 }
 
-#if QT_VERSION < 0x050000
-Q_EXPORT_PLUGIN2(FreeSoftwareQtiPlotExportEMF, exportEMF);
-#endif
+

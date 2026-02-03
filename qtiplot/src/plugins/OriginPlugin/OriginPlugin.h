@@ -31,9 +31,7 @@ class OriginPlugin : public QObject, ImportExportPlugin
 {
 	Q_OBJECT
     Q_INTERFACES(ImportExportPlugin)
-#if QT_VERSION >= 0x050000
 	Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtiPlot.ImportExportPlugin")
-#endif
 public:
 	QStringList importFormats();
 	Table * import(const QString & fname, int sheet);

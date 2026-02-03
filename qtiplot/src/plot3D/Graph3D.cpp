@@ -41,9 +41,8 @@ Description          : 3D graph widget
 #include <QCursor>
 #include <QImageWriter>
 #include <QTextStream>
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
+#include <QMdiArea>
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
@@ -875,7 +874,7 @@ void Graph3D::setLabelsDistance(int val)
 		labelsDist = val;
 		sp->coordinates()->adjustLabels(val);
 		sp->makeCurrent();
-		sp->updateGL();
+		sp->update();
         emit modified();
 	}
 }
@@ -891,7 +890,7 @@ void Graph3D::setNumbersFont(const QFont& font)
 	if (d_active_curve)
 		d_active_curve->legend()->axis()->setNumberFont (font);
 	sp->makeCurrent();
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setXAxisLabelFont(const QFont& fnt)
@@ -1065,7 +1064,7 @@ void Graph3D::setAxisTickLength(int axis, double majorLength, double minorLength
 			}
 			break;
 	}
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::rotationChanged(double, double, double)
@@ -1204,7 +1203,7 @@ void Graph3D::setXAxisLabel(const QString& label)
     }
 
 	sp->makeCurrent();
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -1219,7 +1218,7 @@ void Graph3D::setYAxisLabel(const QString& label)
     }
 
 	sp->makeCurrent();
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -1234,7 +1233,7 @@ void Graph3D::setZAxisLabel(const QString& label)
     }
 
 	sp->makeCurrent();
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -1349,7 +1348,7 @@ void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
 	sp->coordinates()->axes[axis3].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 	sp->coordinates()->axes[axis4].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -1844,7 +1843,7 @@ void Graph3D::setPolygonStyle()
 
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(FILLED);
-	sp->updateGL();
+	sp->update();
 
 	style_=FILLED;
 	pointStyle = None;
@@ -1857,7 +1856,7 @@ void Graph3D::setFilledMeshStyle()
 
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(FILLEDMESH);
-	sp->updateGL();
+	sp->update();
 
 	style_=FILLEDMESH;
 	pointStyle = None;
@@ -1871,7 +1870,7 @@ void Graph3D::setHiddenLineStyle()
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(HIDDENLINE);
 	sp->showColorLegend(false);
-	sp->updateGL();
+	sp->update();
 
 	style_=HIDDENLINE;
 	pointStyle = None;
@@ -1886,7 +1885,7 @@ void Graph3D::setWireframeStyle()
 	sp->makeCurrent();
 	d_active_curve->setPlotStyle(WIREFRAME);
 	sp->showColorLegend(false);
-	sp->updateGL();
+	sp->update();
 
 	pointStyle = None;
 	style_=WIREFRAME;
@@ -1904,7 +1903,7 @@ void Graph3D::setDotStyle()
 	sp->makeCurrent();
 	Dot dot = Dot(d_point_size, d_smooth_points);
 	d_active_curve->setPlotStyle(dot);
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setConeStyle()
@@ -1920,7 +1919,7 @@ void Graph3D::setConeStyle()
 	sp->makeCurrent();
 	Cone cone = Cone(conesRad, conesQuality);
 	d_active_curve->setPlotStyle(cone);
-	sp->updateGL();
+	sp->update();
 
 	QApplication::restoreOverrideCursor();
 }
@@ -1936,7 +1935,7 @@ void Graph3D::setCrossStyle()
 	sp->makeCurrent();
 	CrossHair cross = CrossHair(crossHairRad, crossHairLineWidth,crossHairSmooth,crossHairBoxed);
 	d_active_curve->setPlotStyle(cross);
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::clearData()
@@ -1970,7 +1969,7 @@ void Graph3D::setBarStyle()
 
 	Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh);
 	d_active_curve->setPlotStyle(bar);
-	sp->updateGL();
+	sp->update();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -1981,7 +1980,7 @@ void Graph3D::setFloorData()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(FLOORDATA);
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setFloorIsolines()
@@ -1991,7 +1990,7 @@ void Graph3D::setFloorIsolines()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(FLOORISO);
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setEmptyFloor()
@@ -2001,7 +2000,7 @@ void Graph3D::setEmptyFloor()
 
 	sp->makeCurrent();
 	d_active_curve->setFloorStyle(NOFLOOR);
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setMeshLineWidth(double lw)
@@ -2011,7 +2010,7 @@ void Graph3D::setMeshLineWidth(double lw)
 
 	sp->makeCurrent();
 	d_active_curve->setMeshLineWidth(lw);
-	sp->updateGL();
+	sp->update();
 }
 
 int Graph3D::grids()
@@ -2032,7 +2031,7 @@ void Graph3D::setGrid(int s, bool b)
 		sum &= ~s;
 
 	sp->coordinates()->setGridLines(sum!=Qwt3D::NOSIDEGRID, true, sum);
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -2176,7 +2175,6 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -2188,7 +2186,6 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
-#endif
 	{
 		QImageWriter writer(fileName);
 		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
@@ -2200,7 +2197,6 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	}
 }
 
-#if QT_VERSION >= 0x040500
 void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 						int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
@@ -2243,7 +2239,7 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 	cursor.insertBlock();
 	cursor.insertImage(image);
 }
-#endif
+
 
 void Graph3D::exportPDF(const QString& fileName)
 {
@@ -2504,7 +2500,7 @@ void Graph3D::customPlotStyle(int style)
 			}
 	}
 
-	sp->updateGL();
+	sp->update();
 }
 
 void Graph3D::setRotation(double xVal, double yVal, double zVal)
@@ -2570,7 +2566,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 			return;
 	}
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+
 	t << "<SurfacePlot>\n";
 	t << QString(name())+"\t";
 	t << birthDate() + "\n";
@@ -2800,7 +2796,7 @@ void Graph3D::showColorLegend(bool show)
 	sp->makeCurrent();
 	sp->showColorLegend(show);
 	legendOn = show;
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -2882,7 +2878,7 @@ void Graph3D::changeTransparency(double t)
 	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
 
     sp->showColorLegend(legendOn);
-	sp->updateGL();
+	sp->update();
 	emit modified();
 }
 
@@ -2939,7 +2935,7 @@ void Graph3D::setAntialiasing(bool smooth)
 	if (d_table_plot_type == Bars && pointStyle == VerticalBars)
 		setBarStyle();
 	else
-		sp->updateGL();
+		sp->update();
 }
 
 /*!
@@ -3015,7 +3011,7 @@ void Graph3D::setDataColorMap(const ColorVector& colors)
 	sp->setDataColor(color);
 	sp->updateData();
 	sp->showColorLegend(legendOn);
-	sp->updateGL();
+	sp->update();
 }
 
 bool Graph3D::openColorMapFile(ColorVector& cv, QString fname)

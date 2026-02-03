@@ -38,6 +38,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <QRegularExpression>
 #include <QPrintDialog>
 #include <QtPrintSupport/QPrinter>
 #include <QMessageBox>
@@ -98,22 +99,22 @@ ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
 	connect(actionPrint, &QAction::triggered, this, QOverload<>::of(&ScriptEdit::print));
 
 	actionImport = new QAction(QIcon(":/fileopen.png"), tr("&Import..."), this);
-	actionImport->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_O));
+	actionImport->setShortcut(QKeySequence(Qt::CTRL|Qt::ALT|Qt::Key_O));
 	connect(actionImport, &QAction::triggered, this, [this](bool){ importASCII(); });
 
 	actionSave = new QAction(QIcon(":/filesave.png"), tr("&Save"), this);
-	actionSave->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_S));
+	actionSave->setShortcut(QKeySequence(Qt::CTRL|Qt::ALT|Qt::Key_S));
 	connect(actionSave, &QAction::triggered, this, [this](bool){ save(); });
 
 	actionExport = new QAction(QIcon(":/filesaveas.png"), tr("Sa&ve as..."), this);
 	connect(actionExport, &QAction::triggered, this, [this](bool){ exportASCII(); });
 
 	actionFind = new QAction(QIcon(":/find.png"), tr("&Find..."), this);
-	actionFind->setShortcut(QKeySequence(Qt::CTRL+Qt::ALT+Qt::Key_F));
+	actionFind->setShortcut(QKeySequence(Qt::CTRL|Qt::ALT|Qt::Key_F));
 	connect(actionFind, &QAction::triggered, this, &ScriptEdit::showFindDialog);
 
 	actionReplace = new QAction(QIcon(":/replace.png"), tr("&Replace..."), this);
-	actionReplace->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
+	actionReplace->setShortcut(QKeySequence(Qt::CTRL|Qt::Key_R));
 	connect(actionReplace, &QAction::triggered, this, &ScriptEdit::replace);
 
 	actionFindNext = new QAction(QIcon(":/find_next.png"), tr("&Find next"), this);
@@ -464,7 +465,7 @@ void ScriptEdit::evaluate()
 	QVariant res = myScript->eval();
 
 	if (res.isValid() && !myScript->code().isEmpty())
-		if (!res.isNull() && res.canConvert(QVariant::String)){
+		if (!res.isNull() && res.canConvert<QString>()){
 			QString strVal;
 			if (myScript->scriptingEnv()->name() == QString("Python"))
 				strVal = res.toString();
@@ -540,7 +541,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 
 	clear();
 	QTextStream ts(&file);
-	ts.setCodec("UTF-8");
+
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
@@ -589,7 +590,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 		}
 
 		QTextStream t( &f );
-		t.setCodec("UTF-8");
+
 		t << text();
 		f.close();
 
@@ -813,11 +814,11 @@ void ScriptEdit::highlightErrorLine(int offset)
 	codeCursor.movePosition(QTextCursor::Start, QTextCursor::MoveAnchor);
 
 	if (scriptEnv->name() == QString("Python")){
-		QRegExp rx("<*>:(\\d+)");
-		rx.indexIn(d_err_message);
-		QStringList list = rx.capturedTexts();
+		QRegularExpression rx("<*>:(\\d+)");
+		QRegularExpressionMatch match = rx.match(d_err_message);
+		QStringList list = match.capturedTexts();
 		int lineNumber = 0;
-		if (!list.isEmpty())
+		if (match.hasMatch())
 			lineNumber = list.last().toInt();
 
 		codeCursor.movePosition(QTextCursor::Down, QTextCursor::MoveAnchor, offset + lineNumber - 1);

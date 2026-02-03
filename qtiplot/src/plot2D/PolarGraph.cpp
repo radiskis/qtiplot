@@ -243,7 +243,7 @@ void PolarGraph::save(const QString &fn, const QString &geometry, bool)
             return;
     }
     QTextStream t( &f );
-    t.setCodec("UTF-8");
+
     t << "<PolarGraph>\n";
     t << geometry;
     t << "<Name>" + name() + "</Name>\n";

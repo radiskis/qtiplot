@@ -56,7 +56,7 @@
 #include <QSpinBox>
 #include <QRadioButton>
 #include <QStyleFactory>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QMessageBox>
 #include <QTranslator>
 #include <QApplication>
@@ -130,7 +130,7 @@ ConfigDialog::ConfigDialog( QWidget* parent, Qt::WindowFlags fl )
 
 	QHBoxLayout * topLayout = new QHBoxLayout();
 	topLayout->setSpacing(5);
-	topLayout->setMargin(5);
+	topLayout->setContentsMargins(5, 5, 5, 5);
 	topLayout->addWidget(itemsList, 0);
 	topLayout->addLayout(rightLayout, 1);
 	topLayout->addStretch();
@@ -568,7 +568,7 @@ void ConfigDialog::initPlots3DPage()
 
     colorMapBox = new QGroupBox();
     QHBoxLayout *colorMapLayout = new QHBoxLayout( colorMapBox );
-    colorMapLayout->setMargin(0);
+    colorMapLayout->setContentsMargins(0, 0, 0, 0);
     colorMapLayout->setSpacing(0);
 
     colorMapEditor = new ColorMapEditor(app->locale());
@@ -2422,7 +2422,7 @@ void ConfigDialog::apply()
 	sep.replace(tr("SPACE"), " ");
 	sep.replace("\\s", " ");
 
-	if (sep.contains(QRegExp("[0-9.eE+-]"))!=0){
+	if (sep.contains(QRegularExpression("[0-9.eE+-]"))!=0){
 		QMessageBox::warning(0, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;
@@ -2919,7 +2919,7 @@ void ConfigDialog::insertLanguagesList()
 		else
 		{
 			QTranslator translator;
-			translator.load("qtiplot_"+locales[i], qmPath);
+			(void)translator.load("qtiplot_"+locales[i], qmPath);
 
 			QString language = translator.translate("ApplicationWindow", "English");
 			if (!language.isEmpty())

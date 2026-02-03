@@ -535,6 +535,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 		default:
 			return false;
 	}
+	return false;
 }
 
 void ArrowMarker::displayInfo(bool clear)

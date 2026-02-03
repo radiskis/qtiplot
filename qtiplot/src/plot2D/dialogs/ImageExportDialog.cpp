@@ -46,13 +46,11 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 {
 	setWindowTitle( tr( "QtiPlot - Choose a filename to save under" ) );
 	setAcceptMode(QFileDialog::AcceptSave);
-	setConfirmOverwrite(false);
+	setOption(QFileDialog::DontConfirmOverwrite, true);
 
 	QList<QByteArray> list = QImageWriter::supportedImageFormats();
 	list << "EPS";
-#if QT_VERSION >= 0x040500
 	list << "ODF";
-#endif
 	list << "PS";
 	list << "PDF";
 	list << "SVG";
@@ -79,15 +77,8 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 	initAdvancedOptions();
 	setExtensionWidget(d_advanced_options);
 
-#if QT_VERSION >= 0x040300
 	connect(this, &QFileDialog::filterSelected,
 			this, &ImageExportDialog::updateAdvancedOptions);
-#else
-	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
-	if (combo_boxes.size() >= 2)
-		connect(combo_boxes[1], QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
-				this, &ImageExportDialog::updateAdvancedOptions);
-#endif
 	updateAdvancedOptions(selectedNameFilter());
 }
 
@@ -522,7 +513,7 @@ void ImageExportDialog::drawPreview(QPrinter *printer)
 	}
 
 	printer->setFullPage(true);
-	printer->setPaperSize(size, QPrinter::DevicePixel);
+	printer->setPageSize(QPageSize(QSizeF(size), QPageSize::Point));
 }
 
 void ImageExportDialog::drawVectorPreview(QPrinter *printer)

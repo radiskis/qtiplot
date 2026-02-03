@@ -311,10 +311,17 @@ void LayerDialog::update()
 	int graphs = layersBox->value();
 	int old_graphs = multi_layer->numLayers();
 	int dn = multi_layer->numLayers() - graphs;
-	if (dn > 0 && QMessageBox::question(0, tr("QtiPlot - Delete Layers?"),
+	if (dn > 0){
+		QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot - Delete Layers?"),
 				tr("You are about to delete %1 existing layers.").arg(dn)+"\n"+
 				tr("Are you sure you want to continue this operation?"),
-				tr("&Continue"), tr("&Cancel"), QString(), 0, 1 )) return;
+				QMessageBox::NoButton, this);
+		QPushButton *continueButton = msgBox.addButton(tr("&Continue"), QMessageBox::AcceptRole);
+		msgBox.addButton(tr("&Cancel"), QMessageBox::RejectRole);
+		msgBox.exec();
+		if (msgBox.clickedButton() != (QAbstractButton *)continueButton)
+			return;
+	}
 
 	multi_layer->setNumLayers(graphs);
 

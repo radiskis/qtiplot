@@ -52,6 +52,8 @@
 #include <QtPrintSupport/QPrinter>
 #include <QPrintDialog>
 #include <QPainter>
+#include <QPageSize>
+#include <QPageLayout>
 #include <QLocale>
 #include <QItemDelegate>
 #include <QLabel>
@@ -61,9 +63,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QUndoStack>
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
 #include <QTextTable>
 
 #include <stdlib.h>
@@ -197,7 +197,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	bool notTemplate = !saveAsTemplate;
 
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+
 	t << "<matrix>\n";
 	if (notTemplate)
         t << QString(objectName()) + "\t";
@@ -657,7 +657,7 @@ bool Matrix::canCalculate(bool useMuParser)
 			return false;
         else if (codeLines > 1){
         	QVariant res = mup->eval();
-			if (!res.canConvert(QVariant::Double))
+			if (!res.canConvert<double>())
 				return false;
 		}
 	} else {
@@ -679,7 +679,7 @@ bool Matrix::canCalculate(bool useMuParser)
 		script->setDouble(y, "y");
 
 		QVariant res = script->eval();
-		if (!res.canConvert(QVariant::Double))
+		if (!res.canConvert<double>())
 			return false;
 	}
 	return true;
@@ -1023,7 +1023,6 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi, in
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -1035,7 +1034,6 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi, in
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
-#endif
 	{
 		QImageWriter writer(fileName);
 		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
@@ -1112,7 +1110,7 @@ void Matrix::print(QPrinter *printer)
 	const int margin = (int) ( (1/2.54)*dpiy ); // 1 cm margins
 
 	if (d_view_type == ImageView){
-		p.drawImage (printer->pageRect(), d_matrix_model->renderImage());
+		p.drawImage (printer->pageLayout().paintRectPoints(), d_matrix_model->renderImage());
 		return;
 	}
 
@@ -1222,12 +1220,12 @@ void Matrix::exportVector(QPrinter *printer, int res, bool color)
 	else
 		printer->setColorMode(QPrinter::GrayScale);
 
-	printer->setOrientation(QPrinter::Portrait);
+	printer->setPageOrientation(QPageLayout::Portrait);
 
 	int cols = numCols();
 	int rows = numRows();
 	QRect rect = QRect(0, 0, cols, rows);
-	printer->setPaperSize(QSizeF(cols, rows), QPrinter::DevicePixel);
+	printer->setPageSize(QPageSize(QSizeF(cols, rows), QPageSize::Point));
 
 	QPainter paint(printer);
 	paint.drawImage(rect, d_matrix_model->renderImage());
@@ -1688,7 +1686,6 @@ void Matrix::fft(bool inverse)
 
 bool Matrix::exportODF(const QString& fname, bool exportSelection)
 {
-#if QT_VERSION >= 0x040500
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int topRow = 0;
@@ -1746,8 +1743,6 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 
 	QApplication::restoreOverrideCursor();
 	return true;
-#endif
-	return false;
 }
 
 bool Matrix::exportOdsSpreadsheet(const QString& fname, bool exportSelection)

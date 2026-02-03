@@ -149,7 +149,7 @@ CustomActionDialog::CustomActionDialog(QWidget* parent, Qt::WindowFlags fl)
 
 	connect(newMenuBtn, &QAbstractButton::clicked, this, &CustomActionDialog::addMenu);
 	connect(removeMenuBtn, &QAbstractButton::clicked, this, &CustomActionDialog::removeMenu);
-	connect(menuBox, QOverload<const QString &>::of(&QComboBox::currentIndexChanged),
+	connect(menuBox, &QComboBox::currentTextChanged,
 			this, &CustomActionDialog::enableDeleteMenuBtn);
 
 	connect(buttonSave, &QAbstractButton::clicked, this, &CustomActionDialog::saveCurrentAction);
@@ -405,8 +405,8 @@ void CustomActionDialog::saveCurrentAction()
 	if (!action)
 		return;
 
-	QList<QWidget *> list = action->associatedWidgets();
-    QWidget *w = list[0];
+	QList<QObject *> list = action->associatedObjects();
+	QWidget *w = qobject_cast<QWidget *>(list[0]);
    	QString parentName = w->objectName();
 	if ((toolBarBtn->isChecked() && w->objectName() != toolBarBox->currentText()) ||
 		(menuBtn->isChecked() && w->objectName() != menuBox->currentText())){
@@ -458,7 +458,7 @@ void CustomActionDialog::saveAction(QAction *action)
 	}
 
     QTextStream out( &f );
-    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE action>\n"
@@ -470,8 +470,8 @@ void CustomActionDialog::saveAction(QAction *action)
      out << "<tooltip>" + action->toolTip() + "</tooltip>\n";
      out << "<shortcut>" + action->shortcut().toString() + "</shortcut>\n";
 
-     QList<QWidget *> list = action->associatedWidgets();
-     QWidget *w = list[0];
+     QList<QObject *> list = action->associatedObjects();
+     QWidget *w = qobject_cast<QWidget *>(list[0]);
      out << "<location>" + w->objectName() + "</location>\n";
      out << "</action>\n";
 }
@@ -535,10 +535,10 @@ void CustomActionDialog::setCurrentAction(int row)
     toolTipBox->setText(action->toolTip());
     shortcutBox->setText(action->shortcut().toString());
 
-    QList<QWidget *> list = action->associatedWidgets();
+    QList<QObject *> list = action->associatedObjects();
     QWidget *w = nullptr;
     if (!list.isEmpty())
-        w = list[0];
+        w = qobject_cast<QWidget *>(list[0]);
 	if (!w)
 		return;
 
@@ -668,7 +668,7 @@ void CustomActionDialog::saveMenu(QMenu *menu)
 	}
 
     QTextStream out( &f );
-    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE action>\n"

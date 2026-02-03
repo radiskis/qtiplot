@@ -41,7 +41,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QTextEdit>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QDate>
 
 TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
@@ -99,7 +99,7 @@ TableDialog::TableDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
 
 	QVBoxLayout  *vbox2 = new QVBoxLayout();
 	vbox2->setSpacing(5);
-	vbox2->setMargin(5);
+	vbox2->setContentsMargins(5, 5, 5, 5);
 	vbox2->addWidget(buttonOk);
 	vbox2->addWidget(buttonApply);
 	vbox2->addWidget(buttonCancel);
@@ -326,7 +326,7 @@ void TableDialog::apply()
 		tr("For internal consistency reasons the underscore character is replaced with a minus sign."));
 	}
 
-	QString name = colName->text().replace("-", "_").remove(QRegExp("\n"));
+	QString name = colName->text().replace("-", "_").remove(QRegularExpression("\n"));
 
 	int sc = d_table->selectedColumn();
 	d_table->setColumnWidth(colWidth->value(), applyToAllBox->isChecked());

@@ -49,7 +49,7 @@
 #include <QNetworkReply>
 #include <QUrlQuery>
 #include <QCompleter>
-#include <QDirModel>
+#include <QFileSystemModel>
 
 #include "EnrichmentDialog.h"
 #include <Graph.h>
@@ -273,7 +273,7 @@ void EnrichmentDialog::initImagePage()
 	imagePathBox = new QLineEdit();
 
 	QCompleter *completer = new QCompleter(this);
-	completer->setModel(new QDirModel(completer));
+	completer->setModel(new QFileSystemModel(completer));
 	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 	completer->setCompletionMode(QCompleter::InlineCompletion);
 
@@ -734,7 +734,7 @@ QString EnrichmentDialog::createTempTexFile()
 
 	if (file.open(QIODevice::WriteOnly)){
 		QTextStream t( &file );
-		t.setCodec("UTF-8");
+
 		t << "\\documentclass{article}\n";
 		t << "\\pagestyle{empty}\n";
 		t << "\\begin{document}\n";

@@ -46,6 +46,7 @@
 #include <QListWidget>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <QRegularExpression>
 #include <QLineEdit>
 #include <QLayout>
 #include <QCloseEvent>
@@ -658,18 +659,18 @@ void FitDialog::initAdvancedPage()
 
 	scaleErrorsBox = new QCheckBox(tr("&Scale Errors with sqrt(Chi^2/doF)"));
 	scaleErrorsBox->setChecked(app->fit_scale_errors);
-	connect(scaleErrorsBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
+	connect(scaleErrorsBox, &QCheckBox::checkStateChanged, this, &FitDialog::enableApplyChanges);
 
     QGroupBox *gb2 = new QGroupBox(tr("Parameters Output"));
     gb2->setLayout(gl2);
 
 	logBox = new QCheckBox (tr("&Write Parameters to Result Log"));
 	logBox->setChecked(app->writeFitResultsToLog());
-	connect(logBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
+	connect(logBox, &QCheckBox::checkStateChanged, this, &FitDialog::enableApplyChanges);
 
 	plotLabelBox = new QCheckBox (tr("&Paste Parameters to Plot"));
 	plotLabelBox->setChecked(app->pasteFitResultsToPlot);
-	connect(plotLabelBox, &QCheckBox::stateChanged, this, &FitDialog::enableApplyChanges);
+	connect(plotLabelBox, &QCheckBox::checkStateChanged, this, &FitDialog::enableApplyChanges);
 
     QHBoxLayout *hbox1 = new QHBoxLayout();
 	hbox1->addStretch();
@@ -890,7 +891,7 @@ void FitDialog::saveUserFunction()
 
 	QString name = boxName->text();
     QStringList lst = userFunctionNames();
-	QString formula = parseFormula(editBox->toPlainText().simplified().remove(QRegExp("\\s")));
+	QString formula = parseFormula(editBox->toPlainText().simplified().remove(QRegularExpression("\\s")));
 	if (lst.contains(name)){
 		int index = lst.indexOf(name);
 		d_current_fit = (NonLinearFit *)d_user_functions[index];
@@ -971,7 +972,7 @@ void FitDialog::removeUserFunction()
 
 void FitDialog::showFitPage()
 {
-	QString formula = editBox->toPlainText().simplified().remove(QRegExp("\\s"));
+	QString formula = editBox->toPlainText().simplified().remove(QRegularExpression("\\s"));
 	if (formula.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Input function error"), tr("Please enter a valid function!"));
 		editBox->setFocus();
@@ -1948,7 +1949,7 @@ void FitDialog::guessParameters()
 	if (boxUseBuiltIn->isChecked())
 		return;
 
-	QString text = editBox->toPlainText().remove(QRegExp("\\s")).remove(".");
+	QString text = editBox->toPlainText().remove(QRegularExpression("\\s")).remove(".");
 	if (text.isEmpty()){
 		boxParam->clear();
 		return;

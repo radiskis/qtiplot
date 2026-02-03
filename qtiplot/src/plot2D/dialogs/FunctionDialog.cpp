@@ -40,9 +40,11 @@
 #include <SigmoidalFit.h>
 #include <LogisticFit.h>
 #include <MultiPeakFit.h>
+#include <string>
 
 #include <QTextEdit>
 #include <QLineEdit>
+#include <QRegularExpression>
 #include <QLayout>
 #include <QSpinBox>
 #include <QCheckBox>
@@ -838,7 +840,7 @@ void FunctionDialog::insertFunction()
 	} else if (optionStack->currentWidget () == parametricPage){
 		QString parName = boxParameter->text();
 		if (!builtInFunc && parName != QString("x"))
-			fname.replace(QRegExp("\\bx\\b"), parName);
+			fname.replace(QRegularExpression("\\bx\\b"), parName);
 
 		if (d_active_editor == boxYFunction){
 			if (builtInFunc)
@@ -856,7 +858,7 @@ void FunctionDialog::insertFunction()
 	} else if (optionStack->currentWidget () == polarPage){
 		QString parName = boxPolarParameter->text();
 		if (!builtInFunc && parName != QString("x"))
-			fname.replace(QRegExp("\\bx\\b"), parName);
+			fname.replace(QRegularExpression("\\bx\\b"), parName);
 
 		if (d_active_editor == boxPolarRadius){
 			if (builtInFunc)
@@ -913,18 +915,18 @@ void FunctionDialog::guessConstants()
 	QString var = "x";
 	switch (boxType->currentIndex()){
 		case 0:
-			text = boxFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
+			text = boxFunction->toPlainText().remove(QRegularExpression("\\s")).remove(".");
 			break;
 
 		case 1:
-			text = boxXFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
-			text += "+" + boxYFunction->toPlainText().remove(QRegExp("\\s")).remove(".");
+			text = boxXFunction->toPlainText().remove(QRegularExpression("\\s")).remove(".");
+			text += "+" + boxYFunction->toPlainText().remove(QRegularExpression("\\s")).remove(".");
 			var = boxParameter->text();
 			break;
 
 		case 2:
-			text = boxPolarRadius->toPlainText().remove(QRegExp("\\s")).remove(".");
-			text += "+" + boxPolarTheta->toPlainText().remove(QRegExp("\\s")).remove(".");
+			text = boxPolarRadius->toPlainText().remove(QRegularExpression("\\s")).remove(".");
+			text += "+" + boxPolarTheta->toPlainText().remove(QRegularExpression("\\s")).remove(".");
 			var = boxPolarParameter->text();
 			break;
 	}
@@ -935,7 +937,7 @@ void FunctionDialog::guessConstants()
 	}
 
 	bool error = false;
-	string errMsg;
+	std::string errMsg;
 	QStringList lst = NonLinearFit::guessParameters(text, &error, &errMsg, var);
 	if (!lst.size()){
 		boxConstants->hide();

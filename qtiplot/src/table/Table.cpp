@@ -40,6 +40,7 @@ Description          : Table worksheet class
 #include <QClipboard>
 #include <QApplication>
 #include <QPainter>
+#include <QRegularExpression>
 #include <QEvent>
 #include <QLayout>
 #include <QPrintDialog>
@@ -50,9 +51,7 @@ Description          : Table worksheet class
 #include <QProgressDialog>
 #include <QFile>
 #include <QRegion>
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
 #include <QTextTable>
 
 #include <QTextTable>
@@ -140,7 +139,7 @@ void Table::init(int rows, int cols)
 	QShortcut *accelTab = new QShortcut(QKeySequence(Qt::Key_Tab), this);
 	connect(accelTab, &QShortcut::activated, this, &Table::moveCurrentCell);
 
-	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL+Qt::Key_A), this);
+	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_A), this);
 	connect(accelAll, &QShortcut::activated, this, &Table::selectAllTable);
 
 	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
@@ -329,7 +328,7 @@ void Table::cellDoubleClicked(int row, int col)
 
 void Table::cellEdited(int row, int col)
 {
-	QString text = d_table->text(row,col).remove(QRegExp("\\s"));
+	QString text = d_table->text(row,col).remove(QRegularExpression("\\s"));
 	QString newText = d_table->text(row,col);
 	if (newText == d_old_cell_text)
 		return;
@@ -353,7 +352,7 @@ void Table::cellEdited(int row, int col)
   		script->setInt(row+1, "i");
   		script->setInt(col+1, "j");
   		QVariant ret = script->eval();
-  		if(ret.type()==QVariant::Int || ret.type()==QVariant::UInt || ret.type()==QVariant::LongLong || ret.type()==QVariant::ULongLong)
+  		if(ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong)
   			newText = ret.toString();
   		else if(ret.canConvert<double>())
   			newText = locale().toString(ret.toDouble(), f, precision);
@@ -653,7 +652,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			for (int i = startRow; i <= endRow; i++){
 				*r = i + 1.0;
 				QVariant ret = mup->eval();
-				if (ret.type() == QVariant::Double){
+				if (ret.typeId() == QMetaType::Double){
 					double val = ret.toDouble();
 					if (finite(val))
 						newData << dateTime(val).toString(fmt);
@@ -673,9 +672,9 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			for (int i = startRow; i <= endRow; i++){
 				*r = i + 1.0;
 				QVariant ret = mup->eval();
-				if (ret.type() == QVariant::Double)
+				if (ret.typeId() == QMetaType::Double)
 					newData << loc.toString(ret.toDouble(), f, prec);
-				else if(ret.canConvert(QVariant::String))
+				else if(ret.canConvert<QString>())
 					newData << ret.toString();
 				else {
 					QApplication::restoreOverrideCursor();
@@ -754,7 +753,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		for (int i = startRow; i <= endRow; i++){
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
-			if (ret.type() == QVariant::Double){
+			if (ret.typeId() == QMetaType::Double){
 				double val = ret.toDouble();
 				if (finite(val))
 					newData << dateTime(val).toString(fmt);
@@ -774,9 +773,9 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		for (int i = startRow; i <= endRow; i++){
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
-			if (ret.type() == QVariant::Double)
+			if (ret.typeId() == QMetaType::Double)
 				newData << loc.toString(ret.toDouble(), f, prec);
-			else if(ret.canConvert(QVariant::String))
+			else if(ret.canConvert<QString>())
 				newData << ret.toString();
 			else {
 				QApplication::restoreOverrideCursor();
@@ -850,7 +849,7 @@ Table* Table::extractData(const QString& name, const QString& condition, int sta
 		for (int i = startRow; i <= endRow; i++){
 			*r = i + 1.0;
 			ret = mup->eval();
-			if (ret.type() == QVariant::Double && ret.toDouble()){
+			if (ret.typeId() == QMetaType::Double && ret.toDouble()){
 				for (int j = 0; j < cols; j++)
 					dest->setText(aux, j, this->text(i, j));
 
@@ -975,7 +974,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 			return;
 	}
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+
 	t << "<table>";
 	if (saveAsTemplate){
 	    t << "\t" + QString::number(d_table->numRows()) + "\t";
@@ -1367,7 +1366,7 @@ void Table::insertCols(int start, int count, bool pushUndo)
     int max = 0;
 	int cols = d_table->numCols();
 	for (int i = 0; i<cols; i++){
-		if (!col_label[i].contains(QRegExp ("\\D"))){
+		if (!col_label[i].contains(QRegularExpression ("\\D"))){
 			int id = col_label[i].toInt();
 			if (id > max)
 				max = id;
@@ -1438,7 +1437,7 @@ void Table::addCol(PlotDesignation pd)
 	d_table->clearSelection();
 	int index, max=0, cols=d_table->numCols();
 	for (int i=0; i<cols; i++){
-		if (!col_label[i].contains(QRegExp ("\\D"))){
+		if (!col_label[i].contains(QRegularExpression ("\\D"))){
 			index = col_label[i].toInt();
 			if (index > max)
 				max = index;
@@ -1458,7 +1457,7 @@ void Table::addColumns(int c)
 {
 	int max=0, cols=d_table->numCols();
 	for (int i=0; i<cols; i++){
-		if (!col_label[i].contains(QRegExp ("\\D"))){
+		if (!col_label[i].contains(QRegularExpression ("\\D"))){
 			int index=col_label[i].toInt();
 			if (index>max)
 				max=index;
@@ -1809,7 +1808,7 @@ void Table::pasteSelection()
 			if (pasteComments)
 				comments[j] = firstLine[colIndex];
 			else if (pasteHeader){
-				QString colName = firstLine[colIndex].replace("-", "_").remove(QRegExp("\\W")).replace("_", "-");
+				QString colName = firstLine[colIndex].replace("-", "_").remove(QRegularExpression("\\W")).replace("_", "-");
 				while(colLabels.contains(colName))
 					colName += "2";
 				if (!colLabels.contains(colName)){
@@ -3130,7 +3129,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 			col_label[aux] = QString();
 			if (!importComments)
 				comments[aux] = line[i];
-			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+			s = line[i].replace("-","_").remove(QRegularExpression("\\W")).replace("_","-");
 			int n = col_label.count(s);
 			if(n){//avoid identical col names
 				while (col_label.contains(s+QString::number(n)))
@@ -3280,7 +3279,7 @@ bool Table::exportExcel(const QString& fname, bool withLabels, bool exportCommen
 
 bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments, bool exportSelection)
 {
-#if QT_VERSION >= 0x040500
+
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	int rows = d_table->numRows();
@@ -3355,7 +3354,7 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 
 	if (withLabels){
 		QStringList header = colNames();
-		QStringList ls = header.filter ( QRegExp ("\\D"));
+		QStringList ls = header.filter ( QRegularExpression ("\\D"));
 		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++){
 				if (ls.count()>0)
@@ -3417,8 +3416,6 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 
 	QApplication::restoreOverrideCursor();
 	return true;
-#endif
-	return false;
 }
 
 bool Table::exportASCII(const QString& fname, const QString& separator,
@@ -3504,7 +3501,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 	if (withLabels){
 		QStringList header = colNames();
-		QStringList ls = header.filter ( QRegExp ("\\D"));
+		QStringList ls = header.filter ( QRegularExpression ("\\D"));
 		if (exportSelection && selectedCols){
 			for (int i = 0; i < aux; i++){
 				if (ls.count()>0)
@@ -3747,9 +3744,9 @@ void Table::resizeRows(int r)
 		QString text= tr("Rows will be deleted from the table!");
 		text+="<p>"+tr("Do you really want to continue?");
 		int i,cols = d_table->numCols();
-		switch( QMessageBox::information(this,tr("QtiPlot"), text, tr("Yes"), tr("Cancel"), 0, 1 ) )
+		switch( QMessageBox::information(this,tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes ) )
 		{
-			case 0:
+			case QMessageBox::Yes:
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				d_table->setNumRows(r);
 				for (i=0; i<cols; i++)
@@ -3780,8 +3777,8 @@ void Table::resizeCols(int c)
 	if (cols > c){
 		QString text= tr("Columns will be deleted from the table!");
 		text+="<p>"+tr("Do you really want to continue?");
-		switch( QMessageBox::information(this,tr("QtiPlot"), text, tr("Yes"), tr("Cancel"), 0, 1 ) ){
-			case 0: {
+		switch( QMessageBox::information(this,tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes ) ){
+			case QMessageBox::Yes: {
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				for (int i=cols-1; i>=c; i--){
 					QString name = colName(i);

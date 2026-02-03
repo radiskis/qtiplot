@@ -30,7 +30,7 @@
 #include "importOPJ.h"
 
 #include <QApplication>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QMessageBox>
 #include <QDockWidget>
 #include <QLocale>
@@ -205,9 +205,10 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 		} else {
 			QString name = sib->name.c_str();
 			if(sib->type == Origin::ProjectNode::Note){
-				QRegExp rx("^@\\((\\S+)\\)$");
-				if(rx.indexIn(name) == 0)
-					name = rx.cap(1);
+				QRegularExpression rx("^@\\((\\S+)\\)$");
+				QRegularExpressionMatch match = rx.match(name);
+				if(match.capturedStart() == 0)
+					name = match.captured(1);
 			}
 
 			MdiSubWindow* w = projectFolder->window(name, classes[sib->type].toLatin1().constData());
@@ -256,7 +257,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		for(int j = 0; j < columnCount; ++j){
 			Origin::SpreadColumn column = spread.columns[j];
 			QString name(column.name.c_str());
-			table->setColName(j, name.replace(QRegExp(".*_"), ""), false, false);
+			table->setColName(j, name.replace(QRegularExpression(".*_"), ""), false, false);
 			table->setCommand(j, QString(column.command.c_str()));
 			table->setColComment(j, QString(column.comment.c_str()));
 			table->setColumnWidth(j, column.width * QtiPlot_scaling_factor);
@@ -614,9 +615,10 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 	for(unsigned int n = 0; n < opj.noteCount(); ++n){
 		Origin::Note _note = opj.note(n);
 		QString name = _note.name.c_str();
-		QRegExp rx("^@\\((\\S+)\\)$");
-		if(rx.indexIn(name) == 0)
-			name = rx.cap(1);
+		QRegularExpression rx("^@\\((\\S+)\\)$");
+		QRegularExpressionMatch match = rx.match(name);
+		if(match.capturedStart() == 0)
+			name = match.captured(1);
 
 		Note* note = mw->newNote(name);
 		if(!note)
@@ -2208,41 +2210,45 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 {
 	QString line = str;
 	//Lookbehind conditions are not supported - so need to reverse string
-	QRegExp rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
-	QRegExp rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
+	QRegularExpression rx("\\)[^\\)\\(]*\\((?!\\s*[buig\\+\\-]\\s*\\\\)");
+	QRegularExpression rxfont("\\)[^\\)\\(]*\\((?![^\\:]*\\:f\\s*\\\\)");
 	QString linerev = strreverse(line);
 	QString lBracket=strreverse("&lbracket;");
 	QString rBracket=strreverse("&rbracket;");
 	QString ltagBracket=strreverse("&ltagbracket;");
 	QString rtagBracket=strreverse("&rtagbracket;");
-	int pos1=rx.indexIn(linerev);
-	int pos2=rxfont.indexIn(linerev);
+	QRegularExpressionMatch match1 = rx.match(linerev);
+	QRegularExpressionMatch match2 = rxfont.match(linerev);
+	int pos1 = match1.capturedStart();
+	int pos2 = match2.capturedStart();
 
 	while (pos1>-1 || pos2>-1) {
 		if(pos1==pos2)
 		{
-			QString value = rx.cap(0);
+			QString value = match1.captured(0);
 			int len=value.length();
 			value=rBracket+value.mid(1,len-2)+lBracket;
 			linerev.replace(pos1, len, value);
 		}
 		else if ((pos1>pos2&&pos2!=-1)||pos1==-1)
 		{
-			QString value = rxfont.cap(0);
+			QString value = match2.captured(0);
 			int len=value.length();
 			value=rtagBracket+value.mid(1,len-2)+ltagBracket;
 			linerev.replace(pos2, len, value);
 		}
 		else if ((pos2>pos1&&pos1!=-1)||pos2==-1)
 		{
-			QString value = rx.cap(0);
+			QString value = match1.captured(0);
 			int len=value.length();
 			value=rtagBracket+value.mid(1,len-2)+ltagBracket;
 			linerev.replace(pos1, len, value);
 		}
 
-		pos1=rx.indexIn(linerev);
-		pos2=rxfont.indexIn(linerev);
+		match1 = rx.match(linerev);
+		match2 = rxfont.match(linerev);
+		pos1 = match1.capturedStart();
+		pos2 = match2.capturedStart();
 	}
 	linerev.replace(ltagBracket, "(");
 	linerev.replace(rtagBracket, ")");
@@ -2261,17 +2267,19 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 	int postag[]={0,0,0,0,0,0,0};
 	QString ltag[]={"<b>","<i>","<u>","<font face=Symbol>","<sup>","<sub>","<font face=%1>"};
 	QString rtag[]={"</b>","</i>","</u>","</font>","</sup>","</sub>","</font>"};
-	QRegExp rxtags[7];
+	QRegularExpression rxtags[7];
 	for(int i=0; i<7; ++i)
 		rxtags[i].setPattern(rxstr[i]+"[^\\(\\)]*\\)");
 
 	bool flag=true;
 	while(flag) {
+		flag=false;
 		for(int i=0; i<7; ++i)
 		{
-			postag[i] = rxtags[i].indexIn(line);
-			while (postag[i] > -1) {
-				QString value = rxtags[i].cap(0);
+			QRegularExpressionMatch match = rxtags[i].match(line);
+			while (match.hasMatch()) {
+				int postag = match.capturedStart();
+				QString value = match.captured(0);
 				int len=value.length();
 				int pos2=value.indexOf("(");
 				if(i<6)
@@ -2281,43 +2289,37 @@ QString ImportOPJ::parseOriginTags(const QString &str)
 					int posfont=value.indexOf("f:");
 					value=ltag[i].arg(value.mid(posfont+2,pos2-posfont-2))+value.mid(pos2+1,len-pos2-2)+rtag[i];
 				}
-				line.replace(postag[i], len, value);
-				postag[i] = rxtags[i].indexIn(line);
-			}
-		}
-		flag=false;
-		for(int i=0; i<7; ++i)
-		{
-			if(rxtags[i].indexIn(line)>-1)
-			{
+				line.replace(postag, len, value);
+				match = rxtags[i].match(line);
 				flag=true;
-				break;
 			}
 		}
 	}
 
 	//replace unclosed tags
 	for(int i=0; i<6; ++i)
-		line.replace(QRegExp(rxstr[i]), ltag[i]);
+		line.replace(QRegularExpression(rxstr[i]), ltag[i]);
 	rxfont.setPattern(rxstr[6]);
-	int pos = rxfont.indexIn(line);
-	while (pos > -1) {
-		QString value = rxfont.cap(0);
+	QRegularExpressionMatch matchfont = rxfont.match(line);
+	while (matchfont.hasMatch()) {
+		int pos = matchfont.capturedStart();
+		QString value = matchfont.captured(0);
 		int len=value.length();
 		int posfont=value.indexOf("f:");
 		value=ltag[6].arg(value.mid(posfont+2,len-posfont-3));
 		line.replace(pos, len, value);
-		pos = rxfont.indexIn(line);
+		matchfont = rxfont.match(line);
 	}
 
 	line.replace("&lbracket;", "(");
 	line.replace("&rbracket;", ")");
 
-	QRegExp fontModifier("\\\\p(\\d)+\\(.*\\)");//remove \p163(...) like tags
-	int index = line.indexOf(fontModifier);
-	while (index >= 0){
+	QRegularExpression fontModifier("\\\\p(\\d)+\\(.*\\)");//remove \p163(...) like tags
+	QRegularExpressionMatch fontMatch = fontModifier.match(line);
+	while (fontMatch.hasMatch()){
+		int index = fontMatch.capturedStart();
 		int pos1 = line.indexOf("(", index + 2) + 1;
-		int length = fontModifier.matchedLength();
+		int length = fontMatch.capturedLength();
 		line = line.mid(pos1, length - pos1 - 1);
 		index = line.indexOf(fontModifier, index + length);
 	}

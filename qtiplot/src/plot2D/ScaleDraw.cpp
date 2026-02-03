@@ -35,8 +35,9 @@
 
 #include <QDateTime>
 #include <QPainter>
-#include <QMatrix>
+// #include <QMatrix>
 #include <QTransform>
+#include <QRegularExpression>
 
 #include <qwt_painter.h>
 #include <qwt_text.h>
@@ -187,7 +188,7 @@ QString ScaleDraw::labelString(double value) const
 					eng_suff = 'm';
 					new_value /= 1e-3;
 				} else if(fabs(new_value) >= 1e-6){
-					eng_suff = 'µ';
+					eng_suff = "µ";
 					new_value /= 1e-6;
 				} else if(fabs(new_value) >= 1e-9){
 					eng_suff = 'n';
@@ -205,7 +206,7 @@ QString ScaleDraw::labelString(double value) const
 
 				QString txt = locale.toString((new_value), 'f', d_prec);
 
-				if(txt.contains(QRegExp("^0[\\.,]?0*$")))
+				if(txt.contains(QRegularExpression("^0[\\.,]?0*$")))
 					return "0";
 
 				return txt + eng_suff;
@@ -225,13 +226,13 @@ QString ScaleDraw::labelString(double value) const
 			QString day;
 			switch(d_name_format){
 				case  ShortName:
-					day = QDate::shortDayName (val);
+					day = QLocale().dayName (val, QLocale::ShortFormat);
 				break;
 				case  LongName:
-					day = QDate::longDayName (val);
+					day = QLocale().dayName (val, QLocale::LongFormat);
 				break;
 				case  Initial:
-					day = (QDate::shortDayName (val)).left(1);
+					day = (QLocale().dayName (val, QLocale::ShortFormat)).left(1);
 				break;
 			}
 			return day;
@@ -249,13 +250,13 @@ QString ScaleDraw::labelString(double value) const
 			QString day;
 			switch(d_name_format){
 				case  ShortName:
-					day = QDate::shortMonthName (val);
+					day = QLocale().monthName (val, QLocale::ShortFormat);
 				break;
 				case  LongName:
-					day = QDate::longMonthName (val);
+					day = QLocale().monthName (val, QLocale::LongFormat);
 				break;
 				case  Initial:
-					day = (QDate::shortMonthName (val)).left(1);
+					day = (QLocale().monthName (val, QLocale::ShortFormat)).left(1);
 				break;
 			}
 			return day;
@@ -610,7 +611,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 	painter->save();
 
 	QPen pen = painter->pen();
-	pen.setColor(palette.color(QPalette::Foreground));
+	pen.setColor(palette.color(QPalette::WindowText));
 	painter->setPen(pen);
 
 	int majLen = d_plot->majorTickLength();

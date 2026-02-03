@@ -260,10 +260,8 @@ public slots:
 	void print();
 	void print(QPrinter *printer);
 	void copyImage();
-#if QT_VERSION >= 0x040500
 	void exportImage(QTextDocument *document, int quality, bool transparent,
 						int dpi, const QSizeF& customSize, int unit, double fontsFactor);
-#endif
 	QPixmap pixmap(int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 	void exportImage(const QString& fileName, int quality = 100, bool transparent = false, int dpi = 0,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0, int compression = 0);

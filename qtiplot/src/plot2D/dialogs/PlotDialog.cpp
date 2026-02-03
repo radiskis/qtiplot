@@ -78,7 +78,7 @@ Description          : Custom curves dialog
 #include <QSlider>
 #include <QPainter>
 #include <QCompleter>
-#include <QDirModel>
+#include <QFileSystemModel>
 
 #include <qwt_plot_canvas.h>
 
@@ -128,7 +128,7 @@ PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WindowFlags fl )
     gl->addWidget(curvePlotTypeBox, 1, 0);
 
 	completer = new QCompleter(this);
-	completer->setModel(new QDirModel(completer));
+	completer->setModel(new QFileSystemModel(completer));
 	completer->setModelSorting(QCompleter::CaseSensitivelySortedModel);
 	completer->setCompletionMode(QCompleter::InlineCompletion);
 
@@ -4632,8 +4632,8 @@ void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool
 			ImageSymbol *symbol = new ImageSymbol(path);
 			c->setSymbol(symbol);
 			symbolImageLabel->setPixmap(symbol->pixmap());
-		} else if (symbolImageLabel->pixmap())
-			c->setSymbol(new ImageSymbol(*(symbolImageLabel->pixmap()), path));
+		} else if (!symbolImageLabel->pixmap().isNull())
+			c->setSymbol(new ImageSymbol(symbolImageLabel->pixmap(), path));
 	}
 
 	((PlotCurve *)c)->setSkipSymbolsCount(boxSkipSymbols->value());

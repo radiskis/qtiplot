@@ -34,7 +34,7 @@
 #include <QShortcut>
 #include <QHBoxLayout>
 #include <QButtonGroup>
-#include <QTextCodec>
+
 #include <QFontDatabase>
 
 SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WindowFlags fl )
@@ -80,7 +80,7 @@ SymbolDialog::SymbolDialog(CharSet charSet, QWidget* parent, Qt::WindowFlags fl 
 
 	languageChange();
 
-	connect(buttons, QOverload<int>::of(&QButtonGroup::buttonClicked), this, &SymbolDialog::getChar);
+	connect(buttons, &QButtonGroup::idClicked, this, &SymbolDialog::getChar);
 	connect(closeButton, &QPushButton::clicked, this, &SymbolDialog::close);
 	QShortcut *shortcut = new QShortcut(Qt::Key_Return, this);
 	connect(shortcut, &QShortcut::activated, this, &SymbolDialog::addCurrentChar);

@@ -27,7 +27,47 @@
  *                                                                         *
  ***************************************************************************/
 #include "EmfEngine.h"
-#include <QtWinExtras/QtWin>
+// #include <QtWinExtras/QtWin>
+#include <QImage>
+#include <windows.h>
+// FIXME: qt_toHBITMAP try to find more elegant solution similar to QtWinExtras module in Qt 5
+static HBITMAP qt_toHBITMAP(const QImage &img)
+{
+    if (img.isNull())
+        return 0;
+
+    QImage image = img.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    int w = image.width();
+    int h = image.height();
+
+    HDC display_dc = GetDC(0);
+    
+    BITMAPINFO bmi;
+    memset(&bmi, 0, sizeof(BITMAPINFO));
+    bmi.bmiHeader.biSize        = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth       = w;
+    bmi.bmiHeader.biHeight      = -h; // Top-down
+    bmi.bmiHeader.biPlanes      = 1;
+    bmi.bmiHeader.biBitCount    = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi.bmiHeader.biSizeImage   = w * h * 4;
+
+    void *bits;
+    HBITMAP hbitmap = CreateDIBSection(display_dc, &bmi, DIB_RGB_COLORS, &bits, 0, 0);
+    ReleaseDC(0, display_dc);
+
+    if (hbitmap && bits) {
+        memcpy(bits, image.constBits(), bmi.bmiHeader.biSizeImage);
+    }
+    return hbitmap;
+}
+
+static HBITMAP qt_toHBITMAP(const QPixmap &p)
+{
+    if (p.isNull())
+        return 0;
+    return qt_toHBITMAP(p.toImage());
+}
 #include <QPainterPath>
 #include <QPainter>
 #include <QTransform>
@@ -369,10 +409,10 @@ void EmfPaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF
 	if (pm.hasAlpha()){
 		QImage image = pm.scaled(width, height).toImage();
 		image.invertPixels();
-		hbtmp = QtWin::toHBITMAP(QPixmap::fromImage(image));
+		hbtmp = qt_toHBITMAP(QPixmap::fromImage(image));
 		op = SRCINVERT;
 	} else
-		hbtmp = QtWin::toHBITMAP(pm.scaled(width, height));
+		hbtmp = qt_toHBITMAP(pm.scaled(width, height));
 
 	HDC hDC = CreateCompatibleDC(metaDC);
     SelectObject(hDC, hbtmp);
@@ -398,7 +438,7 @@ void EmfPaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap & pix, const
 	setClipping();
 
 #ifdef Q_OS_WIN
-	HBITMAP hBmp = QtWin::toHBITMAP(pix);
+	HBITMAP hBmp = qt_toHBITMAP(pix);
 	HBRUSH wbrush = CreatePatternBrush(hBmp);
 
 	QTransform m = painter()->worldTransform();
@@ -442,7 +482,7 @@ void EmfPaintEngine::drawImage(const QRectF & r, const QImage & image, const QRe
 	setClipping();
 	QPixmap pix = QPixmap::fromImage (image.scaled(width, height), flags);
 
-	HBITMAP hbtmp = QtWin::toHBITMAP(pix);
+	HBITMAP hbtmp = qt_toHBITMAP(pix);
 	HDC hDC = CreateCompatibleDC(metaDC);
     SelectObject(hDC, hbtmp);
     BitBlt(metaDC, x, y, width, height, hDC, 0, 0, SRCCOPY);
@@ -572,7 +612,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 		p.drawRect(QRect(0, 0, 4, 4));
 		p.end();
 
-		HBITMAP hBmp = QtWin::toHBITMAP(pix);
+		HBITMAP hBmp = qt_toHBITMAP(pix);
 		HBRUSH wbrush = CreatePatternBrush(hBmp);
 		DeleteObject(hBmp);
 		return wbrush;
@@ -608,7 +648,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 			p.drawRect(QRect(0, 0, 4, 4));
 			p.end();
 
-			HBITMAP hbm = QtWin::toHBITMAP(pix);
+			HBITMAP hbm = qt_toHBITMAP(pix);
 			HBRUSH wbrush = CreatePatternBrush(hbm);
 			DeleteObject(hbm);
 			return wbrush;
@@ -662,7 +702,7 @@ HBRUSH EmfPaintEngine::convertBrush(const QBrush& brush)
 		case Qt::TexturePattern:
 		#ifdef Q_OS_WIN
 		{
-			HBITMAP hbm = QtWin::toHBITMAP(brush.texture());
+			HBITMAP hbm = qt_toHBITMAP(brush.texture());
 			HBRUSH wbrush = CreatePatternBrush(hbm);
 			DeleteObject(hbm);
 			return wbrush;

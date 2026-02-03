@@ -58,15 +58,8 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 		selectFile(d_window->objectName());
 	}
 
-#if QT_VERSION >= 0x040400
 	connect(this, &QFileDialog::filterSelected,
 			this, &ExportDialog::updateAdvancedOptions);
-#else
-	QList<QComboBox*> combo_boxes = findChildren<QComboBox*>();
-	if (combo_boxes.size() >= 2)
-		connect(combo_boxes[1], &QComboBox::currentTextChanged,
-				this, &ExportDialog::updateAdvancedOptions);
-#endif
 
 	selectNameFilter(((ApplicationWindow *)parent)->d_export_ASCII_file_filter);
 	updateAdvancedOptions(selectedNameFilter());
@@ -182,10 +175,8 @@ void ExportDialog::setFileTypeFilters()
 	list << "DAT";
 	list << "TXT";
 	list << "TEX";
-#if QT_VERSION >= 0x040500
 	list << "ODF";
 	list << "HTML";
-#endif
 	list << "ODS";
 	list << "XLS";
 
@@ -209,7 +200,7 @@ void ExportDialog::accept()
 	sep.replace("\\s", " ");
 	sep.replace("\\t", "\t");
 
-	if (sep.contains(QRegExp("[0-9.eE+-]"))){
+	if (sep.contains(QRegularExpression("[0-9.eE+-]"))){
 		QMessageBox::warning(0, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;

@@ -1074,7 +1074,7 @@ bool Fit::save(const QString& fileName)
 	}
 
     QTextStream out( &f );
-    // out.setCodec("UTF-8"); // Removed for Qt 6 compatibility
+
 
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          << "<!DOCTYPE fit>\n"

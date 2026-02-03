@@ -45,6 +45,7 @@
 #include <QPaintEngine>
 #include <QPolygon>
 #include <QMessageBox>
+#include <QRegularExpression>
 
 #include <qwt_plot.h>
 #include <qwt_scale_widget.h>
@@ -633,18 +634,18 @@ int LegendWidget::symbolsMaxWidth()
 QString LegendWidget::parse(const QString& str)
 {
     QString s = str;
-    s.remove(QRegExp("\\l(*)", Qt::CaseInsensitive, QRegExp::Wildcard));
-    s.remove(QRegExp("\\p{*}", Qt::CaseInsensitive, QRegExp::Wildcard));
+    s.remove(QRegularExpression(QRegularExpression::wildcardToRegularExpression("\\l(*)"), QRegularExpression::CaseInsensitiveOption));
+    s.remove(QRegularExpression(QRegularExpression::wildcardToRegularExpression("\\p{*}"), QRegularExpression::CaseInsensitiveOption));
 
 	QString ltag[] = {"<b>","<i>","<u>","<sup>","<sub>"};
 	QString rtag[] = {"</b>","</i>","</u>","</sup>","</sub>"};
 	for (int i = 0; i < 5; i++){//remove special tags if they are not paired
 		if (s.count(ltag[i]) != s.count(rtag[i]))
-			s.remove(QRegExp(ltag[i])).remove(QRegExp(rtag[i]));
+			s.remove(QRegularExpression(ltag[i])).remove(QRegularExpression(rtag[i]));
 	}
 
 	QString aux = str;
-    while (aux.contains(QRegExp("%(*)", Qt::CaseInsensitive, QRegExp::Wildcard))){//curve name specification
+    while (aux.contains(QRegularExpression(QRegularExpression::wildcardToRegularExpression("%(*)"), QRegularExpression::CaseInsensitiveOption))){//curve name specification
 		int pos = str.indexOf("%(", 0, Qt::CaseInsensitive);
         int pos2 = str.indexOf(")", pos, Qt::CaseInsensitive);
 		QString spec = str.mid(pos + 2, pos2 - pos - 2);

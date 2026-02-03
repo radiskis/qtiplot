@@ -38,7 +38,7 @@
 #include <QLayout>
 #include <QGroupBox>
 #include <QPushButton>
-#include <QRegExp>
+#include <QRegularExpression>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QApplication>
@@ -358,7 +358,7 @@ const QString ImportASCIIDialog::columnSeparator() const
 	sep.replace("\\t", "\t");
 
 	/* TODO
-	if (sep.contains(QRegExp("[0-9.eE+-]")))
+	if (sep.contains(QRegularExpression("[0-9.eE+-]")))
 		QMessageBox::warning(this, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 	*/
@@ -691,7 +691,7 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 			col_label[aux] = QString();
 			if (!importComments)
 				comments[aux] = line[i];
-			s = line[i].replace("-","_").remove(QRegExp("\\W")).replace("_","-");
+			s = line[i].replace("-","_").remove(QRegularExpression("\\W")).replace("_","-");
 			int n = col_label.count(s);
 			if(n){//avoid identical col names
 				while (col_label.contains(s + QString::number(n)))
@@ -825,7 +825,7 @@ void PreviewTable::addColumns(int c)
 {
 	int max=0, cols = numCols();
 	for (int i=0; i<cols; i++){
-		if (!col_label[i].contains(QRegExp ("\\D"))){
+		if (!col_label[i].contains(QRegularExpression ("\\D"))){
 			int index=col_label[i].toInt();
 			if (index>max)
 				max=index;
@@ -979,7 +979,7 @@ void PreviewTable::showColTypeDialog()
 	updateColumn(d_selected_column);
 
 	connect(typesBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &PreviewTable::setColumnType);
-	connect(formatBox, QOverload<const QString&>::of(&QComboBox::currentIndexChanged), this, &PreviewTable::setColumnFormat);
+	connect(formatBox, &QComboBox::currentTextChanged, this, &PreviewTable::setColumnFormat);
 	connect(formatBox, &QComboBox::editTextChanged, this, &PreviewTable::setColumnFormat);
 	connect(buttonPrev, &QAbstractButton::clicked, this, &PreviewTable::prevColumn);
 	connect(buttonNext, &QAbstractButton::clicked, this, &PreviewTable::nextColumn);

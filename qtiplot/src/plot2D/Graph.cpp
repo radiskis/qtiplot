@@ -94,9 +94,7 @@ Description          : Graph widget
 #include <QFileInfo>
 #include <QSvgGenerator>
 #include <QDir>
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
 
 #include <qwt_painter.h>
 #include <qwt_plot_canvas.h>
@@ -194,7 +192,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 
             //...same for axis color
             QPalette pal = scale->palette();
-            pal.setColor(QPalette::Foreground, QColor(Qt::black));
+            pal.setColor(QPalette::WindowText, QColor(Qt::black));
             scale->setPalette(pal);
 
 			ScaleDraw *sd = new ScaleDraw(this);
@@ -1699,7 +1697,6 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 
-#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -1713,7 +1710,6 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
-#endif
 	{
 		QImageWriter writer(fileName);
 		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
@@ -4859,7 +4855,7 @@ void Graph::showAxisTitleMenu()
 void Graph::showAxisContextMenu(int axis)
 {
 	QMenu menu(this);
-	menu.addAction(QPixmap(":/unzoom.png"), tr("&Rescale to show all"), this, &Graph::setAutoScale, tr("Ctrl+Shift+R"));
+	menu.addAction(QIcon(":/unzoom.png"), tr("&Rescale to show all"), QKeySequence(tr("Ctrl+Shift+R")), this, &Graph::setAutoScale);
 	menu.addSeparator();
 	menu.addAction(tr("&Hide axis"), this, &Graph::hideSelectedAxis);
 
@@ -7185,12 +7181,12 @@ bool Graph::mousePressed(QEvent *e)
 
 	QList<FrameWidget*> lst = stackingOrderEnrichmentsList();
 	for (FrameWidget *o : lst){
-		QPoint pos = o->mapFromGlobal(me->globalPos());
+		QPoint pos = o->mapFromGlobal(me->globalPosition().toPoint());
 		if (o->rect().contains(pos))
 			return QCoreApplication::sendEvent(o, e);
 	}
 
-	QPoint pos = mapFromGlobal(me->globalPos());
+	QPoint pos = mapFromGlobal(me->globalPosition().toPoint());
 	if (plotLayout()->titleRect().contains(pos))
 		return QCoreApplication::sendEvent(titleLabel(), e);
 

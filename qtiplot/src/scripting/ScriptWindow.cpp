@@ -61,7 +61,7 @@ d_app(app)
 	d_frame = new QWidget(this);
 
 	QHBoxLayout *hbox = new QHBoxLayout(d_frame);
-	hbox->setMargin(0);
+	hbox->setContentsMargins(0, 0, 0, 0);
 	hbox->setSpacing(0);
 	hbox->addWidget(d_line_number);
 	hbox->addWidget(te);
@@ -370,7 +370,7 @@ void ScriptWindow::save()
 			return;
 		}
 		QTextStream t( &f );
-		t.setCodec("UTF-8");
+
 		t << te->toPlainText();
 		f.close();
 	} else

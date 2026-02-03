@@ -40,8 +40,12 @@ Description          : QtiPlot's main window
 #include "CustomActionDialog.h"
 #include "MdiSubWindow.h"
 #include <QXmlStreamReader>
+#include <QRegularExpression>
+#include <QStringConverter>
 #include <QPrintDialog>
 #include <QPrinter>
+#include <QPageLayout>
+#include <QPageSize>
 #include <QDesktopServices>
 #include <QUrl>
 #include <QMimeData>
@@ -151,7 +155,7 @@ Description          : QtiPlot's main window
 #include <fstream>
 #include <iostream>
 #include <string>
-using namespace std;
+
 
 #include <qwt_scale_engine.h>
 #include <qwt_scale_widget.h>
@@ -199,11 +203,9 @@ using namespace std;
 #include <QStringListModel>
 #include <QNetworkProxy>
 #include <QHostInfo>
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
 #include <QToolButton>
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && defined(QT_AXCONTAINER_LIB)
 	#include <QAxObject>
 #endif
 
@@ -227,6 +229,8 @@ extern "C"
 void file_compress(char  *file, char  *mode);
 void file_uncompress(char  *file);
 }
+
+using namespace std;
 
 ApplicationWindow::ApplicationWindow(bool factorySettings)
 : QMainWindow(), scripted(ScriptingLangManager::newEnv(this))
@@ -671,8 +675,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_graph_attach_policy = FrameWidget::Scales;
 	d_graph_axis_labeling = Graph::Default;
 	d_synchronize_graph_scales = true;
-	d_print_paper_size = QPrinter::A4;
-	d_printer_orientation = QPrinter::Landscape;
+	d_print_paper_size = QPageSize::A4;
+	d_printer_orientation = QPageLayout::Landscape;
 	defaultCurveStyle = int(Graph::LineSymbols);
 	defaultCurveLineWidth = 1;
 	d_curve_line_style = 0;//Qt::SolidLine;
@@ -759,7 +763,7 @@ void ApplicationWindow::setDefaultOptions()
 	strip_spaces = false;
 	simplify_spaces = false;
 	d_ASCII_file_filter = "*";
-	d_ASCII_import_locale = QLocale::system().name();
+	d_ASCII_import_locale = QLocale::system();
 	d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
 	d_ASCII_import_first_row_role = 0;//column names
 	d_ASCII_comment_string = "#";
@@ -4592,7 +4596,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					w->setCaptionPolicy(MdiSubWindow::Both);
 
 					QString name = QFileInfo(sorted_files[i]).baseName();
-					if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+					if (!alreadyUsedName(name) && !name.contains(QRegularExpression("\\W")))
 						setWindowName(w, name);
 
 					if (i == 0){
@@ -4622,7 +4626,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 					w->setCaptionPolicy(MdiSubWindow::Both);
 
 					QString name = QFileInfo(sorted_files[i]).baseName();
-					if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+					if (!alreadyUsedName(name) && !name.contains(QRegularExpression("\\W")))
 						setWindowName(w, name);
 
 					if (i == 0){
@@ -4689,7 +4693,7 @@ void ApplicationWindow::importASCII(const QStringList& files, int import_mode, c
 				w->setCaptionPolicy(MdiSubWindow::Both);
 
 				QString name = QFileInfo(files[0]).baseName();
-				if (!alreadyUsedName(name) && !name.contains(QRegExp("\\W")))
+				if (!alreadyUsedName(name) && !name.contains(QRegularExpression("\\W")))
 					setWindowName(w, name);
 
                 modifiedProject();
@@ -4836,17 +4840,17 @@ ApplicationWindow* ApplicationWindow::open(const QString& fn, bool factorySettin
 
 	QFile f(fname);
 	QTextStream t( &f );
-	f.open(QIODevice::ReadOnly);
+	if (!f.open(QIODevice::ReadOnly)) return nullptr;
 	QString s = t.readLine();
 	f.close();
 
-    QStringList lst = s.split(QRegExp("\\s"), Qt::SkipEmptyParts);
+    QStringList lst = s.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
 	bool qtiProject = (lst.count() < 2 || lst[0] != "QtiPlot") ? false : true;
 	if (!qtiProject){
 		if (QFile::exists(fname + "~")){
             int choice = QMessageBox::question(this, tr("QtiPlot - File opening error"),
 					tr("The file <b>%1</b> is corrupted, but there exists a backup copy.<br>Do you want to open the backup instead?").arg(fn),
-					QMessageBox::Yes|QMessageBox::Default, QMessageBox::No|QMessageBox::Escape);
+					QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
             if (choice == QMessageBox::Yes)
                 return open(fname + "~");
             else
@@ -4943,8 +4947,9 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 	QFile f(fn);
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
-	f.open(QIODevice::ReadOnly);
+	t.setEncoding(QStringConverter::Utf8);
+	if (!f.open(QIODevice::ReadOnly))
+		return nullptr;
 
 	QFileInfo fi(fn);
 	QString baseName = fi.fileName();
@@ -5064,7 +5069,8 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 	}
 
 	//process the rest
-	f.open(QIODevice::ReadOnly);
+	if (!f.open(QIODevice::ReadOnly))
+		return nullptr;
 
 	MultiLayer *plot=0;
 	while (!t.atEnd() && !progress.wasCanceled()){
@@ -5311,9 +5317,10 @@ MdiSubWindow* ApplicationWindow::openTemplate(const QString& fn)
 
 	QFile f(fn);
 	QTextStream t(&f);
-	t.setCodec("UTF-8");
-	f.open(QIODevice::ReadOnly);
-	QStringList l=t.readLine().split(QRegExp("\\s"), Qt::SkipEmptyParts);
+	t.setEncoding(QStringConverter::Utf8);
+	if (!f.open(QIODevice::ReadOnly))
+		return nullptr;
+	QStringList l=t.readLine().split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
 	QString fileType=l[0];
 	if (fileType != "QtiPlot"){
 		QMessageBox::critical(this,tr("QtiPlot - File opening error"),
@@ -5441,7 +5448,7 @@ void ApplicationWindow::readSettings()
 		recentProjects = recentProjects[0].split("^e", Qt::SkipEmptyParts);
 	else if (recentProjects.count() == 1){
 		QString s = recentProjects[0];
-		if (s.remove(QRegExp("\\s")).isEmpty())
+		if (s.remove(QRegularExpression("\\s")).isEmpty())
 		recentProjects = QStringList();
 	}
 #endif
@@ -5841,7 +5848,7 @@ void ApplicationWindow::readSettings()
 	strip_spaces = settings.value("/StripSpaces", false).toBool();
 	simplify_spaces = settings.value("/SimplifySpaces", false).toBool();
 	d_ASCII_file_filter = settings.value("/AsciiFileTypeFilter", "*").toString();
-	d_ASCII_import_locale = settings.value("/AsciiImportLocale", QLocale::system().name()).toString();
+	d_ASCII_import_locale = QLocale(settings.value("/AsciiImportLocale", QLocale::system().name()).toString());
 	if (settings.value("/OmitGroupSeparator", false).toBool())
 		d_ASCII_import_locale.setNumberOptions(QLocale::OmitGroupSeparator);
 
@@ -5920,8 +5927,8 @@ void ApplicationWindow::readSettings()
 	settings.endGroup(); // end group Notes
 
 	settings.beginGroup("/PrintPreview");
-	d_print_paper_size = (QPrinter::PaperSize)settings.value("/PaperSize", (int)d_print_paper_size).toInt();
-	d_printer_orientation = (QPrinter::Orientation)settings.value("/Orientation", (int)d_printer_orientation).toInt();
+	d_print_paper_size = settings.value("/PaperSize", (int)d_print_paper_size).toInt();
+	d_printer_orientation = settings.value("/Orientation", (int)d_printer_orientation).toInt();
 	settings.endGroup();//PrintPreview
 
 	settings.beginGroup("/Proxy");
@@ -6585,7 +6592,6 @@ void ApplicationWindow::exportLayer()
 	}
 }
 
-#if QT_VERSION >= 0x040500
 void ApplicationWindow::exportPresentationODF()
 {
 	ImageExportDialog *ied = new ImageExportDialog(nullptr, this, d_extended_export_dialog);
@@ -6641,7 +6647,6 @@ void ApplicationWindow::exportPresentationODF()
 		writer.write(document);
 	}
 }
-#endif
 
 void ApplicationWindow::exportAllGraphs()
 {
@@ -7011,7 +7016,7 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+	t.setEncoding(QStringConverter::Utf8);
 	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "." + QString::number(patch_version) + " project file\n";
 	t << "<scripting-lang>\t" + QString(scriptEnv->objectName()) + "\n";
 
@@ -7030,7 +7035,8 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	f.close();
 
 	if (!f.isOpen())
-		f.open(QIODevice::Append);
+		if (!f.open(QIODevice::Append))
+			return false;
 
 	for (QString s : tbls){
 		Table *t = table(s);
@@ -7201,7 +7207,7 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+	t.setEncoding(QStringConverter::Utf8);
 	t << "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
 				QString::number(patch_version) + " template file\n";
 	f.close();
@@ -7261,7 +7267,7 @@ bool ApplicationWindow::setWindowName(MdiSubWindow *w, const QString &text)
 	if (newName.isEmpty()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please enter a valid name!"));
 		return false;
-	} else if (QString(newName).remove("-").contains(QRegExp("\\W"))){
+	} else if (QString(newName).remove("-").contains(QRegularExpression("\\W"))){
 		QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("The name you chose is not valid: only letters and digits are allowed!")+
 				"<p>" + tr("Please choose another name!"));
@@ -7426,12 +7432,7 @@ ExportDialog* ApplicationWindow::showExportASCIIDialog()
 		return 0;
 
     ExportDialog* ed = new ExportDialog(t, this, true);
-#if QT_VERSION >= 0x040500
 	ed->open();
-#else
-	ed->setModal(true);
-	ed->show();
-#endif
 	return ed;
 }
 
@@ -7454,16 +7455,16 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 				QApplication::restoreOverrideCursor();
 				switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
 							tr("A file called: <p><b>%1</b><p>already exists. "
-								"Do you want to overwrite it?").arg(fileName), tr("&Yes"), tr("&All"), tr("&Cancel"), 0, 1))
+								"Do you want to overwrite it?").arg(fileName), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel, QMessageBox::Yes))
 				{
-					case 0:
+					case QMessageBox::Yes:
 						if (w->inherits("Table"))
 							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
 						else if (w->inherits("Matrix"))
 							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 						break;
 
-					case 1:
+					case QMessageBox::YesToAll:
 						confirmOverwrite = false;
 						if (w->inherits("Table"))
 							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
@@ -7471,7 +7472,7 @@ void ApplicationWindow::exportAllTables(const QString& dir, const QString& filte
 							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
 						break;
 
-					case 2:
+					case QMessageBox::Cancel:
 						return;
 						break;
 				}
@@ -10163,9 +10164,7 @@ void ApplicationWindow::fileMenuAboutToShow()
 				exportPlotMenu->addAction(actionExportLayer);
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
-		#if QT_VERSION >= 0x040500
 			exportPlotMenu->addAction(actionPresentationODF);
-		#endif
 		} else if (w->inherits("Table") || w->inherits("Matrix")){
 			QMenu *exportMenu = fileMenu->addMenu(tr("Export"));
 			exportMenu->addAction(actionShowExportASCIIDialog);
@@ -10554,7 +10553,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 	QList<QMdiSubWindow *> windows = d_workspace->subWindowList(QMdiArea::StackingOrder);
 	QListIterator<QMdiSubWindow *> it(windows);
 	it.toBack();
-	QPoint pos = d_workspace->mapFromGlobal(e->pos());
+	QPoint pos = d_workspace->mapFromGlobal(e->position().toPoint());
 	while (it.hasPrevious()){
 		QMdiSubWindow *w = it.previous();
 		if (w->frameGeometry().contains(pos)){
@@ -10782,7 +10781,7 @@ void ApplicationWindow::showListViewSelectionMenu(const QPoint &p)
 	cm.addAction(tr("&Show All Windows"), this, &ApplicationWindow::showSelectedWindows);
 	cm.addAction(tr("&Hide All Windows"), this, &ApplicationWindow::hideSelectedWindows);
 	cm.addSeparator();
-	cm.addAction(tr("&Delete Selection"), this, &ApplicationWindow::deleteSelectedItems, Qt::Key_F8);
+	cm.addAction(tr("&Delete Selection"), Qt::Key_F8, this, &ApplicationWindow::deleteSelectedItems);
 	cm.exec(p);
 }
 
@@ -10845,13 +10844,13 @@ void ApplicationWindow::showWindowPopupMenu(QTreeWidgetItem *it, const QPoint &p
 		cm.addSeparator();
 		if (!hidden(w))
 			cm.addAction(actionHideWindow);
-		cm.addAction(QPixmap(":/close.png"), tr("&Delete Window"), w, &MdiSubWindow::close, Qt::Key_F8);
+		cm.addAction(QIcon(":/close.png"), tr("&Delete Window"), Qt::Key_F8, w, &MdiSubWindow::close);
 		cm.addSeparator();
 		QAction *a = cm.addAction(tr("&Rename Window"), this, qOverload<>(&ApplicationWindow::renameWindow));
 	a->setShortcut(Qt::Key_F2);
 		cm.addAction(actionResizeWindow);
 		cm.addSeparator();
-		cm.addAction(QPixmap(":/fileprint.png"), tr("&Print Window"), w, qOverload<>(&MdiSubWindow::print));
+		cm.addAction(QIcon(":/fileprint.png"), tr("&Print Window"), w, qOverload<>(&MdiSubWindow::print));
 		cm.addSeparator();
 		cm.addAction(tr("&Properties..."), this, &ApplicationWindow::windowProperties);
 
@@ -12304,17 +12303,17 @@ void ApplicationWindow::addLayer()
 	switch(QMessageBox::information(this,
 				tr("QtiPlot - Guess best origin for the new layer?"),
 				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: this will rearrange existing layers!"),
-				tr("&Guess"), tr("&Top-left corner"), tr("&Cancel"), 0, 2 ) ){
-		case 0:
+				QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel ) ){
+		case QMessageBox::Yes:
 				setPreferences(plot->addLayer());
 				plot->arrangeLayers(true, true);
 		break;
 
-		case 1:
+		case QMessageBox::No:
 			setPreferences(plot->addLayer(0, 0, plot->canvasRect().width(), plot->canvasRect().height()));
 		break;
 
-		case 2:
+		case QMessageBox::Cancel:
 			return;
 			break;
 	}
@@ -13973,7 +13972,7 @@ void ApplicationWindow::createActions()
 
 	actionRedo = d_undo_group->createRedoAction(this, tr("&Redo"));
 	actionRedo->setIcon(QIcon(":/redo.png"));
-	actionRedo->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Z));
+	actionRedo->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Z));
 	connect(actionRedo, &QAction::triggered, this, &ApplicationWindow::redo);
 
 	actionCopyWindow = new QAction(QIcon(":/duplicate.png"), tr("&Duplicate"), this);
@@ -14058,10 +14057,8 @@ void ApplicationWindow::createActions()
 	actionExportAllGraphs = new QAction(tr("&All") + "...", this);
 	actionExportAllGraphs->setShortcut( tr("Alt+X") );
 	connect(actionExportAllGraphs, &QAction::triggered, this, [this]{exportAllGraphs();});
-#if QT_VERSION >= 0x040500
 	actionPresentationODF = new QAction(tr("Create Open &Document Presentation..."), this);
 	connect(actionPresentationODF, &QAction::triggered, this, &ApplicationWindow::exportPresentationODF);
-#endif
 	actionExportPDF = new QAction(QIcon(":/pdf.png"), tr("&Export PDF") + "...", this);
 	actionExportPDF->setShortcut( tr("Ctrl+Alt+P") );
 	connect(actionExportPDF, &QAction::triggered, this, &ApplicationWindow::exportPDF);
@@ -15099,9 +15096,7 @@ void ApplicationWindow::translateActionsStrings()
 	actionExportAllGraphs->setText(tr("&All") + "...");
 	actionExportAllGraphs->setShortcut(tr("Alt+X"));
 	actionExportAllGraphs->setToolTip(tr("Export all graphs"));
-#if QT_VERSION >= 0x040500
 	actionPresentationODF->setText(tr("Create Open &Document Presentation..."));
-#endif
 	actionExportPDF->setText(tr("&Export PDF") + "...");
 	actionExportPDF->setShortcut(tr("Ctrl+Alt+P"));
 	actionExportPDF->setToolTip(tr("Export to PDF"));
@@ -16377,8 +16372,8 @@ void ApplicationWindow::createLanguagesList()
 
 	if (appLanguage != "en")
 	{
-		appTranslator->load("qtiplot_" + appLanguage, qmPath);
-		qtTranslator->load("qt_" + appLanguage, qmPath+"/qt");
+		(void)appTranslator->load("qtiplot_" + appLanguage, qmPath);
+		(void)qtTranslator->load("qt_" + appLanguage, qmPath+"/qt");
 	}
 }
 
@@ -16408,8 +16403,8 @@ void ApplicationWindow::switchToLanguage(const QString& locale)
 	else
 	{
 		QString qmPath = d_translations_folder;
-		appTranslator->load("qtiplot_" + locale, qmPath);
-		qtTranslator->load("qt_" + locale, qmPath+"/qt");
+		(void)appTranslator->load("qtiplot_" + locale, qmPath);
+		(void)qtTranslator->load("qt_" + locale, qmPath+"/qt");
 	}
 	insertTranslatedStrings();
 }
@@ -16539,11 +16534,12 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 	else {
 		QFile f(fname);
 		QTextStream t( &f );
-		t.setCodec("UTF-8");
-		f.open(QIODevice::ReadOnly);
+		t.setEncoding(QStringConverter::Utf8);
+		if (!f.open(QIODevice::ReadOnly))
+			return nullptr;
 
 		QString s = t.readLine();
-		lst = s.split(QRegExp("\\s"), Qt::SkipEmptyParts);
+		lst = s.split(QRegularExpression("\\s"), Qt::SkipEmptyParts);
 		QString version = lst[1];
 		lst = version.split(".", Qt::SkipEmptyParts);
 		d_file_version =100*(lst[0]).toInt()+10*(lst[1]).toInt()+(lst[2]).toInt();
@@ -16603,7 +16599,8 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 		f.close();
 
 		//process the rest
-		f.open(QIODevice::ReadOnly);
+		if (!f.open(QIODevice::ReadOnly))
+			return nullptr;
 
 		MultiLayer *plot=0;
 		while ( !t.atEnd()){
@@ -16713,9 +16710,9 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		while (!f.open(QIODevice::ReadOnly)){
 			if (f.isOpen())
 				f.close();
-			int choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
+			QMessageBox::StandardButton choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
 					tr("Cannot make a backup copy of <b>%1</b> (to %2).<br>If you ignore this, you run the risk of <b>data loss</b>.").arg(projectname).arg(projectname+"~"),
-					QMessageBox::Retry|QMessageBox::Default, QMessageBox::Abort|QMessageBox::Escape, QMessageBox::Ignore);
+					QMessageBox::Retry | QMessageBox::Abort | QMessageBox::Ignore);
 			if (choice == QMessageBox::Abort)
 				return;
 			if (choice == QMessageBox::Ignore)
@@ -16746,7 +16743,7 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	}
 
 	QTextStream t( &f );
-	t.setCodec("UTF-8");
+	t.setEncoding(QStringConverter::Utf8);
 	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "."+
 			QString::number(patch_version) + " project file\n";
 	t << "<scripting-lang>\t" + QString(scriptEnv->objectName()) + "\n";
@@ -16760,7 +16757,8 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	dir = folder->folderBelow();
 	while (dir && dir->depth() > initial_depth){
 		if (!f.isOpen())
-			f.open(QIODevice::Append);
+			if (!f.open(QIODevice::Append))
+				return;
 
 		t << "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
 		if (dir == current_folder)
@@ -16775,7 +16773,8 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 			w->save(fn, windowGeometryInfo(w));
 
 		if (!f.isOpen())
-			f.open(QIODevice::Append);
+			if (!f.open(QIODevice::Append))
+				return;
 
 		if (!dir->logInfo().isEmpty() )
 			t << "<log>\n" + dir->logInfo() + "</log>\n" ;
@@ -16800,7 +16799,8 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 	}
 
 	if (!f.isOpen())
-		f.open(QIODevice::Append);
+		if (!f.open(QIODevice::Append))
+			return;
 
 	t << "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
 	if (!folder->logInfo().isEmpty())
@@ -17067,11 +17067,10 @@ void ApplicationWindow::projectProperties()
 	else
 		s += tr("Created") + ": " + current_folder->birthDate() + "\n\n";
 
-	QMessageBox *mbox = new QMessageBox ( tr("Properties"), s, QMessageBox::NoIcon,
-			QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this);
+	QMessageBox mbox(QMessageBox::NoIcon, tr("Properties"), s, QMessageBox::Ok, this);
 
-	mbox->setIconPixmap(QPixmap(":/qtiplot_logo.png" ));
-	mbox->show();
+	mbox.setIconPixmap(QPixmap(":/qtiplot_logo.png" ));
+	mbox.exec();
 }
 
 void ApplicationWindow::folderProperties()
@@ -17093,11 +17092,10 @@ void ApplicationWindow::folderProperties()
 	s += tr("Created") + ": " + current_folder->birthDate() + "\n\n";
 	//s += tr("Modified") + ": " + current_folder->modificationDate() + "\n\n";
 
-	QMessageBox *mbox = new QMessageBox ( tr("Properties"), s, QMessageBox::NoIcon,
-			QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this);
+	QMessageBox mbox(QMessageBox::NoIcon, tr("Properties"), s, QMessageBox::Ok, this);
 
-	mbox->setIconPixmap(QPixmap(":/folder_open.png" ));
-	mbox->show();
+	mbox.setIconPixmap(QPixmap(":/folder_open.png" ));
+	mbox.exec();
 }
 
 void ApplicationWindow::addFolder()
@@ -17151,9 +17149,9 @@ bool ApplicationWindow::deleteFolder(Folder *f)
 	if (!f)
 		return false;
 
-	if (confirmCloseFolder && QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
+	if (confirmCloseFolder && QMessageBox::No == QMessageBox::information(this, tr("QtiPlot - Delete folder?"),
 				tr("Delete folder '%1' and all the windows it contains?").arg(f->objectName()),
-				tr("Yes"), tr("No"), 0, 0))
+				QMessageBox::Yes | QMessageBox::No))
 		return false;
 	else {
 		Folder *parent = projectFolder();
@@ -17431,8 +17429,7 @@ void ApplicationWindow::windowProperties()
 	if (!w)
 		return;
 
-	QMessageBox *mbox = new QMessageBox ( tr("Properties"), QString(), QMessageBox::NoIcon,
-			QMessageBox::Ok, QMessageBox::NoButton, QMessageBox::NoButton, this);
+	QMessageBox *mbox = new QMessageBox (QMessageBox::NoIcon, tr("Properties"), QString(), QMessageBox::Ok, this);
 
 	QString s = QString(w->objectName()) + "\n\n";
 	s += "\n\n\n";
@@ -17460,7 +17457,8 @@ void ApplicationWindow::windowProperties()
 	s += tr("Created") + ": " + w->birthDate() + "\n\n";
 	s += tr("Status") + ": " + it->text(2) + "\n\n";
 	mbox->setText(s);
-	mbox->show();
+	mbox->exec();
+	delete mbox;
 }
 
 void ApplicationWindow::addFolderListViewItem(Folder *f)
@@ -17739,7 +17737,7 @@ void ApplicationWindow::clearTable()
 
 	if (QMessageBox::question(this, tr("QtiPlot - Warning"),
 				tr("This will clear the contents of all the data associated with the table. Are you sure?"),
-				tr("&Yes"), tr("&No"), QString(), 0, 1 ) )
+				QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) != QMessageBox::Yes)
 		return;
 	else
 		t->clear();
@@ -18834,23 +18832,11 @@ void ApplicationWindow::initCompleter()
 			}
 			file.close();
 		}
-	#if QT_VERSION >= 0x040500
 		words.append(PythonSyntaxHighlighter::keywordsList());
-	#else
-		QStringList lst = PythonSyntaxHighlighter::keywordsList();
-		for (QString s : lst)
-			words << s;
-	#endif
 	}
 #endif
 
-#if QT_VERSION >= 0x040500
 	words.append(windowsNameList());
-#else
-	QStringList list = windowsNameList();
-	for (QString s : list)
-		words << s;
-#endif
 
 	QList<MdiSubWindow*> lst = tableList();
 	for (MdiSubWindow* mw : lst){

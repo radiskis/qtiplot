@@ -26,7 +26,7 @@ set(RESOURCES "../manual/html/icons/icons.qrc")
 # --- SIP generated sources ---
 set(SIP_SOURCES "")
 if(ENABLE_PYTHON)
-    file(GLOB SIP_SOURCES "${PROJECT_SOURCE_DIR}/build/qti/*.cpp" "${PROJECT_SOURCE_DIR}/build/qti/*.c")
+    file(GLOB SIP_SOURCES "${PROJECT_SOURCE_DIR}/build_sip_temp/qti/*.cpp" "${PROJECT_SOURCE_DIR}/build_sip_temp/qti/*.c")
 endif()
 
 # --- Executable ---
@@ -57,7 +57,7 @@ target_include_directories(qtiplot PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/3rdparty/qtcolorpicker/src"
 )
 if(ENABLE_PYTHON)
-    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build/qti")
+    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build_sip_temp/qti")
 endif()
 target_include_directories(qtiplot PRIVATE
     # 3rdparty Includes
@@ -84,7 +84,7 @@ endif()
 target_compile_definitions(qtiplot PRIVATE
     MUPARSER_STATIC
     # QTIPLOT_STATIC_BUILD # Disabled to allow plugin linkage
-    QWT_DLL # Assuming we are linking against Qwt DLL
+    # QWT_DLL # Removed: Linking against static Qwt
     # Legacy defines from .pro
 
     QTI_ROOT

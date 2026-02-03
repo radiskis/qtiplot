@@ -74,7 +74,7 @@ void EmfPaintEngine::drawPoints ( const QPointF * points, int pointCount )
 	QColor color = pen.color();
 	SolidBrush *br = new SolidBrush(Color(color.red(), color.green(), color.blue()));
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < pointCount; i++) {
 		QPointF p = m.map(points[i]);
 		d_grx->FillRectangle(br, RectF(p.x(), p.y(), lw, lw));
@@ -90,7 +90,7 @@ void EmfPaintEngine::drawLines ( const QLineF * lines, int lineCount )
 
 	Pen *pen = convertPen(painter()->pen());
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < lineCount; i++) {
 		QPointF p1 = m.map(lines[i].p1());
 		QPointF p2 = m.map(lines[i].p2());
@@ -111,7 +111,7 @@ void EmfPaintEngine::drawPolygon ( const QPointF * points, int pointCount, Polyg
 
 	PointF *pts = new PointF[pointCount];
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < pointCount; i++){
 		QPointF p = m.map (points[i]);
 		pts[i] = PointF(p.x(), p.y());
@@ -201,7 +201,7 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	QColor c = painter()->pen().color();
 	SolidBrush brush(Color(c.red(), c.green(), c.blue()));
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	Matrix wm(m.m11(), m.m12(), m.m21(), m.m22(), m.dx(), m.dy());
 	d_grx->SetTransform(&wm);
 
@@ -229,7 +229,7 @@ void EmfPaintEngine::drawRects ( const QRectF * rects, int rectCount )
 	Color color(c.alpha(), c.red(), c.green(), c.blue());
 	Brush *br = new SolidBrush(color);
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < rectCount; i++){
 		PointF *pts = new PointF[4];
 
@@ -261,7 +261,7 @@ void EmfPaintEngine::drawEllipse ( const QRectF & rect )
 {
 	setClipping();
 
-	QRectF r = painter()->worldMatrix().mapRect(rect);
+	QRectF r = painter()->worldTransform().mapRect(rect);
 	RectF rf((REAL)r.left(), (REAL)r.top(), (REAL)r.width(), (REAL)r.height());
 
 	if (painter()->brush().style() != Qt::NoBrush){
@@ -303,7 +303,7 @@ void EmfPaintEngine::drawPixmap(const QRectF &r, const QPixmap &pm, const QRectF
 {
 	setClipping();
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	QPointF p = m.map(r.topLeft());
 
 	drawPixmap(pm.copy(sr.toAlignedRect()),
@@ -332,7 +332,7 @@ void EmfPaintEngine::drawTiledPixmap(const QRectF &r, const QPixmap & pix, const
 
 	TextureBrush *tBrush = textureBrush(pix);
 
-	QRectF dr = painter()->worldMatrix().mapRect(r);
+	QRectF dr = painter()->worldTransform().mapRect(r);
 	d_grx->FillRectangle(tBrush, RectF((REAL)dr.left(), (REAL)dr.top(), (REAL)dr.width(), (REAL)dr.height()));
 
 	delete tBrush;
@@ -358,7 +358,7 @@ void EmfPaintEngine::drawImage(const QRectF & r, const QImage & image, const QRe
 {
 	setClipping();
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	QPointF p = m.map(r.topLeft());
 
 	drawPixmap(QPixmap::fromImage(image, flags).copy(sr.toAlignedRect()),
@@ -541,7 +541,7 @@ Brush *EmfPaintEngine::convertBrush(const QBrush& brush, GraphicsPath *origPath)
 			QColor fc = stops.first().second;
 			QColor sc = stops.last().second;
 
-			QMatrix m = painter()->worldMatrix();
+			QTransform m = painter()->worldTransform();
 			QPointF sp = m.map(qtgradient->start());
 			QPointF ep = m.map(qtgradient->finalStop());
 
@@ -565,7 +565,7 @@ Brush *EmfPaintEngine::convertBrush(const QBrush& brush, GraphicsPath *origPath)
 			const QRadialGradient *qtgradient = (const QRadialGradient *)brush.gradient();
 			QGradientStops stops = qtgradient->stops();
 
-			QMatrix m = painter()->worldMatrix();
+			QTransform m = painter()->worldTransform();
 			QPointF center = m.map(qtgradient->center());
 			QPointF focalPoint = m.map(qtgradient->focalPoint());
 			REAL radius = qtgradient->radius();
@@ -616,7 +616,7 @@ GraphicsPath * EmfPaintEngine::convertPath ( const QPainterPath & path )
 	PointF *pts = new PointF[points];
 	BYTE *types = new BYTE[points];
 
-	QMatrix m = painter()->worldMatrix();
+	QTransform m = painter()->worldTransform();
 	for (int i = 0; i < points; i++){
 		QPainterPath::Element el = path.elementAt(i);
 		QPointF p = m.map(QPointF(el.x, el.y));

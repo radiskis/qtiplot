@@ -31,7 +31,7 @@
 
 #include "Fit.h"
 
-using namespace std;
+#include <string>
 
 class NonLinearFit : public Fit
 {
@@ -59,7 +59,7 @@ class NonLinearFit : public Fit
 		double constValue(const QString& name){return d_constants.value(name);};
 
 		virtual QString legendInfo();
-		static QStringList guessParameters(const QString& s, bool *error = 0, string *errMsg = 0, const QString& var = "x");
+		static QStringList guessParameters(const QString& s, bool *error = 0, std::string *errMsg = 0, const QString& var = "x");
 
 	protected:
 		QString logFitInfo(int iterations, int status);

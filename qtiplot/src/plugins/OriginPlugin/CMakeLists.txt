@@ -4,7 +4,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Svg Xml OpenGL)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets)
 
 set(ORIGINPLUGIN_SOURCES
     OriginPlugin.cpp
@@ -48,6 +48,7 @@ target_link_libraries(OriginPlugin PRIVATE
     Qt6::Svg
     Qt6::Xml
     Qt6::OpenGL
+    Qt6::OpenGLWidgets
     qtiplot
     qwt
 )

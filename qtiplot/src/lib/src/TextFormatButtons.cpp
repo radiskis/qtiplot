@@ -40,7 +40,7 @@ connectedTextEdit(textEdit),
 d_buttons(buttons)
 {
 	QHBoxLayout * layout = new QHBoxLayout(this);
-	layout->setMargin(0);
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
 	init(buttons);

@@ -77,11 +77,11 @@ QLocale MyParser::getLocale()
 
 void MyParser::setLocale(const QLocale& locale)
 {
-	const char decPoint = locale.decimalPoint().toLatin1();
+	const char decPoint = locale.decimalPoint().at(0).toLatin1();
 	if (decPoint != '.'){
 		SetDecSep(decPoint);
 		SetArgSep(';');
-		SetThousandsSep(locale.groupSeparator().toLatin1());
+		SetThousandsSep(locale.groupSeparator().at(0).toLatin1());
 	} else
 		ResetLocale();// reset C locale
 }
@@ -135,7 +135,7 @@ QString MyParser::explainFunction(int index)
 {
 	const muParserScripting::mathFunction i = muParserScripting::math_functions[index];
 	QString s = i.description;
-	if (getLocale().decimalPoint() == ',')
+	if (getLocale().decimalPoint() == ",")
 		s.replace(",", ";");
 
 	return s;

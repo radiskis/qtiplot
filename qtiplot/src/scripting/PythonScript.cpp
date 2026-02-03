@@ -240,7 +240,7 @@ QVariant PythonScript::eval()
 		}
 		/* bool */
 	} else if (PyBool_Check(pyret))
-		qret = QVariant(pyret==Py_True, 0);
+		qret = QVariant(pyret==Py_True);
 	// could handle advanced types (such as PyList->QValueList) here if needed
 	/* fallback: try to convert to string */
 	if(!qret.isValid()) {

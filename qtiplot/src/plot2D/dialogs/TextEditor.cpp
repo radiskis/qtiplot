@@ -134,7 +134,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 void TextEditor::closeEvent(QCloseEvent *e)
 {
 	QString s = toPlainText();
-	int lines = s.count(QRegExp("\n"));
+	int lines = s.count(QRegularExpression("\n"));
 	if ( lines >= 100 && QMessageBox::question(d_graph->multiLayer(),
 		tr("QtiPlot") + " - " + tr("Confirmation"),
 		tr("Are you sure you want to add %1 text lines into this text box?").arg(lines),

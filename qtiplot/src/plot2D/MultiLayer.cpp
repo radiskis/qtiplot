@@ -51,9 +51,7 @@ Description          : Multi layer widget
 #include <QLabel>
 #include <QGroupBox>
 
-#if QT_VERSION >= 0x040500
 #include <QTextDocumentWriter>
-#endif
 
 #ifdef TEX_OUTPUT
 	#include <QTeXEngine.h>
@@ -184,7 +182,7 @@ d_common_axes_layout(false)
 	QVBoxLayout* layout = new QVBoxLayout(mainWidget);
 	layout->addLayout(hbox);
 	layout->addWidget(d_canvas, 1);
-	layout->setMargin(0);
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 	setWidget(mainWidget);
 
@@ -315,7 +313,9 @@ void MultiLayer::selectLayerCanvas(Graph* g)
 	setActiveLayer(g);
 
 	if (active_graph && active_graph != g){
-		QMouseEvent e(QEvent::MouseButtonPress, QCursor::pos(), Qt::LeftButton, {}, {});
+		QPointF globalPos = QCursor::pos();
+		QPointF localPos = active_graph->mapFromGlobal(globalPos.toPoint());
+		QMouseEvent e(QEvent::MouseButtonPress, localPos, globalPos, Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
 		if (!active_graph->mousePressed(&e)){
 			d_layers_selector = new SelectionMoveResizer(active_graph->canvas());
 			connect(d_layers_selector.data(), &SelectionMoveResizer::targetsChanged, this, &MultiLayer::modifiedPlot);
@@ -478,23 +478,18 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 void MultiLayer::confirmRemoveLayer()
 {
 	if (graphsList.size() > 1){
-		switch(QMessageBox::information(this,
-					tr("QtiPlot - Guess best layout?"),
+		int ret = QMessageBox::information(this, tr("QtiPlot - Guess best layout?"),
 					tr("Do you want QtiPlot to rearrange the remaining layers?"),
-					tr("&Yes"), tr("&No"), tr("&Cancel"),
-					0, 2) ){
-			case 0:
-				removeLayer(active_graph);
-				arrangeLayers(true, false);
-				break;
-
-			case 1:
-				removeLayer(active_graph);
-				break;
-
-			case 2:
-				return;
-				break;
+					QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel,
+					QMessageBox::Yes);
+		
+		if (ret == QMessageBox::Yes){
+			removeLayer(active_graph);
+			arrangeLayers(true, false);
+		} else if (ret == QMessageBox::No){
+			removeLayer(active_graph);
+		} else {
+			return;
 		}
 	} else
 		removeLayer(active_graph);
@@ -1116,7 +1111,6 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	int dpm = (int)ceil(100.0/2.54*dpi);
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
-#if QT_VERSION >= 0x040500
 	if (fileName.endsWith(".odf")){
 		QTextDocument *document = new QTextDocument();
 		QTextCursor cursor = QTextCursor(document);
@@ -1128,7 +1122,6 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 		QTextDocumentWriter writer(fileName);
 		writer.write(document);
 	} else
-#endif
 	{
 		QImageWriter writer(fileName);
 		if (compression > 0 && writer.supportsOption(QImageIOHandler::CompressionRatio)){
@@ -1140,7 +1133,6 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	}
 }
 
-#if QT_VERSION >= 0x040500
 void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 				int dpi, const QSizeF& customSize, int unit, double fontsFactor)
 {
@@ -1187,7 +1179,7 @@ void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 	cursor.insertBlock();
 	cursor.insertImage(image);
 }
-#endif
+
 
 void MultiLayer::exportPDF(const QString& fname)
 {
@@ -1570,10 +1562,10 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 		if (me->button() == Qt::RightButton && applicationWindow()){
 			applicationWindow()->showWindowContextMenu();
 			return true;
-		} else if (me->button() == Qt::MidButton)
+		} else if (me->button() == Qt::MiddleButton)
 			return QMdiSubWindow::eventFilter(object, e);
 
-		QPoint pos = d_canvas->mapFromGlobal(me->globalPos());
+		QPoint pos = d_canvas->mapFromGlobal(me->globalPosition().toPoint());
 		// iterate backwards, so layers on top are preferred for selection
 		QList<Graph*>::iterator i = graphsList.end();
 		while (i != graphsList.begin()){
@@ -1735,7 +1727,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 			return;
 	}
 	QTextStream t(&f);
-	t.setCodec("UTF-8");
+
 	t << "<multiLayer>\n";
 
     bool notTemplate = !saveAsTemplate;

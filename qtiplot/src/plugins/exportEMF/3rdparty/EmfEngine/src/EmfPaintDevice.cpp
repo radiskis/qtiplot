@@ -29,7 +29,7 @@
 #include "EmfEngine.h"
 
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 
 EmfPaintDevice::EmfPaintDevice(const QSize& s, const QString& fileName) : QPaintDevice(),
 d_size(s)
@@ -49,8 +49,9 @@ QPaintEngine * EmfPaintDevice::paintEngine () const
 
 int EmfPaintDevice::metric ( PaintDeviceMetric metric ) const
 {
-	int xdpi = QApplication::desktop()->logicalDpiX();
-	int ydpi = QApplication::desktop()->logicalDpiY();
+    QScreen *screen = QApplication::primaryScreen();
+	int xdpi = screen ? screen->logicalDotsPerInchX() : 96;
+	int ydpi = screen ? screen->logicalDotsPerInchY() : 96;
 
 	switch (metric){
 		case QPaintDevice::PdmWidth:

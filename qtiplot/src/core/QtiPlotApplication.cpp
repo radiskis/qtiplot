@@ -130,7 +130,7 @@ void QtiPlotApplication::activateWindow(ApplicationWindow *w)
 
 	((QWidget *)w)->activateWindow();
 	w->raise();
-	setActiveWindow(w);
+
 
 #ifdef Q_WS_MAC
 	updateDockMenu();

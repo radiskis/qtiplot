@@ -1107,7 +1107,7 @@ bool DataCurve::selectedLabels(const QPoint& pos)
         int x = d_plot->transform(xAxis(), m->xValue());
         int y = d_plot->transform(yAxis(), m->yValue());
 
-        QMatrix wm;
+        QTransform wm;
         wm.translate(x, y);
 		wm.rotate(-d_labels_angle);
         if (wm.mapToPolygon(QRect(QPoint(0, 0), m->label().textSize().toSize())).containsPoint(pos, Qt::OddEvenFill)){

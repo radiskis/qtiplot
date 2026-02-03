@@ -74,18 +74,18 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				}
 
 				int dist, point;
-				if (g->closestCurve(me->pos().x(), me->pos().y(), dist, point))
+				if (g->closestCurve(me->position().toPoint().x(), me->position().toPoint().y(), dist, point))
 					return true;
 
 				if (me->button() == Qt::LeftButton && (g->drawLineActive())){
-					startLinePoint = me->pos();
+					startLinePoint = me->position().toPoint();
 					return true;
 				}
 
 				if (!g->zoomOn()){
 					QList<FrameWidget *> eLst = g->increasingAreaEnrichmentsList();
 					for (FrameWidget *fw : eLst){
-						QPoint p = plot()->canvas()->mapTo(plot()->multiLayer()->canvas(), me->pos());
+						QPoint p = plot()->canvas()->mapTo(plot()->multiLayer()->canvas(), me->position().toPoint());
 						if (fw->frameGeometry().contains(p)){
 							fw->mousePressEvent((QMouseEvent *)e);
 							if (me->button() == Qt::RightButton)
@@ -102,7 +102,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 					QDrag *drag = new QDrag(plot());
 					QMimeData *mimeData = new QMimeData;
-					QPoint p = plot()->canvas()->mapToParent(me->pos());
+					QPoint p = plot()->canvas()->mapToParent(me->position().toPoint());
 					mimeData->setText(QString::number(abs(plot()->x() - p.x())) + ";" +
 									QString::number(abs(plot()->y() - p.y())));
 					drag->setMimeData(mimeData);
@@ -130,7 +130,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				} else {
 					const QMouseEvent *me = (const QMouseEvent *)e;
                     int dist, point;
-                    QwtPlotItem *c = g->closestCurve(me->pos().x(), me->pos().y(), dist, point);
+                    QwtPlotItem *c = g->closestCurve(me->position().toPoint().x(), me->position().toPoint().y(), dist, point);
                     if (c && dist < 10)
                         emit showPlotDialog(g->curveIndex(c));
                     else
@@ -146,7 +146,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 				if (!(me->buttons() & Qt::LeftButton))
   	            	return true;
 
-				QPoint pos = me->pos();
+				QPoint pos = me->position().toPoint();
 
 				QwtPlotItem *c = g->selectedCurveLabels();
 				if (c){
@@ -178,7 +178,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					mrk.attach(g);
 					mrk.setAttachPolicy((ArrowMarker::AttachPolicy)app->d_graph_attach_policy);
 					mrk.setStartPoint(startLinePoint);
-					mrk.setEndPoint(QPoint(me->x(), me->y()));
+					mrk.setEndPoint(QPoint(me->position().toPoint().x(), me->position().toPoint().y()));
 					mrk.setColor(app->defaultArrowColor);
 					mrk.setWidth(app->defaultArrowLineWidth);
 					mrk.setStyle(app->defaultArrowLineStyle);
@@ -256,7 +256,7 @@ void CanvasPicker::drawLineMarker(const QPoint& point, bool endArrow)
 bool CanvasPicker::selectMarker(const QMouseEvent *e)
 {
 	Graph *g = plot();
-	const QPoint point = e->pos();
+	const QPoint point = e->position().toPoint();
 	QList<ArrowMarker *> lines = g->arrowsList();
 	for (ArrowMarker *i : lines){
 		double dist = i->dist(point.x(), point.y());

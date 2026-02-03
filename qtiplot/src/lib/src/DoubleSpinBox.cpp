@@ -194,7 +194,7 @@ d_type(type)
 	d_spin_box->setEnabled(false);
 
 	QHBoxLayout *l = new QHBoxLayout(this);
-	l->setMargin(0);
+	l->setContentsMargins(0, 0, 0, 0);
 	l->setSpacing(0);
 	l->addWidget(d_checkbox);
 	l->addWidget(d_spin_box);

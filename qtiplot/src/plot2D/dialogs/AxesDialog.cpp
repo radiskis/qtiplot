@@ -224,7 +224,7 @@ void AxesDialog::initScalesPage()
 
 	QWidget * stepWidget = new QWidget();
 	QHBoxLayout * stepWidgetLayout = new QHBoxLayout( stepWidget );
-	stepWidgetLayout->setMargin(0);
+	stepWidgetLayout->setContentsMargins(0, 0, 0, 0);
 
 	btnStep = new QRadioButton(tr("Step"));
 	btnStep->setChecked(true);
@@ -287,8 +287,8 @@ void AxesDialog::initScalesPage()
 	QFontMetrics fm(axesList->font());
 	int width = 32;
 	for(int i=0 ; i<axesList->count() ; i++)
-		if( fm.width(axesList->item(i)->text()) > width)
-			width = fm.width(axesList->item(i)->text());
+		if( fm.horizontalAdvance(axesList->item(i)->text()) > width)
+			width = fm.horizontalAdvance(axesList->item(i)->text());
 
 	axesList->setMaximumWidth( axesList->iconSize().width() + width + 50 );
 	// resize the list to the maximum width
@@ -406,8 +406,8 @@ void AxesDialog::initGridPage()
 	QFontMetrics fm(axesGridList->font());
 	int width = 32,i;
 	for(i=0 ; i<axesGridList->count() ; i++)
-		if( fm.width(axesGridList->item(i)->text()) > width)
-			width = fm.width(axesGridList->item(i)->text());
+		if( fm.horizontalAdvance(axesGridList->item(i)->text()) > width)
+			width = fm.horizontalAdvance(axesGridList->item(i)->text());
 
 	axesGridList->setMaximumWidth( axesGridList->iconSize().width() + width + 50 );
 	// resize the list to the maximum width
@@ -458,8 +458,8 @@ void AxesDialog::initAxesPage()
 	QFontMetrics fm(axesTitlesList->font());
 	int width = 32;
 	for(int i = 0; i < axesTitlesList->count(); i++){
-		if( fm.width(axesTitlesList->item(i)->text()) > width)
-			width = fm.width(axesTitlesList->item(i)->text());
+		if( fm.horizontalAdvance(axesTitlesList->item(i)->text()) > width)
+			width = fm.horizontalAdvance(axesTitlesList->item(i)->text());
 	}
 	axesTitlesList->setMaximumWidth(axesTitlesList->iconSize().width() + width + 50);
 	// resize the list to the maximum width
@@ -833,9 +833,9 @@ void AxesDialog::showAxisFormatOptions(int format)
             int day = (QDate::currentDate()).dayOfWeek();
             label2->show();
             boxFormat->show();
-            boxFormat->addItem(QDate::shortDayName(day));
-            boxFormat->addItem(QDate::longDayName(day));
-            boxFormat->addItem((QDate::shortDayName(day)).left(1));
+            boxFormat->addItem(QLocale().dayName(day, QLocale::ShortFormat));
+            boxFormat->addItem(QLocale().dayName(day, QLocale::LongFormat));
+            boxFormat->addItem((QLocale().dayName(day, QLocale::ShortFormat)).left(1));
             boxFormat->setCurrentIndex((d_graph->axisFormatInfo(axis)).toInt());
         }
         break;
@@ -845,9 +845,9 @@ void AxesDialog::showAxisFormatOptions(int format)
             int month = (QDate::currentDate()).month();
             label2->show();
             boxFormat->show();
-            boxFormat->addItem(QDate::shortMonthName(month));
-            boxFormat->addItem(QDate::longMonthName(month));
-            boxFormat->addItem((QDate::shortMonthName(month)).left(1));
+            boxFormat->addItem(QLocale().monthName(month, QLocale::ShortFormat));
+            boxFormat->addItem(QLocale().monthName(month, QLocale::LongFormat));
+            boxFormat->addItem((QLocale().monthName(month, QLocale::ShortFormat)).left(1));
             boxFormat->setCurrentIndex((d_graph->axisFormatInfo(axis)).toInt());
         }
         break;
