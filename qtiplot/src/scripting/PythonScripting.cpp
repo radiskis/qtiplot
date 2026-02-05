@@ -279,7 +279,7 @@ bool PythonScripting::initialize()
 
 	if(!initialized){
 		QMessageBox::critical(d_parent, tr("Couldn't find initialization files"),
-		tr("Please indicate the correct path to the Python configuration files in the preferences dialog."));
+		tr("Please indicate the correct path to the Python configuration files in the preferences dialog.\nSearched: ") + d_parent->d_python_config_folder + "/qtiplotrc");
 	}
 
 	return initialized;
@@ -297,14 +297,19 @@ PythonScripting::~PythonScripting()
 bool PythonScripting::loadInitFile(const QString &path)
 {
 	PyGILState_STATE state = PyGILState_Ensure();
-	QFileInfo pyFile(path+".py"), pycFile(path+".pyc");
+	QString nativePath = QDir::toNativeSeparators(path);
+	QFileInfo pyFile(nativePath+".py"), pycFile(nativePath+".pyc");
 	bool success = false;
-	if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
+	if (pycFile.exists() && (pycFile.lastModified() >= pyFile.lastModified())) {
 		// if we have a recent pycFile, use it
 		FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
-		success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
-		fclose(f);
-	} else if (pyFile.isReadable() && pyFile.exists()) {
+		if (f){
+			success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
+			fclose(f);
+		}
+	} 
+	
+	if (!success && pyFile.exists()) {
 		// try to compile pyFile to pycFile
 		PyObject *compileModule = PyImport_ImportModule("py_compile");
 		if (compileModule) {
@@ -324,17 +329,17 @@ bool PythonScripting::loadInitFile(const QString &path)
 		} else
 			PyErr_Print();
 		pycFile.refresh();
-		if (pycFile.isReadable() && (pycFile.lastModified() >= pyFile.lastModified())) {
+		if (pycFile.exists() && (pycFile.lastModified() >= pyFile.lastModified())) {
 			// run the newly compiled pycFile
 			FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
-			success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
-			fclose(f);
-		} else {
+			if (f){
+				success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
+				fclose(f);
+			}
+		} 
+		
+		if (!success) {
 			// fallback: just run pyFile
-			/*FILE *f = fopen(pyFile.filePath(), "r");
-			success = PyRun_SimpleFileEx(f, pyFile.filePath(), false) == 0;
-			fclose(f);*/
-			//TODO: code above crashes on Windows - bug in Python?
 			QFile f(pyFile.filePath());
 			if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
 				QByteArray data = f.readAll();

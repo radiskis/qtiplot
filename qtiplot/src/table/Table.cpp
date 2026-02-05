@@ -26,6 +26,7 @@ Description          : Table worksheet class
  *                                                                         *
  ***************************************************************************/
 #include "Table.h"
+#include <cmath>
 #include "TableCommand.h"
 #include "SortDialog.h"
 #include <ImportASCIIDialog.h>
@@ -631,7 +632,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			for (int i = startRow; i <= endRow; i++){
 				*r = i + 1.0;
 				double val = mup->evalSingleLine();
-				if (finite(val))
+				if (std::isfinite(val))
 					newData << dateTime(val).toString(fmt);
 				else
 					newData << "";
@@ -654,7 +655,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 				QVariant ret = mup->eval();
 				if (ret.typeId() == QMetaType::Double){
 					double val = ret.toDouble();
-					if (finite(val))
+					if (std::isfinite(val))
 						newData << dateTime(val).toString(fmt);
 					else
 						newData << "";
@@ -755,7 +756,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 			QVariant ret = colscript->eval();
 			if (ret.typeId() == QMetaType::Double){
 				double val = ret.toDouble();
-				if (finite(val))
+				if (std::isfinite(val))
 					newData << dateTime(val).toString(fmt);
 				else
 					newData << "";

@@ -33,6 +33,8 @@
 #include <QApplication>
 #include <QMessageBox>
 
+#include <vector>
+
 #include <gsl/gsl_fft_halfcomplex.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_blas.h>
@@ -392,14 +394,14 @@ void SmoothFilter::setLowessParameter(double f, int iterations)
 #include "lowess.c" // from the R project; see also lowess.doc from the R sources
 void SmoothFilter::smoothLowess(double *x, double *y)
 {
-    double initial_y[d_n]; // we need to conserve the initial y as y will become the output
+    std::vector<double> initial_y(d_n); // we need to conserve the initial y as y will become the output
     for (int i = 0; i < d_n; i++)
         initial_y[i] = y[i];
     double delta = 0.0; // see lowess.doc
-    double robustness_weights[d_n]; // currently unused output
-    double residuals[d_n]; // currently unused output
+    std::vector<double> robustness_weights(d_n); // currently unused output
+    std::vector<double> residuals(d_n); // currently unused output
 
-    clowess(x, initial_y, d_n, d_f, d_iterations, delta, // inputs
-            y, robustness_weights, residuals); // outputs
+    clowess(x, initial_y.data(), d_n, d_f, d_iterations, delta, // inputs
+            y, robustness_weights.data(), residuals.data()); // outputs
 }
 

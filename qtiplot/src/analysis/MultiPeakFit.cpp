@@ -38,6 +38,8 @@
 #include <QLocale>
 #include <QMessageBox>
 
+#include <vector>
+
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
 : Fit(parent, g), d_profile(profile)
 {
@@ -184,11 +186,11 @@ void MultiPeakFit::guessInitialValues()
 
 	double min_out = d_y[imin];
 	double max_out = d_y[imax];
-    double temp[d_n];
+    std::vector<double> temp(d_n);
 	for (int i = 0; i < d_n; i++)
 		temp[i] = fabs(d_y[i]);
 
-	size_t imax_temp = gsl_stats_max_index(temp, 1, d_n);
+	size_t imax_temp = gsl_stats_max_index(temp.data(), 1, d_n);
 	double offset, area;
 	if (imax_temp == imax)
 		offset = min_out;

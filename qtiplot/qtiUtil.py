@@ -216,9 +216,9 @@ def exportTableToTeX(t, filename=None):
 		Export table as TeX-tabular to filename. If filename==None, popup a file selection dialog.
 	"""
 	try:
-		from PyQt5.QtWidgets import QFileDialog
+		from PyQt6.QtWidgets import QFileDialog
 	except ImportError:
-		print("Warning: PyQt5 could not be imported in qtiUtil.py.")
+		print("Warning: PyQt6 could not be imported in qtiUtil.py.")
 		return
 	if not filename:
 		filename, _ = QFileDialog.getSaveFileName(qti.app, "QtiPlot - Export TeX table", "", "All files (*);;TeX documents (*.tex *.TEX)")

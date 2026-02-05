@@ -100,7 +100,7 @@ class MdiSubWindow: QMdiSubWindow /PyName=MDIWindow/
 #include "MdiSubWindow.h"
 %End
 public:
-  MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = 0);
+  MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
   enum CaptionPolicy{Name = 0, Label = 1, Both = 2};
 
   SIP_PYOBJECT windowLabel();
@@ -120,7 +120,7 @@ public:
 
 class Table: MdiSubWindow
 {
-  Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
+  Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
 private:
     Table(const Table &);
 
@@ -352,7 +352,7 @@ public:
   enum NumericFormat{Default = 0, Decimal = 1, Scientific = 2};
 
   int numRows();
-  int __len__();
+  Py_ssize_t __len__();
 %MethodCode
   sipRes = sipCpp->numRows();
 %End
@@ -371,7 +371,7 @@ public:
 %End
   void __delitem__(SIP_PYSLICE);
 %MethodCode
-  SIP_SSIZE_T len, start, stop, step, slicelength;
+  Py_ssize_t len, start, stop, step, slicelength;
   len = sipCpp->numRows();
   if (PySlice_Unpack((PyObject *)a0, &start, &stop, &step) < 0)
     sipIsErr = 1;
@@ -457,7 +457,7 @@ public:
 %End
   SIP_PYTUPLE __getitem__(int); // this is operator[]
 %MethodCode
-  SIP_SSIZE_T idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
+  Py_ssize_t idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
   if (idx < 0)
     sipIsErr = 1;
   else {
@@ -468,7 +468,7 @@ public:
 %End
   SIP_PYTUPLE __getitem__(SIP_PYSLICE); // this is operator[]
 %MethodCode
-  SIP_SSIZE_T len, start, stop, step, slicelength;
+  Py_ssize_t len, start, stop, step, slicelength;
   len = sipCpp->numRows();
   if (PySlice_Unpack((PyObject *)a0, &start, &stop, &step) < 0)
     sipIsErr = 1;
@@ -532,7 +532,7 @@ public:
 %End
   void __setitem__(int, SIP_PYTUPLE);
 %MethodCode
-  SIP_SSIZE_T idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
+  Py_ssize_t idx = sipConvertFromSequenceIndex(a0, sipCpp->numRows());
   if (idx < 0)
     sipIsErr = 1;
   else {
@@ -1029,8 +1029,8 @@ private:
 	}
 %End
 public:
-  Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
-  Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
+  Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
+  Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
   enum HeaderViewType{ColumnRow, XY};
   enum ViewType{TableView, ImageView};
   enum ImportMode{NewColumns, NewRows, Overwrite};
@@ -1967,7 +1967,7 @@ class Graph : QwtPlot /PyName=Layer/
 public:
   enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
   enum Axis{Left, Right, Bottom, Top};
-  enum TicksStyle{NoTicks = 0, Out = 1, InOut = 2, In = 3};
+  enum Ticks{NoTicks = 0, Out = 1, InOut = 2, In = 3};
   enum CurveType{Line, Scatter, LineSymbols, VerticalBars, Area, Pie, VerticalDropLines,
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
@@ -2227,7 +2227,7 @@ class MultiLayer : MdiSubWindow /PyName=Graph/
 #include "MultiLayer.h"
 %End
 public:
-  MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f= 0);
+  MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f = Qt::Widget);
 
   enum HorAlignement{HCenter, Left, Right};
   enum VertAlignement{VCenter, Top, Bottom};
@@ -2293,7 +2293,7 @@ private:
 #include "Note.h"
 %End
 public:
-  Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= 0);
+  Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
   bool autoexec() const;
   void setAutoexec(bool = true);
 
@@ -2327,7 +2327,7 @@ class Graph3D: MdiSubWindow
 #include "Graph3D.h"
 %End
 public:
-  Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f= 0);
+  Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f = Qt::Widget);
 	enum PlotType{Scatter = 0, Trajectory = 1, Bars = 2, Ribbon = 3};
 	enum AxisNumericFormat{Default = 0, Decimal = 1, Scientific = 2, Engineering = 3};
 
@@ -3285,6 +3285,8 @@ class PythonScripting
 %End
 public:
   PythonScripting(ApplicationWindow *parent);
+  void write(const QString&);
+  void flush();
 
 private:
   PythonScripting(const PythonScripting &);

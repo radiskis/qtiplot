@@ -30,6 +30,7 @@
 import __main__
 import qti
 from qti import *
+import os
 
 def import_to_global(modname, attrs=None, math=False):
 	"""
@@ -39,7 +40,11 @@ def import_to_global(modname, attrs=None, math=False):
 	"""
 	import sys
 	import os
-	sys.path.append(os.path.dirname(__file__))
+	try:
+		if '__file__' in globals():
+			sys.path.append(os.path.dirname(__file__))
+	except:
+		pass
 	mod = __import__(modname)
 	for submod in modname.split(".")[1:]:
 		mod = getattr(mod, submod)
@@ -138,19 +143,18 @@ except ImportError: pass
 # make Qt API available (it gets imported in any case by the qti module)
 try:
 	global QtGui
-	from PyQt5 import QtGui
+	from PyQt6 import QtGui
 
 	global QtCore
-	from PyQt5 import QtCore
+	from PyQt6 import QtCore
 
 	global QtWidgets
-	from PyQt5 import QtWidgets
+	from PyQt6 import QtWidgets
 
 	global Qt
-	from PyQt5.QtCore import Qt
+	from PyQt6.QtCore import Qt
 except ImportError:
-	print("Warning: PyQt5 could not be imported. This is expected if there is a compiler ABI mismatch (MinGW vs MSVC).")
-	print("Qt classes (QtGui, QtCore, QtWidgets) will not be available in the scripting environment until compilers are synchronized.")
+	print("Warning: PyQt6 could not be imported.")
 
 # import QtiPlot's classes to the global namespace (particularly useful for fits)
 
@@ -159,7 +163,7 @@ appImports = (
 	"table", "newTable",
 	"matrix", "newMatrix",
 	"graph", "newGraph",
-	"note", "newNote",
+	"newNote",
 	"newPlot3D",
 	"tableToMatrix", "tableToMatrixRegularXYZ", "matrixToTable",
 	"openTemplate", "saveAsTemplate",
@@ -173,7 +177,7 @@ appImports = (
 	"currentTable","currentMatrix","currentGraph","currentNote",
 	"resultsLog", "workspace", "displayInfo", "infoLineEdit",
 	"writeFitResultsToLog", "setWriteFitResultsToLog"
-	)
+)
 for name in appImports:
 	setattr(__main__,name,getattr(qti.app,name))
 

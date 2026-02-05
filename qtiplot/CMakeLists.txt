@@ -57,7 +57,7 @@ target_include_directories(qtiplot PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/3rdparty/qtcolorpicker/src"
 )
 if(ENABLE_PYTHON)
-    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build_sip_temp/qti")
+    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build_sip_temp/qti" "${PROJECT_SOURCE_DIR}/build_sip_temp")
 endif()
 target_include_directories(qtiplot PRIVATE
     # 3rdparty Includes
@@ -67,6 +67,8 @@ target_include_directories(qtiplot PRIVATE
     "${PROJECT_SOURCE_DIR}/3rdparty/gsl" 
     "${PROJECT_SOURCE_DIR}/3rdparty/alglib/src"
     "${PROJECT_SOURCE_DIR}/3rdparty/tamuanova"
+    "${PROJECT_SOURCE_DIR}/3rdparty/zlib"
+    # "${QT_DIR}/include/QtZlib" # Removed to avoid Z_PREFIX conflicts
 )
 
 
@@ -77,6 +79,7 @@ target_compile_definitions(qtiplot PRIVATE
     _UNICODE
     SCRIPTING_CONSOLE 
     SCRIPTING_MUPARSER 
+    ZLIB_STATIC
 )
 if(ENABLE_PYTHON)
     target_compile_definitions(qtiplot PRIVATE SCRIPTING_PYTHON)
@@ -98,10 +101,7 @@ if(ENABLE_PYTHON)
     target_link_libraries(qtiplot PRIVATE Python3::Python)
 endif()
 target_link_libraries(qtiplot PRIVATE
-    # ZLIB::ZLIB
-    # Link ZLIB manually (using Qt's bundled zlib implicitly or system)
-    -lz
-
+    zlib
     
     # 3rdparty Targets
     muparser
@@ -120,6 +120,7 @@ install(TARGETS qtiplot RUNTIME DESTINATION bin)
 
 set_target_properties(qtiplot PROPERTIES
     ENABLE_EXPORTS ON
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
     OUTPUT_NAME "qtiplot"
 )
 if(MINGW)

@@ -273,9 +273,11 @@ QAction* CustomActionDialog::addAction()
 bool CustomActionDialog::validUserInput()
 {
 	QString folder = folderBox->text();
-    while (folder.isEmpty() || !QFileInfo(folder).exists() || !QFileInfo(folder).isReadable()){
-        chooseFolder();
-		folder = folderBox->text();
+    if (folder.isEmpty() || !QFileInfo(folder).exists() || !QFileInfo(folder).isReadable()){
+		QMessageBox::critical(this, tr("QtiPlot") + " - " + tr("Error"),
+        tr("Please provide a valid custom actions folder!"));
+		folderBox->setFocus();
+		return false;
 	}
 
 	ApplicationWindow *app = (ApplicationWindow *)this->parent();

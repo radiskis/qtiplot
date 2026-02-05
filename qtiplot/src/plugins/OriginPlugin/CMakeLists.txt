@@ -51,6 +51,7 @@ target_link_libraries(OriginPlugin PRIVATE
     Qt6::OpenGLWidgets
     qtiplot
     qwt
+    qwtplot3d
 )
 
 set_target_properties(OriginPlugin PROPERTIES

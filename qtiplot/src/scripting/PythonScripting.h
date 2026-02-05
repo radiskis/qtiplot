@@ -49,6 +49,7 @@ class PythonScripting: public ScriptingEnv
 		bool initialize();
 
 		void write(const QString &text) { emit print(text); }
+		void flush() {}
 
 		//! like str(object) in Python
 		/**

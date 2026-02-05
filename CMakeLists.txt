@@ -21,7 +21,7 @@ find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Co
 
 
 # Find Python
-set(ENABLE_PYTHON OFF CACHE BOOL "Enable Python scripting" FORCE)
+option(ENABLE_PYTHON "Enable Python scripting" ON)
 if(ENABLE_PYTHON)
     find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 endif()

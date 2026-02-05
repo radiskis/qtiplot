@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "IntDialog.h"
+#include <cmath>
 #include <Integration.h>
 #include <ApplicationWindow.h>
 #include <Graph.h>
@@ -185,21 +186,21 @@ bool IntDialog::validInput(const QString& function)
 		double xl = x, xr;
 		double y = parser.Eval();
 		bool wellDefinedFunction = true;
-		if (!finite(y)){// try to find a first well defined point (might help for some not really bad functions)
+		if (!std::isfinite(y)){// try to find a first well defined point (might help for some not really bad functions)
 			wellDefinedFunction = false;
 			for (int i = 0; i < lastButOne; i++){
 				xl = x;
 				x += step;
 				xr = x;
 				y = parser.Eval();
-				if (finite(y)){
+				if (std::isfinite(y)){
 					wellDefinedFunction = true;
 					int iter = 0;
 					double x0 = x, y0 = y;
 					while(fabs(xr - xl)/step > 1e-15 && iter < points){
 						x = 0.5*(xl + xr);
 						y = parser.Eval();
-						if (finite(y)){
+						if (std::isfinite(y)){
 							xr = x;
 							x0 = x;
 							y0 = y;

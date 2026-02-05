@@ -24,28 +24,15 @@ add_subdirectory(qwt)
 # )
 
 
-# GSL (Imported)
-add_library(gsl STATIC IMPORTED GLOBAL)
-set_target_properties(gsl PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/gsl/lib/libgsl.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/gsl"
-)
+# GSL (Building from source)
+add_subdirectory(gsl)
 
-add_library(gslcblas STATIC IMPORTED GLOBAL)
-set_target_properties(gslcblas PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/gsl/lib/libgslcblas.a"
-)
+# ALGLIB (Building from source)
+add_subdirectory(alglib)
 
-# ALGLIB (Imported)
-add_library(alglib STATIC IMPORTED GLOBAL)
-set_target_properties(alglib PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/alglib/libalglib.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/alglib/src"
-)
+# TAMUANOVA (Building from source)
+add_subdirectory(tamuanova)
 
-# TAMUANOVA (Imported)
-add_library(tamuanova STATIC IMPORTED GLOBAL)
-set_target_properties(tamuanova PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/tamuanova/libtamuanova.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/tamuanova"
-)
+# ZLIB (Building from source)
+add_subdirectory(zlib)
+

@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "Anova.h"
+#include <vector>
 
 #include <QApplication>
 #include <QLocale>
@@ -149,7 +150,8 @@ bool Anova::twoWayANOVA()
 
 	long J[2] = {(long)aLevels.size(), (long)bLevels.size()};
 
-	long f[n][2];
+    std::vector<long> f_storage(n * 2);
+    long (*f)[2] = (long (*)[2])f_storage.data();
 	for (unsigned int i = 0; i < d_n; i++){
 		data[i] = d_data[i];
 		f[i][0] = d_factorA_levels[0];

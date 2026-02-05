@@ -28,6 +28,7 @@
  ***************************************************************************/
 
 #include <ShapiroWilkTest.h>
+#include <vector>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_sort.h>
@@ -55,9 +56,9 @@ d_pValue(0.0)
 		int n1 = d_n;
 		int n2 = d_n/2;
 		int error = 0;
-		double a[n2];
+		std::vector<double> a(n2);
 		gsl_sort(d_data, 1, d_n);// the data must be sorted first
-		swilk(&init, d_data, &n, &n1, &n2, a, &d_w, &d_pValue, &error);
+		swilk(&init, d_data, &n, &n1, &n2, a.data(), &d_w, &d_pValue, &error);
 	}
 }
 

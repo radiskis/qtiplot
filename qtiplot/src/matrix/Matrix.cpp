@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <Matrix.h>
+#include <cmath>
 #include <MatrixCommand.h>
 #include <Graph.h>
 #include <ApplicationWindow.h>
@@ -250,7 +251,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 			int aux = d_cols*i;
 			bool emptyRow = true;
 			for(int j = 0; j < d_cols; j++){
-				if (finite(d_data[aux + j])){
+				if (std::isfinite(d_data[aux + j])){
 					emptyRow = false;
 					break;
 				}
@@ -262,12 +263,12 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 
 			for(int j = 0; j < cols; j++){
 				double val = d_data[aux + j];
-				if (finite(val))
+				if (std::isfinite(val))
 					t << QString::number(val, 'g', 16);
 				t << "\t";
 			}
 			double val = d_data[aux + cols];
-			if (finite(val))
+			if (std::isfinite(val))
 				t << QString::number(val, 'g', 16);
 			t << "\n";
 		}
@@ -1262,7 +1263,7 @@ bool Matrix::isEmpty()
 	double *data = d_matrix_model->dataVector();
 	int size = numRows()*numCols();
 	for (int i = 0; i < size; i++){
-		if (finite(data[i]))
+		if (std::isfinite(data[i]))
 			return false;
 	}
 	return true;

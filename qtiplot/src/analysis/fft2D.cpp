@@ -29,6 +29,7 @@
 #include "fft2D.h"
 #include <Matrix.h>
 #include <math.h>
+#include <vector>
 
 int next2Power(int n)
 {
@@ -51,7 +52,7 @@ void fft(double* x_int_re, double* x_int_im, int taille)
 	int size_2 = taille >> 1, tmp1 = 0;
 	double tmp, tmpcos, tmpsin, base = 2*M_PI/taille;
 	const double SQ_2=sqrt(2);
-	double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
+	std::vector<double> pair_re(size_2), pair_im(size_2), impair_re(size_2), impair_im(size_2);
 
 	for(int i=0; i<size_2; i++){
 		tmp1=(i<<1);
@@ -62,8 +63,8 @@ void fft(double* x_int_re, double* x_int_im, int taille)
 	}
 
 	if(taille>2){
-		fft(pair_re,pair_im,size_2);
-		fft(impair_re,impair_im,size_2);
+		fft(pair_re.data(),pair_im.data(),size_2);
+		fft(impair_re.data(),impair_im.data(),size_2);
 	}
 
 	for(int i=0; i<size_2; i++){
@@ -82,7 +83,7 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
 	int size_2 = taille >> 1, tmp1 = 0;
 	double tmp, tmpcos, tmpsin, base=2*M_PI/taille;
 	const double SQ_2=sqrt(2);
-	double pair_re[size_2], pair_im[size_2], impair_re[size_2], impair_im[size_2];
+	std::vector<double> pair_re(size_2), pair_im(size_2), impair_re(size_2), impair_im(size_2);
 
 	for(int i=0; i<size_2; i++){
 		tmp1=i<<1;
@@ -93,8 +94,8 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
 	}
 
 	if(taille>2){
-		fft_inv(pair_re, pair_im,size_2);
-		fft_inv(impair_re, impair_im,size_2);
+		fft_inv(pair_re.data(), pair_im.data(),size_2);
+		fft_inv(impair_re.data(), impair_im.data(),size_2);
 	}
 
 	for(int i=0; i<size_2; i++){
@@ -119,14 +120,14 @@ void fft2d(double **xtre, double **xtim, int width, int height, bool shift)
 		return;
 	}
 
-	double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
+	std::vector<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
 	for(int k=0; k<height; k++){
 		for(int j=0; j<width; j++){
 			x_int_l[j] = xtre[k][j];
 			x_int2_l[j] = xtim[k][j];
 		}
 
-		fft(x_int_l, x_int2_l, width);
+		fft(x_int_l.data(), x_int2_l.data(), width);
 
 		for(int j=0; j<width; j++){
 			xint_re[k][j] = x_int_l[j];
@@ -140,7 +141,7 @@ void fft2d(double **xtre, double **xtim, int width, int height, bool shift)
 			x_int2_c[i] = xint_im[i][k];
 		}
 
-		fft(x_int_c, x_int2_c, height) ;
+		fft(x_int_c.data(), x_int2_c.data(), height) ;
 
 		if (shift){
 			int col = (k+(width>>1))%width;
@@ -171,7 +172,7 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
 		return;
 	}
 
-	double x_int_l[width], x_int2_l[width], x_int_c[height], x_int2_c[height];
+	std::vector<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
 
 	for(int k = 0; k < height; k++){
 		if (undoShift){
@@ -188,7 +189,7 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
 			}
 		}
 
-		fft_inv(x_int_l, x_int2_l, width);
+		fft_inv(x_int_l.data(), x_int2_l.data(), width);
 
 		for(int j = 0; j < width; j++){
 			xint_re[k][j] = x_int_l[j];
@@ -201,7 +202,7 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
 			x_int2_c[i] = xint_im[i][k];
 		}
 
-		fft_inv(x_int_c, x_int2_c, height);
+		fft_inv(x_int_c.data(), x_int2_c.data(), height);
 
 		for(int i = 0; i < height; i++){
 			xrec_re[i][k] = x_int_c[i];

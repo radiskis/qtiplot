@@ -30,6 +30,8 @@
 #include <PlotCurve.h>
 #include <ColorBox.h>
 
+#include <vector>
+
 #include <QMessageBox>
 #include <QLocale>
 #include <gsl/gsl_fft_halfcomplex.h>
@@ -134,7 +136,7 @@ void Convolution::addResultCurve()
 	d_table->addCol();
 	d_table->addCol();
 
-    double x_temp[d_n];
+    std::vector<double> x_temp(d_n);
 	QLocale locale = app->locale();
 	for (int i = 0; i<d_n; i++){
 		double x = i+1;
@@ -158,7 +160,7 @@ void Convolution::addResultCurve()
 			createOutputGraph();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
-		c->setSamples(x_temp, d_x, d_n);
+		c->setSamples(x_temp.data(), d_x, d_n);
 		c->setPen(QPen(d_curveColor, 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();
