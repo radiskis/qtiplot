@@ -26,6 +26,7 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
+#include "globals.h"
 #include <qwt_plot.h>
 #include "PlotCurve.h"
 #include "LegendWidget.h"
@@ -116,7 +117,7 @@ private:
 	QVarLengthArray<int> d_table_rows;
 };
 
-class PieLabel: public LegendWidget
+class QTI_EXPORT PieLabel: public LegendWidget
 {
 	Q_OBJECT
 

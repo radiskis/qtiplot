@@ -29,6 +29,8 @@
 #ifndef LEGENDWIDGET_H
 #define LEGENDWIDGET_H
 
+#include "globals.h"
+
 #include "FrameWidget.h"
 #include "Graph.h"
 
@@ -39,7 +41,7 @@
 
 class PlotCurve;
 
-class LegendWidget: public FrameWidget
+class QTI_EXPORT LegendWidget: public FrameWidget
 {
 	Q_OBJECT
 
