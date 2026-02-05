@@ -2807,13 +2807,13 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 QString ApplicationWindow::imageFilter()
 {
 	QList<QByteArray> list = QImageReader::supportedImageFormats();
-	QString filter = tr("Images") + " (", aux1, aux2;
+	QString filter = tr("Images") + " (";
 	for (int i = 0; i < (int)list.count(); i++){
-		aux1 = " *." + list[i] + " ";
-		aux2 += " *." + list[i] + ";;";
-		filter += aux1;
+		if (i > 0)
+			filter += " ";
+		filter += "*." + QString::fromLatin1(list[i].toLower());
 	}
-	filter += ");;" + aux2;
+	filter += ");;" + tr("All Files") + " (*)";
 	return filter;
 }
 
@@ -6891,7 +6891,7 @@ QString ApplicationWindow::getFileName(QWidget *parent, const QString & caption,
 {
 	QFileDialog fd(parent, caption, dir, filter);
 	if (filter.contains(";"))
-		fd.setNameFilters(filter.split(";"));
+		fd.setNameFilters(filter.split(";", Qt::SkipEmptyParts));
 
 	if (save)
 		fd.setAcceptMode(QFileDialog::AcceptSave);
@@ -18819,8 +18819,10 @@ void ApplicationWindow::initCompleter()
 		QString fn = d_python_config_folder + "/qti_wordlist.txt";
 		QFile file(fn);
 		if (!file.open(QFile::ReadOnly)){
+			QApplication::restoreOverrideCursor();
 			QMessageBox::critical(this, tr("QtiPlot - Warning"),
 			tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(QFileInfo(file).absoluteFilePath()));
+			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		} else {
 			while (!file.atEnd()){
 				QByteArray line = file.readLine();
