@@ -363,10 +363,10 @@
 
 (define (make-htmlhelp-project)
   (let* (
-	 (chm (string-append %output-dir% "/" %htmlhelp-filename% ".chm"))
-	 (hhp (string-append %output-dir% "/" %htmlhelp-filename% ".hhp"))
-	 (hhc (string-append %output-dir% "/" %htmlhelp-filename% ".hhc"))
-	 (hhk (string-append %output-dir% "/" %htmlhelp-filename% ".hhk"))
+	 (chm (string-append (if %output-dir% (string-append %output-dir% "/") "") %htmlhelp-filename% ".chm"))
+	 (hhp (string-append (if %output-dir% (string-append %output-dir% "/") "") %htmlhelp-filename% ".hhp"))
+	 (hhc (string-append (if %output-dir% (string-append %output-dir% "/") "") %htmlhelp-filename% ".hhc"))
+	 (hhk (string-append (if %output-dir% (string-append %output-dir% "/") "") %htmlhelp-filename% ".hhk"))
 	 (top (html-base-filename (sgml-root-element))))
     (make sequence
       (make entity
@@ -402,7 +402,7 @@
 
 (define (make-qt-assistant-project)
   (let* (
-	 (adp (string-append %output-dir% "/" %adp-filename% ".adp"))
+	 (adp (string-append (if %output-dir% (string-append %output-dir% "/") "") %adp-filename% ".adp"))
 	 (top (html-base-filename (sgml-root-element))))
     (make sequence
       (make entity

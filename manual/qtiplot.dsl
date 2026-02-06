@@ -34,11 +34,11 @@
 	(list))
 
 (define use-output-dir
-	#t)
+	#f)
 
 (define %output-dir%
 	;; directory to place all output files in (if not specified on the command line)
-	"html")
+	#f)
 
 (define %adp-filename%
  ;; File name of Qt Assistant profile (without extension).
