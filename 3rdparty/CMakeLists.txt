@@ -10,7 +10,7 @@ add_subdirectory(muparser)
 
 # QwtPlot3D (Has valid CMakeLists.txt)
 # QwtPlot3D (Has valid CMakeLists.txt)
-add_subdirectory(qwtplot3d-old)
+add_subdirectory(qwtplot3d)
 
 
 # Qwt (Building from source for Qt 6 migration)
@@ -31,8 +31,8 @@ add_subdirectory(gsl)
 add_subdirectory(alglib)
 
 # TAMUANOVA (Building from source)
-add_subdirectory(tamuanova)
+# add_subdirectory(tamuanova)
 
 # ZLIB (Building from source)
-add_subdirectory(zlib)
+# add_subdirectory(zlib)
 
