@@ -4,7 +4,14 @@ setlocal
 echo Setting up environment...
 
 REM Setup MSVC Environment
-call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" -arch=x64
+if exist "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" (
+    call "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat" -arch=x64
+) else if exist "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat" (
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\Tools\VsDevCmd.bat" -arch=x64
+) else (
+    echo Error: VsDevCmd.bat not found.
+    exit /b 1
+)
 if %errorlevel% neq 0 (
     echo Error: Failed to setup MSVC environment.
     exit /b %errorlevel%
@@ -48,11 +55,14 @@ if exist "%BUILD_DIR%\sip_temp" (
 )
 mkdir "%BUILD_DIR%\sip_temp"
 set "SIP_BUILD=sip-build"
+pushd "%PROJECT_ROOT%"
 "%SIP_BUILD%" --build-dir "%BUILD_DIR%\sip_temp" --no-compile
 if %errorlevel% neq 0 (
     echo Error: SIP binding generation failed.
+    popd
     exit /b %errorlevel%
 )
+popd
 
 cd "%BUILD_DIR%"
 
