@@ -31,7 +31,7 @@ add_subdirectory(gsl)
 add_subdirectory(alglib)
 
 # TAMUANOVA (Building from source)
-# add_subdirectory(tamuanova)
+add_subdirectory(tamuanova)
 
 # ZLIB (Building from source)
 # add_subdirectory(zlib)

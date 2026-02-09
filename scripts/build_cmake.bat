@@ -20,6 +20,10 @@ set "CMAKE_BIN=C:\Qt\Tools\CMake_64\bin"
 set "NINJA_BIN=C:\Qt\Tools\Ninja"
 set "PATH=%CMAKE_BIN%;%NINJA_BIN%;%PATH%"
 
+REM Setup Python and SIP Environment
+for /f "delims=" %%i in ('python -c "import sysconfig; print(sysconfig.get_path('scripts', 'nt_user'))"') do set "PYTHON_SCRIPTS=%%i"
+set "PATH=%PYTHON_SCRIPTS%;%PATH%"
+
 echo Environment setup complete.
 echo QT_DIR=%QT_DIR%
 echo CMAKE_BIN=%CMAKE_BIN%
@@ -38,10 +42,22 @@ if not exist "%BUILD_DIR%" (
     mkdir "%BUILD_DIR%"
 )
 
+echo Generating Python bindings with SIP...
+if exist "%BUILD_DIR%\sip_temp" (
+    rmdir /s /q "%BUILD_DIR%\sip_temp"
+)
+mkdir "%BUILD_DIR%\sip_temp"
+set "SIP_BUILD=sip-build"
+"%SIP_BUILD%" --build-dir "%BUILD_DIR%\sip_temp" --no-compile
+if %errorlevel% neq 0 (
+    echo Error: SIP binding generation failed.
+    exit /b %errorlevel%
+)
+
 cd "%BUILD_DIR%"
 
 echo Configuring with CMake (Ninja)...
-cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DENABLE_PYTHON=OFF -DCMAKE_PREFIX_PATH="%QT_DIR%" "%PROJECT_ROOT%"
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DENABLE_PYTHON=ON -DCMAKE_PREFIX_PATH="%QT_DIR%" "%PROJECT_ROOT%"
 if %errorlevel% neq 0 (
     echo Error: CMake configuration failed.
     exit /b %errorlevel%

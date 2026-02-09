@@ -32,6 +32,9 @@ endif()
 # We will handle ZLIB via Qt or system libs manually in qtiplot/CMakeLists.txt
 
 
+# --- Definitions ---
+add_definitions(-DUNICODE -D_UNICODE -DNOMINMAX)
+
 # Add 3rdparty components
 add_subdirectory(3rdparty)
 

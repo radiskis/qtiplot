@@ -1,10 +1,11 @@
-
 # qtiplot/CMakeLists.txt
+
+# --- Dependencies ---
+find_package(Qt6 REQUIRED COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network ZlibPrivate)
 
 # --- Sources ---
 # Glob all sources in src/
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-list(APPEND SOURCES "${PROJECT_SOURCE_DIR}/3rdparty/zlib/minigzip.c")
 file(GLOB_RECURSE HEADERS "src/*.h")
 file(GLOB_RECURSE UI_FILES "src/*.ui")
 
@@ -13,6 +14,10 @@ list(FILTER SOURCES EXCLUDE REGEX "src/core/MultiPeakFitTool")
 list(FILTER HEADERS EXCLUDE REGEX "src/core/MultiPeakFitTool")
 list(FILTER SOURCES EXCLUDE REGEX "src/plugins")
 list(FILTER HEADERS EXCLUDE REGEX "src/plugins")
+
+# ANOVA files are now enabled with tamuanova
+# list(FILTER SOURCES EXCLUDE REGEX "src/analysis/Anova.*")
+# list(FILTER HEADERS EXCLUDE REGEX "src/analysis/Anova.*")
 
 if(NOT ENABLE_PYTHON)
     list(FILTER SOURCES EXCLUDE REGEX "src/scripting/Python")
@@ -26,7 +31,7 @@ set(RESOURCES "../manual/html/icons/icons.qrc")
 # --- SIP generated sources ---
 set(SIP_SOURCES "")
 if(ENABLE_PYTHON)
-    file(GLOB SIP_SOURCES "${PROJECT_SOURCE_DIR}/build_sip_temp/qti/*.cpp" "${PROJECT_SOURCE_DIR}/build_sip_temp/qti/*.c")
+    file(GLOB SIP_SOURCES "${PROJECT_BINARY_DIR}/sip_temp/qti/*.cpp" "${PROJECT_BINARY_DIR}/sip_temp/qti/*.c")
 endif()
 
 # --- Executable ---
@@ -57,18 +62,18 @@ target_include_directories(qtiplot PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/lib/3rdparty/qtcolorpicker/src"
 )
 if(ENABLE_PYTHON)
-    target_include_directories(qtiplot PRIVATE "${PROJECT_SOURCE_DIR}/build_sip_temp/qti" "${PROJECT_SOURCE_DIR}/build_sip_temp")
+    target_include_directories(qtiplot PRIVATE "${PROJECT_BINARY_DIR}/sip_temp/qti" "${PROJECT_BINARY_DIR}/sip_temp")
 endif()
 target_include_directories(qtiplot PRIVATE
     # 3rdparty Includes
     "${PROJECT_SOURCE_DIR}/3rdparty/qwt/src"
-    "${PROJECT_SOURCE_DIR}/3rdparty/qwtplot3d-old/include"
+    "${PROJECT_SOURCE_DIR}/3rdparty/qwtplot3d/include"
     "${PROJECT_SOURCE_DIR}/3rdparty/muparser/include"
     "${PROJECT_SOURCE_DIR}/3rdparty/gsl" 
     "${PROJECT_SOURCE_DIR}/3rdparty/alglib/src"
-    "${PROJECT_SOURCE_DIR}/3rdparty/tamuanova"
+    # "${PROJECT_SOURCE_DIR}/3rdparty/tamuanova"
     "${PROJECT_SOURCE_DIR}/3rdparty/zlib"
-    # "${QT_DIR}/include/QtZlib" # Removed to avoid Z_PREFIX conflicts
+    "C:/Qt/6.10.2/msvc2022_64/include/QtZlib" # Added to fix missing zlib.h
 )
 
 
@@ -99,9 +104,17 @@ target_link_libraries(qtiplot PRIVATE
 )
 if(ENABLE_PYTHON)
     target_link_libraries(qtiplot PRIVATE Python3::Python)
+    target_sources(qtiplot PRIVATE 
+        src/scripting/PythonScript.cpp
+        src/scripting/PythonScripting.cpp
+        src/scripting/PythonSyntaxHighlighter.cpp
+        src/scripting/PythonScript.h
+        src/scripting/PythonScripting.h
+        src/scripting/PythonSyntaxHighlighter.h
+    )
 endif()
 target_link_libraries(qtiplot PRIVATE
-    zlib
+    Qt6::ZlibPrivate
     
     # 3rdparty Targets
     muparser
@@ -116,6 +129,19 @@ target_link_libraries(qtiplot PRIVATE
 
 # --- Installation ---
 install(TARGETS qtiplot RUNTIME DESTINATION bin)
+
+# --- Definitions ---
+add_definitions(-DHAVE_TAMUANOVA)
+
+# --- Python Config Files Deployment ---
+if(ENABLE_PYTHON)
+    file(COPY 
+        "${CMAKE_CURRENT_SOURCE_DIR}/qtiplotrc.py"
+        "${CMAKE_CURRENT_SOURCE_DIR}/qti_wordlist.txt"
+        "${CMAKE_CURRENT_SOURCE_DIR}/qtiUtil.py"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+    )
+endif()
 
 
 set_target_properties(qtiplot PROPERTIES
