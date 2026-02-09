@@ -152,7 +152,19 @@ try:
 	from PyQt6 import QtWidgets
 
 	global Qt
-	from PyQt6.QtCore import Qt
+	from PyQt6.QtCore import Qt, QSize, QRect, QPoint
+	from PyQt6.QtGui import QFont, QColor, QPen, QBrush
+
+	# Export to __main__
+	import __main__
+	setattr(__main__, "Qt", Qt)
+	setattr(__main__, "QSize", QSize)
+	setattr(__main__, "QRect", QRect)
+	setattr(__main__, "QPoint", QPoint)
+	setattr(__main__, "QFont", QFont)
+	setattr(__main__, "QColor", QColor)
+	setattr(__main__, "QPen", QPen)
+	setattr(__main__, "QBrush", QBrush)
 except ImportError:
 	print("Warning: PyQt6 could not be imported.")
 
