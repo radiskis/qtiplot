@@ -13,3 +13,4 @@ manual/html/*.adp
 manual/*.pdf
 .DS_Store
 *.pyc
+build/*
