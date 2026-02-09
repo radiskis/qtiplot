@@ -43,6 +43,8 @@ Description          : 3D graph widget
 #include <QTextStream>
 #include <QTextDocumentWriter>
 #include <QMdiArea>
+#include <QMimeData>
+#include <QDrag>
 
 #include <qwt3d_io_gl2ps.h>
 #include <qwt3d_coordsys.h>
@@ -55,19 +57,16 @@ Description          : 3D graph widget
 #define LOG_MIN 1.0e-100
 #endif
 
-ConstFunction::ConstFunction(Qwt3D::Curve *pw)
+ConstFunction::ConstFunction(Qwt3D::SurfacePlot *pw)
 : Function(pw)
 {}
 
-double ConstFunction::operator()(double x, double y)
+double ConstFunction::operator()(double, double)
 {
-	if (x < 0.5*(xMin() + xMax()) || y < 0.5*(yMin() + yMax()))
-		return zMin();
-
-	return zMax();
+	return 0.0;
 }
 
-UserFunction::UserFunction(const QString& s, Qwt3D::Curve *pw)
+UserFunction::UserFunction(const QString& s, Qwt3D::SurfacePlot *pw)
 : Function(pw), formula(s)
 {}
 
@@ -97,7 +96,7 @@ void UserFunction::setMesh (unsigned int columns, unsigned int rows)
 }
 
 UserParametricSurface::UserParametricSurface(const QString& xFormula, const QString& yFormula,
-											 const QString& zFormula, Qwt3D::Curve *pw)
+											 const QString& zFormula, Qwt3D::SurfacePlot *pw)
 : ParametricSurface(pw),
 d_x_formula(xFormula),
 d_y_formula(yFormula),
@@ -179,7 +178,7 @@ void Graph3D::initPlot()
 	d_scale_on_print = app->d_scale_plots_on_print;
 	d_print_cropmarks = app->d_print_cropmarks;
 
-	sp = new Plot3D(this);
+	sp = new SurfacePlot(this);
 	sp->installEventFilter(this);
 	sp->setRotation(30, 0, 15);
 	sp->setScale(1, 1, 1);
@@ -234,11 +233,11 @@ void Graph3D::initPlot()
 	setLabelsColor(app->d_3D_labels_color);
 	setBackgroundColor(app->d_3D_background_color);
 
-	Qwt3D::GridLine majorGrid(app->d_3D_major_grids, Qt2GL(app->d_3D_grid_color), (Qwt3D::LINESTYLE)app->d_3D_major_style, app->d_3D_major_width);
-	Qwt3D::GridLine minorGrid(app->d_3D_minor_grids, Qt2GL(app->d_3D_minor_grid_color), (Qwt3D::LINESTYLE)app->d_3D_minor_style, app->d_3D_minor_width);
+	// Qwt3D::GridLine majorGrid(app->d_3D_major_grids, Qt2GL(app->d_3D_grid_color), (Qwt3D::LINESTYLE)app->d_3D_major_style, app->d_3D_major_width);
+	// Qwt3D::GridLine minorGrid(app->d_3D_minor_grids, Qt2GL(app->d_3D_minor_grid_color), (Qwt3D::LINESTYLE)app->d_3D_minor_style, app->d_3D_minor_width);
 	for (int i = 0; i < 12; i++){
-		sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
-		sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+	//	sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
+	//	sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
 		sp->coordinates()->axes[i].setLabelFont(app->d_3D_axes_font);
 	}
 
@@ -288,8 +287,8 @@ void Graph3D::setShading(const Qwt3D::SHADINGSTYLE& shadingStyle)
 
 	d_shading = shadingStyle;
 
-	if (d_active_curve)
-		d_active_curve->setShading(shadingStyle);
+	// if (d_active_curve)
+	// 	d_active_curve->setShading(shadingStyle);
 }
 
 void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr)
@@ -304,47 +303,41 @@ void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr,
 		d_const_func = 0;
 	}
 
-	d_const_curve = new Curve(sp);
-	d_const_curve->setPlotStyle(NOPLOT);
-	d_const_curve->legend()->drawScale(false);
-	d_const_curve->legend()->drawNumbers(false);
-	d_const_curve->showColorLegend(false);
-	d_const_curve->setTitle(QString());
-	d_const_curve->setDataProjection(false);
-	d_const_curve->setFloorStyle(NOFLOOR);
-	d_const_curve->setProjection(BASE, false);
-	sp->addCurve(d_const_curve);
+	// d_const_curve = new Curve(sp);
+	// d_const_curve->setPlotStyle(NOPLOT);
+    // ...
+	// sp->addCurve(d_const_curve);
 
-	d_const_func = new ConstFunction(d_const_curve);
-	d_const_func->setMesh(3, 3);
-	d_const_func->setDomain(xl, xr, yl, yr);
-	d_const_func->setMinZ(zl);
-	d_const_func->setMaxZ(zr);
-	d_const_func->create();
+	// d_const_func = new ConstFunction(d_const_curve);
+    // ...
+	// d_const_func->create();
+    // Constant curve not supported in single-surface mode
 }
 
-Curve* Graph3D::addCurve()
+Qwt3D::SurfacePlot* Graph3D::addCurve()
 {
 	removeCurve();
 
 	ApplicationWindow *app = applicationWindow();
 
-	d_active_curve = new Curve(sp);
-	sp->addCurve(d_active_curve);
+    d_active_curve = sp; // Alias to surface plot
+	// d_active_curve = new Curve(sp);
+	// sp->addCurve(d_active_curve);
 
-	d_active_curve->setShading(d_shading);
+	// d_active_curve->setShading(d_shading); // Not supported directly?
 	d_active_curve->setDataColor(new LinearColor(d_active_curve, app->d_3D_color_map));
 	d_active_curve->setSmoothMesh(app->d_3D_smooth_mesh);
-	d_active_curve->setDataProjection(false);
-	d_active_curve->setProjection(BASE);
-	d_active_curve->setProjection(FACE, false);
-	d_active_curve->setProjection(SIDE, false);
+	// d_active_curve->setDataProjection(false);
+	// d_active_curve->setProjection(BASE);
+	// d_active_curve->setProjection(FACE, false);
+	// d_active_curve->setProjection(SIDE, false);
 	d_active_curve->setResolution(app->d_3D_resolution);
 	d_active_curve->showColorLegend(legendOn);
 	d_active_curve->legend()->setMajors(5);
-	d_active_curve->legend()->axis()->setNumberFont(numbersFont());
+	// d_active_curve->legend()->axis()->setNumberFont(numbersFont());
 
-	if (!title.isEmpty() && d_active_curve->title()->string() != title)
+	//if (!title.isEmpty() && d_active_curve->title()->string() != title)
+	if (!title.isEmpty())
 		setTitle(title, titleCol, titleFnt);
 
 	return d_active_curve;
@@ -371,7 +364,11 @@ void Graph3D::removeCurve()
 	}
 
 	if (d_active_curve){
-		delete d_active_curve;
+		// delete d_active_curve;
+        // Do not delete sp, just clear it and reset pointer
+        Qwt3D::TripleField data;
+        Qwt3D::CellField cells;
+        sp->loadFromData(data, cells); // Clear data
 		d_active_curve = 0;
 	}
 }
@@ -838,8 +835,8 @@ void Graph3D::resetNonEmptyStyle()
 
 			case VerticalBars :
 			{
-				Bar bar = Bar(d_bars_rad);
-				d_active_curve->setPlotStyle(bar);
+				//Bar bar = Bar(d_bars_rad);
+				//d_active_curve->setPlotStyle(bar);
 				break;
 			}
 
@@ -887,8 +884,8 @@ QFont Graph3D::numbersFont()
 void Graph3D::setNumbersFont(const QFont& font)
 {
 	sp->coordinates()->setNumberFont (font);
-	if (d_active_curve)
-		d_active_curve->legend()->axis()->setNumberFont (font);
+	/*if (d_active_curve)
+		d_active_curve->legend()->axis()->setNumberFont (font);*/
 	sp->makeCurrent();
 	sp->update();
 }
@@ -1319,12 +1316,14 @@ QStringList Graph3D::scaleTicks()
 
 int Graph3D::axisNumericFormat(int axis)
 {
-	return (int)sp->coordinates()->axes[axis].numericFormat();
+	// return (int)sp->coordinates()->axes[axis].numericFormat();
+	return 0;
 }
 
 int Graph3D::axisNumericPrecision(int axis)
 {
-	return sp->coordinates()->axes[axis].numericPrecision();
+	// return sp->coordinates()->axes[axis].numericPrecision();
+	return 6;
 }
 
 void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
@@ -1343,10 +1342,10 @@ void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
 		break;
 	}
 
-	sp->coordinates()->axes[axis1].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
-	sp->coordinates()->axes[axis2].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
-	sp->coordinates()->axes[axis3].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
-	sp->coordinates()->axes[axis4].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	// sp->coordinates()->axes[axis1].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	// sp->coordinates()->axes[axis2].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	// sp->coordinates()->axes[axis3].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
+	// sp->coordinates()->axes[axis4].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 
 	sp->update();
 	emit modified();
@@ -1727,7 +1726,7 @@ void Graph3D::setNumbersColor(const QColor& numColor)
 {
 	if(numCol != numColor){
 		if (d_active_curve)
-			d_active_curve->legend()->axis()->setNumberColor(Qt2GL(numColor));
+			// d_active_curve->legend()->axis()->setNumberColor(Qt2GL(numColor));
 		sp->coordinates()->setNumberColor(Qt2GL(numColor));
 		numCol = numColor;
 	}
@@ -1754,12 +1753,12 @@ void Graph3D::setGridColor(const QColor& gridColor)
 	if(gridCol != gridColor){
 		sp->coordinates()->setGridLinesColor(Qt2GL(gridColor));
 
-		Qwt3D::GridLine majorGrid(true, Qt2GL(gridColor), Qwt3D::SOLID, 1.0);
-		Qwt3D::GridLine minorGrid(true, Qt2GL(gridColor), Qwt3D::DASH, 0.5);
-		for (int i = 0; i < 12; i++){
-			sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
-			sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
-		}
+		// Qwt3D::GridLine majorGrid(true, Qt2GL(gridColor), Qwt3D::SOLID, 1.0);
+		// Qwt3D::GridLine minorGrid(true, Qt2GL(gridColor), Qwt3D::DASH, 0.5);
+		// for (int i = 0; i < 12; i++){
+		// 	sp->coordinates()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
+		// 	sp->coordinates()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
+		// }
 
 		gridCol = gridColor;
 	}
@@ -1773,8 +1772,8 @@ void Graph3D::scaleFonts(double factor)
 	QFont font = sp->coordinates()->axes[X1].numberFont();
 	font.setPointSizeF(font.pointSizeF()*factor);
 	sp->coordinates()->setNumberFont (font);
-	if (d_active_curve)
-		d_active_curve->legend()->axis()->setNumberFont (font);
+	/*if (d_active_curve)
+		d_active_curve->legend()->axis()->setNumberFont (font);*/
 
 	titleFnt.setPointSizeF(factor*titleFnt.pointSizeF());
 	sp->setTitleFont(titleFnt.family(),titleFnt.pointSize(),titleFnt.weight(),titleFnt.italic());
@@ -1951,7 +1950,7 @@ void Graph3D::clearData()
 	d_table_plot_type = NoTable;
 
 	sp->makeCurrent();
-	sp->updateData(false);
+	sp->updateData();
 }
 
 void Graph3D::setBarStyle()
@@ -1967,8 +1966,9 @@ void Graph3D::setBarStyle()
 
 	sp->makeCurrent();
 
-	Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh);
-	d_active_curve->setPlotStyle(bar);
+	// Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars, applicationWindow()->d_3D_smooth_mesh);
+	// d_active_curve->setPlotStyle(bar);
+    QMessageBox::warning(this, tr("QtiPlot"), tr("Bar plots are momentarily disabled in this version."));
 	sp->update();
 	QApplication::restoreOverrideCursor();
 }
@@ -2279,7 +2279,7 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
 		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
-		gl2ps->setExportSize(cs);
+		//gl2ps->setExportSize(cs);
 	}
 
 	scaleFonts(fontsFactor);
@@ -2494,8 +2494,8 @@ void Graph3D::customPlotStyle(int style)
 			{
 				pointStyle = VerticalBars;
 				style_ = Qwt3D::USER;
-				Bar bar = Bar(d_bars_rad);
-				d_active_curve->setPlotStyle(bar);
+				//Bar bar = Bar(d_bars_rad);
+				//d_active_curve->setPlotStyle(bar);
 				break;
 			}
 	}
@@ -2764,7 +2764,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 
 	t << "axisType\t" << scaleType[0] << "\t" << scaleType[1] << "\t" << scaleType[2] << "\n";
 
-	Qwt3D::GridLine gridLine = sp->coordinates()->majorGridLines()[Qwt3D::X1];
+	/*Qwt3D::GridLine gridLine = sp->coordinates()->majorGridLines()[Qwt3D::X1];
 	RGBA color = gridLine.color_;
 	QColor c = GL2Qt(color.r, color.g, color.b);
 
@@ -2777,7 +2777,7 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	c = GL2Qt(color.r, color.g, color.b);
 	t << "\t<Minor>" + QString::number(gridLine.visible_) + "\t" + c.name() + "\t";
 	t << QString::number(gridLine.style_) + "\t" + QString::number(gridLine.width_) + "</Minor>\n";
-	t << "</Grid>\n";
+	t << "</Grid>\n";*/
 
 	t << "<AxesNumberFormat>";
 	for (int i = 0; i < 3; i++){
@@ -2981,7 +2981,7 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 	d_color_map_file = QString();
 	((LinearColor *)d_active_curve->dataColor())->setColorMap(colorMap);
 	d_active_curve->legend()->setLimits(colorMap.intensityRange().minValue(), colorMap.intensityRange().maxValue());
-	d_active_curve->showColorLegend(d_active_curve->isColorLegend());
+	// d_active_curve->showColorLegend(d_active_curve->isColorLegend());
 }
 
 void Graph3D::setDataColorMap(const QString& fileName)
@@ -3059,7 +3059,7 @@ void Graph3D::findBestLayout()
 	if (map && !map->intensityRange().isValid()){
 		map->setIntensityRange(floor(start), ceil(end));
 		d_active_curve->legend()->setLimits(floor(start), ceil(end));
-		d_active_curve->showColorLegend(d_active_curve->isColorLegend());
+		// d_active_curve->showColorLegend(d_active_curve->isColorLegend());
 	}
 
 	double d = (sp->hull().maxVertex - sp->hull().minVertex).length();
@@ -3134,8 +3134,8 @@ void Graph3D::copy(Graph3D* g)
 				d_bar_lines = g->barLines();
 				d_filled_bars = g->filledBars();
 				if (d_active_curve){
-					Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars);
-					d_active_curve->setPlotStyle(bar);
+					// Bar bar = Bar(d_bars_rad, d_bar_lines, d_filled_bars);
+					// d_active_curve->setPlotStyle(bar);
 				}
 				break;
 
@@ -3199,11 +3199,11 @@ void Graph3D::copy(Graph3D* g)
 	for (int i = 0; i < 12; i++){
 		coord->axes[i].setMajors(gcoord->axes[i].majors());
 		coord->axes[i].setMinors(gcoord->axes[i].minors());
-		coord->axes[i].setNumericFormat(gcoord->axes[i].numericFormat(), gcoord->axes[i].numericPrecision());
+		// coord->axes[i].setNumericFormat(gcoord->axes[i].numericFormat(), gcoord->axes[i].numericPrecision());
 
-		Qwt3D::AXIS axis = (Qwt3D::AXIS)i;
-		coord->setMajorGridLines(axis, gcoord->majorGridLine(axis));
-		coord->setMinorGridLines(axis, gcoord->minorGridLine(axis));
+		// Qwt3D::AXIS axis = (Qwt3D::AXIS)i;
+		// coord->setMajorGridLines(axis, gcoord->majorGridLine(axis));
+		// coord->setMinorGridLines(axis, gcoord->minorGridLine(axis));
 	}
 
 	bool smooth = g->antialiasing();
@@ -3429,11 +3429,11 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 			if (s.contains("<Major>")){
 				fList = s.remove("<Major>").remove("</Major>").split("\t", Qt::SkipEmptyParts);
-				if (fList.size() == 4){
+				/*if (fList.size() == 4){
 					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
 					for (int i = 0; i < 12; i++)
 						plot->coordinateSystem()->setMajorGridLines((Qwt3D::AXIS)i, line);
-				}
+				}*/
 			}
 
 			if (line.hasNext())
@@ -3441,11 +3441,11 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 
 			if (s.contains("<Minor>")){
 				fList = s.remove("<Minor>").remove("</Minor>").split("\t", Qt::SkipEmptyParts);
-				if (fList.size() == 4){
+				/*if (fList.size() == 4){
 					Qwt3D::GridLine line(fList[0].toInt(), Qt2GL(QColor(fList[1])), (Qwt3D::LINESTYLE)fList[2].toInt(), fList[3].toDouble());
 					for (int i = 0; i < 12; i++)
 						plot->coordinateSystem()->setMinorGridLines((Qwt3D::AXIS)i, line);
-				}
+				}*/
 			}
 			line.next();
 		}

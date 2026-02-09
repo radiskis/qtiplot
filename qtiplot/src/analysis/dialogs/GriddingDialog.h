@@ -29,7 +29,7 @@
 #ifndef GRIDDINGDIALOG_H
 #define GRIDDINGDIALOG_H
 
-#include <qwt3d_curve.h>
+// #include <qwt3d_curve.h>
 #include <qwt3d_surfaceplot.h>
 
 #include <QDialog>
@@ -67,7 +67,7 @@ private:
 	void findBestLayout();
 
 	Table *d_table;
-	Qwt3D::Plot3D* sp;
+	Qwt3D::SurfacePlot* sp;
 
 	QString d_col_name;
 	int d_nodes;

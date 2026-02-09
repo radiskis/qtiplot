@@ -31,7 +31,7 @@ target_include_directories(OriginPlugin PRIVATE
     ${CMAKE_SOURCE_DIR}/qtiplot/src/scripting
     ${CMAKE_SOURCE_DIR}/qtiplot/src/lib/include
     ${CMAKE_SOURCE_DIR}/3rdparty/qwt/src
-    ${CMAKE_SOURCE_DIR}/3rdparty/qwtplot3d-old/include
+    ${CMAKE_SOURCE_DIR}/3rdparty/qwtplot3d/include
     ${CMAKE_SOURCE_DIR}/3rdparty/gsl
     ${CMAKE_SOURCE_DIR}/3rdparty/muparser/include
     ${CMAKE_SOURCE_DIR}/3rdparty

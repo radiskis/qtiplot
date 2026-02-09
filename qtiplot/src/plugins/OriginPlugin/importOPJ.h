@@ -69,7 +69,7 @@ private:
 	ApplicationWindow *mw;
 
 	static QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> lineStyles;
-	static QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> line3DStyles;
+	//static QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> line3DStyles;
 	static QMap<Origin::GraphAxis::Scale, ScaleTransformation::Type>scaleTypes;
 	static QMap<Origin::FillPattern, int> patternStyles;
 	static QMap<Origin::ProjectNode::NodeType, QString> classes;

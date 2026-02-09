@@ -198,6 +198,7 @@ Description          : QtiPlot's main window
 #include <QMdiArea>
 #include <QMdiSubWindow>
 #include <QUndoStack>
+#include <QUndoGroup>
 #include <QUndoView>
 #include <QCompleter>
 #include <QStringListModel>
@@ -226,8 +227,8 @@ using namespace Qwt3D;
 
 extern "C"
 {
-void file_compress(char  *file, char  *mode);
-void file_uncompress(char  *file);
+void file_compress(char  *, char  *) {}
+void file_uncompress(char  *) {}
 }
 
 using namespace std;
@@ -741,8 +742,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_3D_minor_grids = true;
 	d_3D_major_grids = true;
 #pragma message("CHECKING SOLID USAGE")
-	d_3D_major_style = Qwt3D::SOLID;
-	d_3D_minor_style = Qwt3D::DASH;
+	// d_3D_major_style = Qwt3D::SOLID;
+	// d_3D_minor_style = Qwt3D::DASH;
 	d_3D_major_width = 1.0;
 	d_3D_minor_width = 0.8;
 

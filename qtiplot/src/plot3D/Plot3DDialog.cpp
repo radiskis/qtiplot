@@ -51,6 +51,10 @@ Description          : Surface plot options dialog
 #include <QFontDialog>
 #include <QApplication>
 
+#include <qwt3d_surfaceplot.h>
+#include <qwt3d_function.h>
+#include <qwt3d_parametricsurface.h>
+#include <qwt3d_coordsys.h>
 #include <qwt3d_color.h>
 
 Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WindowFlags fl )
@@ -717,7 +721,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	btnBackground->setColor(g->bgColor());
 
 	//Set major grid properties
-	Qwt3D::GridLine majorGridLine = g->surface()->coordinates()->majorGridLine(Qwt3D::X1);
+	/*Qwt3D::GridLine majorGridLine = g->surface()->coordinates()->majorGridLine(Qwt3D::X1);
 	boxMajorGrids->setChecked(majorGridLine.visible_);
 	RGBA color = majorGridLine.color_;
 	btnGrid->setColor(GL2Qt(color.r, color.g, color.b));
@@ -730,7 +734,7 @@ void Plot3DDialog::setPlot(Graph3D *g)
 	color = minorGridLine.color_;
 	btnGridMinor->setColor(GL2Qt(color.r, color.g, color.b));
 	boxMinorGridWidth->setValue(minorGridLine.width_);
-	boxMinorGridStyle->setCurrentIndex(minorGridLine.style_);
+	boxMinorGridStyle->setCurrentIndex(minorGridLine.style_);*/
 
 	d_color_map_file = g->colorMapFile();
 	setColorMapPreview(d_color_map_file);
@@ -1150,12 +1154,12 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setLabelsColor(btnLabels->color());
 		d_plot->setBackgroundColor(btnBackground->color());
 	} else if (generalDialog->currentWidget() == gridPage){
-		Qwt3D::GridLine majorGrid(boxMajorGrids->isChecked(), Qt2GL(btnGrid->color()), (Qwt3D::LINESTYLE)boxMajorGridStyle->currentIndex(), boxMajorGridWidth->value());
+		/*Qwt3D::GridLine majorGrid(boxMajorGrids->isChecked(), Qt2GL(btnGrid->color()), (Qwt3D::LINESTYLE)boxMajorGridStyle->currentIndex(), boxMajorGridWidth->value());
 		Qwt3D::GridLine minorGrid(boxMinorGrids->isChecked(), Qt2GL(btnGridMinor->color()), (Qwt3D::LINESTYLE)boxMinorGridStyle->currentIndex(), boxMinorGridWidth->value());
 		for (int i = 0; i < 12; i++){
 			d_plot->coordinateSystem()->setMajorGridLines((Qwt3D::AXIS)i, majorGrid);
 			d_plot->coordinateSystem()->setMinorGridLines((Qwt3D::AXIS)i, minorGrid);
-		}
+		}*/
 	} else if (generalDialog->currentWidget() == general){
 		d_plot->showColorLegend(boxLegend->isChecked());
 		d_plot->setResolution(boxResolution->value());

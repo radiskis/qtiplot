@@ -27,7 +27,7 @@ Description          : 3D graph widget
 #ifndef GRAPH3D_H
 #define GRAPH3D_H
 
-#include <qwt3d_curve.h>
+// #include <qwt3d_curve.h>
 #include <qwt3d_surfaceplot.h>
 #include <qwt3d_function.h>
 #include <qwt3d_parametricsurface.h>
@@ -57,6 +57,29 @@ class ConstFunction;
  * Big problem here: export to vector formats. Qwt3D's export filters write directly to a file, so they
  * can't be combined with output generated via QPrinter.
  */
+class Graph3D;
+
+class QtiPlotScale : public Qwt3D::LinearScale {
+public:
+	QtiPlotScale(char format = 'g', int precision = 6) : d_format(format), d_prec(precision) {}
+	QString ticLabel(unsigned int idx) const override {
+		if (idx < majors_p.size()) {
+			return QString::number(majors_p[idx], d_format, d_prec);
+		}
+		return QString();
+	}
+	Qwt3D::Scale *clone() const override { return new QtiPlotScale(*this); }
+private:
+	char d_format;
+	int d_prec;
+};
+
+class QtiPlotLogScale : public Qwt3D::LogScale {
+public:
+	QtiPlotLogScale() {}
+	Qwt3D::Scale *clone() const override { return new QtiPlotLogScale(*this); }
+};
+
 class Graph3D: public MdiSubWindow
 {
 	Q_OBJECT
@@ -71,7 +94,7 @@ public:
 
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
-	Qwt3D::Plot3D* surface(){return sp;};
+	Qwt3D::SurfacePlot* surface(){return sp;};
 
 	bool scaleOnPrint(){return d_scale_on_print;};
 	void setScaleOnPrint(bool on){d_scale_on_print = on;};
@@ -395,7 +418,8 @@ private:
 	void addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr);
 	void changeScales(double xl, double xr, double yl, double yr, double zl, double zr);
 
-	Curve* addCurve();
+	// Curve* addCurve();
+    Qwt3D::SurfacePlot* addCurve();
 	void removeCurve();
 
 	void resetAxesType();
@@ -431,22 +455,23 @@ private:
 	PointStyle pointStyle;
 	Table *d_table;
 	Matrix *d_matrix;
-	Qwt3D::Plot3D* sp;
+	Qwt3D::SurfacePlot* sp;
 	UserFunction *d_func;
 	UserParametricSurface *d_surface;
 	Qwt3D::PLOTSTYLE style_;
 	Qwt3D::SHADINGSTYLE d_shading;
 	PlotType d_table_plot_type;
-	Curve * d_active_curve;
+	Qwt3D::SurfacePlot * d_active_curve;
 	ConstFunction *d_const_func;
-	Curve * d_const_curve;
+	// Curve * d_const_curve;
+    Qwt3D::SurfacePlot * d_const_curve; // Not used/Supported?
 };
 
 //! Class for constant z surfaces
 class ConstFunction : public Function
 {
 public:
-	ConstFunction(Qwt3D::Curve *pw);
+	ConstFunction(Qwt3D::SurfacePlot *pw);
 	double operator()(double x, double y);
 };
 
@@ -454,7 +479,7 @@ public:
 class UserFunction : public Function
 {
 public:
-	UserFunction(const QString& s, Qwt3D::Curve *pw);
+	UserFunction(const QString& s, Qwt3D::SurfacePlot *pw);
 
     double operator()(double x, double y);
 	QString function(){return formula;};
@@ -462,6 +487,11 @@ public:
 	unsigned int rows(){return d_rows;};
 	unsigned int columns(){return d_columns;};
 	void setMesh (unsigned int columns, unsigned int rows);
+
+	double xMin(){return minu_p;};
+	double xMax(){return maxu_p;};
+	double yMin(){return minv_p;};
+	double yMax(){return maxv_p;};
 
 private:
 	  QString formula;
@@ -473,7 +503,7 @@ class UserParametricSurface : public ParametricSurface
 {
 public:
     UserParametricSurface(const QString& xFormula, const QString& yFormula,
-						  const QString& zFormula, Qwt3D::Curve *pw);
+						  const QString& zFormula, Qwt3D::SurfacePlot *pw);
     Triple operator()(double u, double v);
 
 	unsigned int rows(){return d_rows;};

@@ -27,16 +27,18 @@ Description          : Linear Color Map for 3D graph widget
 #ifndef LINEARCOLOR_H
 #define LINEARCOLOR_H
 
-#include <LinearColorMap.h>
-#include <qwt3d_curve.h>
+#include "LinearColorMap.h"
+#include <vector>
+#include <qwt3d_color.h>
+#include <qwt3d_plot.h>
 
 using namespace Qwt3D;
 
 class LinearColor : public StandardColor
 {
 public:
-	LinearColor(Qwt3D::Curve*, const LinearColorMap&);
-	LinearColor(Qwt3D::Curve*, const Qwt3D::ColorVector&);
+	LinearColor(Qwt3D::Plot3D*, const LinearColorMap&);
+	LinearColor(Qwt3D::Plot3D*, const Qwt3D::ColorVector&);
 	Qwt3D::RGBA operator()(double x, double y, double z) const;
 
 	double alpha(){return d_alpha;}

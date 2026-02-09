@@ -34,6 +34,7 @@
 #include <QMessageBox>
 #include <QDockWidget>
 #include <QLocale>
+#include <QDateTime>
 #include <QDate>
 #include <QDir>
 #include <QTemporaryFile>
@@ -65,14 +66,14 @@
 
 #include <gsl/gsl_math.h>
 
-#include "boost/date_time/posix_time/posix_time.hpp"
-using namespace boost::posix_time;
+//#include "boost/date_time/posix_time/posix_time.hpp"
+//using namespace boost::posix_time;
 using namespace std;
 
 #define OBJECTXOFFSET 200
 
 QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> ImportOPJ::lineStyles;
-QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> ImportOPJ::line3DStyles;
+//QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> ImportOPJ::line3DStyles;
 QMap<Origin::FillPattern, int> ImportOPJ::patternStyles;
 QMap<Origin::ProjectNode::NodeType, QString> ImportOPJ::classes;
 QMap<Origin::GraphAxis::Scale, ScaleTransformation::Type> ImportOPJ::scaleTypes;
@@ -89,11 +90,7 @@ QString strreverse(const QString &str) //QString reversing
 
 QString cTimeToString(time_t ct)
 {
-	ptime pt = from_time_t(ct);
-	stringstream ss;
-	ss.imbue(locale(locale::classic(), new time_facet("%d.%m.%Y %H:%M:%S")));
-	ss << pt;
-	return QString::fromStdString(ss.str());
+	return QDateTime::fromSecsSinceEpoch(ct).toString("yyyy-MM-ddTHH:mm:ss");
 }
 
 ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
@@ -115,14 +112,14 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 	lineStyles[Origin::GraphCurve::ShortDashDot] = Qt::DashDotLine;
 	lineStyles[Origin::GraphCurve::DashDotDot] = Qt::DashDotDotLine;
 
-	line3DStyles[Origin::GraphCurve::Solid] = Qwt3D::SOLID;
+	/*line3DStyles[Origin::GraphCurve::Solid] = Qwt3D::SOLID;
 	line3DStyles[Origin::GraphCurve::Dash] = Qwt3D::DASH;
 	line3DStyles[Origin::GraphCurve::ShortDash] = Qwt3D::SHORTDASH;
 	line3DStyles[Origin::GraphCurve::Dot] = Qwt3D::DOT;
 	line3DStyles[Origin::GraphCurve::ShortDot] = Qwt3D::SHORTDOT;
 	line3DStyles[Origin::GraphCurve::DashDot] = Qwt3D::DASHDOT;
 	line3DStyles[Origin::GraphCurve::ShortDashDot] = Qwt3D::SHORTDASHDOT;
-	line3DStyles[Origin::GraphCurve::DashDotDot] = Qwt3D::DASHDOTDOT;
+	line3DStyles[Origin::GraphCurve::DashDotDot] = Qwt3D::DASHDOTDOT;*/
 
 	scaleTypes[Origin::GraphAxis::Linear] = ScaleTransformation::Linear;
 	scaleTypes[Origin::GraphAxis::Log10] = ScaleTransformation::Log10;
@@ -1845,12 +1842,12 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		if(layer.backgroundColor.type != Origin::Color::None)
 			plot->setBackgroundColor(originToQtColor(layer.backgroundColor));
 
-		plot->coordinateSystem()->setGridLines(true, true, Qwt3D::LEFT | Qwt3D::FLOOR | Qwt3D::BACK);
+		//plot->coordinateSystem()->setGridLines(true, true, Qwt3D::LEFT | Qwt3D::FLOOR | Qwt3D::BACK);
 
 		RGBA axisColor = Qt2GL(ColorBox::defaultColor(layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
 		RGBA numberColor = layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].color));
-		Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
-		Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		//Qwt3D::GridLine majorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
+		//Qwt3D::GridLine minorGrid(!layer.xAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.xAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.xAxis.majorGrid.style], layer.xAxis.majorGrid.width);
 		double width = layer.xAxis.formatAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].thickness;
 		font = plot->numbersFont();
 		font.setBold(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontBold);
@@ -1859,8 +1856,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(xLabelColor);
-			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
-			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			//plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			//plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
 			plot->coordinateSystem()->axes[axis].setMinors(layer.xAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);
@@ -1868,8 +1865,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		axisColor = Qt2GL(ColorBox::defaultColor(layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
 		numberColor = layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].color));
-		majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
-		minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
+		//majorGrid = Qwt3D::GridLine(!layer.yAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.majorGrid.style], layer.yAxis.majorGrid.width);
+		//minorGrid = Qwt3D::GridLine(!layer.yAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.yAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.yAxis.minorGrid.style], layer.yAxis.minorGrid.width);
 		width = layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].thickness;
 		font.setBold(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
@@ -1877,8 +1874,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(yLabelColor);
-			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
-			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			//plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			//plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
 			plot->coordinateSystem()->axes[axis].setMinors(layer.yAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);
@@ -1886,8 +1883,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		axisColor = Qt2GL(ColorBox::defaultColor(layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
 		numberColor = layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color == 0xF7 ? axisColor : Qt2GL(ColorBox::defaultColor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].color));
-		majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
-		minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
+		//majorGrid = Qwt3D::GridLine(!layer.zAxis.majorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.majorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.majorGrid.style], layer.zAxis.majorGrid.width);
+		//minorGrid = Qwt3D::GridLine(!layer.zAxis.minorGrid.hidden, Qt2GL(ColorBox::defaultColor(layer.zAxis.minorGrid.color)), line3DStyles[(Origin::GraphCurve::LineStyle)layer.zAxis.minorGrid.style], layer.zAxis.minorGrid.width);
 		width = layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].thickness;
 		font.setBold(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
@@ -1895,8 +1892,8 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(zLabelColor);
-			plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
-			plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
+			//plot->coordinateSystem()->setMajorGridLines(axis, majorGrid);
+			//plot->coordinateSystem()->setMinorGridLines(axis, minorGrid);
 			plot->coordinateSystem()->axes[axis].setMinors(layer.zAxis.minorTicks + 1);
 			plot->coordinateSystem()->axes[axis].setLineWidth(width);
 			plot->setNumbersFont(font);

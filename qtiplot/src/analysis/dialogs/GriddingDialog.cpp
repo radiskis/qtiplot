@@ -269,17 +269,20 @@ void GriddingDialog::loadDataFromTable()
 
 	xy.setlength(d_nodes, 3);
 
-	Curve *data_curve = new Curve(sp);
-	sp->addCurve(data_curve);
+	// Curve *data_curve = new Curve(sp);
+	// sp->addCurve(data_curve);
 
-	data_curve->setSmoothMesh(app->d_3D_smooth_mesh);
-	data_curve->setDataProjection(false);
-	data_curve->setProjection(BASE);
-	data_curve->setProjection(FACE, false);
-	data_curve->setProjection(SIDE, false);
+	sp->setSmoothMesh(app->d_3D_smooth_mesh);
+    // data_curve->setDataProjection(false); // Not supported directly in SurfacePlot
+    // data_curve->setProjection(BASE);
+    // data_curve->setProjection(FACE, false);
+    // data_curve->setProjection(SIDE, false);
 
-	Dot dot = Dot(5, true);
-	data_curve->setPlotStyle(dot);
+	// Dot dot = Dot(5, true);
+	// data_curve->setPlotStyle(dot);
+    sp->setPlotStyle(Qwt3D::USER);
+    Qwt3D::Dot dot(5, true);
+    sp->setPlotStyle(dot);
 
 	Qwt3D::TripleField data;
 	Qwt3D::CellField cells;
@@ -311,7 +314,7 @@ void GriddingDialog::loadDataFromTable()
 	}
 
 	sp->makeCurrent();
-	data_curve->loadFromData (data, cells);
+	sp->loadFromData (data, cells);
 	sp->updateData();
 
 	findBestLayout();
@@ -413,23 +416,23 @@ void GriddingDialog::preview()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	Curve *d_preview_curve = 0;
-	if (sp->curveList().size() == 1){
-		d_preview_curve = new Curve(sp);
-		sp->addCurve(d_preview_curve);
+	// Curve *d_preview_curve = 0;
+	// if (sp->curveList().size() == 1){
+	// 	d_preview_curve = new Curve(sp);
+	// 	sp->addCurve(d_preview_curve);
 
-		d_preview_curve->setSmoothMesh(app->d_3D_smooth_mesh);
-		d_preview_curve->setDataProjection(false);
-		d_preview_curve->setProjection(BASE);
-		d_preview_curve->setProjection(FACE, false);
-		d_preview_curve->setProjection(SIDE, false);
-	} else
-		d_preview_curve = sp->curve();
+	sp->setSmoothMesh(app->d_3D_smooth_mesh);
+    // d_preview_curve->setDataProjection(false);
+    // d_preview_curve->setProjection(BASE);
+    // d_preview_curve->setProjection(FACE, false);
+    // d_preview_curve->setProjection(SIDE, false);
+	/*} else
+		d_preview_curve = sp->curve();*/
 
 	if (boxPlotStyle->currentIndex() == 0)
-		d_preview_curve->setPlotStyle(WIREFRAME);
+		sp->setPlotStyle(WIREFRAME);
 	else
-		d_preview_curve->setPlotStyle(HIDDENLINE);
+		sp->setPlotStyle(HIDDENLINE);
 
 	double xmin = this->boxXStart->value();
 	double xmax = this->boxXEnd->value();
@@ -471,7 +474,7 @@ void GriddingDialog::preview()
 	}
 
 	sp->makeCurrent();
-	d_preview_curve->loadFromData(data_matrix, cols, rows, xmin, xmax, ymin, ymax);
+	sp->loadFromData(data_matrix, cols, rows, xmin, xmax, ymin, ymax);
 	resetAxesLabels();
 	Matrix::freeMatrixData(data_matrix, cols);
 
@@ -480,17 +483,17 @@ void GriddingDialog::preview()
 
 void GriddingDialog::setPlotStyle(int style)
 {
-	Curve *d_preview_curve = 0;
+	/*Curve *d_preview_curve = 0;
 	if (sp->curveList().size() == 2)
 		d_preview_curve = sp->curve();
 	else
-		return;
+		return;*/
 
 	sp->makeCurrent();
 	if (style == 0)
-		d_preview_curve->setPlotStyle(WIREFRAME);
+		sp->setPlotStyle(WIREFRAME);
 	else
-		d_preview_curve->setPlotStyle(HIDDENLINE);
+		sp->setPlotStyle(HIDDENLINE);
 	sp->update();
 }
 

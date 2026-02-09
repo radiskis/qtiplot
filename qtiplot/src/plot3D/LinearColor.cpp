@@ -25,15 +25,17 @@ Description          : Linear Color Map for 3D graph widget
  *                                                                         *
  ***************************************************************************/
 #include <LinearColor.h>
+#include <qwt3d_coordsys.h>
+#include <qwt3d_axis.h>
 
-LinearColor::LinearColor(Qwt3D::Curve* curve, const LinearColorMap& colorMap):
-StandardColor(curve, 0),
+LinearColor::LinearColor(Qwt3D::Plot3D* plot, const LinearColorMap& colorMap):
+StandardColor(plot, 0),
 d_color_map(colorMap),
 d_alpha(1.0)
 {}
 
-LinearColor::LinearColor(Qwt3D::Curve* curve, const Qwt3D::ColorVector& colors):
-StandardColor(curve, 0),
+LinearColor::LinearColor(Qwt3D::Plot3D* plot, const Qwt3D::ColorVector& colors):
+StandardColor(plot, 0),
 d_color_map(LinearColorMap())
 {
 	setColorVector(colors);
@@ -42,7 +44,7 @@ d_color_map(LinearColorMap())
 Qwt3D::RGBA LinearColor::operator()(double, double, double z) const
 {
 	double zmin, zmax;
-	data_->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+	data_->coordinates()->axes[Z1].limits(zmin, zmax);
 
 	int size = (int)colors_.size() - 1;
 	if (size >= 0){
@@ -91,7 +93,7 @@ std::vector<double> LinearColor::colorStops() const
 	QwtInterval range = d_color_map.intensityRange();
 	if (!range.isValid()){
 		double zmin, zmax;
-		data_->plot()->coordinates()->axes[Z1].limits(zmin, zmax);
+		data_->coordinates()->axes[Z1].limits(zmin, zmax);
 		range = QwtInterval(zmin, zmax);
 	}
 	double l = range.width();
