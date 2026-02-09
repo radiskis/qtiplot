@@ -32,6 +32,26 @@ import qti
 from qti import *
 import os
 
+# Monkey-patch Layer (Graph) to support Layer.In, Layer.Out, etc.
+try:
+	if hasattr(qti, "Graph"): # Graph is aliased to Layer inside SIP, but module might show it differently
+		# Depending on SIP version/config, usage of /PyName=Layer/ might rename it in module dict
+		pass
+	
+	# Check for Layer in qti module (it should be there due to /PyName/)
+	if hasattr(qti, "Layer"):
+		Layer = qti.Layer
+		if not hasattr(Layer, "In"):
+			Layer.In = 3
+			Layer.Out = 1
+			Layer.InOut = 2
+			Layer.NoTicks = 0
+		# Ensure Layer is available in __main__
+		setattr(__main__, "Layer", Layer)
+except:
+	pass
+
+
 def import_to_global(modname, attrs=None, math=False):
 	"""
 		import_to_global(modname, (a,b,c,...), math): like "from modname import a,b,c,...",
