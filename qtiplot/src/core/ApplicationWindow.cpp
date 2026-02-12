@@ -30,6 +30,19 @@ Description          : QtiPlot's main window
 #include "ApplicationWindow.h"
 #include <QtiPlotApplication.h>
 
+#include <qwt_global.h>
+#include <qwt3d_global.h>
+#include <gsl/gsl_version.h>
+#include <muParser.h>
+#include <zlib.h>
+
+#ifdef SCRIPTING_PYTHON
+#pragma push_macro("slots")
+#undef slots
+#include <Python.h>
+#pragma pop_macro("slots")
+#endif
+
 #include "PlotWizard.h"
 #include "ConfigDialog.h"
 #include "RenameWindowDialog.h"
@@ -9841,23 +9854,93 @@ void ApplicationWindow::closeWindow(MdiSubWindow* window)
 
 QMessageBox * ApplicationWindow::about(bool dialog)
 {
-	if (dialog){
-		QString text = "<h2>"+ versionString() + "</h2>";
-		text +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
-		text += "<h3>" + tr("Released") + ": " + QString(release_date) + "</h3>";
+	QString htmlText, plainText;
 
+	// Basic Info
+	htmlText += "<h2>"+ versionString() + "</h2>";
+	plainText += versionString() + "\n";
+
+	htmlText +=	"<h3>" + QString(copyright_string).replace("\n", "<br>") + "</h3>";
+	plainText += QString(copyright_string) + "\n";
+
+	QString released = tr("Released") + ": " + QString(release_date);
+	htmlText += "<h3>" + released + "</h3>";
+	plainText += released + "\n";
+	
+	// Libraries
+	htmlText += "<h3>" + tr("Libraries") + "</h3><p>";
+	plainText += "\n" + tr("Libraries") + ":\n";
+
+	auto addLib = [&](const QString& name, const QString& version, const QString& url) {
+		htmlText += QString("<a href=\"%1\">%2</a> %3<br>").arg(url, name, version);
+		plainText += QString("%1 %2\n").arg(name, version);
+	};
+
+	addLib("Qt", qVersion(), "https://www.qt.io");
+	addLib("Qwt", QWT_VERSION_STR, "https://qwt.sourceforge.io");
+	addLib("QwtPlot3D", QString("%1.%2.%3").arg(QWT3D_MAJOR_VERSION).arg(QWT3D_MINOR_VERSION).arg(QWT3D_PATCH_VERSION), "http://qwtplot3d.sourceforge.net");
+	addLib("GSL", GSL_VERSION, "https://www.gnu.org/software/gsl");
+#ifdef _UNICODE
+	addLib("muParser", QString::fromStdWString(mu::ParserVersion), "https://beltoforion.de/en/muparser");
+#else
+	addLib("muParser", QString::fromStdString(mu::ParserVersion), "https://beltoforion.de/en/muparser");
+#endif
+	addLib("zlib", ZLIB_VERSION, "https://zlib.net");
+#ifdef SCRIPTING_PYTHON
+	addLib("Python", QString(Py_GetVersion()).split(" ")[0], "https://www.python.org");
+#endif
+	htmlText += "</p>";
+
+	// Compiler
+	htmlText += "<h3>" + tr("Compiler") + "</h3><p>";
+	plainText += "\n" + tr("Compiler") + ":\n";
+
+	QString compiler;
+#if defined(__clang__)
+	compiler = "Clang " + QString::number(__clang_major__) + "." + QString::number(__clang_minor__) + "." + QString::number(__clang_patchlevel__);
+#elif defined(__GNUC__)
+	compiler = "GCC " + QString::number(__GNUC__) + "." + QString::number(__GNUC_MINOR__) + "." + QString::number(__GNUC_PATCHLEVEL__);
+#elif defined(_MSC_VER)
+	compiler = "MSVC " + QString::number(_MSC_VER);
+#else
+	compiler = "Unknown Compiler";
+#endif
+	htmlText += compiler + "</p>";
+	plainText += compiler + "\n";
+
+	// System
+	htmlText += "<h3>" + tr("System") + "</h3><p>";
+	plainText += "\n" + tr("System") + ":\n";
+
+	QString arch;
+#if defined(_M_X64) || defined(__x86_64__)
+	arch = "x86_64";
+#elif defined(_M_IX86) || defined(__i386__)
+	arch = "x86";
+#elif defined(_M_ARM64) || defined(__aarch64__)
+	arch = "ARM64";
+#elif defined(_M_ARM) || defined(__arm__)
+	arch = "ARM";
+#else
+	arch = "Unknown Architecture";
+#endif
+	arch += " " + QString::number(sizeof(void*) * 8) + "-bit";
+	QString built_on = tr("Built on") + ": " + __DATE__ + " " + __TIME__;
+
+	htmlText += arch + "<br>" + built_on + "</p>";
+	plainText += arch + "\n" + built_on + "\n";
+
+	if (dialog){
 		QMessageBox *mb = new QMessageBox();
 		mb->setAttribute(Qt::WA_DeleteOnClose);
 		mb->setWindowTitle (tr("About QtiPlot"));
 		mb->setWindowIcon(QIcon(":/logo.png"));
 		mb->setIconPixmap(QPixmap(":/logo.png"));
-		mb->setText(text);
+		mb->setText(htmlText);
 		mb->exec();
 		return mb;
 	} else {
-		printf("%s\n", versionString().toLocal8Bit().constData());
-		printf("%s\n", copyright_string);
-		printf("%s\n", (tr("Released") + ": " + QString(release_date)).toLocal8Bit().constData());
+		printf("%s", plainText.toLocal8Bit().constData());
 		exit(0);
 	}
 	return nullptr;

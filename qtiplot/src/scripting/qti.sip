@@ -32,6 +32,7 @@
 
 %Module qti
 
+
 %ModuleCode
 #include <QObject>
 #include <QWidget>
@@ -120,6 +121,10 @@ public:
 
 class Table: MdiSubWindow
 {
+%Docstring
+The Table class handles spreadsheet data.
+Note: Column and row indices start at 1.
+%End
   Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f = Qt::Widget);
 private:
     Table(const Table &);
@@ -352,13 +357,25 @@ public:
   enum NumericFormat{Default = 0, Decimal = 1, Scientific = 2};
 
   int numRows();
+%Docstring
+Returns the number of rows in the table.
+%End
   Py_ssize_t __len__();
 %MethodCode
   sipRes = sipCpp->numRows();
 %End
   int numCols();
+%Docstring
+Returns the number of columns in the table.
+%End
   void setNumRows(int);
+%Docstring
+Sets the number of rows in the table.
+%End
   void setNumCols(int);
+%Docstring
+Sets the number of columns in the table.
+%End
 
   void deleteRows(int, int);
   void __delitem__(int);
@@ -390,6 +407,10 @@ public:
 %End
 
   SIP_PYOBJECT text(SIP_PYOBJECT, int);
+%Docstring
+text(col, row) -> string
+Returns the string value at the specified column and row.
+%End
 %MethodCode
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
@@ -414,6 +435,10 @@ public:
 %End
 
   double cell(SIP_PYOBJECT, int);
+%Docstring
+cell(col, row) -> float
+Returns the numeric value at the specified column and row.
+%End
 %MethodCode
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
@@ -603,6 +628,10 @@ public:
     Py_DECREF(iterator);
 %End
   void setText(SIP_PYOBJECT, int, const QString&);
+%Docstring
+setText(col, row, value)
+Sets the string value at the specified column and row.
+%End
 %MethodCode
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
@@ -611,6 +640,10 @@ public:
 		sipCpp->setText(row, col, *a2);
 %End
   void setCell(SIP_PYOBJECT, int, double);
+%Docstring
+setCell(col, row, value)
+Sets the numeric value at the specified column and row.
+%End
 %MethodCode
   sipIsErr = 0;
   CHECK_TABLE_COL(a0);
@@ -627,6 +660,10 @@ public:
 		sipIsErr = setCellDataHelper(sipCpp, row, col, a2);
 %End
   SIP_PYOBJECT colName(int);
+%Docstring
+colName(col) -> string
+Returns the name of the specified column.
+%End
 %MethodCode
    if (a0 < 1 || a0 > sipCpp->numCols()) {\
 		sipIsErr = 1;\
@@ -645,6 +682,10 @@ public:
       sipIsErr = 1;
 %End
   void setColName(SIP_PYOBJECT, const QString&, bool=false);
+%Docstring
+setColName(col, name)
+Renames the specified column.
+%End
 %MethodCode
 	sipIsErr = 0;
    CHECK_TABLE_COL(a0);
@@ -657,7 +698,15 @@ public:
   void importASCII(const QString&, const QString&="\t", int=0, bool=false,
   					bool=true, bool=false, bool=false, const QString&="#", bool=false,
 					ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1, const QList<int>& = QList<int>(), const QStringList& = QStringList());
+%Docstring
+importASCII(file, sep="\t", ignoreLines=0, renameCols=True)
+Imports data from an ASCII file.
+%End
   bool exportASCII(const QString&, const QString&="\t", bool=false, bool=false, bool=false);
+%Docstring
+exportASCII(file, sep="\t")
+Exports the table data to an ASCII file.
+%End
 
   void setDecimalSeparators(int,bool=true);
 %MethodCode
@@ -683,6 +732,10 @@ public:
 %End
 
   void normalizeCol(SIP_PYOBJECT) /PyName=normalize/;
+%Docstring
+normalize(col)
+Normalizes the specified column data.
+%End
 %MethodCode
 	sipIsErr = 0;
 	CHECK_TABLE_COL(a0);
@@ -692,6 +745,10 @@ public:
   void normalize();
 
   void sortColumn(SIP_PYOBJECT, int order = 0);
+%Docstring
+sortColumn(col, order=0)
+Sorts the specified column. 0 = Ascending, 1 = Descending.
+%End
 %MethodCode
   	sipIsErr = 0;
   	CHECK_TABLE_COL(a0);
@@ -784,6 +841,11 @@ if (sipIsErr == 0)
 %End
 
     void setColumnRole(SIP_PYOBJECT, PlotDesignation);
+%Docstring
+setColumnRole(col, role)
+Defines the plot role of the specified column.
+Roles: Table.X, Table.Y, Table.Z, Table.xErr, Table.yErr, Table.Label, Table.None.
+%End
 %MethodCode
   	sipIsErr = 0;
   	CHECK_TABLE_COL(a0);
@@ -1000,6 +1062,10 @@ public:
 
 class Matrix: MdiSubWindow
 {
+%Docstring
+The Matrix class handles 2D matrices of numeric data.
+Note: Row and column indices start at 1.
+%End
 private:
     Matrix(const Matrix &);
 
@@ -1037,14 +1103,34 @@ public:
   enum ResamplingMethod{Bilinear, Bicubic};
 
   int numRows();
+%Docstring
+Returns the number of rows in the matrix.
+%End
   void setNumRows(int);
+%Docstring
+Sets the number of rows in the matrix.
+%End
   int numCols();
+%Docstring
+Returns the number of columns in the matrix.
+%End
   void setNumCols(int);
+%Docstring
+Sets the number of columns in the matrix.
+%End
   void setDimensions(int rows, int cols);
+%Docstring
+setDimensions(rows, cols)
+Resizes the matrix to the specified number of rows and columns.
+%End
   void resample(int rows, int cols, const ResamplingMethod& method = Matrix::Bilinear);
   void smooth();
 
   SIP_PYOBJECT text(int, int);
+%Docstring
+text(row, col) -> string
+Returns the value at the specified row and column as a string.
+%End
 %MethodCode
 	sipIsErr = 0;
 	CHECK_MATRIX_ROW(a0);
@@ -1053,6 +1139,10 @@ public:
 		sipRes = PyUnicode_FromString(sipCpp->text(row, col).toUtf8().constData());
 %End
   double cell(int, int);
+%Docstring
+cell(row, col) -> float
+Returns the numeric value at the specified row and column.
+%End
 %MethodCode
 	sipIsErr = 0;
 	CHECK_MATRIX_ROW(a0);
@@ -1061,6 +1151,10 @@ public:
 		sipRes = sipCpp->cell(row, col);
 %End
   void setText(int, int, const QString&);
+%Docstring
+setText(row, col, value)
+Sets the string value at the specified row and column.
+%End
 %MethodCode
 	sipIsErr = 0;
 	CHECK_MATRIX_ROW(a0);
@@ -1069,6 +1163,10 @@ public:
 		sipCpp->setText(row, col, *a2);
 %End
   void setCell(int, int, double);
+%Docstring
+setCell(row, col, value)
+Sets the numeric value at the specified row and column.
+%End
 %MethodCode
 	sipIsErr = 0;
 	CHECK_MATRIX_ROW(a0);
@@ -1104,18 +1202,54 @@ public:
 	QString zComment();
 
 	QString formula();
+%Docstring
+Returns the formula used to calculate matrix values.
+%End
+	void setFormula(const QString &);
+%Docstring
+setFormula(formula)
+Sets the formula used to calculate matrix values.
+%End
+
 
     bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1, bool muParser = true);
+%Docstring
+calculate(startRow=0, endRow=-1, startCol=0, endCol=-1, muParser=True)
+Calculates matrix values using the current formula.
+%End
+
 
     void setNumericPrecision(int prec);
 
     void transpose();
+%Docstring
+Transposes the matrix.
+%End
 	void invert();
+%Docstring
+Inverts the matrix.
+%End
 	void flipVertically();
+%Docstring
+Flips the matrix vertically.
+%End
 	void flipHorizontally();
+%Docstring
+Flips the matrix horizontally.
+%End
 	void rotate90(bool = true);
+%Docstring
+rotate90(clockwise=True)
+Rotates the matrix by 90 degrees.
+%End
 	double determinant();
+%Docstring
+Returns the determinant of the matrix.
+%End
 	double integrate();
+%Docstring
+Returns the integral of the matrix data.
+%End
 
 	void setViewType(ViewType, bool renderImage = true);
 	void setHeaderViewType(HeaderViewType);
@@ -1135,7 +1269,15 @@ public:
 
 	void importASCII(const QString&, const QString&="\t", int=0, bool=false, bool=false,
 			const QString&="#", ImportMode = Overwrite, const QLocale& = QLocale(), int = 0, int = -1);
+%Docstring
+importASCII(file, sep="\t", ignoreLines=0, stripWhiteSpaces=False, simplifyWhiteSpaces=False)
+Imports data from an ASCII file into the matrix.
+%End
 	bool exportASCII(const QString&, const QString&="\t", bool=false);
+%Docstring
+exportASCII(file, sep="\t", columnNames=False)
+Exports matrix data to an ASCII file.
+%End
 
 
 };
@@ -1951,6 +2093,9 @@ class QwtPlot : QFrame
 
 class Graph : QwtPlot /PyName=Layer/
 {
+%Docstring
+The Layer class (aliased to Graph) represents a single plot layer.
+%End
 
 
 
@@ -1999,6 +2144,10 @@ public:
 %End
 
   bool addCurve(Table*, const QString&, int=0, double=1, int=3, int=0, int=-1);
+%Docstring
+addCurve(table, columnName, style=0) -> bool
+Adds a curve to the layer from the specified table column.
+%End
 %MethodCode
 	if (a0 == 0) {
 	   sipIsErr = 1;
@@ -2010,10 +2159,18 @@ public:
 	}
 %End
   void removeCurve(int);
+%Docstring
+removeCurve(index)
+Removes the curve at the specified index.
+%End
 
   void removeCurve(QwtPlotCurve*);
   void deleteFitCurves();
   int curveCount() /PyName=numCurves/;
+%Docstring
+numCurves() -> int
+Returns the number of curves in the layer.
+%End
   PlotCurve* curve(int index);
   PlotCurve* curve(const QString &title);
   QString curveTitle(int);
@@ -2108,7 +2265,15 @@ public:
   void remove(FrameWidget*);
 
   void setXAxisTitle(const QString& text) /PyName=setXTitle/;
+%Docstring
+setXTitle(text)
+Sets the title of the X axis.
+%End
   void setYAxisTitle(const QString& text) /PyName=setYTitle/;
+%Docstring
+setYTitle(text)
+Sets the title of the Y axis.
+%End
 
   void enableAxis(int axis, bool on = true);
   void setAxisColor(int axis, const QColor& color);
@@ -2170,6 +2335,9 @@ public:
   bool hasGridOnTop();
 
   void replot();
+%Docstring
+Redraws the layer.
+%End
 
   void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
 				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0)/PyName=exportTex/;
@@ -2178,6 +2346,10 @@ public:
   void exportVector(const QString&, int = 0, bool = true,
 				const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
   void exportToFile(const QString& fileName) /PyName=export/;
+%Docstring
+export(filename)
+Exports the layer to an image or vector file.
+%End
 
   void enableAutoscaling(bool = true);
   void setAutoscaleFonts(bool = true);
@@ -2214,6 +2386,9 @@ public:
 
 class MultiLayer : MdiSubWindow /PyName=Graph/
 {
+%Docstring
+The Graph class (aliased to MultiLayer) represents a window containing one or more plot layers.
+%End
 
 
 
@@ -2234,15 +2409,42 @@ public:
   enum AlignPolicy{AlignLayers = 0, AlignCanvases};
 
   Graph *activeLayer();
+%Docstring
+Returns the currently active layer.
+%End
   void setActiveLayer(Graph*);
+%Docstring
+Sets the active layer.
+%End
   int numLayers();
+%Docstring
+Returns the number of layers in the graph window.
+%End
   void setNumLayers(int n);
+%Docstring
+Sets the number of layers in the graph window.
+%End
   Graph* layer(int num);
+%Docstring
+layer(index) -> Layer
+Returns the layer at the specified index.
+%End
   QList<Graph *> layersList();
   Graph* addLayer(int = 0, int = 0, int = 0, int = 0, bool = false);
+%Docstring
+addLayer() -> Layer
+Adds a new layer to the graph window.
+%End
 
   bool removeLayer(Graph *g);
+%Docstring
+removeLayer(layer)
+Removes the specified layer.
+%End
   bool removeActiveLayer();
+%Docstring
+Removes the active layer.
+%End
 
   void setCols(int);
   void setRows(int);
@@ -2251,6 +2453,10 @@ public:
   void setLayerCanvasSize (int, int);
   void setAlignement (int, int);
   void arrangeLayers(bool fit = true, bool userSize = false);
+%Docstring
+arrangeLayers()
+Automatically arranges the layers.
+%End
   bool swapLayers(int, int);
 
   void setScaleLayersOnResize(bool = true);
@@ -2261,6 +2467,10 @@ public:
   void linkXLayerAxes(bool = true);
 
   void exportToFile(const QString& fileName) /PyName=export/;
+%Docstring
+export(filename)
+Exports the graph window to an image or vector file.
+%End
   void exportImage(const QString& fileName, int quality = 100, bool transparent = false,
 		int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel,
 		double fontsFactor = 1.0, int compression = 0);
@@ -2323,6 +2533,9 @@ public:
 
 class Graph3D: MdiSubWindow
 {
+%Docstring
+The Plot3D class (aliased to Graph3D) represents a 3D plot window.
+%End
 %TypeHeaderCode
 #include "Graph3D.h"
 %End
@@ -2338,11 +2551,36 @@ public:
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0, int compression = 0);
 
     void setRotation(double xVal, double yVal, double zVal);
+%Docstring
+setRotation(x, y, z)
+Sets the rotation of the 3D plot.
+%End
 	void setScale(double xVal, double yVal, double zVal);
+%Docstring
+setScale(x, y, z)
+Sets the scale factor for each axis.
+%End
 	void setShift(double xVal, double yVal, double zVal);
+%Docstring
+setShift(x, y, z)
+Sets the shift of the 3D plot.
+%End
     void setZoom(double val);
+%Docstring
+setZoom(value)
+Sets the zoom factor.
+%End
     void setOrthogonal(bool = true);
     void setMeshLineWidth(int);
+%Docstring
+setMeshLineWidth(width)
+Sets the line width for the 3D mesh.
+%End
+  void setMeshColor(const QColor&);
+%Docstring
+setMeshColor(color)
+Sets the color of the wireframe mesh.
+%End
 
 
 
@@ -2360,6 +2598,10 @@ public:
     void showColorLegend(bool = true) /PyName=showLegend/;
     void setTitle(const QString&, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
     void setAntialiasing(bool = true);
+%Docstring
+setAntialiasing(on=True)
+Enables or disables antialiasing.
+%End
     void setLeftGrid(bool = true);
 	void setRightGrid(bool = true);
 	void setCeilGrid(bool = true);
@@ -2392,11 +2634,27 @@ public:
     void setFilledBars(bool filled = true);
 
     void animate(bool = true);
+%Docstring
+animate(on=True)
+Enables or disables plot animation.
+%End
     void findBestLayout();
 
     void changeDataColumn(Table* table, const QString& colName, int = 0) /PyName=setData/;
+%Docstring
+setData(table, colName)
+Sets the data source for the 3D plot from a table column.
+%End
     void addMatrixData(Matrix* ) /PyName=setMatrix/;
+%Docstring
+setMatrix(matrix)
+Sets the data source for the 3D plot from a matrix.
+%End
     void addFunction(const QString&, double, double, double, double, double, double, int = 40, int = 40) /PyName=setFunction/;
+%Docstring
+setFunction(formula, xl, xr, yl, yr, zl, zr, columns=40, rows=40)
+Sets the data source for the 3D plot from a function formula.
+%End
     void addParametricSurface(const QString&, const QString&, const QString&, double,
                         double, double, double, int=40, int=40, bool=true, bool=true) /PyName=setParametricSurface/;
 
@@ -2433,6 +2691,9 @@ public:
 
 class ApplicationWindow: QMainWindow
 {
+%Docstring
+The main application instance. Accessible via ``qti.app``.
+%End
 private:
     ApplicationWindow(const ApplicationWindow &);
 
@@ -2455,12 +2716,49 @@ private:
 %End
 
 public:
+  void open(const QString&, bool = false, bool = true);
+%Docstring
+open(filename, factoryVersion=False, newProject=True)
+Opens a project file.
+%End
+  void saveProject();
+%Docstring
+saveProject()
+Saves the current project.
+%End
+%MethodCode
+  sipCpp->saveProject();
+%End
+  void closeProject();
+%Docstring
+closeProject()
+Closes the current project.
+%End
+  void quit();
+%Docstring
+quit()
+Exits the application.
+%End
+%MethodCode
+  qApp->quit();
+%End
+
   ApplicationWindow();
   enum MatrixToTableConversion{Direct, XYZ, YXZ};
 
   Table* newTable();
+%Docstring
+Creates a new table.
+%End
   Table* currentTable();
+%Docstring
+Returns the currently active table.
+%End
   Table* newTable(const QString&, int=30, int=2);
+%Docstring
+newTable(name, rows=30, cols=2) -> Table
+Creates a new table with the specified name and dimensions.
+%End
 %MethodCode
   sipRes = sipCpp->newTable(*a0, a1, a2);
 %End
@@ -2565,6 +2863,15 @@ public:
             double, double, double, double, int=40, int=40, bool=true, bool=true) /PyName=plot3D/;
 
   QList<MdiSubWindow*> windowsList() /PyName=windows/;
+%Docstring
+windows() -> list
+Returns a list of all windows in the project.
+%End
+  MdiSubWindow* activeWindow();
+%Docstring
+activeWindow() -> Window
+Returns the currently active window.
+%End
 
   // folders
   Folder *activeFolder() ;
@@ -2587,7 +2894,15 @@ public:
   void setPreferences(Graph*);
 
   void saveProjectAs(const QString& fileName = QString(), bool = false);
+%Docstring
+saveProjectAs(filename)
+Saves the current project to a new file.
+%End
   MdiSubWindow* clone(MdiSubWindow*);
+%Docstring
+clone(window) -> MdiSubWindow
+Clones the specified window object.
+%End
 
   Matrix* tableToMatrix(Table* t);
   Matrix* tableToMatrixRegularXYZ(Table* t, const QString& colName);
@@ -2595,6 +2910,10 @@ public:
 
   bool writeFitResultsToLog();
   void setWriteFitResultsToLog(bool on = true);
+%Docstring
+setWriteFitResultsToLog(on=True)
+Enables or disables automatic logging of fit results.
+%End
 
   QTextEdit *resultsLog();
   void displayInfo(const QString& text);
@@ -2611,6 +2930,9 @@ public:
 
 class Fit : Filter
 {
+%Docstring
+The Fit class provides access to the data fitting API.
+%End
 %TypeHeaderCode
 #include "Fit.h"
 %End
@@ -2621,7 +2943,13 @@ public:
   ~Fit();
 
   virtual void fit();
+%Docstring
+Runs the fit.
+%End
   virtual bool run();
+%Docstring
+Runs the fit. Returns True on success.
+%End
 
   bool setWeightingData(WeightingMethod, const QString&=QString());
   bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
@@ -2631,9 +2959,20 @@ public:
   QString resultFormula();
   int numParameters();
   QStringList parameterNames();
+%Docstring
+Returns a list of parameter names.
+%End
 
   void setInitialGuess(int, double) /PyName=setInitialValue/;
+%Docstring
+setInitialValue(index, value)
+Sets the initial guess for the specified parameter.
+%End
   void setInitialGuesses(...) /PyName=setInitialValues/;
+%Docstring
+setInitialValues(val1, val2, ...)
+Sets the initial guesses for all parameters.
+%End
 %MethodCode
 int n = PyTuple_GET_SIZE(a0);
 double *values = new double[n];
@@ -2656,6 +2995,10 @@ delete values;
 
   virtual void guessInitialValues();
   void setParameterRange(int, double, double);
+%Docstring
+setParameterRange(index, min, max)
+Sets the allowed range for the specified parameter.
+%End
 
   void setAlgorithm(Algorithm);
   void setOutputPrecision(int);
@@ -2667,6 +3010,9 @@ delete values;
   void scaleErrors(bool yes = true);
 
   SIP_PYTUPLE results();
+%Docstring
+Returns the fitted parameter values.
+%End
 %MethodCode
 double *results = sipCpp->results();
 int size=sipCpp->numParameters();
@@ -2680,6 +3026,9 @@ if(sipRes)
 %End
 
   SIP_PYTUPLE errors();
+%Docstring
+Returns the estimated errors for the fitted parameters.
+%End
 %MethodCode
 double *errors = sipCpp->errors();
 int size=sipCpp->numParameters();
@@ -2706,7 +3055,13 @@ if(sipRes)
 %End
 
   double chiSquare();
+%Docstring
+Returns the chi-square value of the fit.
+%End
   double rSquare();
+%Docstring
+Returns the R-square value of the fit.
+%End
   double adjustedRSquare();
   double rss();
   double rmse();

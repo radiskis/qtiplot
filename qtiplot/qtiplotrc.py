@@ -32,6 +32,26 @@ import qti
 from qti import *
 import os
 
+# Monkey-patch Layer (Graph) to support Layer.In, Layer.Out, etc.
+try:
+	if hasattr(qti, "Graph"): # Graph is aliased to Layer inside SIP, but module might show it differently
+		# Depending on SIP version/config, usage of /PyName=Layer/ might rename it in module dict
+		pass
+	
+	# Check for Layer in qti module (it should be there due to /PyName/)
+	if hasattr(qti, "Layer"):
+		Layer = qti.Layer
+		if not hasattr(Layer, "In"):
+			Layer.In = 3
+			Layer.Out = 1
+			Layer.InOut = 2
+			Layer.NoTicks = 0
+		# Ensure Layer is available in __main__
+		setattr(__main__, "Layer", Layer)
+except:
+	pass
+
+
 def import_to_global(modname, attrs=None, math=False):
 	"""
 		import_to_global(modname, (a,b,c,...), math): like "from modname import a,b,c,...",
@@ -152,7 +172,19 @@ try:
 	from PyQt6 import QtWidgets
 
 	global Qt
-	from PyQt6.QtCore import Qt
+	from PyQt6.QtCore import Qt, QSize, QRect, QPoint
+	from PyQt6.QtGui import QFont, QColor, QPen, QBrush
+
+	# Export to __main__
+	import __main__
+	setattr(__main__, "Qt", Qt)
+	setattr(__main__, "QSize", QSize)
+	setattr(__main__, "QRect", QRect)
+	setattr(__main__, "QPoint", QPoint)
+	setattr(__main__, "QFont", QFont)
+	setattr(__main__, "QColor", QColor)
+	setattr(__main__, "QPen", QPen)
+	setattr(__main__, "QBrush", QBrush)
 except ImportError:
 	print("Warning: PyQt6 could not be imported.")
 

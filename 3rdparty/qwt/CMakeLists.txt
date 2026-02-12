@@ -4,6 +4,7 @@ project(qwt CXX)
 file(GLOB QWT_SOURCES src/*.cpp)
 list(REMOVE_ITEM QWT_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/qwt_plot_glcanvas.cpp")
 file(GLOB QWT_HEADERS src/*.h)
+list(REMOVE_ITEM QWT_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/src/qwt_plot_glcanvas.h")
 
 add_library(qwt STATIC ${QWT_SOURCES} ${QWT_HEADERS})
 
