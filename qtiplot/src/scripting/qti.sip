@@ -2729,6 +2729,7 @@ Saves the current project.
 %MethodCode
   sipCpp->saveProject();
 %End
+  void savedProject();
   void closeProject();
 %Docstring
 closeProject()
