@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
 	File                 : Matrix.cpp
 	Project              : QtiPlot
 	--------------------------------------------------------------------
@@ -1066,7 +1066,7 @@ void Matrix::exportToFile(const QString& fileName)
 		QList<QByteArray> list = QImageWriter::supportedImageFormats();
 		for(int i=0 ; i<list.count() ; i++){
 			if (fileName.contains( "." + list[i].toLower())){
-				d_matrix_model->renderImage().save(fileName, list[i], 100);
+				d_matrix_model->renderImage().save(fileName, list[i], -1);
 				return;
 			}
 		}
