@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
     File                 : ScriptEdit.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
@@ -46,7 +46,7 @@
 #include <QTextStream>
 #include <QApplication>
 #include <QCompleter>
-#include <qAbstractItemView>
+#include <QAbstractItemView>
 #include <QScrollBar>
 #include <QStringListModel>
 #include <QShortcut>

@@ -7,7 +7,11 @@ name = "qti"
 
 [tool.sip.project]
 sip-files-dir = "qtiplot/src/scripting"
-sip-include-dirs = ["C:/Users/User/AppData/Roaming/Python/Python313/site-packages/PyQt6/bindings"]
+sip-include-dirs = [
+    "/usr/lib/python3/dist-packages/PyQt6/bindings",
+    "/usr/share/sip/PyQt6"
+]
+sip-module = "PyQt6.sip"
 
 [tool.sip.bindings.qti]
 sip-file = "qti.sip"

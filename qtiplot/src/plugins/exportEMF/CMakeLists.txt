@@ -52,3 +52,5 @@ set_target_properties(exportEMF PROPERTIES
     PREFIX ""
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qtiplot/plugins"
 )
+
+install(TARGETS exportEMF RUNTIME DESTINATION bin/plugins LIBRARY DESTINATION bin/plugins)

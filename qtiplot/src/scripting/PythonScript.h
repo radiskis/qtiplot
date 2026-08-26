@@ -30,6 +30,7 @@
 #define PYTHON_SCRIPT_H
 
 #include "Script.h"
+#include <QCoreApplication>
 
 class QObject;
 class QString;
@@ -46,7 +47,14 @@ class PythonScript : public Script
 		PythonScript(PythonScripting *env, const QString &code, QObject *context=0, const QString &name="<input>");
 		~PythonScript();
 
-		void write(const QString &text) { emit print(text); }
+		void write(const QString &text) {
+			if (QCoreApplication::instance() && QCoreApplication::instance()->arguments().contains("-X")) {
+				printf("%s", text.toUtf8().constData());
+				fflush(stdout);
+			}
+			emit print(text);
+		}
+		void flush() {}
 
 		public slots:
 		bool compile(bool for_eval=true);

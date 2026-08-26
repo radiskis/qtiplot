@@ -70,6 +70,8 @@ def import_to_global(modname, attrs=None, math=False):
 		mod = getattr(mod, submod)
 	if attrs==None: attrs=dir(mod)
 	for name in attrs:
+		if not hasattr(mod, name):
+			continue
 		f = getattr(mod, name)
 		setattr(__main__, name, f)
 		# make functions available in QtiPlot's math function list

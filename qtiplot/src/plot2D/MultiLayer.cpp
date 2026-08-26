@@ -1381,7 +1381,7 @@ void MultiLayer::copyAllLayers()
 		QFile::remove(name);
 	}
 #else
-	QApplication::clipboard()->setImage(canvasPixmap().convertToImage());
+	QApplication::clipboard()->setImage(canvasPixmap().toImage());
 #endif
 
 	if (selectionOn)
@@ -1413,11 +1413,9 @@ void MultiLayer::print()
 	QPrintDialog printDialog(&printer, applicationWindow());
 	if (printDialog.exec() == QDialog::Accepted){
 	#ifdef Q_OS_LINUX
-		if (printDialog.enabledOptions() & qAbstractPrintDialog::PrintToFile){
+		if (printDialog.testOption(QAbstractPrintDialog::PrintToFile)){
 			QString fn = printer.outputFileName();
-			if (printer.outputFormat() == QPrinter::PostScriptFormat && !fn.contains(".ps"))
-				printer.setOutputFileName(fn + ".ps");
-			else if (printer.outputFormat() == QPrinter::PdfFormat && !fn.contains(".pdf"))
+			if (!fn.contains(".pdf"))
 				printer.setOutputFileName(fn + ".pdf");
 		}
 	#endif

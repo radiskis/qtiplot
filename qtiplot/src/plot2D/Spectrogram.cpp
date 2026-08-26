@@ -808,10 +808,7 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 	const bool hInvert = xxMap.p1() > xxMap.p2();
 	const bool vInvert = yyMap.p1() < yyMap.p2();
 	if (hInvert || vInvert){
-		Qt::Orientations orientations;
-		if (hInvert) orientations |= Qt::Horizontal;
-		if (vInvert) orientations |= Qt::Vertical;
-		image = image.flipped(orientations);
+		image = image.mirrored(hInvert, vInvert);
 	}
 
 	return image;

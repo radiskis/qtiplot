@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -7,416 +7,319 @@
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
 
-// vim: expandtab
+#include "qwt_plot_canvas.h"
+#include "qwt_painter.h"
+#include "qwt_plot.h"
 
 #include <qpainter.h>
-#include <qstyle.h>
-#if QT_VERSION >= 0x040000
-#include <qstyleoption.h>
-#include <qpaintengine.h>
-#ifdef Q_WS_X11
-#include <qx11info_x11.h>
-#endif
-#endif
+#include <qpainterpath.h>
 #include <qevent.h>
-#include "qwt_painter.h"
-#include "qwt_math.h"
-#include "qwt_plot.h"
-#include "qwt_paint_buffer.h"
-#include "qwt_plot_canvas.h"
 
 class QwtPlotCanvas::PrivateData
 {
-public:
-    PrivateData():
-        focusIndicator(NoFocusIndicator),
-        paintAttributes(0),
-        cache(NULL)
+  public:
+    PrivateData()
+        : backingStore( NULL )
     {
     }
 
     ~PrivateData()
     {
-        delete cache;
+        delete backingStore;
     }
 
-    FocusIndicator focusIndicator;
-    int paintAttributes;
-    QPixmap *cache;
+    QwtPlotCanvas::PaintAttributes paintAttributes;
+    QPixmap* backingStore;
 };
 
-//! Sets a cross cursor, enables QwtPlotCanvas::PaintCached
+/*!
+   \brief Constructor
 
-QwtPlotCanvas::QwtPlotCanvas(QwtPlot *plot):
-    QFrame(plot)
+   \param plot Parent plot widget
+   \sa QwtPlot::setCanvas()
+ */
+QwtPlotCanvas::QwtPlotCanvas( QwtPlot* plot )
+    : QFrame( plot )
+    , QwtPlotAbstractCanvas( this )
 {
-    d_data = new PrivateData;
+    m_data = new PrivateData;
 
-#if QT_VERSION >= 0x040100
-    setAutoFillBackground(true);
-#endif
+    setPaintAttribute( QwtPlotCanvas::BackingStore, true );
+    setPaintAttribute( QwtPlotCanvas::Opaque, true );
+    setPaintAttribute( QwtPlotCanvas::HackStyledBackground, true );
 
-#if QT_VERSION < 0x040000
-    setWFlags(Qt::WNoAutoErase);
-#ifndef QT_NO_CURSOR
-    setCursor(Qt::crossCursor);
-#endif
-#else
-#ifndef QT_NO_CURSOR
-    setCursor(Qt::CrossCursor);
-#endif
-#endif // >= 0x040000
-
-    setPaintAttribute(PaintCached, true);
-    setPaintAttribute(PaintPacked, true);
+    setLineWidth( 2 );
+    setFrameShadow( QFrame::Sunken );
+    setFrameShape( QFrame::Panel );
 }
 
 //! Destructor
 QwtPlotCanvas::~QwtPlotCanvas()
 {
-    delete d_data;
-}
-
-//! Return parent plot widget
-QwtPlot *QwtPlotCanvas::plot()
-{
-    QWidget *w = parentWidget();
-    if ( w && w->inherits("QwtPlot") )
-        return (QwtPlot *)w;
-
-    return NULL;
-}
-
-//! Return parent plot widget
-const QwtPlot *QwtPlotCanvas::plot() const
-{
-    const QWidget *w = parentWidget();
-    if ( w && w->inherits("QwtPlot") )
-        return (QwtPlot *)w;
-
-    return NULL;
+    delete m_data;
 }
 
 /*!
-  \brief Changing the paint attributes
+   \brief Changing the paint attributes
 
-  \param attribute Paint attribute
-  \param on On/Off
+   \param attribute Paint attribute
+   \param on On/Off
 
-  The default setting enables PaintCached and PaintPacked
-
-  \sa testPaintAttribute(), drawCanvas(), drawContents(), paintCache()
-*/
-void QwtPlotCanvas::setPaintAttribute(PaintAttribute attribute, bool on)
+   \sa testPaintAttribute(), backingStore()
+ */
+void QwtPlotCanvas::setPaintAttribute( PaintAttribute attribute, bool on )
 {
-    if ( bool(d_data->paintAttributes & attribute) == on )
+    if ( bool( m_data->paintAttributes & attribute ) == on )
         return;
 
     if ( on )
-        d_data->paintAttributes |= attribute;
+        m_data->paintAttributes |= attribute;
     else
-        d_data->paintAttributes &= ~attribute;
+        m_data->paintAttributes &= ~attribute;
 
-    switch(attribute)
+    switch ( attribute )
     {
-        case PaintCached:
+        case BackingStore:
         {
             if ( on )
             {
-                if ( d_data->cache == NULL )
-                    d_data->cache = new QPixmap();
+                if ( m_data->backingStore == NULL )
+                    m_data->backingStore = new QPixmap();
 
                 if ( isVisible() )
                 {
-                    const QRect cr = contentsRect();
-                    *d_data->cache = QPixmap::grabWidget(this,
-                        cr.x(), cr.y(), cr.width(), cr.height() );
+#if QT_VERSION >= 0x050000
+                    *m_data->backingStore = grab( rect() );
+#else
+                    *m_data->backingStore =
+                        QPixmap::grabWidget( this, rect() );
+#endif
                 }
             }
             else
             {
-                delete d_data->cache;
-                d_data->cache = NULL;
+                delete m_data->backingStore;
+                m_data->backingStore = NULL;
             }
             break;
         }
-        case PaintPacked:
+        case Opaque:
         {
-            /*
-              If not visible, changing of the background mode
-              is delayed until it becomes visible. This tries to avoid 
-              looking through the canvas when the canvas is shown the first 
-              time.
-             */
+            if ( on )
+                setAttribute( Qt::WA_OpaquePaintEvent, true );
 
-            if ( on == false || isVisible() )
-                QwtPlotCanvas::setSystemBackground(!on);
-
+            break;
+        }
+        default:
+        {
             break;
         }
     }
 }
 
 /*!
-  Test wether a paint attribute is enabled
+   Test whether a paint attribute is enabled
 
-  \param attribute Paint attribute
-  \return true if the attribute is enabled
-  \sa setPaintAttribute()
-*/
-bool QwtPlotCanvas::testPaintAttribute(PaintAttribute attribute) const
+   \param attribute Paint attribute
+   \return true, when attribute is enabled
+   \sa setPaintAttribute()
+ */
+bool QwtPlotCanvas::testPaintAttribute( PaintAttribute attribute ) const
 {
-    return (d_data->paintAttributes & attribute) != 0;
+    return m_data->paintAttributes & attribute;
 }
 
-//! Return the paint cache, might be null
-QPixmap *QwtPlotCanvas::paintCache()
+//! \return Backing store, might be null
+const QPixmap* QwtPlotCanvas::backingStore() const
 {
-    return d_data->cache;
+    return m_data->backingStore;
 }
 
-//! Return the paint cache, might be null
-const QPixmap *QwtPlotCanvas::paintCache() const
+//! Invalidate the internal backing store
+void QwtPlotCanvas::invalidateBackingStore()
 {
-    return d_data->cache;
-}
-
-//! Invalidate the internal paint cache
-void QwtPlotCanvas::invalidatePaintCache()
-{
-    if ( d_data->cache )
-        *d_data->cache = QPixmap();
+    if ( m_data->backingStore )
+        *m_data->backingStore = QPixmap();
 }
 
 /*!
-  Set the focus indicator
+   Qt event handler for QEvent::PolishRequest and QEvent::StyleChange
 
-  \sa FocusIndicator, focusIndicator()
-*/
-void QwtPlotCanvas::setFocusIndicator(FocusIndicator focusIndicator)
+   \param event Qt Event
+   \return See QFrame::event()
+ */
+bool QwtPlotCanvas::event( QEvent* event )
 {
-    d_data->focusIndicator = focusIndicator;
-}
-
-/*!
-  \return Focus indicator
-  
-  \sa FocusIndicator, setFocusIndicator()
-*/
-QwtPlotCanvas::FocusIndicator QwtPlotCanvas::focusIndicator() const
-{
-    return d_data->focusIndicator;
-}
-
-/*!
-  Hide event
-  \param event Hide event
-*/
-void QwtPlotCanvas::hideEvent(QHideEvent *event)
-{
-    QFrame::hideEvent(event);
-
-    if ( d_data->paintAttributes & PaintPacked )
+    if ( event->type() == QEvent::PolishRequest )
     {
-        // enable system background to avoid the "looking through
-        // the canvas" effect, for the next show
+        if ( testPaintAttribute( QwtPlotCanvas::Opaque ) )
+        {
+            // Setting a style sheet changes the
+            // Qt::WA_OpaquePaintEvent attribute, but we insist
+            // on painting the background.
 
-        setSystemBackground(true);
-    }
-}
-
-/*!
-  Paint event
-  \param event Paint event
-*/
-void QwtPlotCanvas::paintEvent(QPaintEvent *event)
-{
-#if QT_VERSION >= 0x040000
-    QPainter painter(this);
-    
-    if ( !contentsRect().contains( event->rect() ) ) 
-    {
-        painter.save();
-        painter.setClipRegion( event->region() & frameRect() );
-        drawFrame( &painter );
-        painter.restore(); 
+            setAttribute( Qt::WA_OpaquePaintEvent, true );
+        }
     }
 
-    painter.setClipRegion(event->region() & contentsRect());
+    if ( event->type() == QEvent::PolishRequest ||
+        event->type() == QEvent::StyleChange )
+    {
+        updateStyleSheetInfo();
+    }
 
-    drawContents( &painter );
-#else // QT_VERSION < 0x040000
-    QFrame::paintEvent(event);
-#endif
-
-    if ( d_data->paintAttributes & PaintPacked )
-        setSystemBackground(false);
+    return QFrame::event( event );
 }
 
-/*! 
-  Redraw the canvas, and focus rect
-  \param painter Painter
-*/
-void QwtPlotCanvas::drawContents(QPainter *painter)
+/*!
+   Paint event
+   \param event Paint event
+ */
+void QwtPlotCanvas::paintEvent( QPaintEvent* event )
 {
-    if ( d_data->paintAttributes & PaintCached && d_data->cache 
-        && d_data->cache->size() == contentsRect().size() )
+    QPainter painter( this );
+    painter.setClipRegion( event->region() );
+
+    if ( testPaintAttribute( QwtPlotCanvas::BackingStore ) &&
+        m_data->backingStore != NULL )
     {
-        painter->drawPixmap(contentsRect().topLeft(), *d_data->cache);
+        QPixmap& bs = *m_data->backingStore;
+        if ( bs.size() != size() * QwtPainter::devicePixelRatio( &bs ) )
+        {
+            bs = QwtPainter::backingStore( this, size() );
+
+            if ( testAttribute(Qt::WA_StyledBackground) )
+            {
+                QPainter p( &bs );
+                drawStyled( &p, testPaintAttribute( HackStyledBackground ) );
+            }
+            else
+            {
+                QPainter p;
+                if ( borderRadius() <= 0.0 )
+                {
+                    QwtPainter::fillPixmap( this, bs );
+                    p.begin( &bs );
+                    drawCanvas( &p );
+                }
+                else
+                {
+                    p.begin( &bs );
+                    drawUnstyled( &p );
+                }
+
+                if ( frameWidth() > 0 )
+                    drawBorder( &p );
+            }
+        }
+
+        painter.drawPixmap( 0, 0, *m_data->backingStore );
     }
     else
     {
-        QwtPlot *plot = ((QwtPlot *)parent());
-        const bool doAutoReplot = plot->autoReplot();
-        plot->setAutoReplot(false);
+        if ( testAttribute(Qt::WA_StyledBackground ) )
+        {
+            if ( testAttribute( Qt::WA_OpaquePaintEvent ) )
+            {
+                drawStyled( &painter, testPaintAttribute( HackStyledBackground ) );
+            }
+            else
+            {
+                drawCanvas( &painter );
+            }
+        }
+        else
+        {
+            if ( testAttribute( Qt::WA_OpaquePaintEvent ) )
+            {
+                if ( autoFillBackground() )
+                {
+                    fillBackground( &painter );
+                    drawBackground( &painter );
+                }
+            }
+            else
+            {
+                if ( borderRadius() > 0.0 )
+                {
+                    QPainterPath clipPath;
+                    clipPath.addRect( rect() );
+                    clipPath = clipPath.subtracted( borderPath( rect() ) );
 
-        drawCanvas(painter);
+                    painter.save();
 
-        plot->setAutoReplot(doAutoReplot);
+                    painter.setClipPath( clipPath, Qt::IntersectClip );
+                    fillBackground( &painter );
+                    drawBackground( &painter );
+
+                    painter.restore();
+                }
+            }
+
+            drawCanvas( &painter );
+
+            if ( frameWidth() > 0 )
+                drawBorder( &painter );
+        }
     }
 
     if ( hasFocus() && focusIndicator() == CanvasFocusIndicator )
-        drawFocusIndicator(painter);
+        drawFocusIndicator( &painter );
 }
 
 /*!
-  Draw the the canvas
+   Draw the border of the plot canvas
 
-  Paints all plot items to the contentsRect(), using QwtPlot::drawCanvas
-  and updates the paint cache.
-
-  \param painter Painter
-
-  \sa QwtPlot::drawCanvas(), setPaintAttributes(), testPaintAttributes()
-*/
-void QwtPlotCanvas::drawCanvas(QPainter *painter)
+   \param painter Painter
+   \sa setBorderRadius()
+ */
+void QwtPlotCanvas::drawBorder( QPainter* painter )
 {
-    if ( !contentsRect().isValid() )
+    if ( borderRadius() <= 0 )
+    {
+        drawFrame( painter );
         return;
-
-    QBrush bgBrush;
-#if QT_VERSION >= 0x040000
-        bgBrush = palette().brush(backgroundRole());
-#else
-    QColorGroup::ColorRole role = 
-        QPalette::backgroundRoleFromMode( backgroundMode() );
-    bgBrush = colorGroup().brush( role );
-#endif
-
-    if ( d_data->paintAttributes & PaintCached && d_data->cache )
-    {
-        *d_data->cache = QPixmap(contentsRect().size());
-
-#ifdef Q_WS_X11
-#if QT_VERSION >= 0x040000
-        if ( d_data->cache->x11Info().screen() != x11Info().screen() )
-            d_data->cache->x11SetScreen(x11Info().screen());
-#else
-        if ( d_data->cache->x11Screen() != x11Screen() )
-            d_data->cache->x11SetScreen(x11Screen());
-#endif
-#endif
-
-        if ( d_data->paintAttributes & PaintPacked )
-        {
-            QPainter bgPainter(d_data->cache);
-            bgPainter.setPen(Qt::NoPen);
-
-            bgPainter.setBrush(bgBrush);
-            bgPainter.drawRect(d_data->cache->rect());
-        }
-        else
-            d_data->cache->fill(this, d_data->cache->rect().topLeft());
-
-        QPainter cachePainter(d_data->cache);
-        cachePainter.translate(-contentsRect().x(),
-            -contentsRect().y());
-
-        ((QwtPlot *)parent())->drawCanvas(&cachePainter);
-
-        cachePainter.end();
-
-        painter->drawPixmap(contentsRect(), *d_data->cache);
     }
-    else
-    {
-#if QT_VERSION >= 0x040000
-        if ( d_data->paintAttributes & PaintPacked )
-#endif
-        {
-            painter->save();
 
-            painter->setPen(Qt::NoPen);
-            painter->setBrush(bgBrush);
-            painter->drawRect(contentsRect());
-
-            painter->restore();
-        }
-
-        ((QwtPlot *)parent())->drawCanvas(painter);
-    }
+    QwtPlotAbstractCanvas::drawBorder( painter );
 }
 
-/*! 
-  Draw the focus indication
-  \param painter Painter
-*/
-void QwtPlotCanvas::drawFocusIndicator(QPainter *painter)
+/*!
+   Resize event
+   \param event Resize event
+ */
+void QwtPlotCanvas::resizeEvent( QResizeEvent* event )
 {
-    const int margin = 1;
-
-    QRect focusRect = contentsRect();
-    focusRect.setRect(focusRect.x() + margin, focusRect.y() + margin,
-        focusRect.width() - 2 * margin, focusRect.height() - 2 * margin);
-
-    QwtPainter::drawFocusRect(painter, this, focusRect);
-}
-
-void QwtPlotCanvas::setSystemBackground(bool on)
-{
-#if QT_VERSION < 0x040000
-    if ( backgroundMode() == Qt::NoBackground )
-    {
-        if ( on )
-            setBackgroundMode(Qt::PaletteBackground);
-    }
-    else
-    {
-        if ( !on )
-            setBackgroundMode(Qt::NoBackground);
-    }
-#else
-    if ( testAttribute(Qt::WA_NoSystemBackground) == on )
-        setAttribute(Qt::WA_NoSystemBackground, !on);
-#endif
+    QFrame::resizeEvent( event );
+    updateStyleSheetInfo();
 }
 
 /*!
    Invalidate the paint cache and repaint the canvas
    \sa invalidatePaintCache()
-*/
+ */
 void QwtPlotCanvas::replot()
 {
-    invalidatePaintCache();
+    invalidateBackingStore();
 
-    /*
-      In case of cached or packed painting the canvas
-      is repainted completely and doesn't need to be erased.
-     */
-    const bool erase =
-        !testPaintAttribute(QwtPlotCanvas::PaintPacked)
-        && !testPaintAttribute(QwtPlotCanvas::PaintCached);
-
-#if QT_VERSION >= 0x040000
-    const bool noBackgroundMode = testAttribute(Qt::WA_NoBackground);
-    if ( !erase && !noBackgroundMode )
-        setAttribute(Qt::WA_NoBackground, true);
-
-    repaint(contentsRect());
-
-    if ( !erase && !noBackgroundMode )
-        setAttribute(Qt::WA_NoBackground, false);
-#else
-    repaint(contentsRect(), erase);
-#endif
+    if ( testPaintAttribute( QwtPlotCanvas::ImmediatePaint ) )
+        repaint( contentsRect() );
+    else
+        update( contentsRect() );
 }
+
+/*!
+   Calculate the painter path for a styled or rounded border
+
+   When the canvas has no styled background or rounded borders
+   the painter path is empty.
+
+   \param rect Bounding rectangle of the canvas
+   \return Painter path, that can be used for clipping
+ */
+QPainterPath QwtPlotCanvas::borderPath( const QRect& rect ) const
+{
+    return canvasBorderPath( rect );
+}
+
+#include "moc_qwt_plot_canvas.cpp"

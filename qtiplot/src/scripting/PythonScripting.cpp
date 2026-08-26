@@ -236,6 +236,13 @@ PythonScripting::PythonScripting(ApplicationWindow *parent)
 	if (!math)
 		PyErr_Print();
 
+	PyObject *qtcore = PyImport_ImportModule("PyQt6.QtCore");
+	if (qtcore) Py_DECREF(qtcore); else PyErr_Print();
+	PyObject *qtgui = PyImport_ImportModule("PyQt6.QtGui");
+	if (qtgui) Py_DECREF(qtgui); else PyErr_Print();
+	PyObject *qtwidgets = PyImport_ImportModule("PyQt6.QtWidgets");
+	if (qtwidgets) Py_DECREF(qtwidgets); else PyErr_Print();
+
 	qtimod = PyImport_ImportModule("qti");
 	if (qtimod)
 	{
@@ -267,6 +274,18 @@ bool PythonScripting::initialize()
 {
 	if (!d_initialized) return false;
 
+	PyGILState_STATE state = PyGILState_Ensure();
+	// Add config folder and application directory to sys.path
+	QString addPathCode = QString("import sys\n"
+		"for p in ['%1', '%2', '%3']:\n"
+		"    if p and p not in sys.path:\n"
+		"        sys.path.insert(0, p)\n")
+		.arg(d_parent->d_python_config_folder)
+		.arg(qApp->applicationDirPath())
+		.arg(qApp->applicationDirPath() + "/../qtiplot");
+	PyRun_SimpleString(addPathCode.toUtf8().constData());
+	PyGILState_Release(state);
+
 	// Redirect output to the print(const QString&) signal.
 	// Also see method write(const QString&) and Python documentation on
 	// sys.stdout and sys.stderr.
@@ -276,10 +295,19 @@ bool PythonScripting::initialize()
 	bool initialized = loadInitFile(d_parent->d_python_config_folder + "/qtiplotrc");
 	if(!initialized)
 		initialized = loadInitFile(d_parent->d_python_config_folder + "/.qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(qApp->applicationDirPath() + "/qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(qApp->applicationDirPath() + "/../qtiplot/qtiplotrc");
+	if(!initialized)
+		initialized = loadInitFile(qApp->applicationDirPath() + "/../../qtiplot/qtiplotrc");
 
 	if(!initialized){
-		QMessageBox::critical(d_parent, tr("Couldn't find initialization files"),
-		tr("Please indicate the correct path to the Python configuration files in the preferences dialog.\nSearched: ") + d_parent->d_python_config_folder + "/qtiplotrc");
+		fprintf(stderr, "Couldn't find Python initialization files in %s\n", d_parent->d_python_config_folder.toUtf8().constData());
+		if (!qApp->arguments().contains("-X")) {
+			QMessageBox::critical(d_parent, tr("Couldn't find initialization files"),
+			tr("Please indicate the correct path to the Python configuration files in the preferences dialog.\nSearched: ") + d_parent->d_python_config_folder + "/qtiplotrc");
+		}
 	}
 
 	return initialized;
@@ -298,54 +326,18 @@ bool PythonScripting::loadInitFile(const QString &path)
 {
 	PyGILState_STATE state = PyGILState_Ensure();
 	QString nativePath = QDir::toNativeSeparators(path);
-	QFileInfo pyFile(nativePath+".py"), pycFile(nativePath+".pyc");
+	QFileInfo pyFile(nativePath+".py");
 	bool success = false;
-	if (pycFile.exists() && (pycFile.lastModified() >= pyFile.lastModified())) {
-		// if we have a recent pycFile, use it
-		FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
-		if (f){
-			success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
-			fclose(f);
-		}
-	} 
 	
-	if (!success && pyFile.exists()) {
-		// try to compile pyFile to pycFile
-		PyObject *compileModule = PyImport_ImportModule("py_compile");
-		if (compileModule) {
-			PyObject *compile = PyDict_GetItemString(PyModule_GetDict(compileModule), "compile");
-			if (compile) {
-				PyObject *tmp = PyObject_CallFunctionObjArgs(compile,
-						PyString_FromString(pyFile.filePath().toUtf8().constData()),
-						PyString_FromString(pycFile.filePath().toUtf8().constData()),
-						nullptr);
-				if (tmp)
-					Py_DECREF(tmp);
-				else
-					PyErr_Print();
-			} else
+	if (pyFile.exists()) {
+		QFile f(pyFile.filePath());
+		if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QByteArray data = f.readAll();
+			success = (PyRun_SimpleString(data.constData()) == 0);
+			if (!success) {
 				PyErr_Print();
-			Py_DECREF(compileModule);
-		} else
-			PyErr_Print();
-		pycFile.refresh();
-		if (pycFile.exists() && (pycFile.lastModified() >= pyFile.lastModified())) {
-			// run the newly compiled pycFile
-			FILE *f = fopen(pycFile.filePath().toUtf8().constData(), "rb");
-			if (f){
-				success = PyRun_SimpleFileEx(f, pycFile.filePath().toUtf8().constData(), false) == 0;
-				fclose(f);
 			}
-		} 
-		
-		if (!success) {
-			// fallback: just run pyFile
-			QFile f(pyFile.filePath());
-			if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-				QByteArray data = f.readAll();
-				success = PyRun_SimpleString(data.data()) == 0;
-				f.close();
-			}
+			f.close();
 		}
 	}
 	PyGILState_Release(state);
@@ -368,8 +360,10 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 	PyObject *pyobj=nullptr;
 
 	PyGILState_STATE state = PyGILState_Ensure();
-	const auto klass = sipAPI_qti->api_find_type(val->metaObject()->className());
-	if (klass) pyobj = sipAPI_qti->api_convert_from_type(val, klass, nullptr);
+	if (sipAPI_qti && sipAPI_qti->api_find_type && sipAPI_qti->api_convert_from_type) {
+		const auto klass = sipAPI_qti->api_find_type(val->metaObject()->className());
+		if (klass) pyobj = sipAPI_qti->api_convert_from_type(val, klass, nullptr);
+	}
 
 	if (pyobj) {
 		if (dict)

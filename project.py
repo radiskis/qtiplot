@@ -1,23 +1,39 @@
 import os
+import sys
 from sipbuild import Project
 
 class QtiProject(Project):
     def update(self, tool):
-        # Dynamically find PyQt5 bindings
+        self.target_abi = (13, 9)
+        # Dynamically find PyQt6 bindings
         try:
-            import PyQt5
-            qt_path = os.path.dirname(PyQt5.__file__)
+            import PyQt6
+            qt_path = os.path.dirname(PyQt6.__file__)
             bindings_path = os.path.join(qt_path, "bindings")
-            # Also check for alternate locations (e.g. Qt/bin issue seen earlier)
-            # But normally bindings are in site-packages/PyQt5/bindings or similar
             
+            # Check standard path
             if os.path.exists(bindings_path):
-                print(f"Project.py: Found PyQt5 bindings at: {bindings_path}")
-                self.sip_include_dirs.append(bindings_path)
+                print(f"Project.py: Found PyQt6 bindings at: {bindings_path}")
+                if bindings_path not in self.sip_include_dirs:
+                    self.sip_include_dirs.append(bindings_path)
             else:
-                print(f"Project.py: Warning: PyQt5 bindings directory not found at {bindings_path}")
+                # Check distro locations for Linux
+                dist_bindings = [
+                    "/usr/lib/python3/dist-packages/PyQt6/bindings",
+                    "/usr/share/sip/PyQt6",
+                ]
+                found = False
+                for p in dist_bindings:
+                    if os.path.exists(p):
+                        print(f"Project.py: Found distro PyQt6 bindings at: {p}")
+                        if p not in self.sip_include_dirs:
+                            self.sip_include_dirs.append(p)
+                        found = True
+                        break
+                if not found:
+                    print(f"Project.py: Warning: PyQt6 bindings directory not found at {bindings_path}")
                 
         except ImportError:
-            print("Project.py: Warning: Could not import PyQt5 to find bindings path")
+            print("Project.py: Warning: Could not import PyQt6 to find bindings path")
 
         super().update(tool)

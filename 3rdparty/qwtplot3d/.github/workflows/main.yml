@@ -1,0 +1,152 @@
+name: CI Tests
+
+on: [pull_request,push]
+
+jobs:
+  Ubuntu:
+
+    runs-on: ubuntu-20.04
+
+    name: Ubuntu
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install prerequisties
+        run: |
+          sudo apt update
+          sudo apt install -y --no-install-recommends \
+            qtbase5-dev \
+            libqt5opengl5-dev \
+            qttools5-dev \
+            libgl2ps-dev
+
+      - name: Configuring
+        run: |
+          mkdir build && cd build
+          cmake ..
+
+      - name: Building
+        run: |
+          make -j$(nproc) -C build
+
+  MSVC:
+    name: MSVC_Qt_${{ matrix.qt_version }}
+    runs-on: windows-latest
+    env:
+      VCPKG_BINARY_SOURCES: 'clear;nuget,GitHub,readwrite'
+    strategy:
+      fail-fast: false
+      matrix:
+        qt_version: [5.15.2, 6.0.1]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v1
+        with:
+          path: ../Qt
+          key: ${{ runner.os }}-QtCache-${{ matrix.qt_version }}
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: ${{ matrix.qt_version }}
+          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+      - name: Setup NuGet Credentials
+        run: |
+          & $(vcpkg fetch nuget | select -last 1) sources add `
+          -source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" `
+          -storepasswordincleartext `
+          -name "GitHub" `
+          -username ${{ github.repository_owner }} `
+          -password "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: vcpkg package restore
+        run: |
+          vcpkg install gl2ps --triplet x64-windows
+
+      - name: Configuring
+        run: |
+          mkdir build; cd build
+          cmake .. -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+
+      - name: Building
+        run: |
+          cmake --build build --config Release -- -maxCpuCount
+
+  MinGW-w64:
+
+    runs-on: windows-latest
+
+    name: MinGW-w64
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install MinGW-w64 packages
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: >-
+            make
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-qt5
+            mingw-w64-x86_64-gl2ps
+
+      - name: Configuring
+        run: |
+          mkdir build && cd build
+          cmake .. -G"MSYS Makefiles"
+
+      - name: Building
+        run: |
+          make -C build -j$(nproc)
+
+  macos:
+
+    runs-on: macos-latest
+
+    name: macos
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Cache Qt
+        id: cache-qt
+        uses: actions/cache@v1
+        with:
+          path: ../Qt
+          key: ${{ runner.os }}-QtCache
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+
+      - name: Install prerequisties
+        run: |
+          brew install gl2ps
+
+      - name: Configuring
+        run: |
+          mkdir build && cd build
+          cmake ..
+
+      - name: Building
+        run: |
+          make -j$(sysctl -n hw.logicalcpu) -C build

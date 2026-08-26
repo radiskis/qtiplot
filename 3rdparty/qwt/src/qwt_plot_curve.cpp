@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -7,195 +7,81 @@
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
 
-#include <qpainter.h>
-#include <qpixmap.h>
-#include <qbitarray.h>
-#include "qwt_global.h"
-#include "qwt_legend.h"
-#include "qwt_legend_item.h"
-#include "qwt_data.h"
-#include "qwt_scale_map.h"
-#include "qwt_double_rect.h"
+#include "qwt_plot_curve.h"
+#include "qwt_point_data.h"
 #include "qwt_math.h"
 #include "qwt_clipper.h"
 #include "qwt_painter.h"
+#include "qwt_scale_map.h"
 #include "qwt_plot.h"
-#include "qwt_plot_canvas.h"
-#include "qwt_curve_fitter.h"
+#include "qwt_spline_curve_fitter.h"
 #include "qwt_symbol.h"
-#include "qwt_plot_curve.h"
+#include "qwt_point_mapper.h"
+#include "qwt_text.h"
+#include "qwt_graphic.h"
 
-#if QT_VERSION < 0x040000
-#include <qguardedptr.h>
-#else
-#include <qpointer.h>
-#endif
+#include <qpainter.h>
+#include <qpainterpath.h>
+#include <qnumeric.h>
 
-#if QT_VERSION >= 0x040000
+#include <climits>
 
-#include <qevent.h>
-#include <qpaintengine.h>
-
-class QwtPlotCurvePaintHelper: public QObject
+static inline QRectF qwtIntersectedClipRect( const QRectF& rect, QPainter* painter )
 {
-public:
-    QwtPlotCurvePaintHelper(const QwtPlotCurve *curve, int from, int to):
-        _curve(curve),
-        _from(from),
-        _to(to)
-    {
-    }
+    QRectF clipRect = rect;
+    if ( painter->hasClipping() )
+        clipRect &= painter->clipBoundingRect();
 
-    virtual bool eventFilter(QObject *, QEvent *event)
-    {
-        if ( event->type() == QEvent::Paint )
-        {
-            _curve->draw(_from, _to);
-            return true;
-        }
-        return false;
-    }
-private:
-    const QwtPlotCurve *_curve;
-    int _from;
-    int _to;
-};
+    return clipRect;
+}
 
-#endif // QT_VERSION >= 0x040000
-
-// Creating and initializing a QPainter is an
-// expensive operation. So we keep an painter
-// open for situations, where we paint outside
-// of paint events. This improves the performance
-// of incremental painting like in the realtime
-// example a lot.
-// But it is not possible to have more than
-// one QPainter open at the same time. So we
-// need to close it before regular paint events
-// are processed.
-
-class QwtGuardedPainter: public QObject
+static void qwtUpdateLegendIconSize( QwtPlotCurve* curve )
 {
-public:
-    ~QwtGuardedPainter()
+    if ( curve->symbol() &&
+        curve->testLegendAttribute( QwtPlotCurve::LegendShowSymbol ) )
     {
-        end();
-    }
+        QSize sz = curve->symbol()->boundingRect().size();
+        sz += QSize( 2, 2 ); // margin
 
-    QPainter *begin(QwtPlotCanvas *canvas)
-    {
-        _canvas = canvas;
-
-        QMap<QwtPlotCanvas *, QPainter *>::iterator it = _map.find(_canvas);
-        if ( it == _map.end() )
+        if ( curve->testLegendAttribute( QwtPlotCurve::LegendShowLine ) )
         {
-            QPainter *painter = new QPainter(_canvas);
-            painter->setClipping(true);
-            painter->setClipRect(_canvas->contentsRect());
+            // Avoid, that the line is completely covered by the symbol
 
-            it = _map.insert(_canvas, painter);
-            _canvas->installEventFilter(this);
+            int w = qwtCeil( 1.5 * sz.width() );
+            if ( w % 2 )
+                w++;
+
+            sz.setWidth( qMax( 8, w ) );
         }
-#if QT_VERSION < 0x040000
-        return it.data();
-#else
-        return it.value();
-#endif
+
+        curve->setLegendIconSize( sz );
     }
+}
 
-    void end()
-    {
-        if ( _canvas )
-        {
-            QMap<QwtPlotCanvas *, QPainter *>::iterator it = _map.find(_canvas);
-            if ( it != _map.end() )
-            {
-                _canvas->removeEventFilter(this);
-
-#if QT_VERSION < 0x040000
-                delete it.data();
-#else
-                delete it.value();
-#endif
-                _map.erase(it);
-            }
-        }
-    }
-
-    virtual bool eventFilter(QObject *, QEvent *event)
-    {
-        if ( event->type() == QEvent::Paint )
-            end();
-
-        return false;
-    }
-
-private:
-#if QT_VERSION < 0x040000
-    QGuardedPtr<QwtPlotCanvas> _canvas;
-#else
-    QPointer<QwtPlotCanvas> _canvas;
-#endif
-    static QMap<QwtPlotCanvas *, QPainter *> _map;
-};
-
-QMap<QwtPlotCanvas *, QPainter *> QwtGuardedPainter::_map;
-
-static int verifyRange(int size, int &i1, int &i2)
+static int qwtVerifyRange( int size, int& i1, int& i2 )
 {
-    if (size < 1)
+    if ( size < 1 )
         return 0;
 
-    i1 = qwtLim(i1, 0, size-1);
-    i2 = qwtLim(i2, 0, size-1);
+    i1 = qBound( 0, i1, size - 1 );
+    i2 = qBound( 0, i2, size - 1 );
 
     if ( i1 > i2 )
-        qSwap(i1, i2);
+        qSwap( i1, i2 );
 
-    return (i2 - i1 + 1);
+    return ( i2 - i1 + 1 );
 }
 
 class QwtPlotCurve::PrivateData
 {
-public:
-    class PixelMatrix: private QBitArray
+  public:
+    PrivateData()
+        : style( QwtPlotCurve::Lines )
+        , baseline( 0.0 )
+        , symbol( NULL )
+        , pen( Qt::black )
+        , paintAttributes( QwtPlotCurve::ClipPolygons | QwtPlotCurve::FilterPoints )
     {
-    public:
-        PixelMatrix(const QRect& rect):
-            QBitArray(rect.width() * rect.height()),
-            _rect(rect)
-        {
-            fill(false);
-        }
-
-        inline bool testPixel(const QPoint& pos)
-        {
-            if ( !_rect.contains(pos) )
-                return false;
-
-            const int idx = _rect.width() * (pos.y() - _rect.y()) +
-                (pos.x() - _rect.x());
-
-            const bool marked = testBit(idx);
-            if ( !marked )
-                setBit(idx, true);
-
-            return !marked;
-        }
-
-    private:
-        QRect _rect;
-    };
-
-    PrivateData():
-        curveType(Yfx),
-        style(QwtPlotCurve::Lines),
-        reference(0.0),
-        attributes(0),
-        paintAttributes(0)
-    {
-        symbol = new QwtSymbol();
-        pen = QPen(Qt::black);
         curveFitter = new QwtSplineCurveFitter;
     }
 
@@ -205,47 +91,37 @@ public:
         delete curveFitter;
     }
 
-    QwtPlotCurve::CurveType curveType;
     QwtPlotCurve::CurveStyle style;
-    double reference;
+    double baseline;
 
-    QwtSymbol *symbol;
-    QwtCurveFitter *curveFitter;
+    const QwtSymbol* symbol;
+    QwtCurveFitter* curveFitter;
 
     QPen pen;
     QBrush brush;
 
-    int attributes;
-    int paintAttributes;
+    QwtPlotCurve::CurveAttributes attributes;
+    QwtPlotCurve::PaintAttributes paintAttributes;
 
-    QwtGuardedPainter guardedPainter;
-
-	QRect canvasRect; // temporary, while painting
+    QwtPlotCurve::LegendAttributes legendAttributes;
 };
 
-//! Constructor
-QwtPlotCurve::QwtPlotCurve():
-    QwtPlotItem(QwtText())
+/*!
+   Constructor
+   \param title Title of the curve
+ */
+QwtPlotCurve::QwtPlotCurve( const QwtText& title )
+    : QwtPlotSeriesItem( title )
 {
     init();
 }
 
 /*!
-  Constructor
-  \param title Title of the curve
-*/
-QwtPlotCurve::QwtPlotCurve(const QwtText &title):
-    QwtPlotItem(title)
-{
-    init();
-}
-
-/*!
-  Constructor
-  \param title Title of the curve
-*/
-QwtPlotCurve::QwtPlotCurve(const QString &title):
-    QwtPlotItem(QwtText(title))
+   Constructor
+   \param title Title of the curve
+ */
+QwtPlotCurve::QwtPlotCurve( const QString& title )
+    : QwtPlotSeriesItem( QwtText( title ) )
 {
     init();
 }
@@ -253,22 +129,19 @@ QwtPlotCurve::QwtPlotCurve(const QString &title):
 //! Destructor
 QwtPlotCurve::~QwtPlotCurve()
 {
-    delete d_xy;
-    delete d_data;
+    delete m_data;
 }
 
-/*!
-  \brief Initialize data members
-*/
+//! Initialize internal members
 void QwtPlotCurve::init()
 {
-    setItemAttribute(QwtPlotItem::Legend);
-    setItemAttribute(QwtPlotItem::AutoScale);
+    setItemAttribute( QwtPlotItem::Legend );
+    setItemAttribute( QwtPlotItem::AutoScale );
 
-    d_data = new PrivateData;
-    d_xy = new QwtPolygonFData(QwtArray<QwtDoublePoint>());
+    m_data = new PrivateData;
+    setData( new QwtPointSeriesData() );
 
-    setZ(20.0);
+    setZ( 20.0 );
 }
 
 //! \return QwtPlotItem::Rtti_PlotCurve
@@ -278,103 +151,190 @@ int QwtPlotCurve::rtti() const
 }
 
 /*!
-  Specify an attribute how to draw the curve
+   Specify an attribute how to draw the curve
 
-  \param attribute Paint attribute
-  \param on On/Off
-  /sa PaintAttribute, testPaintAttribute()
-*/
-void QwtPlotCurve::setPaintAttribute(PaintAttribute attribute, bool on)
+   \param attribute Paint attribute
+   \param on On/Off
+   \sa testPaintAttribute()
+ */
+void QwtPlotCurve::setPaintAttribute( PaintAttribute attribute, bool on )
 {
     if ( on )
-        d_data->paintAttributes |= attribute;
+        m_data->paintAttributes |= attribute;
     else
-        d_data->paintAttributes &= ~attribute;
+        m_data->paintAttributes &= ~attribute;
 }
 
 /*!
-    \brief Return the current paint attributes
-    \sa PaintAttribute, setPaintAttribute()
-*/
-bool QwtPlotCurve::testPaintAttribute(PaintAttribute attribute) const
+    \return True, when attribute is enabled
+    \sa setPaintAttribute()
+ */
+bool QwtPlotCurve::testPaintAttribute( PaintAttribute attribute ) const
 {
-    return (d_data->paintAttributes & attribute);
+    return ( m_data->paintAttributes & attribute );
 }
 
 /*!
-  Set the curve's drawing style
+   Specify an attribute how to draw the legend icon
 
-  \param style Curve style
-  \sa CurveStyle, style()
-*/
-void QwtPlotCurve::setStyle(CurveStyle style)
+   \param attribute Attribute
+   \param on On/Off
+   /sa testLegendAttribute(). legendIcon()
+ */
+void QwtPlotCurve::setLegendAttribute( LegendAttribute attribute, bool on )
 {
-    if ( style != d_data->style )
+    if ( on != testLegendAttribute( attribute ) )
     {
-        d_data->style = style;
+        if ( on )
+            m_data->legendAttributes |= attribute;
+        else
+            m_data->legendAttributes &= ~attribute;
+
+        qwtUpdateLegendIconSize( this );
+        legendChanged();
+    }
+}
+
+/*!
+   \return True, when attribute is enabled
+   \sa setLegendAttribute()
+ */
+bool QwtPlotCurve::testLegendAttribute( LegendAttribute attribute ) const
+{
+    return ( m_data->legendAttributes & attribute );
+}
+
+/*!
+   Specify the attributes how to draw the legend icon
+
+   \param attributes Attributes
+   /sa setLegendAttribute(). legendIcon()
+ */
+void QwtPlotCurve::setLegendAttributes( LegendAttributes attributes )
+{
+    if ( attributes != m_data->legendAttributes )
+    {
+        m_data->legendAttributes = attributes;
+
+        qwtUpdateLegendIconSize( this );
+        legendChanged();
+    }
+}
+
+/*!
+   \return Attributes how to draw the legend icon
+   \sa setLegendAttributes(), testLegendAttribute()
+ */
+QwtPlotCurve::LegendAttributes QwtPlotCurve::legendAttributes() const
+{
+    return m_data->legendAttributes;
+}
+
+/*!
+   Set the curve's drawing style
+
+   \param style Curve style
+   \sa style()
+ */
+void QwtPlotCurve::setStyle( CurveStyle style )
+{
+    if ( style != m_data->style )
+    {
+        m_data->style = style;
+
+        legendChanged();
         itemChanged();
     }
 }
 
 /*!
-    Return the current style
-    \sa CurveStyle, setStyle()
-*/
+   \return Style of the curve
+   \sa setStyle()
+ */
 QwtPlotCurve::CurveStyle QwtPlotCurve::style() const
 {
-    return d_data->style;
+    return m_data->style;
 }
 
 /*!
-  \brief Assign a symbol
-  \param symbol Symbol
-  \sa symbol()
-*/
-void QwtPlotCurve::setSymbol(const QwtSymbol &symbol )
+   \brief Assign a symbol
+
+   The curve will take the ownership of the symbol, hence the previously
+   set symbol will be delete by setting a new one. If \p symbol is
+   \c NULL no symbol will be drawn.
+
+   \param symbol Symbol
+   \sa symbol()
+ */
+void QwtPlotCurve::setSymbol( QwtSymbol* symbol )
 {
-    delete d_data->symbol;
-    d_data->symbol = symbol.clone();
-    itemChanged();
-}
-
-/*!
-    \brief Return the current symbol
-    \sa setSymbol()
-*/
-const QwtSymbol &QwtPlotCurve::symbol() const
-{
-    return *d_data->symbol;
-}
-
-/*!
-  Assign a pen
-
-  The width of non cosmetic pens is scaled according to the resolution
-  of the paint device.
-
-  \param pen New pen
-  \sa pen(), brush(), QwtPainter::scaledPen()
-*/
-void QwtPlotCurve::setPen(const QPen &pen)
-{
-    if ( pen != d_data->pen )
+    if ( symbol != m_data->symbol )
     {
-        d_data->pen = pen;
+        delete m_data->symbol;
+        m_data->symbol = symbol;
+
+        qwtUpdateLegendIconSize( this );
+
+        legendChanged();
         itemChanged();
     }
 }
 
 /*!
-    \brief Return the pen used to draw the lines
-    \sa setPen(), brush()
-*/
-const QPen& QwtPlotCurve::pen() const
+   \return Current symbol or NULL, when no symbol has been assigned
+   \sa setSymbol()
+ */
+const QwtSymbol* QwtPlotCurve::symbol() const
 {
-    return d_data->pen;
+    return m_data->symbol;
 }
 
 /*!
-  \brief Assign a brush.
+   Build and assign a pen
+
+   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
+   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
+   to hide this incompatibility.
+
+   \param color Pen color
+   \param width Pen width
+   \param style Pen style
+
+   \sa pen(), brush()
+ */
+void QwtPlotCurve::setPen( const QColor& color, qreal width, Qt::PenStyle style )
+{
+    setPen( QPen( color, width, style ) );
+}
+
+/*!
+   Assign a pen
+
+   \param pen New pen
+   \sa pen(), brush()
+ */
+void QwtPlotCurve::setPen( const QPen& pen )
+{
+    if ( pen != m_data->pen )
+    {
+        m_data->pen = pen;
+
+        legendChanged();
+        itemChanged();
+    }
+}
+
+/*!
+   \return Pen used to draw the lines
+   \sa setPen(), brush()
+ */
+const QPen& QwtPlotCurve::pen() const
+{
+    return m_data->pen;
+}
+
+/*!
+   \brief Assign a brush.
 
    In case of brush.style() != QBrush::NoBrush
    and style() != QwtPlotCurve::Sticks
@@ -385,322 +345,114 @@ const QPen& QwtPlotCurve::pen() const
    last curve point to the baseline. So the curve data has to be sorted
    (ascending or descending).
 
-  \param brush New brush
-  \sa brush(), setBaseline(), baseline()
-*/
-void QwtPlotCurve::setBrush(const QBrush &brush)
+   \param brush New brush
+   \sa brush(), setBaseline(), baseline()
+ */
+void QwtPlotCurve::setBrush( const QBrush& brush )
 {
-    if ( brush != d_data->brush )
+    if ( brush != m_data->brush )
     {
-        d_data->brush = brush;
+        m_data->brush = brush;
+
+        legendChanged();
         itemChanged();
     }
 }
 
 /*!
-  \brief Return the brush used to fill the area between lines and the baseline
-  \sa setBrush(), setBaseline(), baseline()
-*/
+   \return Brush used to fill the area between lines and the baseline
+   \sa setBrush(), setBaseline(), baseline()
+ */
 const QBrush& QwtPlotCurve::brush() const
 {
-    return d_data->brush;
-}
-
-
-/*!
-  Set data by copying x- and y-values from specified memory blocks.
-  Contrary to setCurveRawData(), this function makes a 'deep copy' of
-  the data.
-
-  \param xData Pointer to x values
-  \param yData Pointer to y values
-  \param size Size of xData and yData
-
-  \note Internally the data is stored in a QwtArrayData object
-*/
-void QwtPlotCurve::setData(const double *xData, const double *yData, int size)
-{
-    delete d_xy;
-    d_xy = new QwtArrayData(xData, yData, size);
-    itemChanged();
+    return m_data->brush;
 }
 
 /*!
-  Initialize data with x- and y-arrays (explicitly shared)
-  ( Builds an QwtArrayData object internally )
+   Draw an interval of the curve
 
-  \param xData x data
-  \param yData y data
-
-  \note Internally the data is stored in a QwtArrayData object
-*/
-void QwtPlotCurve::setData(const QwtArray<double> &xData,
-    const QwtArray<double> &yData)
-{
-    delete d_xy;
-    d_xy = new QwtArrayData(xData, yData);
-    itemChanged();
-}
-
-/*!
-  Initialize data with an array of points (explicitly shared).
-
-  \param data Data
-  \note Internally the data is stored in a QwtPolygonFData object
-*/
-#if QT_VERSION < 0x040000
-void QwtPlotCurve::setData(const QwtArray<QwtDoublePoint> &data)
-#else
-void QwtPlotCurve::setData(const QPolygonF &data)
-#endif
-{
-    delete d_xy;
-    d_xy = new QwtPolygonFData(data);
-    itemChanged();
-}
-
-/*!
-  Initialize data with a pointer to QwtData.
-
-  \param data Data
-  \sa QwtData::copy()
-*/
-void QwtPlotCurve::setData(const QwtData &data)
-{
-    delete d_xy;
-    d_xy = data.copy();
-    itemChanged();
-}
-
-/*!
-  \brief Initialize the data by pointing to memory blocks which are not managed
-  by QwtPlotCurve.
-
-  setRawData is provided for efficiency. It is important to keep the pointers
-  during the lifetime of the underlying QwtCPointerData class.
-
-  \param xData pointer to x data
-  \param yData pointer to y data
-  \param size size of x and y
-
-  \note Internally the data is stored in a QwtCPointerData object
-*/
-void QwtPlotCurve::setRawData(const double *xData, const double *yData, int size)
-{
-    delete d_xy;
-    d_xy = new QwtCPointerData(xData, yData, size);
-    itemChanged();
-}
-
-/*!
-  Returns the bounding rectangle of the curve data. If there is
-  no bounding rect, like for empty data the rectangle is invalid.
-  \sa QwtData::boundingRect(), QwtDoubleRect::isValid()
-*/
-
-QwtDoubleRect QwtPlotCurve::boundingRect() const
-{
-    if ( d_xy == NULL )
-        return QwtDoubleRect(1.0, 1.0, -2.0, -2.0); // invalid
-
-    return d_xy->boundingRect();
-}
-
-/*!
-  \brief Draw the complete curve
-
-  \param painter Painter
-  \param xMap Maps x-values into pixel coordinates.
-  \param yMap Maps y-values into pixel coordinates.
-
-  \sa drawCurve(), drawSymbols()
-*/
-void QwtPlotCurve::draw(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-	const QRect &canvasRect) const
-{
-	d_data->canvasRect = canvasRect;
-	draw(painter, xMap, yMap, 0, -1);
-	d_data->canvasRect = QRect();
-}
-
-/*!
-  \brief Draw a set of points of a curve.
-
-  When observing an measurement while it is running, new points have to be
-  added to an existing curve. drawCurve can be used to display them avoiding
-  a complete redraw of the canvas.
-
-  Setting plot()->canvas()->setAttribute(Qt::WA_PaintOutsidePaintEvent, true);
-  will result in faster painting, if the paint engine of the canvas widget
-  supports this feature.
-
-  \param from Index of the first point to be painted
-  \param to Index of the last point to be painted. If to < 0 the
+   \param painter Painter
+   \param xMap Maps x-values into pixel coordinates.
+   \param yMap Maps y-values into pixel coordinates.
+   \param canvasRect Contents rectangle of the canvas
+   \param from Index of the first point to be painted
+   \param to Index of the last point to be painted. If to < 0 the
          curve will be painted to its last point.
 
-  \sa drawCurve(), drawSymbols()
-*/
-void QwtPlotCurve::draw(int from, int to) const
+   \sa drawCurve(), drawSymbols(),
+ */
+void QwtPlotCurve::drawSeries( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
 {
-    if ( !plot() )
+    const size_t numSamples = dataSize();
+
+    if ( !painter || numSamples <= 0 )
         return;
 
-    QwtPlotCanvas *canvas = plot()->canvas();
+    if ( to < 0 )
+        to = numSamples - 1;
 
-#if QT_VERSION >= 0x040000
-#if 0
-    if ( canvas->paintEngine()->type() == QPaintEngine::OpenGL )
+    if ( qwtVerifyRange( numSamples, from, to ) > 0 )
     {
-        /*
-            OpenGL alway repaint the complete widget.
-            So for this operation OpenGL is one of the slowest
-            environments.
-         */
-        canvas->repaint();
-        return;
-    }
-#endif
+        painter->save();
+        painter->setPen( m_data->pen );
 
-    if ( !canvas->testAttribute(Qt::WA_WState_InPaintEvent) &&
-        !canvas->testAttribute(Qt::WA_PaintOutsidePaintEvent) )
-    {
         /*
-          We save curve and range in helper and call repaint.
-          The helper filters the Paint event, to repeat
-          the QwtPlotCurve::draw, but now from inside the paint
-          event.
+           Qt 4.0.0 is slow when drawing lines, but it's even
+           slower when the painter has a brush. So we don't
+           set the brush before we really need it.
          */
 
-        QwtPlotCurvePaintHelper helper(this, from, to);
-        canvas->installEventFilter(&helper);
+        drawCurve( painter, m_data->style, xMap, yMap, canvasRect, from, to );
+        painter->restore();
 
-        const bool noSystemBackground =
-            canvas->testAttribute(Qt::WA_NoSystemBackground);
-        canvas->setAttribute(Qt::WA_NoSystemBackground, true);
-        canvas->repaint();
-        canvas->setAttribute(Qt::WA_NoSystemBackground, noSystemBackground);
-
-        return;
-    }
-#endif
-
-    const QwtScaleMap xMap = plot()->canvasMap(xAxis());
-    const QwtScaleMap yMap = plot()->canvasMap(yAxis());
-
-    if ( canvas->testPaintAttribute(QwtPlotCanvas::PaintCached) &&
-        canvas->paintCache() && !canvas->paintCache()->isNull() )
-    {
-        QPainter cachePainter((QPixmap *)canvas->paintCache());
-        cachePainter.translate(-canvas->contentsRect().x(),
-            -canvas->contentsRect().y());
-
-        draw(&cachePainter, xMap, yMap, from, to);
-    }
-
-#if QT_VERSION >= 0x040000
-    if ( canvas->testAttribute(Qt::WA_WState_InPaintEvent) )
-    {
-        QPainter painter(canvas);
-
-        painter.setClipping(true);
-        painter.setClipRect(canvas->contentsRect());
-
-        draw(&painter, xMap, yMap, from, to);
-    }
-    else
-#endif
-    {
-        QPainter *painter = d_data->guardedPainter.begin(canvas);
-        draw(painter, xMap, yMap, from, to);
+        if ( m_data->symbol &&
+            ( m_data->symbol->style() != QwtSymbol::NoSymbol ) )
+        {
+            painter->save();
+            drawSymbols( painter, *m_data->symbol,
+                xMap, yMap, canvasRect, from, to );
+            painter->restore();
+        }
     }
 }
 
 /*!
-  \brief Draw an interval of the curve
-  \param painter Painter
-  \param xMap maps x-values into pixel coordinates.
-  \param yMap maps y-values into pixel coordinates.
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted. If to < 0 the
-         curve will be painted to its last point.
-
-  \sa drawCurve(), drawSymbols(),
-*/
-void QwtPlotCurve::draw(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+   \brief Draw the line part (without symbols) of a curve interval.
+   \param painter Painter
+   \param style curve style, see QwtPlotCurve::CurveStyle
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from index of the first point to be painted
+   \param to index of the last point to be painted
+   \sa draw(), drawDots(), drawLines(), drawSteps(), drawSticks()
+ */
+void QwtPlotCurve::drawCurve( QPainter* painter, int style,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
 {
-	if (!painter)
-		return;
-
-	const int numPoints = (int)dataSize();
-	if (to < 0 || to >= numPoints)
-		to = numPoints - 1;
-
-	if (verifyRange(numPoints, from, to) > 0){
-		painter->save();
-		painter->setPen(QwtPainter::scaledPen(d_data->pen));
-
-		/*
-		  Qt 4.0.0 is slow when drawing lines, but it's even
-		  slower when the painter has a brush. So we don't
-		  set the brush before we really need it.
-		 */
-
-		drawCurve(painter, d_data->style, xMap, yMap, from, to);
-		painter->restore();
-
-		if (d_data->symbol->style() != QwtSymbol::NoSymbol){
-			painter->save();
-			drawSymbols(painter, *d_data->symbol, xMap, yMap, from, to);
-			painter->restore();
-		}
-	}
-}
-
-/*!
-  \brief Draw the line part (without symbols) of a curve interval.
-  \param painter Painter
-  \param style curve style, see QwtPlotCurve::CurveStyle
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
-  \sa draw(), drawDots(), drawLines(), drawSteps(), drawSticks()
-*/
-
-void QwtPlotCurve::drawCurve(QPainter *painter, int style,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
-{
-	const int numPoints = (int)dataSize();
-	if (!painter || numPoints < 1)
-		return;
-
-	if (to < 0 || to >= numPoints)
-		to = numPoints - 1;
-
-    switch (style)
+    switch ( style )
     {
         case Lines:
-            if ( testCurveAttribute(Fitted) )
+            if ( testCurveAttribute( Fitted ) )
             {
                 // we always need the complete
                 // curve for fitting
                 from = 0;
                 to = dataSize() - 1;
             }
-            drawLines(painter, xMap, yMap, from, to);
+            drawLines( painter, xMap, yMap, canvasRect, from, to );
             break;
         case Sticks:
-            drawSticks(painter, xMap, yMap, from, to);
+            drawSticks( painter, xMap, yMap, canvasRect, from, to );
             break;
         case Steps:
-            drawSteps(painter, xMap, yMap, from, to);
+            drawSteps( painter, xMap, yMap, canvasRect, from, to );
             break;
         case Dots:
-            drawDots(painter, xMap, yMap, from, to);
+            drawDots( painter, xMap, yMap, canvasRect, from, to );
             break;
         case NoCurve:
         default:
@@ -709,621 +461,1061 @@ void QwtPlotCurve::drawCurve(QPainter *painter, int style,
 }
 
 /*!
-  \brief Draw lines
+   \brief Draw lines
 
-  If the CurveAttribute Fitted is enabled a QwtCurveFitter tries
-  to interpolate/smooth the curve, before it is painted.
+   If the CurveAttribute Fitted is enabled a QwtCurveFitter tries
+   to interpolate/smooth the curve, before it is painted.
 
-  \param painter Painter
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
+   \param painter Painter
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from index of the first point to be painted
+   \param to index of the last point to be painted
 
-  \sa setCurveAttribute(), setCurveFitter(), draw(),
+   \sa setCurveAttribute(), setCurveFitter(), draw(),
       drawLines(), drawDots(), drawSteps(), drawSticks()
-*/
-// modified by Ion Vasilief in order to use floating point coordinates
-void QwtPlotCurve::drawLines(QPainter *painter,
-	const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-	int from, int to) const
+ */
+void QwtPlotCurve::drawLines( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
 {
-	int size = to - from + 1;
-	if ( size <= 0 )
-		return;
+    if ( from > to )
+        return;
 
-	QwtPolygonF polyline;
-	if ((d_data->attributes & Fitted) && d_data->curveFitter){
-		// Transform x and y values to window coordinates
-		// to avoid a distinction between linear and
-		// logarithmic scales.
+    const bool doFit = ( m_data->attributes & Fitted ) && m_data->curveFitter;
+    const bool doAlign = !doFit && QwtPainter::roundingAlignment( painter );
+    const bool doFill = ( m_data->brush.style() != Qt::NoBrush )
+        && ( m_data->brush.color().alpha() > 0 );
 
-		QPolygonF points(size);
-		for (int i = from; i <= to; i++){
-			QwtDoublePoint &p = points[i];
-			p.setX( xMap.xTransform(x(i)) );
-			p.setY( yMap.xTransform(y(i)) );
-		}
-
-		points = d_data->curveFitter->fitCurve(points);
-		size = points.size();
-
-		if (size == 0)
-			return;
-
-		// Round QwtDoublePoints to QPoints
-		// When Qwt support for Qt3 has been dropped (Qwt 6.x)
-		// we will use a doubles for painting and the following
-		// step will be obsolete.
-
-		polyline.resize(size);
-
-		const QwtDoublePoint *p = points.data();
-		QPointF *pl = polyline.data();
-		if (d_data->paintAttributes & PaintFiltered){
-			QPointF pp(p[0].x(), p[0].y());
-			pl[0] = pp;
-
-			int count = 1;
-			for (int i = 1; i < size; i++){
-				const QPointF pi(p[i].x(), p[i].y());
-				if ( pi != pp ){
-					pl[count++] = pi;
-					pp = pi;
-				}
-			}
-			if ( count != size )
-				polyline.resize(count);
-		} else {
-			for ( int i = 0; i < size; i++ ){
-				pl[i].setX( p[i].x() );
-				pl[i].setY( p[i].y() );
-			}
-		}
-	} else {
-		polyline.resize(size);
-		if ( d_data->paintAttributes & PaintFiltered ){
-			QPointF pp( xMap.xTransform(x(from)), yMap.xTransform(y(from)) );
-			polyline[0] = pp;
-
-			int count = 1;
-			for (int i = from + 1; i <= to; i++){
-				const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
-				if ( pi != pp ){
-					polyline[count] = pi;
-					count++;
-
-					pp = pi;
-				}
-			}
-			if ( count != size )
-				polyline.resize(count);
-		} else {
-			for (int i = from; i <= to; i++)
-				polyline[i - from] = QPointF(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
-		}
-	}
-
-	if ( d_data->canvasRect.isValid() && d_data->paintAttributes & ClipPolygons )
-		polyline = QwtClipper::clipPolygonF(d_data->canvasRect, polyline);
-
-	QwtPainter::drawPolyline(painter, polyline);
-
-	if ( d_data->brush.style() != Qt::NoBrush )
-		fillCurve(painter, xMap, yMap, polyline);
-}
-
-/*!
-  Draw sticks
-
-  \param painter Painter
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
-
-  \sa draw(), drawCurve(), drawDots(), drawLines(), drawSteps()
-*/
-void QwtPlotCurve::drawSticks(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const
-{
-	double x0 = xMap.transform(d_data->reference);
-	double y0 = yMap.transform(d_data->reference);
-
-	for (int i = from; i <= to; i++){
-		const double xi = xMap.transform(x(i));
-		const double yi = yMap.transform(y(i));
-
-		if (d_data->curveType == Xfy){
-			if (xi == x0)
-				continue;
-			QwtPainter::drawLine(painter, QPointF(x0, yi), QPointF(xi, yi));
-		} else {
-			if (yi == y0)
-				continue;
-			QwtPainter::drawLine(painter, QPointF(xi, y0), QPointF(xi, yi));
-		}
-	}
-}
-
-/*!
-  Draw dots
-
-  \param painter Painter
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
-
-  \sa draw(), drawCurve(), drawSticks(), drawLines(), drawSteps()
-*/
-void QwtPlotCurve::drawDots(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
-{
-    const bool doFill = d_data->brush.style() != Qt::NoBrush;
-
-    QwtPolygonF polyline;
-    if ( doFill )
-        polyline.resize(to - from + 1);
-
-    if ( to > from && d_data->paintAttributes & PaintFiltered )
+    QRectF clipRect;
+    if ( m_data->paintAttributes & ClipPolygons )
     {
-		if ( doFill || d_data->canvasRect.isEmpty() )
+        clipRect = qwtIntersectedClipRect( canvasRect, painter );
+
+        const qreal pw = QwtPainter::effectivePenWidth( painter->pen() );
+        clipRect = clipRect.adjusted(-pw, -pw, pw, pw);
+    }
+
+    QwtPointMapper mapper;
+
+    if ( doAlign )
+    {
+        mapper.setFlag( QwtPointMapper::RoundPoints, true );
+        mapper.setFlag( QwtPointMapper::WeedOutIntermediatePoints,
+            testPaintAttribute( FilterPointsAggressive ) );
+    }
+
+    mapper.setFlag( QwtPointMapper::WeedOutPoints,
+        testPaintAttribute( FilterPoints ) ||
+        testPaintAttribute( FilterPointsAggressive ) );
+
+    mapper.setBoundingRect( canvasRect );
+
+    QPolygonF polyline = mapper.toPolygonF( xMap, yMap, data(), from, to );
+
+    if ( doFill )
+    {
+        if ( doFit )
         {
-            QPointF pp( xMap.xTransform(x(from)), yMap.xTransform(y(from)) );
+            // it might be better to extend and draw the curvePath, but for
+            // the moment we keep an implementation, where we translate the
+            // path back to a polyline.
 
-            QwtPainter::drawPoint(painter, pp.x(), pp.y());
-            polyline[0] = pp;
+            polyline = m_data->curveFitter->fitCurve( polyline );
+        }
 
-            int count = 1;
-            for (int i = from + 1; i <= to; i++)
-            {
-                const QPointF pi(xMap.xTransform(x(i)), yMap.xTransform(y(i)));
-                if ( pi != pp )
-                {
-                    QwtPainter::drawPoint(painter, pi.x(), pi.y());
+        if ( painter->pen().style() != Qt::NoPen )
+        {
+            // here we are wasting memory for the filled copy,
+            // do polygon clipping twice etc .. TODO
 
-                    polyline[count] = pi;
-                    count++;
+            QPolygonF filled = polyline;
+            fillCurve( painter, xMap, yMap, canvasRect, filled );
+            filled.clear();
 
-                    pp = pi;
-                }
-            }
-            if ( int(polyline.size()) != count )
-                polyline.resize(count);
+            if ( m_data->paintAttributes & ClipPolygons )
+                QwtClipper::clipPolygonF( clipRect, polyline, false );
+
+            QwtPainter::drawPolyline( painter, polyline );
         }
         else
         {
-            // if we don't need to fill, we can sort out
-            // duplicates independent from the order
-
-			PrivateData::PixelMatrix pixelMatrix(d_data->canvasRect);
-
-            for (int i = from; i <= to; i++)
-            {
-                const QPointF p( xMap.xTransform(x(i)), yMap.xTransform(y(i)) );
-
-                if ( pixelMatrix.testPixel(p.toPoint()) )
-                    QwtPainter::drawPoint(painter, p.x(), p.y());
-            }
+            fillCurve( painter, xMap, yMap, canvasRect, polyline );
         }
     }
     else
     {
-        for (int i = from; i <= to; i++)
+        if ( testPaintAttribute( ClipPolygons ) )
         {
-            const double xi = xMap.xTransform(x(i));
-            const double yi = yMap.xTransform(y(i));
-            QwtPainter::drawPoint(painter, xi, yi);
+            QwtClipper::clipPolygonF( clipRect, polyline, false );
+        }
 
-            if ( doFill )
-                polyline[i - from] = QPointF(xi, yi);
+        if ( doFit )
+        {
+            if ( m_data->curveFitter->mode() == QwtCurveFitter::Path )
+            {
+                const QPainterPath curvePath =
+                    m_data->curveFitter->fitCurvePath( polyline );
+
+                painter->drawPath( curvePath );
+            }
+            else
+            {
+                polyline = m_data->curveFitter->fitCurve( polyline );
+                QwtPainter::drawPolyline( painter, polyline );
+            }
+        }
+        else
+        {
+            QwtPainter::drawPolyline( painter, polyline );
+        }
+    }
+}
+
+/*!
+   Draw sticks
+
+   \param painter Painter
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from index of the first point to be painted
+   \param to index of the last point to be painted
+
+   \sa draw(), drawCurve(), drawDots(), drawLines(), drawSteps()
+ */
+void QwtPlotCurve::drawSticks( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
+{
+    Q_UNUSED( canvasRect )
+
+    painter->save();
+    painter->setRenderHint( QPainter::Antialiasing, false );
+
+    const bool doAlign = QwtPainter::roundingAlignment( painter );
+
+    double x0 = xMap.transform( m_data->baseline );
+    double y0 = yMap.transform( m_data->baseline );
+    if ( doAlign )
+    {
+        x0 = qRound( x0 );
+        y0 = qRound( y0 );
+    }
+
+    const Qt::Orientation o = orientation();
+
+    const QwtSeriesData< QPointF >* series = data();
+
+    for ( int i = from; i <= to; i++ )
+    {
+        const QPointF sample = series->sample( i );
+        double xi = xMap.transform( sample.x() );
+        double yi = yMap.transform( sample.y() );
+        if ( doAlign )
+        {
+            xi = qRound( xi );
+            yi = qRound( yi );
+        }
+
+        if ( o == Qt::Horizontal )
+            QwtPainter::drawLine( painter, x0, yi, xi, yi );
+        else
+            QwtPainter::drawLine( painter, xi, y0, xi, yi );
+    }
+
+    painter->restore();
+}
+
+/*!
+   Draw dots
+
+   \param painter Painter
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from index of the first point to be painted
+   \param to index of the last point to be painted
+
+   \sa draw(), drawCurve(), drawSticks(), drawLines(), drawSteps()
+ */
+void QwtPlotCurve::drawDots( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
+{
+    const QColor color = painter->pen().color();
+
+    if ( painter->pen().style() == Qt::NoPen || color.alpha() == 0 )
+    {
+        return;
+    }
+
+    const bool doFill = ( m_data->brush.style() != Qt::NoBrush )
+        && ( m_data->brush.color().alpha() > 0 );
+    const bool doAlign = QwtPainter::roundingAlignment( painter );
+
+    QwtPointMapper mapper;
+    mapper.setBoundingRect( canvasRect );
+    mapper.setFlag( QwtPointMapper::RoundPoints, doAlign );
+
+    if ( m_data->paintAttributes & FilterPoints )
+    {
+        if ( ( color.alpha() == 255 )
+            && !( painter->renderHints() & QPainter::Antialiasing ) )
+        {
+            mapper.setFlag( QwtPointMapper::WeedOutPoints, true );
         }
     }
 
     if ( doFill )
     {
-		if ( d_data->canvasRect.isValid() && (d_data->paintAttributes & ClipPolygons) )
-			polyline = QwtClipper::clipPolygonF(d_data->canvasRect, polyline);
+        mapper.setFlag( QwtPointMapper::WeedOutPoints, false );
 
-        fillCurve(painter, xMap, yMap, polyline);
+        QPolygonF points = mapper.toPolygonF(
+            xMap, yMap, data(), from, to );
+
+        QwtPainter::drawPoints( painter, points );
+        fillCurve( painter, xMap, yMap, canvasRect, points );
+    }
+    else if ( m_data->paintAttributes & ImageBuffer )
+    {
+        const QImage image = mapper.toImage( xMap, yMap,
+            data(), from, to, m_data->pen,
+            painter->testRenderHint( QPainter::Antialiasing ),
+            renderThreadCount() );
+
+        painter->drawImage( canvasRect.toAlignedRect(), image );
+    }
+    else if ( m_data->paintAttributes & MinimizeMemory )
+    {
+        const QwtSeriesData< QPointF >* series = data();
+
+        for ( int i = from; i <= to; i++ )
+        {
+            const QPointF sample = series->sample( i );
+
+            double xi = xMap.transform( sample.x() );
+            double yi = yMap.transform( sample.y() );
+
+            if ( doAlign )
+            {
+                xi = qRound( xi );
+                yi = qRound( yi );
+            }
+
+            QwtPainter::drawPoint( painter, QPointF( xi, yi ) );
+        }
+    }
+    else
+    {
+        if ( doAlign )
+        {
+            const QPolygon points = mapper.toPoints(
+                xMap, yMap, data(), from, to );
+
+            QwtPainter::drawPoints( painter, points );
+        }
+        else
+        {
+            const QPolygonF points = mapper.toPointsF(
+                xMap, yMap, data(), from, to );
+
+            QwtPainter::drawPoints( painter, points );
+        }
     }
 }
 
 /*!
-  Draw step function
+   Draw step function
 
-  The direction of the steps depends on Inverted attribute.
+   The direction of the steps depends on Inverted attribute.
 
-  \param painter Painter
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
+   \param painter Painter
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from index of the first point to be painted
+   \param to index of the last point to be painted
 
-  \sa CurveAttribute, setCurveAttribute(),
+   \sa CurveAttribute, setCurveAttribute(),
       draw(), drawCurve(), drawDots(), drawLines(), drawSticks()
-*/
-void QwtPlotCurve::drawSteps(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+ */
+void QwtPlotCurve::drawSteps( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
 {
-    QwtPolygonF polyline(2 * (to - from) + 1);
+    const bool doAlign = QwtPainter::roundingAlignment( painter );
 
-    bool inverted = d_data->curveType == Yfx;
-    if ( d_data->attributes & Inverted )
+    QPolygonF polygon( 2 * ( to - from ) + 1 );
+    QPointF* points = polygon.data();
+
+    bool inverted = orientation() == Qt::Vertical;
+    if ( m_data->attributes & Inverted )
         inverted = !inverted;
 
-    int i,ip;
-    for (i = from, ip = 0; i <= to; i++, ip += 2)
+    const QwtSeriesData< QPointF >* series = data();
+
+    int i, ip;
+    for ( i = from, ip = 0; i <= to; i++, ip += 2 )
     {
-        const double xi = xMap.xTransform(x(i));
-        const double yi = yMap.xTransform(y(i));
+        const QPointF sample = series->sample( i );
+        double xi = xMap.transform( sample.x() );
+        double yi = yMap.transform( sample.y() );
+        if ( doAlign )
+        {
+            xi = qRound( xi );
+            yi = qRound( yi );
+        }
 
         if ( ip > 0 )
         {
-            if (inverted)
-                polyline[ip - 1] = QPointF(polyline[ip-2].x(), yi);
+            const QPointF& p0 = points[ip - 2];
+            QPointF& p = points[ip - 1];
+
+            if ( inverted )
+            {
+                p.rx() = p0.x();
+                p.ry() = yi;
+            }
             else
-                polyline[ip - 1] = QPointF(xi, polyline[ip-2].y());
+            {
+                p.rx() = xi;
+                p.ry() = p0.y();
+            }
         }
 
-        polyline[ip] = QPointF(xi, yi);
+        points[ip].rx() = xi;
+        points[ip].ry() = yi;
     }
 
-	if ( d_data->canvasRect.isValid() && (d_data->paintAttributes & ClipPolygons) )
-		polyline = QwtClipper::clipPolygonF(d_data->canvasRect, polyline);
+    if ( m_data->paintAttributes & ClipPolygons )
+    {
+        QRectF clipRect = qwtIntersectedClipRect( canvasRect, painter );
 
-    QwtPainter::drawPolyline(painter, polyline);
+        const qreal pw = QwtPainter::effectivePenWidth( painter->pen() );
+        clipRect = clipRect.adjusted(-pw, -pw, pw, pw);
 
-    if ( d_data->brush.style() != Qt::NoBrush )
-        fillCurve(painter, xMap, yMap, polyline);
+        const QPolygonF clipped = QwtClipper::clippedPolygonF(
+            clipRect, polygon, false );
+
+        QwtPainter::drawPolyline( painter, clipped );
+    }
+    else
+    {
+        QwtPainter::drawPolyline( painter, polygon );
+    }
+
+    if ( m_data->brush.style() != Qt::NoBrush )
+        fillCurve( painter, xMap, yMap, canvasRect, polygon );
 }
 
 
 /*!
-  Specify an attribute for drawing the curve
+   Specify an attribute for drawing the curve
 
-  \param attribute Curve attribute
-  \param on On/Off
+   \param attribute Curve attribute
+   \param on On/Off
 
-  /sa CurveAttribute, testCurveAttribute(), setCurveFitter()
-*/
-void QwtPlotCurve::setCurveAttribute(CurveAttribute attribute, bool on)
+   /sa testCurveAttribute(), setCurveFitter()
+ */
+void QwtPlotCurve::setCurveAttribute( CurveAttribute attribute, bool on )
 {
-    if ( bool(d_data->attributes & attribute) == on )
+    if ( bool( m_data->attributes & attribute ) == on )
         return;
 
     if ( on )
-        d_data->attributes |= attribute;
+        m_data->attributes |= attribute;
     else
-        d_data->attributes &= ~attribute;
+        m_data->attributes &= ~attribute;
 
     itemChanged();
 }
 
 /*!
     \return true, if attribute is enabled
-    \sa CurveAttribute, setCurveAttribute()
-*/
-bool QwtPlotCurve::testCurveAttribute(CurveAttribute attribute) const
+    \sa setCurveAttribute()
+ */
+bool QwtPlotCurve::testCurveAttribute( CurveAttribute attribute ) const
 {
-    return d_data->attributes & attribute;
+    return m_data->attributes & attribute;
 }
 
 /*!
-  Assign the curve type
+   Assign a curve fitter
 
-  \param curveType Yfx or Xfy
-  \sa CurveType, curveType()
-*/
-void QwtPlotCurve::setCurveType(CurveType curveType)
+   The curve fitter "smooths" the curve points, when the Fitted
+   CurveAttribute is set. setCurveFitter(NULL) also disables curve fitting.
+
+   The curve fitter operates on the translated points ( = widget coordinates)
+   to be functional for logarithmic scales. Obviously this is less performant
+   for fitting algorithms, that reduce the number of points.
+
+   For situations, where curve fitting is used to improve the performance
+   of painting huge series of points it might be better to execute the fitter
+   on the curve points once and to cache the result in the QwtSeriesData object.
+
+   \param curveFitter() Curve fitter
+   \sa Fitted
+ */
+void QwtPlotCurve::setCurveFitter( QwtCurveFitter* curveFitter )
 {
-    if ( d_data->curveType != curveType )
-    {
-        d_data->curveType = curveType;
-        itemChanged();
-    }
-}
-
-/*!
-   Return the curve type
-   \sa CurveType, setCurveType()
-*/
-QwtPlotCurve::CurveType QwtPlotCurve::curveType() const
-{
-    return d_data->curveType;
-}
-
-/*!
-  Assign a curve fitter
-  setCurveFitter(NULL) disables curve fitting.
-
-  \param curveFitter Curve fitter
-*/
-void QwtPlotCurve::setCurveFitter(QwtCurveFitter *curveFitter)
-{
-    delete d_data->curveFitter;
-    d_data->curveFitter = curveFitter;
+    delete m_data->curveFitter;
+    m_data->curveFitter = curveFitter;
 
     itemChanged();
 }
 
 /*!
-  Get the curve fitter. If curve fitting is disabled NULL is returned.
-  \return Curve fitter
-*/
-QwtCurveFitter *QwtPlotCurve::curveFitter() const
+   Get the curve fitter. If curve fitting is disabled NULL is returned.
+
+   \return Curve fitter
+   \sa setCurveFitter(), Fitted
+ */
+QwtCurveFitter* QwtPlotCurve::curveFitter() const
 {
-    return d_data->curveFitter;
+    return m_data->curveFitter;
 }
 
 /*!
-  Fill the area between the curve and the baseline with
-  the curve brush
+   Fill the area between the curve and the baseline with
+   the curve brush
 
-  \param painter Painter
-  \param xMap x map
-  \param yMap y map
-  \param pa Polygon
+   \param painter Painter
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param polygon Polygon - will be modified !
 
-  \sa setBrush(), setBaseline(), setCurveType()
-*/
-void QwtPlotCurve::fillCurve(QPainter *painter,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    QwtPolygonF &pa) const
+   \sa setBrush(), setBaseline(), setStyle()
+ */
+void QwtPlotCurve::fillCurve( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, QPolygonF& polygon ) const
 {
-    if ( d_data->brush.style() == Qt::NoBrush )
+    if ( m_data->brush.style() == Qt::NoBrush )
         return;
 
-    closePolyline(xMap, yMap, pa);
-    if ( pa.count() <= 2 ) // a line can't be filled
+    closePolyline( painter, xMap, yMap, polygon );
+    if ( polygon.count() <= 2 ) // a line can't be filled
         return;
 
-    QBrush b = d_data->brush;
-    if ( !b.color().isValid() )
-        b.setColor(d_data->pen.color());
+    QBrush brush = m_data->brush;
+    if ( !brush.color().isValid() )
+        brush.setColor( m_data->pen.color() );
+
+    if ( m_data->paintAttributes & ClipPolygons )
+    {
+        const QRectF clipRect = qwtIntersectedClipRect( canvasRect, painter );
+        QwtClipper::clipPolygonF( clipRect, polygon, true );
+    }
 
     painter->save();
 
-    painter->setPen(QPen(Qt::NoPen));
-    painter->setBrush(b);
+    painter->setPen( Qt::NoPen );
+    painter->setBrush( brush );
 
-    QwtPainter::drawPolygon(painter, pa);
+    QwtPainter::drawPolygon( painter, polygon );
 
     painter->restore();
 }
 
 /*!
-  \brief Complete a polygon to be a closed polygon
-         including the area between the original polygon
-         and the baseline.
-  \param xMap X map
-  \param yMap Y map
-  \param pa Polygon to be completed
-*/
-void QwtPlotCurve::closePolyline(
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    QwtPolygonF &pa) const
+   \brief Complete a polygon to be a closed polygon including the
+         area between the original polygon and the baseline.
+
+   \param painter Painter
+   \param xMap X map
+   \param yMap Y map
+   \param polygon Polygon to be completed
+ */
+void QwtPlotCurve::closePolyline( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    QPolygonF& polygon ) const
 {
-    const int sz = pa.size();
-    if ( sz < 2 )
+    if ( polygon.size() < 2 )
         return;
 
-    pa.resize(sz + 2);
+    const bool doAlign = QwtPainter::roundingAlignment( painter );
 
-    if ( d_data->curveType == QwtPlotCurve::Xfy )
+    double baseline = m_data->baseline;
+
+    if ( orientation() == Qt::Vertical )
     {
-        pa[sz] = QPointF(xMap.transform(d_data->reference), pa[sz - 1].y());
-        pa[sz + 1] = QPointF(xMap.transform(d_data->reference), pa[0].y());
+        if ( yMap.transformation() )
+            baseline = yMap.transformation()->bounded( baseline );
+
+        double refY = yMap.transform( baseline );
+        if ( doAlign && qAbs( refY ) < std::numeric_limits< int >::max() )
+            refY = qRound( refY );
+
+        polygon += QPointF( polygon.last().x(), refY );
+        polygon += QPointF( polygon.first().x(), refY );
     }
     else
-	{
-		pa[sz] = QPointF(pa[sz - 1].x(), yMap.transform(d_data->reference));
-		pa[pa.size() - 1] = QPointF(pa[0].x(), yMap.transform(d_data->reference));
+    {
+        if ( xMap.transformation() )
+            baseline = xMap.transformation()->bounded( baseline );
+
+        double refX = xMap.transform( baseline );
+        if ( doAlign && qAbs( refX ) < std::numeric_limits< int >::max() )
+            refX = qRound( refX );
+
+        polygon += QPointF( refX, polygon.last().y() );
+        polygon += QPointF( refX, polygon.first().y() );
     }
 }
 
 /*!
-  \brief Draw symbols
-  \param painter Painter
-  \param symbol Curve symbol
-  \param xMap x map
-  \param yMap y map
-  \param from index of the first point to be painted
-  \param to index of the last point to be painted
+   Draw symbols
 
-  \sa setSymbol(), draw(), drawCurve()
-*/
-void QwtPlotCurve::drawSymbols(QPainter *painter, const QwtSymbol &symbol,
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    int from, int to) const
+   \param painter Painter
+   \param symbol Curve symbol
+   \param xMap x map
+   \param yMap y map
+   \param canvasRect Contents rectangle of the canvas
+   \param from Index of the first point to be painted
+   \param to Index of the last point to be painted
+
+   \sa setSymbol(), drawSeries(), drawCurve()
+ */
+void QwtPlotCurve::drawSymbols( QPainter* painter, const QwtSymbol& symbol,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect, int from, int to ) const
 {
-    painter->setBrush(symbol.brush());
-    painter->setPen(QwtPainter::scaledPen(symbol.pen()));
+    QwtPointMapper mapper;
+    mapper.setFlag( QwtPointMapper::RoundPoints,
+        QwtPainter::roundingAlignment( painter ) );
+    mapper.setFlag( QwtPointMapper::WeedOutPoints,
+        testPaintAttribute( QwtPlotCurve::FilterPoints ) );
 
-    const QwtMetricsMap &metricsMap = QwtPainter::metricsMap();
+    const QRectF clipRect = qwtIntersectedClipRect( canvasRect, painter );
+    mapper.setBoundingRect( clipRect );
 
-    QRect rect;
-    rect.setSize(metricsMap.screenToLayout(symbol.size()));
+    const int chunkSize = 500;
 
-	if ( (to > from) && (d_data->paintAttributes & PaintFiltered) &&
-		 d_data->canvasRect.isValid() )
+    for ( int i = from; i <= to; i += chunkSize )
     {
-		PrivateData::PixelMatrix pixelMatrix(d_data->canvasRect);
+        const int n = qMin( chunkSize, to - i + 1 );
 
-        for (int i = from; i <= to; i++)
-        {
-            const QPoint pi( xMap.transform(x(i)),
-                yMap.transform(y(i)) );
+        const QPolygonF points = mapper.toPointsF( xMap, yMap,
+            data(), i, i + n - 1 );
 
-            if ( pixelMatrix.testPixel(pi) )
-            {
-                rect.moveCenter(pi);
-                symbol.draw(painter, rect);
-            }
-        }
-    }
-    else
-    {
-        for (int i = from; i <= to; i++)
-        {
-            const int xi = xMap.transform(x(i));
-            const int yi = yMap.transform(y(i));
-
-            rect.moveCenter(QPoint(xi, yi));
-            symbol.draw(painter, rect);
-        }
+        if ( points.size() > 0 )
+            symbol.drawSymbols( painter, points );
     }
 }
 
 /*!
-  \brief Set the value of the baseline
+   \brief Set the value of the baseline
 
-  The baseline is needed for filling the curve with a brush or
-  the Sticks drawing style.
-  The default value is 0.0. The interpretation
-  of the baseline depends on the CurveType. With QwtPlotCurve::Yfx,
-  the baseline is interpreted as a horizontal line at y = baseline(),
-  with QwtPlotCurve::Yfy, it is interpreted as a vertical line at
-  x = baseline().
-  \param reference baseline
-  \sa baseline(), setBrush(), setStyle(), setCurveType()
-*/
-void QwtPlotCurve::setBaseline(double reference)
+   The baseline is needed for filling the curve with a brush or
+   the Sticks drawing style.
+
+   The interpretation of the baseline depends on the orientation().
+   With Qt::Vertical, the baseline is interpreted as a horizontal line
+   at y = baseline(), with Qt::Horizontal, it is interpreted as a vertical
+   line at x = baseline().
+
+   The default value is 0.0.
+
+   \param value Value of the baseline
+   \sa baseline(), setBrush(), setStyle(), QwtPlotAbstractSeriesItem::orientation()
+ */
+void QwtPlotCurve::setBaseline( double value )
 {
-    if ( d_data->reference != reference )
+    if ( m_data->baseline != value )
     {
-        d_data->reference = reference;
+        m_data->baseline = value;
         itemChanged();
     }
 }
 
 /*!
-    Return the value of the baseline
-    \sa setBaseline()
-*/
+   \return Value of the baseline
+   \sa setBaseline()
+ */
 double QwtPlotCurve::baseline() const
 {
-    return d_data->reference;
+    return m_data->baseline;
 }
 
 /*!
-  Return the size of the data arrays
-  \sa setData()
-*/
-int QwtPlotCurve::dataSize() const
-{
-    return d_xy->size();
-}
+   Find the closest curve point for a specific position
 
-/*!
-  Find the closest curve point for a specific position
-
-  \param pos Position, where to look for the closest curve point
-  \param dist If dist != NULL, closestPoint() returns the distance between
-              the position and the clostest curve point
-  \return Index of the closest curve point, or -1 if none can be found
+   \param pos Position, where to look for the closest curve point
+   \param dist If dist != NULL, closestPoint() returns the distance between
+              the position and the closest curve point in paint device coordinates
+   \return Index of the closest curve point, or -1 if none can be found
           ( f.e when the curve has no points )
-  \note closestPoint() implements a dumb algorithm, that iterates
+   \note closestPoint() implements a dumb algorithm, that iterates
         over all points
-*/
-int QwtPlotCurve::closestPoint(const QPoint &pos, double *dist) const
+ */
+int QwtPlotCurve::closestPoint( const QPointF& pos, double* dist ) const
 {
-	const int numPoints = dataSize();
-	if ( plot() == NULL || numPoints <= 0 )
+    const QwtPlot* plot = this->plot();
+
+    if ( ( plot == NULL ) || !plot->isAxisValid( xAxis() ) || !plot->isAxisValid( yAxis() ) )
         return -1;
 
-    const QwtScaleMap xMap = plot()->canvasMap(xAxis());
-    const QwtScaleMap yMap = plot()->canvasMap(yAxis());
+    const size_t numSamples = dataSize();
+    if ( numSamples <= 0 )
+        return -1;
+
+    const QwtSeriesData< QPointF >* series = data();
+
+    const QwtScaleMap xMap = plot->canvasMap( xAxis() );
+    const QwtScaleMap yMap = plot->canvasMap( yAxis() );
 
     int index = -1;
     double dmin = 1.0e10;
 
-	for (int i = 0; i < numPoints; i++)
+    for ( uint i = 0; i < numSamples; i++ )
     {
-        const double cx = xMap.xTransform(x(i)) - pos.x();
-        const double cy = yMap.xTransform(y(i)) - pos.y();
+        const QPointF sample = series->sample( i );
 
-        const double f = qwtSqr(cx) + qwtSqr(cy);
-        if (f < dmin)
+        const double cx = xMap.transform( sample.x() ) - pos.x();
+        const double cy = yMap.transform( sample.y() ) - pos.y();
+
+        const double f = qwtSqr( cx ) + qwtSqr( cy );
+        if ( f < dmin )
         {
             index = i;
             dmin = f;
         }
     }
     if ( dist )
-        *dist = sqrt(dmin);
+        *dist = std::sqrt( dmin );
 
     return index;
 }
 
-//!  Update the widget that represents the curve on the legend
-void QwtPlotCurve::updateLegend(QwtLegend *legend) const
+/*!
+   Find the curve point with the smallest coordinate larger than a specific value
+   The coordinates have to be monotonic in direction of the orientation.
+    
+   \param orientation Qt::Horizontal corresponds to x, Qt::Vertical to y coordinates
+   \param value x or y coordinate, depending on the orientation
+
+   \return Index of the curve point with the smalles coordinate above value
+           or -1 if there is none.
+
+   \note The implementation uses a binary search algorithm and requires the
+         points being ordered in direction of the orientation.
+
+   \sa qwtUpperSampleIndex()
+ */
+int QwtPlotCurve::adjacentPoint( Qt::Orientation orientation, qreal value ) const
 {
-    if ( !legend )
-        return;
+    const QwtSeriesData< QPointF >* data = this->data();
+    if ( data == NULL )
+        return -1;
 
-    QwtPlotItem::updateLegend(legend);
-
-    QWidget *widget = legend->find(this);
-    if ( !widget || !widget->inherits("QwtLegendItem") )
-        return;
-
-    QwtLegendItem *legendItem = (QwtLegendItem *)widget;
-
-#if QT_VERSION < 0x040000
-    const bool doUpdate = legendItem->isUpdatesEnabled();
-#else
-    const bool doUpdate = legendItem->updatesEnabled();
-#endif
-    legendItem->setUpdatesEnabled(false);
-
-    const int policy = legend->displayPolicy();
-
-    if (policy == QwtLegend::FixedIdentifier)
+    if ( orientation == Qt::Horizontal )
     {
-        int mode = legend->identifierMode();
+        struct compareX
+        {
+            inline bool operator()( const double x, const QPointF& pos ) const
+            {
+                return ( x < pos.x() );
+            }
+        };
 
-        if (mode & QwtLegendItem::ShowLine)
-            legendItem->setCurvePen(pen());
-
-        if (mode & QwtLegendItem::ShowSymbol)
-            legendItem->setSymbol(symbol());
-
-        if (mode & QwtLegendItem::ShowText)
-            legendItem->setText(title());
-        else
-            legendItem->setText(QwtText());
-
-        legendItem->setIdentifierMode(mode);
+        return qwtUpperSampleIndex< QPointF >( *data, value, compareX() );
     }
-    else if (policy == QwtLegend::AutoIdentifier)
+    else
     {
-        int mode = 0;
+        struct compareY
+        {
+            inline bool operator()( const double y, const QPointF& pos ) const
+            {
+                return ( y < pos.y() );
+            }
+        };
 
-        if (QwtPlotCurve::NoCurve != style())
-        {
-            legendItem->setCurvePen(pen());
-            mode |= QwtLegendItem::ShowLine;
-        }
-        if (QwtSymbol::NoSymbol != symbol().style())
-        {
-            legendItem->setSymbol(symbol());
-            mode |= QwtLegendItem::ShowSymbol;
-        }
-        if ( !title().isEmpty() )
-        {
-            legendItem->setText(title());
-            mode |= QwtLegendItem::ShowText;
-        }
-        else
-        {
-            legendItem->setText(QwtText());
-        }
-        legendItem->setIdentifierMode(mode);
+        return qwtUpperSampleIndex< QPointF >( *data, value, compareY() );
     }
 
-    legendItem->setUpdatesEnabled(doUpdate);
-    legendItem->update();
+    return -1;
+}
+
+/*!
+   Calculate a fictive curve point by interpolating between the adjacent
+   points. The curve points have to be monotonic in direction of the orientation.
+    
+   \param orientation For Qt::Horizontal value is a x coordinate and a y coordinate
+                      is returned. For Qt::Vertical value is a x coordinate
+   \param value x or y coordinate, depending on the orientation
+
+   \return Interpolated coordinate or qQNaN() if value is outside the bounding
+           rectangle of the curve
+
+   \note The implementation uses a binary search algorithm and requires the
+         points being ordered in direction of the orientation.
+
+   \sa adjacentPoint()
+ */
+qreal QwtPlotCurve::interpolatedValueAt( Qt::Orientation orientation, double value ) const
+{
+    const QRectF br = boundingRect();
+    if ( br.width() <= 0.0 )
+        return qQNaN();
+
+    double v;
+
+    if ( orientation == Qt::Horizontal )
+    {
+        if ( value < br.left() || value > br.right() )
+            return qQNaN();
+
+        const int index = adjacentPoint( orientation, value );
+
+        if ( index == -1 )
+        {
+            const QPointF last = sample( dataSize() - 1 );
+
+            if ( value != last.x() )
+                return qQNaN();
+
+            v = last.y();
+        }
+        else
+        {
+            const QLineF line( sample( index - 1 ), sample( index ) );
+            v = line.pointAt( ( value - line.p1().x() ) / line.dx() ).y();
+        }
+    }
+    else
+    {
+        if ( value < br.top() || value > br.bottom() )
+            return qQNaN();
+
+        const int index = adjacentPoint( orientation, value );
+
+        if ( index == -1 )
+        {
+            const QPointF last = sample( dataSize() - 1 );
+
+            if ( value != last.y() )
+                return qQNaN();
+
+            v = last.x();
+        }
+        else
+        {
+            const QLineF line( sample( index - 1 ), sample( index ) );
+            v = line.pointAt( ( value - line.p1().y() ) / line.dy() ).x();
+        }
+    }
+
+    return v;
+}
+
+/*!
+   \return Icon representing the curve on the legend
+
+   \param index Index of the legend entry
+                ( ignored as there is only one )
+   \param size Icon size
+
+   \sa QwtPlotItem::setLegendIconSize(), QwtPlotItem::legendData()
+ */
+QwtGraphic QwtPlotCurve::legendIcon( int index, const QSizeF& size ) const
+{
+    Q_UNUSED( index );
+
+    if ( size.isEmpty() )
+        return QwtGraphic();
+
+    QwtGraphic graphic;
+    graphic.setDefaultSize( size );
+    graphic.setRenderHint( QwtGraphic::RenderPensUnscaled, true );
+
+    QPainter painter( &graphic );
+    painter.setRenderHint( QPainter::Antialiasing,
+        testRenderHint( QwtPlotItem::RenderAntialiased ) );
+
+    if ( m_data->legendAttributes == 0 ||
+        m_data->legendAttributes & QwtPlotCurve::LegendShowBrush )
+    {
+        QBrush brush = m_data->brush;
+
+        if ( brush.style() == Qt::NoBrush &&
+            m_data->legendAttributes == 0 )
+        {
+            if ( style() != QwtPlotCurve::NoCurve )
+            {
+                brush = QBrush( pen().color() );
+            }
+            else if ( m_data->symbol &&
+                ( m_data->symbol->style() != QwtSymbol::NoSymbol ) )
+            {
+                brush = QBrush( m_data->symbol->pen().color() );
+            }
+        }
+
+        if ( brush.style() != Qt::NoBrush )
+        {
+            QRectF r( 0, 0, size.width(), size.height() );
+            painter.fillRect( r, brush );
+        }
+    }
+
+    if ( m_data->legendAttributes & QwtPlotCurve::LegendShowLine )
+    {
+        if ( pen() != Qt::NoPen )
+        {
+            QPen pn = pen();
+            pn.setCapStyle( Qt::FlatCap );
+
+            painter.setPen( pn );
+
+            const double y = 0.5 * size.height();
+            QwtPainter::drawLine( &painter, 0.0, y, size.width(), y );
+        }
+    }
+
+    if ( m_data->legendAttributes & QwtPlotCurve::LegendShowSymbol )
+    {
+        if ( m_data->symbol )
+        {
+            QRectF r( 0, 0, size.width(), size.height() );
+            m_data->symbol->drawSymbol( &painter, r );
+        }
+    }
+
+    return graphic;
+}
+
+/*!
+   Assign a series of points
+
+   setSamples() is just a wrapper for setData() without any additional
+   value - beside that it is easier to find for the developer.
+
+   \param data Data
+   \warning The item takes ownership of the data object, deleting
+           it when its not used anymore.
+ */
+void QwtPlotCurve::setSamples( QwtSeriesData< QPointF >* data )
+{
+    setData( data );
+}
+
+/*!
+   Initialize data with an array of points.
+
+   \param samples Vector of points
+   \note QVector is implicitly shared
+   \note QPolygonF is derived from QVector<QPointF>
+ */
+void QwtPlotCurve::setSamples( const QVector< QPointF >& samples )
+{
+    setData( new QwtPointSeriesData( samples ) );
+}
+
+/*!
+   \brief Initialize the data by pointing to memory blocks which
+         are not managed by QwtPlotCurve.
+
+   setRawSamples is provided for efficiency.
+   It is important to keep the pointers
+   during the lifetime of the underlying QwtCPointerData class.
+
+   \param xData pointer to x data
+   \param yData pointer to y data
+   \param size size of x and y
+
+   \sa QwtCPointerData
+ */
+void QwtPlotCurve::setRawSamples(
+    const double* xData, const double* yData, int size )
+{
+    setData( new QwtCPointerData< double >( xData, yData, size ) );
+}
+
+/*!
+   \brief Initialize the data by pointing to memory blocks which
+         are not managed by QwtPlotCurve.
+
+   setRawSamples is provided for efficiency.
+   It is important to keep the pointers
+   during the lifetime of the underlying QwtCPointerData class.
+
+   \param xData pointer to x data
+   \param yData pointer to y data
+   \param size size of x and y
+
+   \sa QwtCPointerData
+ */
+void QwtPlotCurve::setRawSamples(
+    const float* xData, const float* yData, int size )
+{
+    setData( new QwtCPointerData< float >( xData, yData, size ) );
+}
+
+/*!
+   \brief Initialize the data by pointing to a memory block which
+         is not managed by QwtPlotCurve.
+
+   The memory contains the y coordinates, while the index is
+   interpreted as x coordinate.
+
+   setRawSamples() is provided for efficiency. It is important to
+   keep the pointers during the lifetime of the underlying
+   QwtCPointerValueData class.
+
+   \param yData pointer to y data
+   \param size size of x and y
+
+   \sa QwtCPointerData
+ */
+void QwtPlotCurve::setRawSamples( const double* yData, int size )
+{
+    setData( new QwtCPointerValueData< double >( yData, size ) );
+}
+
+/*!
+   \brief Initialize the data by pointing to memory blocks which
+         are not managed by QwtPlotCurve.
+
+   The memory contains the y coordinates, while the index is
+   interpreted as x coordinate.
+
+   setRawSamples() is provided for efficiency. It is important to
+   keep the pointers during the lifetime of the underlying
+   QwtCPointerValueData class.
+
+   \param yData pointer to y data
+   \param size size of x and y
+
+   \sa QwtCPointerData
+ */
+void QwtPlotCurve::setRawSamples( const float* yData, int size )
+{
+    setData( new QwtCPointerValueData< float >( yData, size ) );
+}
+
+/*!
+   Set data by copying x- and y-values from specified memory blocks.
+   Contrary to setRawSamples(), this function makes a 'deep copy' of
+   the data.
+
+   \param xData pointer to x values
+   \param yData pointer to y values
+   \param size size of xData and yData
+
+   \sa QwtPointArrayData
+ */
+void QwtPlotCurve::setSamples(
+    const double* xData, const double* yData, int size )
+{
+    setData( new QwtPointArrayData< double >( xData, yData, size ) );
+}
+
+/*!
+   Set data by copying x- and y-values from specified memory blocks.
+   Contrary to setRawSamples(), this function makes a 'deep copy' of
+   the data.
+
+   \param xData pointer to x values
+   \param yData pointer to y values
+   \param size size of xData and yData
+
+   \sa QwtPointArrayData
+ */
+void QwtPlotCurve::setSamples(
+    const float* xData, const float* yData, int size )
+{
+    setData( new QwtPointArrayData< float >( xData, yData, size ) );
+}
+
+/*!
+   \brief Initialize data with x- and y-arrays (explicitly shared)
+
+   \param xData x data
+   \param yData y data
+
+   \sa QwtPointArrayData
+ */
+void QwtPlotCurve::setSamples( const QVector< double >& xData,
+    const QVector< double >& yData )
+{
+    setData( new QwtPointArrayData< double >( xData, yData ) );
+}
+
+/*!
+   \brief Initialize data with x- and y-arrays (explicitly shared)
+
+   \param xData x data
+   \param yData y data
+
+   \sa QwtPointArrayData
+ */
+void QwtPlotCurve::setSamples( const QVector< float >& xData,
+    const QVector< float >& yData )
+{
+    setData( new QwtPointArrayData< float >( xData, yData ) );
+}
+
+/*!
+   Set data by copying y-values from a specified memory block.
+
+   The memory contains the y coordinates, while the index is
+   interpreted as x coordinate.
+
+   \param yData y data
+   \param size size of yData
+
+   \sa QwtValuePointData
+ */
+void QwtPlotCurve::setSamples( const double* yData, int size )
+{
+    setData( new QwtValuePointData< double >( yData, size ) );
+}
+
+/*!
+   Set data by copying y-values from a specified memory block.
+
+   The vector contains the y coordinates, while the index is
+   interpreted as x coordinate.
+
+   \param yData y data
+   \param size size of yData
+
+   \sa QwtValuePointData
+ */
+void QwtPlotCurve::setSamples( const float* yData, int size )
+{
+    setData( new QwtValuePointData< float >( yData, size ) );
+}
+
+/*!
+   Initialize data with an array of y values (explicitly shared)
+
+   The vector contains the y coordinates, while the index is
+   the x coordinate.
+
+   \param yData y data
+
+   \sa QwtValuePointData
+ */
+void QwtPlotCurve::setSamples( const QVector< double >& yData )
+{
+    setData( new QwtValuePointData< double >( yData ) );
+}
+
+/*!
+   Initialize data with an array of y values (explicitly shared)
+
+   The vector contains the y coordinates, while the index is
+   the x coordinate.
+
+   \param yData y data
+
+   \sa QwtValuePointData
+ */
+void QwtPlotCurve::setSamples( const QVector< float >& yData )
+{
+    setData( new QwtValuePointData< float >( yData ) );
 }

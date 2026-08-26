@@ -198,6 +198,7 @@ public:
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
 	void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
 	QMdiArea* workspace(){return d_workspace;};
+    void setVisible(bool visible) override;
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);

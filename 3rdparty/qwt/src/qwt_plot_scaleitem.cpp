@@ -1,28 +1,29 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
 
+#include "qwt_plot_scaleitem.h"
+#include "qwt_plot.h"
+#include "qwt_scale_map.h"
+#include "qwt_interval.h"
+#include "qwt_text.h"
+
 #include <qpalette.h>
 #include <qpainter.h>
-#include "qwt_plot.h"
-#include "qwt_plot_canvas.h"
-#include "qwt_scale_map.h"
-#include "qwt_plot_scaleitem.h"
-#include "qwt_double_interval.h"
 
 class QwtPlotScaleItem::PrivateData
 {
-public:
-    PrivateData():
-        position(0.0),
-        borderDistance(-1),
-        scaleDivFromAxis(true),
-        scaleDraw(new QwtScaleDraw())
+  public:
+    PrivateData()
+        : position( 0.0 )
+        , borderDistance( -1 )
+        , scaleDivFromAxis( true )
+        , scaleDraw( new QwtScaleDraw() )
     {
     }
 
@@ -31,45 +32,62 @@ public:
         delete scaleDraw;
     }
 
-#if QT_VERSION < 0x040000
-    QColorGroup colorGroup;
-#else
+    QwtInterval scaleInterval( const QRectF&,
+        const QwtScaleMap&, const QwtScaleMap& ) const;
+
     QPalette palette;
-#endif
     QFont font;
     double position;
     int borderDistance;
     bool scaleDivFromAxis;
-    QwtScaleDraw *scaleDraw;
-    QRect canvasRectCache;
+    QwtScaleDraw* scaleDraw;
 };
+
+QwtInterval QwtPlotScaleItem::PrivateData::scaleInterval( const QRectF& canvasRect,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap ) const
+{
+    QwtInterval interval;
+    if ( scaleDraw->orientation() == Qt::Horizontal )
+    {
+        interval.setMinValue( xMap.invTransform( canvasRect.left() ) );
+        interval.setMaxValue( xMap.invTransform( canvasRect.right() - 1 ) );
+    }
+    else
+    {
+        interval.setMinValue( yMap.invTransform( canvasRect.bottom() - 1 ) );
+        interval.setMaxValue( yMap.invTransform( canvasRect.top() ) );
+    }
+
+    return interval;
+}
 
 /*!
    \brief Constructor for scale item at the position pos.
 
-   \param alignment In case of QwtScaleDraw::BottomScale/QwtScaleDraw::TopScale
-                    the scale item is corresponding to the xAxis(), 
+   \param alignment In case of QwtScaleDraw::BottomScale or QwtScaleDraw::TopScale
+                    the scale item is corresponding to the xAxis(),
                     otherwise it corresponds to the yAxis().
 
    \param pos x or y position, depending on the corresponding axis.
-  
-   \sa setPosition(), setAlignment()
-*/
-QwtPlotScaleItem::QwtPlotScaleItem(
-        QwtScaleDraw::Alignment alignment, const double pos):
-    QwtPlotItem(QwtText("Scale"))
-{
-    d_data = new PrivateData;
-    d_data->position = pos;
-    d_data->scaleDraw->setAlignment(alignment);
 
-    setZ(11.0);
+   \sa setPosition(), setAlignment()
+ */
+QwtPlotScaleItem::QwtPlotScaleItem(
+        QwtScaleDraw::Alignment alignment, const double pos )
+    : QwtPlotItem( QwtText( "Scale" ) )
+{
+    m_data = new PrivateData;
+    m_data->position = pos;
+    m_data->scaleDraw->setAlignment( alignment );
+
+    setItemInterest( QwtPlotItem::ScaleInterest, true );
+    setZ( 11.0 );
 }
 
 //! Destructor
 QwtPlotScaleItem::~QwtPlotScaleItem()
 {
-    delete d_data;
+    delete m_data;
 }
 
 //! \return QwtPlotItem::Rtti_PlotScale
@@ -86,38 +104,38 @@ int QwtPlotScaleItem::rtti() const
 
    \param scaleDiv Scale division
    \sa scaleDiv(), setScaleDivFromAxis(), isScaleDivFromAxis()
-*/
-void QwtPlotScaleItem::setScaleDiv(const QwtScaleDiv& scaleDiv)
+ */
+void QwtPlotScaleItem::setScaleDiv( const QwtScaleDiv& scaleDiv )
 {
-    d_data->scaleDivFromAxis = false;
-    d_data->scaleDraw->setScaleDiv(scaleDiv);
+    m_data->scaleDivFromAxis = false;
+    m_data->scaleDraw->setScaleDiv( scaleDiv );
 }
 
 //! \return Scale division
 const QwtScaleDiv& QwtPlotScaleItem::scaleDiv() const
 {
-    return d_data->scaleDraw->scaleDiv();
+    return m_data->scaleDraw->scaleDiv();
 }
 
 /*!
-   Enable/Disable the synchronization of the scale division with 
+   Enable/Disable the synchronization of the scale division with
    the corresponding axis.
 
    \param on true/false
    \sa isScaleDivFromAxis()
-*/
-void QwtPlotScaleItem::setScaleDivFromAxis(bool on)
+ */
+void QwtPlotScaleItem::setScaleDivFromAxis( bool on )
 {
-    if ( on != d_data->scaleDivFromAxis )
+    if ( on != m_data->scaleDivFromAxis )
     {
-        d_data->scaleDivFromAxis = on;
+        m_data->scaleDivFromAxis = on;
         if ( on )
         {
-            const QwtPlot *plt = plot();
+            const QwtPlot* plt = plot();
             if ( plt )
             {
-                updateScaleDiv( *plt->axisScaleDiv(xAxis()),
-                    *plt->axisScaleDiv(yAxis()) );
+                updateScaleDiv( plt->axisScaleDiv( xAxis() ),
+                    plt->axisScaleDiv( yAxis() ) );
                 itemChanged();
             }
         }
@@ -125,50 +143,26 @@ void QwtPlotScaleItem::setScaleDivFromAxis(bool on)
 }
 
 /*!
-   \return True, if the synchronization of the scale division with 
+   \return True, if the synchronization of the scale division with
            the corresponding axis is enabled.
    \sa setScaleDiv(), setScaleDivFromAxis()
-*/
+ */
 bool QwtPlotScaleItem::isScaleDivFromAxis() const
 {
-    return d_data->scaleDivFromAxis;
+    return m_data->scaleDivFromAxis;
 }
-
-#if QT_VERSION < 0x040000 
-
-/*!
-   Set the color group
-   \sa QwtAbstractScaleDraw::draw(), colorGroup()
-*/
-void QwtPlotScaleItem::setColorGroup(const QColorGroup &colorGroup)
-{
-    if ( colorGroup != d_data->colorGroup )
-    {
-        d_data->colorGroup = colorGroup;
-        itemChanged();
-    }
-}
-
-/*!
-   \return color group
-   \sa setColorGroup()
-*/
-QColorGroup QwtPlotScaleItem::colorGroup() const
-{
-    return d_data->colorGroup;
-}
-
-#else
 
 /*!
    Set the palette
    \sa QwtAbstractScaleDraw::draw(), palette()
-*/
-void QwtPlotScaleItem::setPalette(const QPalette &palette)
+ */
+void QwtPlotScaleItem::setPalette( const QPalette& palette )
 {
-    if ( palette != d_data->palette )
+    if ( palette != m_data->palette )
     {
-        d_data->palette = palette;
+        m_data->palette = palette;
+
+        legendChanged();
         itemChanged();
     }
 }
@@ -176,23 +170,21 @@ void QwtPlotScaleItem::setPalette(const QPalette &palette)
 /*!
    \return palette
    \sa setPalette()
-*/
+ */
 QPalette QwtPlotScaleItem::palette() const
 {
-    return d_data->palette;
+    return m_data->palette;
 }
-
-#endif
 
 /*!
    Change the tick label font
    \sa font()
-*/
-void QwtPlotScaleItem::setFont(const QFont &font)
+ */
+void QwtPlotScaleItem::setFont( const QFont& font )
 {
-    if ( font != d_data->font )
+    if ( font != m_data->font )
     {
-        d_data->font = font;
+        m_data->font = font;
         itemChanged();
     }
 }
@@ -200,38 +192,38 @@ void QwtPlotScaleItem::setFont(const QFont &font)
 /*!
    \return tick label font
    \sa setFont()
-*/
+ */
 QFont QwtPlotScaleItem::font() const
 {
-    return d_data->font;
+    return m_data->font;
 }
 
 /*!
-  \brief Set a scale draw
+   \brief Set a scale draw
 
-  \param scaleDraw object responsible for drawing scales.
+   \param scaleDraw object responsible for drawing scales.
 
-  The main use case for replacing the default QwtScaleDraw is
-  to overload QwtAbstractScaleDraw::label, to replace or swallow
-  tick labels.
+   The main use case for replacing the default QwtScaleDraw is
+   to overload QwtAbstractScaleDraw::label, to replace or swallow
+   tick labels.
 
-  \sa scaleDraw()
-*/
-void QwtPlotScaleItem::setScaleDraw(QwtScaleDraw *scaleDraw) 
+   \sa scaleDraw()
+ */
+void QwtPlotScaleItem::setScaleDraw( QwtScaleDraw* scaleDraw )
 {
     if ( scaleDraw == NULL )
         return;
 
-    if ( scaleDraw != d_data->scaleDraw )
-        delete d_data->scaleDraw;
+    if ( scaleDraw != m_data->scaleDraw )
+        delete m_data->scaleDraw;
 
-    d_data->scaleDraw = scaleDraw;
+    m_data->scaleDraw = scaleDraw;
 
-    const QwtPlot *plt = plot();
+    const QwtPlot* plt = plot();
     if ( plt )
     {
-        updateScaleDiv( *plt->axisScaleDiv(xAxis()),
-            *plt->axisScaleDiv(yAxis()) );
+        updateScaleDiv( plt->axisScaleDiv( xAxis() ),
+            plt->axisScaleDiv( yAxis() ) );
     }
 
     itemChanged();
@@ -240,24 +232,24 @@ void QwtPlotScaleItem::setScaleDraw(QwtScaleDraw *scaleDraw)
 /*!
    \return Scale draw
    \sa setScaleDraw()
-*/
-const QwtScaleDraw *QwtPlotScaleItem::scaleDraw() const
+ */
+const QwtScaleDraw* QwtPlotScaleItem::scaleDraw() const
 {
-    return d_data->scaleDraw;
+    return m_data->scaleDraw;
 }
 
 /*!
    \return Scale draw
    \sa setScaleDraw()
-*/
-QwtScaleDraw *QwtPlotScaleItem::scaleDraw() 
+ */
+QwtScaleDraw* QwtPlotScaleItem::scaleDraw()
 {
-    return d_data->scaleDraw;
+    return m_data->scaleDraw;
 }
 
 /*!
    Change the position of the scale
- 
+
    The position is interpreted as y value for horizontal axes
    and as x value for vertical axes.
 
@@ -265,13 +257,13 @@ QwtScaleDraw *QwtPlotScaleItem::scaleDraw()
 
    \param pos New position
    \sa position(), setAlignment()
-*/
-void QwtPlotScaleItem::setPosition(double pos)
+ */
+void QwtPlotScaleItem::setPosition( double pos )
 {
-    if ( d_data->position != pos )
+    if ( m_data->position != pos )
     {
-        d_data->position = pos;
-        d_data->borderDistance = -1;
+        m_data->position = pos;
+        m_data->borderDistance = -1;
         itemChanged();
     }
 }
@@ -279,36 +271,36 @@ void QwtPlotScaleItem::setPosition(double pos)
 /*!
    \return Position of the scale
    \sa setPosition(), setAlignment()
-*/
+ */
 double QwtPlotScaleItem::position() const
 {
-    return d_data->position;
+    return m_data->position;
 }
 
 /*!
    \brief Align the scale to the canvas
 
-   If distance is >= 0 the scale will be aligned to a 
-   border of the contents rect of the canvas. If 
+   If distance is >= 0 the scale will be aligned to a
+   border of the contents rectangle of the canvas. If
    alignment() is QwtScaleDraw::LeftScale, the scale will
    be aligned to the right border, if it is QwtScaleDraw::TopScale
    it will be aligned to the bottom (and vice versa),
 
    If distance is < 0 the scale will be at the position().
 
-   \param distance Number of pixels between the canvas border and the 
+   \param distance Number of pixels between the canvas border and the
                    backbone of the scale.
 
    \sa setPosition(), borderDistance()
-*/
-void QwtPlotScaleItem::setBorderDistance(int distance)
+ */
+void QwtPlotScaleItem::setBorderDistance( int distance )
 {
     if ( distance < 0 )
         distance = -1;
 
-    if ( distance != d_data->borderDistance )
+    if ( distance != m_data->borderDistance )
     {
-        d_data->borderDistance = distance;
+        m_data->borderDistance = distance;
         itemChanged();
     }
 }
@@ -316,16 +308,16 @@ void QwtPlotScaleItem::setBorderDistance(int distance)
 /*!
    \return Distance from a canvas border
    \sa setBorderDistance(), setPosition()
-*/
+ */
 int QwtPlotScaleItem::borderDistance() const
 {
-    return d_data->borderDistance;
+    return m_data->borderDistance;
 }
 
 /*!
    Change the alignment of the scale
 
-   The alignment sets the orientation of the scale and the position of 
+   The alignment sets the orientation of the scale and the position of
    the ticks:
 
    - QwtScaleDraw::BottomScale: horizontal, ticks below
@@ -337,96 +329,105 @@ int QwtPlotScaleItem::borderDistance() const
    otherwise to QwtPlotItem::xAxis().
 
    \sa scaleDraw(), QwtScaleDraw::alignment(), setPosition()
-*/
-void QwtPlotScaleItem::setAlignment(QwtScaleDraw::Alignment alignment)
+ */
+void QwtPlotScaleItem::setAlignment( QwtScaleDraw::Alignment alignment )
 {
-    QwtScaleDraw *sd = d_data->scaleDraw;
+    QwtScaleDraw* sd = m_data->scaleDraw;
     if ( sd->alignment() != alignment )
     {
-        sd->setAlignment(alignment);
+        sd->setAlignment( alignment );
         itemChanged();
     }
 }
 
 /*!
-  \brief Draw the scale
-*/
-void QwtPlotScaleItem::draw(QPainter *painter, 
-    const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRect &canvasRect) const
+   \brief Draw the scale
+ */
+void QwtPlotScaleItem::draw( QPainter* painter,
+    const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+    const QRectF& canvasRect ) const
 {
-    if ( canvasRect != d_data->canvasRectCache )
+    QwtScaleDraw* sd = m_data->scaleDraw;
+
+    if ( m_data->scaleDivFromAxis )
     {
-        QwtPlotScaleItem* that = (QwtPlotScaleItem*)this;
-        that->updateBorders();
+        const QwtInterval interval =
+            m_data->scaleInterval( canvasRect, xMap, yMap );
+
+        if ( interval != sd->scaleDiv().interval() )
+        {
+            QwtScaleDiv scaleDiv = sd->scaleDiv();
+            scaleDiv.setInterval( interval );
+            sd->setScaleDiv( scaleDiv );
+        }
     }
 
     QPen pen = painter->pen();
-    pen.setStyle(Qt::SolidLine);
-    painter->setPen(pen);
+    pen.setStyle( Qt::SolidLine );
+    painter->setPen( pen );
 
-    int pw = painter->pen().width();
-    if ( pw == 0 )
-        pw = 1;
-
-    QwtScaleDraw *sd = d_data->scaleDraw;
     if ( sd->orientation() == Qt::Horizontal )
     {
-        int y;
-        if ( d_data->borderDistance >= 0 )
+        double y;
+        if ( m_data->borderDistance >= 0 )
         {
             if ( sd->alignment() == QwtScaleDraw::BottomScale )
-                y = canvasRect.top() + d_data->borderDistance;
+                y = canvasRect.top() + m_data->borderDistance;
             else
             {
-                y = canvasRect.bottom() - d_data->borderDistance - pw + 1;
+                y = canvasRect.bottom() - m_data->borderDistance;
             }
 
         }
         else
         {
-            y = yMap.transform(d_data->position);
+            y = yMap.transform( m_data->position );
         }
 
         if ( y < canvasRect.top() || y > canvasRect.bottom() )
             return;
 
-        sd->move(canvasRect.left(), y);
-        sd->setLength(canvasRect.width() - 1);
-        sd->setTransformation(xMap.transformation()->copy());
+        sd->move( canvasRect.left(), y );
+        sd->setLength( canvasRect.width() - 1 );
+
+        QwtTransform* transform = NULL;
+        if ( xMap.transformation() )
+            transform = xMap.transformation()->copy();
+
+        sd->setTransformation( transform );
     }
     else // == Qt::Vertical
     {
-        int x;
-        if ( d_data->borderDistance >= 0 )
+        double x;
+        if ( m_data->borderDistance >= 0 )
         {
             if ( sd->alignment() == QwtScaleDraw::RightScale )
-                x = canvasRect.left() + d_data->borderDistance;
+                x = canvasRect.left() + m_data->borderDistance;
             else
             {
-                x = canvasRect.right() - d_data->borderDistance - pw + 1;
+                x = canvasRect.right() - m_data->borderDistance;
             }
         }
         else
         {
-            x = xMap.transform(d_data->position);
+            x = xMap.transform( m_data->position );
         }
         if ( x < canvasRect.left() || x > canvasRect.right() )
             return;
 
-        sd->move(x, canvasRect.top());
-        sd->setLength(canvasRect.height() - 1);
-        sd->setTransformation(yMap.transformation()->copy());
+        sd->move( x, canvasRect.top() );
+        sd->setLength( canvasRect.height() - 1 );
+
+        QwtTransform* transform = NULL;
+        if ( yMap.transformation() )
+            transform = yMap.transformation()->copy();
+
+        sd->setTransformation( transform );
     }
 
-    painter->setFont(d_data->font);
+    painter->setFont( m_data->font );
 
-#if QT_VERSION < 0x040000
-    sd->draw(painter, d_data->colorGroup);
-#else
-    sd->draw(painter, d_data->palette);
-#endif
-    
+    sd->draw( painter, m_data->palette );
 }
 
 /*!
@@ -439,44 +440,41 @@ void QwtPlotScaleItem::draw(QPainter *painter,
    \param yScaleDiv Scale division of the y-axis
 
    \sa QwtPlot::updateAxes()
-*/
+ */
 
-void QwtPlotScaleItem::updateScaleDiv(const QwtScaleDiv& xScaleDiv,
-    const QwtScaleDiv& yScaleDiv)
+void QwtPlotScaleItem::updateScaleDiv( const QwtScaleDiv& xScaleDiv,
+    const QwtScaleDiv& yScaleDiv )
 {
-    QwtScaleDraw *sd = d_data->scaleDraw;
-    if ( d_data->scaleDivFromAxis && sd )
-    {
-        sd->setScaleDiv(
-            sd->orientation() == Qt::Horizontal ? xScaleDiv : yScaleDiv);
-        updateBorders();
-    }
-}
+    QwtScaleDraw* scaleDraw = m_data->scaleDraw;
 
-void QwtPlotScaleItem::updateBorders()
-{
-    const QwtPlot *plt = plot();
-    if ( plt == NULL || !d_data->scaleDivFromAxis )
-        return;
-    
-    const QRect r = plt->canvas()->contentsRect();
-    d_data->canvasRectCache = r;
-
-    QwtDoubleInterval interval;
-    if ( d_data->scaleDraw->orientation() == Qt::Horizontal )
+    if ( m_data->scaleDivFromAxis && scaleDraw )
     {
-        const QwtScaleMap map = plt->canvasMap(xAxis());
-        interval.setMinValue(map.invTransform(r.left()));
-        interval.setMaxValue(map.invTransform(r.right()));
-    }
-    else
-    {
-        const QwtScaleMap map = plt->canvasMap(yAxis());
-        interval.setMinValue(map.invTransform(r.bottom()));
-        interval.setMaxValue(map.invTransform(r.top()));
-    }
+        const QwtScaleDiv& scaleDiv =
+            scaleDraw->orientation() == Qt::Horizontal ? xScaleDiv : yScaleDiv;
 
-    QwtScaleDiv scaleDiv = d_data->scaleDraw->scaleDiv();
-    scaleDiv.setInterval(interval);
-    d_data->scaleDraw->setScaleDiv(scaleDiv);
+        const QwtPlot* plt = plot();
+        if ( plt != NULL )
+        {
+            const QRectF canvasRect = plt->canvas()->contentsRect();
+
+            const QwtInterval interval = m_data->scaleInterval(
+                canvasRect, plt->canvasMap( xAxis() ), plt->canvasMap( yAxis() ) );
+
+            QwtScaleDiv sd = scaleDiv;
+            sd.setInterval( interval );
+
+            if ( sd != scaleDraw->scaleDiv() )
+            {
+                // the internal label cache of QwtScaleDraw
+                // is cleared here, so better avoid pointless
+                // assignments.
+
+                scaleDraw->setScaleDiv( sd );
+            }
+        }
+        else
+        {
+            scaleDraw->setScaleDiv( scaleDiv );
+        }
+    }
 }

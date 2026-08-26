@@ -1,7 +1,14 @@
 # qtiplot/CMakeLists.txt
 
 # --- Dependencies ---
-find_package(Qt6 REQUIRED COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network ZlibPrivate)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network)
+find_package(ZLIB)
+if(TARGET ZLIB::ZLIB)
+    set(ZLIB_LIBRARIES ZLIB::ZLIB)
+else()
+    find_package(Qt6 REQUIRED COMPONENTS ZlibPrivate)
+    set(ZLIB_LIBRARIES Qt6::ZlibPrivate)
+endif()
 
 # --- Sources ---
 # Glob all sources in src/
@@ -34,14 +41,19 @@ if(ENABLE_PYTHON)
     file(GLOB SIP_SOURCES "${PROJECT_BINARY_DIR}/sip_temp/qti/*.cpp" "${PROJECT_BINARY_DIR}/sip_temp/qti/*.c")
 endif()
 
+set(PLATFORM_SOURCES "")
+if(WIN32)
+    list(APPEND PLATFORM_SOURCES "icons/qtiplot.rc")
+endif()
+
 # --- Executable ---
-add_executable(qtiplot WIN32 
+add_executable(qtiplot
     ${SOURCES} 
     ${HEADERS} 
     ${UI_FILES} 
     ${RESOURCES}
     ${SIP_SOURCES}
-    "icons/qtiplot.rc"
+    ${PLATFORM_SOURCES}
 )
 
 # --- Include Directories ---
@@ -73,7 +85,6 @@ target_include_directories(qtiplot PRIVATE
     "${PROJECT_SOURCE_DIR}/3rdparty/alglib/src"
     # "${PROJECT_SOURCE_DIR}/3rdparty/tamuanova"
     "${PROJECT_SOURCE_DIR}/3rdparty/zlib"
-    "C:/Qt/6.10.2/msvc2022_64/include/QtZlib" # Added to fix missing zlib.h
 )
 
 
@@ -114,7 +125,7 @@ if(ENABLE_PYTHON)
     )
 endif()
 target_link_libraries(qtiplot PRIVATE
-    Qt6::ZlibPrivate
+    ${ZLIB_LIBRARIES}
     
     # 3rdparty Targets
     muparser
@@ -141,7 +152,31 @@ if(ENABLE_PYTHON)
         "${CMAKE_CURRENT_SOURCE_DIR}/qtiUtil.py"
         DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
     )
+    install(FILES 
+        "${CMAKE_CURRENT_SOURCE_DIR}/qtiplotrc.py"
+        "${CMAKE_CURRENT_SOURCE_DIR}/qti_wordlist.txt"
+        "${CMAKE_CURRENT_SOURCE_DIR}/qtiUtil.py"
+        DESTINATION bin
+    )
 endif()
+
+# Install deployed runtime dependencies for standalone distribution
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/" 
+    DESTINATION bin 
+    FILES_MATCHING 
+    PATTERN "*.dll" 
+    PATTERN "CMakeFiles" EXCLUDE 
+    PATTERN "src" EXCLUDE 
+    PATTERN "qtiplot_autogen" EXCLUDE
+)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/platforms" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/imageformats" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/iconengines" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/styles" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/tls" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/generic" DESTINATION bin OPTIONAL)
+install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/networkinformation" DESTINATION bin OPTIONAL)
+
 
 
 set_target_properties(qtiplot PROPERTIES
@@ -154,5 +189,7 @@ if(MINGW)
 endif()
 
 # --- Plugins ---
-add_subdirectory(src/plugins/exportEMF)
+if(WIN32)
+    add_subdirectory(src/plugins/exportEMF)
+endif()
 add_subdirectory(src/plugins/OriginPlugin)

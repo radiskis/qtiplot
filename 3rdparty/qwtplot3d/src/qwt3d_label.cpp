@@ -1,7 +1,5 @@
 #include <qbitmap.h>
 #include "qwt3d_label.h"
-#include "qwt3d_plot.h"
-#include "../3rdparty/gl2ps/gl2ps.h"
 
 using namespace Qwt3D;
 
@@ -9,72 +7,60 @@ bool Label::devicefonts_ = false;
 
 Label::Label()
 {
-	init();
+    init();
 }
 
-Label::Label(const QString & family, int pointSize, int weight, bool italic)
+Label::Label(const QString &family, int pointSize, int weight, bool italic)
 {
-	init(family, pointSize, weight, italic);
+    init(family, pointSize, weight, italic);
 }
 
-
-void Label::init(const QString & family, int pointSize, int weight, bool italic)
+void Label::init(const QString &family, int pointSize, int weight, bool italic)
 {
-	init();
-	font_ = QFont(family, pointSize, weight, italic );
+    init();
+    font_ = QFont(family, pointSize, weight, italic);
 }
 
 void Label::init()
 {
-	beg_ = Triple(0.0, 0.0, 0.0);
-	end_ = beg_;
-	pos_ = beg_;
-	setColor(0,0,0);
-	font_ = QFont();
-	anchor_ = BottomLeft;
-	gap_ = 0;
-	width_ = 0.0;
-	height_ = 0.0;
+    beg_ = Triple(0.0, 0.0, 0.0);
+    end_ = beg_;
+    pos_ = beg_;
+    setColor(0, 0, 0);
+    pm_ = QPixmap(0, 0);
+    font_ = QFont();
+    anchor_ = BottomLeft;
+    gap_ = 0;
+    flagforupdate_ = true;
 }
 
 void Label::useDeviceFonts(bool val)
 {
-	devicefonts_ = val;
+    devicefonts_ = val;
 }
 
-void Label::setFont(const QFont& f)
+void Label::setFont(const QString &family, int pointSize, int weight, bool italic)
 {
-    if ( font_ == f ) {
-        return;
-    }
-    font_ = f;
+    font_ = QFont(family, pointSize, weight, italic);
+    flagforupdate_ = true;
 }
 
-void Label::setFont(const QString & family, int pointSize, int weight, bool italic)
+void Label::setString(QString const &s)
 {
-    setFont( QFont(family, pointSize, weight, italic ) );
-}
-
-void Label::setString(QString const& s)
-{
-  text_ = s;
-}
-
-const QString& Label::string() const
-{
-   return text_;
+    text_ = s;
+    flagforupdate_ = true;
 }
 
 void Label::setColor(double r, double g, double b, double a)
 {
-  Drawable::setColor(r,g,b,a);
-  flagforupdate_ = true;
-}	
+    Drawable::setColor(r, g, b, a);
+    flagforupdate_ = true;
+}
 
 void Label::setColor(Qwt3D::RGBA rgba)
 {
-  Drawable::setColor(rgba);
-  flagforupdate_ = true;
+    Drawable::setColor(rgba);
+    flagforupdate_ = true;
 }
 
 /**
@@ -82,7 +68,7 @@ example:
 
 \verbatim
 
-   Anchor TopCenter (*)  resp. BottomRight(X) 
+   Anchor TopCenter (*)  resp. BottomRight(X)
 
    +----*----+
    |  Pixmap |
@@ -92,76 +78,61 @@ example:
 */
 void Label::setPosition(Triple pos, ANCHOR a)
 {
-    use_relpos_ = false;
-	anchor_ = a;
-	pos_ = pos;
+    anchor_ = a;
+    pos_ = pos;
 }
 
 void Label::setRelPosition(Tuple rpos, ANCHOR a)
 {
-	double ot = 0.99;
-    relpos_ = Triple(rpos.x, rpos.y, ot);
-    anchor_ = a;
-    use_relpos_ = true;
+    double ot = 0.99;
+
+    getMatrices(modelMatrix, projMatrix, viewport);
+    beg_ = relativePosition(Triple(rpos.x, rpos.y, ot));
+    setPosition(beg_, a);
 }
 
-QImage Label::createImage(double angle)
+void Label::update()
 {
-	QRect r = QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_));
-	int textWidth = r.width();
-	int textHeight = r.height();
+    QPainter p;
+    QFontMetrics fm(font_);
 
-	double aux_a = angle;
-	if (aux_a > 270)
-		aux_a -= 270;
-	if (aux_a >= 180)
-		aux_a -= 180;
-	if (aux_a > 90)
-		aux_a -= 90;
+    QFontInfo info(font_);
 
-	double rad = aux_a*M_PI/180.0;
+    QRect r = QRect(
+            QPoint(0, 0),
+            fm.size(Qwt3D::SingleLine, text_)); // fm.boundingRect(text_)  misbehaviour under linux;
 
-	int w = 0, h = 0;
-	if ((angle >= 0 && angle <= 90) || (angle >= 180 && angle <= 270)){
-		w = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
-		h = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
-	} else {
-		w = qRound(fabs(textWidth*sin(rad) + textHeight*cos(rad)));
-		h = qRound(fabs(textWidth*cos(rad) + textHeight*sin(rad)));
-	}
+    r.translate(0, -r.top());
 
-	width_ = w;
-	height_ = h;
+    pm_ = QPixmap(r.width(), r.bottom());
 
-	QPixmap pm_ = QPixmap(w, h);
+    if (pm_.isNull()) // else crash under linux
+    {
+        r = QRect(QPoint(0, 0),
+                  fm.size(Qwt3D::SingleLine, QString(" "))); // draw empty space else //todo
+        r.translate(0, -r.top());
+        pm_ = QPixmap(r.width(), r.bottom());
+    }
 
-	if (plot() && plot()->isExportingVector() && plot()->vectorExportFormat() != GL2PS_PDF){
-		Qwt3D::RGBA rgba = plot()->backgroundRGBAColor();
-		pm_.fill(GL2Qt(rgba.r, rgba.g, rgba.b));
-	} else
-		pm_.fill(Qt::transparent);
+    QBitmap bm(pm_.width(), pm_.height());
+    bm.fill(Qt::color0);
+    p.begin(&bm);
+    p.setPen(Qt::color1);
+    p.setFont(font_);
+    p.drawText(0, r.height() - fm.descent() - 1, text_);
+    p.end();
 
-	QPainter p(&pm_);
+    pm_.setMask(bm);
 
-	if (angle >= 270)
-		p.translate(textHeight*cos(rad), 0.0);
-	else if (angle >= 180)
-		p.translate(w, textHeight*cos(rad));
-	else if (angle > 90)
-		p.translate(textWidth*sin(rad), h);
-	else
-		p.translate(0.0, textWidth*sin(rad));
+    p.begin(&pm_);
+    p.setFont(font_);
+    p.setPen(Qt::SolidLine);
+    p.setPen(GL2Qt(color.r, color.g, color.b));
 
-	p.rotate(-angle);
-	p.translate(0.0, textHeight - QFontMetrics(font_).descent());
-
-	p.setFont( font_ );
-	p.setPen(Qt::SolidLine);
-	p.setPen(GL2Qt(color_.r, color_.g, color_.b));
-	p.drawText(0, 0, text_);
-	p.end();
-
-	return QGLWidget::convertToGLFormat(pm_.toImage());
+    p.drawText(0, r.height() - fm.descent() - 1, text_);
+    p.end();
+    buf_ = pm_.toImage();
+    tex_ = buf_.mirrored();
 }
 
 /**
@@ -172,155 +143,99 @@ anchor type         shift
 
 left aligned         -->
 right aligned        <--
-top aligned          top-down            
+top aligned          top-down
 bottom aligned       bottom-up
 \endverbatim
 The unit is user space dependend (one pixel on screen - play around to get satisfying results)
 */
 void Label::adjust(int gap)
 {
-	gap_ = gap;
+    gap_ = gap;
 }
 
 void Label::convert2screen()
 {
-	Triple start = World2ViewPort(pos_);
-	
-	switch (anchor_)
-	{
-		case BottomLeft :
-			beg_ = pos_;
-			break;
-		case BottomRight:
-			beg_ = ViewPort2World(start - Triple(width() + gap_, 0, 0));
-			break;
-		case BottomCenter:
-			beg_ = ViewPort2World(start - Triple(width() / 2, -gap_, 0));
-			break;
-		case TopRight:
-			beg_ = ViewPort2World(start - Triple(width() + gap_, height(), 0));
-			break;
-		case TopLeft:
-			beg_ = ViewPort2World(start - Triple(-gap_, height(), 0));
-			break;
-		case TopCenter:
-			beg_ = ViewPort2World(start - Triple(width() / 2, height() + gap_, 0));
-			break;
-		case CenterLeft:
-			beg_ = ViewPort2World(start - Triple(-gap_, height() / 2, 0));
-			break;
-		case CenterRight:
-			beg_ = ViewPort2World(start - Triple(width() + gap_, height() / 2, 0));
-			break;
-		case Center:
-			beg_ = ViewPort2World(start - Triple(width() / 2, height() / 2, 0));
-			break;
-		default:
-			break;
-	}
-	start = World2ViewPort(beg_);
-	end_ = ViewPort2World(start + Triple(width(), height(), 0));	
+    Triple start = World2ViewPort(pos_);
+
+    switch (anchor_) {
+    case BottomLeft:
+        beg_ = pos_;
+        break;
+    case BottomRight:
+        beg_ = ViewPort2World(start - Triple(width() + gap_, 0, 0));
+        break;
+    case BottomCenter:
+        beg_ = ViewPort2World(start - Triple(width() / 2, -gap_, 0));
+        break;
+    case TopRight:
+        beg_ = ViewPort2World(start - Triple(width() + gap_, height(), 0));
+        break;
+    case TopLeft:
+        beg_ = ViewPort2World(start - Triple(-gap_, height(), 0));
+        break;
+    case TopCenter:
+        beg_ = ViewPort2World(start - Triple(width() / 2, height() + gap_, 0));
+        break;
+    case CenterLeft:
+        beg_ = ViewPort2World(start - Triple(-gap_, height() / 2, 0));
+        break;
+    case CenterRight:
+        beg_ = ViewPort2World(start - Triple(width() + gap_, height() / 2, 0));
+        break;
+    case Center:
+        beg_ = ViewPort2World(start - Triple(width() / 2, height() / 2, 0));
+        break;
+    default:
+        break;
+    }
+    start = World2ViewPort(beg_);
+    end_ = ViewPort2World(start + Triple(width(), height(), 0));
 }
 
-const char * Label::fontname()
+void Label::draw()
 {
-	const char *name = "Helvetica";
-	if (font_.family() == "Times New Roman"){
-		name = "Times";
-		if (font_.bold() && font_.italic ())
-			name = "Times-BoldItalic";
-		else if (font_.italic())
-			name = "Times-Italic";
-		else if (font_.bold())
-			name = "Times-Bold";
-	} else if (font_.family() == "Courier" || font_.family() == "Courier New"){
-		name = "Courier";
-		if (font_.bold() && font_.italic ())
-			name = "Courier-BoldOblique";
-		else if (font_.italic())
-			name = "Courier-Oblique";
-		else if (font_.bold())
-			name = "Courier-Bold";
-	} else {
-		if (font_.bold() && font_.italic ())
-			name = "Helvetica-BoldOblique";
-		else if (font_.italic())
-			name = "Helvetica-Oblique";
-		else if (font_.bold())
-			name = "Helvetica-Bold";
-	}
+    if (flagforupdate_) {
+        update();
+        flagforupdate_ = false;
+    }
 
-	return (const char*) name;
-}
+    if (buf_.isNull())
+        return;
 
-void Label::draw(double angle)
-{
-	if (!plot() || !plot()->isVisible())
-		return;
+    GLboolean b;
+    GLint func;
+    GLdouble v;
+    glGetBooleanv(GL_ALPHA_TEST, &b);
+    glGetIntegerv(GL_ALPHA_TEST_FUNC, &func);
+    glGetDoublev(GL_ALPHA_TEST_REF, &v);
 
-	if (text_.isEmpty())
-		return;
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_NOTEQUAL, 0.0);
 
-	if ( use_relpos_ ) {
-		getMatrices(modelMatrix, projMatrix, viewport);
-		beg_ = relativePosition(relpos_);
-		setPosition(beg_, anchor_);
-		use_relpos_ = true;// reset the flag
-	}
+    convert2screen();
+    glRasterPos3d(beg_.x, beg_.y, beg_.z);
 
-	GLboolean b;
-	GLint func;
-	GLdouble v;
-	glGetBooleanv(GL_ALPHA_TEST, &b);
-	glGetIntegerv(GL_ALPHA_TEST_FUNC, &func);
-	glGetDoublev(GL_ALPHA_TEST_REF, &v);
+    int w = tex_.width();
+    int h = tex_.height();
 
-	glEnable (GL_ALPHA_TEST);
-	glAlphaFunc (GL_NOTEQUAL, 0.0);
+    if (devicefonts_) {
+        drawDeviceText(QWT3DLOCAL8BIT(text_), "Courier", font_.pointSize(), pos_, color, anchor_,
+                       gap_);
+    } else {
+        drawDevicePixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+        //    glDrawPixels(w, h, GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
+    }
 
-	convert2screen();
-	glRasterPos3d(beg_.x, beg_.y, beg_.z);
-
-	if (plot()->isExportingVector()){
-		if (devicefonts_)
-			drawDeviceText(QWT3DLOCAL8BIT(text_), fontname(), font_.pointSize(), pos_, color_, anchor_, gap_, angle);
-		else {
-			QImage tex_ = createImage(angle);
-			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
-		}
-	} else {
-		if (!angle){
-			Triple start = World2ViewPort(beg_);
-			start = ViewPort2World(start + Triple(0, QFontMetrics(font_).descent(), 0));
-			plot()->qglColor(GL2Qt(color_.r, color_.g, color_.b));
-			plot()->renderText(start.x, start.y, start.z, text_, font_);
-		} else {
-			QImage tex_ = createImage(angle);
-			drawDevicePixels(tex_.width(), tex_.height(), GL_RGBA, GL_UNSIGNED_BYTE, tex_.bits());
-		}
-	}
-
-	glAlphaFunc(func,v);
-	Enable(GL_ALPHA_TEST, b);
+    glAlphaFunc(func, v);
+    Enable(GL_ALPHA_TEST, b);
 }
 
 double Label::width() const
 {
-	if (width_ > 0.0 && height_ > 0.0)
-		return width_;
-
-	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).width();
+    return pm_.width();
 }
 
 double Label::height() const
 {
-	if (width_ > 0.0 && height_ > 0.0)
-		return height_;
-
-	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).height();
-}
-
-double Label::textHeight() const
-{
-	return QRect(QPoint(0, 0), QFontMetrics(font_).size(Qwt3D::SingleLine, text_)).height();
+    return pm_.height();
 }

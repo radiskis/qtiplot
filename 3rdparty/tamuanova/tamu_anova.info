@@ -1,0 +1,797 @@
+This is tamu_anova.info, produced by makeinfo version 4.8 from
+tamu_anova.texi.
+
+INFO-DIR-SECTION Statistics software
+START-INFO-DIR-ENTRY
+* tamu_anova: (tamu_anova).                   TAMU ANOVA extensions to GSL
+END-INFO-DIR-ENTRY
+
+
+File: tamu_anova.info,  Node: Top,  Next: Introduction,  Prev: (dir),  Up: (dir)
+
+TAMU_ANOVA
+**********
+
+This file documents TAMU_ANOVA, a package for the GNU Scientific
+Library (GSL) containing functions for performing one and two way NOVA
+tests.
+
+   Information about GSL can be found at the project homepage,
+`http://www.gnu.org/software/gsl/'.
+
+   Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License.
+
+* Menu:
+
+* Introduction::
+* Motivation::
+* Computational Method::
+* Functions::
+* Examples::
+* References and Further Reading::
+* GNU Free Documentation License::
+* Function Index::
+* Concept Index::
+
+
+File: tamu_anova.info,  Node: Introduction,  Next: Motivation,  Prev: Top,  Up: Top
+
+1 Introduction
+**************
+
+ANOVA, or Analysis of Variance, is a method for comparing levels of
+some continuous response variable between different groups.  The main
+idea is to compare variation within each group to variation between the
+groups; if the groups vary considerably from one group to another in
+comparison to the within group variation, we can reject the null
+hypothesis that all the groups have similar levels of the response
+variable.
+
+   TAMU ANOVA contains both single and two factor ANOVA.  Use of the
+package can be facilitated through linking to the compiled library
+tamuanova.  The package function definitions are accessible through
+`tamu_anova.h'.  Another option for use of the package is to include
+the original function definitions in the files `anova_1.h' and
+`anova_2.h'.  With the use of these files the program must still be
+linked to the GSL (see GSL documentation on linking and compiling.)
+
+
+File: tamu_anova.info,  Node: Motivation,  Next: Computational Method,  Prev: Introduction,  Up: Top
+
+2 Motivation
+************
+
+The first reason for creating this package was that, to the best of the
+programmers' knowledge, there was not an open source package in
+existence that computed sums of squares correctly in the case of
+unequal cell sizes.  The model for the two-way ANOVA is commonly y_ijk
+= \alpha_i + \beta_j + \gammaij + \epsilon_ijk, but the sums of squares
+are computed in different ways according to the hypotheses desired to
+test.  This package computes Type III sums of squares, as described in
+Searle (1987).  The Type III Sums of Squares are the only correct sums
+of squares in the case of unequal cell sizes (but no cells are empty)
+when the desired hypotheses are as follows: H_o: \alpha_1 = \alpha_2 =
+... = \alpha_k = 0 vs. H_a: at least one \alpha_i \neq 0, H_o: \beta_1
+= \beta_2 = ... = \beta_m = 0 vs. H_a: at least one \beta_i \neq 0,
+and H_o: \gamma_1,1 = \gamma_1,2 = ... = \gamma_k,m vs. H_a: at  least
+one \gamma_i,j = 0.
+
+   The second reason for creating this package was to calculate
+F-statistics for models with random and mixed effects as described in
+Section 4.10 of Sahai and Ageel's book, The Analysis of Variance
+(2000).  Some packages seem superficially to calculate F-statistics
+correctly, but upon further investigation, do not actually find the
+F-statistics recommended by Sahai and Ageel(2000).
+
+
+File: tamu_anova.info,  Node: Computational Method,  Next: Functions,  Prev: Motivation,  Up: Top
+
+3 Computational Method
+**********************
+
+The one-way ANOVA tables were computed by the methods described in
+Devore (2004).  First, sums of squares are computed in the usual way (n
+is the total number of observations, and k is the number of populations
+in the study): 	SST = \sum_i=1^k \sum_j=1^n_i (x_ij -
+\barx_..)^2,         SSM = \sum_i=1^k \sum_j=1^n_i (\barx_i. -
+\barx_..)^2, and         SSE = \sum_i=1^k \sum_j=1^n_i (x_ij -
+\barx_i.)^2.  Then the package constructs the ANOVA table as follows:
+
+Source:     SS:     df:     MS:            F-stat:        p-value:
+Model       SSM     k-1     SSM/k-1        SSM/SSE        P(F > F-stat)
+Error       SSE     n-k     SSE/n-k                       
+Total       SST     n-1     SST/n-1                       
+
+   The two-way models require further computation when the desired
+hypotheses to be tested are not conditional on the previous factors
+entered into the model but are the most common (where the model is:
+y_ijk = \mu + \alpha_i + \beta_j + \gamma_ij + \epsilon_ijk):     H_o:
+\alpha_1 = \alpha_2 = ... = \alpha_k = 0,     H_o:  \beta_1 = \beta_2 =
+... = \beta_m = 0, and     H_o:  \gamma_11 = \gamma_12 = ... =
+\gamma_km = 0.  Note that the hypotheses for the individual factors
+only hold in the absence of significant interaction.
+
+   Following Searle (1987), then, the package computes Type III Sums of
+Squares:     SST = \sum_i n_i. \bary_i..^2 + \sum_j=1^b-1 \mathaccent
+94 \tau_j r_j,  where for     c_jj = n_.j - \sum_i=1^a n_ij^2/n_i.,
+c_jj' = -\sum_i=1^a n_ijn_ij'/n_i., and     r_j = y_.j. - \sum_i=1^a
+n_ij \bary_i.., we solve the b-1 linear equations     c_jj \mathaccent
+94 \tau_j + \sum_j'=1, j' \neq j^b-1 c_jj' \mathaccent 94 \tau_j' = r_j
+for \mathaccent 94 \tau_1, \mathaccent 94 \tau_2,..., \mathaccent 94
+\tau_b-1.  These computations are only correct in the case that no
+cells are empty.   In the case that some cells are completely empty,
+the experimenter must use other  methods to compute sums of squares,
+depending on the desired hypotheses.
+
+   Those methods only are appropriate in the case that the effects are
+fixed.  In the case that the effects are random, the expected values of
+the mean squares are not the same as for the fixed case, so one uses a
+different denominator for finding the F-statistics in the ANOVA table.
+The computation follows the recommendation of Sahai and Ageel (2000):
+
+   For the random effects model,     F_\alpha = MS_\alpha / MS_\gamma
+and 		F_\beta = MS_\beta / MS_\gamma.
+
+   For the mixed effects model,     F_\alpha = MS_\alpha / MS_\gamma and
+F_\beta = MS_\beta / MSE.
+
+   Thus we see that for the mixed effects model, the data must be
+entered in such a way that the first effect is the fixed effect, while
+the second effect is the random effect.
+
+
+File: tamu_anova.info,  Node: Functions,  Next: Structures,  Prev: Computational Method,  Up: Top
+
+4 Functions
+***********
+
+* Menu:
+
+* Structures::
+* Function Definitions::
+
+
+File: tamu_anova.info,  Node: Structures,  Next: Function Definitions,  Prev: Functions,  Up: Functions
+
+4.1 Structures
+==============
+
+One way table
+
+ -- struct tamu_anova_table:
+     `struct tamu_anova_table{   long   df_tr, df_err, df_tot;   double
+     SSTr, SSE, SST, MSTr, MSE, F, p;}; '
+
+Two way table
+
+ -- struct tamu_anova_table_twoway:
+     `struct tamu_anova_table_twoway {   long   dfA, dfB, dfAB, dfT,
+     dfE; 	double 	SSA, MSA, FA, pA, 	SSB, MSB, FA, pB,
+     SSAB, MSAB, FAB, pAB, 	SSE, MSE, 	SST; }; '
+
+
+File: tamu_anova.info,  Node: Function Definitions,  Next: Examples,  Prev: Structures,  Up: Functions
+
+4.2 Function Definitions
+========================
+
+ -- Function: tamu_anova_table tamu_anova (double DATA[],long FACTOR[],
+          long I, long J);
+This performs the one way ANOVA and returns a oneway table struct. The
+arguments are as follows:
+  1. data - an array of all data values of type double.
+
+  2. factor - an array of factor codings for the data.  Acceptable
+     values are 1..J with no breaks (I.E. the function does not allow
+     for empty cells).
+
+  3. I - the length of the data and factor arrays (yes they must be the
+     same length).
+
+  4. J - The number or factors in the experiment.
+
+ -- Function: tamu_anova_table_twoway tamu_anova_twoway (double
+          DATA[],long FACTOR[][2], long I, long J[2], enum
+          gsl_anova_twoway_types TYPE )
+   This performs the two way ANOVA and returns a twoway table struct.
+The arguments are as follows:
+  1. data - an array of all data values of type double.
+
+  2. factor - a I x 2 matrix of type long for factor codings.
+     Essentially an array of ordered pair of the type {factor A, Factor
+     B}.  Acceptable values for are 1..J_A for factor A and 1..J_B for
+     factor B.  With no skipped numbers (I.E. the function does not
+     allow for empty cells)
+
+  3. I - the length of the data and factor arrays (yes they must be the
+     same length).
+
+  4. J - an array of {J_A,J_B} which tells the function the number of
+     groups for factor A and factor B.
+
+  5. type - an enumerated variable to tell the function what kind of
+     model to use.  This only affects the F and P values.
+        * anova_fixed = 0
+
+        * anova_random = 1
+
+        * anova_mixed = 2
+
+
+File: tamu_anova.info,  Node: Examples,  Next: References and Further Reading,  Prev: Function Definitions,  Up: Top
+
+5 Examples
+**********
+
+Here are three examples of how to use the program.  They all assume
+that you have the library installed and are able to link to it without
+any extra declarations.  If this is not the case extra compiler
+directive may be needed to compile and link properly.
+WARNING: The TAMU ANOVA library must be linked with the GSl libraries,
+as shown in the examples.  The functions in TAMU ANOVA use the gsl and
+cannot be ran without it.
+Example 1: One-way balanced ANOVA
+     #include <tamu_anova/tamu_anova.h>
+     //Data set from Devore(2004).
+     double data[20] = {
+     88.60,73.20,91.40,68.00,75.20,63.00,53.90,69.20,
+     50.10,71.50,44.90,59.50,40.20,56.30,38.70,31.00,
+     39.60,45.30,25.20,22.70 };
+     long factor[20]={
+     1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4 };
+
+     int main()
+     {
+     	struct tamu_anova_table tbl1 = tamu_anova(data,factor,20,4);
+     	tamu_anova_printtable(tbl1);
+     	return 0;
+     };
+   This file would be compiled by the following:
+
+     % gcc -c testfile.c
+     % gcc testfile.o -ltamuanova -lgsl -lgslcbls -lm
+
+Example(2): One-way unbalanced ANOVA
+     #include <tamu_anova/tamu_anova.h>
+     //Data from Devore(2004)
+     double data[22] = {
+     45.50,45.30,45.40,44.40,44.60,43.90,44.60,44.00,44.20,
+     43.90,44.70,44.20,44.00,43.80,44.60,43.10,46.00,45.90,
+     44.80,46.20,45.10,45.50
+     };
+     long factor[22]={
+     1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3
+     };
+     int main()
+     {
+     struct tamu_anova_table tbl1 = tamu_anova(data,factor,22,3);
+     tamu_anova_printtable(tbl1);
+     return 0;};
+   this example is compiled the same as above
+An example of two way unbalanced ANOVA with data from Searle(1987).
+     #include <tamu_anova/tamu_anova.h>
+
+     double d[15]={
+     6,10,11,13,15,14,22,12,15,19,18,31,18,9,12};
+     long f[15][2]={
+     {1,1},
+     {1,1},
+     {1,1},
+     {1,2},
+     {1,2},
+     {1,3},{1,3},
+     {2,1},{2,1},{2,1},{2,1}
+     ,{2,2},
+     {2,3},{2,3},{2,3}};
+
+     int main()
+     {
+     struct tamu_anova_table_twoway r;
+     long J[2]={2,3};
+     r=tamu_anova_twoway(d,f,15,J,0);
+     tamu_anova_printtable_twoway(r);
+     };
+   This is compiled the same as above for the one way library linked
+example.  The output is (slightly reformatted from what is printed on
+the screen):
+
+Source: SS:          df:     MS:            F-stat:        p-value:
+Factor-A123.771429   1       123.771429     9.282857       0.013865
+Factor-B192.127660   2       96.063830      7.204787       0.013546
+Interact222.765957   2       111.382979     8.353723       0.008888
+Error   120.000000   9       13.333333                     
+Total   520.000000   14                                    
+
+
+File: tamu_anova.info,  Node: References and Further Reading,  Next: GNU Free Documentation License,  Prev: Examples,  Up: Top
+
+6 References and Further Reading
+********************************
+
+Devore, Jay L. (2004), Probability and Statistics for Engineering and
+the Sciences (6th ed.), Canada, Brooks/Cole.
+Milliken and Johnson (1992), Analysis of Messy Data:  Volume I:
+Designed Experiments, New York, NY, Van Nostrand Reinhold.
+Sahai, Hardeo and Ageel, Mohammed I. (2000), The Analysis of Variance:
+Fixed, Random, and Mixed Models, Ann Arbor, MI, Sheridan Books, Inc.
+Searle, Shayle R. (1987), Linear Models for Unbalanced Data, New York,
+NY, John Wiley and Sons, Inc.
+Yandell, Brian S. (1997), Practical Data Analysis for Designed
+Experiments, Cornwall, Great Britian, Chapman & Hall.
+
+
+File: tamu_anova.info,  Node: GNU Free Documentation License,  Next: Function Index,  Prev: References and Further Reading,  Up: Top
+
+GNU Free Documentation License
+******************************
+
+                      Version 1.2, November 2002
+
+     Copyright (C) 2000,2001,2002 Free Software Foundation, Inc.
+     59 Temple Place, Suite 330, Boston, MA  02111-1307, USA
+
+     Everyone is permitted to copy and distribute verbatim copies
+     of this license document, but changing it is not allowed.
+
+  0. PREAMBLE
+
+     The purpose of this License is to make a manual, textbook, or other
+     functional and useful document "free" in the sense of freedom: to
+     assure everyone the effective freedom to copy and redistribute it,
+     with or without modifying it, either commercially or
+     noncommercially.  Secondarily, this License preserves for the
+     author and publisher a way to get credit for their work, while not
+     being considered responsible for modifications made by others.
+
+     This License is a kind of "copyleft", which means that derivative
+     works of the document must themselves be free in the same sense.
+     It complements the GNU General Public License, which is a copyleft
+     license designed for free software.
+
+     We have designed this License in order to use it for manuals for
+     free software, because free software needs free documentation: a
+     free program should come with manuals providing the same freedoms
+     that the software does.  But this License is not limited to
+     software manuals; it can be used for any textual work, regardless
+     of subject matter or whether it is published as a printed book.
+     We recommend this License principally for works whose purpose is
+     instruction or reference.
+
+  1. APPLICABILITY AND DEFINITIONS
+
+     This License applies to any manual or other work, in any medium,
+     that contains a notice placed by the copyright holder saying it
+     can be distributed under the terms of this License.  Such a notice
+     grants a world-wide, royalty-free license, unlimited in duration,
+     to use that work under the conditions stated herein.  The
+     "Document", below, refers to any such manual or work.  Any member
+     of the public is a licensee, and is addressed as "you".  You
+     accept the license if you copy, modify or distribute the work in a
+     way requiring permission under copyright law.
+
+     A "Modified Version" of the Document means any work containing the
+     Document or a portion of it, either copied verbatim, or with
+     modifications and/or translated into another language.
+
+     A "Secondary Section" is a named appendix or a front-matter section
+     of the Document that deals exclusively with the relationship of the
+     publishers or authors of the Document to the Document's overall
+     subject (or to related matters) and contains nothing that could
+     fall directly within that overall subject.  (Thus, if the Document
+     is in part a textbook of mathematics, a Secondary Section may not
+     explain any mathematics.)  The relationship could be a matter of
+     historical connection with the subject or with related matters, or
+     of legal, commercial, philosophical, ethical or political position
+     regarding them.
+
+     The "Invariant Sections" are certain Secondary Sections whose
+     titles are designated, as being those of Invariant Sections, in
+     the notice that says that the Document is released under this
+     License.  If a section does not fit the above definition of
+     Secondary then it is not allowed to be designated as Invariant.
+     The Document may contain zero Invariant Sections.  If the Document
+     does not identify any Invariant Sections then there are none.
+
+     The "Cover Texts" are certain short passages of text that are
+     listed, as Front-Cover Texts or Back-Cover Texts, in the notice
+     that says that the Document is released under this License.  A
+     Front-Cover Text may be at most 5 words, and a Back-Cover Text may
+     be at most 25 words.
+
+     A "Transparent" copy of the Document means a machine-readable copy,
+     represented in a format whose specification is available to the
+     general public, that is suitable for revising the document
+     straightforwardly with generic text editors or (for images
+     composed of pixels) generic paint programs or (for drawings) some
+     widely available drawing editor, and that is suitable for input to
+     text formatters or for automatic translation to a variety of
+     formats suitable for input to text formatters.  A copy made in an
+     otherwise Transparent file format whose markup, or absence of
+     markup, has been arranged to thwart or discourage subsequent
+     modification by readers is not Transparent.  An image format is
+     not Transparent if used for any substantial amount of text.  A
+     copy that is not "Transparent" is called "Opaque".
+
+     Examples of suitable formats for Transparent copies include plain
+     ASCII without markup, Texinfo input format, LaTeX input format,
+     SGML or XML using a publicly available DTD, and
+     standard-conforming simple HTML, PostScript or PDF designed for
+     human modification.  Examples of transparent image formats include
+     PNG, XCF and JPG.  Opaque formats include proprietary formats that
+     can be read and edited only by proprietary word processors, SGML or
+     XML for which the DTD and/or processing tools are not generally
+     available, and the machine-generated HTML, PostScript or PDF
+     produced by some word processors for output purposes only.
+
+     The "Title Page" means, for a printed book, the title page itself,
+     plus such following pages as are needed to hold, legibly, the
+     material this License requires to appear in the title page.  For
+     works in formats which do not have any title page as such, "Title
+     Page" means the text near the most prominent appearance of the
+     work's title, preceding the beginning of the body of the text.
+
+     A section "Entitled XYZ" means a named subunit of the Document
+     whose title either is precisely XYZ or contains XYZ in parentheses
+     following text that translates XYZ in another language.  (Here XYZ
+     stands for a specific section name mentioned below, such as
+     "Acknowledgements", "Dedications", "Endorsements", or "History".)
+     To "Preserve the Title" of such a section when you modify the
+     Document means that it remains a section "Entitled XYZ" according
+     to this definition.
+
+     The Document may include Warranty Disclaimers next to the notice
+     which states that this License applies to the Document.  These
+     Warranty Disclaimers are considered to be included by reference in
+     this License, but only as regards disclaiming warranties: any other
+     implication that these Warranty Disclaimers may have is void and
+     has no effect on the meaning of this License.
+
+  2. VERBATIM COPYING
+
+     You may copy and distribute the Document in any medium, either
+     commercially or noncommercially, provided that this License, the
+     copyright notices, and the license notice saying this License
+     applies to the Document are reproduced in all copies, and that you
+     add no other conditions whatsoever to those of this License.  You
+     may not use technical measures to obstruct or control the reading
+     or further copying of the copies you make or distribute.  However,
+     you may accept compensation in exchange for copies.  If you
+     distribute a large enough number of copies you must also follow
+     the conditions in section 3.
+
+     You may also lend copies, under the same conditions stated above,
+     and you may publicly display copies.
+
+  3. COPYING IN QUANTITY
+
+     If you publish printed copies (or copies in media that commonly
+     have printed covers) of the Document, numbering more than 100, and
+     the Document's license notice requires Cover Texts, you must
+     enclose the copies in covers that carry, clearly and legibly, all
+     these Cover Texts: Front-Cover Texts on the front cover, and
+     Back-Cover Texts on the back cover.  Both covers must also clearly
+     and legibly identify you as the publisher of these copies.  The
+     front cover must present the full title with all words of the
+     title equally prominent and visible.  You may add other material
+     on the covers in addition.  Copying with changes limited to the
+     covers, as long as they preserve the title of the Document and
+     satisfy these conditions, can be treated as verbatim copying in
+     other respects.
+
+     If the required texts for either cover are too voluminous to fit
+     legibly, you should put the first ones listed (as many as fit
+     reasonably) on the actual cover, and continue the rest onto
+     adjacent pages.
+
+     If you publish or distribute Opaque copies of the Document
+     numbering more than 100, you must either include a
+     machine-readable Transparent copy along with each Opaque copy, or
+     state in or with each Opaque copy a computer-network location from
+     which the general network-using public has access to download
+     using public-standard network protocols a complete Transparent
+     copy of the Document, free of added material.  If you use the
+     latter option, you must take reasonably prudent steps, when you
+     begin distribution of Opaque copies in quantity, to ensure that
+     this Transparent copy will remain thus accessible at the stated
+     location until at least one year after the last time you
+     distribute an Opaque copy (directly or through your agents or
+     retailers) of that edition to the public.
+
+     It is requested, but not required, that you contact the authors of
+     the Document well before redistributing any large number of
+     copies, to give them a chance to provide you with an updated
+     version of the Document.
+
+  4. MODIFICATIONS
+
+     You may copy and distribute a Modified Version of the Document
+     under the conditions of sections 2 and 3 above, provided that you
+     release the Modified Version under precisely this License, with
+     the Modified Version filling the role of the Document, thus
+     licensing distribution and modification of the Modified Version to
+     whoever possesses a copy of it.  In addition, you must do these
+     things in the Modified Version:
+
+       A. Use in the Title Page (and on the covers, if any) a title
+          distinct from that of the Document, and from those of
+          previous versions (which should, if there were any, be listed
+          in the History section of the Document).  You may use the
+          same title as a previous version if the original publisher of
+          that version gives permission.
+
+       B. List on the Title Page, as authors, one or more persons or
+          entities responsible for authorship of the modifications in
+          the Modified Version, together with at least five of the
+          principal authors of the Document (all of its principal
+          authors, if it has fewer than five), unless they release you
+          from this requirement.
+
+       C. State on the Title page the name of the publisher of the
+          Modified Version, as the publisher.
+
+       D. Preserve all the copyright notices of the Document.
+
+       E. Add an appropriate copyright notice for your modifications
+          adjacent to the other copyright notices.
+
+       F. Include, immediately after the copyright notices, a license
+          notice giving the public permission to use the Modified
+          Version under the terms of this License, in the form shown in
+          the Addendum below.
+
+       G. Preserve in that license notice the full lists of Invariant
+          Sections and required Cover Texts given in the Document's
+          license notice.
+
+       H. Include an unaltered copy of this License.
+
+       I. Preserve the section Entitled "History", Preserve its Title,
+          and add to it an item stating at least the title, year, new
+          authors, and publisher of the Modified Version as given on
+          the Title Page.  If there is no section Entitled "History" in
+          the Document, create one stating the title, year, authors,
+          and publisher of the Document as given on its Title Page,
+          then add an item describing the Modified Version as stated in
+          the previous sentence.
+
+       J. Preserve the network location, if any, given in the Document
+          for public access to a Transparent copy of the Document, and
+          likewise the network locations given in the Document for
+          previous versions it was based on.  These may be placed in
+          the "History" section.  You may omit a network location for a
+          work that was published at least four years before the
+          Document itself, or if the original publisher of the version
+          it refers to gives permission.
+
+       K. For any section Entitled "Acknowledgements" or "Dedications",
+          Preserve the Title of the section, and preserve in the
+          section all the substance and tone of each of the contributor
+          acknowledgements and/or dedications given therein.
+
+       L. Preserve all the Invariant Sections of the Document,
+          unaltered in their text and in their titles.  Section numbers
+          or the equivalent are not considered part of the section
+          titles.
+
+       M. Delete any section Entitled "Endorsements".  Such a section
+          may not be included in the Modified Version.
+
+       N. Do not retitle any existing section to be Entitled
+          "Endorsements" or to conflict in title with any Invariant
+          Section.
+
+       O. Preserve any Warranty Disclaimers.
+
+     If the Modified Version includes new front-matter sections or
+     appendices that qualify as Secondary Sections and contain no
+     material copied from the Document, you may at your option
+     designate some or all of these sections as invariant.  To do this,
+     add their titles to the list of Invariant Sections in the Modified
+     Version's license notice.  These titles must be distinct from any
+     other section titles.
+
+     You may add a section Entitled "Endorsements", provided it contains
+     nothing but endorsements of your Modified Version by various
+     parties--for example, statements of peer review or that the text
+     has been approved by an organization as the authoritative
+     definition of a standard.
+
+     You may add a passage of up to five words as a Front-Cover Text,
+     and a passage of up to 25 words as a Back-Cover Text, to the end
+     of the list of Cover Texts in the Modified Version.  Only one
+     passage of Front-Cover Text and one of Back-Cover Text may be
+     added by (or through arrangements made by) any one entity.  If the
+     Document already includes a cover text for the same cover,
+     previously added by you or by arrangement made by the same entity
+     you are acting on behalf of, you may not add another; but you may
+     replace the old one, on explicit permission from the previous
+     publisher that added the old one.
+
+     The author(s) and publisher(s) of the Document do not by this
+     License give permission to use their names for publicity for or to
+     assert or imply endorsement of any Modified Version.
+
+  5. COMBINING DOCUMENTS
+
+     You may combine the Document with other documents released under
+     this License, under the terms defined in section 4 above for
+     modified versions, provided that you include in the combination
+     all of the Invariant Sections of all of the original documents,
+     unmodified, and list them all as Invariant Sections of your
+     combined work in its license notice, and that you preserve all
+     their Warranty Disclaimers.
+
+     The combined work need only contain one copy of this License, and
+     multiple identical Invariant Sections may be replaced with a single
+     copy.  If there are multiple Invariant Sections with the same name
+     but different contents, make the title of each such section unique
+     by adding at the end of it, in parentheses, the name of the
+     original author or publisher of that section if known, or else a
+     unique number.  Make the same adjustment to the section titles in
+     the list of Invariant Sections in the license notice of the
+     combined work.
+
+     In the combination, you must combine any sections Entitled
+     "History" in the various original documents, forming one section
+     Entitled "History"; likewise combine any sections Entitled
+     "Acknowledgements", and any sections Entitled "Dedications".  You
+     must delete all sections Entitled "Endorsements."
+
+  6. COLLECTIONS OF DOCUMENTS
+
+     You may make a collection consisting of the Document and other
+     documents released under this License, and replace the individual
+     copies of this License in the various documents with a single copy
+     that is included in the collection, provided that you follow the
+     rules of this License for verbatim copying of each of the
+     documents in all other respects.
+
+     You may extract a single document from such a collection, and
+     distribute it individually under this License, provided you insert
+     a copy of this License into the extracted document, and follow
+     this License in all other respects regarding verbatim copying of
+     that document.
+
+  7. AGGREGATION WITH INDEPENDENT WORKS
+
+     A compilation of the Document or its derivatives with other
+     separate and independent documents or works, in or on a volume of
+     a storage or distribution medium, is called an "aggregate" if the
+     copyright resulting from the compilation is not used to limit the
+     legal rights of the compilation's users beyond what the individual
+     works permit.  When the Document is included in an aggregate, this
+     License does not apply to the other works in the aggregate which
+     are not themselves derivative works of the Document.
+
+     If the Cover Text requirement of section 3 is applicable to these
+     copies of the Document, then if the Document is less than one half
+     of the entire aggregate, the Document's Cover Texts may be placed
+     on covers that bracket the Document within the aggregate, or the
+     electronic equivalent of covers if the Document is in electronic
+     form.  Otherwise they must appear on printed covers that bracket
+     the whole aggregate.
+
+  8. TRANSLATION
+
+     Translation is considered a kind of modification, so you may
+     distribute translations of the Document under the terms of section
+     4.  Replacing Invariant Sections with translations requires special
+     permission from their copyright holders, but you may include
+     translations of some or all Invariant Sections in addition to the
+     original versions of these Invariant Sections.  You may include a
+     translation of this License, and all the license notices in the
+     Document, and any Warranty Disclaimers, provided that you also
+     include the original English version of this License and the
+     original versions of those notices and disclaimers.  In case of a
+     disagreement between the translation and the original version of
+     this License or a notice or disclaimer, the original version will
+     prevail.
+
+     If a section in the Document is Entitled "Acknowledgements",
+     "Dedications", or "History", the requirement (section 4) to
+     Preserve its Title (section 1) will typically require changing the
+     actual title.
+
+  9. TERMINATION
+
+     You may not copy, modify, sublicense, or distribute the Document
+     except as expressly provided for under this License.  Any other
+     attempt to copy, modify, sublicense or distribute the Document is
+     void, and will automatically terminate your rights under this
+     License.  However, parties who have received copies, or rights,
+     from you under this License will not have their licenses
+     terminated so long as such parties remain in full compliance.
+
+ 10. FUTURE REVISIONS OF THIS LICENSE
+
+     The Free Software Foundation may publish new, revised versions of
+     the GNU Free Documentation License from time to time.  Such new
+     versions will be similar in spirit to the present version, but may
+     differ in detail to address new problems or concerns.  See
+     `http://www.gnu.org/copyleft/'.
+
+     Each version of the License is given a distinguishing version
+     number.  If the Document specifies that a particular numbered
+     version of this License "or any later version" applies to it, you
+     have the option of following the terms and conditions either of
+     that specified version or of any later version that has been
+     published (not as a draft) by the Free Software Foundation.  If
+     the Document does not specify a version number of this License,
+     you may choose any version ever published (not as a draft) by the
+     Free Software Foundation.
+
+ADDENDUM: How to use this License for your documents
+----------------------------------------------------
+
+To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and license
+notices just after the title page:
+
+       Copyright (C) YEAR YOUR NAME.
+       Permission is granted to copy, distribute and/or modify
+       this document under the terms of the GNU Free
+       Documentation License, Version 1.2 or any later version
+       published by the Free Software Foundation; with no
+       Invariant Sections, no Front-Cover Texts, and no
+       Back-Cover Texts.  A copy of the license is included in
+       the section entitled ``GNU Free Documentation License''.
+
+   If you have Invariant Sections, Front-Cover Texts and Back-Cover
+Texts, replace the "with...Texts." line with this:
+
+       with the Invariant Sections being LIST THEIR
+       TITLES, with the Front-Cover Texts being LIST, and
+       with the Back-Cover Texts being LIST.
+
+   If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+
+   If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License, to
+permit their use in free software.
+
+
+File: tamu_anova.info,  Node: Function Index,  Next: Concept Index,  Prev: GNU Free Documentation License,  Up: Top
+
+Function Index
+**************
+
+ [index ]
+* Menu:
+
+* :                                      Structures.           (line  9)
+* tamu_anova:                            Function Definitions. (line  8)
+* tamu_anova_twoway:                     Function Definitions. (line 24)
+
+
+File: tamu_anova.info,  Node: Concept Index,  Prev: Function Index,  Up: Top
+
+Concept Index
+*************
+
+ [index ]
+* Menu:
+
+* FDL, GNU Free Documentation License:   GNU Free Documentation License.
+                                                                (line 6)
+
+
+
+Tag Table:
+Node: Top234
+Node: Introduction915
+Node: Motivation1928
+Node: Computational Method3374
+Node: Functions6250
+Node: Structures6426
+Node: Function Definitions6949
+Node: Examples8696
+Node: References and Further Reading11504
+Node: GNU Free Documentation License12298
+Node: Function Index34736
+Node: Concept Index35127
+
+End Tag Table

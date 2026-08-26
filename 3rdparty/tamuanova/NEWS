@@ -1,0 +1,35 @@
+TAMU ANOVA NEWS
+
+Version 0.2.1 released
+-------------------------
+A memory leak in anova_2.c was fixed.
+
+
+TAMU ANOVA 0.2 released
+-------------------------
+I have made a few changes and improvements that warents a new release.
+The changes are:
+	-Improved error handling
+	 TAMU ANOVA now uses the GSL error handler for errors.
+	-File structure change
+	 the file structure was changed to disallow direct inclusion of the 
+	 functions. They must now be accesed only through the library.
+	-Interface changes
+	 Function names have been chaged.  All function begining with
+	 gsl_tamu_anova have been changed to read tamu_anova so as to
+	 not be confused with core gsl fucntions.
+	-Computation changes
+	 some slight computation changes were made to avoid cancelation error
+	 
+
+TAMU ANOVA 0.1 launched
+-----------------------
+It's finally here an open source GSL compliant package that 
+will compute ANOVA.  At Texas A&M University, three statistics
+students, Andrew Redd, Krista Rister, and Elizabeth Young, have 
+programed and released TAMU ANOVA a gsl package for ANOVA.
+
+The package computes both one and two way models, and can handle 
+both balanced and unbalanced data.
+
+

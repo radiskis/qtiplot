@@ -3655,6 +3655,8 @@ class PythonScript
 %End
 public:
   PythonScript(PythonScripting *env, const QString &code, QObject *context=0, const QString &name="<input>");
+  void write(const QString&);
+  void flush();
 
 private:
   PythonScript(const PythonScript &);

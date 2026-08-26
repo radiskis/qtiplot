@@ -43,6 +43,7 @@
 
 #include "PythonScript.h"
 #include "PythonScripting.h"
+#include <QApplication>
 #include <ApplicationWindow.h>
 
 #include <QObject>
@@ -184,6 +185,9 @@ bool PythonScript::compile(bool for_eval)
 	}
 
 	if (!success){
+		if (qApp && qApp->arguments().contains("-X")) {
+			PyErr_Print();
+		}
 		compiled = compileErr;
 		emit_error(env()->errorMsg(), 0);
 	} else
@@ -298,6 +302,9 @@ bool PythonScript::exec()
 		Py_DECREF(pyret);
 		PyGILState_Release(state);
 		return true;
+	}
+	if (qApp && qApp->arguments().contains("-X")) {
+		PyErr_Print();
 	}
 	emit_error(env()->errorMsg(), 0);
 	PyGILState_Release(state);

@@ -1,8 +1,8 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
@@ -11,27 +11,44 @@
 #define QWT_CLIPPER_H
 
 #include "qwt_global.h"
-#include "qwt_array.h"
-#include "qwt_polygon.h"
-#include "qwt_double_rect.h"
-#include "qwt_double_interval.h"
 
+class QwtInterval;
+class QPointF;
 class QRect;
+class QRectF;
+class QPolygon;
+class QPolygonF;
+
+#if QT_VERSION < 0x060000
+template< typename T > class QVector;
+#endif
 
 /*!
-  \brief Some clipping algos
-*/
+   \brief Some clipping algorithms
+ */
 
-class QWT_EXPORT QwtClipper
+namespace QwtClipper
 {
-public:
-    static QwtPolygon clipPolygon(const QRect &, const QwtPolygon &);
-    static QwtPolygonF clipPolygonF(const QwtDoubleRect &, const QwtPolygonF &);
+    QWT_EXPORT void clipPolygon( const QRect&,
+        QPolygon&, bool closePolygon = false );
 
-#if QT_VERSION >= 0x040000
-    static QwtArray<QwtDoubleInterval> clipCircle(
-        const QwtDoubleRect &, const QwtDoublePoint &, double radius);
-#endif
+    QWT_EXPORT void clipPolygon( const QRectF&,
+        QPolygon&, bool closePolygon = false );
+
+    QWT_EXPORT void clipPolygonF( const QRectF&,
+        QPolygonF&, bool closePolygon = false );
+
+    QWT_EXPORT QPolygon clippedPolygon( const QRect&,
+        const QPolygon&, bool closePolygon = false );
+
+    QWT_EXPORT QPolygon clippedPolygon( const QRectF&,
+        const QPolygon&, bool closePolygon = false );
+
+    QWT_EXPORT QPolygonF clippedPolygonF( const QRectF&,
+        const QPolygonF&, bool closePolygon = false );
+
+    QWT_EXPORT QVector< QwtInterval > clipCircle(
+        const QRectF&, const QPointF&, double radius );
 };
 
 #endif

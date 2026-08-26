@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -7,81 +7,60 @@
  * modify it under the terms of the Qwt License, Version 1.0
  *****************************************************************************/
 
-// vim: expandtab
-
 #ifndef QWT_DIAL_H
-#define QWT_DIAL_H 1
+#define QWT_DIAL_H
+
+#include "qwt_global.h"
+#include "qwt_abstract_slider.h"
 
 #include <qframe.h>
 #include <qpalette.h>
-#include "qwt_global.h"
-#include "qwt_abstract_slider.h"
-#include "qwt_round_scale_draw.h"
 
 class QwtDialNeedle;
-class QwtDial;
+class QwtRoundScaleDraw;
+class QwtAbstractScaleDraw;
 
 /*!
-  \brief A special scale draw made for QwtDial
-  
-  \sa QwtDial, QwtCompass
-*/
-class QWT_EXPORT QwtDialScaleDraw: public QwtRoundScaleDraw
-{
-public:
-    explicit QwtDialScaleDraw(QwtDial *);
-    virtual QwtText label(double value) const;
+   \brief QwtDial class provides a rounded range control.
 
-    void setPenWidth(uint);
-    uint penWidth() const;
+   QwtDial is intended as base class for dial widgets like
+   speedometers, compass widgets, clocks ...
 
-private:
-    QwtDial *d_parent;
-    int d_penWidth;
-};
+   \image html dials2.png
 
-/*!
-  \brief QwtDial class provides a rounded range control. 
+   A dial contains a scale and a needle indicating the current value
+   of the dial. Depending on Mode one of them is fixed and the
+   other is rotating. If not isReadOnly() the
+   dial can be rotated by dragging the mouse or using keyboard inputs
+   (see QwtAbstractSlider::keyPressEvent()). A dial might be wrapping, what means
+   a rotation below/above one limit continues on the other limit (f.e compass).
+   The scale might cover any arc of the dial, its values are related to
+   the origin() of the dial.
 
-  QwtDial is intended as base class for dial widgets like
-  speedometers, compass widgets, clocks ... 
+   Often dials have to be updated very often according to values from external
+   devices. For these high refresh rates QwtDial caches as much as possible.
+   For derived classes it might be necessary to clear these caches manually
+   according to attribute changes using invalidateCache().
 
-  \image html dials2.png
+   \sa QwtCompass, QwtAnalogClock, QwtDialNeedle
+   \note The controls and dials examples shows different types of dials.
+   \note QDial is more similar to QwtKnob than to QwtDial
+ */
 
-  A dial contains a scale and a needle indicating the current value
-  of the dial. Depending on Mode one of them is fixed and the 
-  other is rotating. If not isReadOnly() the
-  dial can be rotated by dragging the mouse or using keyboard inputs 
-  (see keyPressEvent()). A dial might be wrapping, what means
-  a rotation below/above one limit continues on the other limit (f.e compass).
-  The scale might cover any arc of the dial, its values are related to
-  the origin() of the dial.
-  
-  Qwt is missing a set of good looking needles (QwtDialNeedle).
-  Contributions are very welcome.
-  
-  \sa QwtCompass, QwtAnalogClock, QwtDialNeedle
-  \note The examples/dials example shows different types of dials.
-*/
-
-class QWT_EXPORT QwtDial: public QwtAbstractSlider
+class QWT_EXPORT QwtDial : public QwtAbstractSlider
 {
     Q_OBJECT
 
-    Q_ENUMS(Shadow)
-    Q_ENUMS(Mode)
-    Q_ENUMS(Direction)
+    Q_ENUMS( Shadow Mode Direction )
 
-    Q_PROPERTY(bool visibleBackground READ hasVisibleBackground WRITE showBackground)
-    Q_PROPERTY(int lineWidth READ lineWidth WRITE setLineWidth)
-    Q_PROPERTY(Shadow frameShadow READ frameShadow WRITE setFrameShadow)
-    Q_PROPERTY(Mode mode READ mode WRITE setMode)
-    Q_PROPERTY(double origin READ origin WRITE setOrigin)
-    Q_PROPERTY(bool wrapping READ wrapping WRITE setWrapping)
-    Q_PROPERTY(Direction direction READ direction WRITE setDirection)
+    Q_PROPERTY( int lineWidth READ lineWidth WRITE setLineWidth )
+    Q_PROPERTY( Shadow frameShadow READ frameShadow WRITE setFrameShadow )
+    Q_PROPERTY( Mode mode READ mode WRITE setMode )
+    Q_PROPERTY( double origin READ origin WRITE setOrigin )
+    Q_PROPERTY( double minScaleArc READ minScaleArc WRITE setMinScaleArc )
+    Q_PROPERTY( double maxScaleArc READ maxScaleArc WRITE setMaxScaleArc )
 
-    friend class QwtDialScaleDraw;
-public:
+  public:
 
     /*!
         \brief Frame shadow
@@ -93,136 +72,98 @@ public:
      */
     enum Shadow
     {
+        //! QFrame::Plain
         Plain = QFrame::Plain,
+
+        //! QFrame::Raised
         Raised = QFrame::Raised,
+
+        //! QFrame::Sunken
         Sunken = QFrame::Sunken
     };
 
-    //! see QwtDial::setScaleOptions
-    enum ScaleOptions
-    {
-        ScaleBackbone = 1,
-        ScaleTicks = 2,
-        ScaleLabel = 4
-    };
-
-    /*!
-        In case of RotateNeedle the needle is rotating, in case of
-        RotateScale, the needle points to origin()
-        and the scale is rotating.
-    */
+    //! Mode controlling whether the needle or the scale is rotating
     enum Mode
     {
+        //! The needle is rotating
         RotateNeedle,
+
+        //! The needle is fixed, the scales are rotating
         RotateScale
     };
 
-    /*!
-      Direction of the dial
-    */
-    enum Direction
-    {
-        Clockwise,
-        CounterClockwise
-    };
-
-    explicit QwtDial( QWidget *parent = NULL);
-#if QT_VERSION < 0x040000
-    explicit QwtDial( QWidget *parent, const char *name);
-#endif
-
+    explicit QwtDial( QWidget* parent = NULL );
     virtual ~QwtDial();
 
-    void setFrameShadow(Shadow);
+    void setFrameShadow( Shadow );
     Shadow frameShadow() const;
 
-    bool hasVisibleBackground() const;
-    void showBackground(bool);
-
-    void setLineWidth(int);
+    void setLineWidth( int );
     int lineWidth() const;
 
-    void setMode(Mode);
+    void setMode( Mode );
     Mode mode() const;
 
-    virtual void setWrapping(bool);
-    bool wrapping() const;
+    void setScaleArc( double minArc, double maxArc );
 
-    virtual void setScale(int maxMajIntv, int maxMinIntv, double step = 0.0);
-
-    void setScaleArc(double min, double max);
-    void setScaleOptions(int);
-    void setScaleTicks(int minLen, int medLen, int majLen, int penWidth = 1);
-
+    void setMinScaleArc( double );
     double minScaleArc() const;
+
+    void setMaxScaleArc( double );
     double maxScaleArc() const;
 
-    virtual void setOrigin(double);
+    virtual void setOrigin( double );
     double origin() const;
 
-    void setDirection(Direction);
-    Direction direction() const;
-
-    virtual void setNeedle(QwtDialNeedle *);
-    const QwtDialNeedle *needle() const;
-    QwtDialNeedle *needle();
+    void setNeedle( QwtDialNeedle* );
+    const QwtDialNeedle* needle() const;
+    QwtDialNeedle* needle();
 
     QRect boundingRect() const;
-    QRect contentsRect() const;
-    virtual QRect scaleContentsRect() const;
+    QRect innerRect() const;
 
-    virtual QSize sizeHint() const;
-    virtual QSize minimumSizeHint() const;
+    virtual QRect scaleInnerRect() const;
 
-    virtual void setScaleDraw(QwtDialScaleDraw *);
+    virtual QSize sizeHint() const QWT_OVERRIDE;
+    virtual QSize minimumSizeHint() const QWT_OVERRIDE;
 
-    QwtDialScaleDraw *scaleDraw();
-    const QwtDialScaleDraw *scaleDraw() const;
+    void setScaleDraw( QwtRoundScaleDraw* );
 
-protected:
-    virtual void paintEvent(QPaintEvent *);
-    virtual void resizeEvent(QResizeEvent *);
-    virtual void keyPressEvent(QKeyEvent *);
+    QwtRoundScaleDraw* scaleDraw();
+    const QwtRoundScaleDraw* scaleDraw() const;
 
-    virtual void updateMask();
+  protected:
+    virtual void wheelEvent( QWheelEvent* ) QWT_OVERRIDE;
+    virtual void paintEvent( QPaintEvent* ) QWT_OVERRIDE;
+    virtual void changeEvent( QEvent* ) QWT_OVERRIDE;
 
-    virtual void drawFrame(QPainter *p);
-    virtual void drawContents(QPainter *) const;
-    virtual void drawFocusIndicator(QPainter *) const;
+    virtual void drawFrame( QPainter* );
+    virtual void drawContents( QPainter* ) const;
+    virtual void drawFocusIndicator( QPainter* ) const;
 
-    virtual void drawScale(QPainter *, const QPoint &center,
-        int radius, double origin, double arcMin, double arcMax) const;
+    void invalidateCache();
 
-    /*!
-      Draw the contents inside the scale
+    virtual void drawScale( QPainter*,
+        const QPointF& center, double radius ) const;
 
-      Paints nothing.
+    virtual void drawScaleContents( QPainter* painter,
+        const QPointF& center, double radius ) const;
 
-      \param painter Painter
-      \param center Center of the contents circle
-      \param radius Radius of the contents circle
-    */
-    virtual void drawScaleContents(QPainter *painter, const QPoint &center, 
-        int radius) const;
+    virtual void drawNeedle( QPainter*, const QPointF&,
+        double radius, double direction, QPalette::ColorGroup ) const;
 
-    virtual void drawNeedle(QPainter *, const QPoint &, 
-        int radius, double direction, QPalette::ColorGroup) const;
+    virtual double scrolledTo( const QPoint& ) const QWT_OVERRIDE;
+    virtual bool isScrollPosition( const QPoint& ) const QWT_OVERRIDE;
 
-    virtual QwtText scaleLabel(double) const;
-    void updateScale();
+    virtual void sliderChange() QWT_OVERRIDE;
+    virtual void scaleChange() QWT_OVERRIDE;
 
-    virtual void rangeChange();
-    virtual void valueChange();
-
-    virtual double getValue(const QPoint &);
-    virtual void getScrollMode(const QPoint &, 
-        int &scrollMode, int &direction);
-
-private:
-    void initDial();
+  private:
+    void setAngleRange( double angle, double span );
+    void drawNeedle( QPainter* ) const;
 
     class PrivateData;
-    PrivateData *d_data;
+    PrivateData* m_data;
 };
 
 #endif

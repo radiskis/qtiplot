@@ -5,6 +5,7 @@ import pytest
 def test_roundtrip_data():
     import qti
     project_file = "build/tests/results/rt_pytest.qti"
+    os.makedirs(os.path.dirname(project_file), exist_ok=True)
     
     # 1. Setup
     t = qti.app.newTable("RTTable", 5, 2)

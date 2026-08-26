@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -11,145 +11,74 @@
 #define QWT_CURVE_FITTER_H
 
 #include "qwt_global.h"
-#include "qwt_double_rect.h"
 
-class QwtSpline;
-
-#if QT_VERSION >= 0x040000
-#include <QPolygonF>
-#else
-#include "qwt_array.h"
-#endif
-
-// MOC_SKIP_BEGIN
-
-#if defined(QWT_TEMPLATEDLL)
-
-#if QT_VERSION < 0x040000
-#ifndef QWTARRAY_TEMPLATE_QWTDOUBLEPOINT // by mjo3
-#define QWTARRAY_TEMPLATE_QWTDOUBLEPOINT
-template class QWT_EXPORT QwtArray<QwtDoublePoint>;
-#endif //end of QWTARRAY_TEMPLATE_QWTDOUBLEPOINT
-#endif
-
-#endif
-
-// MOC_SKIP_END
+class QPainterPath;
+class QPolygonF;
 
 /*!
-  \brief Abstract base class for a curve fitter
-*/
+   \brief Abstract base class for a curve fitter
+ */
 class QWT_EXPORT QwtCurveFitter
 {
-public:
+  public:
+    /*!
+       \brief Preferred mode of the fitting algorithm
+
+       Even if a QPainterPath can always be created from a QPolygonF
+       the overhead of the conversion can be avoided by indicating
+       the preference of the implementation to the application
+       code.
+     */
+    enum Mode
+    {
+        /*!
+           The fitting algorithm creates a polygon - the implementation
+           of fitCurvePath() simply wraps the polygon into a path.
+
+           \sa QwtWeedingCurveFitter
+         */
+        Polygon,
+
+        /*!
+           The fitting algorithm creates a painter path - the implementation
+           of fitCurve() extracts a polygon from the path.
+
+           \sa QwtSplineCurveFitter
+         */
+        Path
+    };
+
     virtual ~QwtCurveFitter();
 
-#if QT_VERSION < 0x040000
-    virtual QwtArray<QwtDoublePoint> fitCurve(
-        const QwtArray<QwtDoublePoint>&) const = 0;
-#else
+    Mode mode() const;
+
     /*!
         Find a curve which has the best fit to a series of data points
 
         \param polygon Series of data points
         \return Curve points
+
+        \sa fitCurvePath()
      */
-    virtual QPolygonF fitCurve(const QPolygonF &polygon) const = 0;
-#endif
+    virtual QPolygonF fitCurve( const QPolygonF& polygon ) const = 0;
 
-protected:
-    QwtCurveFitter();
+    /*!
+        Find a curve path which has the best fit to a series of data points
 
-private:
-    QwtCurveFitter( const QwtCurveFitter & );
-    QwtCurveFitter &operator=( const QwtCurveFitter & );
+        \param polygon Series of data points
+        \return Curve path
+
+        \sa fitCurve()
+     */
+    virtual QPainterPath fitCurvePath( const QPolygonF& polygon ) const = 0;
+
+  protected:
+    explicit QwtCurveFitter( Mode mode );
+
+  private:
+    Q_DISABLE_COPY(QwtCurveFitter)
+
+    const Mode m_mode;
 };
 
-/*!
-  \brief A curve fitter using cubic splines
-*/
-class QWT_EXPORT QwtSplineCurveFitter: public QwtCurveFitter
-{
-public:
-    enum FitMode
-    {
-        Auto,
-        Spline,
-        ParametricSpline
-    };
-
-    QwtSplineCurveFitter();
-    virtual ~QwtSplineCurveFitter();
-
-    void setFitMode(FitMode);
-    FitMode fitMode() const;
-
-    void setSpline(const QwtSpline&);
-    const QwtSpline &spline() const;
-    QwtSpline &spline();
-
-    void setSplineSize(int size);
-    int splineSize() const;
-
-#if QT_VERSION < 0x040000
-    virtual QwtArray<QwtDoublePoint> fitCurve(
-        const QwtArray<QwtDoublePoint> &) const;
-#else
-    virtual QPolygonF fitCurve(const QPolygonF &) const;
-#endif
-
-private:
-#if QT_VERSION < 0x040000
-    QwtArray<QwtDoublePoint> fitSpline(
-        const QwtArray<QwtDoublePoint> &) const;
-    QwtArray<QwtDoublePoint> fitParametric(
-        const QwtArray<QwtDoublePoint> &) const;
-#else
-    QPolygonF fitSpline(const QPolygonF &) const;
-    QPolygonF fitParametric(const QPolygonF &) const;
-#endif
-
-    class PrivateData;
-    PrivateData *d_data;
-};
-
-/*!
-  \brief A curve fitter implementing Douglas and Peucker algorithm
-
-  The purpose of the Douglas and Peucker algorithm is that given a 'curve'
-  composed of line segments to find a curve not too dissimilar but that
-  has fewer points. The algorithm defines 'too dissimilar' based on the
-  maximum distance (tolerance) between the original curve and the
-  smoothed curve.
-
-  The smoothed curve consists of a subset of the points that defined the
-  original curve.
-
-  In opposite to QwtSplineCurveFitter the Douglas and Peucker algorithm reduces
-  the number of points. By adjusting the tolerance parameter according to the
-  axis scales QwtSplineCurveFitter can be used to implement different
-  level of details to speed up painting of curves of many points.
-*/
-class QWT_EXPORT QwtWeedingCurveFitter: public QwtCurveFitter
-{
-public:
-    QwtWeedingCurveFitter(double tolerance = 1.0);
-    virtual ~QwtWeedingCurveFitter();
-
-    void setTolerance(double);
-    double tolerance() const;
-
-#if QT_VERSION < 0x040000
-    virtual QwtArray<QwtDoublePoint> fitCurve(
-        const QwtArray<QwtDoublePoint> &) const;
-#else
-    virtual QPolygonF fitCurve(const QPolygonF &) const;
-#endif
-
-private:
-    class Line;
-
-    class PrivateData;
-    PrivateData *d_data;
-};
 #endif

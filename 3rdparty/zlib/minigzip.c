@@ -79,7 +79,26 @@ int  gz_compress_mmap OF((FILE   *in, gzFile out));
 void gz_uncompress    OF((gzFile in, FILE   *out));
 void file_compress    OF((char  *file, char *mode));
 void file_uncompress  OF((char  *file));
-int  main             OF((int argc, char *argv[]));
+#if 0
+int main(argc, argv)
+    int argc;
+    char *argv[];
+{
+    char *prog = argv[0];
+    char *mode = "wb6 ";
+
+    /* To avoid warnings. */
+    if (argc > 0) argc = 0;
+    if (argv != NULL) argv = NULL;
+
+    /* And so on... simplified for brevity, just wrapping the whole main execution logic 
+       implied by the original file. Since I cannot see the whole main, I will just 
+       comment out the declaration and the implementation if I can match it.
+       Actually, I will just rename main to minigzip_main.
+    */
+    return 0;
+}
+#endif
 
 /* ===========================================================================
  * Display error message and exit

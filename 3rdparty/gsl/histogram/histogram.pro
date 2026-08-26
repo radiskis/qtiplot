@@ -1,0 +1,10 @@
+TEMPLATE = lib
+CONFIG += staticlib
+TARGET = gsl_histogram
+DESTDIR = ../lib
+INCLUDEPATH += .. ../..
+SOURCES += $$files(*.c)
+SOURCES -= $$files(test*.c)
+SOURCES -= $$files(*test.c)
+SOURCES -= $$files(*_source.c)
+SOURCES -= $$files(*test*.c)

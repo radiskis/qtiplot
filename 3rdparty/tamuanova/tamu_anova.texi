@@ -1,0 +1,361 @@
+\input texinfo @c -*-texinfo-*-
+@setfilename tamu_anova.info
+@settitle TAMU ANOVA anova package for GNU scientific library
+@finalout
+
+@dircategory Statistics software
+@direntry
+* tamu_anova: (tamu_anova).                   TAMU ANOVA extensions to GSL
+@end direntry
+
+@include mathinclude.texi
+@include version-ref.texi
+
+@iftex
+@copying
+Copyright @copyright{} 2005 Andrew Redd, Krista Rister, Elizabeth Young
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+A copy of the license is included in the section entitled "GNU
+Free Documentation License".
+@end copying
+@end iftex
+
+@titlepage
+@title TAMU ANOVA
+@subtitle ANOVA Extensions to the GNU Scientific Library
+@subtitle Version @value{VERSION}
+@subtitle @value{UPDATED}
+
+@author Andrew Redd
+@author Krista Rister
+@author Elizabeth Young
+
+@end titlepage
+
+@ifnottex
+@node Top, Introduction, (dir), (dir)
+@top TAMU_ANOVA
+
+This file documents TAMU_ANOVA, a package
+for the GNU Scientific Library (GSL) containing functions for performing 
+one and two way NOVA tests.
+
+
+Information about GSL can be found at the project homepage,
+@uref{http://www.gnu.org/software/gsl/}.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License.
+@end ifnottex
+
+@menu
+* Introduction::                
+* Motivation::
+* Computational Method::
+* Functions::                   
+* Examples::                    
+* References and Further Reading::  
+* GNU Free Documentation License::  
+* Function Index::              
+* Concept Index::               
+@end menu
+@c %entries not used
+@c %* Variable Index::              
+@c %* Type Index::                  
+@node  Introduction, Motivation, Top, Top
+@chapter Introduction
+
+ANOVA, or Analysis of Variance, is a method for comparing levels of 
+some continuous response variable between different groups.  The main idea is 
+to compare variation within each group to variation between the groups;
+if the groups vary considerably from one group to another in comparison
+to the within group variation, we can reject the null hypothesis that 
+all the groups have similar levels of the response variable.  
+
+TAMU ANOVA contains both single and two factor ANOVA.  Use of the package can be 
+facilitated through linking to the compiled library tamuanova.  The package function
+definitions are accessible through @file{tamu_anova.h}.  Another option for use of the 
+package is to include the original function definitions in the files @file{anova_1.h}
+and @file{anova_2.h}.  With the use of these files the program must still be linked
+to the GSL (see GSL documentation on linking and compiling.)
+
+
+@node Motivation, Computational Method, Introduction, Top
+@chapter Motivation
+
+The first reason for creating this package was that, to the best of the 
+programmers' knowledge, there was not an open source package in existence 
+that computed sums of squares correctly in the case of unequal cell sizes.
+The model for the two-way ANOVA is commonly @math{y_{ijk} = \alpha_i + \beta_j +
+\gamma{ij} + \epsilon_{ijk}}, but the sums of squares are computed in different
+ways according to the hypotheses desired to test.  
+This package computes Type III sums of squares, as described in Searle
+(1987).  The Type III Sums of Squares are the only 
+correct sums of squares in the case of unequal cell sizes (but no cells are empty) 
+when the desired hypotheses are as follows: @math{H_o: \alpha_1 = \alpha_2 = ... =
+\alpha_k = 0} vs. @math{H_a:} at least one @math{\alpha_i \neq 0}, @math{H_o: \beta_1
+ = \beta_2 = ... = \beta_m = 0} vs. @math{H_a:} at least one @math{\beta_i \neq 0}, 
+ and @math{H_o: \gamma_{1,1} = \gamma_{1,2} = ... = \gamma_{k,m}} vs. @math{H_a:} at
+ least one @math{\gamma_{i,j} = 0}. 
+
+The second reason for creating this package was to calculate F-statistics
+for models with random and mixed effects as described in Section 4.10 of Sahai
+and Ageel's book, @i{The Analysis of Variance} (2000).  Some packages
+seem superficially to calculate F-statistics correctly, but upon further 
+investigation, do not actually find the F-statistics recommended by Sahai and Ageel(2000).
+
+@node Computational Method, Functions, Motivation, Top
+@chapter Computational Method
+The one-way ANOVA tables were computed by the methods described in Devore (2004).
+First, sums of squares are computed in the usual way (n is the total number of
+observations, and k is the number of populations in the study):
+	@math{SST = \sum_{i=1}^k \sum_{j=1}^{n_i} (x_{ij} - \bar{x}_{..})^2},
+        @math{SSM = \sum_{i=1}^k \sum_{j=1}^{n_i} (\bar{x}_{i.} - \bar{x}_{..})^2}, and
+        @math{SSE = \sum_{i=1}^k \sum_{j=1}^{n_i} (x_{ij} - \bar{x}_{i.})^2}.
+Then the package constructs the ANOVA table as follows:
+
+@multitable @columnfractions .15 .1 .1 .2 .2 .25
+@item Source: @tab SS: @tab df: @tab MS: @tab F-stat: @tab p-value:
+@item Model @tab SSM @tab k-1 @tab SSM/k-1 @tab SSM/SSE @tab P(F > F-stat)
+@item Error @tab SSE @tab n-k @tab SSE/n-k
+@item Total @tab SST @tab n-1 @tab SST/n-1
+@end multitable
+
+The two-way models require further computation when the desired hypotheses to be 
+tested are not conditional on the previous factors entered into the model but
+are the most common (where the model is:  @math{y_{ijk} = \mu + \alpha_i + \beta_j
++ \gamma_{ij} + \epsilon_{ijk}}):
+    @math{H_o:  \alpha_1 = \alpha_2 = ... = \alpha_k = 0},
+    @math{H_o:  \beta_1 = \beta_2 = ... = \beta_m = 0}, and
+    @math{H_o:  \gamma_{11} = \gamma_{12} = ... = \gamma_{km} = 0}.	
+Note that the hypotheses for the individual factors only hold in the absence of 
+significant interaction.
+
+Following Searle (1987), then, the package computes Type III Sums of Squares:
+    @math{SST = \sum_i n_{i.} \bar{y}_{i..}^2 + \sum_{j=1}^{b-1} {\mathaccent 94 \tau}_j r_j},
+ where for 
+    @math{c_{jj} = n_{.j} - \sum_{i=1}^a {n_{ij}^2}/{n_{i.}}},
+    @math{c_{jj'} = -\sum_{i=1}^a {n_{ij}n_{ij'}}/{n_{i.}}}, and
+    @math{r_j = y_{.j.} - \sum_{i=1}^a n_{ij} \bar{y}_{i..}}, we solve the b-1 linear equations 
+    @math{c_{jj} {\mathaccent 94 \tau}_j + \sum_{j'=1, j' \neq j}^{b-1} c_{jj'} {\mathaccent 94 \tau}_{j'} = r_j}
+ for @math{{\mathaccent 94 \tau}_1, {\mathaccent 94 \tau}_2,..., {\mathaccent 94 \tau}_{b-1}}.  These computations are only correct in the case that no cells are empty.
+ In the case that some cells are completely empty, the experimenter must use other
+ methods to compute sums of squares, depending on the desired hypotheses.
+  
+Those methods only are appropriate in the case that the effects are fixed.  In the 
+case that the effects are random, the expected values of the mean squares are not
+the same as for the fixed case, so one uses a different denominator for finding the 
+F-statistics in the ANOVA table.  The computation follows the recommendation of 
+Sahai and Ageel (2000):
+
+For the random effects model,
+    @math{F_{\alpha} = MS_{\alpha} / MS_{\gamma}} and
+		@math{F_{\beta} = MS_{\beta} / MS_{\gamma}}.
+
+For the mixed effects model, 
+    @math{F_{\alpha} = MS_{\alpha} / MS_{\gamma}} and
+		@math{F_{\beta} = MS_{\beta} / MSE}.
+
+Thus we see that for the mixed effects model, the data must be entered in such a way 
+that the first effect is the fixed effect, while the second effect is the random effect.
+		
+		
+ 
+@node Functions, Structures, Computational Method, Top
+@chapter Functions
+
+@menu
+* Structures::
+* Function Definitions::
+@end menu
+
+@node Structures, Function Definitions, Functions, Functions
+@section Structures
+@b{One way table}
+
+@deftypefn {struct tamu_anova_table}
+@code{struct tamu_anova_table@{
+  long   df_tr, df_err, df_tot;
+  double SSTr, SSE, SST, MSTr, MSE, F, p;@};
+}
+@end deftypefn
+@*
+@b{Two way table}
+@deftypefn {struct tamu_anova_table_twoway} 
+@code{struct tamu_anova_table_twoway @{
+  long   
+  dfA, dfB, dfAB, dfT, dfE;
+	double 
+	SSA, MSA, FA, pA,
+	SSB, MSB, FA, pB,
+	SSAB, MSAB, FAB, pAB,
+	SSE, MSE,
+	SST;
+@};
+}
+@end deftypefn
+
+@node Function Definitions, Examples, Structures, Functions
+@section Function Definitions
+@deftypefun tamu_anova_table tamu_anova (double @var{data}[],long @var{factor}[], long @var{I}, long @var{J});
+@end deftypefun
+This performs the one way ANOVA and returns a oneway table struct. The arguments are as follows:
+@enumerate
+@item data - an array of all data values of type double.
+@item factor - an array of factor codings for the data.  Acceptable values are 1..J with no breaks (I.E. the function does not allow for empty cells).
+@item I - the length of the data and factor arrays (yes they must be the same length).
+@item J - The number or factors in the experiment.
+@end enumerate
+
+@deftypefun tamu_anova_table_twoway tamu_anova_twoway (double @var{data}[],long @var{factor}[][2], long @var{I}, long @var{J}[2],  enum gsl_anova_twoway_types @var{type} )
+
+@end deftypefun
+This performs the two way ANOVA and returns a twoway table struct.  The arguments are as follows:
+@enumerate
+@item data - an array of all data values of type double.
+@item factor - a I x 2 matrix of type long for factor codings.  Essentially an array of ordered pair of the type @{factor A, Factor B@}.  Acceptable values for are 1..@math{J_A} for factor A and 1..@math{J_B} for factor B.  With no skipped numbers (I.E. the function does not allow for empty cells)
+@item I - the length of the data and factor arrays (yes they must be the same length).
+@item J - an array of @{@math{J_A,J_B}@} which tells the function the number of groups for factor A and factor B.
+@item type - an enumerated variable to tell the function what kind of model to use.  This only affects the F and P values.
+@itemize
+@item anova_fixed = 0
+@item anova_random = 1
+@item anova_mixed = 2
+@end itemize
+@end enumerate
+
+
+@node Examples, References and Further Reading, Function Definitions, Top
+@chapter Examples
+
+Here are three examples of how to use the program.  They all assume that you have the library installed and are able to link to it without any extra declarations.  If this is not the case extra compiler directive may be needed to compile and link properly.@*
+WARNING: The TAMU ANOVA library must be linked with the GSl libraries, as shown in the examples.  The functions in TAMU ANOVA use the gsl and cannot be ran without it. 
+@*@*
+@b{Example 1: One-way balanced ANOVA}
+@example
+#include <tamu_anova/tamu_anova.h>
+//Data set from Devore(2004).
+double data[20] = @{
+88.60,73.20,91.40,68.00,75.20,63.00,53.90,69.20,
+50.10,71.50,44.90,59.50,40.20,56.30,38.70,31.00,
+39.60,45.30,25.20,22.70 @};
+long factor[20]=@{
+1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,4 @};
+
+int main()
+@{
+	struct tamu_anova_table tbl1 = tamu_anova(data,factor,20,4);
+	tamu_anova_printtable(tbl1);
+	return 0;
+@};
+@end example
+This file would be compiled by the following:
+
+@example
+% gcc -c testfile.c
+% gcc testfile.o -ltamuanova -lgsl -lgslcbls -lm
+@end example
+@*@*
+@b{Example(2): One-way unbalanced ANOVA}
+@example
+#include <tamu_anova/tamu_anova.h>
+//Data from Devore(2004)
+double data[22] = @{
+45.50,45.30,45.40,44.40,44.60,43.90,44.60,44.00,44.20,
+43.90,44.70,44.20,44.00,43.80,44.60,43.10,46.00,45.90,
+44.80,46.20,45.10,45.50
+@};
+long factor[22]=@{
+1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,3,3
+@};
+int main()
+@{
+struct tamu_anova_table tbl1 = tamu_anova(data,factor,22,3);
+tamu_anova_printtable(tbl1);
+return 0;@};
+@end example
+this example is compiled the same as above
+@*@*
+@b{An example of two way unbalanced ANOVA with data from Searle(1987).}
+@example
+#include <tamu_anova/tamu_anova.h>
+
+double d[15]=@{
+6,10,11,13,15,14,22,12,15,19,18,31,18,9,12@};
+long f[15][2]=@{
+@{1,1@},
+@{1,1@},
+@{1,1@},
+@{1,2@},
+@{1,2@},
+@{1,3@},@{1,3@},
+@{2,1@},@{2,1@},@{2,1@},@{2,1@}
+,@{2,2@},
+@{2,3@},@{2,3@},@{2,3@}@};
+
+int main()
+@{
+struct tamu_anova_table_twoway r;
+long J[2]=@{2,3@};
+r=tamu_anova_twoway(d,f,15,J,0);
+tamu_anova_printtable_twoway(r);
+@};
+@end example
+This is compiled the same as above for the one way library linked example.  The output is (slightly reformatted from what is printed on the screen):
+
+@multitable @columnfractions .1 .17 .1 .2 .2 .25
+@item Source: @tab SS: @tab df: @tab MS: @tab F-stat: @tab p-value:
+@item Factor-A @tab 123.771429 @tab 1 @tab 123.771429 @tab 9.282857 @tab 0.013865
+@item Factor-B @tab 192.127660 @tab 2 @tab 96.063830 @tab 7.204787 @tab 0.013546
+@item Interact @tab 222.765957  @tab 2 @tab 111.382979 @tab 8.353723 @tab 0.008888
+@item Error @tab 120.000000 @tab 9 @tab 13.333333
+@item Total @tab 520.000000 @tab 14 
+@end multitable
+
+@node References and Further Reading, GNU Free Documentation License, Examples, Top
+@chapter References and Further Reading
+
+Devore, Jay L. (2004), @i{Probability and Statistics for Engineering and the Sciences} 
+(6th ed.), Canada, Brooks/Cole.
+@*@*
+Milliken and Johnson (1992), @i{Analysis of Messy Data:  Volume I:  Designed Experiments},
+New York, NY, Van Nostrand Reinhold.
+@*@*
+Sahai, Hardeo and Ageel, Mohammed I. (2000), @i{The Analysis of Variance:  Fixed, Random,
+and Mixed Models}, Ann Arbor, MI,
+Sheridan Books, Inc.
+@*@*
+Searle, Shayle R. (1987), @i{Linear Models for Unbalanced Data}, New York, NY, John
+Wiley and Sons, Inc.
+@*@*
+Yandell, Brian S. (1997), @i{Practical Data Analysis for Designed Experiments}, 
+Cornwall, Great Britian, Chapman & Hall.
+
+@node GNU Free Documentation License, Function Index, References and Further Reading, Top
+@unnumbered GNU Free Documentation License
+@include fdl.texi
+
+@node Function Index, Concept Index, GNU Free Documentation License, Top
+@unnumbered Function Index
+
+@printindex fn
+
+@c % @node Variable Index, Type Index, Function Index, Top
+@c % @unnumbered Variable Index
+
+@c % @printindex vr
+
+@c % @node Type Index, Concept Index, Variable Index, Top
+@c % @unnumbered Type Index
+
+@c % @printindex tp
+
+@node Concept Index,  , Function Index, Top
+@unnumbered Concept Index
+
+@printindex cp
+@bye

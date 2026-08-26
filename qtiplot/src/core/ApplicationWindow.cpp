@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
 File                 : ApplicationWindow.cpp
 Project              : QtiPlot
 --------------------------------------------------------------------
@@ -1951,41 +1951,42 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
 	if (qobject_cast<MultiLayer*>(w)){
 		actionTextColor->setVisible(true);
 		if (d_plot_tool_bar){
-			if(!plotTools->isVisible())
+			if(!plotTools->isVisible() && !qApp->arguments().contains("-X"))
 				plotTools->show();
 			plotTools->setEnabled (true);
 			custom2DPlotTools((MultiLayer *)w);
 		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
-            formatToolBar->show();
+            if (!qApp->arguments().contains("-X"))
+                formatToolBar->show();
 		}
     } else if (w->inherits("Table")){
         if(d_table_tool_bar){
-            if(!tableTools->isVisible())
+            if(!tableTools->isVisible() && !qApp->arguments().contains("-X"))
                 tableTools->show();
             tableTools->setEnabled (true);
         }
         if (d_column_tool_bar){
-            if(!columnTools->isVisible())
+            if(!columnTools->isVisible() && !qApp->arguments().contains("-X"))
                 columnTools->show();
             columnTools->setEnabled (true);
             customColumnActions();
         }
 	} else if (qobject_cast<Matrix*>(w)){
-		 if(d_matrix_tool_bar && !plotMatrixBar->isVisible())
+		 if(d_matrix_tool_bar && !plotMatrixBar->isVisible() && !qApp->arguments().contains("-X"))
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
 	} else if (qobject_cast<Graph3D*>(w)){
-		if(d_plot3D_tool_bar && !plot3DTools->isVisible())
+		if(d_plot3D_tool_bar && !plot3DTools->isVisible() && !qApp->arguments().contains("-X"))
 			plot3DTools->show();
 
 		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
 		custom3DActions(w);
 	} else if (qobject_cast<Note*>(w)){
-		if(d_format_tool_bar && !formatToolBar->isVisible())
+		if(d_format_tool_bar && !formatToolBar->isVisible() && !qApp->arguments().contains("-X"))
             formatToolBar->show();
-		if(d_notes_tool_bar && !noteTools->isVisible())
+		if(d_notes_tool_bar && !noteTools->isVisible() && !qApp->arguments().contains("-X"))
             noteTools->show();
 
         formatToolBar->setEnabled (true);
@@ -1994,13 +1995,14 @@ void ApplicationWindow::customToolBars(QMdiSubWindow* w)
     } else if (qobject_cast<PolarGraph*>(w)){
 		actionTextColor->setVisible(true);
 		if (d_plot_tool_bar){
-			if(!plotTools->isVisible())
+			if(!plotTools->isVisible() && !qApp->arguments().contains("-X"))
 				plotTools->show();
 			plotTools->setEnabled (true);
 		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
-            formatToolBar->show();
+			if (!qApp->arguments().contains("-X"))
+				formatToolBar->show();
 		}
 	}
 }
@@ -3020,7 +3022,8 @@ void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 		g->setParent(0);
 
 	connectMultilayerPlot(g);
-        g->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		g->showNormal();
 
 	addListViewItem(g);
         windowActivated(g);
@@ -3145,7 +3148,8 @@ Table* ApplicationWindow::newTable()
 {
 	Table* w = new Table(scriptEnv, 30, 2, "", this, 0);
 	initTable(w, generateUniqueName(tr("Table")));
-	w->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		w->showNormal();
 	return w;
 }
 
@@ -3165,7 +3169,8 @@ Table* ApplicationWindow::newTable(const QString& caption, int r, int c)
 			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		}
 	}
-	w->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		w->showNormal();
 	return w;
 }
 
@@ -3274,7 +3279,8 @@ Note* ApplicationWindow::newNote(const QString& caption)
 	connect(m, &Note::dirPathChanged, this, &ApplicationWindow::scriptsDirPathChanged);
 	connect(m, &Note::currentEditorChanged, this, &ApplicationWindow::scriptingMenuAboutToShow);
 
-	m->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		m->showNormal();
 	return m;
 }
 
@@ -3304,7 +3310,8 @@ Matrix* ApplicationWindow::newMatrix(int rows, int columns)
 {
 	Matrix* m = new Matrix(scriptEnv, rows, columns, "", this, 0);
 	initMatrix(m, generateUniqueName(tr("Matrix")));
-	m->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		m->showNormal();
 	return m;
 }
 
@@ -3322,7 +3329,8 @@ Matrix* ApplicationWindow::newMatrix(const QString& caption, int r, int c)
 		}
 	}
 
-	w->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		w->showNormal();
 	return w;
 }
 
@@ -3569,7 +3577,8 @@ Table* ApplicationWindow::matrixToTable(Matrix* m, MatrixToTableConversion conve
 	w->setWindowLabel(m->windowLabel());
 	w->setCaptionPolicy(m->captionPolicy());
 	w->resize(m->size());
-	w->showNormal();
+	if (!qApp->arguments().contains("-X"))
+		w->showNormal();
 
 	QApplication::restoreOverrideCursor();
 	return w;
@@ -5232,6 +5241,10 @@ void ApplicationWindow::executeNotes()
 
 void ApplicationWindow::scriptError(const QString &message, const QString &scriptName, int lineNumber)
 {
+	if (qApp->arguments().contains("-X")) {
+		fprintf(stderr, "Script Error [%s:%d]: %s\n", scriptName.toUtf8().constData(), lineNumber, message.toUtf8().constData());
+		return;
+	}
 	Q_UNUSED(scriptName);
 	Q_UNUSED(lineNumber);
 
@@ -5240,6 +5253,11 @@ void ApplicationWindow::scriptError(const QString &message, const QString &scrip
 
 void ApplicationWindow::scriptPrint(const QString &text)
 {
+	if (qApp->arguments().contains("-X")) {
+		printf("%s\n", text.toLocal8Bit().constData());
+		fflush(stdout);
+		return;
+	}
 #ifdef SCRIPTING_CONSOLE
 	if(!text.trimmed().isEmpty()) console->append(text);
 #else
@@ -5249,7 +5267,7 @@ void ApplicationWindow::scriptPrint(const QString &text)
 
 bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 {
-	if (!force && lang == scriptEnv->objectName())return true;
+	if (!force && scriptEnv && lang == scriptEnv->objectName()) return true;
 	if (lang.isEmpty()) return false;
 
 	ScriptingEnv *newEnv = ScriptingLangManager::newEnv(lang.toLatin1().constData(), this);
@@ -5278,8 +5296,8 @@ bool ApplicationWindow::setScriptingLanguage(const QString &lang, bool force)
 
 #ifdef SCRIPTING_PYTHON
 	bool python = (lang == QString("Python"));
-	actionCommentSelection->setEnabled(python);
-	actionUncommentSelection->setEnabled(python);
+	if (actionCommentSelection) actionCommentSelection->setEnabled(python);
+	if (actionUncommentSelection) actionUncommentSelection->setEnabled(python);
 #endif
 
 	return true;
@@ -5496,7 +5514,8 @@ void ApplicationWindow::readSettings()
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
 
 	//restore dock windows and tool bars
-	restoreState(settings.value("/DockWindows").toByteArray());
+	if (!qApp->arguments().contains("-X"))
+		restoreState(settings.value("/DockWindows").toByteArray());
 	explorerSplitter->restoreState(settings.value("/ExplorerSplitter").toByteArray());
 	QList<int> lst = explorerSplitter->sizes();
 	for (int i=0; i< lst.count(); i++){
@@ -11658,7 +11677,7 @@ void ApplicationWindow::setFramed3DPlot()
 		return;
 
 	g->setFramed();
-	actionShowAxisDialog->setEnabled(TRUE);
+	actionShowAxisDialog->setEnabled(true);
 }
 
 void ApplicationWindow::setBoxed3DPlot()
@@ -11668,7 +11687,7 @@ void ApplicationWindow::setBoxed3DPlot()
 		return;
 
 	g->setBoxed();
-	actionShowAxisDialog->setEnabled(TRUE);
+	actionShowAxisDialog->setEnabled(true);
 }
 
 void ApplicationWindow::removeAxes3DPlot()
@@ -16229,6 +16248,8 @@ void ApplicationWindow::subtractReferenceData()
 
 void ApplicationWindow::baselineDialog()
 {
+	if (qApp->arguments().contains("-X"))
+		return;
 	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (!plot)
 		return;
@@ -16279,6 +16300,8 @@ void ApplicationWindow::showBugTracker()
 
 void ApplicationWindow::showDonationDialog()
 {
+	if (qApp->arguments().contains("-X"))
+		return;
 	QString s = tr("<font size=+2, color = darkBlue><b>QtiPlot is open-source software and its development required hundreds of hours of work.<br><br>\
 				If you like it, you're using it in your work and you would like to see it \
 				constantly improved, please support its authors by making a donation.</b></font>");
@@ -16384,8 +16407,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 		}
 		else if (str.startsWith("--execute") || str.startsWith("-x"))
 			exec = true;
-		else if (str.startsWith("-X"))
+		else if (str.startsWith("-X")) {
 			noGui = true;
+		}
 		else if (str.startsWith("-") || str.startsWith("--")){
 			QMessageBox::critical(this, tr("QtiPlot - Error"),
 			tr("<b> %1 </b> unknown command line option!").arg(str) + "\n" + tr("Type %1 to see the list of the valid options.").arg("'qtiplot -h'"));
@@ -16422,8 +16446,9 @@ void ApplicationWindow::parseCommandLineArguments(const QStringList& args)
 			scriptWindow->open(file_name);
 			if (exec)
 				scriptWindow->executeAll();
-		} else if (exec || noGui)
+		} else if (exec || noGui) {
 			loadScript(file_name, exec, noGui);
+		}
 		else {
 			ApplicationWindow *app = open(file_name, default_settings);
 			if (app && app != this)
@@ -18021,7 +18046,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		se->importASCII(fn);
 		se->executeAll();
 
-		exit(0);
+		_Exit(0);
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		setScriptingLanguage("Python");
@@ -18188,6 +18213,9 @@ void ApplicationWindow::moveTableRowDown()
 
 void ApplicationWindow::restoreApplicationGeometry()
 {
+	if (qApp->arguments().contains("-X"))
+		return;
+
 	if (d_app_rect.isNull()){
 		showMaximized();
 	} else {
@@ -18199,6 +18227,13 @@ void ApplicationWindow::restoreApplicationGeometry()
 	MultiLayer *ml = (MultiLayer *)activeWindow(MultiLayerWindow);
 	if (ml && ml->isMaximized())
 		ml->adjustLayersToCanvasSize();
+}
+
+void ApplicationWindow::setVisible(bool visible)
+{
+    if (visible && qApp->arguments().contains("-X"))
+        return;
+    QMainWindow::setVisible(visible);
 }
 
 void ApplicationWindow::scriptsDirPathChanged(const QString& path)
@@ -18603,6 +18638,8 @@ void ApplicationWindow::insertMathSymbol()
 
 void ApplicationWindow::showCustomActionDialog()
 {
+	if (qApp->arguments().contains("-X"))
+		return;
     CustomActionDialog *ad = new CustomActionDialog(this);
 	ad->setAttribute(Qt::WA_DeleteOnClose);
 	ad->show();
@@ -18899,13 +18936,15 @@ void ApplicationWindow::initCompleter()
 	words.append("tablecol");
 	words.append("cell");
 #ifdef SCRIPTING_PYTHON
-	if (scriptEnv->objectName() == QString("Python")){
+	if (scriptEnv && scriptEnv->objectName() == QString("Python")){
 		QString fn = d_python_config_folder + "/qti_wordlist.txt";
 		QFile file(fn);
 		if (!file.open(QFile::ReadOnly)){
 			QApplication::restoreOverrideCursor();
-			QMessageBox::critical(this, tr("QtiPlot - Warning"),
-			tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(QFileInfo(file).absoluteFilePath()));
+			if (!qApp->arguments().contains("-X")) {
+				QMessageBox::critical(this, tr("QtiPlot - Warning"),
+				tr("Couldn't load file: %1.\nAutocompletion will not be available!").arg(QFileInfo(file).absoluteFilePath()));
+			}
 			QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		} else {
 			while (!file.atEnd()){
@@ -19506,25 +19545,49 @@ void ApplicationWindow::loadPlugins()
 	}
 
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
-	pluginsDir.cd("plugins");
+	bool hasPlugins = pluginsDir.cd("plugins");
+	if (!hasPlugins) {
+		pluginsDir = QDir(QDir::currentPath() + "/build_linux/qtiplot/plugins");
+		hasPlugins = pluginsDir.exists();
+	}
+	if (!hasPlugins) {
+		pluginsDir = QDir(QDir::currentPath() + "/plugins");
+		hasPlugins = pluginsDir.exists();
+	}
 
-	for (QString fileName : pluginsDir.entryList(QDir::Files)){
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader.instance();
-		if (!plugin) {
-			QMessageBox::critical(this, "Plugin Load Error", 
-				QString("Failed to load plugin: %1\nError: %2")
-				.arg(fileName)
-				.arg(loader.errorString()));
-		}
-		if (plugin){
-			ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
-			if (p){
-				p->setApplicationWindow(this);
-				d_import_export_plugins << p;
-			} else {
-                QMessageBox::warning(this, "Plugin Cast Failed", "Loaded " + fileName + " but cast to ImportExportPlugin failed.");
-            }
+	if (hasPlugins) {
+		QStringList filters;
+#if defined(Q_OS_WIN)
+		filters << "*.dll";
+#elif defined(Q_OS_MAC)
+		filters << "*.dylib";
+#else
+		filters << "*.so";
+#endif
+		for (QString fileName : pluginsDir.entryList(filters, QDir::Files)){
+			QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+			QObject *plugin = loader.instance();
+			if (!plugin) {
+				fprintf(stderr, "Plugin load error for %s: %s\n", fileName.toUtf8().constData(), loader.errorString().toUtf8().constData());
+				if (!qApp->arguments().contains("-X")) {
+					QMessageBox::critical(this, "Plugin Load Error", 
+						QString("Failed to load plugin: %1\nError: %2")
+						.arg(fileName)
+						.arg(loader.errorString()));
+				}
+			}
+			if (plugin){
+				ImportExportPlugin *p = qobject_cast<ImportExportPlugin *>(plugin);
+				if (p){
+					p->setApplicationWindow(this);
+					d_import_export_plugins << p;
+				} else {
+					fprintf(stderr, "Plugin cast failed for %s\n", fileName.toUtf8().constData());
+					if (!qApp->arguments().contains("-X")) {
+						QMessageBox::warning(this, "Plugin Cast Failed", "Loaded " + fileName + " but cast to ImportExportPlugin failed.");
+					}
+				}
+			}
 		}
 	}
 }

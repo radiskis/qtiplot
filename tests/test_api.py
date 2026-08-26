@@ -24,6 +24,7 @@ def test_set_cell_values():
 def test_save_project():
     import qti
     save_path = "build/tests/results/test_api_project.qti"
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
     qti.app.saveProjectAs(save_path)
     assert os.path.exists(save_path)
     # Cleanup

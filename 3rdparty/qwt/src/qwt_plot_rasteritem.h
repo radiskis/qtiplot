@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -10,98 +10,142 @@
 #ifndef QWT_PLOT_RASTERITEM_H
 #define QWT_PLOT_RASTERITEM_H
 
-#include <qglobal.h>
-#include <qstring.h>
-#include <qimage.h>
+#include "qwt_global.h"
+#include "qwt_plot_item.h"
 
-#include "qwt_plot_item.h" 
+#include <qstring.h>
+
+class QwtInterval;
 
 /*!
-  \brief A class, which displays raster data
+   \brief A class, which displays raster data
 
-  Raster data is a grid of pixel values, that can be represented
-  as a QImage. It is used for many types of information like
-  spectrograms, cartograms, geographical maps ...
+   Raster data is a grid of pixel values, that can be represented
+   as a QImage. It is used for many types of information like
+   spectrograms, cartograms, geographical maps ...
 
-  Often a plot has several types of raster data organized in layers.
-  ( f.e a geographical map, with weather statistics ).
-  Using setAlpha() raster items can be stacked easily.
+   Often a plot has several types of raster data organized in layers.
+   ( f.e a geographical map, with weather statistics ).
+   Using setAlpha() raster items can be stacked easily.
 
-  QwtPlotRasterItem is only implemented for images of the following formats:
-  QImage::Format_Indexed8, QImage::Format_ARGB32.
+   QwtPlotRasterItem is only implemented for images of the following formats:
+   QImage::Format_Indexed8, QImage::Format_ARGB32.
 
-  \sa QwtPlotSpectrogram
-*/
+   \sa QwtPlotSpectrogram
+ */
 
-class QWT_EXPORT QwtPlotRasterItem: public QwtPlotItem
+class QWT_EXPORT QwtPlotRasterItem : public QwtPlotItem
 {
-public:
+  public:
     /*!
-      - NoCache\n
-        renderImage() is called, whenever the item has to be repainted
-      - PaintCache\n
-        renderImage() is called, whenever the image cache is not valid,
-        or the scales, or the size of the canvas has changed. This type
-        of cache is only useful for improving the performance of hide/show
-        operations. All other situations are already handled by the
-        plot canvas cache.
-      - ScreenCache\n
-        The screen cache is an image in size of the screen. As long as
-        the scales don't change the target image is scaled from the cache.
-        This might improve the performance
-        when resizing the plot widget, but suffers from scaling effects.
-
-      The default policy is NoCache
+       \brief Cache policy
+       The default policy is NoCache
      */
     enum CachePolicy
     {
+        /*!
+           renderImage() is called each time the item has to be repainted
+         */
         NoCache,
-        PaintCache,
-        ScreenCache
+
+        /*!
+           renderImage() is called, whenever the image cache is not valid,
+           or the scales, or the size of the canvas has changed.
+
+           This type of cache is useful for improving the performance
+           of hide/show operations or manipulations of the alpha value.
+           All other situations are handled by the canvas backing store.
+         */
+        PaintCache
     };
 
-    explicit QwtPlotRasterItem(const QString& title = QString::null);
-    explicit QwtPlotRasterItem(const QwtText& title);
+    /*!
+        Attributes to modify the drawing algorithm.
+        \sa setPaintAttribute(), testPaintAttribute()
+     */
+    enum PaintAttribute
+    {
+        /*!
+           When the image is rendered according to the data pixels
+           ( QwtRasterData::pixelHint() ) it can be expanded to paint
+           device resolution before it is passed to QPainter.
+           The expansion algorithm rounds the pixel borders in the same
+           way as the axis ticks, what is usually better than the
+           scaling algorithm implemented in Qt.
+           Disabling this flag might make sense, to reduce the size of a
+           document/file. If this is possible for a document format
+           depends on the implementation of the specific QPaintEngine.
+         */
+
+        PaintInDeviceResolution = 1
+    };
+
+    Q_DECLARE_FLAGS( PaintAttributes, PaintAttribute )
+
+    explicit QwtPlotRasterItem( const QString& title = QString() );
+    explicit QwtPlotRasterItem( const QwtText& title );
     virtual ~QwtPlotRasterItem();
 
-    void setAlpha(int alpha);
+    void setPaintAttribute( PaintAttribute, bool on = true );
+    bool testPaintAttribute( PaintAttribute ) const;
+
+    void setAlpha( int alpha );
     int alpha() const;
 
-    void setCachePolicy(CachePolicy);
+    void setCachePolicy( CachePolicy );
     CachePolicy cachePolicy() const;
 
     void invalidateCache();
 
-    virtual void draw(QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRect &rect) const;
+    virtual void draw( QPainter*,
+        const QwtScaleMap& xMap, const QwtScaleMap& yMap,
+        const QRectF& canvasRect ) const QWT_OVERRIDE;
 
-    virtual QSize rasterHint(const QwtDoubleRect &) const;
+    virtual QRectF pixelHint( const QRectF& ) const;
 
-protected:
+    virtual QwtInterval interval(Qt::Axis) const;
+    virtual QRectF boundingRect() const QWT_OVERRIDE;
 
-     /*!
-      Renders an image for an area
+  protected:
+    /*!
+       \brief Render an image
 
-      The format of the image must be QImage::Format_Indexed8,
-      QImage::Format_RGB32 or QImage::Format_ARGB32
-      
-      \param xMap Maps x-values into pixel coordinates.
-      \param yMap Maps y-values into pixel coordinates.
-      \param area Requested area for the image in scale coordinates
+       An implementation of render() might iterate over all
+       pixels of imageRect. Each pixel has to be translated into
+       the corresponding position in scale coordinates using the maps.
+       This position can be used to look up a value in a implementation
+       specific way and to map it into a color.
+
+       \param xMap X-Scale Map
+       \param yMap Y-Scale Map
+       \param area Requested area for the image in scale coordinates
+       \param imageSize Requested size of the image
+
+       \return Rendered image
      */
-    virtual QImage renderImage(const QwtScaleMap &xMap, 
-        const QwtScaleMap &yMap, const QwtDoubleRect &area
-        ) const = 0;
+    virtual QImage renderImage( const QwtScaleMap& xMap,
+        const QwtScaleMap& yMap, const QRectF& area,
+        const QSize& imageSize ) const = 0;
 
-private:
-    QwtPlotRasterItem( const QwtPlotRasterItem & );
-    QwtPlotRasterItem &operator=( const QwtPlotRasterItem & );
+    virtual QwtScaleMap imageMap( Qt::Orientation,
+        const QwtScaleMap& map, const QRectF& area,
+        const QSize& imageSize, double pixelSize) const;
+
+  private:
+    explicit QwtPlotRasterItem( const QwtPlotRasterItem& );
+    QwtPlotRasterItem& operator=( const QwtPlotRasterItem& );
 
     void init();
 
+    QImage compose( const QwtScaleMap&, const QwtScaleMap&,
+        const QRectF& imageArea, const QRectF& paintRect,
+        const QSize& imageSize, bool doCache) const;
+
+
     class PrivateData;
-    PrivateData *d_data;
+    PrivateData* m_data;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS( QwtPlotRasterItem::PaintAttributes )
 
 #endif

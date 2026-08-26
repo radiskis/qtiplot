@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example
+END
+main.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example/main.cpp
+END
+pixmaps.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example/pixmaps.h
+END
+renderarea.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example/renderarea.cpp
+END
+example.pro
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example/example.pro
+END
+renderarea.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/example/renderarea.h
+END

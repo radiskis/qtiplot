@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svnroot/repos/qtiplot/!svn/ver/1391/trunk/3rdparty/QTeXEngine/src
+END
+QTeXPaintEngine.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/qtiplot/!svn/ver/1391/trunk/3rdparty/QTeXEngine/src/QTeXPaintEngine.cpp
+END
+src.pro
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/src/src.pro
+END
+QTeXEngine.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svnroot/repos/qtiplot/!svn/ver/1330/trunk/3rdparty/QTeXEngine/src/QTeXEngine.h
+END
+QTeXPaintDevice.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/repos/qtiplot/!svn/ver/1335/trunk/3rdparty/QTeXEngine/src/QTeXPaintDevice.cpp
+END

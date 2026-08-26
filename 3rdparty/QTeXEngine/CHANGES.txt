@@ -1,0 +1,23 @@
+QTeXEngine GNU GPL v. 3.0
+------------------------
+02/12/2015 - Release 0.6:
+- File paths for exported images are enclosed by double quote marks.
+------------------------
+07/11/2013 - Release 0.5:
+- Improved export of QLinearGradients.
+- Fixed export of QPixmaps.
+- Replaced obsolete QMatrix class with QTransform class.
+- All calls to painter()->worldMatrix() were replaced with painter()->combinedTransform(), thus also taking into account world/viewport transformations.
+------------------------
+06/09/2012 - Release 0.4:
+	Does not add a general clip rectangle anymore since this leads to a huge space around the ouput image.
+------------------------
+09/11/2010 - Release 0.3:
+	Fixed a bug leading to the creation of empty drawing paths.
+------------------------
+17/08/2009 - Release 0.2:
+- Improved handling of text strings.
+- Added several useful output options.
+- Added Doxygen configuration files.
+------------------------
+05/08/2009 - Release 0.1: Initial release.

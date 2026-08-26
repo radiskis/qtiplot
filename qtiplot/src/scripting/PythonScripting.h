@@ -31,6 +31,7 @@
 
 #include "ScriptingEnv.h"
 #include "PythonScript.h"
+#include <QCoreApplication>
 
 class QObject;
 class QString;
@@ -48,7 +49,13 @@ class PythonScripting: public ScriptingEnv
 		static ScriptingEnv *constructor(ApplicationWindow *parent) { return new PythonScripting(parent); }
 		bool initialize();
 
-		void write(const QString &text) { emit print(text); }
+		void write(const QString &text) {
+			if (QCoreApplication::instance() && QCoreApplication::instance()->arguments().contains("-X")) {
+				printf("%s", text.toUtf8().constData());
+				fflush(stdout);
+			}
+			emit print(text);
+		}
 		void flush() {}
 
 		//! like str(object) in Python

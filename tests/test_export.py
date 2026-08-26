@@ -45,6 +45,9 @@ def test_eps_export():
     assert os.path.getsize(eps_path) > 0
 
 def test_emf_export():
+    import sys
+    if not sys.platform.startswith("win"):
+        pytest.skip("EMF export plugin is only supported on Windows")
     import qti
     res_dir = "build/tests/results"
     emf_path = os.path.join(res_dir, "pytest_sine.emf")
@@ -57,3 +60,4 @@ def test_emf_export():
     l.export(emf_path)
     assert os.path.exists(emf_path)
     assert os.path.getsize(emf_path) > 0
+

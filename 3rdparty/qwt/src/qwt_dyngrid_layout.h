@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/******************************************************************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -10,98 +10,75 @@
 #ifndef QWT_DYNGRID_LAYOUT_H
 #define QWT_DYNGRID_LAYOUT_H
 
-#include <qlayout.h>
-#include <qsize.h>
-#if QT_VERSION >= 0x040000
-#include <qlist.h>
-#else
-#include <qvaluelist.h>
-#endif
 #include "qwt_global.h"
-#include "qwt_array.h"
+#include <qlayout.h>
+
+template< typename T > class QList;
 
 /*!
-  \brief The QwtDynGridLayout class lays out widgets in a grid,
+   \brief The QwtDynGridLayout class lays out widgets in a grid,
          adjusting the number of columns and rows to the current size.
-         
-  QwtDynGridLayout takes the space it gets, divides it up into rows and 
-  columns, and puts each of the widgets it manages into the correct cell(s). 
-  It lays out as many number of columns as possible (limited by maxCols()).
-*/
+
+   QwtDynGridLayout takes the space it gets, divides it up into rows and
+   columns, and puts each of the widgets it manages into the correct cell(s).
+   It lays out as many number of columns as possible (limited by maxColumns()).
+ */
 
 class QWT_EXPORT QwtDynGridLayout : public QLayout
 {
     Q_OBJECT
-public:
-    explicit QwtDynGridLayout(QWidget *, int margin = 0, int space = -1);
-#if QT_VERSION < 0x040000
-    explicit QwtDynGridLayout(QLayout *, int space = -1);
-#endif
-    explicit QwtDynGridLayout(int space = -1);
+  public:
+    explicit QwtDynGridLayout( QWidget*, int margin = 0, int spacing = -1 );
+    explicit QwtDynGridLayout( int spacing = -1 );
 
     virtual ~QwtDynGridLayout();
 
-    virtual void invalidate();
+    virtual void invalidate() QWT_OVERRIDE;
 
-    void setMaxCols(uint maxCols);
-    uint maxCols() const;
+    void setMaxColumns( uint maxColumns );
+    uint maxColumns() const;
 
-    uint numRows () const; 
-    uint numCols () const;
+    uint numRows () const;
+    uint numColumns () const;
 
-    virtual void addItem(QLayoutItem *);
+    virtual void addItem( QLayoutItem* ) QWT_OVERRIDE;
 
-#if QT_VERSION >= 0x040000
-    virtual QLayoutItem *itemAt( int index ) const;
-    virtual QLayoutItem *takeAt( int index );
-    virtual int count() const;
+    virtual QLayoutItem* itemAt( int index ) const QWT_OVERRIDE;
+    virtual QLayoutItem* takeAt( int index ) QWT_OVERRIDE;
+    virtual int count() const QWT_OVERRIDE;
 
-    void setExpandingDirections(Qt::Orientations);
-    virtual Qt::Orientations expandingDirections() const;
-    QList<QRect> layoutItems(const QRect &, uint numCols) const;
-#else
-    virtual QLayoutIterator iterator();
-
-    void setExpanding(QSizePolicy::ExpandData);
-    virtual QSizePolicy::ExpandData expanding() const;
-    QValueList<QRect> layoutItems(const QRect &, uint numCols) const;
-#endif
+    void setExpandingDirections( Qt::Orientations );
+    virtual Qt::Orientations expandingDirections() const QWT_OVERRIDE;
+    QList< QRect > layoutItems( const QRect&, uint numColumns ) const;
 
     virtual int maxItemWidth() const;
 
-    virtual void setGeometry(const QRect &rect);
+    virtual void setGeometry( const QRect& ) QWT_OVERRIDE;
 
-    virtual bool hasHeightForWidth() const;
-    virtual int heightForWidth(int) const;
+    virtual bool hasHeightForWidth() const QWT_OVERRIDE;
+    virtual int heightForWidth( int ) const QWT_OVERRIDE;
 
-    virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const QWT_OVERRIDE;
 
-    virtual bool isEmpty() const;
+    virtual bool isEmpty() const QWT_OVERRIDE;
     uint itemCount() const;
 
-    virtual uint columnsForWidth(int width) const;
+    virtual uint columnsForWidth( int width ) const;
 
-protected:
+  protected:
 
-    void layoutGrid(uint numCols,
-        QwtArray<int>& rowHeight, QwtArray<int>& colWidth) const;
-    void stretchGrid(const QRect &rect, uint numCols, 
-        QwtArray<int>& rowHeight, QwtArray<int>& colWidth) const;
+    void layoutGrid( uint numColumns,
+        QVector< int >& rowHeight, QVector< int >& colWidth ) const;
 
+    void stretchGrid( const QRect& rect, uint numColumns,
+        QVector< int >& rowHeight, QVector< int >& colWidth ) const;
 
-private:
+  private:
     void init();
-    int maxRowWidth(int numCols) const;
-    void updateLayoutCache();
+    int maxRowWidth( int numColumns ) const;
 
-#if QT_VERSION < 0x040000
-// xlC 5.1, the IBM/AIX C++ compiler, needs it to be public
-public:
-#endif
-   class PrivateData;
-
-private:
-    PrivateData *d_data;
+    class PrivateData;
+    PrivateData* m_data;
 };
 
 #endif

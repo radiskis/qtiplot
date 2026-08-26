@@ -1,91 +1,90 @@
-#include "qwt3d_curve.h"
+#include "qwt3d_surfaceplot.h"
 #include "qwt3d_function.h"
 
 using namespace Qwt3D;
 
-Function::Function()
-:GridMapping()
+Function::Function() : GridMapping() { }
+
+Function::Function(SurfacePlot &pw) : GridMapping()
 {
+    plotwidget_p = &pw;
 }
 
-Function::Function(Curve& pw)
-:GridMapping()
+Function::Function(SurfacePlot *pw) : GridMapping()
 {
-  plotwidget_p = &pw;
+    plotwidget_p = pw;
 }
 
-Function::Function(Curve* pw)
-:GridMapping()
+void Function::assign(SurfacePlot &plotWidget)
 {
-  plotwidget_p = pw;
+    if (&plotWidget != plotwidget_p)
+        plotwidget_p = &plotWidget;
 }
 
-void Function::assign(Curve& plotWidget)
+void Function::assign(SurfacePlot *plotWidget)
 {
-	if (&plotWidget != plotwidget_p)
-		plotwidget_p = &plotWidget;
+    if (plotWidget != plotwidget_p)
+        plotwidget_p = plotWidget;
 }
 
-void Function::assign(Curve* plotWidget)
+void Function::setMinZ(double val)
 {
-	if (plotWidget != plotwidget_p)
-		plotwidget_p = plotWidget;
+    range_p.minVertex.z = val;
 }
 
-void Function::	setMinZ(double val)
+void Function::setMaxZ(double val)
 {
-	range_p.minVertex.z = val;
-}
-
-void Function::	setMaxZ(double val)
-{
-	range_p.maxVertex.z = val;
+    range_p.maxVertex.z = val;
 }
 
 bool Function::create()
 {
-	if ((umesh_p <= 2) || (vmesh_p <= 2) || !plotwidget_p)
-		return false;
-	
-	// allocate some space for the mesh
-	double** data = new double* [umesh_p] ;
+    if ((umesh_p <= 2) || (vmesh_p <= 2) || !plotwidget_p)
+        return false;
 
-	unsigned i, j;
-	for (i = 0; i < umesh_p; i++)
-		data[i] = new double [vmesh_p];
-	
-	// get the data
+    /* allocate some space for the mesh */
+    double **data = new double *[umesh_p];
 
-	double dx = (maxu_p - minu_p) / (umesh_p - 1);
-	double dy = (maxv_p - minv_p) / (vmesh_p - 1);
-	
-	for (i = 0; i < umesh_p; ++i){
-		for (j = 0; j < vmesh_p; ++j){
-			double val = operator()(minu_p + i*dx, minv_p + j*dy);
-			if (val > range_p.maxVertex.z)
-				data[i][j] = range_p.maxVertex.z;
-			else if (val < range_p.minVertex.z)
-				data[i][j] = range_p.minVertex.z;
-			else
-				data[i][j] = val;
-		}
-	}
+    unsigned i, j;
+    for (i = 0; i < umesh_p; i++) {
+        data[i] = new double[vmesh_p];
+    }
 
-	Q_ASSERT(plotwidget_p);
-	if (!plotwidget_p)
-		fprintf(stderr, "Function: no valid Plot3D Widget assigned");
-	else
-		(plotwidget_p)->loadFromData(data, umesh_p, vmesh_p, minu_p, maxu_p, minv_p, maxv_p);
+    /* get the data */
 
-	for (i = 0; i < umesh_p; i++)
-		delete [] data[i];
-	delete [] data;
+    double dx = (maxu_p - minu_p) / (umesh_p - 1);
+    double dy = (maxv_p - minv_p) / (vmesh_p - 1);
 
-	return true;
+    for (i = 0; i < umesh_p; ++i) {
+        for (j = 0; j < vmesh_p; ++j) {
+            data[i][j] = operator()(minu_p + i * dx, minv_p + j * dy);
+
+            if (data[i][j] > range_p.maxVertex.z)
+                data[i][j] = range_p.maxVertex.z;
+            else if (data[i][j] < range_p.minVertex.z)
+                data[i][j] = range_p.minVertex.z;
+        }
+    }
+
+    Q_ASSERT(plotwidget_p);
+    if (!plotwidget_p) {
+        fprintf(stderr, "Function: no valid Plot3D Widget assigned");
+    } else {
+        ((SurfacePlot *)plotwidget_p)
+                ->loadFromData(data, umesh_p, vmesh_p, minu_p, maxu_p, minv_p, maxv_p);
+    }
+
+    for (i = 0; i < umesh_p; i++) {
+        delete[] data[i];
+    }
+
+    delete[] data;
+
+    return true;
 }
 
-bool Function::create(Curve& pl)
+bool Function::create(SurfacePlot &pl)
 {
-  assign(pl);
-  return create();
+    assign(pl);
+    return create();
 }

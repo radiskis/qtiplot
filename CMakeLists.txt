@@ -5,6 +5,7 @@ project(qtiplot LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)
@@ -40,3 +41,13 @@ add_subdirectory(3rdparty)
 
 # Add Main Application
 add_subdirectory(qtiplot)
+
+# --- Packaging (CPack) ---
+set(CPACK_PACKAGE_NAME "qtiplot")
+set(CPACK_PACKAGE_VENDOR "QtiPlot Project")
+set(CPACK_PACKAGE_VERSION_MAJOR "0")
+set(CPACK_PACKAGE_VERSION_MINOR "9")
+set(CPACK_PACKAGE_VERSION_PATCH "9")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "QtiPlot - Data Analysis and Scientific Plotting")
+set(CPACK_GENERATOR "ZIP")
+include(CPack)

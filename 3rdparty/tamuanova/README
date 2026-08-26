@@ -1,0 +1,17 @@
+TAMU ANOVA 0.1 README
+
+TAMU ANOVA is a GSL package for computing one and two way anova.
+
+To install the package follow the instructions in the INSTALL file.
+
+KNOWN ISSUES & BUGS
+-------------------
+For two way unbalanced ANOVA fixed effects model calculated the F-statisic
+correctly, according to comercial software packages.  There is some discrepancy
+with the mixed and random models as to how the F-statistic is computed and the 
+computed value from TAMU& ANOVA will differ from comercial packages. 
+
+
+Andrew Redd
+Krista Rister
+Elizabeth Young

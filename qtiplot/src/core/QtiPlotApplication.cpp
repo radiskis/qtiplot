@@ -40,8 +40,13 @@
 
 QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication( argc, argv)
 {
-	QStringList args = arguments();
-	args.removeFirst(); // remove application name
+	QStringList args;
+	for (int i = 1; i < argc; ++i)
+		args.append(QString::fromLocal8Bit(argv[i]));
+	if (args.isEmpty()) {
+		args = arguments();
+		if (!args.isEmpty()) args.removeFirst();
+	}
 
 	if( (args.count() == 1) && (args[0] == "-m" || args[0] == "--manual") )
 		ApplicationWindow::showStandAloneHelp();
@@ -58,9 +63,11 @@ QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication
 			factorySettings = true;
 
 		ApplicationWindow *mw = new ApplicationWindow(factorySettings);
-		mw->restoreApplicationGeometry();
+		if (!args.contains("-X") && !args.contains("-c") && !args.contains("--console")) {
+			mw->restoreApplicationGeometry();
+		}
 
-		if (mw->autoSearchUpdates){
+		if (mw->autoSearchUpdates && !args.contains("-X") && !args.contains("-c") && !args.contains("--console")){
 			mw->autoSearchUpdatesRequest = true;
 			mw->searchForUpdates();
 		}
@@ -126,6 +133,9 @@ void QtiPlotApplication::remove(ApplicationWindow *w)
 void QtiPlotApplication::activateWindow(ApplicationWindow *w)
 {
 	if (!w)
+		return;
+
+	if (qApp->arguments().contains("-X"))
 		return;
 
 	((QWidget *)w)->activateWindow();
