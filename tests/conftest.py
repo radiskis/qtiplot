@@ -1,13 +1,17 @@
 import pytest
+
 @pytest.fixture(autouse=True)
 def per_test_cleanup():
-    import qti
-    if qti.app:
-        qti.app.savedProject()
+    try:
+        import qti
+        if qti.app:
+            qti.app.savedProject()
+    except ImportError:
+        pass
     yield
     try:
         import qti
         if qti.app:
             qti.app.savedProject()
-    except:
+    except Exception:
         pass
