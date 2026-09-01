@@ -145,6 +145,11 @@ void Table::init(int rows, int cols)
 
 	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
 	connect(d_table, &QTableWidget::cellDoubleClicked, this, &Table::cellDoubleClicked);
+	connect(d_table, &QTableWidget::cellPressed, this, &Table::cellDoubleClicked);
+	connect(d_table, &QTableWidget::currentCellChanged, this, [this](int r, int c, int, int) {
+		if (r >= 0 && c >= 0)
+			d_old_cell_text = d_table->text(r, c);
+	});
 
 	d_undo_stack = new QUndoStack(this);
 	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());
@@ -322,20 +327,68 @@ void Table::print(const QString& fileName)
 	print(&printer);
 }
 
+void MyTable::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Delete || e->key() == Qt::Key_Backspace) {
+		Table *t = qobject_cast<Table *>(parentWidget());
+		if (!t)
+			t = qobject_cast<Table *>(parent());
+		if (t) {
+			t->clearSelection();
+			e->accept();
+			return;
+		}
+	} else if (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter) {
+		int r = currentRow();
+		int c = currentColumn();
+		if (r >= 0 && c >= 0) {
+			if (r + 1 >= rowCount())
+				setRowCount(r + 11);
+			setCurrentCell(r + 1, c);
+			e->accept();
+			return;
+		}
+	}
+	QTableWidget::keyPressEvent(e);
+}
+
+void MyTable::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
+{
+	int r = currentRow();
+	int c = currentColumn();
+	QTableWidget::closeEditor(editor, hint);
+	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::NoHint) {
+		if (r >= 0 && c >= 0) {
+			int nextRow = r + 1;
+			QMetaObject::invokeMethod(this, [this, nextRow, c]() {
+				if (nextRow >= rowCount())
+					setRowCount(nextRow + 10);
+				setCurrentCell(nextRow, c);
+			}, Qt::QueuedConnection);
+		}
+	}
+}
+
 void Table::cellDoubleClicked(int row, int col)
 {
-	d_old_cell_text = d_table->text(row, col);
+	Q_UNUSED(row);
+	Q_UNUSED(col);
 }
 
 void Table::cellEdited(int row, int col)
 {
-	QString text = d_table->text(row,col).remove(QRegularExpression("\\s"));
-	QString newText = d_table->text(row,col);
-	if (newText == d_old_cell_text)
+	QTableWidgetItem *it = d_table->item(row, col);
+	QString oldText = it ? it->data(Qt::UserRole).toString() : QString();
+	QString text = d_table->text(row, col).trimmed();
+	QString newText = d_table->text(row, col);
+
+	if (newText == oldText)
 		return;
 
 	if (columnType(col) != Numeric || text.isEmpty()){
-		d_undo_stack->push(new TableEditCellCommand(this, row, col, d_old_cell_text, newText, tr("Edit Cell")));
+		if (it)
+			it->setData(Qt::UserRole, newText);
+		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
 		return;
 	}
 
@@ -347,21 +400,41 @@ void Table::cellEdited(int row, int col)
   	if (ok)
   		newText = locale().toString(res, f, precision);
   	else {
-  		Script *script = scriptEnv->newScript(d_table->text(row,col),this,QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
-  		connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
-
-  		script->setInt(row+1, "i");
-  		script->setInt(col+1, "j");
-  		QVariant ret = script->eval();
-  		if(ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong)
-  			newText = ret.toString();
-  		else if(ret.canConvert<double>())
-  			newText = locale().toString(ret.toDouble(), f, precision);
-  		else
-  			newText = "";
+  		Script *script = scriptEnv->newScript(d_table->text(row, col), this, QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
+  		if (script) {
+  			disconnect(script, &Script::error, nullptr, nullptr);
+  			script->setInt(row+1, "i");
+  			script->setInt(col+1, "j");
+  			QVariant ret = script->eval();
+  			if (ret.isValid() && (ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong))
+  				newText = ret.toString();
+  			else if (ret.isValid() && ret.canConvert<double>() && !ret.toString().isEmpty()) {
+  				bool convOk = false;
+  				double val = ret.toDouble(&convOk);
+  				if (convOk)
+  					newText = locale().toString(val, f, precision);
+  				else
+  					newText = d_table->text(row, col);
+  			} else {
+  				newText = d_table->text(row, col);
+  			}
+  			delete script;
+  		} else {
+  			newText = d_table->text(row, col);
+  		}
   	}
 
-	d_undo_stack->push(new TableEditCellCommand(this, row, col, d_old_cell_text, newText, tr("Edit Cell")));
+	if (newText != d_table->text(row, col)) {
+		QMetaObject::invokeMethod(d_table, [this, row, col, newText]() {
+			bool blocked = d_table->blockSignals(true);
+			d_table->setText(row, col, newText);
+			d_table->blockSignals(blocked);
+		}, Qt::QueuedConnection);
+	}
+	if (it)
+		it->setData(Qt::UserRole, newText);
+
+	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
 }
 
 int Table::colX(int col)
@@ -1478,10 +1551,15 @@ void Table::clearCol()
 	if (d_table->isColumnReadOnly(selectedCol))
 		return;
 
+	d_undo_stack->beginMacro(tr("Clear Column"));
 	for (int i = 0; i < d_table->numRows(); i++){
-		if (d_table->isSelected(i, selectedCol))
-			d_table->setText(i, selectedCol, "");
+		if (d_table->isSelected(i, selectedCol)) {
+			QString old = d_table->text(i, selectedCol);
+			if (!old.isEmpty())
+				d_undo_stack->push(new TableEditCellCommand(this, i, selectedCol, old, "", tr("Clear Cell")));
+		}
 	}
+	d_undo_stack->endMacro();
 
 	emit modifiedData(this, colName(selectedCol));
 }
@@ -1496,7 +1574,11 @@ void Table::clearCell(int row, int col)
         return;
 	}
 
-	d_table->setText(row, col, "");
+	QString oldText = d_table->text(row, col);
+	if (oldText.isEmpty())
+		return;
+
+	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, "", tr("Clear Cell")));
 
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -1557,7 +1639,7 @@ void Table::insertRows(int row, int count, bool pushUndo)
 	}
 
 	for (int i=0; i<count; i++)
-		d_table->insertRow(row - 1);
+		d_table->insertRow(row - 1 + i);
 	notifyChanges();
 }
 
@@ -1607,17 +1689,11 @@ void Table::clearSelection()
 
 		if (sel.rowCount() == 0){
 			int col = d_table->currentColumn();
-			if (col < 0 || d_table->currentRow() < 0)
+			int row = d_table->currentRow();
+			if (col < 0 || row < 0)
 				return;
 
-			QString name = colName(col);
-			if (d_table->isColumnReadOnly(col)){
-				QMessageBox::warning(this, tr("QtiPlot - Error"),
-       			tr("Column '%1' is read only!").arg(name));
-				return;
-    		}
-			d_table->setText(d_table->currentRow(), col, "");
-			emit modifiedData(this, name);
+			clearCell(row, col);
 		} else {
 			QStringList lstReadOnly;
 			for (int i=left; i<=right; i++){
@@ -1630,16 +1706,21 @@ void Table::clearSelection()
         		tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     		}
 
+			d_undo_stack->beginMacro(tr("Clear Cells"));
 			for (int i=left; i<=right; i++){
 				if (d_table->isColumnReadOnly(i))
 					continue;
 
-				for (int j=top; j<=bottom; j++)
-					d_table->setText(j, i, "");
+				for (int j=top; j<=bottom; j++) {
+					QString old = d_table->text(j, i);
+					if (!old.isEmpty())
+						d_undo_stack->push(new TableEditCellCommand(this, j, i, old, "", tr("Clear Cell")));
+				}
 
 				QString name = colName(i);
 				emit modifiedData(this, name);
 			}
+			d_undo_stack->endMacro();
 		}
 	}
 	emit modifiedWindow(this);
@@ -2332,16 +2413,16 @@ double Table::cell(int row, int col)
 	return locale().toDouble(d_table->text(row, col));
 }
 
-void Table::setCell(int row, int col, double val)
+void Table::setCell(int row, int col, double val, bool pushUndo)
 {
-	 if (col < 0 || col >= d_table->numCols() ||
-		 row < 0 || row >= d_table->numRows())
+	if (col < 0 || col >= d_table->numCols() ||
+		row < 0 || row >= d_table->numRows())
 		return;
 
-    char format;
-    int prec;
-    columnNumericFormat(col, &format, &prec);
-    d_table->setText(row, col, locale().toString(val, format, prec));
+	char format;
+	int prec;
+	columnNumericFormat(col, &format, &prec);
+	setText(row, col, locale().toString(val, format, prec), pushUndo);
 }
 
 QString Table::text(int row, int col)
@@ -2349,9 +2430,24 @@ QString Table::text(int row, int col)
 	return d_table->text(row, col);
 }
 
-void Table::setText (int row, int col, const QString & text )
+void Table::setText(int row, int col, const QString &text, bool pushUndo)
 {
-	d_table->setText(row, col, text);
+	if (col < 0 || col >= d_table->numCols() ||
+		row < 0 || row >= d_table->numRows())
+		return;
+
+	QString oldText = d_table->text(row, col);
+	if (oldText == text)
+		return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell")));
+	} else {
+		bool blocked = d_table->blockSignals(true);
+		d_table->setText(row, col, text);
+		d_table->blockSignals(blocked);
+		notifyChanges(colName(col));
+	}
 }
 
 void Table::saveToMemory()

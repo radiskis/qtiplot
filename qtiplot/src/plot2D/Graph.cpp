@@ -58,6 +58,8 @@ Description          : Graph widget
 #include "ScaleEngine.h"
 #include "RectangleWidget.h"
 #include "EllipseWidget.h"
+#include "PlotCommand.h"
+#include "Grid.h"
 #include <FrameWidget.h>
 #include <ImageSymbol.h>
 #include <ImportExportPlugin.h>
@@ -7347,6 +7349,156 @@ void Graph::showMissingDataGap(bool on, bool update)
 		modifiedGraph();
 	}
 }
+
+void Graph::showGrid(int axis, bool on, bool minor)
+{
+	if (!d_grid)
+		return;
+
+	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale){
+		d_grid->enableY(on);
+		d_grid->enableYMin(minor);
+	} else if (axis == QwtScaleDraw::BottomScale || axis == QwtScaleDraw::TopScale){
+		d_grid->enableX(on);
+		d_grid->enableXMin(minor);
+	} else
+		return;
+
+	replot();
+	emit modifiedGraph();
+}
+
+bool Graph::isGridEnabled(int axis) const
+{
+	if (!d_grid)
+		return false;
+	if (axis == QwtScaleDraw::LeftScale || axis == QwtScaleDraw::RightScale)
+		return d_grid->yEnabled();
+	if (axis == QwtScaleDraw::BottomScale || axis == QwtScaleDraw::TopScale)
+		return d_grid->xEnabled();
+	return false;
+}
+
+void Graph::undoSetScale(int axis, double start, double end, double step,
+						int majorTicks, int minorTicks, int type, bool inverted)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setScale(axis, start, end, step, majorTicks, minorTicks, type, inverted);
+		return;
+	}
+
+	double oldStart = axisScaleDiv(axis).lowerBound();
+	double oldEnd = axisScaleDiv(axis).upperBound();
+	double oldStep = axisStep(axis);
+	ScaleEngine *sc_engine = (ScaleEngine *)axisScaleEngine(axis);
+	bool oldInverted = sc_engine ? sc_engine->testAttribute(QwtScaleEngine::Inverted) : false;
+	int oldType = sc_engine ? (int)sc_engine->type() : 0;
+
+	multiLayer()->undoStack()->push(new PlotSetScaleCommand(this, axis,
+		oldStart, oldEnd, oldStep, majorTicks, minorTicks, oldType, oldInverted,
+		start, end, step, majorTicks, minorTicks, type, inverted));
+}
+
+void Graph::undoSetAxisTitle(int axis, const QString &text)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setAxisTitle(axis, text);
+		return;
+	}
+	QString oldTitle = axisTitleString(axis);
+	multiLayer()->undoStack()->push(new PlotSetAxisTitleCommand(this, axis, oldTitle, text));
+}
+
+void Graph::undoSetAxisTitleFont(int axis, const QFont &font)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setAxisTitleFont(axis, font);
+		return;
+	}
+	QFont oldFont = axisTitleFont(axis);
+	multiLayer()->undoStack()->push(new PlotSetAxisFontCommand(this, axis, oldFont, font));
+}
+
+void Graph::undoSetAxisTitleColor(int axis, const QColor &color)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setAxisTitleColor(axis, color);
+		return;
+	}
+	QColor oldColor = axisTitleColor(axis);
+	multiLayer()->undoStack()->push(new PlotSetAxisColorCommand(this, axis, oldColor, color));
+}
+
+void Graph::undoSetCanvasBackground(const QColor &color)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setCanvasBackground(color);
+		return;
+	}
+	QColor oldColor = canvasBackground().color();
+	multiLayer()->undoStack()->push(new PlotSetCanvasColorCommand(this, oldColor, color));
+}
+
+void Graph::undoShowGrid(int axis, bool on, bool minor)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		showGrid(axis, on, minor);
+		return;
+	}
+	bool oldOn = isGridEnabled(axis);
+	bool oldMinor = false;
+	multiLayer()->undoStack()->push(new PlotShowGridCommand(this, axis, oldOn, oldMinor, on, minor));
+}
+
+void Graph::undoSetCurvePen(int curveIndex, const QPen &pen)
+{
+	PlotCurve *c = curve(curveIndex);
+	if (!c)
+		return;
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		c->setPen(pen);
+		replot();
+		return;
+	}
+	QPen oldPen = c->pen();
+	multiLayer()->undoStack()->push(new PlotSetCurvePenCommand(this, curveIndex, oldPen, pen));
+}
+
+void Graph::undoSetCurveBrush(int curveIndex, const QBrush &brush)
+{
+	PlotCurve *c = curve(curveIndex);
+	if (!c)
+		return;
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		c->setBrush(brush);
+		replot();
+		return;
+	}
+	QBrush oldBrush = c->brush();
+	multiLayer()->undoStack()->push(new PlotSetCurveBrushCommand(this, curveIndex, oldBrush, brush));
+}
+
+void Graph::undoSetCurveSymbol(int curveIndex, const QwtSymbol &symbol)
+{
+	PlotCurve *c = curve(curveIndex);
+	if (!c)
+		return;
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		c->setSymbol(new QwtSymbol(symbol.style(), symbol.brush(), symbol.pen(), symbol.size()));
+		replot();
+		return;
+	}
+	const QwtSymbol *oldSym = c->symbol();
+	QwtSymbol::Style oldStyle = oldSym ? oldSym->style() : QwtSymbol::NoSymbol;
+	QBrush oldBrush = oldSym ? oldSym->brush() : QBrush();
+	QPen oldPen = oldSym ? oldSym->pen() : QPen();
+	QSize oldSize = oldSym ? oldSym->size() : QSize(8, 8);
+
+	multiLayer()->undoStack()->push(new PlotSetCurveSymbolCommand(this, curveIndex,
+		oldStyle, oldBrush, oldPen, oldSize,
+		symbol.style(), symbol.brush(), symbol.pen(), symbol.size()));
+}
+
 
 #if 0 // Commented out legacy ScaledFontsPrintFilter
 /*************************************************************************/

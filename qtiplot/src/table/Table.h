@@ -42,7 +42,9 @@
 #include <ScriptingEnv.h>
 #include <Script.h>
 #include <QUndoStack>
+#include <QKeyEvent>
 
+class Table;
 
 class MyTable : public QTableWidget
 {
@@ -63,10 +65,12 @@ public:
         QTableWidgetItem *it = item(r, c);
         if (!it) {
             it = new QTableWidgetItem(t);
+            it->setData(Qt::UserRole, t);
             if (isColumnReadOnly(c)) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
             setItem(r, c, it);
         } else {
             it->setText(t);
+            it->setData(Qt::UserRole, t);
         }
     }
 
@@ -139,12 +143,12 @@ public:
 
 	void insertColumns(int col, int count = 1) {
 		for (int i = 0; i < count; i++)
-			insertColumn(col);
+			insertColumn(col + i);
 	}
 
 	void insertRows(int row, int count = 1) {
 		for (int i = 0; i < count; i++)
-			insertRow(row);
+			insertRow(row + i);
 	}
 
 	void swapColumns(int col1, int col2) {
@@ -197,6 +201,10 @@ public:
         if (ro) setEditTriggers(QAbstractItemView::NoEditTriggers);
         else setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked | QAbstractItemView::EditKeyPressed);
     }
+
+protected:
+    void keyPressEvent(QKeyEvent *e) override;
+    void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint) override;
 
 private:
     QList<int> d_readOnlyCols;
@@ -258,7 +266,7 @@ public slots:
 
 	//! Return the value of the cell as a double
 	double cell(int row, int col);
-	void setCell(int row, int col, double val);
+	void setCell(int row, int col, double val, bool pushUndo = true);
 
 	QString text(int row, int col);
 	QStringList columnsList();
@@ -277,7 +285,7 @@ public slots:
 	void setHeader(QStringList header);
 	void loadHeader(QStringList header);
 	void setHeaderColType();
-	void setText(int row,int col,const QString & text);
+	void setText(int row,int col,const QString & text, bool pushUndo = true);
 	void setRandomValues();
 	void setRandomValues(int col, int startRow = 0, int endRow = -1);
 	void setNormalRandomValues();

@@ -9,7 +9,8 @@ import qtiparser
 
 
 def test_parse_simple_2dplot():
-    qti_path = "manual/html/tutorial/simple-2dplot.qti"
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    qti_path = os.path.join(base_dir, "manual", "html", "tutorial", "simple-2dplot.qti")
     assert os.path.exists(qti_path)
 
     project = qtiparser.read_qti(qti_path)
@@ -97,7 +98,8 @@ def test_parse_simple_2dplot():
 
 
 def test_parse_polar_graph():
-    qti_path = "qtiplot/bndpolar.qti"
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    qti_path = os.path.join(base_dir, "qtiplot", "bndpolar.qti")
     if os.path.exists(qti_path):
         project = qtiparser.read_qti(qti_path)
         assert project.version == "0.9.8"

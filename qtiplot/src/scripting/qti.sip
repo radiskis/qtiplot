@@ -423,6 +423,26 @@ Returns the string value at the specified column and row.
 	}
 %End
 
+  void undo();
+%Docstring
+undo()
+Undoes the last operation on this table.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->undo();
+%End
+
+  void redo();
+%Docstring
+redo()
+Redoes the last undone operation on this table.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->redo();
+%End
+
     void removeCol(SIP_PYOBJECT);
 %MethodCode
     sipIsErr=0;
@@ -1125,6 +1145,26 @@ Resizes the matrix to the specified number of rows and columns.
 %End
   void resample(int rows, int cols, const ResamplingMethod& method = Matrix::Bilinear);
   void smooth();
+
+  void undo();
+%Docstring
+undo()
+Undoes the last operation on this matrix.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->undo();
+%End
+
+  void redo();
+%Docstring
+redo()
+Redoes the last undone operation on this matrix.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->redo();
+%End
 
   SIP_PYOBJECT text(int, int);
 %Docstring
@@ -2108,6 +2148,7 @@ The Layer class (aliased to Graph) represents a single plot layer.
 %TypeHeaderCode
 #include "Graph.h"
 #include "LegendWidget.h"
+#include "MultiLayer.h"
 %End
 public:
   enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
@@ -2122,6 +2163,38 @@ public:
   SIP_PYOBJECT pieLegendText() /PyName=pieLegend/;
 %MethodCode
   sipRes = PyUnicode_FromString(sipCpp->pieLegendText().toUtf8().constData());
+%End
+
+  void undoSetScale(int axis, double start, double end, double step = 0.0, int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
+  void undoSetAxisTitle(int axis, const QString &text);
+  void undoSetAxisTitleColor(int axis, const QColor &color);
+  void undoSetCanvasBackground(const QColor &color);
+  void undoShowGrid(int axis, bool on = true, bool minor = false);
+  void undoSetCurvePen(int curveIndex, const QPen &pen);
+  void undoSetCurveBrush(int curveIndex, const QBrush &brush);
+  bool isGridEnabled(int axis);
+  void showGrid(int axis, bool on, bool minor = false);
+  QBrush canvasBackground();
+  QString axisTitleString(int axis);
+
+  void undo();
+%Docstring
+undo()
+Undoes the last operation on this plot.
+%End
+%MethodCode
+  if (sipCpp->multiLayer() && sipCpp->multiLayer()->undoStack())
+    sipCpp->multiLayer()->undoStack()->undo();
+%End
+
+  void redo();
+%Docstring
+redo()
+Redoes the last undone operation on this plot.
+%End
+%MethodCode
+  if (sipCpp->multiLayer() && sipCpp->multiLayer()->undoStack())
+    sipCpp->multiLayer()->undoStack()->redo();
 %End
 
   DataCurve* insertCurve(Table*, const QString&, int style = 1, int startRow = 0, int endRow = -1);
@@ -2412,6 +2485,27 @@ public:
 %Docstring
 Returns the currently active layer.
 %End
+
+  void undo();
+%Docstring
+undo()
+Undoes the last operation on this multilayer graph.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->undo();
+%End
+
+  void redo();
+%Docstring
+redo()
+Redoes the last undone operation on this multilayer graph.
+%End
+%MethodCode
+  if (sipCpp->undoStack())
+    sipCpp->undoStack()->redo();
+%End
+
   void setActiveLayer(Graph*);
 %Docstring
 Sets the active layer.
@@ -2742,6 +2836,24 @@ Exits the application.
 %End
 %MethodCode
   qApp->quit();
+%End
+
+  void undo();
+%Docstring
+undo()
+Undoes the last operation in the active window.
+%End
+%MethodCode
+  sipCpp->undo();
+%End
+
+  void redo();
+%Docstring
+redo()
+Redoes the last undone operation in the active window.
+%End
+%MethodCode
+  sipCpp->redo();
 %End
 
   ApplicationWindow();

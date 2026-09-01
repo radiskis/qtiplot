@@ -453,6 +453,16 @@ class Graph: public QwtPlot
 				double left_break = -DBL_MAX, double right_break = DBL_MAX, int pos = 50,
 				double stepBeforeBreak = 0.0, double stepAfterBreak = 0.0, int minTicksBeforeBreak = 4,
 				int minTicksAfterBreak = 4, bool log10AfterBreak = false, int breakWidth = 4, bool breakDecoration = true);
+		void undoSetScale(int axis, double start, double end, double step = 0.0,
+				int majorTicks = 5, int minorTicks = 5, int type = 0, bool inverted = false);
+		void undoSetAxisTitle(int axis, const QString &text);
+		void undoSetAxisTitleFont(int axis, const QFont &font);
+		void undoSetAxisTitleColor(int axis, const QColor &color);
+		void undoSetCanvasBackground(const QColor &color);
+		void undoShowGrid(int axis, bool on = true, bool minor = false);
+		void undoSetCurvePen(int curveIndex, const QPen &pen);
+		void undoSetCurveBrush(int curveIndex, const QBrush &brush);
+		void undoSetCurveSymbol(int curveIndex, const QwtSymbol &symbol);
 		double axisStep(int axis){return d_user_step[axis];};
 		void setAxisStep(int axis, double step){d_user_step[axis] = step;};
 		void setCanvasCoordinates(const QRectF&);
@@ -807,6 +817,8 @@ class Graph: public QwtPlot
 		void showGrid();
 		//! Convenience function enabling the grid for a user defined axis
 		void showGrid(int axis);
+		void showGrid(int axis, bool on, bool minor = false);
+		bool isGridEnabled(int axis) const;
 		void setGridOnTop(bool on = true, bool update = true);
 		bool hasGridOnTop(){return d_grid_on_top;}
 

@@ -22,13 +22,17 @@ d_new_text(newText)
 
 void TableEditCellCommand::redo()
 {
-	d_table->setText(d_row, d_col, d_new_text);
+	bool blocked = d_table->table()->blockSignals(true);
+	d_table->setText(d_row, d_col, d_new_text, false);
+	d_table->table()->blockSignals(blocked);
 	d_table->notifyChanges(d_table->colName(d_col));
 }
 
 void TableEditCellCommand::undo()
 {
-	d_table->setText(d_row, d_col, d_old_text);
+	bool blocked = d_table->table()->blockSignals(true);
+	d_table->setText(d_row, d_col, d_old_text, false);
+	d_table->table()->blockSignals(blocked);
 	d_table->notifyChanges(d_table->colName(d_col));
 }
 
@@ -206,7 +210,7 @@ void TableDeleteRowsCommand::undo()
 	for (int i = 0; i < d_data.count(); i++){
 		QStringList rowData = d_data[i];
 		for (int j = 0; j < rowData.count(); j++){
-			d_table->setText(d_start_row + i - 1, j, rowData[j]);
+			d_table->setText(d_start_row + i - 1, j, rowData[j], false);
 		}
 	}
 }
@@ -300,7 +304,7 @@ void TableDeleteColsCommand::undo()
         
         QStringList colData = d_cell_data[i];
         for (int row = 0; row < colData.count(); row++)
-            d_table->setText(row, col, colData[row]);
+            d_table->setText(row, col, colData[row], false);
 	}
     d_table->setHeaderColType();
 }
@@ -350,7 +354,7 @@ void TableSetValuesCommand::redo()
 		int col = d_cols[i];
 		QStringList data = d_new_data[i];
 		for (int j = d_start_row; j <= d_end_row; j++)
-			d_table->setText(j, col, data[j - d_start_row]);
+			d_table->setText(j, col, data[j - d_start_row], false);
 	}
 	table->blockSignals(false);
 
@@ -366,7 +370,7 @@ void TableSetValuesCommand::undo()
 		int col = d_cols[i];
 		QStringList data = d_old_data[i];
 		for (int j = d_start_row; j <= d_end_row; j++)
-			d_table->setText(j, col, data[j - d_start_row]);
+			d_table->setText(j, col, data[j - d_start_row], false);
 	}
 	table->blockSignals(false);
 

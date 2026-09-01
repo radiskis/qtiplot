@@ -21,6 +21,13 @@ def test_set_cell_values():
     assert t.cell(1, 5) == 5.0
     assert t.cell(2, 5) == 25.0
 
+def test_table_text_entry_in_numeric_cell():
+    import qti
+    t = qti.app.newTable("TextInNumericTable", 5, 2)
+    # Enter arbitrary non-numeric text string in a newly created table cell
+    t.setText(1, 1, "dsdf")
+    assert t.text(1, 1) == "dsdf"
+
 def test_save_project():
     import qti
     save_path = "build/tests/results/test_api_project.qti"

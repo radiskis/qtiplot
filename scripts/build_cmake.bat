@@ -1,6 +1,13 @@
 @echo off
 setlocal
 
+set "DO_PACKAGE=0"
+for %%a in (%*) do (
+    if /i "%%a"=="--package" set "DO_PACKAGE=1"
+    if /i "%%a"=="-p" set "DO_PACKAGE=1"
+    if /i "%%a"=="--no-package" set "DO_PACKAGE=0"
+)
+
 echo Setting up environment...
 
 REM Setup MSVC Environment (if cl is not already available)
@@ -76,20 +83,31 @@ if not exist "%BUILD_DIR%" (
     mkdir "%BUILD_DIR%"
 )
 
-echo Generating Python bindings with SIP...
-if exist "%BUILD_DIR%\sip_temp" (
-    rmdir /s /q "%BUILD_DIR%\sip_temp"
-)
-mkdir "%BUILD_DIR%\sip_temp"
+echo Checking Python bindings with SIP...
 set "SIP_BUILD=sip-build"
-pushd "%PROJECT_ROOT%"
-"%SIP_BUILD%" --build-dir "%BUILD_DIR%\sip_temp" --no-compile
-if %errorlevel% neq 0 (
-    echo Error: SIP binding generation failed.
-    popd
-    exit /b %errorlevel%
+set "NEED_SIP=0"
+if not exist "%BUILD_DIR%\sip_temp\qti\sipqticmodule.cpp" (
+    set "NEED_SIP=1"
+) else (
+    python -c "import os, glob; sip_files = glob.glob(r'%PROJECT_ROOT%\qtiplot\src\scripting\*.sip'); out_file = r'%BUILD_DIR%\sip_temp\qti\sipqticmodule.cpp'; out_mtime = os.path.getmtime(out_file); exit(0 if any(os.path.getmtime(f) > out_mtime for f in sip_files) else 1)"
+    if not errorlevel 1 set "NEED_SIP=1"
 )
-popd
+
+if "%NEED_SIP%"=="1" (
+    echo Generating Python bindings with SIP...
+    if exist "%BUILD_DIR%\sip_temp" rmdir /s /q "%BUILD_DIR%\sip_temp"
+    mkdir "%BUILD_DIR%\sip_temp"
+    pushd "%PROJECT_ROOT%"
+    "%SIP_BUILD%" --build-dir "%BUILD_DIR%\sip_temp" --no-compile
+    if %errorlevel% neq 0 (
+        echo Error: SIP binding generation failed.
+        popd
+        exit /b %errorlevel%
+    )
+    popd
+) else (
+    echo Python bindings are up-to-date. Skipping SIP generation.
+)
 
 cd "%BUILD_DIR%"
 
@@ -131,10 +149,14 @@ if %errorlevel% neq 0 (
 )
 echo Automated tests passed successfully!
 
-echo Creating release package with CPack...
-cpack
-if %errorlevel% neq 0 (
-    echo Warning: CPack packaging failed.
+if "%DO_PACKAGE%"=="1" (
+    echo Creating release package with CPack...
+    cpack
+    if %errorlevel% neq 0 (
+        echo Warning: CPack packaging failed.
+    ) else (
+        echo Release package created successfully in %BUILD_DIR%!
+    )
 ) else (
-    echo Release package created successfully in %BUILD_DIR%!
+    echo Build completed and verified. Unpackaged build kept for fast testing. Pass --package or -p to create release ZIP.
 )
