@@ -807,8 +807,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_export_compression = 1;
 	d_export_raster_size = QSizeF();
 	d_export_size_unit = FrameWidget::Pixel;
-	d_export_vector_resolution = QWidget().logicalDpiX();
-	d_export_bitmap_resolution = d_export_vector_resolution;
+	d_export_vector_resolution = 600;
+	d_export_bitmap_resolution = QWidget().logicalDpiX();
 	d_export_color = true;
 	d_export_escape_tex_strings = true;
 	d_export_tex_font_sizes = true;

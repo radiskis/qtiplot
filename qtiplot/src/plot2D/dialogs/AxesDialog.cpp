@@ -161,6 +161,8 @@ void AxesDialog::initScalesPage()
 	boxAxesBreaks = new QGroupBox(tr("Show Axis &Break"));
 	boxAxesBreaks->setCheckable(true);
 	boxAxesBreaks->setChecked(false);
+	boxAxesBreaks->setEnabled(false);
+	boxAxesBreaks->setToolTip(tr("Axis breaks are disabled pending piecewise scale transform support in Qwt 6."));
 
 	QGridLayout * breaksLayout = new QGridLayout(boxAxesBreaks);
 	boxBreakDecoration = new QCheckBox(tr("Draw Break &Decoration"));

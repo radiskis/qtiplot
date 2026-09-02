@@ -1191,8 +1191,10 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 {
 	if (!printer)
 		return;
-	if (!printer->resolution())
-		printer->setResolution(logicalDpiX());//we set screen resolution as default
+	if (!printer->resolution()) {
+		int defaultRes = (res > 0) ? res : (applicationWindow() ? applicationWindow()->d_export_vector_resolution : 600);
+		printer->setResolution(defaultRes);
+	}
 
 	printer->setDocName (objectName());
 	printer->setFontEmbeddingEnabled(true);
