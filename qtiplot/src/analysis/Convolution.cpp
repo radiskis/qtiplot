@@ -191,8 +191,10 @@ void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 		{
 			if(sign == 1)
 				sig[i] = res[i]*sig[i];
-			else
+			else if (fabs(res[i]) > 0.0)
 				sig[i] = sig[i]/res[i];
+			else
+				sig[i] = 0.0;
 		}
 		else
 		{
@@ -205,10 +207,16 @@ void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 			else
 			{
 				size = res[i]*res[i]+res[ni]*res[ni];
-				re = res[i]*sig[i]+res[ni]*sig[ni];
-				im = res[i]*sig[ni]-res[ni]*sig[i];
-				re /= size;
-				im /= size;
+				if (size > 0.0)
+				{
+					re = (res[i]*sig[i]+res[ni]*sig[ni]) / size;
+					im = (res[i]*sig[ni]-res[ni]*sig[i]) / size;
+				}
+				else
+				{
+					re = 0.0;
+					im = 0.0;
+				}
 			}
 
 			sig[i] = re;

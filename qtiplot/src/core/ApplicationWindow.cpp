@@ -2712,13 +2712,26 @@ void ApplicationWindow::plotPolar()
 
 MdiSubWindow* ApplicationWindow::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
 {
-    Q_UNUSED(startRow);
-    Q_UNUSED(endRow);
     if (!table || colList.size() < 2) return 0;
     
     PolarGraph* w = (PolarGraph*)newPolarPlot();
-    // Use first column as radius, second as theta for now
-    w->addCurve(table, colList[0], colList[1]);
+
+    // Check column designations: if one is X and one is Y, X is Theta and Y is Radius
+    QString thetaCol = colList[0];
+    QString rCol = colList[1];
+    int col0Index = table->colIndex(colList[0]);
+    int col1Index = table->colIndex(colList[1]);
+    if (col0Index >= 0 && col1Index >= 0) {
+        if (table->colPlotDesignation(col0Index) == Table::X && table->colPlotDesignation(col1Index) == Table::Y) {
+            thetaCol = colList[0];
+            rCol = colList[1];
+        } else if (table->colPlotDesignation(col0Index) == Table::Y && table->colPlotDesignation(col1Index) == Table::X) {
+            rCol = colList[0];
+            thetaCol = colList[1];
+        }
+    }
+
+    w->addCurve(table, rCol, thetaCol, startRow, endRow);
     return w;
 }
 

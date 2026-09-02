@@ -27,7 +27,7 @@ public:
 
     QwtPolarPlot* plot() { return d_plot; }
     
-    void addCurve(Table* t, const QString& rColName, const QString& thetaColName);
+    void addCurve(Table* t, const QString& rColName, const QString& thetaColName, int startRow = 0, int endRow = -1);
     
     void setAxisScale(int axisId, double start, double end, double step = 0.0);
     void setAxisAutoscale(int axisId, bool on = true);

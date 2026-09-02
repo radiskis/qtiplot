@@ -203,7 +203,7 @@ QList<QwtPolarCurve*> PolarGraph::curves() const
     return d_curves.keys();
 }
 
-void PolarGraph::addCurve(Table* t, const QString& rColName, const QString& thetaColName)
+void PolarGraph::addCurve(Table* t, const QString& rColName, const QString& thetaColName, int startRow, int endRow)
 {
     if (!t) return;
     
@@ -213,9 +213,11 @@ void PolarGraph::addCurve(Table* t, const QString& rColName, const QString& thet
 
     QwtPolarCurve* curve = new QwtPolarCurve(rColName);
     
-    int size = t->numRows();
+    if (startRow < 0) startRow = 0;
+    if (endRow < 0 || endRow >= t->numRows()) endRow = t->numRows() - 1;
+
     QVector<QwtPointPolar> data;
-    for (int i = 0; i < size; i++){
+    for (int i = startRow; i <= endRow; i++){
         if (!t->text(i, rCol).isEmpty() && !t->text(i, thetaCol).isEmpty()){
             data.append(QwtPointPolar(t->cell(i, thetaCol), t->cell(i, rCol)));
         }

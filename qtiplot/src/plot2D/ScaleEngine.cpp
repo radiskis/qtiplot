@@ -39,8 +39,42 @@
 static const double LOG_MIN = 1.0e-100;
 
 ScaleTransformation::ScaleTransformation(const ScaleEngine *engine):
-	d_engine(engine)
-{}
+	d_engine(engine),
+	d_delegate_transform(nullptr)
+{
+	if (d_engine)
+		d_delegate_transform = newScaleTransformation();
+}
+
+ScaleTransformation::ScaleTransformation(const ScaleTransformation &other):
+	QwtTransform(),
+	d_engine(other.d_engine),
+	d_delegate_transform(nullptr)
+{
+	if (other.d_delegate_transform)
+		d_delegate_transform = other.d_delegate_transform->copy();
+	else if (d_engine)
+		d_delegate_transform = newScaleTransformation();
+}
+
+ScaleTransformation::~ScaleTransformation()
+{
+	delete d_delegate_transform;
+}
+
+ScaleTransformation& ScaleTransformation::operator=(const ScaleTransformation &other)
+{
+	if (this != &other) {
+		d_engine = other.d_engine;
+		delete d_delegate_transform;
+		d_delegate_transform = nullptr;
+		if (other.d_delegate_transform)
+			d_delegate_transform = other.d_delegate_transform->copy();
+		else if (d_engine)
+			d_delegate_transform = newScaleTransformation();
+	}
+	return *this;
+}
 
 QwtTransform* ScaleEngine::transformation() const
 {
@@ -60,13 +94,10 @@ double ScaleTransformation::invTransform(double p) const
 	ScaleTransformation::Type d_type = d_engine->type();
     
     // Delegation for complex types
-    if (d_type == ScaleTransformation::Reciprocal || 
+    if (d_delegate_transform && (d_type == ScaleTransformation::Reciprocal || 
         d_type == ScaleTransformation::Probability || 
-        d_type == ScaleTransformation::Logit) {
-        QwtTransform *tr = newScaleTransformation();
-        double res = tr->invTransform(p);
-        delete tr;
-        return res;
+        d_type == ScaleTransformation::Logit)) {
+        return d_delegate_transform->invTransform(p);
     }
 
     // Basic types
@@ -97,13 +128,10 @@ double ScaleTransformation::transform(double s) const
 	ScaleTransformation::Type d_type = d_engine->type();
 
     // Delegation for complex types
-    if (d_type == ScaleTransformation::Reciprocal || 
+    if (d_delegate_transform && (d_type == ScaleTransformation::Reciprocal || 
         d_type == ScaleTransformation::Probability || 
-        d_type == ScaleTransformation::Logit) {
-        QwtTransform *tr = newScaleTransformation();
-        double res = tr->transform(s);
-        delete tr;
-        return res;
+        d_type == ScaleTransformation::Logit)) {
+        return d_delegate_transform->transform(s);
     }
 
 	if (d_type == ScaleTransformation::Linear)
@@ -120,7 +148,7 @@ double ScaleTransformation::transform(double s) const
 
 QwtTransform *ScaleTransformation::copy() const
 {
-    return new ScaleTransformation(d_engine);
+    return new ScaleTransformation(*this);
 }
 
 QwtTransform* ScaleTransformation::newScaleTransformation() const

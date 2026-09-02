@@ -42,6 +42,10 @@ public:
 	enum Type{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
 
 	ScaleTransformation(const ScaleEngine *engine);
+	ScaleTransformation(const ScaleTransformation &other);
+	virtual ~ScaleTransformation();
+	ScaleTransformation& operator=(const ScaleTransformation &other);
+
 	virtual double transform(double x) const;
 	virtual double invTransform(double x) const;
 	QwtTransform* copy() const;
@@ -50,6 +54,7 @@ protected:
 	QwtTransform* newScaleTransformation() const;
     //! The scale engine that generates the transformation
 	const ScaleEngine* d_engine;
+	QwtTransform* d_delegate_transform;
 };
 
 class ScaleEngine: public QwtScaleEngine
