@@ -4249,6 +4249,7 @@ void Table::moveColumnBy(int cols)
 		newPos = d_table->numCols() - 1;
 
 	if (abs(cols) > 1){
+		int origWidth = d_table->columnWidth(oldPos);
 		if (cols < 0){
 			d_table->insertColumns(newPos);
 			d_table->swapColumns(oldPos + 1, newPos);
@@ -4258,6 +4259,7 @@ void Table::moveColumnBy(int cols)
 			d_table->swapColumns(oldPos, newPos + 1);
 			d_table->removeColumn(oldPos);
 		}
+		d_table->setColumnWidth(newPos, origWidth);
 
 		col_label.move(oldPos, newPos);
     	comments.move(oldPos, newPos);

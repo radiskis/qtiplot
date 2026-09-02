@@ -141,6 +141,23 @@ public:
         return selectedRanges().count() > 0 ? 0 : -1;
     }
 
+	void insertColumn(int col) {
+		QTableWidget::insertColumn(col);
+		for (int i = 0; i < d_readOnlyCols.size(); i++) {
+			if (d_readOnlyCols[i] >= col)
+				d_readOnlyCols[i]++;
+		}
+	}
+
+	void removeColumn(int col) {
+		QTableWidget::removeColumn(col);
+		d_readOnlyCols.removeAll(col);
+		for (int i = 0; i < d_readOnlyCols.size(); i++) {
+			if (d_readOnlyCols[i] > col)
+				d_readOnlyCols[i]--;
+		}
+	}
+
 	void insertColumns(int col, int count = 1) {
 		for (int i = 0; i < count; i++)
 			insertColumn(col + i);
@@ -152,11 +169,17 @@ public:
 	}
 
 	void swapColumns(int col1, int col2) {
+		bool ro1 = isColumnReadOnly(col1);
+		bool ro2 = isColumnReadOnly(col2);
 		for (int i = 0; i < rowCount(); i++) {
 			QTableWidgetItem *it1 = takeItem(i, col1);
 			QTableWidgetItem *it2 = takeItem(i, col2);
 			setItem(i, col1, it2);
 			setItem(i, col2, it1);
+		}
+		if (ro1 != ro2) {
+			setColumnReadOnly(col1, ro2);
+			setColumnReadOnly(col2, ro1);
 		}
 	}
 
