@@ -32,6 +32,7 @@
 #include "Matrix.h"
 #include "MatrixModel.h"
 #include <QUndoCommand>
+#include <QPointer>
 
 //! Matrix commands used by the undo/redo framework
 class MatrixEditCellCommand: public QUndoCommand
@@ -43,7 +44,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	QModelIndex d_index;
 	double d_val_before;
 	double d_val_after;
@@ -57,7 +58,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	QString d_old_formula;
 	QString d_new_formula;
 };
@@ -70,7 +71,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	QString d_old_string;
 	QString d_new_string;
 	Qt::Axis d_axis;
@@ -85,7 +86,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	Matrix::ViewType d_old_view;
 	Matrix::ViewType d_new_view;
 };
@@ -99,7 +100,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	Matrix::HeaderViewType d_old_view;
 	Matrix::HeaderViewType d_new_view;
 };
@@ -115,7 +116,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	QChar d_old_format;
 	QChar d_new_format;
 	int d_old_prec;
@@ -131,7 +132,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	double d_old_xs, d_old_xe, d_old_ys, d_old_ye;
 	double d_new_xs, d_new_xe, d_new_ys, d_new_ye;
 };
@@ -146,7 +147,7 @@ public:
 	virtual void undo();
 
 private:
-	Matrix *d_matrix;
+	QPointer<Matrix> d_matrix;
 	Matrix::ColorMapType d_map_type_before, d_map_type_after;
 	LinearColorMap d_map_before, d_map_after;
 };
@@ -160,7 +161,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	int d_start_row, d_count;
 	double* d_data;
 };
@@ -173,7 +174,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	int d_start_row;
 };
 
@@ -186,7 +187,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	int d_start_col, d_count;
 	double* d_data;
 };
@@ -199,7 +200,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	int d_start_col;
 };
 
@@ -212,7 +213,7 @@ public:
 	virtual void undo();
 
 protected:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	QSize d_old_size, d_new_size;
 	double *d_backup;
 };
@@ -226,7 +227,7 @@ public:
 	virtual void undo();
 
 protected:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	double *d_backup;
 };
 
@@ -250,7 +251,7 @@ public:
 	virtual void undo();
 
 protected:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	Matrix::Operation d_operation;
 	int d_start_row, d_end_row, d_start_col, d_end_col;
 	double* d_data;
@@ -306,7 +307,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	Matrix::Operation d_operation;
 };
 
@@ -321,7 +322,7 @@ public:
 	virtual void undo();
 
 private:
-	MatrixModel *d_model;
+	QPointer<MatrixModel> d_model;
 	int d_start_row, d_end_row, d_start_col, d_end_col, d_rows, d_cols, d_old_rows, d_old_cols;
 	double *d_clipboard_data, *d_backup_data;
 };

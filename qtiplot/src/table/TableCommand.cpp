@@ -251,26 +251,27 @@ void TableDeleteRowsCommand::undo()
 /*************************************************************************/
 /*           Class TableInsertRowCommand                                 */
 /*************************************************************************/
-TableInsertRowCommand::TableInsertRowCommand(Table *t, int row, const QString& text):
-QUndoCommand(text),
+TableInsertRowCommand::TableInsertRowCommand(Table *t, int row, int count, const QString& text):
+QUndoCommand(text.isEmpty() ? QObject::tr("Insert Rows") : text),
 d_table(t),
-d_row(row)
+d_row(row),
+d_count(count)
 {
-	setText(t->objectName() + ": " + text);
+	setText(t->objectName() + ": " + (text.isEmpty() ? QObject::tr("Insert Rows") : text));
 }
 
 void TableInsertRowCommand::redo()
 {
 	if (!d_table)
 		return;
-	d_table->insertRow(d_row, false);
+	d_table->insertRows(d_row, d_count, false);
 }
 
 void TableInsertRowCommand::undo()
 {
 	if (!d_table)
 		return;
-	d_table->deleteRows(d_row, d_row, false);
+	d_table->deleteRows(d_row, d_row + d_count - 1, false);
 }
 
 /*************************************************************************/

@@ -122,13 +122,14 @@ private:
 class TableInsertRowCommand: public QUndoCommand
 {
 public:
-	TableInsertRowCommand(Table *t, int row, const QString& text);
+	TableInsertRowCommand(Table *t, int row, int count = 1, const QString& text = QString());
 	virtual void redo();
 	virtual void undo();
 
 private:
 	QPointer<Table> d_table;
 	int d_row;
+	int d_count;
 };
 
 class TableAddColsCommand: public QUndoCommand

@@ -1616,7 +1616,10 @@ void Table::deleteRows(int startRow, int endRow, bool pushUndo)
     if (end >= d_table->numRows())
         end = d_table->numRows() - 1;
 
-    int rows = abs(end - start) + 1;
+    if (start > end || d_table->numRows() == 0)
+        return;
+
+    int rows = end - start + 1;
 	if (pushUndo){
 		QList<QStringList> data;
 		for (int i = start; i <= end; i++){
@@ -1640,7 +1643,7 @@ void Table::deleteRows(int startRow, int endRow, bool pushUndo)
 void Table::insertRows(int row, int count, bool pushUndo)
 {
 	if (pushUndo){
-		d_undo_stack->push(new TableInsertRowCommand(this, row, tr("Insert Rows"))); // Need to support count in command if needed
+		d_undo_stack->push(new TableInsertRowCommand(this, row, count, tr("Insert Rows")));
 		return;
 	}
 
@@ -1914,35 +1917,50 @@ void Table::pasteSelection()
 			setHeaderColType();
 	}
 
-	bool wasBlocked = d_table->blockSignals(true);
-	for (int i = 0; i < rows; i++){
-		int row = top + i;
-		QStringList cells = linesList[i].split("\t");
-		for (int j = left; j < left + cols; j++){
-			if (d_table->isColumnReadOnly(j))
-				continue;
+	QList<int> colList;
+	QList<QStringList> oldData, newData;
 
-			int colIndex = j-left;
-			if (colIndex >= cells.count())
-				break;
+	for (int j = left; j < left + cols; j++){
+		if (d_table->isColumnReadOnly(j))
+			continue;
 
-			bool numeric = false;
-			double value = clipboardLocale.toDouble(cells[colIndex], &numeric);
-			if (numeric){
-				int prec;
-				char f;
-				columnNumericFormat(j, &f, &prec);
-				d_table->setText(row, j, l.toString(value, f, prec));
-			} else
-				d_table->setText(row, j, cells[colIndex]);
+		colList << j;
+		int colIndex = j - left;
+		QStringList oldColData, newColData;
+
+		for (int i = 0; i < rows; i++){
+			int row = top + i;
+			oldColData << d_table->text(row, j);
+
+			QString newCellText;
+			if (i < linesList.count()){
+				QStringList cells = linesList[i].split("\t");
+				if (colIndex < cells.count()){
+					bool numeric = false;
+					double value = clipboardLocale.toDouble(cells[colIndex], &numeric);
+					if (numeric){
+						int prec;
+						char f;
+						columnNumericFormat(j, &f, &prec);
+						newCellText = l.toString(value, f, prec);
+					} else {
+						newCellText = cells[colIndex];
+					}
+				} else {
+					newCellText = d_table->text(row, j);
+				}
+			} else {
+				newCellText = d_table->text(row, j);
+			}
+			newColData << newCellText;
 		}
+		oldData << oldColData;
+		newData << newColData;
 	}
-	d_table->blockSignals(wasBlocked);
 
-	for (int i = left; i< left + cols; i++){
-		if (!d_table->isColumnReadOnly(i))
-			emit modifiedData(this, colName(i));
-	}
+	if (!colList.isEmpty())
+		d_undo_stack->push(new TableSetValuesCommand(this, top, top + rows - 1, colList, oldData, newData, tr("Paste")));
+
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
 }
@@ -3181,6 +3199,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	int r = d_table->numRows();
 	switch(importAs){
 		case Overwrite:
+			d_undo_stack->clear();
 			if (d_table->numRows() != rows)
 				d_table->setNumRows(rows);
 
@@ -4035,17 +4054,36 @@ void Table::notifyChanges(const QString& colName)
 
 void Table::clear()
 {
-	bool wasBlocked = d_table->blockSignals(true);
-	for (int i=0; i<d_table->numCols(); i++)
-	{
-		for (int j=0; j<d_table->numRows(); j++)
-			d_table->setText(j, i, QString());
+	int rows = d_table->numRows();
+	int cols = d_table->numCols();
+	if (rows == 0 || cols == 0)
+		return;
+
+	QList<int> colList;
+	QList<QStringList> oldData, newData;
+	bool hasData = false;
+
+	for (int i = 0; i < cols; i++){
+		if (d_table->isColumnReadOnly(i))
+			continue;
+
+		colList << i;
+		QStringList oldColData, newColData;
+		for (int j = 0; j < rows; j++){
+			QString t = d_table->text(j, i);
+			if (!t.isEmpty())
+				hasData = true;
+			oldColData << t;
+			newColData << QString();
+		}
+		oldData << oldColData;
+		newData << newColData;
 	}
-	d_table->blockSignals(wasBlocked);
 
-	for (int i=0; i<d_table->numCols(); i++)
-		emit modifiedData(this, colName(i));
+	if (!hasData || colList.isEmpty())
+		return;
 
+	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, colList, oldData, newData, tr("Clear Table")));
 	emit modifiedWindow(this);
 }
 
