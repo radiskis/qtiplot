@@ -189,6 +189,19 @@ if(MINGW)
     target_link_options(qtiplot PRIVATE "-Wl,--export-all-symbols")
 endif()
 
+# --- Translations (B4) ---
+if(Qt6LinguistTools_FOUND)
+    file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/translations/*.ts")
+    qt6_add_translations(qtiplot TS_FILES ${TS_FILES} QM_FILES_OUTPUT_VARIABLE QM_FILES)
+    if(QM_FILES)
+        add_custom_command(TARGET qtiplot POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:qtiplot>/translations
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different ${QM_FILES} $<TARGET_FILE_DIR:qtiplot>/translations
+            COMMENT "Copying compiled .qm translation catalogs"
+        )
+    endif()
+endif()
+
 # --- Plugins ---
 if(WIN32)
     add_subdirectory(src/plugins/exportEMF)

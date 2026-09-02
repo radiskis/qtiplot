@@ -32,11 +32,13 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /FS")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /FS /W3")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
 
 # Find Qt6
-find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network OPTIONAL_COMPONENTS LinguistTools REQUIRED)
 
 
 
