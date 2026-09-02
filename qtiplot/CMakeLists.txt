@@ -17,8 +17,6 @@ file(GLOB_RECURSE HEADERS "src/*.h")
 file(GLOB_RECURSE UI_FILES "src/*.ui")
 
 # Exclude redundant/duplicate files and plugins
-list(FILTER SOURCES EXCLUDE REGEX "src/core/MultiPeakFitTool")
-list(FILTER HEADERS EXCLUDE REGEX "src/core/MultiPeakFitTool")
 list(FILTER SOURCES EXCLUDE REGEX "src/plugins")
 list(FILTER HEADERS EXCLUDE REGEX "src/plugins")
 

@@ -12541,10 +12541,19 @@ void ApplicationWindow::deleteLayer()
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
 {
+	if (!app || flist.isEmpty())
+		return nullptr;
+
 	QStringList lst = flist[0].split("\t", Qt::SkipEmptyParts);
+	if (lst.isEmpty())
+		return nullptr;
+
 	QString caption = lst[0];
 	Note* w = app->newNote(caption);
-	if (lst.count() == 2){
+	if (!w)
+		return nullptr;
+
+	if (lst.count() >= 2){
 		app->setListViewDate(caption, lst[1]);
 		w->setBirthDate(lst[1]);
 	}
@@ -12564,9 +12573,23 @@ Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &fli
 
 Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList &flist)
 {
+	if (!app || flist.isEmpty())
+		return nullptr;
+
 	QStringList list = flist.first().split("\t");
+	if (list.size() < 4)
+		return nullptr;
+
+	int rows = list[1].toInt();
+	int cols = list[2].toInt();
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000)
+		return nullptr;
+
 	QString caption = list[0];
-	Matrix* w = app->newMatrix(caption, list[1].toInt(), list[2].toInt());
+	Matrix* w = app->newMatrix(caption, rows, cols);
+	if (!w)
+		return nullptr;
+
 	app->setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
 	w->restore(flist, d_file_version);
@@ -12575,14 +12598,24 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 
 Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &flist)
 {
-	QStringList::const_iterator line = flist.begin();
+	if (!app || flist.isEmpty())
+		return nullptr;
 
+	QStringList::const_iterator line = flist.begin();
 	QStringList list = (*line).split("\t");
+	if (list.size() < 4)
+		return nullptr;
+
 	QString caption = list[0];
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000)
+		return nullptr;
 
 	Table* w = app->newTable(caption, rows, cols);
+	if (!w)
+		return nullptr;
+
 	app->setListViewDate(caption, list[3]);
 	w->setBirthDate(list[3]);
 
@@ -12667,9 +12700,14 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 
 TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist)
 {
+	if (flist.size() < 2)
+		return nullptr;
+
 	QStringList::const_iterator line = flist.begin();
 
 	QStringList list=(*line++).split("\t");
+	if (list.size() < 4)
+		return nullptr;
 	QString caption=list[0];
 
 	QList<int> targets;
@@ -12677,6 +12715,8 @@ TableStatistics* ApplicationWindow::openTableStatistics(const QStringList &flist
 		targets << (*line).section('\t',i,i).toInt();
 
 	TableStatistics* w = newTableStatistics(0, list[2] == "row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
+	if (!w)
+		return nullptr;
 	w->setBaseName(list[1]);
 
 	setListViewDate(caption, list[3]);
