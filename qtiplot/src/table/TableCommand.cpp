@@ -206,6 +206,11 @@ void TableDeleteRowsCommand::redo()
 
 void TableDeleteRowsCommand::undo()
 {
+	// d_start_row is 1-based (stored as start+1 in Table::deleteRows).
+	// Table::insertRows(row, count, false) inserts at 0-based index (row-1+i),
+	// so the first restored row lands at d_start_row-1 (0-based).
+	// setText(d_start_row + i - 1, ...) == setText(d_start_row - 1 + i, ...)
+	// which matches the insertion point exactly.
 	d_table->insertRows(d_start_row, d_data.count(), false);
 	for (int i = 0; i < d_data.count(); i++){
 		QStringList rowData = d_data[i];

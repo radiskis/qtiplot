@@ -146,10 +146,8 @@ void Table::init(int rows, int cols)
 	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
 	connect(d_table, &QTableWidget::cellDoubleClicked, this, &Table::cellDoubleClicked);
 	connect(d_table, &QTableWidget::cellPressed, this, &Table::cellDoubleClicked);
-	connect(d_table, &QTableWidget::currentCellChanged, this, [this](int r, int c, int, int) {
-		if (r >= 0 && c >= 0)
-			d_old_cell_text = d_table->text(r, c);
-	});
+	// Note: old-value tracking is done via Qt::UserRole on each QTableWidgetItem,
+	// updated in MyTable::setText and in cellEdited. d_old_cell_text is no longer used.
 
 	d_undo_stack = new QUndoStack(this);
 	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());

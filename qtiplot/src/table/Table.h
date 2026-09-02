@@ -546,7 +546,6 @@ private:
 
 	bool d_show_comments;
 	QStringList commands, col_format, comments, col_label;
-	QString d_old_cell_text;
 	QList<int> colTypes, col_plot_type;
 	int selectedCol;
 	int d_numeric_precision;
