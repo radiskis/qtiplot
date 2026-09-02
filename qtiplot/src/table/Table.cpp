@@ -161,7 +161,7 @@ void Table::setAutoUpdateValues(bool on)
 {
 	if (on){
 		connect(this, &Table::modifiedData,
-            	this, &Table::updateValues);
+            	this, &Table::updateValues, Qt::UniqueConnection);
 	} else {
 		disconnect(this, &Table::modifiedData,
             	this, &Table::updateValues);
@@ -339,6 +339,12 @@ void MyTable::keyPressEvent(QKeyEvent *e)
 			return;
 		}
 	} else if (e->key() == Qt::Key_Return || e->key() == Qt::Key_Enter) {
+		// When the delegate editor is active, let the base class commit and
+		// closeEditor() will handle navigation — don't advance twice.
+		if (state() == QAbstractItemView::EditingState) {
+			QTableWidget::keyPressEvent(e);
+			return;
+		}
 		int r = currentRow();
 		int c = currentColumn();
 		if (r >= 0 && c >= 0) {
@@ -360,10 +366,13 @@ void MyTable::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hi
 	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::NoHint) {
 		if (r >= 0 && c >= 0) {
 			int nextRow = r + 1;
-			QMetaObject::invokeMethod(this, [this, nextRow, c]() {
-				if (nextRow >= rowCount())
-					setRowCount(nextRow + 10);
-				setCurrentCell(nextRow, c);
+			QPointer<MyTable> guard(this);
+			QMetaObject::invokeMethod(this, [guard, nextRow, c]() {
+				if (!guard)
+					return;
+				if (nextRow >= guard->rowCount())
+					guard->setRowCount(nextRow + 10);
+				guard->setCurrentCell(nextRow, c);
 			}, Qt::QueuedConnection);
 		}
 	}
@@ -386,6 +395,7 @@ void Table::cellEdited(int row, int col)
 		return;
 
 	if (columnType(col) != Numeric || text.isEmpty()){
+		// Non-numeric: commit immediately, update UserRole now.
 		if (it)
 			it->setData(Qt::UserRole, newText);
 		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
@@ -424,15 +434,30 @@ void Table::cellEdited(int row, int col)
   		}
   	}
 
+	// For numeric columns: if the formatted text differs from what the user
+	// typed, we need to update the model asynchronously (after the delegate
+	// finishes its own commit sequence).  We move BOTH the model write AND the
+	// UserRole update into the same deferred call so they are always in sync.
 	if (newText != d_table->text(row, col)) {
-		QMetaObject::invokeMethod(d_table, [this, row, col, newText]() {
-			bool blocked = d_table->blockSignals(true);
-			d_table->setText(row, col, newText);
-			d_table->blockSignals(blocked);
+		QPointer<Table> guard(this);
+		QMetaObject::invokeMethod(d_table, [guard, row, col, newText]() {
+			if (!guard)
+				return;
+			Table *t = guard.data();
+			if (row >= t->d_table->rowCount() || col >= t->d_table->columnCount())
+				return;
+			bool blocked = t->d_table->blockSignals(true);
+			t->d_table->setText(row, col, newText);
+			t->d_table->blockSignals(blocked);
+			// Keep UserRole in sync with the formatted text that is now in the model.
+			if (QTableWidgetItem *item = t->d_table->item(row, col))
+				item->setData(Qt::UserRole, newText);
 		}, Qt::QueuedConnection);
+	} else {
+		// Formatted text matches what the delegate wrote — update UserRole now.
+		if (it)
+			it->setData(Qt::UserRole, newText);
 	}
-	if (it)
-		it->setData(Qt::UserRole, newText);
 
 	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
 }
@@ -665,8 +690,10 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 	QString cmd = commands[col];
 	int colType = colTypes[col];
 	if (cmd.isEmpty() || colType == Text){
+		bool wasBlocked = d_table->blockSignals(true);
 		for (int i = startRow; i <= endRow; i++)
 			d_table->setText(i, col, cmd);
+		d_table->blockSignals(wasBlocked);
         if (notifyChanges)
             emit modifiedData(this, colName(col));
         emit modifiedWindow(this);
@@ -792,8 +819,10 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 
 	QString cmd = commands[col];
 	if (cmd.isEmpty()){
+		bool wasBlocked = d_table->blockSignals(true);
 		for (int i = startRow; i <= endRow; i++)
 			d_table->setText(i, col, cmd);
+		d_table->blockSignals(wasBlocked);
 		if (notifyChanges)
 			emit modifiedData(this, colName(col));
 		emit modifiedWindow(this);
@@ -1908,6 +1937,7 @@ void Table::pasteSelection()
 			setHeaderColType();
 	}
 
+	bool wasBlocked = d_table->blockSignals(true);
 	for (int i = 0; i < rows; i++){
 		int row = top + i;
 		QStringList cells = linesList[i].split("\t");
@@ -1930,6 +1960,7 @@ void Table::pasteSelection()
 				d_table->setText(row, j, cells[colIndex]);
 		}
 	}
+	d_table->blockSignals(wasBlocked);
 
 	for (int i = left; i< left + cols; i++){
 		if (!d_table->isColumnReadOnly(i))
@@ -3256,6 +3287,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 
 	if ((!renameCols || allNumbers) && !importComments && rows > 0){
 		//put values in the first line of the table
+		d_table->blockSignals(true);  // block before any programmatic setText
 		for (int i = 0; i < cols; i++){
 			QString cell = line[i];
 			if (cell.isEmpty())
@@ -3272,9 +3304,9 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 				d_table->setText(startRow, startCol + i, cell);
 		}
 		startRow++;
+	} else {
+		d_table->blockSignals(true);
 	}
-
-	d_table->blockSignals(true);
 	setHeaderColType();
 
 	int steps = rows/100 + 1;
@@ -3914,10 +3946,12 @@ void Table::copy(Table *m, bool values)
 	int cols = d_table->numCols();
 
 	if (values){
+		bool wasBlocked = d_table->blockSignals(true);
 		for (int i=0; i<rows; i++){
 			for (int j=0; j<cols; j++)
 				d_table->setText(i, j, m->text(i, j));
 		}
+		d_table->blockSignals(wasBlocked);
 	}
 
 	for (int i=0; i<cols; i++){
@@ -4013,13 +4047,16 @@ void Table::notifyChanges(const QString& colName)
 
 void Table::clear()
 {
+	bool wasBlocked = d_table->blockSignals(true);
 	for (int i=0; i<d_table->numCols(); i++)
 	{
 		for (int j=0; j<d_table->numRows(); j++)
 			d_table->setText(j, i, QString());
-
-		emit modifiedData(this, colName(i));
 	}
+	d_table->blockSignals(wasBlocked);
+
+	for (int i=0; i<d_table->numCols(); i++)
+		emit modifiedData(this, colName(i));
 
 	emit modifiedWindow(this);
 }
@@ -4098,6 +4135,7 @@ void Table::updateDecimalSeparators(const QLocale& oldSeparators)
         return;
 
     int rows = d_table->numRows();
+	bool wasBlocked = d_table->blockSignals(true);
 	for (int i=0; i<d_table->numCols(); i++){
 	    if (colTypes[i] != Numeric)
             continue;
@@ -4114,6 +4152,7 @@ void Table::updateDecimalSeparators(const QLocale& oldSeparators)
 			}
 		}
 	}
+	d_table->blockSignals(wasBlocked);
 }
 
 bool Table::isReadOnlyColumn(int col)
