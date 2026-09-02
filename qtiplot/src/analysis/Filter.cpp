@@ -146,9 +146,7 @@ void Filter::setDataCurve(PlotCurve *curve, double start, double end)
 int Filter::curveIndex(const QString& curveTitle, Graph *g)
 {
 	if (curveTitle.isEmpty()){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Filter Error"),
-				tr("Please enter a valid curve name!"));
-		d_init_err = true;
+		reportError(tr("QtiPlot - Filter Error"), tr("Please enter a valid curve name!"));
 		return -1;
 	}
 
@@ -606,14 +604,26 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	return true;
 }
 
-void Filter::memoryErrorMessage()
+void Filter::reportError(const QString &title, const QString &message)
 {
 	d_init_err = true;
-
+	d_error_message = message;
 	QApplication::restoreOverrideCursor();
 
-	QMessageBox::critical((ApplicationWindow *)parent(),
-		tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (app)
+		app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+
+	if (app && app->isVisible()) {
+		QMessageBox::critical(app, title, message);
+	} else {
+		qWarning("Filter Error [%s]: %s", qPrintable(title), qPrintable(message));
+	}
+}
+
+void Filter::memoryErrorMessage()
+{
+	reportError(tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
 }
 

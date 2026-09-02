@@ -105,8 +105,11 @@ class Filter : public QObject
 		//! Returns a pointer to the plot curve created to display the results
 		PlotCurve *resultCurve(){return d_result_curve;};
 
-        bool error(){return d_init_err;};
-		void setError(bool on = true){d_init_err = on;};
+        bool error() const { return d_init_err; }
+		void setError(bool on = true) { d_init_err = on; }
+		QString errorMessage() const { return d_error_message; }
+		void setErrorMessage(const QString &msg) { d_error_message = msg; d_init_err = !msg.isEmpty(); }
+		void reportError(const QString &title, const QString &message);
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
 
@@ -187,6 +190,7 @@ class Filter : public QObject
 
 		//! Error flag telling if something went wrong during the initialization phase.
 		bool d_init_err;
+		QString d_error_message;
 
         //! Data interval
         double d_from, d_to;

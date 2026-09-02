@@ -665,8 +665,7 @@ double* Fit::residuals()
 PlotCurve* Fit::showResiduals()
 {
 	if (!d_residuals){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("Please perform a fit first!"));
+		reportError(tr("QtiPlot - Fit Error"), tr("Please perform a fit first!"));
 		return nullptr;
 	}
 
@@ -706,8 +705,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		return;
 
 	if (!d_n){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("Please perform a fit first!"));
+		reportError(tr("QtiPlot - Fit Error"), tr("Please perform a fit first!"));
 		return;
 	}
 
@@ -716,8 +714,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-			tr("Not enough memory!"));
+			memoryErrorMessage();
 			return;
 		}
 		points = d_points;
@@ -730,14 +727,12 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 
 	double *lcl = (double *)malloc(d_points*sizeof(double));
 	if (!lcl){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-		tr("Not enough memory!"));
+		memoryErrorMessage();
 		return;
 	}
 	double *ucl = (double *)malloc(d_points*sizeof(double));
 	if (!ucl){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-		tr("Not enough memory!"));
+		memoryErrorMessage();
 		return;
 	}
 
@@ -828,8 +823,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		return;
 
 	if (!d_n){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("Please perform a fit first!"));
+		reportError(tr("QtiPlot - Fit Error"), tr("Please perform a fit first!"));
 		return;
 	}
 
@@ -838,8 +832,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	if (d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-			tr("Not enough memory!"));
+			memoryErrorMessage();
 			return;
 		}
 		points = d_points;
@@ -852,14 +845,12 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 	double *lcl = (double *)malloc(d_points*sizeof(double));
 	if (!lcl){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-		tr("Not enough memory!"));
+		memoryErrorMessage();
 		return;
 	}
 	double *ucl = (double *)malloc(d_points*sizeof(double));
 	if (!ucl){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
-		tr("Not enough memory!"));
+		memoryErrorMessage();
 		return;
 	}
 
