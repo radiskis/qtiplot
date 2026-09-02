@@ -2828,6 +2828,10 @@ private:
 %End
 
 public:
+  bool isLedgerClean() const;
+  QString ledgerReport() const;
+  void resetLedger();
+
   void open(const QString&, bool = false, bool = true);
 %Docstring
 open(filename, factoryVersion=False, newProject=True)

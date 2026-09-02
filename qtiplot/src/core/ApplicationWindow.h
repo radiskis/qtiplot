@@ -490,6 +490,10 @@ public slots:
 	Note* currentNote();
 	Matrix* currentMatrix();
 
+	bool isLedgerClean() const;
+	QString ledgerReport() const;
+	void resetLedger();
+
 	//! Used when loading a table from a project file
 	Table* newTable(const QString& caption,int r, int c);
 	Table* newTable(int r, int c, const QString& name = QString(),const QString& legend = QString());

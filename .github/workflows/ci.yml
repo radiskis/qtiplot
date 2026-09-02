@@ -1,0 +1,30 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  windows-asan:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.7.2'
+      - uses: ilammy/msvc-dev-cmd@v1
+      - run: cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
+      - run: cmake --build build --config RelWithDebInfo
+      - run: ctest --test-dir build --output-on-failure
+
+  linux-asan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.7.2'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgsl-dev zlib1g-dev python3-sip-dev pybind11-dev
+      - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
+      - run: cmake --build build
+      - run: ctest --test-dir build --output-on-failure

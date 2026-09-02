@@ -108,6 +108,9 @@ target_compile_definitions(qtiplot PRIVATE
 
     QTI_ROOT
 )
+if(QTIPLOT_LEDGER OR QTIPLOT_SANITIZE)
+    target_compile_definitions(qtiplot PRIVATE QTIPLOT_LEDGER)
+endif()
 
 # --- Linking ---
 target_link_libraries(qtiplot PRIVATE

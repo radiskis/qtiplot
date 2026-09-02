@@ -38,6 +38,7 @@
 
 #include "customevents.h"
 #include "ScriptingEnv.h"
+#include "Tracked.h"
 
 class ApplicationWindow;
 
@@ -47,7 +48,7 @@ class ApplicationWindow;
    * variables. The code may be changed and executed multiple times during the
    * lifetime of an object.
    */
-class Script : public QObject
+class Script : public QObject, public Tracked<Script>
 {
   Q_OBJECT
 

@@ -29,6 +29,7 @@ Description          : QtiPlot's main window
 #include "globals.h"
 #include "ApplicationWindow.h"
 #include <QtiPlotApplication.h>
+#include "Tracked.h"
 
 #include <qwt_global.h>
 #include <qwt3d_global.h>
@@ -10903,6 +10904,41 @@ void ApplicationWindow::closeProject()
 	blockSignals(false);
 	savedProject();
 	setWindowTitle(tr("QtiPlot - untitled"));
+
+#ifdef QTIPLOT_LEDGER
+	const AllocLedger &l = AllocLedger::instance();
+	if (!l.clean()) {
+		fprintf(stderr, "LEDGER: objects outliving project:\n%s\n",
+				l.report().toUtf8().constData());
+		if (qApp->arguments().contains("--assert-ledger"))
+			::exit(70);
+	}
+#endif
+}
+
+bool ApplicationWindow::isLedgerClean() const
+{
+#ifdef QTIPLOT_LEDGER
+	return AllocLedger::instance().clean();
+#else
+	return true;
+#endif
+}
+
+QString ApplicationWindow::ledgerReport() const
+{
+#ifdef QTIPLOT_LEDGER
+	return AllocLedger::instance().report();
+#else
+	return QString();
+#endif
+}
+
+void ApplicationWindow::resetLedger()
+{
+#ifdef QTIPLOT_LEDGER
+	AllocLedger::instance().reset();
+#endif
 }
 
 void ApplicationWindow::customEvent(QEvent *e)
@@ -18113,6 +18149,17 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
 		se->importASCII(fn);
 		se->executeAll();
+
+#ifdef QTIPLOT_LEDGER
+		if (qApp->arguments().contains("--assert-ledger")) {
+			const AllocLedger &l = AllocLedger::instance();
+			if (!l.clean()) {
+				fprintf(stderr, "LEDGER: objects outliving project:\n%s\n",
+						l.report().toUtf8().constData());
+				_Exit(70);
+			}
+		}
+#endif
 
 		_Exit(0);
 	} else {

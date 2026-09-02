@@ -35,13 +35,14 @@
 #include <qwt_weeding_curve_fitter.h>
 #include <qwt_plot_marker.h> // Keeping this as PlotMarker class is defined later
 #include <Table.h>
+#include <Tracked.h>
 
 class PlotMarker;
 class Table;
 class ErrorBarsCurve;
 
 //! Abstract 2D plot curve class
-class PlotCurve: public QwtPlotCurve
+class PlotCurve: public QwtPlotCurve, public Tracked<PlotCurve>
 {
 
 public:
@@ -104,7 +105,7 @@ protected:
 	int d_skip_symbols;
 };
 
-class DataCurve: public PlotCurve
+class DataCurve: public PlotCurve, public Tracked<DataCurve>
 {
 
 public:
