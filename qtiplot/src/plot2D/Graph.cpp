@@ -218,9 +218,9 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	plCanvas->setFrameShadow(QwtPlot::Plain);
 	plCanvas->setCursor(Qt::ArrowCursor);
 	plCanvas->setLineWidth(0);
-	plCanvas->setPaintAttribute(QwtPlotCanvas::BackingStore, false);
-	plCanvas->setPaintAttribute(QwtPlotCanvas::ImmediatePaint, true);
-	plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, false);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::BackingStore, true);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::ImmediatePaint, false);
+	plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, true);
 	plCanvas->setAutoFillBackground(true);
 	plCanvas->setAttribute(Qt::WA_OpaquePaintEvent, false);
 	plCanvas->setAttribute(Qt::WA_NoSystemBackground, false);

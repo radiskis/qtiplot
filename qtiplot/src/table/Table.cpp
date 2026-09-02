@@ -955,13 +955,20 @@ void Table::updateValues(Table* t, const QString& columnName)
 
 	int cols = numCols();
 	int endRow = numRows() - 1;
+    static QSet<QPair<Table*, int>> s_active_recalcs;
     for (int i = 0; i < cols; i++){
 		QString cmd = commands[i];
         if (cmd.isEmpty() || colTypes[i] != Numeric || !cmd.contains("\"" + colLabel + "\"") ||
 			cmd.contains("\"" + col_label[i] + "\""))
             continue;
 
+        QPair<Table*, int> key = qMakePair(this, i);
+        if (s_active_recalcs.contains(key))
+            continue; // Cycle detected: break loop
+
+        s_active_recalcs.insert(key);
         calculate(i, 0, endRow, false, true);
+        s_active_recalcs.remove(key);
 	}
 }
 
