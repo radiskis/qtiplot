@@ -127,11 +127,13 @@ void TableSetColTypeCommand::undo()
 /*************************************************************************/
 /*           Class TableSetColFormatCommand                              */
 /*************************************************************************/
-TableSetColFormatCommand::TableSetColFormatCommand(Table *t, int col, const QString& oldFormat,
-						const QString& newFormat, const QString & text):
+TableSetColFormatCommand::TableSetColFormatCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType,
+						const QString& oldFormat, const QString& newFormat, const QString & text):
 QUndoCommand(text),
 d_table(t),
 d_col(col),
+d_old_type(oldType),
+d_new_type(newType),
 d_old_format(oldFormat),
 d_new_format(newFormat)
 {
@@ -140,13 +142,16 @@ d_new_format(newFormat)
 
 void TableSetColFormatCommand::redo()
 {
-	// Need a generic setColFormat(col, format, pushUndo)
-	// For now, assume format contains "type/prec" or just format
-    // This is a bit tricky since Table has different setters for different types.
+	if (!d_table)
+		return;
+	d_table->setColFormat(d_col, d_new_type, d_new_format);
 }
 
 void TableSetColFormatCommand::undo()
 {
+	if (!d_table)
+		return;
+	d_table->setColFormat(d_col, d_old_type, d_old_format);
 }
 
 /*************************************************************************/
@@ -430,4 +435,125 @@ void TableSetValuesCommand::undo()
 
 	for (int i = 0; i < d_cols.count(); i++)
 		d_table->notifyChanges(d_table->colName(d_cols[i]));
+}
+
+/*************************************************************************/
+/*           Class TableSwapColumnsCommand                               */
+/*************************************************************************/
+TableSwapColumnsCommand::TableSwapColumnsCommand(Table *t, int col1, int col2, const QString &text):
+QUndoCommand(text.isEmpty() ? QObject::tr("Swap Columns") : text),
+d_table(t),
+d_col1(col1),
+d_col2(col2)
+{
+	if (t)
+		setText(t->objectName() + ": " + this->text());
+}
+
+void TableSwapColumnsCommand::redo()
+{
+	if (!d_table)
+		return;
+	d_table->swapColumns(d_col1, d_col2, false);
+}
+
+void TableSwapColumnsCommand::undo()
+{
+	if (!d_table)
+		return;
+	d_table->swapColumns(d_col1, d_col2, false);
+}
+
+/*************************************************************************/
+/*           Class TableMoveColumnCommand                                */
+/*************************************************************************/
+TableMoveColumnCommand::TableMoveColumnCommand(Table *t, int from, int to, const QString &text):
+QUndoCommand(text.isEmpty() ? QObject::tr("Move Column") : text),
+d_table(t),
+d_from(from),
+d_to(to)
+{
+	if (t)
+		setText(t->objectName() + ": " + this->text());
+}
+
+void TableMoveColumnCommand::redo()
+{
+	if (!d_table)
+		return;
+	d_table->moveColumnBy(d_to - d_from, false);
+}
+
+void TableMoveColumnCommand::undo()
+{
+	if (!d_table)
+		return;
+	d_table->moveColumnBy(d_from - d_to, false);
+}
+
+/*************************************************************************/
+/*           Class TableSetColumnWidthCommand                            */
+/*************************************************************************/
+TableSetColumnWidthCommand::TableSetColumnWidthCommand(Table *t, int col, int oldWidth, int newWidth, bool allCols,
+													   const QList<int>& oldWidths, const QString &text):
+QUndoCommand(text.isEmpty() ? QObject::tr("Set Column Width") : text),
+d_table(t),
+d_col(col),
+d_old_width(oldWidth),
+d_new_width(newWidth),
+d_all_cols(allCols),
+d_old_widths(oldWidths)
+{
+	if (t)
+		setText(t->objectName() + ": " + this->text());
+}
+
+void TableSetColumnWidthCommand::redo()
+{
+	if (!d_table)
+		return;
+	if (d_all_cols)
+		d_table->setColumnWidth(d_new_width, true, false);
+	else
+		d_table->setColumnWidth(d_col, d_new_width, false);
+}
+
+void TableSetColumnWidthCommand::undo()
+{
+	if (!d_table)
+		return;
+	if (d_all_cols) {
+		for (int i = 0; i < d_old_widths.size() && i < d_table->numCols(); i++)
+			d_table->setColumnWidth(i, d_old_widths[i], false);
+	} else {
+		d_table->setColumnWidth(d_col, d_old_width, false);
+	}
+}
+
+/*************************************************************************/
+/*           Class TableSetReadOnlyCommand                               */
+/*************************************************************************/
+TableSetReadOnlyCommand::TableSetReadOnlyCommand(Table *t, int col, bool oldState, bool newState, const QString &text):
+QUndoCommand(text.isEmpty() ? QObject::tr("Set Read Only") : text),
+d_table(t),
+d_col(col),
+d_old_state(oldState),
+d_new_state(newState)
+{
+	if (t)
+		setText(t->objectName() + ": " + this->text());
+}
+
+void TableSetReadOnlyCommand::redo()
+{
+	if (!d_table)
+		return;
+	d_table->setReadOnlyColumn(d_col, d_new_state, false);
+}
+
+void TableSetReadOnlyCommand::undo()
+{
+	if (!d_table)
+		return;
+	d_table->setReadOnlyColumn(d_col, d_old_state, false);
 }

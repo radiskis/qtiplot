@@ -2086,7 +2086,7 @@ void Graph::clearTitle()
 
 void Graph::removeTitle()
 {
-	setTitle("");
+	undoSetTitle(QString(""));
 	emit modifiedGraph();
 }
 
@@ -7497,6 +7497,25 @@ void Graph::undoSetCurveSymbol(int curveIndex, const QwtSymbol &symbol)
 	multiLayer()->undoStack()->push(new PlotSetCurveSymbolCommand(this, curveIndex,
 		oldStyle, oldBrush, oldPen, oldSize,
 		symbol.style(), symbol.brush(), symbol.pen(), symbol.size()));
+}
+
+void Graph::undoSetTitle(const QwtText &newTitle)
+{
+	if (!multiLayer() || !multiLayer()->undoStack()) {
+		setTitle(newTitle);
+		replot();
+		updateMarkersBoundingRect();
+		return;
+	}
+	QwtText oldTitle = title();
+	multiLayer()->undoStack()->push(new PlotSetPlotTitleCommand(this, oldTitle, newTitle));
+}
+
+void Graph::undoSetTitle(const QString &newTitle)
+{
+	QwtText t = title();
+	t.setText(newTitle);
+	undoSetTitle(t);
 }
 
 

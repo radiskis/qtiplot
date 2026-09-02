@@ -267,3 +267,30 @@ void PlotSetCurveSymbolCommand::undo()
 		d_graph->replot();
 	}
 }
+
+/*************************************************************************/
+/*           Class PlotSetPlotTitleCommand                               */
+/*************************************************************************/
+PlotSetPlotTitleCommand::PlotSetPlotTitleCommand(Graph *g, const QwtText &oldTitle, const QwtText &newTitle, const QString &text)
+: QUndoCommand(text.isEmpty() ? QObject::tr("Set Plot Title") : text),
+  d_graph(g), d_old_title(oldTitle), d_new_title(newTitle)
+{
+}
+
+void PlotSetPlotTitleCommand::redo()
+{
+	if (!d_graph)
+		return;
+	d_graph->setTitle(d_new_title);
+	d_graph->replot();
+	d_graph->updateMarkersBoundingRect();
+}
+
+void PlotSetPlotTitleCommand::undo()
+{
+	if (!d_graph)
+		return;
+	d_graph->setTitle(d_old_title);
+	d_graph->replot();
+	d_graph->updateMarkersBoundingRect();
+}

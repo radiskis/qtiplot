@@ -852,6 +852,14 @@ if (sipIsErr == 0)
 		sipCpp->setReadOnlyColumn(col, a1);
 %End
 
+    bool isReadOnlyColumn(SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("b", sipCpp->isReadOnlyColumn(col));
+%End
+
 	int columnRole(SIP_PYOBJECT);
 %MethodCode
 	sipIsErr = 0;
@@ -929,6 +937,14 @@ Roles: Table.X, Table.Y, Table.Z, Table.xErr, Table.yErr, Table.Label, Table.Non
   	CHECK_TABLE_COL(a0);
 	if (sipIsErr == 0)
 		sipCpp->setColumnWidth(col, a1);
+%End
+
+	int columnWidth(SIP_PYOBJECT);
+%MethodCode
+  	sipIsErr = 0;
+  	CHECK_TABLE_COL(a0);
+	if (sipIsErr == 0)
+		return Py_BuildValue("i", sipCpp->columnWidth(col));
 %End
 
 	void showAllColumns();
@@ -2172,6 +2188,8 @@ public:
   void undoShowGrid(int axis, bool on = true, bool minor = false);
   void undoSetCurvePen(int curveIndex, const QPen &pen);
   void undoSetCurveBrush(int curveIndex, const QBrush &brush);
+  void undoSetTitle(const QString &text);
+  QString plotTitle() const;
   bool isGridEnabled(int axis);
   void showGrid(int axis, bool on, bool minor = false);
   QBrush canvasBackground();

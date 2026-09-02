@@ -2307,6 +2307,9 @@ d_new_page_geometries(newPage)
 
 void ResizeLayersCommand::redo()
 {
+	if (!d_ml)
+		return;
+
 	if (d_ml->size() == d_new_size)
 		return;
 
@@ -2322,6 +2325,9 @@ void ResizeLayersCommand::redo()
 
 void ResizeLayersCommand::undo()
 {
+	if (!d_ml)
+		return;
+
 	d_ml->d_block_undo = true;
 	d_ml->resize(d_old_size);
 	QList<Graph *> layers = d_ml->layersList();

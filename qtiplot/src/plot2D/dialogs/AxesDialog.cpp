@@ -1229,11 +1229,8 @@ bool AxesDialog::updatePlot(QWidget *page)
 			breakRight = qMax(boxBreakStart->value(), boxBreakEnd->value());
 		}
 
-		d_graph->setScale(a, start, end, step, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
-                          boxScaleType->currentIndex(), btnInvert->isChecked(), breakLeft, breakRight,
-                          boxBreakPosition->value(), boxStepBeforeBreak->value(), boxStepAfterBreak->value(),
-                          boxMinorTicksBeforeBreak->currentText().toInt(), boxMinorTicksAfterBreak->currentText().toInt(),
-                          boxLog10AfterBreak->isChecked(), boxBreakWidth->value(), boxBreakDecoration->isChecked());
+		d_graph->undoSetScale(a, start, end, step, boxMajorValue->value(), boxMinorValue->currentText().toInt(),
+                          boxScaleType->currentIndex(), btnInvert->isChecked());
 
 		if (d_graph->hasSynchronizedScaleDivisions() && (a == QwtPlot::xTop || a == QwtPlot::yRight)){
 			d_graph->updateOppositeScaleDiv(d_graph->oppositeAxis(a));
@@ -1278,7 +1275,7 @@ bool AxesDialog::updatePlot(QWidget *page)
             formatInfo = boxColName->currentText();
 
 		if (d_graph->axisTitleString(axis) != boxTitle->toPlainText())
-			d_graph->setAxisTitle(axis, boxTitle->toPlainText());
+			d_graph->undoSetAxisTitle(axis, boxTitle->toPlainText());
 
 		d_graph->setAxisTitleDistance(axis, boxLabelsDistance->value());
 
@@ -1662,7 +1659,7 @@ void AxesDialog::showFormulaBox()
 
 void AxesDialog::pickAxisLabelColor()
 {
-	d_graph->setAxisTitleColor(mapToQwtAxisId(), axisLabelColorButton->color());
+	d_graph->undoSetAxisTitleColor(mapToQwtAxisId(), axisLabelColorButton->color());
 	d_graph->replot();
 }
 
@@ -1673,7 +1670,7 @@ void AxesDialog::customAxisLabelFont()
 	QFont oldFont = d_graph->axisTitleFont(axis);
 	QFont fnt = QFontDialog::getFont( &okF, oldFont,this);
 	if (okF && fnt != oldFont)
-		d_graph->setAxisTitleFont(axis, fnt);
+		d_graph->undoSetAxisTitleFont(axis, fnt);
 }
 
 void AxesDialog::pageChanged(QWidget *page)

@@ -306,7 +306,7 @@ public:
 	bool mergeWith(const QUndoCommand *other) override;
 
 private:
-	MultiLayer *d_ml;
+	QPointer<MultiLayer> d_ml;
 	QSize d_old_size, d_new_size;
 	QList<QRect> d_old_canvas_geometries, d_new_canvas_geometries;
 	QList<QRectF> d_old_page_geometries, d_new_page_geometries;

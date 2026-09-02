@@ -3512,11 +3512,11 @@ void PlotDialog::applyCanvasFormatToLayer(Graph *g)
 		g->setCanvasBackgroundImage("");
 		QColor c = boxCanvasColor->color();
 		c.setAlphaF(0.01*boxCanvasTransparency->value());
-		g->setCanvasBackground(c);
+		g->undoSetCanvasBackground(c);
 	} else if (imageBtn->isChecked()){
 		QColor c = Qt::white;
 		c.setAlpha(0);
-		g->setCanvasBackground(c);
+		g->undoSetCanvasBackground(c);
 		g->setCanvasBackgroundImage(imagePathBox->text());
 	}
 
@@ -3845,8 +3845,8 @@ bool PlotDialog::acceptParams()
 		QPen pen = QPen(lc, boxLineWidth->value(), boxLineStyle->style(), Qt::SquareCap, Qt::MiterJoin);
 		pen.setCosmetic(true);
 		QwtPlotCurve *curve = (QwtPlotCurve *)plotItem;
-		curve->setPen(pen);
-		curve->setBrush(br);
+		graph->undoSetCurvePen(item->plotItemIndex(), pen);
+		graph->undoSetCurveBrush(item->plotItemIndex(), br);
 
 		applyLineFormat((QwtPlotCurve *)plotItem);
 	} else if (privateTabWidget->currentWidget() == symbolPage)
@@ -4624,7 +4624,16 @@ void PlotDialog::applySymbolsFormatToCurve(QwtPlotCurve *c, bool fillColor, bool
 		pen.setCosmetic(true);
 
 		QwtSymbol *s = new QwtSymbol(boxSymbolStyle->selectedSymbol(), br, pen, QSize(size, size));
-		c->setSymbol(s);
+		Graph *layer = (Graph *)c->plot();
+		if (layer && layer->multiLayer() && layer->multiLayer()->undoStack()) {
+			int curveIndex = layer->curveIndex(c);
+			if (curveIndex >= 0)
+				layer->undoSetCurveSymbol(curveIndex, *s);
+			else
+				c->setSymbol(s);
+		} else {
+			c->setSymbol(s);
+		}
 	} else if (imageSymbolBtn->isChecked()){
 		QString path = imageSymbolPathBox->text();
 		QFileInfo fi(path);

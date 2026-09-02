@@ -344,8 +344,8 @@ public slots:
 	virtual void addCol(PlotDesignation pd = Y);
 	void addColumns(int c);
 	virtual void moveColumn(int, int, int);
-	void swapColumns(int, int);
-	void moveColumnBy(int cols);
+	void swapColumns(int col1, int col2, bool pushUndo = true);
+	void moveColumnBy(int cols, bool pushUndo = true);
 	void hideSelectedColumns();
 	void showAllColumns();
 	void hideColumn(int col, bool = true);
@@ -457,7 +457,8 @@ public slots:
 	QStringList YColumns();
 	int selectedColsNumber();
 
-	void setColumnWidth(int width, bool allCols);
+	void setColumnWidth(int width, bool allCols, bool pushUndo);
+	void setColumnWidth(int width, bool allCols = false) { setColumnWidth(width, allCols, true); }
 	void setColumnWidth(int col, int width, bool pushUndo = true);
 	int columnWidth(int col);
 	QStringList columnWidths();
@@ -489,7 +490,8 @@ public slots:
 	void freeMemory();
 
     bool isReadOnlyColumn(int col);
-    void setReadOnlyColumn(int col, bool on = true);
+    void setReadOnlyColumn(int col, bool on = true, bool pushUndo = true);
+	void setColFormat(int col, ColType type, const QString &format);
 
 	QString columnFormat(int col){return col_format[col];};
 	QStringList getColumnsFormat(){return col_format;};

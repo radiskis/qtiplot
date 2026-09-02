@@ -577,3 +577,88 @@ def test_plot_curve_pen_undo_redo():
     layer.redo()
 
 
+def test_table_swap_columns_undo_redo():
+    """Test undo and redo of column swapping in a Table."""
+    app = qti.app
+    t = app.newTable("TestSwapColsTable", 3, 2)
+    t.setText(1, 1, "A1")
+    t.setText(2, 1, "B1")
+
+    # Swap column 1 and 2
+    t.swapColumns(1, 2)
+    assert t.text(1, 1) == "B1"
+    assert t.text(2, 1) == "A1"
+
+    # Undo
+    t.undo()
+    assert t.text(1, 1) == "A1"
+    assert t.text(2, 1) == "B1"
+
+    # Redo
+    t.redo()
+    assert t.text(1, 1) == "B1"
+    assert t.text(2, 1) == "A1"
+
+
+def test_table_set_column_width_undo_redo():
+    """Test undo and redo of column width adjustments."""
+    app = qti.app
+    t = app.newTable("TestColWidthTable", 3, 2)
+    orig_width = t.columnWidth(1)
+
+    t.setColumnWidth(1, 145)
+    assert t.columnWidth(1) == 145
+
+    # Undo
+    t.undo()
+    assert t.columnWidth(1) == orig_width
+
+    # Redo
+    t.redo()
+    assert t.columnWidth(1) == 145
+
+
+def test_table_set_read_only_undo_redo():
+    """Test undo and redo of toggling column read-only mode."""
+    app = qti.app
+    t = app.newTable("TestReadOnlyTable", 3, 2)
+    assert not t.isReadOnlyColumn(1)
+
+    t.setReadOnlyColumn(1, True)
+    assert t.isReadOnlyColumn(1)
+
+    # Undo
+    t.undo()
+    assert not t.isReadOnlyColumn(1)
+
+    # Redo
+    t.redo()
+    assert t.isReadOnlyColumn(1)
+
+
+def test_plot_title_undo_redo():
+    """Test undo and redo of plot title changes."""
+    app = qti.app
+    t = app.newTable("TestPlotTitleTable", 5, 2)
+    for i in range(5):
+        t.setCell(1, i + 1, float(i + 1))
+        t.setCell(2, i + 1, float(i + 2))
+
+    g = app.plot(t, "TestPlotTitleTable_2", 1)
+    layer = g.activeLayer()
+    assert layer is not None
+
+    orig_title = layer.plotTitle()
+    layer.undoSetTitle("New Meaningful Title")
+    assert layer.plotTitle() == "New Meaningful Title"
+
+    # Undo
+    layer.undo()
+    assert layer.plotTitle() == orig_title
+
+    # Redo
+    layer.redo()
+    assert layer.plotTitle() == "New Meaningful Title"
+
+
+

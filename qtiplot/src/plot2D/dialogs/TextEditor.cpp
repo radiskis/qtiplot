@@ -154,7 +154,7 @@ void TextEditor::closeEvent(QCloseEvent *e)
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);
-		d_graph->setTitle(title);
+		d_graph->undoSetTitle(title);
 	} else if (d_target->inherits("QwtScaleWidget")){
 		if(s.isEmpty())
 			s = " ";
@@ -175,7 +175,7 @@ void TextEditor::closeEvent(QCloseEvent *e)
 				axis = QwtPlot::yRight;
 			break;
 		}
-		d_graph->setAxisTitle(axis, s);
+		d_graph->undoSetAxisTitle(axis, s);
 	}
 
 	if (d_initial_text != s)

@@ -236,14 +236,14 @@ void TextDialog::apply()
 				axis = QwtPlot::yRight;
 			break;
 		}
-		d_graph->setAxisTitle(axis, t.text());
+		d_graph->undoSetAxisTitle(axis, t.text());
 	} else if (d_text_type == LayerTitle){
 		QwtText t =	d_graph->title();
 		t.setRenderFlags(alignment());
 		t.setText(textEditBox->toPlainText().replace("\n", "<br>"));
 		t.setFont(selectedFont);
 		t.setColor(colorBtn->color());
-		d_graph->setTitle(t);
+		d_graph->undoSetTitle(t);
 	}
 
 	d_graph->notifyChanges();
@@ -318,7 +318,7 @@ void TextDialog::formatLayerLabels(Graph *g)
 	t.setColor(tc);
 	t.setFont(selectedFont);
 	t.setRenderFlags(align);
-	g->setTitle(t);
+	g->undoSetTitle(t);
 	g->replot();
 	g->updateMarkersBoundingRect();
 }

@@ -171,4 +171,18 @@ private:
 	QSize d_old_size, d_new_size;
 };
 
+//! Undo command for modifying plot title
+class PlotSetPlotTitleCommand : public QUndoCommand
+{
+public:
+	PlotSetPlotTitleCommand(Graph *g, const QwtText &oldTitle, const QwtText &newTitle, const QString &text = QString());
+
+	void redo() override;
+	void undo() override;
+
+private:
+	QPointer<Graph> d_graph;
+	QwtText d_old_title, d_new_title;
+};
+
 #endif

@@ -463,6 +463,8 @@ class Graph: public QwtPlot
 		void undoSetCurvePen(int curveIndex, const QPen &pen);
 		void undoSetCurveBrush(int curveIndex, const QBrush &brush);
 		void undoSetCurveSymbol(int curveIndex, const QwtSymbol &symbol);
+		void undoSetTitle(const QwtText &title);
+		void undoSetTitle(const QString &title);
 		double axisStep(int axis){return d_user_step[axis];};
 		void setAxisStep(int axis, double step){d_user_step[axis] = step;};
 		void setCanvasCoordinates(const QRectF&);
@@ -703,6 +705,7 @@ class Graph: public QwtPlot
 		void clearTitle();
 		//! Sets title to an empty string and hides the text label
 		void removeTitle();
+		QString plotTitle() const { return title().text(); }
 		void initTitle( bool on, const QFont& fnt);
 		//@}
 

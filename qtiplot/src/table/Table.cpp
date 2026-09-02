@@ -1149,33 +1149,56 @@ void Table::setColComment(int col, const QString& s, bool pushUndo)
 
 void Table::setColumnType(int col, ColType val, bool pushUndo)
 {
-	Q_UNUSED(pushUndo);
 	if (col < 0 || col >= d_table->numCols() || colTypes[col] == val)
 		return;
 
-	// TODO: Push TableSetColTypeCommand if pushUndo is true
-	// For now, just apply it
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColTypeCommand(this, col, (ColType)colTypes[col], val, tr("Set Column Type")));
+		return;
+	}
+
 	colTypes[col] = val;
+	setHeaderColType();
+	emit modifiedWindow(this);
 }
 
-void Table::setColumnWidth(int width, bool allCols)
+void Table::setColumnWidth(int width, bool allCols, bool pushUndo)
 {
 	if (allCols)
 	{
+		QList<int> oldWidths;
+		bool anyChanged = false;
+		for (int i = 0; i < d_table->numCols(); i++) {
+			int oldW = d_table->columnWidth(i);
+			oldWidths << oldW;
+			if (oldW != width)
+				anyChanged = true;
+		}
+		if (!anyChanged)
+			return;
+
+		if (pushUndo) {
+			d_undo_stack->push(new TableSetColumnWidthCommand(this, 0, 0, width, true, oldWidths, tr("Set Column Width")));
+			return;
+		}
+
 		for(int i=0; i<d_table->numCols(); i++)
 			d_table->setColumnWidth(i, width);
 	}
 	else
 	{
-		if (d_table->columnWidth(selectedCol) == width)
+		if (selectedCol < 0 || selectedCol >= d_table->numCols() || d_table->columnWidth(selectedCol) == width)
 			return;
+
+		if (pushUndo) {
+			d_undo_stack->push(new TableSetColumnWidthCommand(this, selectedCol, d_table->columnWidth(selectedCol), width, false, QList<int>(), tr("Set Column Width")));
+			return;
+		}
 
 		d_table->setColumnWidth(selectedCol, width);
 	}
 	emit modifiedWindow(this);
 }
-
-
 
 void Table::adjustColumnsWidth(bool selection)
 {
@@ -1194,7 +1217,7 @@ void Table::adjustColumnsWidth(bool selection)
 	emit modifiedWindow(this);
 }
 
-void Table::setColumnWidth(int col, int width, bool)
+void Table::setColumnWidth(int col, int width, bool pushUndo)
 {
 	if (col < 0 || col >= d_table->numCols())
 		return;
@@ -1202,7 +1225,12 @@ void Table::setColumnWidth(int col, int width, bool)
 	if (d_table->columnWidth(col) == width)
 		return;
 
-	d_table->setColumnWidth (col, width);
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColumnWidthCommand(this, col, d_table->columnWidth(col), width, false, QList<int>(), tr("Set Column Width")));
+		return;
+	}
+
+	d_table->setColumnWidth(col, width);
 	emit modifiedWindow(this);
 }
 
@@ -2527,27 +2555,25 @@ void Table::freeMemory()
 
 void Table::setTextFormat(int col, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
-	if (col >= 0 && col < colTypes.count() && colTypes[col] != Text)
-		colTypes[col] = Text;
+	setColumnType(col, Text, pushUndo);
 }
 
 void Table::setColNumericFormat(int col, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
-	if (colTypes[col] == Numeric || (col < 0 && col >= colTypes.count()))
-		return;
-
-	colTypes[col] = Numeric;
+	setColumnType(col, Numeric, pushUndo);
 }
 
 void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols())
+		return;
+
 	if (prec < 0)
 		prec = 0;
 	else if (prec > 14)
 		prec = 14;
+
+	QString newFormat = QString::number(f) + "/" + QString::number(prec);
 
 	if (colTypes[col] == Numeric){
 		int old_f, old_prec;
@@ -2557,8 +2583,14 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool
 	} else if (!updateCells)
 		emit modifiedData(this, colName(col));
 
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Numeric,
+														col_format[col], newFormat, tr("Set Numeric Format")));
+		return;
+	}
+
 	colTypes[col] = Numeric;
-	col_format[col] = QString::number(f) + "/" + QString::number(prec);
+	col_format[col] = newFormat;
 
     if (!updateCells)
         return;
@@ -2611,9 +2643,17 @@ double Table::fromTime(const QTime& t)
 
 bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols())
+		return false;
+
 	if (colTypes[col] == Date && col_format[col] == format)
 		return true;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Date,
+														col_format[col], format, tr("Set Date Format")));
+		return true;
+	}
 
 	bool first_time = false;
 	if (updateCells){
@@ -2642,15 +2682,24 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool
 		for (int i = 0; i < d_table->numRows(); i++)
 			d_saved_cells[col][i] = fromDateTime(QDateTime::fromString(d_table->text(i, col), format));
 	}
+	setHeaderColType();
 	emit modifiedData(this, colName(col));
 	return true;
 }
 
 bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols())
+		return false;
+
 	if (colTypes[col] == Time && col_format[col] == format)
 		return true;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Time,
+														col_format[col], format, tr("Set Time Format")));
+		return true;
+	}
 
 	bool first_time = false;
 	if (updateCells){
@@ -2681,15 +2730,24 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool
 		for (int i = 0; i < d_table->numRows(); i++)
 			d_saved_cells[col][i] = fromTime(QTime::fromString(d_table->text(i, col), format));
 	}
+	setHeaderColType();
 	emit modifiedData(this, colName(col));
 	return true;
 }
 
 void Table::setMonthFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols())
+		return;
+
     if (colTypes[col] == Month && col_format[col] == format)
         return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Month,
+														col_format[col], format, tr("Set Month Format")));
+		return;
+	}
 
     colTypes[col] = Month;
 	col_format[col] = format;
@@ -2716,14 +2774,23 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells, boo
                 d_table->setText(i, col, QLocale::system().monthName(day, QLocale::LongFormat));
         }
     }
+	setHeaderColType();
 	emit modifiedData(this, colName(col));
 }
 
 void Table::setDayFormat(const QString& format, int col, bool updateCells, bool pushUndo)
 {
-    Q_UNUSED(pushUndo);
+	if (col < 0 || col >= d_table->numCols())
+		return;
+
     if (colTypes[col] == Day && col_format[col] == format)
         return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Day,
+														col_format[col], format, tr("Set Day Format")));
+		return;
+	}
 
     colTypes[col] = Day;
 	col_format[col] = format;
@@ -2750,10 +2817,21 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells, bool 
                 d_table->setText(i, col, QLocale::system().dayName(day, QLocale::LongFormat));
         }
     }
+	setHeaderColType();
 	emit modifiedData(this, colName(col));
 }
 
-// Replaced by new implementation below
+void Table::setColFormat(int col, ColType type, const QString &format)
+{
+	if (col < 0 || col >= d_table->numCols())
+		return;
+
+	colTypes[col] = type;
+	col_format[col] = format;
+	setHeaderColType();
+	emit modifiedData(this, colName(col));
+	emit modifiedWindow(this);
+}
 
 void Table::setRandomValues(int col, int startRow, int endRow)
 {
@@ -4189,13 +4267,18 @@ bool Table::isReadOnlyColumn(int col)
     return d_table->isColumnReadOnly(col);
 }
 
-void Table::setReadOnlyColumn(int col, bool on)
+void Table::setReadOnlyColumn(int col, bool on, bool pushUndo)
 {
     if (col < 0 || col >= d_table->numCols())
         return;
 
     if (d_table->isColumnReadOnly(col) == on)
 		return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSetReadOnlyCommand(this, col, !on, on, tr("Set Read Only")));
+		return;
+	}
 
 	d_table->setColumnReadOnly(col, on);
 	emit modifiedWindow(this);
@@ -4216,10 +4299,18 @@ void Table::moveColumn(int, int fromIndex, int toIndex)
 	setHeaderColType();
 }
 
-void Table::swapColumns(int col1, int col2)
+void Table::swapColumns(int col1, int col2, bool pushUndo)
 {
     if (col1 < 0 || col1 >= d_table->numCols() || col2 < 0 || col2 >= d_table->numCols())
         return;
+
+	if (col1 == col2)
+		return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableSwapColumnsCommand(this, col1, col2, tr("Swap Columns")));
+		return;
+	}
 
     int width1 = d_table->columnWidth(col1);
     int width2 = d_table->columnWidth(col2);
@@ -4239,7 +4330,7 @@ void Table::swapColumns(int col1, int col2)
 	emit colIndexChanged(col1, col2);
 }
 
-void Table::moveColumnBy(int cols)
+void Table::moveColumnBy(int cols, bool pushUndo)
 {
 	int oldPos = selectedCol;
 	int newPos = oldPos + cols;
@@ -4247,6 +4338,14 @@ void Table::moveColumnBy(int cols)
 		newPos = 0;
 	else if	(newPos >= d_table->numCols())
 		newPos = d_table->numCols() - 1;
+
+	if (oldPos == newPos)
+		return;
+
+	if (pushUndo) {
+		d_undo_stack->push(new TableMoveColumnCommand(this, oldPos, newPos, tr("Move Column")));
+		return;
+	}
 
 	if (abs(cols) > 1){
 		int origWidth = d_table->columnWidth(oldPos);
@@ -4269,7 +4368,7 @@ void Table::moveColumnBy(int cols)
 		col_plot_type.move(oldPos, newPos);
 		emit colIndexChanged(oldPos, newPos);
 	} else
-		swapColumns(oldPos, newPos);
+		swapColumns(oldPos, newPos, false);
 
 	setHeaderColType();
 
