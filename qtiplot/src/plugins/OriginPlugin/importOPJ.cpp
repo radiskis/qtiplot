@@ -162,9 +162,12 @@ ImportOPJ::ImportOPJ(ApplicationWindow *app, const QString& filename) :
 		if(filename.endsWith(".opj", Qt::CaseInsensitive))
 			createProjectTree(opj);
 		mw->showResults(opj.resultsLogString().c_str(), mw->logWindow->isVisible());
-	} catch(const std::logic_error& er){
+	} catch(const std::exception& er){
 		QApplication::restoreOverrideCursor();
 		QMessageBox::critical(mw, "Origin Project Import Error", QString(er.what()));
+	} catch(...){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(mw, "Origin Project Import Error", "An unexpected error occurred while importing the Origin project.");
 	}
 }
 

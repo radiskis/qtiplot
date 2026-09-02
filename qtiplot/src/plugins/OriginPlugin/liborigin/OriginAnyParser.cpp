@@ -1083,10 +1083,16 @@ void OriginAnyParser::readAttachmentList()
         GET_INT(stmp, att_size)
 
         // get name and data
+        if (att_header_size < 12)
+            break;
         unsigned int name_size = att_header_size - 3 * 4;
+        if (name_size > 65536)
+            break;
         string att_name = string(name_size, 0);
         file.read(&att_name[0], name_size);
         curpos = file.tellg();
+        if (att_size > 100 * 1024 * 1024)
+            break;
         string att_data = string(att_size, 0);
         file.read(&att_data[0], att_size);
         LOG_PRINT(logfile,
