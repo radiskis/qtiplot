@@ -1765,10 +1765,27 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 	actionExportGraph->setEnabled(false);
 	actionGoToRow->setEnabled(false);
 
-	// clear undo stack view (in case window is not a matrix)
-	d_undo_view->setStack(0);
-	actionUndo->setEnabled(false);
-	actionRedo->setEnabled(false);
+	MdiSubWindow *mw = qobject_cast<MdiSubWindow*>(w);
+	if (!mw) {
+		if (d_undo_group)
+			d_undo_group->setActiveStack(nullptr);
+		if (d_undo_view)
+			d_undo_view->setStack(nullptr);
+	} else if (!qobject_cast<Note*>(mw)) {
+		QUndoStack *stack = mw->undoStack();
+		if (d_undo_group)
+			d_undo_group->setActiveStack(stack);
+		if (d_undo_view) {
+			d_undo_view->setEmptyLabel(mw->objectName() + ": " + tr("Empty Stack"));
+			d_undo_view->setStack(stack);
+		}
+	} else {
+		if (d_undo_group)
+			d_undo_group->setActiveStack(nullptr);
+		if (d_undo_view)
+			d_undo_view->setStack(nullptr);
+	}
+	updateUndoRedoActions();
 
 	actionCopyWindow->setEnabled(w);
 	actionPrint->setEnabled(w);
@@ -1849,10 +1866,6 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			plot3DMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
 			matrixMenu->menuAction()->setVisible(true);
-
-			d_undo_view->setEmptyLabel(w->objectName() + ": " + tr("Empty Stack"));
-			QUndoStack *stack = ((Matrix *)w)->undoStack();
-			d_undo_view->setStack(stack);
 		} else if (qobject_cast<Note*>(w)){
 			#ifndef SCRIPTING_PYTHON
 			scriptingMenu->menuAction()->setVisible(true);
@@ -1860,6 +1873,8 @@ void ApplicationWindow::customMenu(QMdiSubWindow* w)
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
 			actionFind->setEnabled(true);
+			if (ScriptEdit *editor = ((Note *)w)->currentEditor())
+				connectScriptEditor(editor);
 		} else if (w->inherits("PolarGraph")) {
 			actionExportGraph->setEnabled(true);
 			plotDataMenu->menuAction()->setVisible(true);
@@ -3290,11 +3305,20 @@ void ApplicationWindow::connectScriptEditor(ScriptEdit *editor)
 		return;
 
 	QTextDocument *doc = editor->document();
-	actionUndo->setEnabled(doc->isUndoAvailable());
-	actionRedo->setEnabled(doc->isRedoAvailable());
+	MdiSubWindow *w = activeWindow();
+	if (qobject_cast<Note*>(w)) {
+		actionUndo->setEnabled(doc && doc->isUndoAvailable());
+		actionRedo->setEnabled(doc && doc->isRedoAvailable());
+	}
 
-	connect(editor, &ScriptEdit::undoAvailable, actionUndo, &QAction::setEnabled);
-	connect(editor, &ScriptEdit::redoAvailable, actionRedo, &QAction::setEnabled);
+	connect(editor, &ScriptEdit::undoAvailable, this, [this](bool available){
+		if (qobject_cast<Note*>(activeWindow()))
+			actionUndo->setEnabled(available);
+	}, Qt::UniqueConnection);
+	connect(editor, &ScriptEdit::redoAvailable, this, [this](bool available){
+		if (qobject_cast<Note*>(activeWindow()))
+			actionRedo->setEnabled(available);
+	}, Qt::UniqueConnection);
 }
 
 /*
@@ -4068,8 +4092,11 @@ void ApplicationWindow::windowActivated(QMdiSubWindow *w)
 	QUndoStack *stack = window->undoStack();
 	if (d_undo_group)
 		d_undo_group->setActiveStack(stack);
-	if (d_undo_view)
+	if (d_undo_view) {
+		d_undo_view->setEmptyLabel(window->objectName() + ": " + tr("Empty Stack"));
 		d_undo_view->setStack(stack);
+	}
+	updateUndoRedoActions();
 
 	emit modified();
 }
@@ -9627,12 +9654,16 @@ void ApplicationWindow::undo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (qobject_cast<Note*>(w))
-		((Note*)w)->currentEditor()->undo();
-	else if (d_undo_group)
-		d_undo_group->undo();
+	if (qobject_cast<Note*>(w)) {
+		if (ScriptEdit *editor = ((Note*)w)->currentEditor())
+			editor->undo();
+	} else if (QUndoStack *stack = w->undoStack())
+		stack->undo();
 
 	QApplication::restoreOverrideCursor();
+
+	// Keep toolbar/menu state in sync after executing undo.
+	updateUndoRedoActions();
 }
 
 void ApplicationWindow::redo()
@@ -9643,12 +9674,16 @@ void ApplicationWindow::redo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	if (qobject_cast<Note*>(w))
-		((Note*)w)->currentEditor()->redo();
-	else if (d_undo_group)
-		d_undo_group->redo();
+	if (qobject_cast<Note*>(w)) {
+		if (ScriptEdit *editor = ((Note*)w)->currentEditor())
+			editor->redo();
+	} else if (QUndoStack *stack = w->undoStack())
+		stack->redo();
 
 	QApplication::restoreOverrideCursor();
+
+	// Keep toolbar/menu state in sync after executing redo.
+	updateUndoRedoActions();
 }
 
 bool ApplicationWindow::hidden(QWidget* window)
@@ -10291,27 +10326,31 @@ void ApplicationWindow::fileMenuAboutToShow()
 	reloadCustomActions();
 }
 
-void ApplicationWindow::editMenuAboutToShow()
+void ApplicationWindow::updateUndoRedoActions()
 {
 	MdiSubWindow *w = activeWindow();
-	if (!w){
+	if (!w) {
 		actionUndo->setEnabled(false);
 		actionRedo->setEnabled(false);
 		return;
 	}
 
-	if (qobject_cast<Note *>(w)){
-		QTextDocument *doc = ((Note *)w)->currentEditor()->document();
-		actionUndo->setEnabled(doc->isUndoAvailable());
-		actionRedo->setEnabled(doc->isRedoAvailable());
-	} else if (qobject_cast<Matrix *>(w)){
-		QUndoStack *stack = ((Matrix *)w)->undoStack();
-		actionUndo->setEnabled(stack->canUndo());
-		actionRedo->setEnabled(stack->canRedo());
+	if (qobject_cast<Note *>(w)) {
+		ScriptEdit *editor = ((Note *)w)->currentEditor();
+		QTextDocument *doc = editor ? editor->document() : nullptr;
+		actionUndo->setEnabled(doc && doc->isUndoAvailable());
+		actionRedo->setEnabled(doc && doc->isRedoAvailable());
 	} else {
-		actionUndo->setEnabled(false);
-		actionRedo->setEnabled(false);
+		// Table, Matrix, MultiLayer/Graph — all expose undoStack().
+		QUndoStack *stack = w->undoStack();
+		actionUndo->setEnabled(stack && stack->canUndo());
+		actionRedo->setEnabled(stack && stack->canRedo());
 	}
+}
+
+void ApplicationWindow::editMenuAboutToShow()
+{
+	updateUndoRedoActions();
 }
 
 void ApplicationWindow::windowsMenuAboutToShow()
@@ -14068,15 +14107,24 @@ void ApplicationWindow::createActions()
 	actionImportDatabase = new QAction(tr("&Database..."), this);
 	connect(actionImportDatabase, &QAction::triggered, this, [this]{importDatabase();});
 
-	actionUndo = d_undo_group->createUndoAction(this, tr("&Undo"));
-	actionUndo->setIcon(QIcon(":/undo.png"));
-	actionUndo->setShortcut( tr("Ctrl+Z") );
+	actionUndo = new QAction(QIcon(":/undo.png"), tr("&Undo"), this);
+	actionUndo->setShortcut(tr("Ctrl+Z"));
 	connect(actionUndo, &QAction::triggered, this, &ApplicationWindow::undo);
 
-	actionRedo = d_undo_group->createRedoAction(this, tr("&Redo"));
-	actionRedo->setIcon(QIcon(":/redo.png"));
+	actionRedo = new QAction(QIcon(":/redo.png"), tr("&Redo"), this);
 	actionRedo->setShortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Z));
 	connect(actionRedo, &QAction::triggered, this, &ApplicationWindow::redo);
+
+	connect(d_undo_group, &QUndoGroup::canUndoChanged, this, [this](bool canUndo) {
+		MdiSubWindow *w = activeWindow();
+		if (w && !qobject_cast<Note*>(w))
+			actionUndo->setEnabled(canUndo);
+	});
+	connect(d_undo_group, &QUndoGroup::canRedoChanged, this, [this](bool canRedo) {
+		MdiSubWindow *w = activeWindow();
+		if (w && !qobject_cast<Note*>(w))
+			actionRedo->setEnabled(canRedo);
+	});
 
 	actionCopyWindow = new QAction(QIcon(":/duplicate.png"), tr("&Duplicate"), this);
 	actionCopyWindow->setShortcut(tr("Ctrl+Alt+D"));

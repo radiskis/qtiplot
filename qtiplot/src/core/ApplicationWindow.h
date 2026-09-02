@@ -1188,6 +1188,7 @@ private slots:
 	void scriptingMenuAboutToShow();
 	void fileMenuAboutToShow();
 	void editMenuAboutToShow();
+	void updateUndoRedoActions();
 	void matrixMenuAboutToShow();
 	void plotMenuAboutToShow();
 	void plotDataMenuAboutToShow();
