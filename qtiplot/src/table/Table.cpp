@@ -3429,6 +3429,12 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 		line = s.split(sep);
 		int lc = line.size();
 		if (lc > cols) {
+			if (applicationWindow()) {
+				applicationWindow()->showResults(
+					tr("WARNING: ASCII import line %1 has %2 fields (expected %3). Appended %4 column(s).\n")
+					.arg(l + startRow + 1).arg(lc).arg(cols).arg(lc - cols),
+					false);
+			}
 			addColumns(lc - cols);
 			cols = lc;
 		}

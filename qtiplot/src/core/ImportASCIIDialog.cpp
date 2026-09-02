@@ -754,6 +754,8 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		line = s.split(sep);
 		int lc = line.size();
 		if (lc > cols) {
+			qWarning("ASCII preview line %d has %d fields (expected %d). Appended %d column(s).",
+					 row + 1, lc, cols, lc - cols);
 			addColumns(lc - cols);
 			cols = lc;
 		}

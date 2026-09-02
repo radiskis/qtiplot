@@ -6814,21 +6814,62 @@ void Graph::showEvent (QShowEvent * event)
   \param plotRect Bounding rectangle
   \param pfilter Print filter
 */
-void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &/*pfilter*/)
+void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
 {
     if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
         return;
 
     d_is_printing = true;
 
-    // Use QwtPlotRenderer for Qwt 6 compatibility
     QwtPlotRenderer renderer;
-    // renderer.setDiscardFlag(QwtPlotRenderer::DiscardBackground, ...); // Map pfilter if needed
-    // For now we do a standard render. 
-    // QtiPlot's pfilter functionality is complex to map 1:1 without more code, 
-    // but this enables compilation.
-    
-    renderer.render(this, painter, plotRect);
+
+    double factor = 1.0;
+    const ScaledFontsPrintFilter *sff = dynamic_cast<const ScaledFontsPrintFilter *>(&pfilter);
+    if (sff)
+        factor = sff->scaleFontsFactor();
+
+    if (factor > 0.0 && fabs(factor - 1.0) > 1e-4) {
+        // Title font scaling
+        QFont origTitleFont = title().font();
+        QFont scaledTitleFont = origTitleFont;
+        if (origTitleFont.pointSizeF() > 0)
+            scaledTitleFont.setPointSizeF(origTitleFont.pointSizeF() * factor);
+        else
+            scaledTitleFont.setPointSize(qMax(1, qRound(origTitleFont.pointSize() * factor)));
+        setTitleFont(scaledTitleFont);
+
+        // Axis scale tick fonts and axis title fonts
+        QFont origAxisFont[QwtPlot::axisCnt];
+        QFont origAxisTitleFont[QwtPlot::axisCnt];
+        for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
+            origAxisFont[axis] = axisFont(axis);
+            QFont scaledAxisFont = origAxisFont[axis];
+            if (scaledAxisFont.pointSizeF() > 0)
+                scaledAxisFont.setPointSizeF(scaledAxisFont.pointSizeF() * factor);
+            else
+                scaledAxisFont.setPointSize(qMax(1, qRound(scaledAxisFont.pointSize() * factor)));
+            setAxisFont(axis, scaledAxisFont);
+
+            origAxisTitleFont[axis] = axisTitleFont(axis);
+            QFont scaledAxisTitleFont = origAxisTitleFont[axis];
+            if (scaledAxisTitleFont.pointSizeF() > 0)
+                scaledAxisTitleFont.setPointSizeF(scaledAxisTitleFont.pointSizeF() * factor);
+            else
+                scaledAxisTitleFont.setPointSize(qMax(1, qRound(scaledAxisTitleFont.pointSize() * factor)));
+            setAxisTitleFont(axis, scaledAxisTitleFont);
+        }
+
+        renderer.render(this, painter, plotRect);
+
+        // Restore original fonts
+        setTitleFont(origTitleFont);
+        for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
+            setAxisFont(axis, origAxisFont[axis]);
+            setAxisTitleFont(axis, origAxisTitleFont[axis]);
+        }
+    } else {
+        renderer.render(this, painter, plotRect);
+    }
 
     d_is_printing = false;
 }
