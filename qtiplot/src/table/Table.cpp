@@ -77,6 +77,7 @@ Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationW
 
 Table::~Table()
 {
+	freeMemory();
 	delete d_undo_stack;
 }
 
@@ -361,7 +362,7 @@ void MyTable::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hi
 	int r = currentRow();
 	int c = currentColumn();
 	QTableWidget::closeEditor(editor, hint);
-	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::NoHint) {
+	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::EditNextItem) {
 		if (r >= 0 && c >= 0) {
 			int nextRow = r + 1;
 			QPointer<MyTable> guard(this);
@@ -432,30 +433,8 @@ void Table::cellEdited(int row, int col)
   		}
   	}
 
-	// For numeric columns: if the formatted text differs from what the user
-	// typed, we need to update the model asynchronously (after the delegate
-	// finishes its own commit sequence).  We move BOTH the model write AND the
-	// UserRole update into the same deferred call so they are always in sync.
-	if (newText != d_table->text(row, col)) {
-		QPointer<Table> guard(this);
-		QMetaObject::invokeMethod(d_table, [guard, row, col, newText]() {
-			if (!guard)
-				return;
-			Table *t = guard.data();
-			if (row >= t->d_table->rowCount() || col >= t->d_table->columnCount())
-				return;
-			bool blocked = t->d_table->blockSignals(true);
-			t->d_table->setText(row, col, newText);
-			t->d_table->blockSignals(blocked);
-			// Keep UserRole in sync with the formatted text that is now in the model.
-			if (QTableWidgetItem *item = t->d_table->item(row, col))
-				item->setData(Qt::UserRole, newText);
-		}, Qt::QueuedConnection);
-	} else {
-		// Formatted text matches what the delegate wrote — update UserRole now.
-		if (it)
-			it->setData(Qt::UserRole, newText);
-	}
+	if (it)
+		it->setData(Qt::UserRole, newText);
 
 	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
 }
@@ -2518,6 +2497,9 @@ void Table::saveToMemory()
 
 void Table::freeMemory()
 {
+	if (!d_saved_cells)
+		return;
+
     for ( int i = 0; i < d_table->numCols(); i++)
         delete[] d_saved_cells[i];
 
@@ -2970,6 +2952,14 @@ void Table::setHeader(QStringList header)
 
 int Table::colIndex(const QString& name)
 {
+	if (col_label.contains(name))
+		return col_label.indexOf(name);
+	QString prefix = QString(objectName()) + "_";
+	if (name.startsWith(prefix)) {
+		QString label = name.mid(prefix.length());
+		if (col_label.contains(label))
+			return col_label.indexOf(label);
+	}
 	int pos = name.lastIndexOf("_");
 	QString label = name.right(name.length() - pos - 1);
 	return col_label.indexOf(label);

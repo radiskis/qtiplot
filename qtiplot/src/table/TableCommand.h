@@ -10,6 +10,7 @@
 
 #include "Table.h"
 #include <QUndoCommand>
+#include <QPointer>
 #include <QStringList>
 
 class TableSetColNamesCommand: public QUndoCommand
@@ -20,7 +21,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_start_col;
 	QStringList d_old_names, d_new_names;
 };
@@ -33,7 +34,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_row, d_col;
 	QString d_old_text, d_new_text;
 };
@@ -46,7 +47,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 	QString d_old_name, d_new_name;
 };
@@ -59,7 +60,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 	Table::ColType d_old_type, d_new_type;
 };
@@ -72,7 +73,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 	QString d_old_format, d_new_format;
 };
@@ -85,7 +86,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 	QString d_old_comment, d_new_comment;
 };
@@ -98,7 +99,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 	Table::PlotDesignation d_old_pd, d_new_pd;
 };
@@ -113,7 +114,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_start_row, d_end_row;
 	QList<QStringList> d_data;
 };
@@ -126,7 +127,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_row;
 };
 
@@ -138,7 +139,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_start_col, d_count;
 	QStringList d_names;
 };
@@ -155,7 +156,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_start_col, d_end_col;
 	QList<QStringList> d_cell_data;
 	QStringList d_names, d_comments, d_formats, d_widths, d_commands;
@@ -170,7 +171,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_col;
 };
 
@@ -183,7 +184,7 @@ public:
 	virtual void undo();
 
 private:
-	Table *d_table;
+	QPointer<Table> d_table;
 	int d_start_row, d_end_row;
 	QList<int> d_cols;
 	QList<QStringList> d_old_data, d_new_data;

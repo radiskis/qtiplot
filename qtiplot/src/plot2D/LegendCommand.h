@@ -9,6 +9,7 @@
 #define LEGENDCOMMAND_H
 
 #include <QUndoCommand>
+#include <QPointer>
 #include <QString>
 #include <QColor>
 #include <QFont>
@@ -24,7 +25,7 @@ public:
 	bool mergeWith(const QUndoCommand *other) override;
 
 private:
-	LegendWidget *d_legend;
+	QPointer<LegendWidget> d_legend;
 	QString d_old_text, d_new_text;
 };
 
@@ -38,7 +39,7 @@ public:
 	bool mergeWith(const QUndoCommand *other) override;
 
 private:
-	LegendWidget *d_legend;
+	QPointer<LegendWidget> d_legend;
 	QColor d_old_color, d_new_color;
 };
 
@@ -52,7 +53,7 @@ public:
 	bool mergeWith(const QUndoCommand *other) override;
 
 private:
-	LegendWidget *d_legend;
+	QPointer<LegendWidget> d_legend;
 	QFont d_old_font, d_new_font;
 };
 

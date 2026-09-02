@@ -22,6 +22,8 @@ d_new_text(newText)
 
 void TableEditCellCommand::redo()
 {
+	if (!d_table)
+		return;
 	bool blocked = d_table->table()->blockSignals(true);
 	d_table->setText(d_row, d_col, d_new_text, false);
 	d_table->table()->blockSignals(blocked);
@@ -30,6 +32,8 @@ void TableEditCellCommand::redo()
 
 void TableEditCellCommand::undo()
 {
+	if (!d_table)
+		return;
 	bool blocked = d_table->table()->blockSignals(true);
 	d_table->setText(d_row, d_col, d_old_text, false);
 	d_table->table()->blockSignals(blocked);
@@ -52,11 +56,15 @@ d_new_names(newNames)
 
 void TableSetColNamesCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->setColNames(d_start_col, d_new_names);
 }
 
 void TableSetColNamesCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->setColNames(d_start_col, d_old_names);
 }
 
@@ -76,11 +84,15 @@ d_new_name(newName)
 
 void TableSetColNameCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->setColName(d_col, d_new_name, false, false);
 }
 
 void TableSetColNameCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->setColName(d_col, d_old_name, false, false);
 }
 
@@ -100,11 +112,15 @@ d_new_type(newType)
 
 void TableSetColTypeCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->setColumnType(d_col, d_new_type, false);
 }
 
 void TableSetColTypeCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->setColumnType(d_col, d_old_type, false);
 }
 
@@ -149,11 +165,15 @@ d_new_comment(newComment)
 
 void TableSetColCommentCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->setColComment(d_col, d_new_comment, false);
 }
 
 void TableSetColCommentCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->setColComment(d_col, d_old_comment, false);
 }
 
@@ -173,12 +193,16 @@ d_new_pd(newPD)
 
 void TableSetPlotDesignationCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->setColPlotDesignation(d_col, d_new_pd, false);
 	d_table->setHeaderColType();
 }
 
 void TableSetPlotDesignationCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->setColPlotDesignation(d_col, d_old_pd, false);
 	d_table->setHeaderColType();
 }
@@ -201,11 +225,15 @@ d_data(data)
 
 void TableDeleteRowsCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->deleteRows(d_start_row, d_end_row, false);
 }
 
 void TableDeleteRowsCommand::undo()
 {
+	if (!d_table)
+		return;
 	// d_start_row is 1-based (stored as start+1 in Table::deleteRows).
 	// Table::insertRows(row, count, false) inserts at 0-based index (row-1+i),
 	// so the first restored row lands at d_start_row-1 (0-based).
@@ -233,11 +261,15 @@ d_row(row)
 
 void TableInsertRowCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->insertRow(d_row, false);
 }
 
 void TableInsertRowCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->deleteRows(d_row, d_row, false);
 }
 
@@ -256,6 +288,8 @@ d_names(names)
 
 void TableAddColsCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->insertCols(d_start_col, d_count, false);
     for (int i = 0; i < d_names.count(); i++)
         d_table->setColName(d_start_col + i, d_names[i], false, false);
@@ -263,6 +297,8 @@ void TableAddColsCommand::redo()
 
 void TableAddColsCommand::undo()
 {
+	if (!d_table)
+		return;
 	d_table->deleteColumns(d_names, false);
 }
 
@@ -292,11 +328,15 @@ d_commands(commands)
 
 void TableDeleteColsCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->deleteColumns(d_names, false);
 }
 
 void TableDeleteColsCommand::undo()
 {
+	if (!d_table)
+		return;
 	int count = d_names.count();
 	for (int i = 0; i < count; i++){
 		int col = d_start_col + i;
@@ -327,12 +367,16 @@ d_col(col)
 
 void TableInsertColCommand::redo()
 {
+	if (!d_table)
+		return;
 	d_table->insertColumn(d_col, false);
 }
 
 void TableInsertColCommand::undo()
 {
-	d_table->deleteColumns(QStringList() << d_table->colName(d_col), false);
+	if (!d_table)
+		return;
+	d_table->deleteColumns(QStringList() << d_table->colLabel(d_col), false);
 }
 
 /*************************************************************************/
@@ -353,6 +397,8 @@ d_new_data(newData)
 
 void TableSetValuesCommand::redo()
 {
+	if (!d_table)
+		return;
 	MyTable *table = d_table->table();
 	table->blockSignals(true);
 	for (int i = 0; i < d_cols.count(); i++){
@@ -369,6 +415,8 @@ void TableSetValuesCommand::redo()
 
 void TableSetValuesCommand::undo()
 {
+	if (!d_table)
+		return;
 	MyTable *table = d_table->table();
 	table->blockSignals(true);
 	for (int i = 0; i < d_cols.count(); i++){

@@ -23,11 +23,15 @@ d_new_text(newText)
 
 void LegendSetTextCommand::redo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setText(d_new_text, false);
 }
 
 void LegendSetTextCommand::undo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setText(d_old_text, false);
 }
 
@@ -59,11 +63,15 @@ d_new_color(newColor)
 
 void LegendSetColorCommand::redo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setTextColor(d_new_color, false);
 }
 
 void LegendSetColorCommand::undo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setTextColor(d_old_color, false);
 }
 
@@ -95,11 +103,15 @@ d_new_font(newFont)
 
 void LegendSetFontCommand::redo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setFont(d_new_font, false);
 }
 
 void LegendSetFontCommand::undo()
 {
+	if (!d_legend)
+		return;
 	d_legend->setFont(d_old_font, false);
 }
 

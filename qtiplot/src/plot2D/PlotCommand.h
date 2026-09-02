@@ -9,6 +9,7 @@
 #define PLOT_COMMAND_H
 
 #include <QUndoCommand>
+#include <QPointer>
 #include <QString>
 #include <QColor>
 #include <QFont>
@@ -33,7 +34,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_axis;
 	double d_old_start, d_old_end, d_old_step;
 	int d_old_maj_ticks, d_old_min_ticks, d_old_type;
@@ -54,7 +55,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_axis;
 	QString d_old_title, d_new_title;
 };
@@ -69,7 +70,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_axis;
 	QFont d_old_font, d_new_font;
 };
@@ -84,7 +85,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_axis;
 	QColor d_old_color, d_new_color;
 };
@@ -99,7 +100,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	QColor d_old_color, d_new_color;
 };
 
@@ -113,7 +114,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_axis;
 	bool d_old_major, d_old_minor;
 	bool d_new_major, d_new_minor;
@@ -129,7 +130,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_curve_index;
 	QPen d_old_pen, d_new_pen;
 };
@@ -144,7 +145,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_curve_index;
 	QBrush d_old_brush, d_new_brush;
 };
@@ -162,7 +163,7 @@ public:
 	void undo() override;
 
 private:
-	Graph *d_graph;
+	QPointer<Graph> d_graph;
 	int d_curve_index;
 	QwtSymbol::Style d_old_style, d_new_style;
 	QBrush d_old_brush, d_new_brush;
