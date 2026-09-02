@@ -219,12 +219,22 @@ void FFTDialog::activateDataSet(const QString& s)
 		}
 	} else if (d_table){
 		int col = d_table->colIndex(s);
-		boxSampling->setValue(d_table->cell(1, col) - d_table->cell(0, col));
+		if (col >= 0 && d_table->numRows() >= 2) {
+			double dx = fabs(d_table->cell(1, col) - d_table->cell(0, col));
+			boxSampling->setValue(dx > 0.0 ? dx : 1.0);
+		} else {
+			boxSampling->setValue(1.0);
+		}
 	} else if (graph){
 		PlotCurve *c = graph->curve(s);
 		if (!c)
 			return;
-		boxSampling->setValue(c->x(1) - c->x(0));
+		if (c->dataSize() >= 2) {
+			double dx = fabs(c->x(1) - c->x(0));
+			boxSampling->setValue(dx > 0.0 ? dx : 1.0);
+		} else {
+			boxSampling->setValue(1.0);
+		}
 	}
 }
 
@@ -242,7 +252,12 @@ void FFTDialog::setTable(Table *t)
 	int xcol = t->firstXCol();
 	if (xcol >= 0){
 		boxName->setCurrentIndex(xcol);
-		boxSampling->setValue(d_table->cell(1, xcol) - d_table->cell(0, xcol));
+		if (d_table->numRows() >= 2) {
+			double dx = fabs(d_table->cell(1, xcol) - d_table->cell(0, xcol));
+			boxSampling->setValue(dx > 0.0 ? dx : 1.0);
+		} else {
+			boxSampling->setValue(1.0);
+		}
 	}
 
 	l = t->selectedColumns();

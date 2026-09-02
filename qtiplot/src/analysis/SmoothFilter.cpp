@@ -128,12 +128,19 @@ void SmoothFilter::calculateOutputData(double *x, double *y)
 
 void SmoothFilter::smoothFFT(double *x, double *y)
 {
+	if (d_n < 2 || d_smooth_points <= 0)
+		return;
+
+	double dx = x[1] - x[0];
+	if (fabs(dx) <= 0.0)
+		return;
+
 	gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
 	gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
 	gsl_fft_real_transform (y, 1, d_n, real, work);//FFT forward
 	gsl_fft_real_wavetable_free (real);
 
-	double df = 1.0/(double)(x[1] - x[0]);
+	double df = 1.0/(double)dx;
 	double lf = df/(double)d_smooth_points;//frequency cutoff
 	df = 0.5*df/(double)d_n;
 

@@ -638,7 +638,7 @@ bool Matrix::canCalculate(bool useMuParser)
 		return false;
 
 	if (useMuParser){
-    	muParserScript *mup = new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName()));
+    	std::unique_ptr<muParserScript> mup(new muParserScript(scriptEnv, formula_str, this, QString("<%1>").arg(objectName())));
     	double *ri = mup->defineVariable("i");
     	double *rr = mup->defineVariable("row");
     	double *cj = mup->defineVariable("j");
@@ -662,9 +662,9 @@ bool Matrix::canCalculate(bool useMuParser)
 				return false;
 		}
 	} else {
-		Script *script = scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName()));
-		connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
-		connect(script, &Script::print, scriptEnv, &ScriptingEnv::print);
+		std::unique_ptr<Script> script(scriptEnv->newScript(formula_str, this, QString("<%1>").arg(objectName())));
+		connect(script.get(), &Script::error, scriptEnv, &ScriptingEnv::error);
+		connect(script.get(), &Script::print, scriptEnv, &ScriptingEnv::print);
 		if (!script->compile())
 			return false;
 
@@ -759,9 +759,18 @@ void Matrix::copySelection()
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	QString s = "";
 	QString eol = applicationWindow()->endOfLine();
+	QLocale clipLoc = applicationWindow()->clipboardLocale();
+
+	auto matrixCellForClipboard = [this, &clipLoc](int r, int c) -> QString {
+		double val = d_matrix_model->cell(r, c);
+		if (std::isnan(val))
+			return QString();
+		return clipLoc.toString(val, textFormat().toLatin1(), precision());
+	};
+
 	if (!selModel->hasSelection()){
 		QModelIndex index = selModel->currentIndex();
-		s = text(index.row(), index.column());
+		s = matrixCellForClipboard(index.row(), index.column());
 	} else {
 		QItemSelection sel = selModel->selection();
 		QListIterator<QItemSelectionRange> it(sel);
@@ -775,8 +784,8 @@ void Matrix::copySelection()
 		int right = cur.right();
 		for(int i=top; i<=bottom; i++){
 			for(int j=left; j<right; j++)
-				s += d_matrix_model->text(i, j) + "\t";
-			s += d_matrix_model->text(i,right) + eol;
+				s += matrixCellForClipboard(i, j) + "\t";
+			s += matrixCellForClipboard(i, right) + eol;
 		}
 	}
 	// Copy text into the clipboard

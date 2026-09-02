@@ -808,9 +808,9 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	Script *colscript = scriptEnv->newScript(cmd, this,  QString("<%1>").arg(colName(col)));
-	connect(colscript, &Script::error, scriptEnv, &ScriptingEnv::error);
-	connect(colscript, &Script::print, scriptEnv, &ScriptingEnv::print);
+	std::unique_ptr<Script> colscript(scriptEnv->newScript(cmd, this,  QString("<%1>").arg(colName(col))));
+	connect(colscript.get(), &Script::error, scriptEnv, &ScriptingEnv::error);
+	connect(colscript.get(), &Script::print, scriptEnv, &ScriptingEnv::print);
 
 	if (!colscript->compile()){
 		QApplication::restoreOverrideCursor();
@@ -888,7 +888,7 @@ Table* Table::extractData(const QString& name, const QString& condition, int sta
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	muParserScript *mup = new muParserScript(scriptEnv, condition, this,  QString("<%1>").arg(this->objectName()));
+	std::unique_ptr<muParserScript> mup(new muParserScript(scriptEnv, condition, this,  QString("<%1>").arg(this->objectName())));
 	double *r = mup->defineVariable("i");
 	mup->defineVariable("sr", startRow + 1.0);
 	mup->defineVariable("er", endRow + 1.0);
@@ -1776,6 +1776,20 @@ void Table::copySelection()
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
 	QString eol = applicationWindow()->endOfLine();
+	QLocale clipLoc = applicationWindow()->clipboardLocale();
+
+	auto cellTextForClipboard = [this, &clipLoc](int r, int c) -> QString {
+		if (c >= 0 && c < colTypes.size() && colTypes[c] == Table::Numeric) {
+			QString t = d_table->text(r, c);
+			if (t.isEmpty())
+				return QString();
+			char format;
+			int prec;
+			columnNumericFormat(c, &format, &prec);
+			return clipLoc.toString(this->cell(r, c), format, prec);
+		}
+		return d_table->text(r, c);
+	};
 
 	QVarLengthArray<int> selection(1);
 	int c = 0;
@@ -1789,24 +1803,24 @@ void Table::copySelection()
 	if (c > 0){
 		for (int i = 0; i<rows; i++){
 			for (int j = 0; j<c-1; j++)
-				text += d_table->text(i, selection[j]) + "\t";
-			text += d_table->text(i, selection[c-1]) + eol;
+				text += cellTextForClipboard(i, selection[j]) + "\t";
+			text += cellTextForClipboard(i, selection[c-1]) + eol;
 		}
 	} else {
 		QTableWidgetSelectionRange sel = d_table->selectedRanges().isEmpty() ? QTableWidgetSelectionRange() : d_table->selectedRanges()[0];
 		int right = sel.rightColumn();
 		int bottom = sel.bottomRow();
 		if (right < 0 || bottom < 0)
-			text = d_table->text(d_table->currentRow(), d_table->currentColumn());
+			text = cellTextForClipboard(d_table->currentRow(), d_table->currentColumn());
 		else {
 			for (int i = sel.topRow(); i<bottom; i++){
 				for (int j = sel.leftColumn(); j<right; j++)
-					text += d_table->text(i, j) + "\t";
-				text += d_table->text(i, right) + eol;
+					text += cellTextForClipboard(i, j) + "\t";
+				text += cellTextForClipboard(i, right) + eol;
 			}
 			for (int j = sel.leftColumn(); j<right; j++)
-				text += d_table->text(bottom, j) + "\t";
-			text += d_table->text(bottom, right);
+				text += cellTextForClipboard(bottom, j) + "\t";
+			text += cellTextForClipboard(bottom, right);
 		}
 	}
 

@@ -115,7 +115,8 @@ void FFT::fftCurve()
 		return;
 	}
 
-	double df = 1.0/(double)(d_n*d_sampling);//frequency sampling
+	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
+	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	if(!d_inverse){
 		gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
@@ -203,7 +204,8 @@ void FFT::fftTable()
 		return;
 	}
 
-	double df = 1.0/(double)(d_n*d_sampling);//frequency sampling
+	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
+	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	if(d_inverse)
 		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable, workspace);

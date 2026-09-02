@@ -903,9 +903,9 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	ScriptingEnv *scriptEnv = d_matrix->scriptingEnv();
-	Script *script = scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(objectName()));
-	connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
-	connect(script, &Script::print, scriptEnv, &ScriptingEnv::print);
+	std::unique_ptr<Script> script(scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(objectName())));
+	connect(script.get(), &Script::error, scriptEnv, &ScriptingEnv::error);
+	connect(script.get(), &Script::print, scriptEnv, &ScriptingEnv::print);
 
 	if (!script->compile()){
 		QApplication::restoreOverrideCursor();
