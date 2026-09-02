@@ -151,7 +151,7 @@ void Table::init(int rows, int cols)
 	// updated in MyTable::setText and in cellEdited. d_old_cell_text is no longer used.
 
 	d_undo_stack = new QUndoStack(this);
-	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());
+	d_undo_stack->setUndoLimit(100);
 
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
 }
@@ -3411,6 +3411,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	while (!t.atEnd() && row < rows){
 		if (progress.wasCanceled()){
 			f.close();
+			f.remove();
 			return;
 		}
 		s = t.readLine();

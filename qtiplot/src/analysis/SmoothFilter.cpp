@@ -150,7 +150,15 @@ void SmoothFilter::smoothFFT(double *x, double *y)
 
 void SmoothFilter::smoothAverage(double *, double *y)
 {
+	if (d_n <= 1)
+		return;
+
 	int p2 = d_smooth_points/2;
+	if (p2 > (d_n - 1)/2)
+		p2 = (d_n - 1)/2;
+	if (p2 < 1)
+		return;
+
 	double m = double(2*p2+1);
 	double aux = 0.0;
     double *s = new double[d_n];
@@ -315,10 +323,14 @@ void SmoothFilter::smoothSavGol(double *, double *y_inout)
 	}
 
 	// handle right edge by zero padding
-	for (int i = d_n - d_smooth_points; i < d_n; i++){
+	int right_start = qMax(0, d_n - d_smooth_points);
+	for (int i = right_start; i < d_n; i++){
 		double convolution = 0.0;
-		for (int k = 0; i - d_sav_gol_points + k < d_n; k++)
-			convolution += gsl_matrix_get(h, d_sav_gol_points, k) * y_inout[i - d_sav_gol_points + k];
+		for (int k = 0; k < points && i - d_sav_gol_points + k < d_n; k++){
+			int y_idx = i - d_sav_gol_points + k;
+			if (y_idx >= 0 && y_idx < d_n)
+				convolution += gsl_matrix_get(h, d_sav_gol_points, k) * y_inout[y_idx];
+		}
 		result[i] = convolution;
 	}
 

@@ -5260,10 +5260,26 @@ ApplicationWindow* ApplicationWindow::openProject(const QString& fn, bool factor
 
 void ApplicationWindow::executeNotes()
 {
+	QList<Note *> autoNotes;
 	QList<MdiSubWindow *> lst = projectFolder()->windowsList();
-	for (MdiSubWindow *widget : lst)
-		if (widget->inherits("Note") && ((Note*)widget)->autoexec())
-			((Note*)widget)->executeAll();
+	for (MdiSubWindow *widget : lst) {
+		Note *n = qobject_cast<Note *>(widget);
+		if (n && n->autoexec())
+			autoNotes << n;
+	}
+	if (autoNotes.isEmpty())
+		return;
+
+	// In non-interactive or batch test mode (-X), do not execute unprompted
+	if (qApp->arguments().contains("-X"))
+		return;
+
+	if (QMessageBox::question(this, tr("Execute Notes"),
+		tr("This project contains %1 note(s) configured to execute scripts automatically.\nDo you want to execute them now?").arg(autoNotes.size()),
+		QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes) {
+		for (Note *n : autoNotes)
+			n->executeAll();
+	}
 }
 
 void ApplicationWindow::scriptError(const QString &message, const QString &scriptName, int lineNumber)
@@ -5272,10 +5288,14 @@ void ApplicationWindow::scriptError(const QString &message, const QString &scrip
 		fprintf(stderr, "Script Error [%s:%d]: %s\n", scriptName.toUtf8().constData(), lineNumber, message.toUtf8().constData());
 		return;
 	}
-	Q_UNUSED(scriptName);
-	Q_UNUSED(lineNumber);
 
-	QMessageBox::critical(this, tr("QtiPlot") + " - "+ tr("Script Error"), message);
+	QString msg = message;
+	if (!scriptName.isEmpty() && lineNumber > 0)
+		msg = tr("In %1, line %2:\n%3").arg(scriptName).arg(lineNumber).arg(message);
+	else if (lineNumber > 0)
+		msg = tr("Line %1:\n%2").arg(lineNumber).arg(message);
+
+	QMessageBox::critical(this, tr("QtiPlot") + " - "+ tr("Script Error"), msg);
 }
 
 void ApplicationWindow::scriptPrint(const QString &text)

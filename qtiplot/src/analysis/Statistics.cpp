@@ -48,9 +48,10 @@ d_table(0)
 
 bool Statistics::run()
 {
-	if (d_n < 0){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("You didn't specify a valid data set for this operation!"));
+	if (d_n <= 0){
+		if (!qApp->arguments().contains("-X"))
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+					tr("You didn't specify a valid data set for this operation!"));
 		return false;
 	}
 

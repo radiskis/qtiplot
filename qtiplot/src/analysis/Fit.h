@@ -63,7 +63,7 @@ class Fit : public Filter
 
 		//! Actually does the fit. Should be reimplemented in derived classes.
 		virtual void fit();
-        virtual bool run(){fit(); return true;};
+        virtual bool run(){fit(); return !d_init_err;};
 
 		//! Sets the data set to be used for weighting
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString());

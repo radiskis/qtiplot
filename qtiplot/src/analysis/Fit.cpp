@@ -938,9 +938,11 @@ void Fit::fit()
 				tr("There are no parameters specified for this fit operation. Operation aborted!"));
 		return;
 	}
-	if (d_p > d_n){
-  		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-  	    tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p));
+	if (d_p >= d_n){
+		d_init_err = true;
+		if (!qApp->arguments().contains("-X"))
+  			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+  	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
   	    return;
   	}
 	if (d_formula.isEmpty()){

@@ -120,9 +120,11 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 */
 
 #include <QtPlugin>
+#include <gsl/gsl_errno.h>
 
 int main( int argc, char ** argv )
 {
+	gsl_set_error_handler_off();
 
 //	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
 //	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);

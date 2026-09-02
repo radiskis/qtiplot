@@ -45,25 +45,13 @@ d_range(other.intensityRange())
 LinearColorMap& LinearColorMap::operator=(const LinearColorMap& other)
 {
 	if (this != &other) {
-		// Since QwtLinearColorMap doesn't have an assignment operator, we have to re-initialize or set properties
-		// Actually, QwtColorMap doesn't have a way to reset everything easily except by re-creation or setting parts.
-		// For QwtLinearColorMap, we can set color1, color2, format and stops.
-		// However, it's easier to use the copy constructor logic if we were using pointers.
-		// But here we are already an object.
-		
-		// In Qwt 6.1, QwtLinearColorMap has methods to set these.
-		// But wait, there are no setColor1/setColor2.
-		// We might need to use the constructor logic by placement new or just copy what we can.
-		
-		// Actually, Qwt 6.2+ might have more methods. 
-		// If we can't assign, we might have a problem.
-		
-		// Let's try to use what's available. 
-		// If we can't, maybe we should change how LinearColorMap is used.
-		
-		// Wait, I can't easily assign a QwtLinearColorMap if it doesn't provide setters for color1/color2.
-		// Let's check Qwt documentation or headers again.
-		// Qwt 6.1: no setColor1, setColor2.
+		setColorInterval(other.color1(), other.color2());
+		setMode(other.mode());
+		setFormat(other.format());
+		d_range = other.intensityRange();
+		QVector<double> stops = other.colorStops();
+		for (int i = 1; i < stops.size() - 1; i++)
+			addColorStop(stops[i], QColor(other.rgb(QwtInterval(0, 1), stops[i])));
 	}
 	return *this;
 }

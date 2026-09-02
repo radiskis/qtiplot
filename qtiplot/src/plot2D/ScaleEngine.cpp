@@ -92,7 +92,7 @@ double ScaleTransformation::transform(double s) const
     */
     
     if (s <= 0.0 && d_engine->type() != ScaleTransformation::Linear)
-        return -DBL_MAX; // Or some handling for log(<=0)
+        return qQNaN();
 
 	ScaleTransformation::Type d_type = d_engine->type();
 

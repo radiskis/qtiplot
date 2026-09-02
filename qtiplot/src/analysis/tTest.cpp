@@ -56,7 +56,7 @@ int tTest::dof()
 double tTest::t()
 {
 	if (!d_n)
-		return 0.0;
+		return qQNaN();
 
 	if (d_sample2)
 		return (d_diff - d_test_val)/d_s12;
@@ -72,7 +72,7 @@ double tTest::t(int size)
 double tTest::pValue()
 {
 	if (!d_n)
-		return 0.0;
+		return qQNaN();
 
 	double p = gsl_cdf_tdist_P(t(), dof());
 	switch(d_tail){

@@ -178,8 +178,7 @@ void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 		res[n-m2+i] = dres[i];
 	}
 
-	if(m2%2==1)
-		res[m2]=dres[m-1];
+	res[m2] = dres[m-1];
 
 	// calculate ffts
 	gsl_fft_real_radix2_transform(res,1,n);

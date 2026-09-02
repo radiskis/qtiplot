@@ -622,8 +622,10 @@ void PreviewTable::importASCII(const QString &fname, const QString &sep, int ign
 		return;
 
 	QFile f(name);
-	if (!f.open(QIODevice::ReadOnly))
+	if (!f.open(QIODevice::ReadOnly)){
+		f.remove();
 		return;
+	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

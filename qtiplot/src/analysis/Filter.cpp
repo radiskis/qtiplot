@@ -126,13 +126,15 @@ void Filter::setDataCurve(PlotCurve *curve, double start, double end)
     	d_n = curveData(d_curve, start, end, &d_x, &d_y);
 
 	if (d_n == -1){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("Several data points have the same x value causing divisions by zero, operation aborted!"));
+		if (!qApp->arguments().contains("-X"))
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+					tr("Several data points have the same x value causing divisions by zero, operation aborted!"));
 		d_init_err = true;
         return;
 	}else if (d_n < d_min_points){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
+		if (!qApp->arguments().contains("-X"))
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+					tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
 		d_init_err = true;
         return;
 	}
@@ -277,9 +279,10 @@ bool Filter::run()
 	if (d_init_err)
 		return false;
 
-	if (d_n < 0){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-				tr("You didn't specify a valid data set for this operation!"));
+	if (d_n <= 0 || d_n < d_min_points){
+		if (!qApp->arguments().contains("-X"))
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+					tr("You didn't specify a valid data set for this operation!"));
 		return false;
 	}
 
@@ -552,8 +555,9 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	}
 
 	if (size < d_min_points){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-		tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
+		if (!qApp->arguments().contains("-X"))
+			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+			tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
         return false;
 	}
 

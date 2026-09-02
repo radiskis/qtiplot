@@ -82,7 +82,11 @@ void Differentiation::init()
 
 void Differentiation::output()
 {
+	if (d_n < 3)
+		return;
+
     double *result = new double[d_n - 1];
+    result[0] = 0.0;
 	for (int i = 1; i < d_n - 1; i++){
 		double xl = d_x[i - 1];
 		double xc = d_x[i];

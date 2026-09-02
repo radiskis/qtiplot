@@ -619,7 +619,7 @@ void Graph3D::addData(Table* table, int xCol, int yCol, int zCol, int type)
 }
 
 void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
-		double xl, double xr, double yl, double yr, double zl, double zr, int /*axis*/)
+		double xl, double xr, double yl, double yr, double zl, double zr, int axis)
 {
 	if (!table || xCol < 0 || yCol < 0 || zCol < 0)
 		return;
@@ -635,6 +635,13 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 	if (xl == xr && yl == yr && zl == zr)
 		check_limits = false;
 
+	double xmin = qMin(xl, xr);
+	double xmax = qMax(xl, xr);
+	double ymin = qMin(yl, yr);
+	double ymax = qMax(yl, yr);
+	double zmin = qMin(zl, zr);
+	double zmax = qMax(zl, zr);
+
 	Qwt3D::TripleField data;
 	Qwt3D::CellField cells;
 	int index = 0;
@@ -644,12 +651,9 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 			double y = table->cell(i, yCol);
 			double z = table->cell(i, zCol);
 
-			/*if (check_limits &&
-			   ((axis < 0 && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr)) ||
-			   (axis == 0 && (x < xl || x > xr)) || (axis == 1 && (y < yl || y > yr)) || (axis == 2 && (z < zl || z > zr))))
-				continue;*/
-
-			if (check_limits && (x < xl || x > xr || y < yl || y > yr || z < zl || z > zr))
+			if (check_limits &&
+			   ((axis < 0 && (x < xmin || x > xmax || y < ymin || y > ymax || z < zmin || z > zmax)) ||
+			   (axis == 0 && (x < xmin || x > xmax)) || (axis == 1 && (y < ymin || y > ymax)) || (axis == 2 && (z < zmin || z > zmax))))
 				continue;
 
 			data.push_back (Triple(x, y, z));
@@ -1511,9 +1515,12 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 	sp->coordinates()->setPosition(Triple(xl, yl, zmin), Triple(xr, yr, zmax));
 
 	if (xmin > xEnd || xmax < xStart || ymin > yEnd || ymax < yStart || zmin > zEnd || zmax < zStart){
-		if (d_active_curve)
-			delete d_active_curve;
-		d_active_curve = 0;
+		if (d_active_curve){
+			Qwt3D::TripleField data;
+			Qwt3D::CellField cells;
+			sp->loadFromData(data, cells);
+			d_active_curve = 0;
+		}
 
 		changeScales(xl, xr, yl, yr, zl, zr);
 		update();

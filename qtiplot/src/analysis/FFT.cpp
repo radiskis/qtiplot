@@ -147,12 +147,16 @@ void FFT::fftCurve()
 	}
 
 	if (d_shift_order){
-		for(int i = 0; i < d_n; i++){
-			d_x[i] = (i - n2)*df;
-			int j = i + d_n;
-			double aux = result[i];
-			result[i] = result[j];
-			result[j] = aux;
+		double *temp = (double *)malloc(2*d_n*sizeof(double));
+		if (temp) {
+			for (int i = 0; i < d_n; i++) {
+				d_x[i] = (i - n2)*df;
+				int src = (i + (d_n - n2)) % d_n;
+				temp[2*i] = result[2*src];
+				temp[2*i + 1] = result[2*src + 1];
+			}
+			memcpy(result, temp, 2*d_n*sizeof(double));
+			free(temp);
 		}
 	} else {
 		for(int i = 0; i < d_n; i++)
@@ -177,11 +181,11 @@ void FFT::fftCurve()
 		d_result_table->setText(i, 0, locale.toString(d_x[i], 'g', prec));
 		d_result_table->setText(i, 1, locale.toString(result[i2], 'g', prec));
 		d_result_table->setText(i, 2, locale.toString(result[i2 + 1], 'g', prec));
-		if (d_normalize)
+		if (d_normalize && aMax > 0.0)
 			d_result_table->setText(i, 3, locale.toString(amp[i]/aMax, 'g', prec));
 		else
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
-		d_result_table->setText(i, 4, locale.toString(atan(result[i2 + 1]/result[i2]), 'g', prec));
+		d_result_table->setText(i, 4, locale.toString(atan2(result[i2 + 1], result[i2]), 'g', prec));
 	}
 
 	free(amp);
@@ -211,12 +215,16 @@ void FFT::fftTable()
 
 	if (d_shift_order) {
 		int n2 = d_n/2;
-		for(int i = 0; i < d_n; i++) {
-			d_x[i] = (i - n2)*df;
-			int j = i + d_n;
-			double aux = d_y[i];
-			d_y[i] = d_y[j];
-			d_y[j] = aux;
+		double *temp = (double *)malloc(2*d_n*sizeof(double));
+		if (temp) {
+			for (int i = 0; i < d_n; i++) {
+				d_x[i] = (i - n2)*df;
+				int src = (i + (d_n - n2)) % d_n;
+				temp[2*i] = d_y[2*src];
+				temp[2*i + 1] = d_y[2*src + 1];
+			}
+			memcpy(d_y, temp, 2*d_n*sizeof(double));
+			free(temp);
 		}
 	} else {
 		for(int i = 0; i < d_n; i++)
@@ -239,11 +247,11 @@ void FFT::fftTable()
 		d_result_table->setText(i, 0, locale.toString(d_x[i], 'g', prec));
 		d_result_table->setText(i, 1, locale.toString(d_y[i2], 'g', prec));
 		d_result_table->setText(i, 2, locale.toString(d_y[i2 + 1], 'g', prec));
-		if (d_normalize)
+		if (d_normalize && aMax > 0.0)
 			d_result_table->setText(i, 3, locale.toString(amp[i]/aMax, 'g', prec));
 		else
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
-		d_result_table->setText(i, 4, locale.toString(atan(d_y[i2 + 1]/d_y[i2]), 'g', prec));
+		d_result_table->setText(i, 4, locale.toString(atan2(d_y[i2 + 1], d_y[i2]), 'g', prec));
 	}
 	free(amp);
 }
@@ -295,7 +303,7 @@ void FFT::outputGraphs()
 	MultiLayer *ml = d_output_graph->multiLayer();
 
 	d_output_graph->setTitle(QString());
-	d_output_graph->setYAxisTitle(tr("Angle (deg)"));
+	d_output_graph->setYAxisTitle(tr("Phase (rad)"));
 	d_output_graph->enableAxis(QwtPlot::xTop, true);
 	d_output_graph->enableAxis(QwtPlot::yRight, true);
 	if (!d_inverse)

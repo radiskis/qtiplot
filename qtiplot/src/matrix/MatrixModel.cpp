@@ -500,8 +500,10 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 	if (name.isEmpty())
 		return false;
 	QFile f(name);
-	if (!f.open(QIODevice::ReadOnly))
+	if (!f.open(QIODevice::ReadOnly)){
+		f.remove();
 		return false;
+	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 

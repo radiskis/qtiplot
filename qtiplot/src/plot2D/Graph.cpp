@@ -2215,11 +2215,7 @@ void Graph::updateCurvesData(Table* w, const QString& yColName)
 	}
 
     if (updated_curves){
-        for (int i = 0; i < QwtPlot::axisCnt; i++){
-			QwtScaleWidget *scale = axisWidget(i);
-			if (scale)
-                connect(scale, &QwtScaleWidget::scaleDivChanged, this, [this](){ updateMarkersBoundingRect(); });
-		}
+        updateMarkersBoundingRect();
         updatePlot();
     }
 }
@@ -4002,6 +3998,7 @@ void Graph::removeCurve(QwtPlotItem *it)
 
 	it->detach();
 	d_curves.removeAll(it);
+	delete it;
 	emit modifiedGraph();
 }
 
