@@ -413,8 +413,15 @@ double Fit::rSquare()
 		dy = y - mean;
 		sst += w*dy*dy;
 	}
-	d_adjusted_r_square = 1 - d_rss*(d_n - 1)/(sst*(d_n - d_p - 1));
-	return 1 - d_rss/sst;
+	if (sst <= 0.0) {
+		d_adjusted_r_square = qQNaN();
+		return qQNaN();
+	}
+	if (d_n - d_p - 1 > 0)
+		d_adjusted_r_square = 1.0 - d_rss*(d_n - 1)/(sst*(d_n - d_p - 1));
+	else
+		d_adjusted_r_square = qQNaN();
+	return 1.0 - d_rss/sst;
 }
 
 QString Fit::legendInfo()

@@ -43,8 +43,8 @@
 
 ShapiroWilkTest::ShapiroWilkTest(ApplicationWindow *parent, const QString& sample)
 : StatisticTest(parent, 0.0, 0.05, sample),
-d_w(0.0),
-d_pValue(0.0)
+d_w(qQNaN()),
+d_pValue(qQNaN())
 {
 	if (d_n < 3 || d_n > 5000){
 		QMessageBox::critical(parent, QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
@@ -119,7 +119,9 @@ QString ShapiroWilkTest::infoString(bool header)
 		val += aux + QString(spaces, QLatin1Char(' '));
 	}
 
-	if (d_pValue >= d_significance_level)
+	if (std::isnan(d_pValue))
+		val += QObject::tr("Test could not be evaluated (sample size must be between 3 and 5000)");
+	else if (d_pValue >= d_significance_level)
 		val += QObject::tr("Normal at %1 level").arg(l.toString(d_significance_level));
 	else
 		val += QObject::tr("Not normal at %1 level").arg(l.toString(d_significance_level));

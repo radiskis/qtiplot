@@ -496,6 +496,7 @@ public slots:
 	QString columnFormat(int col){return col_format[col];};
 	QStringList getColumnsFormat(){return col_format;};
 	void setColumnsFormat(const QStringList& lst);
+	void setColumnFormat(int col, const QString &f){if (col >= 0 && col < col_format.size()) col_format[col] = f;};
 
 	void setTextFormat(int col, bool pushUndo = true);
 	void setColNumericFormat(int col, bool pushUndo = true);

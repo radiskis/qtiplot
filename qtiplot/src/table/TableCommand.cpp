@@ -351,7 +351,11 @@ void TableDeleteColsCommand::undo()
 		d_table->setColComment(col, d_comments[i], false);
 		d_table->setColumnType(col, (Table::ColType)d_types[i], false);
 		d_table->setColPlotDesignation(col, (Table::PlotDesignation)d_plot_types[i], false);
-		d_table->setColumnWidth(col, d_widths[i].toInt()); // This needs pushUndo = false too
+		d_table->setColumnWidth(col, d_widths[i].toInt());
+		if (i < d_formats.size())
+			d_table->setColumnFormat(col, d_formats[i]);
+		if (i < d_commands.size())
+			d_table->setCommand(col, d_commands[i]);
         
         QStringList colData = d_cell_data[i];
         for (int row = 0; row < colData.count(); row++)

@@ -213,6 +213,11 @@ QString tTest::logInfo()
 	s += sep1;
 	s += "\n";
 
+	if (std::isnan(pval)) {
+		s += QObject::tr("At the %1 level, the test could not be evaluated (empty dataset).\n").arg(l.toString(d_significance_level, 'g', 6));
+		return s;
+	}
+
 	if (d_sample2)
 		s += QObject::tr("At the %1 level, the difference of the population means").arg(l.toString(d_significance_level, 'g', 6)) + " ";
 	else

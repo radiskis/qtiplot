@@ -43,7 +43,7 @@ ChiSquareTest::ChiSquareTest(ApplicationWindow *parent, double testValue, double
 double ChiSquareTest::chiSquare()
 {
 	if (!d_n)
-		return 0.0;
+		return qQNaN();
 
 	return (d_n - 1)*d_variance/d_test_val;
 }
@@ -51,7 +51,7 @@ double ChiSquareTest::chiSquare()
 double ChiSquareTest::pValue()
 {
 	if (!d_n)
-		return 0.0;
+		return qQNaN();
 
 	double p = gsl_cdf_chisq_P(chiSquare(), dof());
 	switch(d_tail){
@@ -136,6 +136,11 @@ QString ChiSquareTest::logInfo()
 	s += l.toString(chiSquare(), 'g', p) + sep + QString::number(dof()) + sep + l.toString(pval, 'g', p) +  + "\n";
 	s += sep1;
 	s += "\n";
+
+	if (std::isnan(pval)) {
+		s += QObject::tr("At the %1 level, the test could not be evaluated (empty dataset).\n").arg(l.toString(d_significance_level, 'g', 6));
+		return s;
+	}
 
 	s += QObject::tr("At the %1 level, the population variance").arg(l.toString(d_significance_level, 'g', 6)) + " ";
 	if (pval < d_significance_level)
