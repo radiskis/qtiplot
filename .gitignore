@@ -39,3 +39,4 @@ all_show_calls.txt
 gsl_*.txt
 pow_int_syms.txt
 qwt3d_syms.txt
+*.exe
