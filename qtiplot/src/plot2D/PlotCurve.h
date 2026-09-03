@@ -36,6 +36,7 @@
 #include <qwt_plot_marker.h> // Keeping this as PlotMarker class is defined later
 #include <Table.h>
 #include <Tracked.h>
+#include "Ref.h"
 
 class PlotMarker;
 class Table;
@@ -213,9 +214,9 @@ protected:
 	//! List of the error bar curves associated to this curve.
 	QList <ErrorBarsCurve *> d_error_bars;
 	//! The data source table.
-	Table *d_table;
+	Ref<Table> d_table;
 	//! The data source table in case X and Y datasets are from different tables.
-	Table *d_x_table;
+	Ref<Table> d_x_table;
 	//!\brief The name of the column used for abscissae values.
 	/*
 	 *The column name used for Y values is stored in title().text().
