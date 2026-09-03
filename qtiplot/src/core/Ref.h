@@ -56,6 +56,11 @@ public:
 		return *get();
 	}
 
+	operator T*() const
+	{
+		return get();
+	}
+
 	explicit operator bool() const
 	{
 		return get() != nullptr;

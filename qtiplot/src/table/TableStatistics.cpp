@@ -102,6 +102,7 @@ void TableStatistics::setBase(Table *t)
 
 	d_base = t;
 	d_base_name = d_base->objectName();
+	ObjectRegistry::instance()->addDependency(objectId(), d_base->objectId());
 
 	if (d_type == row){
 		if (d_end < 0)

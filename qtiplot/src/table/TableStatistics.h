@@ -31,6 +31,7 @@
 #define TABLE_STATISTICS_H
 
 #include "Table.h"
+#include "Ref.h"
 
 /*!\brief Table that computes and displays statistics on another Table.
  *
@@ -49,7 +50,7 @@ class TableStatistics : public Table
 		//! return the type of statistics
 		Type type() const { return d_type; }
 		//! return the base table of which statistics are displayed
-		Table *base() const { return d_base; }
+		Table *base() const { return d_base.get(); }
 		void setBase(Table *t);
 		// saving
 		virtual void save(const QString&, const QString &geometry, bool = false);
@@ -78,7 +79,7 @@ class TableStatistics : public Table
 		void addCol(PlotDesignation pd = Y);
 	
 	private:
-		Table *d_base;
+		Ref<Table> d_base;
 		Type d_type;
 		QList<int> d_targets;
 		QList<int> d_stats_col_type;
