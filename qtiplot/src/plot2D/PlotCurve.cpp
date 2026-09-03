@@ -496,6 +496,23 @@ void DataCurve::updateColumnNames(const QString& oldName, const QString& newName
 	}
 }
 
+bool DataCurve::hasAssociation(const QString& name) const
+{
+	if (name.isEmpty())
+		return false;
+
+	if (title().text() == name || title().text().endsWith("_" + name))
+		return true;
+
+	if (!d_x_column.isEmpty() && (d_x_column == name || d_x_column.endsWith("_" + name)))
+		return true;
+
+	if (!d_labels_column.isEmpty() && (d_labels_column == name || d_labels_column.endsWith("_" + name)))
+		return true;
+
+	return false;
+}
+
 bool DataCurve::updateData(Table *t, const QString& colName)
 {
 	if (d_table != t || (colName != title().text() && colName != d_x_column && colName != d_labels_column))

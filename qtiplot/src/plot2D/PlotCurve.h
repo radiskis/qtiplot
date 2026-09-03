@@ -183,6 +183,7 @@ public:
 	 */
 	virtual QStringList plotAssociation();
 	virtual void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
+	bool hasAssociation(const QString& name) const;
 
 	//! The list of attached error bars.
 	QList<ErrorBarsCurve *> errorBarsList(){return d_error_bars;};

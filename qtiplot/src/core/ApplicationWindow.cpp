@@ -4147,8 +4147,9 @@ void ApplicationWindow::removeCurves(const QString& name)
 			for (Graph *g : layers)
                 g->removeCurves(name);
 		} else if (w->inherits("Graph3D")){
-			if ( (((Graph3D*)w)->formula()).contains(name) )
-				((Graph3D*)w)->clearData();
+			Graph3D *g3d = (Graph3D*)w;
+			if (g3d->hasAssociation(name))
+				g3d->clearData();
 		}
 	}
 
@@ -4166,7 +4167,7 @@ void ApplicationWindow::updateCurves(Table *t, const QString& name)
                 g->updateCurvesData(t, name);
 		} else if (w->inherits("Graph3D")){
 			Graph3D* g = (Graph3D*)w;
-			if ((g->formula()).contains(name))
+			if (g->table() == t && g->hasAssociation(name))
 				g->updateData(t);
 		}
 	}

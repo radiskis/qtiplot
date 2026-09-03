@@ -394,6 +394,7 @@ public slots:
 	Matrix* functionMatrix();
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
+	bool hasAssociation(const QString& name) const;
 
 	void setAntialiasing(bool smooth = true);
 	bool antialiasing(){if (d_active_curve) return d_active_curve->smoothDataMesh(); return false;};

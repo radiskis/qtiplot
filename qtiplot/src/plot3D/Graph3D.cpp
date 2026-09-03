@@ -2565,6 +2565,22 @@ QString Graph3D::formula()
 		return plotAssociation;
 }
 
+bool Graph3D::hasAssociation(const QString& name) const
+{
+	if (d_func || !d_table || name.isEmpty())
+		return false;
+
+	QStringList tokens = plotAssociation.split(",", Qt::SkipEmptyParts);
+	for (const QString& token : tokens){
+		QString col = token.trimmed();
+		if (col.endsWith("(X)") || col.endsWith("(Y)") || col.endsWith("(Z)"))
+			col.chop(3);
+		if (col == name || col.endsWith("_" + name))
+			return true;
+	}
+	return false;
+}
+
 void Graph3D::save(const QString &fn, const QString &geometry, bool)
 {
 	QFile f(fn);

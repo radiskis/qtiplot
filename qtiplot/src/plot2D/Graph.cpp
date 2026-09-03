@@ -3938,7 +3938,8 @@ void Graph::removeCurves(const QString& s)
         if (((PlotCurve *)it)->type() == Function)
             continue;
 
-		if(((DataCurve *)it)->plotAssociation().join(",").contains(s))
+		DataCurve *dc = (DataCurve *)it;
+		if(dc->hasAssociation(s))
             removeCurve(d_curves.indexOf(it));
 	}
 	replot();
@@ -5799,7 +5800,7 @@ void Graph::updateCurveNames(const QString& oldName, const QString& newName, boo
             continue;
 
         DataCurve *c = (DataCurve *)it;
-		if (c->type() != Function && c->plotAssociation().join(",").contains(oldName))
+		if (c->type() != Function && c->hasAssociation(oldName))
             c->updateColumnNames(oldName, newName, updateTableName);
 	}
 
