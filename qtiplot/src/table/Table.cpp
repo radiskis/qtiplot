@@ -1725,20 +1725,17 @@ void Table::clearSelection()
 		}
 		if (lstReadOnly.count() > 0){
 			QMessageBox::warning(this, tr("QtiPlot - Error"),
-        	tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
+        	tr("The following columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
     	}
+		d_undo_stack->beginMacro(tr("Clear Columns"));
 		for (int i = 0; i < n; i++){
 			selectedCol = colIndex(list[i]);
 			clearCol();
 		}
+		d_undo_stack->endMacro();
 	} else {
-		QTableWidgetSelectionRange sel = d_table->selectedRanges().isEmpty() ? QTableWidgetSelectionRange() : d_table->selectedRanges()[0];
-		int top = sel.topRow();
-		int bottom = sel.bottomRow();
-		int left = sel.leftColumn();
-		int right = sel.rightColumn();
-
-		if (sel.rowCount() == 0){
+		QList<QTableWidgetSelectionRange> ranges = d_table->selectedRanges();
+		if (ranges.isEmpty()){
 			int col = d_table->currentColumn();
 			int row = d_table->currentRow();
 			if (col < 0 || row < 0)
@@ -1746,32 +1743,57 @@ void Table::clearSelection()
 
 			clearCell(row, col);
 		} else {
-			QStringList lstReadOnly;
-			for (int i=left; i<=right; i++){
-				QString name = col_label[i];
-				if (d_table->isColumnReadOnly(i))
-					lstReadOnly << name;
-			}
-			if (lstReadOnly.count() > 0){
-				QMessageBox::warning(this, tr("QtiPlot - Error"),
-        		tr("The folowing columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
-    		}
+			bool multiRange = ranges.count() > 1;
+			if (multiRange)
+				d_undo_stack->beginMacro(tr("Clear Cells"));
 
-			d_undo_stack->beginMacro(tr("Clear Cells"));
-			for (int i=left; i<=right; i++){
-				if (d_table->isColumnReadOnly(i))
-					continue;
+			for (const QTableWidgetSelectionRange &sel : ranges) {
+				int top = sel.topRow();
+				int bottom = sel.bottomRow();
+				int left = sel.leftColumn();
+				int right = sel.rightColumn();
 
-				for (int j=top; j<=bottom; j++) {
-					QString old = d_table->text(j, i);
-					if (!old.isEmpty())
-						d_undo_stack->push(new TableEditCellCommand(this, j, i, old, "", tr("Clear Cell")));
+				QStringList lstReadOnly;
+				for (int i=left; i<=right; i++){
+					QString name = col_label[i];
+					if (d_table->isColumnReadOnly(i))
+						lstReadOnly << name;
+				}
+				if (lstReadOnly.count() > 0){
+					QMessageBox::warning(this, tr("QtiPlot - Error"),
+						tr("The following columns")+":\n"+ lstReadOnly.join("\n") + "\n"+ tr("are read only!"));
 				}
 
-				QString name = colName(i);
-				emit modifiedData(this, name);
+				QList<int> colList;
+				QList<QStringList> oldData;
+				QList<QStringList> newData;
+				bool hasNonEmptyCell = false;
+
+				for (int i = left; i <= right; i++){
+					if (d_table->isColumnReadOnly(i))
+						continue;
+
+					colList << i;
+					QStringList oldColData;
+					QStringList newColData;
+					for (int j = top; j <= bottom; j++) {
+						QString old = d_table->text(j, i);
+						if (!old.isEmpty())
+							hasNonEmptyCell = true;
+						oldColData << old;
+						newColData << QString();
+					}
+					oldData << oldColData;
+					newData << newColData;
+				}
+
+				if (hasNonEmptyCell && !colList.isEmpty()){
+					d_undo_stack->push(new TableSetValuesCommand(this, top, bottom, colList, oldData, newData, tr("Clear Cells")));
+				}
 			}
-			d_undo_stack->endMacro();
+
+			if (multiRange)
+				d_undo_stack->endMacro();
 		}
 	}
 	emit modifiedWindow(this);

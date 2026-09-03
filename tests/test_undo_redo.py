@@ -661,4 +661,46 @@ def test_plot_title_undo_redo():
     assert layer.plotTitle() == "New Meaningful Title"
 
 
+def test_table_clear_selection_block_undo_redo():
+    """Test clearing a multi-column and multi-row block of cells:
+    undo() must restore the entire block in a single step, not column by column."""
+    app = qti.app
+    t = app.newTable("TestClearBlock", 10, 4)
+    assert t is not None
+
+    # Fill cells in rows 2..4 and cols 1..3
+    for r in range(2, 5):
+        for c in range(1, 4):
+            t.setText(c, r, f"val_{r}_{c}")
+
+    # Verify initial population
+    for r in range(2, 5):
+        for c in range(1, 4):
+            assert t.text(c, r) == f"val_{r}_{c}"
+
+    # Select the rectangular range: rows 1..3 (0-indexed: top=1, bottom=3), cols 0..2 (left=0, right=2)
+    t.setSelectedRange(1, 0, 3, 2, True)
+
+    # Clear selection (simulating user pressing Delete key or Edit -> Clear)
+    t.clearSelection()
+
+    # All cells in the block must be cleared
+    for r in range(2, 5):
+        for c in range(1, 4):
+            assert t.text(c, r) == ""
+
+    # Calling undo() ONCE must restore ALL cells across all 3 columns simultaneously
+    t.undo()
+    for r in range(2, 5):
+        for c in range(1, 4):
+            assert t.text(c, r) == f"val_{r}_{c}", f"Cell at ({r},{c}) was not restored on single undo!"
+
+    # Calling redo() ONCE must re-clear ALL cells across all 3 columns simultaneously
+    t.redo()
+    for r in range(2, 5):
+        for c in range(1, 4):
+            assert t.text(c, r) == ""
+
+
+
 

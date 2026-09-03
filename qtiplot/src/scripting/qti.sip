@@ -985,6 +985,7 @@ Roles: Table.X, Table.Y, Table.Z, Table.xErr, Table.yErr, Table.Label, Table.Non
 %End
 
 	int selectedColumn();
+	void setSelectedRange(int, int, int, int, bool = true);
 
 	void addCol(PlotDesignation pd = Y)/PyName=addColumn/;
   int addRow();

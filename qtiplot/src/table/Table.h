@@ -140,17 +140,33 @@ public:
 
     void adjustColumn(int col) { resizeColumnToContents(col); }
 
-    bool isRowSelected(int row, bool /*full*/ = false) {
+    bool isRowSelected(int row, bool full = false) {
         QList<QTableWidgetSelectionRange> ranges = selectedRanges();
-        for(int i=0; i<ranges.count(); ++i)
-             if (ranges[i].topRow() <= row && ranges[i].bottomRow() >= row) return true;
+        for(int i=0; i<ranges.count(); ++i) {
+            if (ranges[i].topRow() <= row && ranges[i].bottomRow() >= row) {
+                if (full) {
+                    if (ranges[i].leftColumn() == 0 && ranges[i].rightColumn() == columnCount() - 1)
+                        return true;
+                } else {
+                    return true;
+                }
+            }
+        }
         return false;
     }
     
-    bool isColumnSelected(int col, bool /*full*/ = false) {
+    bool isColumnSelected(int col, bool full = false) {
         QList<QTableWidgetSelectionRange> ranges = selectedRanges();
-        for(int i=0; i<ranges.count(); ++i)
-             if (ranges[i].leftColumn() <= col && ranges[i].rightColumn() >= col) return true;
+        for(int i=0; i<ranges.count(); ++i) {
+            if (ranges[i].leftColumn() <= col && ranges[i].rightColumn() >= col) {
+                if (full) {
+                    if (ranges[i].topRow() == 0 && ranges[i].bottomRow() == rowCount() - 1)
+                        return true;
+                } else {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -492,6 +508,9 @@ public slots:
 	int numSelectedRows();
 	bool isRowSelected(int row, bool full=false) { return d_table->isRowSelected(row, full); }
 	bool isColumnSelected(int col, bool full=false) { return d_table->isColumnSelected(col, full); }
+	void setSelectedRange(int topRow, int leftCol, int bottomRow, int rightCol, bool sel = true) {
+		if (d_table) d_table->setRangeSelected(QTableWidgetSelectionRange(topRow, leftCol, bottomRow, rightCol), sel);
+	}
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
 	//! Scroll to column (column starts with 1)
