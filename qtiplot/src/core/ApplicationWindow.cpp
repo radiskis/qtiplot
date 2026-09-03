@@ -2291,15 +2291,6 @@ void ApplicationWindow::setListView(const QString& caption,const QString& view)
 		items[0]->setText(2, view);
 }
 
-void ApplicationWindow::setListViewSize(const QString& caption,const QString& size)
-{
-	Q_UNUSED(caption);
-	Q_UNUSED(size);
-	/*Q3ListViewItem *it=lv->findItem ( caption,0, Q3ListView::ExactMatch | Qt::CaseSensitive );
-	if (it)
-		it->setText(3, size);*/
-}
-
 QString ApplicationWindow::listViewDate(const QString& caption)
 {
 	QList<QTreeWidgetItem*> items = lv->findItems(caption, Qt::MatchExactly | Qt::MatchCaseSensitive, 0);
@@ -9673,7 +9664,6 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 
 		nw->setWindowLabel(w->windowLabel());
 		nw->setCaptionPolicy(w->captionPolicy());
-		//setListViewSize(nw->objectName(), w->sizeToString());
 	}
 
 	QApplication::restoreOverrideCursor();
