@@ -31,6 +31,7 @@
 
 #include <QDialog>
 #include <StatisticTest.h>
+#include "Ref.h"
 
 class QGroupBox;
 class QComboBox;
@@ -99,8 +100,8 @@ private:
 	QLineEdit *noteNameLineEdit;
 	QCheckBox *showStatisticsBox;
 
-	Table *d_table;
-	Note *d_note;
+	Ref<Table> d_table;
+	Ref<Note> d_note;
 };
 
 #endif

@@ -30,6 +30,7 @@
 #define BASELINE_DIALOG_H
 
 #include <QDialog>
+#include "Ref.h"
 
 class QPushButton;
 class QRadioButton;
@@ -86,7 +87,7 @@ private:
 	QSpinBox* boxPoints;
 
 	PlotCurve *d_baseline;
-	Table *d_table;
+	Ref<Table> d_table;
 	BaselineTool *d_picker_tool;
 };
 

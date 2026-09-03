@@ -31,6 +31,7 @@
 
 #include <QDialog>
 #include <gsl/gsl_vector.h>
+#include "Ref.h"
 
 class QPushButton;
 class DoubleSpinBox;
@@ -50,8 +51,8 @@ private slots:
     void accept();
 
 private:
-    Table *d_source_table;
-    Table *d_result_table;
+    Ref<Table> d_source_table;
+    Ref<Table> d_result_table;
     QString d_col_name;
     gsl_vector *d_col_values;
 	int d_bins;

@@ -30,6 +30,7 @@
 #define INTEGRATIONDIALOG_H
 
 #include <QDialog>
+#include "Ref.h"
 
 class QPushButton;
 class QComboBox;
@@ -61,8 +62,8 @@ private:
 	void integrateCurve();
 	void integrateTable();
 
-	Graph *d_graph;
-	Table *d_table;
+	Ref<Graph> d_graph;
+	Ref<Table> d_table;
 	QPushButton* buttonFit;
 	QPushButton* buttonCancel;
 	QComboBox* boxName;

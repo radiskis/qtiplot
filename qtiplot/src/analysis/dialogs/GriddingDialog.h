@@ -34,6 +34,7 @@
 
 #include <QDialog>
 #include <ap.h>
+#include "Ref.h"
 
 class QGroupBox;
 class QLabel;
@@ -66,7 +67,7 @@ private:
 	void resetAxesLabels();
 	void findBestLayout();
 
-	Table *d_table;
+	Ref<Table> d_table;
 	Qwt3D::SurfacePlot* sp;
 
 	QString d_col_name;

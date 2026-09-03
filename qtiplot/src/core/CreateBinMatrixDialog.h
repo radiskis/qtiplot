@@ -30,6 +30,7 @@
 #define BinMatrixDialog_H
 
 #include <QDialog>
+#include "Ref.h"
 
 class QPushButton;
 class QSpinBox;
@@ -55,7 +56,7 @@ private:
 	QPushButton* buttonCancel;
 	DoubleSpinBox *xMinBox, *xMaxBox, *yMinBox, *yMaxBox;
 	QSpinBox *rowsBox, *colsBox;
-	Table *d_table;
+	Ref<Table> d_table;
 	int d_start_row, d_end_row, d_x_col, d_y_col;
 };
 

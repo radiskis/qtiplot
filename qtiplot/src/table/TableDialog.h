@@ -30,6 +30,7 @@
 #define TABLEDIALOG_H
 
 #include "Table.h"
+#include "Ref.h"
 #include <QDialog>
 #include <QCloseEvent>
 
@@ -75,7 +76,7 @@ private:
 	void setTextFormat(bool allRightColumns);
     void closeEvent( QCloseEvent *);
 
-    Table * d_table;
+    Ref<Table> d_table;
 
     QPushButton* buttonOk;
     QPushButton* buttonCancel;

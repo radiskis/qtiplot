@@ -30,6 +30,7 @@
 #define FFTDIALOG_H
 
 #include <QDialog>
+#include "Ref.h"
 
 class QPushButton;
 class QRadioButton;
@@ -64,8 +65,8 @@ private:
     void fftMatrix();
 	void closeEvent (QCloseEvent *);
 
-	Graph *graph;
-	Table *d_table;
+	Ref<Graph> graph;
+	Ref<Table> d_table;
 	int d_type;
 
 	QPushButton* buttonOK;
