@@ -39,6 +39,7 @@ Description          : 3D graph widget
 #include <Table.h>
 #include <Matrix.h>
 #include <FrameWidget.h>
+#include "Ref.h"
 
 using namespace Qwt3D;
 
@@ -453,8 +454,8 @@ private:
 	bool crossHairSmooth, crossHairBoxed;
 	int conesQuality;
 	PointStyle pointStyle;
-	Table *d_table;
-	Matrix *d_matrix;
+	Ref<Table> d_table;
+	Ref<Matrix> d_matrix;
 	Qwt3D::SurfacePlot* sp;
 	UserFunction *d_func;
 	UserParametricSurface *d_surface;

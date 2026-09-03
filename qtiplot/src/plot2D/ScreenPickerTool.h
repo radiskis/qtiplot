@@ -31,6 +31,7 @@
 
 #include <PlotToolInterface.h>
 #include <DoubleSpinBox.h>
+#include "Ref.h"
 
 #include <QObject>
 #include <QPointer>
@@ -92,7 +93,7 @@ class DrawPointTool : public ScreenPickerTool
         virtual bool eventFilter(QObject *obj, QEvent *event);
 		void appendPoint(const QPointF &point);
 		DataCurve *d_curve;
-		Table *d_table;
+		Ref<Table> d_table;
 		ApplicationWindow *d_app;
 };
 
