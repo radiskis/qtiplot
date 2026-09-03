@@ -33,6 +33,7 @@
 
 #include <ApplicationWindow.h>
 #include "PlotCurve.h"
+#include "Ref.h"
 
 class MultiLayer;
 class Graph;
@@ -147,16 +148,16 @@ class Filter : public QObject
 		MultiLayer* createOutputGraph();
 
 		//! The source graph with the curve to be analyzed
-		Graph *d_graph;
+		Ref<Graph> d_graph;
 
 		//! The graph where the result curve should be displayed
-		Graph *d_output_graph;
+		Ref<Graph> d_output_graph;
 
         //! A table source of data
-		Table *d_table;
+		Ref<Table> d_table;
 
         //! The table displaying the results of the filtering operation (not alvays valid!)
-        Table *d_result_table;
+        Ref<Table> d_result_table;
 
 		//! Size of the data arrays
 		int d_n;

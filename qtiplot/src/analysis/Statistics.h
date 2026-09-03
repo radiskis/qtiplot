@@ -31,6 +31,7 @@
 
 #include <QObject>
 #include <ApplicationWindow.h>
+#include "Ref.h"
 
 class Table;
 
@@ -79,7 +80,7 @@ class Statistics : public QObject
 		//! y data set to be analysed
 		double *d_data;
 		//! A table source of data
-		Table *d_table;
+		Ref<Table> d_table;
 
 		double d_mean;
 		double d_sd;

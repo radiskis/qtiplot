@@ -19,10 +19,25 @@ public:
 			m_id = ObjectRegistry::instance()->registerObject(ptr);
 	}
 
+	Ref(std::nullptr_t) : m_id(NullObjectId) {}
+	Ref(int val) : m_id(val == 0 ? NullObjectId : static_cast<ObjectId>(val)) {}
+
 	Ref(const Ref &other) = default;
 	Ref(Ref &&other) noexcept = default;
 	Ref& operator=(const Ref &other) = default;
 	Ref& operator=(Ref &&other) noexcept = default;
+
+	Ref& operator=(std::nullptr_t)
+	{
+		m_id = NullObjectId;
+		return *this;
+	}
+
+	Ref& operator=(int val)
+	{
+		m_id = (val == 0 ? NullObjectId : static_cast<ObjectId>(val));
+		return *this;
+	}
 
 	Ref& operator=(T *ptr)
 	{
@@ -118,8 +133,27 @@ public:
 		return get() != ptr;
 	}
 
+	bool operator==(T *ptr) const
+	{
+		return get() == ptr;
+	}
+
+	bool operator!=(T *ptr) const
+	{
+		return get() != ptr;
+	}
+
 private:
 	ObjectId m_id;
 };
+
+template <typename T>
+inline bool operator==(const T *ptr, const Ref<T> &ref) { return ref.get() == ptr; }
+template <typename T>
+inline bool operator!=(const T *ptr, const Ref<T> &ref) { return ref.get() != ptr; }
+template <typename T>
+inline bool operator==(T *ptr, const Ref<T> &ref) { return ref.get() == ptr; }
+template <typename T>
+inline bool operator!=(T *ptr, const Ref<T> &ref) { return ref.get() != ptr; }
 
 #endif // REF_H
