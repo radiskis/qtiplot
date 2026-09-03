@@ -11,14 +11,9 @@ else()
 endif()
 
 # --- Sources ---
-# Glob all sources in src/
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-file(GLOB_RECURSE HEADERS "src/*.h")
-file(GLOB_RECURSE UI_FILES "src/*.ui")
-
-# Exclude redundant/duplicate files and plugins
-list(FILTER SOURCES EXCLUDE REGEX "src/plugins")
-list(FILTER HEADERS EXCLUDE REGEX "src/plugins")
+# Explicit source lists (A3)
+include(sources.cmake)
+set(UI_FILES "")
 
 # ANOVA files are now enabled with tamuanova
 # list(FILTER SOURCES EXCLUDE REGEX "src/analysis/Anova.*")
