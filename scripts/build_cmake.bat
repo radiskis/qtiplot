@@ -136,6 +136,12 @@ if exist "%EXE_PATH%" (
     ) else (
         echo Deployment successful!
     )
+    where clang_rt.asan_dynamic-x86_64.dll >nul 2>nul
+    if %errorlevel% equ 0 (
+        for /f "delims=" %%I in ('where clang_rt.asan_dynamic-x86_64.dll') do (
+            copy /y "%%I" "%BUILD_DIR%\qtiplot\" >nul 2>nul
+        )
+    )
 ) else (
     echo Error: qtiplot.exe not found at %EXE_PATH%
     exit /b 1
