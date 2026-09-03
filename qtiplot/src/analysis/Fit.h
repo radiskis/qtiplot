@@ -254,7 +254,7 @@ class Fit : public Filter
 		QPointer <Table> d_param_table;
 
 		//! Matrix window used for the output of covariance matrix
-		Matrix *d_cov_matrix;
+		Ref<Matrix> d_cov_matrix;
 
 		FitType d_fit_type;
 

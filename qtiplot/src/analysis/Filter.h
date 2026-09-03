@@ -212,7 +212,7 @@ class Filter : public QObject
 		bool d_update_output_graph;
 
 		QString d_y_col_name;
-		Matrix *d_matrix;
+		Ref<Matrix> d_matrix;
 };
 
 #endif

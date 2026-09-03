@@ -72,10 +72,10 @@ private:
 
     int d_real_col, d_imag_col;
 
-	Matrix *d_im_matrix;
-	Matrix *d_re_out_matrix;
-	Matrix *d_im_out_matrix;
-	Matrix *d_amp_matrix;
+	Ref<Matrix> d_im_matrix;
+	Ref<Matrix> d_re_out_matrix;
+	Ref<Matrix> d_im_out_matrix;
+	Ref<Matrix> d_amp_matrix;
 	bool d_power2;
 };
 
