@@ -24,7 +24,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libgsl-dev zlib1g-dev python3-sip-dev pybind11-dev
+          sudo apt-get install -y libgsl-dev zlib1g-dev python3-sip-dev pybind11-dev libglu1-mesa-dev libgl1-mesa-dev
       - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
       - run: cmake --build build
       - run: ctest --test-dir build --output-on-failure
+        env:
+          QT_QPA_PLATFORM: offscreen

@@ -39,7 +39,7 @@ else()
   set( QT_VERSION_MAJOR 5 )
 endif()
 
-find_package( OpenGL COMPONENTS OpenGL REQUIRED )
+find_package( OpenGL REQUIRED )
 
 find_library( GL2PS_LIBRARY NAMES gl2ps )
 if( GL2PS_LIBRARY )
@@ -110,8 +110,23 @@ add_library( qwtplot3d ${SRCS} ${HEADERS} )
 target_link_libraries( qwtplot3d
   Qt${QT_VERSION_MAJOR}::Core
   Qt${QT_VERSION_MAJOR}::Gui
-  OpenGL::GLU
   )
+
+if( TARGET OpenGL::GLU )
+  target_link_libraries( qwtplot3d OpenGL::GLU )
+elseif( OPENGL_glu_LIBRARY )
+  target_link_libraries( qwtplot3d ${OPENGL_glu_LIBRARY} )
+elseif( WIN32 )
+  target_link_libraries( qwtplot3d glu32 )
+endif()
+
+if( TARGET OpenGL::GL )
+  target_link_libraries( qwtplot3d OpenGL::GL )
+elseif( OPENGL_gl_LIBRARY )
+  target_link_libraries( qwtplot3d ${OPENGL_gl_LIBRARY} )
+elseif( WIN32 )
+  target_link_libraries( qwtplot3d opengl32 )
+endif()
 
 if( QT_VERSION_MAJOR VERSION_GREATER_EQUAL 6 )
   target_link_libraries( qwtplot3d Qt${QT_VERSION_MAJOR}::OpenGLWidgets )
