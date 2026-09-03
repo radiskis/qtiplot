@@ -74,6 +74,27 @@ public:
         }
     }
 
+    void setRawValue(int r, int c, double val) {
+        QTableWidgetItem *it = item(r, c);
+        if (it)
+            it->setData(Qt::UserRole + 1, val);
+    }
+    void clearRawValue(int r, int c) {
+        QTableWidgetItem *it = item(r, c);
+        if (it)
+            it->setData(Qt::UserRole + 1, QVariant());
+    }
+    bool hasRawValue(int r, int c) const {
+        QTableWidgetItem *it = item(r, c);
+        return it && it->data(Qt::UserRole + 1).isValid();
+    }
+    double rawValue(int r, int c) const {
+        QTableWidgetItem *it = item(r, c);
+        if (it && it->data(Qt::UserRole + 1).isValid())
+            return it->data(Qt::UserRole + 1).toDouble();
+        return 0.0;
+    }
+
     bool isColumnReadOnly(int col) const {
         return d_readOnlyCols.contains(col);
     }

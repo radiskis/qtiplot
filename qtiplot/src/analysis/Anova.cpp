@@ -141,12 +141,7 @@ bool Anova::twoWayANOVA()
 	for (Statistics *sample : d_data_samples)
 		n += sample->dataSize();
 
-	double *data = (double *)malloc(n*sizeof(double));
-	if (!data){
-		QApplication::restoreOverrideCursor();
-		memoryErrorMessage();
-		return false;
-	}
+	std::vector<double> data(n);
 
 	long J[2] = {(long)aLevels.size(), (long)bLevels.size()};
 
@@ -172,9 +167,7 @@ bool Anova::twoWayANOVA()
 		s++;
 	}
 
-	d_att = tamu_anova_twoway(data, f, n, J, d_anova_type);
-
-	free(data);
+	d_att = tamu_anova_twoway(data.data(), f, n, J, d_anova_type);
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -186,13 +179,8 @@ bool Anova::oneWayANOVA()
 	for (Statistics *sample : d_data_samples)
 		n += sample->dataSize();
 
-	long *factor = (long *)malloc(n*sizeof(long));
-	double *data = (double *)malloc(n*sizeof(double));
-	if (!data || !factor){
-		QApplication::restoreOverrideCursor();
-		memoryErrorMessage();
-		return false;
-	}
+	std::vector<long> factor(n);
+	std::vector<double> data(n);
 
 	for (unsigned int i = 0; i < d_n; i++){
 		factor[i] = 1.0;
@@ -212,10 +200,7 @@ bool Anova::oneWayANOVA()
 		}
 	}
 
-	d_at = tamu_anova(data, factor, n, samples);
-
-	free(data);
-	free(factor);
+	d_at = tamu_anova(data.data(), factor.data(), n, samples);
 	return true;
 }
 

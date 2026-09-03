@@ -269,10 +269,10 @@ QString FrameWidget::saveToString()
 	s += "<FrameWidth>" + QString::number(d_frame_pen.widthF()) + "</FrameWidth>\n";
 	s += "<LineStyle>" + QString::number(PenStyleBox::styleIndex(d_frame_pen.style())) + "</LineStyle>\n";
 
-	s += "<x>" + QString::number(d_x, 'g', 14) + "</x>\n";
-	s += "<y>" + QString::number(d_y, 'g', 14) + "</y>\n";
-	s += "<right>" + QString::number(d_x_right, 'g', 15) + "</right>\n";
-    s += "<bottom>" + QString::number(d_y_bottom, 'g', 15) + "</bottom>\n";
+	s += "<x>" + QString::number(d_x, 'g', 17) + "</x>\n";
+	s += "<y>" + QString::number(d_y, 'g', 17) + "</y>\n";
+	s += "<right>" + QString::number(d_x_right, 'g', 17) + "</right>\n";
+    s += "<bottom>" + QString::number(d_y_bottom, 'g', 17) + "</bottom>\n";
     s += "<attachTo>" + QString::number(d_attach_policy) + "</attachTo>\n";
 	s += "<onTop>" + QString::number(d_on_top) + "</onTop>\n";
 	s += "<visible>" + QString::number(!isHidden()) + "</visible>\n";

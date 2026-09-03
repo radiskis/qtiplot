@@ -82,6 +82,15 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	while (d_n < rows)
 		d_n *= 2;
 
+	if (d_x) {
+		free(d_x);
+		d_x = nullptr;
+	}
+	if (d_y) {
+		free(d_y);
+		d_y = nullptr;
+	}
+
     d_x = (double *)malloc(d_n*sizeof(double));
 	if (!d_x){
 		memoryErrorMessage();
@@ -92,21 +101,16 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	if (!d_y){
 		memoryErrorMessage();
 		free(d_x);
+		d_x = nullptr;
 		return false;
 	};
 
-    if(d_y && d_x){
-		memset( d_x, 0, d_n * sizeof( double ) ); // zero-pad the two arrays...
-		memset( d_y, 0, d_n * sizeof( double ) );
-		for(int i = 0; i< d_n; i++){
-		    int j = i + from;
-			d_x[i] = d_table->cell(j, col1);
-			d_y[i] = d_table->cell(j, col2);
-		}
-	} else {
-		memoryErrorMessage();
-		d_n = 0;
-		return false;
+	memset( d_x, 0, d_n * sizeof( double ) ); // zero-pad the two arrays...
+	memset( d_y, 0, d_n * sizeof( double ) );
+	for(int i = 0; i < rows; i++){
+		int j = i + from;
+		d_x[i] = d_table->cell(j, col1);
+		d_y[i] = d_table->cell(j, col2);
 	}
 	return true;
 }

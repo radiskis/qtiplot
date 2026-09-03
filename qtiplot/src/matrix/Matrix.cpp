@@ -212,8 +212,8 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 	t << "TextFormat\t" + QString(txt_format) + "\t" + QString::number(num_precision) + "\n";
 	if (notTemplate)
         t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
-	t << "Coordinates\t" + QString::number(x_start,'g',15) + "\t" +QString::number(x_end,'g',15) + "\t";
-	t << QString::number(y_start,'g',15) + "\t" + QString::number(y_end,'g',15) + "\n";
+	t << "Coordinates\t" + QString::number(x_start,'g',17) + "\t" +QString::number(x_end,'g',17) + "\t";
+	t << QString::number(y_start,'g',17) + "\t" + QString::number(y_end,'g',17) + "\n";
 	t << "ViewType\t" + QString::number((int)d_view_type) + "\n";
     t << "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
 	if (!d_x_label.isEmpty())
@@ -264,12 +264,12 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 			for(int j = 0; j < cols; j++){
 				double val = d_data[aux + j];
 				if (std::isfinite(val))
-					t << QString::number(val, 'g', 16);
+					t << QString::number(val, 'g', 17);
 				t << "\t";
 			}
 			double val = d_data[aux + cols];
 			if (std::isfinite(val))
-				t << QString::number(val, 'g', 16);
+				t << QString::number(val, 'g', 17);
 			t << "\n";
 		}
 		t << "</data>\n";

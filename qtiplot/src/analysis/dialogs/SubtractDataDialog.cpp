@@ -33,6 +33,7 @@
 #include <DoubleSpinBox.h>
 #include <PlotCurve.h>
 #include <RangeSelectorTool.h>
+#include <vector>
 
 #include <QGroupBox>
 #include <QCheckBox>
@@ -258,15 +259,8 @@ void SubtractDataDialog::interpolate()
 		return;
 	}
 
-	double *x = (double *)malloc(refPoints*sizeof(double));
-	if (!x)
-		return;
-
-	double *y = (double *)malloc(refPoints*sizeof(double));
-	if (!y){
-		free (x);
-		return;
-	}
+	std::vector<double> x(refPoints);
+	std::vector<double> y(refPoints);
 
 	aux = 0;
 	for (int i = 0; i < refTable->numRows(); i++){
@@ -277,50 +271,42 @@ void SubtractDataDialog::interpolate()
 		}
 	}
 
-	//sort data with respect to x value
-	size_t *p = (size_t *)malloc(refPoints*sizeof(size_t));
-	if (!p){
-		free(x); free(y);
-		return;
-	}
+	// sort data with respect to x value
+	std::vector<size_t> p(refPoints);
+	gsl_sort_index(p.data(), x.data(), 1, refPoints);
 
-	gsl_sort_index(p, x, 1, refPoints);
-
-	double *xtemp = (double *)malloc(refPoints*sizeof(double));
-	if (!xtemp){
-		free(x); free(y); free(p);
-		return;
-	}
-
-	double *ytemp = (double *)malloc(refPoints*sizeof(double));
-	if (!ytemp){
-		free(x); free(y); free(p); free(xtemp);
-		return;
-	}
-
+	// Deduplicate strictly monotonic X values for GSL spline
+	std::vector<double> xtemp;
+	std::vector<double> ytemp;
+	xtemp.reserve(refPoints);
+	ytemp.reserve(refPoints);
 	for (int i = 0; i < refPoints; i++){
-		xtemp[i] = x[p[i]];
-		ytemp[i] = y[p[i]];
+		double xi = x[p[i]];
+		double yi = y[p[i]];
+		if (xtemp.empty() || xi > xtemp.back()){
+			xtemp.push_back(xi);
+			ytemp.push_back(yi);
+		}
 	}
-	free(x);
-	free(y);
-	free(p);
 
-	//make linear interpolation on sorted data
+	if (xtemp.size() < 2)
+		return;
+
+	// make linear interpolation on sorted data
 	gsl_interp_accel *acc = gsl_interp_accel_alloc();
-	gsl_spline *interp = gsl_spline_alloc(gsl_interp_linear, refPoints);
-	gsl_spline_init (interp, xtemp, ytemp, refPoints);
-
-	for (int i = startRow; i <= endRow; i++){
-		if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
-			inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp, inputTable->cell(i, xCol), acc)));
+	gsl_spline *interp = gsl_spline_alloc(gsl_interp_linear, xtemp.size());
+	if (acc && interp && gsl_spline_init(interp, xtemp.data(), ytemp.data(), xtemp.size()) == 0){
+		for (int i = startRow; i <= endRow; i++){
+			if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
+				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp, inputTable->cell(i, xCol), acc)));
+		}
+		inputTable->notifyChanges(c->title().text());
 	}
-	inputTable->notifyChanges(c->title().text());
 
-	gsl_spline_free (interp);
-	gsl_interp_accel_free (acc);
-	free(xtemp);
-	free(ytemp);
+	if (interp)
+		gsl_spline_free(interp);
+	if (acc)
+		gsl_interp_accel_free(acc);
 }
 
 void SubtractDataDialog::setGraph(Graph *g)

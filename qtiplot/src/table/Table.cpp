@@ -406,30 +406,37 @@ void Table::cellEdited(int row, int col)
   	columnNumericFormat(col, &f, &precision);
   	bool ok = true;
   	double res = locale().toDouble(text, &ok);
-  	if (ok)
+  	if (ok) {
   		newText = locale().toString(res, f, precision);
-  	else {
+		d_table->setRawValue(row, col, res);
+	} else {
   		Script *script = scriptEnv->newScript(d_table->text(row, col), this, QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
   		if (script) {
   			disconnect(script, &Script::error, nullptr, nullptr);
   			script->setInt(row+1, "i");
   			script->setInt(col+1, "j");
   			QVariant ret = script->eval();
-  			if (ret.isValid() && (ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong))
+  			if (ret.isValid() && (ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong)) {
   				newText = ret.toString();
-  			else if (ret.isValid() && ret.canConvert<double>() && !ret.toString().isEmpty()) {
+				d_table->setRawValue(row, col, ret.toDouble());
+			} else if (ret.isValid() && ret.canConvert<double>() && !ret.toString().isEmpty()) {
   				bool convOk = false;
   				double val = ret.toDouble(&convOk);
-  				if (convOk)
+  				if (convOk) {
   					newText = locale().toString(val, f, precision);
-  				else
+					d_table->setRawValue(row, col, val);
+				} else {
   					newText = d_table->text(row, col);
+					d_table->clearRawValue(row, col);
+				}
   			} else {
   				newText = d_table->text(row, col);
+				d_table->clearRawValue(row, col);
   			}
   			delete script;
   		} else {
   			newText = d_table->text(row, col);
+			d_table->clearRawValue(row, col);
   		}
   	}
 
@@ -543,11 +550,11 @@ void Table::columnNumericFormat(int col, int *f, int *precision)
 	if (format.count() == 2){
 		*f = format[0].toInt();
 		*precision = format[1].toInt();
-		if (*precision > 14)
-			*precision = 14;
+		if (*precision > 16)
+			*precision = 16;
 	} else {
 		*f = 0;
-		*precision = 14;
+		*precision = 16;
 	}
 }
 
@@ -569,11 +576,11 @@ void Table::columnNumericFormat(int col, char *f, int *precision)
 			break;
 		}
 		*precision = format[1].toInt();
-		if (*precision > 14)
-			*precision = 14;
+		if (*precision > 16)
+			*precision = 16;
 	} else {
 		*f = 'g';
-		*precision = 14;
+		*precision = 16;
 	}
 }
 
@@ -1091,12 +1098,12 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 				t << QString::number(i) + "\t";
 				for (int j=0; j<cols; j++){
 			    	if (colTypes[j] == Numeric && !d_table->text(i, j).isEmpty())
-						t << QString::number(cell(i, j), 'g', 14) + "\t";
+						t << QString::number(cell(i, j), 'g', 17) + "\t";
 					else
 						t << d_table->text(i, j) + "\t";
 				}
             	if (colTypes[cols] == Numeric && !d_table->text(i, cols).isEmpty())
-					t << QString::number(cell(i, cols), 'g', 14) + "\n";
+					t << QString::number(cell(i, cols), 'g', 17) + "\n";
 				else
 					t << d_table->text(i, cols) + "\n";
 			}
@@ -2479,11 +2486,17 @@ int Table::nonEmptyRows()
 
 double Table::cell(int row, int col)
 {
+	if (col < 0 || col >= d_table->numCols() || row < 0 || row >= d_table->numRows())
+		return 0.0;
+
 	int colType = colTypes[col];
 	if (colType == Time)
 		return fromTime(QTime::fromString(d_table->text(row, col).trimmed(), col_format[col].trimmed()));
 	else if (colType == Date)
 		return fromDateTime(QDateTime::fromString(d_table->text(row, col).trimmed(), col_format[col].trimmed()));
+
+	if (d_table->hasRawValue(row, col))
+		return d_table->rawValue(row, col);
 
 	return locale().toDouble(d_table->text(row, col));
 }
@@ -2498,6 +2511,7 @@ void Table::setCell(int row, int col, double val, bool pushUndo)
 	int prec;
 	columnNumericFormat(col, &format, &prec);
 	setText(row, col, locale().toString(val, format, prec), pushUndo);
+	d_table->setRawValue(row, col, val);
 }
 
 QString Table::text(int row, int col)
@@ -2514,6 +2528,13 @@ void Table::setText(int row, int col, const QString &text, bool pushUndo)
 	QString oldText = d_table->text(row, col);
 	if (oldText == text)
 		return;
+
+	bool ok = false;
+	double d = locale().toDouble(text, &ok);
+	if (ok)
+		d_table->setRawValue(row, col, d);
+	else
+		d_table->clearRawValue(row, col);
 
 	if (pushUndo) {
 		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell")));
@@ -2591,8 +2612,8 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool
 
 	if (prec < 0)
 		prec = 0;
-	else if (prec > 14)
-		prec = 14;
+	else if (prec > 16)
+		prec = 16;
 
 	QString newFormat = QString::number(f) + "/" + QString::number(prec);
 
@@ -2627,10 +2648,15 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool
 			else
 				format = 'g';
 
-			if (d_saved_cells)
+			if (d_table->hasRawValue(i, col))
+				setText(i, col, locale().toString(d_table->rawValue(i, col), format, prec));
+			else if (d_saved_cells)
 				setText(i, col, locale().toString(d_saved_cells[col][i], format, prec));
-			else
-				setText(i, col, locale().toString(locale().toDouble(t), format, prec));
+			else {
+				double val = locale().toDouble(t);
+				d_table->setRawValue(i, col, val);
+				setText(i, col, locale().toString(val, format, prec));
+			}
 		}
 	}
 }
@@ -3406,6 +3432,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 				int prec;
 				columnNumericFormat(startCol + i, &format, &prec);
 				d_table->setText(startRow, startCol + i, locale.toString(val, format, prec));
+				d_table->setRawValue(startRow, startCol + i, val);
 			} else
 				d_table->setText(startRow, startCol + i, cell);
 		}
@@ -3465,6 +3492,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 				int prec;
 				columnNumericFormat(startCol + j, &format, &prec);
 				d_table->setText(row, startCol + j, locale.toString(val, format, prec));
+				d_table->setRawValue(row, startCol + j, val);
 			} else
 				d_table->setText(row, startCol + j, cell);
 		}
