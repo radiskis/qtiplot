@@ -17,7 +17,7 @@ set(MUPARSER_VERSION_PATCH 5)
 set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPARSER_VERSION_PATCH})
 
 # Build options
-option(ENABLE_SAMPLES "Build the samples" ON)
+option(ENABLE_SAMPLES "Build the samples" OFF)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" ON)
 option(ENABLE_WIDE_CHAR "Enable wide character support" OFF)
 option(BUILD_SHARED_LIBS "Build shared/static libs" ON)
@@ -80,7 +80,7 @@ set_target_properties(muparser PROPERTIES
     SOVERSION ${MUPARSER_VERSION_MAJOR}
 )
 
-if(ENABLE_SAMPLES)
+if(ENABLE_SAMPLES AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/samples/example1/example1.cpp" AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/samples/example2/example2.c")
   add_executable(example1 samples/example1/example1.cpp)
   target_link_libraries(example1 muparser)
 

@@ -5,6 +5,7 @@
 set(ENABLE_WIDE_CHAR ON CACHE BOOL "Enable wide char support" FORCE)
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared/static libs" FORCE)
 set(ENABLE_OPENMP OFF CACHE BOOL "Enable OpenMP" FORCE)
+set(ENABLE_SAMPLES OFF CACHE BOOL "Build the samples" FORCE)
 add_subdirectory(muparser)
 
 
