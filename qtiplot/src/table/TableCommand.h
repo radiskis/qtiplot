@@ -29,7 +29,8 @@ private:
 class TableEditCellCommand: public QUndoCommand
 {
 public:
-	TableEditCellCommand(Table *t, int row, int col, const QString& oldText, const QString& newText, const QString & text);
+	TableEditCellCommand(Table *t, int row, int col, const QString& oldText, const QString& newText, const QString & text,
+	                     bool hasOldVal = false, double oldVal = 0.0, bool hasNewVal = false, double newVal = 0.0);
 	virtual void redo();
 	virtual void undo();
 
@@ -37,6 +38,8 @@ private:
 	QPointer<Table> d_table;
 	int d_row, d_col;
 	QString d_old_text, d_new_text;
+	bool d_has_old_val, d_has_new_val;
+	double d_old_val, d_new_val;
 };
 
 class TableSetColNameCommand: public QUndoCommand

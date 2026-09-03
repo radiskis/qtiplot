@@ -9,13 +9,13 @@ if(QTIPLOT_SANITIZE)
         # /RTC1 is incompatible with ASan and is in CMake's default Debug flags.
         string(REGEX REPLACE "/RTC[1csu]+" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
         string(REGEX REPLACE "/RTC[1csu]+" "" CMAKE_C_FLAGS_DEBUG   "${CMAKE_C_FLAGS_DEBUG}")
-        add_compile_options(/fsanitize=address /Zi)
+        set(QTIPLOT_SANITIZE_COMPILE_OPTIONS /fsanitize=address /Zi /D_DISABLE_VECTOR_ANNOTATION /D_DISABLE_STRING_ANNOTATION)
         # ASan cannot be combined with incremental linking or LTCG.
-        add_link_options(/INCREMENTAL:NO)
+        set(QTIPLOT_SANITIZE_LINK_OPTIONS /INCREMENTAL:NO /DEBUG)
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
     else()
-        add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer -g)
-        add_link_options(-fsanitize=address,undefined)
+        set(QTIPLOT_SANITIZE_COMPILE_OPTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -g)
+        set(QTIPLOT_SANITIZE_LINK_OPTIONS -fsanitize=address,undefined)
     endif()
 endif()
 
@@ -30,12 +30,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /FS /W3")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
-endif()
 
 # Find Qt6
 find_package(Qt6 COMPONENTS Widgets Svg Xml OpenGL OpenGLWidgets PrintSupport Concurrent Network OPTIONAL_COMPONENTS LinguistTools REQUIRED)
@@ -89,12 +83,20 @@ target_include_directories(test_object_registry PRIVATE
 target_link_libraries(test_object_registry PRIVATE
     Qt6::Core
 )
+if(QTIPLOT_SANITIZE)
+    target_compile_options(test_object_registry PRIVATE ${QTIPLOT_SANITIZE_COMPILE_OPTIONS})
+    target_link_options(test_object_registry PRIVATE ${QTIPLOT_SANITIZE_LINK_OPTIONS})
+endif()
 add_test(NAME test_object_registry COMMAND test_object_registry)
 
 add_test(NAME python_suite
          COMMAND qtiplot -X "${CMAKE_SOURCE_DIR}/tests/pytest_runner.py")
-set_tests_properties(python_suite PROPERTIES
-    ENVIRONMENT "ASAN_OPTIONS=detect_leaks=1:abort_on_error=1;LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/tests/lsan.supp")
 
 add_test(NAME gate_curve_ledger
          COMMAND qtiplot -X "${CMAKE_SOURCE_DIR}/tests/gate_curve_ledger.py")
+if(NOT MSVC)
+    set_tests_properties(python_suite PROPERTIES
+        ENVIRONMENT "ASAN_OPTIONS=detect_leaks=1:abort_on_error=1;LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/tests/lsan.supp")
+    set_tests_properties(gate_curve_ledger PROPERTIES
+        ENVIRONMENT "ASAN_OPTIONS=detect_leaks=1:abort_on_error=1;LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/tests/lsan.supp")
+endif()

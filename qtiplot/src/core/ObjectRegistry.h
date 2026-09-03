@@ -27,7 +27,14 @@ public:
 	template <typename T>
 	T* resolve(ObjectId id) const
 	{
-		return static_cast<T*>(resolve(id));
+		void *ptr = resolve(id);
+		if (!ptr)
+			return nullptr;
+		if constexpr (std::is_base_of_v<QObject, T>) {
+			return dynamic_cast<T*>(static_cast<QObject*>(ptr));
+		} else {
+			return static_cast<T*>(ptr);
+		}
 	}
 
 	ObjectId idOf(const void *ptr) const;

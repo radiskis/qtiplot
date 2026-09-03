@@ -10908,6 +10908,12 @@ void ApplicationWindow::closeProject()
 	blockSignals(false);
 	savedProject();
 	setWindowTitle(tr("QtiPlot - untitled"));
+	if (scriptWindow) {
+		delete scriptWindow;
+		scriptWindow = nullptr;
+	}
+	QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+	QCoreApplication::processEvents();
 
 #ifdef QTIPLOT_LEDGER
 	const AllocLedger &l = AllocLedger::instance();
@@ -18130,7 +18136,7 @@ ApplicationWindow::~ApplicationWindow()
 	delete hiddenWindows;
 
 	if (scriptWindow)
-		scriptWindow->close();
+		delete scriptWindow;
 
     if (d_text_editor)
 		delete d_text_editor;
@@ -18194,18 +18200,22 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		se->importASCII(fn);
 		se->executeAll();
 
+		int status = scriptEnv ? scriptEnv->lastExitStatus() : 0;
+		delete se;
+		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+		QCoreApplication::processEvents();
+
 #ifdef QTIPLOT_LEDGER
-		if (qApp->arguments().contains("--assert-ledger")) {
-			const AllocLedger &l = AllocLedger::instance();
-			if (!l.clean()) {
-				fprintf(stderr, "LEDGER: objects outliving project:\n%s\n",
-						l.report().toUtf8().constData());
-				_Exit(70);
-			}
+		const AllocLedger &l = AllocLedger::instance();
+		if (!l.clean()) {
+			fprintf(stderr, "LEDGER: objects outliving project:\n%s\n",
+					l.report().toUtf8().constData());
+			if (status == 0)
+				status = 70;
 		}
 #endif
 
-		_Exit(0);
+		::exit(status);
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		setScriptingLanguage("Python");

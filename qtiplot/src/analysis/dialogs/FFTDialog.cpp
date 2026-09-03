@@ -56,8 +56,8 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	d_table = 0;
-	graph = 0;
+	d_table = nullptr;
+	graph = nullptr;
 	d_type = type;
 
 	forwardBtn = new QRadioButton(tr("&Forward"));

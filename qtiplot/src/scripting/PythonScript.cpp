@@ -303,10 +303,41 @@ bool PythonScript::exec()
 		PyGILState_Release(state);
 		return true;
 	}
-	if (qApp && qApp->arguments().contains("-X")) {
-		PyErr_Print();
+	if (PyErr_Occurred()) {
+		if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
+			PyObject *exc = nullptr, *val = nullptr, *tb = nullptr;
+			PyErr_Fetch(&exc, &val, &tb);
+			int exitCode = 0;
+			if (val) {
+				if (PyLong_Check(val)) {
+					exitCode = (int)PyLong_AsLong(val);
+				} else if (val != Py_None) {
+					PyObject *str = PyObject_Str(val);
+					if (str) {
+						fprintf(stderr, "%s\n", PyUnicode_AsUTF8(str));
+						Py_DECREF(str);
+					}
+					exitCode = 1;
+				}
+			}
+			Py_XDECREF(exc);
+			Py_XDECREF(val);
+			Py_XDECREF(tb);
+			env()->setLastExitStatus(exitCode);
+			PyGILState_Release(state);
+			return (exitCode == 0);
+		} else {
+			if (qApp && qApp->arguments().contains("-X")) {
+				PyErr_Print();
+			}
+			emit_error(env()->errorMsg(), 0);
+			env()->setLastExitStatus(1);
+			PyGILState_Release(state);
+			return false;
+		}
 	}
 	emit_error(env()->errorMsg(), 0);
+	env()->setLastExitStatus(1);
 	PyGILState_Release(state);
 	return false;
 }

@@ -66,11 +66,13 @@ public:
         if (!it) {
             it = new QTableWidgetItem(t);
             it->setData(Qt::UserRole, t);
+            it->setData(Qt::UserRole + 1, QVariant());
             if (isColumnReadOnly(c)) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
             setItem(r, c, it);
         } else {
             it->setText(t);
             it->setData(Qt::UserRole, t);
+            it->setData(Qt::UserRole + 1, QVariant());
         }
     }
 
@@ -345,7 +347,7 @@ public slots:
 	void setHeader(QStringList header);
 	void loadHeader(QStringList header);
 	void setHeaderColType();
-	void setText(int row,int col,const QString & text, bool pushUndo = true);
+	void setText(int row,int col,const QString & text, bool pushUndo = true, const double *exact = nullptr);
 	void setRandomValues();
 	void setRandomValues(int col, int startRow = 0, int endRow = -1);
 	void setNormalRandomValues();

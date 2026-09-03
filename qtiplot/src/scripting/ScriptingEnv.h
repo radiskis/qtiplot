@@ -79,6 +79,9 @@ class ScriptingEnv : public QObject
 
 	ApplicationWindow *application(){return d_parent;};
 
+	virtual int lastExitStatus() const { return d_last_exit_status; }
+	virtual void setLastExitStatus(int status) { d_last_exit_status = status; }
+
   public slots:
     // global variables
     virtual bool setQObject(QObject*, const char*) { return false; }
@@ -108,6 +111,7 @@ class ScriptingEnv : public QObject
     bool d_initialized;
     //! the context in which we are running
     ApplicationWindow *d_parent;
+    int d_last_exit_status = 0;
 
   private:
     //! the reference counter

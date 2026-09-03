@@ -54,8 +54,8 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	d_two_way(twoWay)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent;
-	d_table = 0;
-	d_note = 0;
+	d_table = nullptr;
+	d_note = nullptr;
 
 	setObjectName( "AnovaDialog" );
 	setSizeGripEnabled( true );

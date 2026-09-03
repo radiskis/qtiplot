@@ -90,10 +90,10 @@ void Filter::init()
     d_sort_data = true;
     d_min_points = 2;
     d_explanation = objectName();
-    d_graph = 0;
-    d_table = 0;
-    d_result_table = 0;
-	d_output_graph = 0;
+    d_graph = nullptr;
+    d_table = nullptr;
+    d_result_table = nullptr;
+	d_output_graph = nullptr;
 	d_graphics_display = true;
 	d_update_output_graph = true;
 	d_y_col_name = QString();
@@ -562,7 +562,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
     if (d_n > 0)//delete previousely allocated memory
 		freeMemory();
 
-	d_graph = 0;
+	d_graph = nullptr;
 	d_curve = 0;
 	d_n = size;
 	d_init_err = false;

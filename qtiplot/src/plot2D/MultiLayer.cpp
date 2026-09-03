@@ -526,6 +526,8 @@ bool MultiLayer::removeLayer(Graph *g)
 
 	graphsList.removeAt(index);
 	g->close();
+	if (d_undo_stack)
+		d_undo_stack->clear();
 	if(index >= graphsList.count())
 		index--;
 

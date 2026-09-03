@@ -943,6 +943,8 @@ void ScriptEdit::createParenthesisSelection(int pos)
 
 ScriptEdit::~ScriptEdit()
 {
+	if (myScript)
+		delete myScript;
 	if (d_highlighter)
 		delete d_highlighter;
 	if (d_completer){

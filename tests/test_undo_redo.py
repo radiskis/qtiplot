@@ -6,7 +6,6 @@ states when triggering undo() and redo().
 """
 
 import pytest
-import numpy as np
 import qti
 
 
@@ -700,6 +699,34 @@ def test_table_clear_selection_block_undo_redo():
     for r in range(2, 5):
         for c in range(1, 4):
             assert t.text(c, r) == ""
+
+
+def test_table_cell_typed_precision_and_undo_redo():
+    """Test that cell precision is retained in the raw double cache,
+    does not get truncated to the display precision, and survives undo/redo."""
+    app = qti.app
+    t = app.newTable("PrecTable", 5, 2)
+    # Set display precision to 3 decimal digits for column 1
+    t.setColNumericFormat(1, 1, 3)
+
+    exact_val = 3.14159265358979
+    t.setCell(1, 1, exact_val)
+
+    # Display text must be formatted to 3 decimal digits
+    display_str = t.text(1, 1)
+    assert display_str in ("3.142", "3,142")
+
+    # Raw value accessed via cell(col, row) must retain the exact value without truncation
+    val = t.cell(1, 1)
+    assert abs(val - exact_val) < 1e-12
+
+    # Undo must restore previous empty/zero state
+    t.undo()
+    assert t.text(1, 1) == "" or t.cell(1, 1) == 0.0
+
+    # Redo must restore exact double precision, not truncated display precision
+    t.redo()
+    assert abs(t.cell(1, 1) - exact_val) < 1e-12
 
 
 

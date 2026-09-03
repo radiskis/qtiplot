@@ -501,13 +501,13 @@ bool DataCurve::hasAssociation(const QString& name) const
 	if (name.isEmpty())
 		return false;
 
-	if (title().text() == name || title().text().endsWith("_" + name))
+	if (title().text() == name)
 		return true;
 
-	if (!d_x_column.isEmpty() && (d_x_column == name || d_x_column.endsWith("_" + name)))
+	if (!d_x_column.isEmpty() && d_x_column == name)
 		return true;
 
-	if (!d_labels_column.isEmpty() && (d_labels_column == name || d_labels_column.endsWith("_" + name)))
+	if (!d_labels_column.isEmpty() && d_labels_column == name)
 		return true;
 
 	return false;

@@ -78,6 +78,7 @@ Description          : Graph widget
 #include <LinearColorMap.h>
 
 #include <QApplication>
+#include <QScopeGuard>
 #include <QBitmap>
 #include <QClipboard>
 #include <QCursor>
@@ -220,9 +221,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	plCanvas->setLineWidth(0);
 	plCanvas->setPaintAttribute(QwtPlotCanvas::BackingStore, true);
 	plCanvas->setPaintAttribute(QwtPlotCanvas::ImmediatePaint, false);
-	plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, true);
 	plCanvas->setAutoFillBackground(true);
-	plCanvas->setAttribute(Qt::WA_OpaquePaintEvent, false);
 	plCanvas->setAttribute(Qt::WA_NoSystemBackground, false);
 
     QColor background = QColor(Qt::white);
@@ -479,8 +478,10 @@ void Graph::initFonts(const QFont &scaleTitleFnt, const QFont &numbersFnt)
 void Graph::setAxisFont(int axis, const QFont &fnt)
 {
 	((QwtPlot *)this)->setAxisFont (axis, fnt);
-	replot();
-	emit modifiedGraph();
+	if (!d_is_printing) {
+		replot();
+		emit modifiedGraph();
+	}
 }
 
 void Graph::enableAxis(int axis, bool on)
@@ -989,8 +990,10 @@ void Graph::setAxisTitleFont(int axis,const QFont &fnt)
 	QwtText t = axisTitle (axis);
 	t.setFont (fnt);
 	((QwtPlot *)this)->setAxisTitle(axis, t);
-	replot();
-	emit modifiedGraph();
+	if (!d_is_printing) {
+		replot();
+		emit modifiedGraph();
+	}
 }
 
 QFont Graph::axisTitleFont(int axis)
@@ -1106,8 +1109,10 @@ void Graph::setTitleFont(const QFont &fnt)
 	QwtText t = title();
 	t.setFont(fnt);
 	setTitle(t);
-	replot();
-	emit modifiedGraph();
+	if (!d_is_printing) {
+		replot();
+		emit modifiedGraph();
+	}
 }
 
 void Graph::setYAxisTitle(const QString& text)
@@ -2204,7 +2209,10 @@ QString Graph::pieLegendText()
 void Graph::updateCurvesData(Table* w, const QString& yColName)
 {
 	int updated_curves = 0;
-	for (QwtPlotItem *it : d_curves){
+	const QList<QwtPlotItem*> items = d_curves;
+	for (QwtPlotItem *it : items){
+		if (!d_curves.contains(it))
+			continue;
     	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
 			PlotCurve *c = (PlotCurve*)it;
 			if (c->type() == Function)
@@ -3927,7 +3935,11 @@ void Graph::removePie()
 
 void Graph::removeCurves(const QString& s)
 {
-	for (QwtPlotItem *it : d_curves){
+	const QList<QwtPlotItem*> items = d_curves;
+	for (QwtPlotItem *it : items){
+		if (!d_curves.contains(it))
+			continue;
+
         if (it->title().text() == s){
             removeCurve(d_curves.indexOf(it));
             continue;
@@ -6220,6 +6232,17 @@ void Graph::setCanvasBackgroundImage(const QString & fn, bool update)
 	}
 }
 
+void Graph::setCanvasBackground(const QBrush &brush)
+{
+	QwtPlot::setCanvasBackground(brush);
+	QwtPlotCanvas* plCanvas = qobject_cast<QwtPlotCanvas*>(canvas());
+	if (plCanvas) {
+		const bool opaque = (brush.color().alpha() == 255);
+		plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, opaque);
+		plCanvas->setAttribute(Qt::WA_OpaquePaintEvent, opaque);
+	}
+}
+
 void Graph::printCanvas(QPainter *painter, const QRectF &canvasRect,
 						const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
 {
@@ -6821,6 +6844,9 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
         return;
 
     d_is_printing = true;
+    auto printingGuard = qScopeGuard([this]() {
+        d_is_printing = false;
+    });
 
     QwtPlotRenderer renderer;
 
@@ -6832,6 +6858,21 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
     if (factor > 0.0 && fabs(factor - 1.0) > 1e-4) {
         // Title font scaling
         QFont origTitleFont = title().font();
+        QFont origAxisFont[QwtPlot::axisCnt];
+        QFont origAxisTitleFont[QwtPlot::axisCnt];
+        for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
+            origAxisFont[axis] = axisFont(axis);
+            origAxisTitleFont[axis] = axisTitleFont(axis);
+        }
+
+        auto fontGuard = qScopeGuard([&]() {
+            setTitleFont(origTitleFont);
+            for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
+                setAxisFont(axis, origAxisFont[axis]);
+                setAxisTitleFont(axis, origAxisTitleFont[axis]);
+            }
+        });
+
         QFont scaledTitleFont = origTitleFont;
         if (origTitleFont.pointSizeF() > 0)
             scaledTitleFont.setPointSizeF(origTitleFont.pointSizeF() * factor);
@@ -6840,10 +6881,7 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
         setTitleFont(scaledTitleFont);
 
         // Axis scale tick fonts and axis title fonts
-        QFont origAxisFont[QwtPlot::axisCnt];
-        QFont origAxisTitleFont[QwtPlot::axisCnt];
         for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
-            origAxisFont[axis] = axisFont(axis);
             QFont scaledAxisFont = origAxisFont[axis];
             if (scaledAxisFont.pointSizeF() > 0)
                 scaledAxisFont.setPointSizeF(scaledAxisFont.pointSizeF() * factor);
@@ -6851,7 +6889,6 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
                 scaledAxisFont.setPointSize(qMax(1, qRound(scaledAxisFont.pointSize() * factor)));
             setAxisFont(axis, scaledAxisFont);
 
-            origAxisTitleFont[axis] = axisTitleFont(axis);
             QFont scaledAxisTitleFont = origAxisTitleFont[axis];
             if (scaledAxisTitleFont.pointSizeF() > 0)
                 scaledAxisTitleFont.setPointSizeF(scaledAxisTitleFont.pointSizeF() * factor);
@@ -6861,18 +6898,9 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
         }
 
         renderer.render(this, painter, plotRect);
-
-        // Restore original fonts
-        setTitleFont(origTitleFont);
-        for (int axis = 0; axis < QwtPlot::axisCnt; axis++) {
-            setAxisFont(axis, origAxisFont[axis]);
-            setAxisTitleFont(axis, origAxisTitleFont[axis]);
-        }
     } else {
         renderer.render(this, painter, plotRect);
     }
-
-    d_is_printing = false;
 }
 
 

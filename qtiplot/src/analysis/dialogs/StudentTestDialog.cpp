@@ -50,8 +50,8 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	d_two_samples(twoSamples)
 {
 	ApplicationWindow *app = (ApplicationWindow *)parent;
-	d_table = 0;
-	d_note = 0;
+	d_table = nullptr;
+	d_note = nullptr;
 
 	setObjectName( "StudentTestDialog" );
 	QHBoxLayout *hl = 0;

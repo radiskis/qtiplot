@@ -3,7 +3,10 @@
 
 #include "ObjectId.h"
 #include "ObjectRegistry.h"
+#include "Registered.h"
 #include <type_traits>
+
+class MdiSubWindow;
 
 template <typename T>
 class Ref
@@ -15,12 +18,14 @@ public:
 
 	Ref(T *ptr) : m_id(NullObjectId)
 	{
+		static_assert(std::is_base_of_v<RegisteredBase, T> ||
+		              std::is_base_of_v<MdiSubWindow, T>,
+		              "Ref<T> requires T to derive from Registered or MdiSubWindow");
 		if (ptr)
 			m_id = ObjectRegistry::instance()->registerObject(ptr);
 	}
 
 	Ref(std::nullptr_t) : m_id(NullObjectId) {}
-	Ref(int val) : m_id(val == 0 ? NullObjectId : static_cast<ObjectId>(val)) {}
 
 	Ref(const Ref &other) = default;
 	Ref(Ref &&other) noexcept = default;
@@ -33,14 +38,11 @@ public:
 		return *this;
 	}
 
-	Ref& operator=(int val)
-	{
-		m_id = (val == 0 ? NullObjectId : static_cast<ObjectId>(val));
-		return *this;
-	}
-
 	Ref& operator=(T *ptr)
 	{
+		static_assert(std::is_base_of_v<RegisteredBase, T> ||
+		              std::is_base_of_v<MdiSubWindow, T>,
+		              "Ref<T> requires T to derive from Registered or MdiSubWindow");
 		if (ptr)
 			m_id = ObjectRegistry::instance()->registerObject(ptr);
 		else
@@ -56,6 +58,9 @@ public:
 
 	T* get() const
 	{
+		static_assert(std::is_base_of_v<RegisteredBase, T> ||
+		              std::is_base_of_v<MdiSubWindow, T>,
+		              "Ref<T> requires T to derive from Registered or MdiSubWindow");
 		if (m_id == NullObjectId)
 			return nullptr;
 		return ObjectRegistry::instance()->resolve<T>(m_id);

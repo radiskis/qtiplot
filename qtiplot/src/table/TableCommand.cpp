@@ -9,13 +9,18 @@
 #include <ApplicationWindow.h>
 
 TableEditCellCommand::TableEditCellCommand(Table *t, int row, int col, const QString& oldText,
-						const QString& newText, const QString & text):
+						const QString& newText, const QString & text,
+						bool hasOldVal, double oldVal, bool hasNewVal, double newVal):
 QUndoCommand(text),
 d_table(t),
 d_row(row),
 d_col(col),
 d_old_text(oldText),
-d_new_text(newText)
+d_new_text(newText),
+d_has_old_val(hasOldVal),
+d_has_new_val(hasNewVal),
+d_old_val(oldVal),
+d_new_val(newVal)
 {
 	setText(t->objectName() + ": " + text);
 }
@@ -25,7 +30,7 @@ void TableEditCellCommand::redo()
 	if (!d_table)
 		return;
 	bool blocked = d_table->table()->blockSignals(true);
-	d_table->setText(d_row, d_col, d_new_text, false);
+	d_table->setText(d_row, d_col, d_new_text, false, d_has_new_val ? &d_new_val : nullptr);
 	d_table->table()->blockSignals(blocked);
 	d_table->notifyChanges(d_table->colName(d_col));
 }
@@ -35,7 +40,7 @@ void TableEditCellCommand::undo()
 	if (!d_table)
 		return;
 	bool blocked = d_table->table()->blockSignals(true);
-	d_table->setText(d_row, d_col, d_old_text, false);
+	d_table->setText(d_row, d_col, d_old_text, false, d_has_old_val ? &d_old_val : nullptr);
 	d_table->table()->blockSignals(blocked);
 	d_table->notifyChanges(d_table->colName(d_col));
 }

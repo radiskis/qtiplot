@@ -86,7 +86,7 @@ d_power2(outputPower2Sizes)
 	d_real_col = -1;
 	d_imag_col = -1;
 	d_sampling = 1.0;
-	d_output_graph = 0;
+	d_output_graph = nullptr;
 }
 
 void FFT::init()
@@ -98,7 +98,7 @@ void FFT::init()
     d_real_col = -1;
     d_imag_col = -1;
 	d_sampling = 1.0;
-	d_output_graph = 0;
+	d_output_graph = nullptr;
 	d_im_matrix = nullptr;
 	d_re_out_matrix = nullptr;
 	d_im_out_matrix = nullptr;
@@ -392,7 +392,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     if (d_n > 0)//delete previousely allocated memory
 		freeMemory();
 
-	d_graph = 0;
+	d_graph = nullptr;
 	d_curve = 0;
 	d_init_err = false;
 

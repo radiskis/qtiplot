@@ -43,7 +43,7 @@
 
 IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
-	d_table(0)
+	d_table(nullptr)
 {
 	setObjectName( "IntegrationDialog" );
 	setWindowTitle(tr("QtiPlot - Integration Options"));
@@ -103,7 +103,7 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags 
 
 IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WindowFlags fl )
 	: QDialog( parent, fl ),
-	d_graph(0)
+	d_graph(nullptr)
 {
 	setObjectName( "IntegrationDialog" );
 	setWindowTitle(tr("QtiPlot - Integration Options"));

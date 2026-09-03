@@ -21,7 +21,7 @@ template <class Derived>
 class Tracked {
 protected:
     Tracked()  { AllocLedger::instance().add(typeid(Derived).name()); }
-    virtual ~Tracked() { AllocLedger::instance().remove(typeid(Derived).name()); }
+    ~Tracked() { AllocLedger::instance().remove(typeid(Derived).name()); }
     Tracked(const Tracked&) : Tracked() {}
     Tracked& operator=(const Tracked&) { return *this; }
 };
@@ -29,9 +29,9 @@ protected:
 template <class Derived>
 class Tracked {
 protected:
-    Tracked() {}
-    virtual ~Tracked() {}
-    Tracked(const Tracked&) {}
-    Tracked& operator=(const Tracked&) { return *this; }
+    Tracked() = default;
+    ~Tracked() = default;
+    Tracked(const Tracked&) = default;
+    Tracked& operator=(const Tracked&) = default;
 };
 #endif

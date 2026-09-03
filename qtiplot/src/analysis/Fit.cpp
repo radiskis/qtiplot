@@ -96,7 +96,7 @@ void Fit::init()
 	d_sort_data = false;
 	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
 	d_param_table = 0;
-	d_cov_matrix = 0;
+	d_cov_matrix = nullptr;
 	covar = 0;
 	d_param_init = 0;
 	d_fit_type = BuiltIn;

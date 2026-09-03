@@ -1,0 +1,5 @@
+# tests/lsan.supp
+leak:libpython
+leak:_PyObject_
+leak:libQt6Core
+leak:QFontEngine

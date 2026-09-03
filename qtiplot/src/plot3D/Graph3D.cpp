@@ -164,9 +164,9 @@ void Graph3D::initPlot()
 	d_const_curve = nullptr;
 	d_const_func = nullptr;
 
-	d_table = 0;
+	d_table = nullptr;
 	d_table_plot_type = NoTable;
-	d_matrix = 0;
+	d_matrix = nullptr;
 	plotAssociation = QString();
 
 	animation_redraw_wait = 50;
@@ -1947,9 +1947,9 @@ void Graph3D::setCrossStyle()
 void Graph3D::clearData()
 {
 	if (d_matrix)
-		d_matrix = 0;
+		d_matrix = nullptr;
 	else if (d_table)
-		d_table = 0;
+		d_table = nullptr;
 
 	removeCurve();
 
@@ -2575,7 +2575,7 @@ bool Graph3D::hasAssociation(const QString& name) const
 		QString col = token.trimmed();
 		if (col.endsWith("(X)") || col.endsWith("(Y)") || col.endsWith("(Z)"))
 			col.chop(3);
-		if (col == name || col.endsWith("_" + name))
+		if (col == name)
 			return true;
 	}
 	return false;

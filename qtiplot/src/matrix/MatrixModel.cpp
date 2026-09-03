@@ -818,8 +818,8 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 			return false;
 	}
 
-	muParserScript *mup = new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
-											d_matrix, QString("<%1>").arg(d_matrix->objectName()));
+	std::unique_ptr<muParserScript> mup(new muParserScript(d_matrix->scriptingEnv(), d_matrix->formula(),
+											d_matrix, QString("<%1>").arg(d_matrix->objectName())));
 	if (endRow < 0)
 		endRow = d_rows - 1;
 	if (endCol < 0)

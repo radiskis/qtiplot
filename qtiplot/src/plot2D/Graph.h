@@ -161,7 +161,9 @@ typedef struct{
  * [ Framework needs to support plug-ins; assigned to ion ]
  */
 
-class Graph: public QwtPlot
+#include <Registered.h>
+
+class Graph: public QwtPlot, public Registered<Graph>
 {
 	Q_OBJECT
 
@@ -690,6 +692,7 @@ class Graph: public QwtPlot
 		//@{
 		QString canvasBackgroundFileName(){return d_canvas_bkg_path;};
 		void setCanvasBackgroundImage (const QString & fn = QString(), bool update = true);
+		void setCanvasBackground(const QBrush &brush);
 		QPixmap backgroundPixmap(){return d_canvas_bkg_pix;};
 		//@}
 

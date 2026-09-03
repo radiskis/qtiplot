@@ -184,6 +184,17 @@ if(MINGW)
     target_link_options(qtiplot PRIVATE "-Wl,--export-all-symbols")
 endif()
 
+if(QTIPLOT_SANITIZE)
+    target_compile_options(qtiplot PRIVATE ${QTIPLOT_SANITIZE_COMPILE_OPTIONS})
+    target_link_options(qtiplot PRIVATE ${QTIPLOT_SANITIZE_LINK_OPTIONS})
+endif()
+
+if(MSVC)
+    target_compile_options(qtiplot PRIVATE /FS /W4 /wd4127 /wd4244 /wd4267 /wd4458)
+else()
+    target_compile_options(qtiplot PRIVATE -Wall -Wextra)
+endif()
+
 # --- Translations (B4) ---
 if(Qt6LinguistTools_FOUND)
     file(GLOB TS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/translations/*.ts")

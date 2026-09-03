@@ -390,6 +390,11 @@ void Table::cellEdited(int row, int col)
 	QString text = d_table->text(row, col).trimmed();
 	QString newText = d_table->text(row, col);
 
+	bool hasOldVal = d_table->hasRawValue(row, col);
+	double oldVal = d_table->rawValue(row, col);
+	bool hasNewVal = false;
+	double newVal = 0.0;
+
 	if (newText == oldText)
 		return;
 
@@ -397,7 +402,8 @@ void Table::cellEdited(int row, int col)
 		// Non-numeric: commit immediately, update UserRole now.
 		if (it)
 			it->setData(Qt::UserRole, newText);
-		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
+		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
+		                                            hasOldVal, oldVal, false, 0.0));
 		return;
 	}
 
@@ -408,22 +414,28 @@ void Table::cellEdited(int row, int col)
   	double res = locale().toDouble(text, &ok);
   	if (ok) {
   		newText = locale().toString(res, f, precision);
+		hasNewVal = true;
+		newVal = res;
 		d_table->setRawValue(row, col, res);
 	} else {
   		Script *script = scriptEnv->newScript(d_table->text(row, col), this, QString("<%1_%2_%3>").arg(objectName()).arg(row+1).arg(col+1));
   		if (script) {
-  			disconnect(script, &Script::error, nullptr, nullptr);
+  			connect(script, &Script::error, scriptEnv, &ScriptingEnv::error);
   			script->setInt(row+1, "i");
   			script->setInt(col+1, "j");
   			QVariant ret = script->eval();
   			if (ret.isValid() && (ret.typeId()==QMetaType::Int || ret.typeId()==QMetaType::UInt || ret.typeId()==QMetaType::LongLong || ret.typeId()==QMetaType::ULongLong)) {
   				newText = ret.toString();
-				d_table->setRawValue(row, col, ret.toDouble());
+				hasNewVal = true;
+				newVal = ret.toDouble();
+				d_table->setRawValue(row, col, newVal);
 			} else if (ret.isValid() && ret.canConvert<double>() && !ret.toString().isEmpty()) {
   				bool convOk = false;
   				double val = ret.toDouble(&convOk);
   				if (convOk) {
   					newText = locale().toString(val, f, precision);
+					hasNewVal = true;
+					newVal = val;
 					d_table->setRawValue(row, col, val);
 				} else {
   					newText = d_table->text(row, col);
@@ -443,7 +455,8 @@ void Table::cellEdited(int row, int col)
 	if (it)
 		it->setData(Qt::UserRole, newText);
 
-	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell")));
+	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
+	                                            hasOldVal, oldVal, hasNewVal, newVal));
 }
 
 int Table::colX(int col)
@@ -693,7 +706,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    muParserScript *mup = new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col)));
+	std::unique_ptr<muParserScript> mup(new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col))));
     double *r = mup->defineVariable("i",startRow + 1.0);
     mup->defineVariable("j", (double)col);
     mup->defineVariable("sr", startRow + 1.0);
@@ -2532,8 +2545,7 @@ void Table::setCell(int row, int col, double val, bool pushUndo)
 	char format;
 	int prec;
 	columnNumericFormat(col, &format, &prec);
-	setText(row, col, locale().toString(val, format, prec), pushUndo);
-	d_table->setRawValue(row, col, val);
+	setText(row, col, locale().toString(val, format, prec), pushUndo, &val);
 }
 
 QString Table::text(int row, int col)
@@ -2541,28 +2553,48 @@ QString Table::text(int row, int col)
 	return d_table->text(row, col);
 }
 
-void Table::setText(int row, int col, const QString &text, bool pushUndo)
+void Table::setText(int row, int col, const QString &text, bool pushUndo, const double *exact)
 {
 	if (col < 0 || col >= d_table->numCols() ||
 		row < 0 || row >= d_table->numRows())
 		return;
 
 	QString oldText = d_table->text(row, col);
-	if (oldText == text)
+	bool hasOldRaw = d_table->hasRawValue(row, col);
+	double oldRaw = d_table->rawValue(row, col);
+
+	bool rawChanged = false;
+	if (exact) {
+		rawChanged = (!hasOldRaw || oldRaw != *exact);
+	}
+
+	if (oldText == text && !rawChanged)
 		return;
 
-	bool ok = false;
-	double d = locale().toDouble(text, &ok);
-	if (ok)
-		d_table->setRawValue(row, col, d);
-	else
-		d_table->clearRawValue(row, col);
+	bool hasNewRaw = false;
+	double newRaw = 0.0;
+	if (exact) {
+		hasNewRaw = true;
+		newRaw = *exact;
+	} else {
+		bool ok = false;
+		double d = locale().toDouble(text, &ok);
+		if (ok) {
+			hasNewRaw = true;
+			newRaw = d;
+		}
+	}
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell")));
+		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell"),
+		                                            hasOldRaw, oldRaw, hasNewRaw, newRaw));
 	} else {
 		bool blocked = d_table->blockSignals(true);
 		d_table->setText(row, col, text);
+		if (hasNewRaw)
+			d_table->setRawValue(row, col, newRaw);
+		else
+			d_table->clearRawValue(row, col);
 		d_table->blockSignals(blocked);
 		notifyChanges(colName(col));
 	}
