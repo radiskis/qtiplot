@@ -30,6 +30,7 @@ Description          : MDI sub window
 
 #include <QMdiSubWindow>
 #include <QtPrintSupport/QPrinter>
+#include "ObjectId.h"
 
 class QEvent;
 class Folder;
@@ -94,6 +95,7 @@ public:
 	QString birthDate(){return d_birthdate;};
 	//! Set the creation date
 	void setBirthDate(const QString& s){d_birthdate = s;};
+	ObjectId objectId() const { return d_object_id; }
 
 	//! Return the window status as a string
 	QString aspect();
@@ -209,6 +211,7 @@ private:
 	QString d_birthdate;
 	//! Stores the size the window had before a change state event to minimized/maximized.
 	QSize d_restore_size;
+	ObjectId d_object_id = NullObjectId;
 };
 
 #endif

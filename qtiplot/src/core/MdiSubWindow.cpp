@@ -29,6 +29,7 @@
 #include "MdiSubWindow.h"
 #include "Folder.h"
 #include "ApplicationWindow.h"
+#include "ObjectRegistry.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -57,8 +58,10 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 		d_caption_policy(Both),
 		d_confirm_close(true),
 		d_birthdate(QDateTime::currentDateTime ().toString(Qt::TextDate)),
-		d_restore_size(QSize())
+		d_restore_size(QSize()),
+		d_object_id(NullObjectId)
 {
+	d_object_id = ObjectRegistry::instance()->registerObject(this, metaObject()->className());
 	setObjectName(name);
 	setAttribute(Qt::WA_DeleteOnClose);
 	setLocale(app->locale());
@@ -68,6 +71,7 @@ MdiSubWindow::MdiSubWindow(const QString& label, ApplicationWindow *app, const Q
 
 MdiSubWindow::~MdiSubWindow()
 {
+	ObjectRegistry::instance()->unregisterObject(this);
 	if (d_folder)
 		d_folder->removeWindow(this);
 }

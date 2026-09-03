@@ -75,6 +75,22 @@ include(CPack)
 
 # --- Testing (CTest) ---
 enable_testing()
+
+add_executable(test_object_registry
+    tests/test_object_registry.cpp
+    qtiplot/src/core/ObjectRegistry.cpp
+)
+set_target_properties(test_object_registry PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/qtiplot"
+)
+target_include_directories(test_object_registry PRIVATE
+    qtiplot/src/core
+)
+target_link_libraries(test_object_registry PRIVATE
+    Qt6::Core
+)
+add_test(NAME test_object_registry COMMAND test_object_registry)
+
 add_test(NAME python_suite
          COMMAND qtiplot -X "${CMAKE_SOURCE_DIR}/tests/pytest_runner.py")
 set_tests_properties(python_suite PROPERTIES

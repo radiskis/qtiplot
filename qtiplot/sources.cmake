@@ -50,6 +50,7 @@ set(SOURCES
     src/core/Folder.cpp
     src/core/ImportASCIIDialog.cpp
     src/core/MdiSubWindow.cpp
+    src/core/ObjectRegistry.cpp
     src/core/OpenProjectDialog.cpp
     src/core/PlotWizard.cpp
     src/core/QtiPlotApplication.cpp
@@ -226,9 +227,12 @@ set(HEADERS
     src/core/ImportASCIIDialog.h
     src/core/ImportExportPlugin.h
     src/core/MdiSubWindow.h
+    src/core/ObjectId.h
+    src/core/ObjectRegistry.h
     src/core/OpenProjectDialog.h
     src/core/PlotWizard.h
     src/core/QtiPlotApplication.h
+    src/core/Ref.h
     src/core/RenameWindowDialog.h
     src/core/globals.h
     # src/excel
