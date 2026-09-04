@@ -18931,11 +18931,11 @@ void ApplicationWindow::loadCustomActions()
 		QXmlStreamReader reader(&file);
 		QString title, location;
 		if (reader.readNextStartElement()) {
-			if (reader.name() == "menu") {
+			if (reader.name() == QLatin1String("menu")) {
 				while (reader.readNextStartElement()) {
-					if (reader.name() == "title")
+					if (reader.name() == QLatin1String("title"))
 						title = reader.readElementText();
-					else if (reader.name() == "location")
+					else if (reader.name() == QLatin1String("location"))
 						location = reader.readElementText();
 					else
 						reader.skipCurrentElement();
@@ -18960,7 +18960,7 @@ void ApplicationWindow::loadCustomActions()
 		QAction *action = new QAction(this);
 		QString parentName, filePath;
 		if (reader.readNextStartElement()) {
-			if (reader.name() == "action") {
+			if (reader.name() == QLatin1String("action")) {
 				while (reader.readNextStartElement()) {
 					QString name = reader.name().toString();
 					if (name == "text")
