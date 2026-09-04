@@ -1112,7 +1112,7 @@ bool Fit::load(const QString& fileName)
 
     QXmlStreamReader reader(&file);
 	if (reader.readNextStartElement()) {
-		if (reader.name() != "fit") {
+		if (reader.name() != QLatin1String("fit")) {
 			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
 								tr("The file is not a QtiPlot fit model file."));
 			return false;
