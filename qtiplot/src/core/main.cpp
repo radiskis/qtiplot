@@ -121,10 +121,14 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 
 #include <QtPlugin>
 #include <gsl/gsl_errno.h>
+#include "Logger.h"
+#include "CrashHandler.h"
 
 int main( int argc, char ** argv )
 {
 	gsl_set_error_handler_off();
+	Logger::initLogging();
+	CrashHandler::initCrashHandler();
 
 //	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
 //	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
@@ -137,5 +141,16 @@ int main( int argc, char ** argv )
 
 	QtiPlotApplication app( argc, argv );
 	QObject::connect(&app, &QtiPlotApplication::lastWindowClosed, &app, &QtiPlotApplication::quit);
-	return app.exec();
+	int ret = 0;
+	try {
+		ret = app.exec();
+	} catch (const std::exception &e) {
+		qCCritical(lcIo) << "Uncaught exception in main event loop:" << e.what();
+		throw;
+	} catch (...) {
+		qCCritical(lcIo) << "Unknown uncaught exception in main event loop";
+		throw;
+	}
+	CrashHandler::cleanSessionRecoveryFiles();
+	return ret;
 }

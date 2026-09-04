@@ -30,6 +30,8 @@ Description          : QtiPlot's main window
 #include "ApplicationWindow.h"
 #include <QtiPlotApplication.h>
 #include "Tracked.h"
+#include "Logger.h"
+#include "CrashHandler.h"
 
 #include <qwt_global.h>
 #include <qwt3d_global.h>
@@ -1559,6 +1561,7 @@ void ApplicationWindow::initMainMenu()
 	help->addAction(actionDonate);
 	help->addAction(actionHelpForums);
 	help->addAction(actionHelpBugReports);
+	help->addAction(tr("Open Log Folder / Report a Problem..."), this, &ApplicationWindow::openLogFolder);
 	help->addSeparator();
 	help->addAction(actionAbout);
 
@@ -1641,6 +1644,71 @@ void ApplicationWindow::tableMenuAboutToShow()
 #endif
 
     reloadCustomActions();
+
+	QTimer::singleShot(0, this, &ApplicationWindow::checkRecoveryOnStartup);
+}
+
+void ApplicationWindow::openLogFolder()
+{
+	QString path = Logger::logDirPath();
+	QDir().mkpath(path);
+	QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+}
+
+void ApplicationWindow::autoSaveRecovery()
+{
+	if (!projectFolder())
+		return;
+
+	// Determine recovery directory and filename
+	QString recDir = CrashHandler::recoveryDirPath();
+	QDir().mkpath(recDir);
+
+	QString recFn;
+	if (projectname == "untitled" || projectname.isEmpty() ||
+		projectname.endsWith(".opj", Qt::CaseInsensitive) || projectname.endsWith(".ogm", Qt::CaseInsensitive) ||
+		projectname.endsWith(".ogw", Qt::CaseInsensitive) || projectname.endsWith(".ogg", Qt::CaseInsensitive)) {
+		qint64 pid = QCoreApplication::applicationPid();
+		recFn = QString("%1/recovery_unnamed_%2.qti").arg(recDir).arg(pid);
+	} else {
+		// Named project: save recovery to sibling file in recovery dir to avoid touching user file
+		QFileInfo fi(projectname);
+		qint64 pid = QCoreApplication::applicationPid();
+		recFn = QString("%1/recovery_%2_%3.qti").arg(recDir).arg(fi.baseName()).arg(pid);
+	}
+
+	qCDebug(lcIo) << "Performing background autosave to recovery file:" << recFn;
+	if (saveFolder(projectFolder(), recFn, false)) {
+		CrashHandler::setSessionRecoveryFile(recFn);
+		qCInfo(lcIo) << "Autosave recovery file updated successfully:" << recFn;
+	} else {
+		qCWarning(lcIo) << "Autosave recovery file failed to write:" << recFn;
+	}
+}
+
+void ApplicationWindow::checkRecoveryOnStartup()
+{
+	QStringList recoveryFiles = CrashHandler::findRecoveryFiles();
+	if (recoveryFiles.isEmpty())
+		return;
+
+	QString recDir = CrashHandler::recoveryDirPath();
+	QString latest = recDir + "/" + recoveryFiles.first();
+	QFileInfo fi(latest);
+
+	QString timeStr = fi.lastModified().toString("yyyy-MM-dd hh:mm:ss");
+	int choice = QMessageBox::question(this, tr("QtiPlot - Session Recovery"),
+		tr("QtiPlot detected an unsaved or recovered session from <b>%1</b>.<br>"
+		   "Would you like to recover it?").arg(timeStr),
+		QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+
+	if (choice == QMessageBox::Yes) {
+		qCInfo(lcIo) << "User chose to recover previous session from:" << latest;
+		open(latest, false, false);
+	} else {
+		qCInfo(lcIo) << "User declined to recover session; removing stale recovery file:" << latest;
+		QFile::remove(latest);
+	}
 }
 
 void ApplicationWindow::plotDataMenuAboutToShow()
@@ -6958,7 +7026,10 @@ bool ApplicationWindow::saveProject(bool compress)
 	}
 
 
-	saveFolder(projectFolder(), projectname, compress);
+	if (!saveFolder(projectFolder(), projectname, compress)) {
+		QApplication::restoreOverrideCursor();
+		return false;
+	}
 	savedProject();
 
 	if (autoSave){
@@ -7094,14 +7165,18 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	if (!w)
 		return false;
 
-	QFile f(fn);
-	if ( !f.open( QIODevice::WriteOnly ) ){
-		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
+	QString tempFn = fn + ".tmp";
+	QFile::remove(tempFn);
+
+	QFile f(tempFn);
+	if (!f.open(QIODevice::WriteOnly)) {
+		QMessageBox::critical(this, tr("QtiPlot - File save error"),
+			tr("Cannot write to temporary file: <br><b>%1</b>").arg(tempFn));
 		return false;
 	}
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	QTextStream t( &f );
+	QTextStream t(&f);
 	t.setEncoding(QStringConverter::Utf8);
 	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "." + QString::number(patch_version) + " project file\n";
 	t << "<scripting-lang>\t" + QString(scriptEnv->objectName()) + "\n";
@@ -7118,32 +7193,51 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 		windows++;
 
 	t << "<windows>\t" + QString::number(windows) + "\n";
+	t.flush();
+	if (t.status() != QTextStream::Ok || f.error() != QFile::NoError) {
+		f.close();
+		QFile::remove(tempFn);
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing window header to <b>%1</b>.").arg(fn));
+		return false;
+	}
 	f.close();
-
-	if (!f.isOpen())
-		if (!f.open(QIODevice::Append))
-			return false;
 
 	for (QString s : tbls){
 		Table *t = table(s);
 		if (t)
-			t->save(fn, windowGeometryInfo(t));
+			t->save(tempFn, windowGeometryInfo(t));
 	}
 
 	if (g){
 		Matrix *m = g->matrix();
 		if (m)
-			m->save(fn, windowGeometryInfo(m));
+			m->save(tempFn, windowGeometryInfo(m));
 		Table *t = g->table();
 		if (t)
-			t->save(fn, windowGeometryInfo(t));
+			t->save(tempFn, windowGeometryInfo(t));
 	}
 
-	w->save(fn, windowGeometryInfo(w));
-	f.close();
+	w->save(tempFn, windowGeometryInfo(w));
 
 	if (compress)
-		file_compress((char*)fn.toLocal8Bit().constData(), (char*)"wb9");
+		file_compress(tempFn.toUtf8().data(), (char*)"wb9");
+
+	if (QFile::exists(fn)) {
+		if (!QFile::remove(fn)) {
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Cannot overwrite existing file <b>%1</b>.").arg(fn));
+			return false;
+		}
+	}
+
+	if (!QFile::rename(tempFn, fn)) {
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"),
+			tr("Cannot rename temporary file <b>%1</b> to <b>%2</b>.").arg(tempFn).arg(fn));
+		return false;
+	}
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -10706,7 +10800,7 @@ void ApplicationWindow::modifiedProject(MdiSubWindow *w)
 void ApplicationWindow::timerEvent ( QTimerEvent *e)
 {
 	if (e->timerId() == savingTimerId)
-		saveProject();
+		autoSaveRecovery();
 	else
 		QWidget::timerEvent(e);
 }
@@ -10825,12 +10919,14 @@ void ApplicationWindow::closeEvent( QCloseEvent* ce )
 				ce->ignore();
 				break;
 			}
+			CrashHandler::cleanSessionRecoveryFiles();
 			saveSettings();
 			ce->accept();
 			break;
 
 		case QMessageBox::No:
 		default:
+			CrashHandler::cleanSessionRecoveryFiles();
 			saveSettings();
 			ce->accept();
 			break;
@@ -12579,7 +12675,7 @@ Matrix* ApplicationWindow::openMatrix(ApplicationWindow* app, const QStringList 
 
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
-	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000)
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || (int64_t)rows * (int64_t)cols > 50000000LL)
 		return nullptr;
 
 	QString caption = list[0];
@@ -12606,7 +12702,7 @@ Table* ApplicationWindow::openTable(ApplicationWindow* app, const QStringList &f
 	QString caption = list[0];
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
-	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000)
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || (int64_t)rows * (int64_t)cols > 50000000LL)
 		return nullptr;
 
 	Table* w = app->newTable(caption, rows, cols);
@@ -16965,35 +17061,21 @@ Folder* ApplicationWindow::appendProject(const QString& fn, Folder* parentFolder
 }
 
 
-void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
+bool ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compress)
 {
-	QFile f( fn );
-	if (d_backup_files && f.exists())
-	{// make byte-copy of current file so that there's always a copy of the data on disk
-		while (!f.open(QIODevice::ReadOnly)){
-			if (f.isOpen())
-				f.close();
-			QMessageBox::StandardButton choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
-					tr("Cannot make a backup copy of <b>%1</b> (to %2).<br>If you ignore this, you run the risk of <b>data loss</b>.").arg(projectname).arg(projectname+"~"),
-					QMessageBox::Retry | QMessageBox::Abort | QMessageBox::Ignore);
-			if (choice == QMessageBox::Abort)
-				return;
-			if (choice == QMessageBox::Ignore)
-				break;
-		}
+	if (!folder)
+		return false;
 
-		if (f.isOpen()){
-			QString bfn = fn + "~";
-			QFile::remove(bfn);//remove any existing backup
-            QFile::copy(fn, bfn);
-			f.close();
-		}
+	QString tempFn = fn + ".tmp";
+	QFile::remove(tempFn);
+
+	QFile f(tempFn);
+	if (!f.open(QIODevice::WriteOnly)) {
+		QMessageBox::critical(this, tr("QtiPlot - File save error"),
+			tr("Cannot write to temporary file: <br><b>%1</b>").arg(tempFn));
+		return false;
 	}
 
-	if ( !f.open( QIODevice::WriteOnly ) ){
-		QMessageBox::about(this, tr("QtiPlot - File save error"), tr("The file: <br><b>%1</b> is opened in read-only mode").arg(fn));
-		return;
-	}
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	QList<MdiSubWindow *> lst = folder->windowsList();
@@ -17005,39 +17087,61 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		dir = dir->folderBelow();
 	}
 
-	QTextStream t( &f );
+	QTextStream t(&f);
 	t.setEncoding(QStringConverter::Utf8);
 	t << "QtiPlot " + QString::number(maj_version) + "." + QString::number(min_version) + "."+
 			QString::number(patch_version) + " project file\n";
 	t << "<scripting-lang>\t" + QString(scriptEnv->objectName()) + "\n";
 	t << "<windows>\t" + QString::number(windows) + "\n";
+	t.flush();
+	if (t.status() != QTextStream::Ok || f.error() != QFile::NoError) {
+		f.close();
+		QFile::remove(tempFn);
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing project header to <b>%1</b>.").arg(fn));
+		return false;
+	}
 	f.close();
 
 	for (MdiSubWindow *w : lst)
-		w->save(fn, windowGeometryInfo(w));
+		w->save(tempFn, windowGeometryInfo(w));
 
 	initial_depth = folder->depth();
 	dir = folder->folderBelow();
 	while (dir && dir->depth() > initial_depth){
-		if (!f.isOpen())
-			if (!f.open(QIODevice::Append))
-				return;
+		if (!f.open(QIODevice::Append)) {
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing folder structure to <b>%1</b>.").arg(fn));
+			return false;
+		}
 
 		t << "<folder>\t" + QString(dir->objectName()) + "\t" + dir->birthDate() + "\t" + dir->modificationDate();
 		if (dir == current_folder)
 			t << "\tcurrent\n";
 		else
-			t << "\n";  // FIXME: Having no 5th string here is not a good idea
+			t << "\n";
 		t << "<open>" + QString::number(dir->folderListItem()->isOpen()) + "</open>\n";
+		t.flush();
+		if (t.status() != QTextStream::Ok || f.error() != QFile::NoError) {
+			f.close();
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing folder data to <b>%1</b>.").arg(fn));
+			return false;
+		}
 		f.close();
 
 		lst = dir->windowsList();
 		for (MdiSubWindow *w : lst)
-			w->save(fn, windowGeometryInfo(w));
+			w->save(tempFn, windowGeometryInfo(w));
 
-		if (!f.isOpen())
-			if (!f.open(QIODevice::Append))
-				return;
+		if (!f.open(QIODevice::Append)) {
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing folder structure to <b>%1</b>.").arg(fn));
+			return false;
+		}
 
 		if (!dir->logInfo().isEmpty() )
 			t << "<log>\n" + dir->logInfo() + "</log>\n" ;
@@ -17061,20 +17165,68 @@ void ApplicationWindow::saveFolder(Folder *folder, const QString& fn, bool compr
 		}
 	}
 
-	if (!f.isOpen())
-		if (!f.open(QIODevice::Append))
-			return;
+	if (!f.isOpen()) {
+		if (!f.open(QIODevice::Append)) {
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error finalizing project file <b>%1</b>.").arg(fn));
+			return false;
+		}
+	}
 
 	t << "<open>" + QString::number(folder->folderListItem()->isOpen()) + "</open>\n";
 	if (!folder->logInfo().isEmpty())
 		t << "<log>\n" + folder->logInfo() + "</log>" ;
 
+	t.flush();
+	bool writeOk = (t.status() == QTextStream::Ok) && (f.error() == QFile::NoError);
 	f.close();
 
+	if (!writeOk) {
+		QFile::remove(tempFn);
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing data to <b>%1</b>. Operation aborted.").arg(fn));
+		return false;
+	}
+
 	if (compress)
-		file_compress(fn.toUtf8().data(), (char*)"wb9");
+		file_compress(tempFn.toUtf8().data(), (char*)"wb9");
+
+	// Backup existing target file if requested
+	if (d_backup_files && QFile::exists(fn)) {
+		QString bfn = fn + "~";
+		QFile::remove(bfn);
+		if (!QFile::copy(fn, bfn)) {
+			QMessageBox::StandardButton choice = QMessageBox::warning(this, tr("QtiPlot - File backup error"),
+					tr("Cannot make a backup copy of <b>%1</b> (to %2).<br>If you ignore this, you run the risk of <b>data loss</b>.").arg(fn).arg(bfn),
+					QMessageBox::Retry | QMessageBox::Abort | QMessageBox::Ignore);
+			if (choice == QMessageBox::Abort) {
+				QFile::remove(tempFn);
+				QApplication::restoreOverrideCursor();
+				return false;
+			}
+		}
+	}
+
+	// Atomically replace target file
+	if (QFile::exists(fn)) {
+		if (!QFile::remove(fn)) {
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Cannot overwrite existing file <b>%1</b>.").arg(fn));
+			return false;
+		}
+	}
+
+	if (!QFile::rename(tempFn, fn)) {
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"),
+			tr("Cannot rename temporary file <b>%1</b> to <b>%2</b>.<br>Your data is preserved in the temporary file.").arg(tempFn).arg(fn));
+		return false;
+	}
 
 	QApplication::restoreOverrideCursor();
+	return true;
 }
 
 void ApplicationWindow::saveAsProject()
@@ -17082,12 +17234,13 @@ void ApplicationWindow::saveAsProject()
 	saveFolderAsProject(current_folder);
 }
 
-void ApplicationWindow::saveFolderAsProject(Folder *f)
+bool ApplicationWindow::saveFolderAsProject(Folder *f)
 {
 	bool compress = false;
 	QString fn = getSaveProjectName("", &compress, 1);
 	if (!fn.isEmpty())
-		saveFolder(f, fn, compress);
+		return saveFolder(f, fn, compress);
+	return false;
 }
 
 void ApplicationWindow::showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p, int)

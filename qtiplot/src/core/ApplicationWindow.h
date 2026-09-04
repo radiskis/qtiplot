@@ -964,6 +964,9 @@ public slots:
 	void showForums();
 	//! Open bug tracking system at berliOS in external browser
 	void showBugTracker();
+	void openLogFolder();
+	void autoSaveRecovery();
+	void checkRecoveryOnStartup();
 	//! Show download page in external browser
 	void downloadManual();
 	//! Show translations page in external browser
@@ -1083,8 +1086,8 @@ public slots:
 	//! Open the specified project file and add it as a subfolder to the parentFolder or to the current folder if no parent folder is specified.
 	Folder* appendProject(const QString& file_name, Folder* parentFolder = 0);
 	void saveAsProject();
-	void saveFolderAsProject(Folder *f);
-	void saveFolder(Folder *folder, const QString& fn, bool compress = false);
+	bool saveFolderAsProject(Folder *f);
+	bool saveFolder(Folder *folder, const QString& fn, bool compress = false);
 
 	//!  adds a folder list item to the list view "lv"
 	void addFolderListViewItem(Folder *f);

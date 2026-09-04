@@ -30,6 +30,7 @@
 #define PLUGINFIT_H
 
 #include "Fit.h"
+#include <QLibrary>
 
 class PluginFit : public Fit
 {
@@ -51,5 +52,6 @@ class PluginFit : public Fit
 		typedef double (*fitFunctionEval)(double, double *);
 		void calculateFitCurveData(double *X, double *Y);
 		fitFunctionEval f_eval;
+		QLibrary d_library;
 };
 #endif

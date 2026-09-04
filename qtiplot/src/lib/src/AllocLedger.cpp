@@ -1,6 +1,8 @@
 #include "Tracked.h"
 #include <QVector>
 #include <QPair>
+#include <QThread>
+#include <QCoreApplication>
 #include <algorithm>
 
 AllocLedger& AllocLedger::instance()
@@ -11,12 +13,14 @@ AllocLedger& AllocLedger::instance()
 
 void AllocLedger::add(const char *type)
 {
+    Q_ASSERT(!QCoreApplication::instance() || QThread::currentThread() == QCoreApplication::instance()->thread());
     if (type)
         d_counts[QString::fromUtf8(type)]++;
 }
 
 void AllocLedger::remove(const char *type)
 {
+    Q_ASSERT(!QCoreApplication::instance() || QThread::currentThread() == QCoreApplication::instance()->thread());
     if (type) {
         QString key = QString::fromUtf8(type);
         d_counts[key]--;

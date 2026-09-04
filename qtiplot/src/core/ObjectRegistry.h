@@ -31,7 +31,9 @@ public:
 		if (!ptr)
 			return nullptr;
 		if constexpr (std::is_base_of_v<QObject, T>) {
-			return dynamic_cast<T*>(static_cast<QObject*>(ptr));
+			T *res = dynamic_cast<T*>(static_cast<QObject*>(ptr));
+			Q_ASSERT(res != nullptr && "ObjectRegistry: resolved pointer is not of expected type T");
+			return res;
 		} else {
 			return static_cast<T*>(ptr);
 		}

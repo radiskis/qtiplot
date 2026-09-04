@@ -86,31 +86,32 @@ bool PluginFit::load(const QString& pluginName)
 		return false;
 	}
 
-	QLibrary lib(pluginName);
-	// lib.setAutoUnload(false);
+	d_library.setFileName(pluginName);
+	if (!d_library.load())
+		return false;
 
-	d_fsimplex = (fit_function_simplex) lib.resolve( "function_d" );
+	d_fsimplex = (fit_function_simplex) d_library.resolve( "function_d" );
 	if (!d_fsimplex)
 		return false;
 
-	d_f = (fit_function) lib.resolve( "function_f" );
+	d_f = (fit_function) d_library.resolve( "function_f" );
 	if (!d_f)
 		return false;
 
-	d_df = (fit_function_df) lib.resolve( "function_df" );
+	d_df = (fit_function_df) d_library.resolve( "function_df" );
 	if (!d_df)
 		return false;
 
-	d_fdf = (fit_function_fdf) lib.resolve( "function_fdf" );
+	d_fdf = (fit_function_fdf) d_library.resolve( "function_fdf" );
 	if (!d_fdf)
 		return false;
 
-	f_eval = (fitFunctionEval) lib.resolve("function_eval");
+	f_eval = (fitFunctionEval) d_library.resolve("function_eval");
 	if (!f_eval)
 		return false;
 
 	typedef char* (*fitFunc)();
-	fitFunc fitFunction = (fitFunc) lib.resolve("parameters");
+	fitFunc fitFunction = (fitFunc) d_library.resolve("parameters");
 	if (fitFunction){
 		d_param_names = QString(fitFunction()).split(",", Qt::SkipEmptyParts);
 		d_p = (int)d_param_names.count();
@@ -118,17 +119,17 @@ bool PluginFit::load(const QString& pluginName)
 	} else
 		return false;
 
-	fitFunc fitExplain = (fitFunc) lib.resolve("explanations");
+	fitFunc fitExplain = (fitFunc) d_library.resolve("explanations");
 	if (fitExplain)
 		d_param_explain = QString(fitExplain()).split(",", Qt::SkipEmptyParts);
 	else
 		for (int i=0; i<d_p; i++)
 			d_param_explain << "";
 
-	fitFunction = (fitFunc) lib.resolve( "name" );
+	fitFunction = (fitFunc) d_library.resolve( "name" );
 	setObjectName(QString(fitFunction()));
 
-	fitFunction = (fitFunc) lib.resolve( "function" );
+	fitFunction = (fitFunc) d_library.resolve( "function" );
 	if (fitFunction)
 		d_formula = QString(fitFunction());
 	else

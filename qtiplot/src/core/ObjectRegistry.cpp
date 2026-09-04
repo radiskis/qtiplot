@@ -1,4 +1,6 @@
 #include "ObjectRegistry.h"
+#include <QThread>
+#include <QCoreApplication>
 
 static ObjectRegistry *s_instance = nullptr;
 
@@ -24,6 +26,7 @@ ObjectRegistry::~ObjectRegistry()
 
 ObjectId ObjectRegistry::registerObject(void *ptr, const QString &typeName)
 {
+	Q_ASSERT(!QCoreApplication::instance() || QThread::currentThread() == QCoreApplication::instance()->thread());
 	if (!ptr)
 		return NullObjectId;
 

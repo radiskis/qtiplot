@@ -32,11 +32,33 @@
 #include <QFileOpenEvent>
 #include <QTimer>
 #include <QMenu>
+#include <QMessageBox>
+#include "Logger.h"
+#include <new>
 
 #ifdef Q_WS_MAC
 	void qt_mac_set_menubar_merge(bool enable);
 	void qt_mac_set_dock_menu(QMenu *menu);
 #endif
+
+bool QtiPlotApplication::notify(QObject *receiver, QEvent *event)
+{
+	try {
+		return QApplication::notify(receiver, event);
+	} catch (const std::bad_alloc &) {
+		qCCritical(lcIo) << "Memory exhaustion (std::bad_alloc) caught in application event dispatcher for object:"
+		                 << (receiver ? receiver->objectName() : "unknown");
+		QMessageBox::critical(activeWindow(), tr("QtiPlot - Out of Memory"),
+			tr("There is not enough memory to complete the requested operation.<br>"
+			   "Your current project and data remain intact. Please save your work."));
+		return false;
+	} catch (const std::exception &e) {
+		qCCritical(lcIo) << "Uncaught standard exception in event dispatcher:" << e.what();
+		QMessageBox::critical(activeWindow(), tr("QtiPlot - Error"),
+			tr("An error occurred while processing this operation:<br><b>%1</b>").arg(e.what()));
+		return false;
+	}
+}
 
 QtiPlotApplication::QtiPlotApplication( int & argc, char ** argv) : QApplication( argc, argv)
 {

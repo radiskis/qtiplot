@@ -27,6 +27,7 @@ d_new_val(newVal)
 
 void TableEditCellCommand::redo()
 {
+	Q_ASSERT(d_table != nullptr && "TableEditCellCommand::redo: target table is no longer alive");
 	if (!d_table)
 		return;
 	bool blocked = d_table->table()->blockSignals(true);
@@ -37,6 +38,7 @@ void TableEditCellCommand::redo()
 
 void TableEditCellCommand::undo()
 {
+	Q_ASSERT(d_table != nullptr && "TableEditCellCommand::undo: target table is no longer alive");
 	if (!d_table)
 		return;
 	bool blocked = d_table->table()->blockSignals(true);

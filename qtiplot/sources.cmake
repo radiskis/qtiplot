@@ -44,11 +44,13 @@ set(SOURCES
     # src/core
     src/core/ApplicationWindow.cpp
     src/core/ConfigDialog.cpp
+    src/core/CrashHandler.cpp
     src/core/CreateBinMatrixDialog.cpp
     src/core/CustomActionDialog.cpp
     src/core/FindDialog.cpp
     src/core/Folder.cpp
     src/core/ImportASCIIDialog.cpp
+    src/core/Logger.cpp
     src/core/MdiSubWindow.cpp
     src/core/ObjectRegistry.cpp
     src/core/OpenProjectDialog.cpp
@@ -220,12 +222,14 @@ set(HEADERS
     # src/core
     src/core/ApplicationWindow.h
     src/core/ConfigDialog.h
+    src/core/CrashHandler.h
     src/core/CreateBinMatrixDialog.h
     src/core/CustomActionDialog.h
     src/core/FindDialog.h
     src/core/Folder.h
     src/core/ImportASCIIDialog.h
     src/core/ImportExportPlugin.h
+    src/core/Logger.h
     src/core/MdiSubWindow.h
     src/core/ObjectId.h
     src/core/ObjectRegistry.h

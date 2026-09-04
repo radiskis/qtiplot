@@ -46,8 +46,11 @@ public:
 	void updateDockMenu();
 #endif
 
+public:
+	bool notify(QObject *receiver, QEvent *event) override;
+
 protected:
-	bool event(QEvent *);
+	bool event(QEvent *) override;
 
 private:
 	QList<ApplicationWindow *> d_windows;
