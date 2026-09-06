@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "PlotCurve.h"
+#include "CurveDecimator.h"
 #include "ErrorBarsCurve.h"
 #include "BoxCurve.h"
 #include "Graph.h"
@@ -656,11 +657,21 @@ void DataCurve::loadData()
 			g->grid()->setZ(-g->curveCount() - 1);
 	}
 
+	int maxPoints = g->speedModeMaxPoints();
+	Graph::DecimationMethod method = g->decimationMethod();
 	double speedTol = g->getDouglasPeukerTolerance();
-	if (speedTol != 0.0 && size >= g->speedModeMaxPoints()){
-		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(speedTol);
-		data = fitter->fitCurve(data);
-		delete fitter;
+	if (maxPoints > 2 && size >= maxPoints){
+		if (method == Graph::LTTB)
+			data = CurveDecimator::decimateLTTB(data, maxPoints);
+		else if (method == Graph::MinMax)
+			data = CurveDecimator::decimateMinMax(data, maxPoints);
+		else if (method == Graph::DouglasPeucker || (method == Graph::NoDecimation && speedTol > 0.0)){
+			if (speedTol > 0.0){
+				QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(speedTol);
+				data = fitter->fitCurve(data);
+				delete fitter;
+			}
+		}
 	}
 
 	if (d_type == Graph::HorizontalBars){

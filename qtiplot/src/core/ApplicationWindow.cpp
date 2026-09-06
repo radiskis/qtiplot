@@ -633,6 +633,7 @@ void ApplicationWindow::setDefaultOptions()
 	tableTextColor = QColor("#000000");
 	tableHeaderColor = QColor("#000000");
 
+	d_decimation_method = Graph::LTTB;
 	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
 	d_speed_mode_export = false;
@@ -3191,7 +3192,7 @@ void ApplicationWindow::setPreferences(Graph* g)
 		for (int i = 0; i < QwtPlot::axisCnt; i++)
 			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
 
-		g->enableDouglasPeukerSpeedMode(d_Douglas_Peuker_tolerance, d_speed_mode_points, false);
+		g->enableSpeedMode(d_decimation_method, d_speed_mode_points, d_Douglas_Peuker_tolerance, false);
 	}
 
 	g->setAxisTitlePolicy(d_graph_axis_labeling);
@@ -5860,6 +5861,7 @@ void ApplicationWindow::readSettings()
 	d_disable_curve_antialiasing = settings.value("/DisableAntialiasing", d_disable_curve_antialiasing).toBool();
 	d_curve_max_antialising_size = settings.value("/MaxCurveAntialisingSize", d_curve_max_antialising_size).toInt();
 	d_Douglas_Peuker_tolerance = settings.value("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance).toDouble();
+	d_decimation_method = (Graph::DecimationMethod)settings.value("/DecimationMethod", (int)d_decimation_method).toInt();
 	d_speed_mode_points = settings.value("/MaxPoints", d_speed_mode_points).toInt();
 	d_speed_mode_export = settings.value("/SpeedModeExport", d_speed_mode_export).toBool();
 	settings.endGroup(); // Curves
@@ -6362,6 +6364,7 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/DisableAntialiasing", d_disable_curve_antialiasing);
 	settings.setValue("/MaxCurveAntialisingSize", d_curve_max_antialising_size);
 	settings.setValue("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance);
+	settings.setValue("/DecimationMethod", (int)d_decimation_method);
 	settings.setValue("/MaxPoints", d_speed_mode_points);
 	settings.setValue("/SpeedModeExport", d_speed_mode_export);
 	settings.endGroup(); // Curves
@@ -13585,7 +13588,9 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 		} else if (s.startsWith ("<SpeedMode>") && s.endsWith ("</SpeedMode>")){
 			QStringList lst = s.remove("<SpeedMode>").remove("</SpeedMode>").split("\t");
-			if (lst.size() == 2)
+			if (lst.size() >= 3)
+				ag->enableSpeedMode((Graph::DecimationMethod)lst[2].toInt(), lst[1].toInt(), lst[0].toDouble());
+			else if (lst.size() == 2)
 				ag->enableDouglasPeukerSpeedMode(lst[0].toDouble(), lst[1].toInt());
 		} else if (s.startsWith ("<ImageProfileTool>") && s.endsWith ("</ImageProfileTool>")){
 			QStringList lst = s.remove("<ImageProfileTool>").remove("</ImageProfileTool>").split("\t");

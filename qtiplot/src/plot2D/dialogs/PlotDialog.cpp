@@ -897,14 +897,23 @@ void PlotDialog::initLayerSpeedPage()
 	if (app)
 		locale = app->locale();
 
+	decimationMethodLabel = new QLabel(tr("Algorithm:"));
+	boxDecimationMethod = new QComboBox();
+	boxDecimationMethod->addItem(tr("Largest-Triangle-Three-Buckets (LTTB)"), (int)Graph::LTTB);
+	boxDecimationMethod->addItem(tr("Min-Max (extremum preserving)"), (int)Graph::MinMax);
+	boxDecimationMethod->addItem(tr("Douglas-Peucker"), (int)Graph::DouglasPeucker);
+
+	gl1->addWidget(decimationMethodLabel, 1, 0);
+	gl1->addWidget(boxDecimationMethod, 1, 1);
+
 	boxDouglasPeukerTolerance = new DoubleSpinBox();
 	boxDouglasPeukerTolerance->setLocale(locale);
 	boxDouglasPeukerTolerance->setMinimum(0.0);
 	boxDouglasPeukerTolerance->setSpecialValueText(tr("0 (all data points)"));
 
-	gl1->addWidget(new QLabel(tr("Tolerance (Douglas-Peucker algorithm)")), 1, 0);
-	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
-	gl1->setRowStretch(2, 1);
+	gl1->addWidget(new QLabel(tr("Tolerance (Douglas-Peucker algorithm)")), 2, 0);
+	gl1->addWidget(boxDouglasPeukerTolerance, 2, 1);
+	gl1->setRowStretch(3, 1);
 	gl1->setColumnStretch(1, 1);
 
 	QVBoxLayout * vl = new QVBoxLayout( speedPage );
@@ -912,7 +921,13 @@ void PlotDialog::initLayerSpeedPage()
 
 	privateTabWidget->addTab(speedPage, tr("Speed"));
 	connect(speedModeBox, &QGroupBox::toggled, this, [this](bool){ acceptParams(); });
+	connect(boxDecimationMethod, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index){
+		int method = boxDecimationMethod->itemData(index).toInt();
+		boxDouglasPeukerTolerance->setEnabled(method == Graph::DouglasPeucker);
+		acceptParams();
+	});
 	connect(boxDouglasPeukerTolerance, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });
+	connect(boxMaxPoints, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int){ acceptParams(); });
 }
 
 void PlotDialog::initPiePage()
@@ -2859,13 +2874,22 @@ void PlotDialog::setActiveLayer(LayerItem *item)
     boxMargin->blockSignals(false);
 	boxSynchronizeScales->blockSignals(false);
 
+	bool speedEnabled = (g->decimationMethod() != Graph::NoDecimation && (g->decimationMethod() != Graph::DouglasPeucker || g->getDouglasPeukerTolerance() > 0.0));
 	speedModeBox->blockSignals(true);
-	speedModeBox->setChecked(g->getDouglasPeukerTolerance() > 0.0);
+	speedModeBox->setChecked(speedEnabled);
 	speedModeBox->blockSignals(false);
 
+	boxDecimationMethod->blockSignals(true);
+	int methodIdx = boxDecimationMethod->findData((int)g->decimationMethod());
+	if (methodIdx < 0)
+		methodIdx = boxDecimationMethod->findData((int)Graph::LTTB);
+	boxDecimationMethod->setCurrentIndex(methodIdx);
+	boxDecimationMethod->blockSignals(false);
+
 	boxDouglasPeukerTolerance->blockSignals(true);
-    boxDouglasPeukerTolerance->setValue(g->getDouglasPeukerTolerance());
-    boxDouglasPeukerTolerance->blockSignals(false);
+	boxDouglasPeukerTolerance->setValue(g->getDouglasPeukerTolerance());
+	boxDouglasPeukerTolerance->setEnabled(g->decimationMethod() == Graph::DouglasPeucker);
+	boxDouglasPeukerTolerance->blockSignals(false);
 
     boxMaxPoints->blockSignals(true);
     boxMaxPoints->setValue(g->speedModeMaxPoints());
@@ -3706,10 +3730,11 @@ bool PlotDialog::acceptParams()
 			return false;
 
 		double tolerance = boxDouglasPeukerTolerance->value();
+		Graph::DecimationMethod method = (Graph::DecimationMethod)boxDecimationMethod->currentData().toInt();
 		if (!speedModeBox->isChecked())
-			tolerance = 0;
+			method = Graph::NoDecimation;
 
-		g->enableDouglasPeukerSpeedMode(tolerance, boxMaxPoints->value());
+		g->enableSpeedMode(method, boxMaxPoints->value(), tolerance);
 		g->notifyChanges();
 		return true;
 	} else if (privateTabWidget->currentWidget() == layerDisplayPage){

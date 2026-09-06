@@ -270,9 +270,19 @@ class Graph: public QwtPlot, public Registered<Graph>
 		static QString escapeTeXSpecialCharacters(const QString &);
 		static QString texSuperscripts(const QString &);
 #endif
+		enum DecimationMethod {
+			NoDecimation = 0,
+			LTTB = 1,
+			MinMax = 2,
+			DouglasPeucker = 3
+		};
+
 		void changeCurveIndex(int fromIndex, int toIndex);
 		void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints = 3000, bool update = true);
+		void enableSpeedMode(DecimationMethod method, int maxPoints = 3000, double tolerance = 0.0, bool update = true);
 
+		DecimationMethod decimationMethod() const { return d_decimation_method; }
+		void setDecimationMethod(DecimationMethod method) { d_decimation_method = method; }
 		int speedModeMaxPoints(){return d_speed_mode_points;};
 		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
 
@@ -992,6 +1002,7 @@ signals:
 		QwtPlotMagnifier *d_magnifier;
 		QwtPlotPanner *d_panner;
 
+		DecimationMethod d_decimation_method;
 		double d_Douglas_Peuker_tolerance;
 		int d_speed_mode_points;
 		AxisTitlePolicy d_axis_title_policy;

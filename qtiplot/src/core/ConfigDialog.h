@@ -312,7 +312,7 @@ private:
 	ColorButton *boxColorMinor, *boxColorMajor;
 	PenStyleBox *boxTypeMinor, *boxTypeMajor;
 	DoubleSpinBox *boxWidthMinor, *boxWidthMajor, *boxDouglasPeukerTolerance;
-	QComboBox *boxGridYAxis, *boxGridXAxis;
+	QComboBox *boxGridYAxis, *boxGridXAxis, *boxDecimationMethod;
 	QCheckBox *boxAntialiseGrid;
 	QListWidget *axesGridList;
 	QLabel *gridLineColorLbl, *gridLineWidthLbl, *gridLineTypeLbl, *gridAxesLbl;
@@ -327,7 +327,7 @@ private:
 
 	QLineEdit *javaPathBox;
 	QPushButton *browseJavaBtn;
-	QLabel *javaLabel, *toleranceLabel, *maxPointsLabel;
+	QLabel *javaLabel, *toleranceLabel, *maxPointsLabel, *decimationMethodLabel;
 
 	QLineEdit *jodconverterPathBox;
 	QPushButton *browseJODConverterBtn;

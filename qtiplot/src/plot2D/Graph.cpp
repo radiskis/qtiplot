@@ -154,6 +154,7 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	d_tex_escape_strings = true;
 #endif
 	d_axis_title_policy = ColComment;
+	d_decimation_method = LTTB;
 	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
 	d_synchronize_scales = false;
@@ -4532,9 +4533,10 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveTickLabelsSpace();
 	s+=saveEnabledTickLabels();
 	s+=saveMarkers();
-	if (d_Douglas_Peuker_tolerance > 0.0){
+	if (d_decimation_method != NoDecimation && (d_decimation_method != DouglasPeucker || d_Douglas_Peuker_tolerance > 0.0)){
 		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
-		s += QString::number(d_speed_mode_points) + "</SpeedMode>\n";
+		s += QString::number(d_speed_mode_points) + "\t";
+		s += QString::number((int)d_decimation_method) + "</SpeedMode>\n";
 	}
 
 	if (d_image_profiles_tool){
@@ -5042,7 +5044,9 @@ void Graph::copy(Graph* g)
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
+	d_decimation_method = g->decimationMethod();
 	d_Douglas_Peuker_tolerance = g->getDouglasPeukerTolerance();
+	d_speed_mode_points = g->speedModeMaxPoints();
 
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		copyScaleDraw(g, i);
@@ -7201,16 +7205,18 @@ void Graph::dropEvent(QDropEvent* event)
 		clone->copy(g);
 }
 
-void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool update)
+void Graph::enableSpeedMode(DecimationMethod method, int maxPoints, double tolerance, bool update)
 {
-	if (d_speed_mode_points == maxPoints && d_Douglas_Peuker_tolerance == tolerance)
+	if (d_decimation_method == method && d_speed_mode_points == maxPoints && d_Douglas_Peuker_tolerance == tolerance)
 		return;
 
+	d_decimation_method = method;
 	d_speed_mode_points = maxPoints;
 	d_Douglas_Peuker_tolerance = tolerance;
 
+	bool speedEnabled = (d_decimation_method != NoDecimation && (d_decimation_method != DouglasPeucker || d_Douglas_Peuker_tolerance > 0.0));
 	if (multiLayer())
-		multiLayer()->setLayerButtonSpeedMode(this, d_Douglas_Peuker_tolerance > 0.0);
+		multiLayer()->setLayerButtonSpeedMode(this, speedEnabled);
 
 	if (!update)
 		return;
@@ -7224,6 +7230,12 @@ void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool u
 		((DataCurve *)c)->loadData();
 	}
 	replot();
+}
+
+void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool update)
+{
+	DecimationMethod method = (tolerance > 0.0) ? DouglasPeucker : NoDecimation;
+	enableSpeedMode(method, maxPoints, tolerance, update);
 }
 
 QList<FrameWidget*> Graph::stackingOrderEnrichmentsList() const

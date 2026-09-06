@@ -1082,13 +1082,23 @@ void ConfigDialog::initLayerSpeedPage()
 	gl->setRowStretch(1, 1);
 
 	double tolerance = app->getDouglasPeukerTolerance();
+	Graph::DecimationMethod method = app->defaultDecimationMethod();
 	speedModeBox = new QGroupBox();
 	speedModeBox->setCheckable(true);
-	speedModeBox->setChecked(tolerance > 0);
+	speedModeBox->setChecked(method != Graph::NoDecimation && (method != Graph::DouglasPeucker || tolerance > 0));
 
 	boxMaxPoints = new QSpinBox();
 	boxMaxPoints->setMaximum(INT_MAX);
 	boxMaxPoints->setValue(app->speedModeMaxPoints());
+
+	decimationMethodLabel = new QLabel();
+	boxDecimationMethod = new QComboBox();
+	boxDecimationMethod->addItem(tr("Largest-Triangle-Three-Buckets (LTTB)"), (int)Graph::LTTB);
+	boxDecimationMethod->addItem(tr("Min-Max (extremum preserving)"), (int)Graph::MinMax);
+	boxDecimationMethod->addItem(tr("Douglas-Peucker"), (int)Graph::DouglasPeucker);
+	int mIdx = boxDecimationMethod->findData((int)method);
+	if (mIdx >= 0)
+		boxDecimationMethod->setCurrentIndex(mIdx);
 
 	QGridLayout *gl1 = new QGridLayout(speedModeBox);
 
@@ -1096,6 +1106,10 @@ void ConfigDialog::initLayerSpeedPage()
 	gl1->addWidget(maxPointsLabel, 0, 0);
 	gl1->addWidget(boxMaxPoints, 0, 1);
 	maxPointsLabel->setBuddy(boxMaxPoints);
+
+	gl1->addWidget(decimationMethodLabel, 1, 0);
+	gl1->addWidget(boxDecimationMethod, 1, 1);
+	decimationMethodLabel->setBuddy(boxDecimationMethod);
 
 	QLocale locale = QLocale();
 	if (app)
@@ -1105,17 +1119,23 @@ void ConfigDialog::initLayerSpeedPage()
 	boxDouglasPeukerTolerance->setLocale(locale);
 	boxDouglasPeukerTolerance->setMinimum(0.0);
 	boxDouglasPeukerTolerance->setValue(app->getDouglasPeukerTolerance());
+	boxDouglasPeukerTolerance->setEnabled(method == Graph::DouglasPeucker);
+
+	connect(boxDecimationMethod, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index){
+		int m = boxDecimationMethod->itemData(index).toInt();
+		boxDouglasPeukerTolerance->setEnabled(m == Graph::DouglasPeucker);
+	});
 
 	toleranceLabel = new QLabel();
 	toleranceLabel->setBuddy(boxDouglasPeukerTolerance);
-	gl1->addWidget(toleranceLabel, 1, 0);
-	gl1->addWidget(boxDouglasPeukerTolerance, 1, 1);
+	gl1->addWidget(toleranceLabel, 2, 0);
+	gl1->addWidget(boxDouglasPeukerTolerance, 2, 1);
 
 	applySpeedExportBox = new QCheckBox();
 	applySpeedExportBox->setChecked(app->speedModeExport());
-	gl1->addWidget(applySpeedExportBox, 2, 0);
+	gl1->addWidget(applySpeedExportBox, 3, 0);
 
-	gl1->setRowStretch(3, 1);
+	gl1->setRowStretch(4, 1);
 	gl1->setColumnStretch(1, 1);
 
 	QVBoxLayout * vl = new QVBoxLayout(plotSpeedPage);
@@ -2089,6 +2109,7 @@ void ConfigDialog::languageChange()
 	curveSizeBox->setSuffix(" " + tr("data points"));
 	speedModeBox->setTitle(tr("&Speed Mode, Skip Points if needed"));
 	maxPointsLabel->setText(tr("A&pply to curves with more than"));
+	decimationMethodLabel->setText(tr("&Algorithm"));
 	toleranceLabel->setText(tr("&Tolerance (Douglas-Peucker algorithm)"));
 	boxMaxPoints->setSuffix(" " + tr("data points"));
 	boxDouglasPeukerTolerance->setSpecialValueText(tr("0 (all data points)"));
@@ -2540,6 +2561,10 @@ void ConfigDialog::apply()
 	app->d_curve_max_antialising_size = curveSizeBox->value();
 	app->d_disable_curve_antialiasing = disableAntialiasingBox->isChecked();
 	app->setSpeedMaxPoints(boxMaxPoints->value());
+	Graph::DecimationMethod decMethod = (Graph::DecimationMethod)boxDecimationMethod->currentData().toInt();
+	if (!speedModeBox->isChecked())
+		decMethod = Graph::NoDecimation;
+	app->setDefaultDecimationMethod(decMethod);
 	app->setDouglasPeukerTolerance(speedModeBox->isChecked() ? boxDouglasPeukerTolerance->value() : 0.0);
 	app->setSpeedModeExport(applySpeedExportBox->isChecked());
 
@@ -3788,8 +3813,13 @@ void ConfigDialog::setApplication(ApplicationWindow *app)
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 
 	double tolerance = app->getDouglasPeukerTolerance();
-	speedModeBox->setChecked(tolerance > 0);
+	Graph::DecimationMethod method = app->defaultDecimationMethod();
+	speedModeBox->setChecked(method != Graph::NoDecimation && (method != Graph::DouglasPeucker || tolerance > 0));
+	int mIdx = boxDecimationMethod->findData((int)method);
+	if (mIdx >= 0)
+		boxDecimationMethod->setCurrentIndex(mIdx);
 	boxDouglasPeukerTolerance->setValue(tolerance);
+	boxDouglasPeukerTolerance->setEnabled(method == Graph::DouglasPeucker);
 	boxMaxPoints->setValue(app->speedModeMaxPoints());
 	applySpeedExportBox->setChecked(app->speedModeExport());
 
