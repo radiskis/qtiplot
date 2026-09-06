@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ConfigDialog.h
+    File                 : TablesConfigPage.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Preferences dialog
+    Description          : Table preferences page
 
  ***************************************************************************/
 
@@ -26,50 +26,57 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef TABLES_CONFIG_PAGE_H
+#define TABLES_CONFIG_PAGE_H
 
-#include <QDialog>
-#include <QList>
+#include "ConfigPage.h"
+#include <QFont>
 
-class ApplicationWindow;
-class ApplicationSettings;
-class ConfigPage;
-class QListWidget;
-class QStackedWidget;
 class QLabel;
+class QComboBox;
+class QGroupBox;
+class ColorButton;
 class QPushButton;
+class QCheckBox;
 
-//! Preferences dialog
-class ConfigDialog : public QDialog
+class TablesConfigPage : public ConfigPage
 {
     Q_OBJECT
-
 public:
-	//! Constructor
-    ConfigDialog( QWidget* parent, Qt::WindowFlags fl = {} );
-	void setColumnSeparator(const QString& sep);
+    explicit TablesConfigPage(QWidget *parent = nullptr);
+
+    QString pageTitle() const override { return tr("Tables"); }
+    QIcon pageIcon() const override { return QIcon(":/configTable.png"); }
+
+    void init(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void apply(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void retranslateUi() override;
+
+    void setColumnSeparator(const QString& sep);
 
 private slots:
-    void languageChange();
-	void accept() override;
-	void apply();
-	void resetDefaultSettings();
-	void setCurrentPage(int index);
+    void pickTextFont();
+    void pickHeaderFont();
 
 private:
-	ApplicationWindow *d_app;
-	ApplicationSettings *d_settings;
-	QList<ConfigPage *> d_pages;
+    QLabel *lblSeparator;
+    QComboBox *boxSeparator;
+    QGroupBox *groupBoxTableCol;
+    QLabel *lblTableBackground;
+    QLabel *lblTextColor;
+    QLabel *lblHeaderColor;
+    ColorButton *buttonBackground;
+    ColorButton *buttonText;
+    ColorButton *buttonHeader;
+    QGroupBox *groupBoxTableFonts;
+    QPushButton *buttonTextFont;
+    QPushButton *buttonHeaderFont;
+    QCheckBox *boxTableComments;
+    QCheckBox *boxUpdateTableValues;
+    QCheckBox *boxTablePasteDialog;
 
-	QListWidget *itemsList;
-	QStackedWidget *generalDialog;
-	QLabel *lblPageHeader;
-
-	QPushButton *btnDefaultSettings;
-	QPushButton *buttonApply;
-	QPushButton *buttonOk;
-	QPushButton *buttonCancel;
+    QFont textFont;
+    QFont headerFont;
 };
 
-#endif // CONFIGDIALOG_H
+#endif // TABLES_CONFIG_PAGE_H

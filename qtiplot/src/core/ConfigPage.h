@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ConfigDialog.h
+    File                 : ConfigPage.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Preferences dialog
+    Description          : Preferences page base class
 
  ***************************************************************************/
 
@@ -26,50 +26,34 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef CONFIG_PAGE_H
+#define CONFIG_PAGE_H
 
-#include <QDialog>
-#include <QList>
+#include <QWidget>
+#include <QString>
+#include <QIcon>
 
 class ApplicationWindow;
 class ApplicationSettings;
-class ConfigPage;
-class QListWidget;
-class QStackedWidget;
-class QLabel;
-class QPushButton;
 
-//! Preferences dialog
-class ConfigDialog : public QDialog
+class ConfigPage : public QWidget
 {
     Q_OBJECT
-
 public:
-	//! Constructor
-    ConfigDialog( QWidget* parent, Qt::WindowFlags fl = {} );
-	void setColumnSeparator(const QString& sep);
+    explicit ConfigPage(QWidget *parent = nullptr) : QWidget(parent) {}
+    virtual ~ConfigPage() override = default;
 
-private slots:
-    void languageChange();
-	void accept() override;
-	void apply();
-	void resetDefaultSettings();
-	void setCurrentPage(int index);
+    virtual QString pageTitle() const = 0;
+    virtual QIcon pageIcon() const = 0;
 
-private:
-	ApplicationWindow *d_app;
-	ApplicationSettings *d_settings;
-	QList<ConfigPage *> d_pages;
+    //! Initialize UI controls from current application and settings
+    virtual void init(ApplicationWindow *app, ApplicationSettings *settings) = 0;
 
-	QListWidget *itemsList;
-	QStackedWidget *generalDialog;
-	QLabel *lblPageHeader;
+    //! Apply changes from UI back to ApplicationSettings and ApplicationWindow
+    virtual void apply(ApplicationWindow *app, ApplicationSettings *settings) = 0;
 
-	QPushButton *btnDefaultSettings;
-	QPushButton *buttonApply;
-	QPushButton *buttonOk;
-	QPushButton *buttonCancel;
+    //! Dynamic UI string retranslation on language change
+    virtual void retranslateUi() = 0;
 };
 
-#endif // CONFIGDIALOG_H
+#endif // CONFIG_PAGE_H

@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ConfigDialog.h
+    File                 : FittingConfigPage.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Preferences dialog
+    Description          : Curve fitting preferences page
 
  ***************************************************************************/
 
@@ -26,50 +26,52 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef FITTING_CONFIG_PAGE_H
+#define FITTING_CONFIG_PAGE_H
 
-#include <QDialog>
-#include <QList>
+#include "ConfigPage.h"
 
-class ApplicationWindow;
-class ApplicationSettings;
-class ConfigPage;
-class QListWidget;
-class QStackedWidget;
+class QGroupBox;
+class QRadioButton;
 class QLabel;
-class QPushButton;
+class QSpinBox;
+class QCheckBox;
+class ColorButton;
 
-//! Preferences dialog
-class ConfigDialog : public QDialog
+class FittingConfigPage : public ConfigPage
 {
     Q_OBJECT
-
 public:
-	//! Constructor
-    ConfigDialog( QWidget* parent, Qt::WindowFlags fl = {} );
-	void setColumnSeparator(const QString& sep);
+    explicit FittingConfigPage(QWidget *parent = nullptr);
+
+    QString pageTitle() const override { return tr("Fitting"); }
+    QIcon pageIcon() const override { return QIcon(":/fit.png"); }
+
+    void init(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void apply(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void retranslateUi() override;
 
 private slots:
-    void languageChange();
-	void accept() override;
-	void apply();
-	void resetDefaultSettings();
-	void setCurrentPage(int index);
+    void showPointsBox(bool);
 
 private:
-	ApplicationWindow *d_app;
-	ApplicationSettings *d_settings;
-	QList<ConfigPage *> d_pages;
-
-	QListWidget *itemsList;
-	QStackedWidget *generalDialog;
-	QLabel *lblPageHeader;
-
-	QPushButton *btnDefaultSettings;
-	QPushButton *buttonApply;
-	QPushButton *buttonOk;
-	QPushButton *buttonCancel;
+    QGroupBox *groupBoxFittingCurve;
+    QRadioButton *samePointsBtn;
+    QRadioButton *generatePointsBtn;
+    QLabel *lblPoints;
+    QSpinBox *generatePointsBox;
+    QCheckBox *linearFit2PointsBox;
+    QGroupBox *groupBoxFitParameters;
+    QCheckBox *scaleErrorsBox;
+    QCheckBox *logBox;
+    QCheckBox *plotLabelBox;
+    QLabel *lblPrecision;
+    QSpinBox *boxPrecision;
+    QGroupBox *groupBoxMultiPeak;
+    QCheckBox *generatePeaksBox;
+    QLabel *lblPeaksColor;
+    ColorButton *boxPeaksColor;
+    QCheckBox *boxMultiPeakMsgs;
 };
 
-#endif // CONFIGDIALOG_H
+#endif // FITTING_CONFIG_PAGE_H

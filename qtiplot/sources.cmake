@@ -45,6 +45,12 @@ set(SOURCES
     src/core/ApplicationSettings.cpp
     src/core/ApplicationWindow.cpp
     src/core/ConfigDialog.cpp
+    src/core/FittingConfigPage.cpp
+    src/core/GeneralConfigPage.cpp
+    src/core/NotesConfigPage.cpp
+    src/core/Plots2DConfigPage.cpp
+    src/core/Plots3DConfigPage.cpp
+    src/core/TablesConfigPage.cpp
     src/core/CrashHandler.cpp
     src/core/CreateBinMatrixDialog.cpp
     src/core/CustomActionDialog.cpp
@@ -226,6 +232,13 @@ set(HEADERS
     src/core/ApplicationSettings.h
     src/core/ApplicationWindow.h
     src/core/ConfigDialog.h
+    src/core/ConfigPage.h
+    src/core/FittingConfigPage.h
+    src/core/GeneralConfigPage.h
+    src/core/NotesConfigPage.h
+    src/core/Plots2DConfigPage.h
+    src/core/Plots3DConfigPage.h
+    src/core/TablesConfigPage.h
     src/core/CrashHandler.h
     src/core/CreateBinMatrixDialog.h
     src/core/CustomActionDialog.h

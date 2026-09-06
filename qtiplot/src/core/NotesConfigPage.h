@@ -1,10 +1,10 @@
 /***************************************************************************
-    File                 : ConfigDialog.h
+    File                 : NotesConfigPage.h
     Project              : QtiPlot
     --------------------------------------------------------------------
     Copyright            : (C) 2006 - 2011 by Ion Vasilief
     Email (use @ for *)  : ion_vasilief*yahoo.fr
-    Description          : Preferences dialog
+    Description          : Notes preferences page
 
  ***************************************************************************/
 
@@ -26,50 +26,61 @@
  *   Boston, MA  02110-1301  USA                                           *
  *                                                                         *
  ***************************************************************************/
-#ifndef CONFIGDIALOG_H
-#define CONFIGDIALOG_H
+#ifndef NOTES_CONFIG_PAGE_H
+#define NOTES_CONFIG_PAGE_H
 
-#include <QDialog>
-#include <QList>
+#include "ConfigPage.h"
+#include <QFont>
 
-class ApplicationWindow;
-class ApplicationSettings;
-class ConfigPage;
-class QListWidget;
-class QStackedWidget;
 class QLabel;
+class QSpinBox;
+class QFontComboBox;
 class QPushButton;
+class QCheckBox;
+class QGroupBox;
+class ColorButton;
 
-//! Preferences dialog
-class ConfigDialog : public QDialog
+class NotesConfigPage : public ConfigPage
 {
     Q_OBJECT
-
 public:
-	//! Constructor
-    ConfigDialog( QWidget* parent, Qt::WindowFlags fl = {} );
-	void setColumnSeparator(const QString& sep);
+    explicit NotesConfigPage(QWidget *parent = nullptr);
+
+    QString pageTitle() const override { return tr("Notes"); }
+    QIcon pageIcon() const override { return QIcon(":/notes_32.png"); }
+
+    void init(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void apply(ApplicationWindow *app, ApplicationSettings *settings) override;
+    void retranslateUi() override;
 
 private slots:
-    void languageChange();
-	void accept() override;
-	void apply();
-	void resetDefaultSettings();
-	void setCurrentPage(int index);
+    void customizeNotes();
+    void rehighlight();
 
 private:
-	ApplicationWindow *d_app;
-	ApplicationSettings *d_settings;
-	QList<ConfigPage *> d_pages;
+    ApplicationWindow *d_app;
+    QLabel *labelTabLength;
+    QSpinBox *boxTabLength;
+    QLabel *labelNotesFont;
+    QFontComboBox *boxFontFamily;
+    QSpinBox *boxFontSize;
+    QPushButton *buttonBoldFont;
+    QPushButton *buttonItalicFont;
+    QCheckBox *lineNumbersBox;
 
-	QListWidget *itemsList;
-	QStackedWidget *generalDialog;
-	QLabel *lblPageHeader;
-
-	QPushButton *btnDefaultSettings;
-	QPushButton *buttonApply;
-	QPushButton *buttonOk;
-	QPushButton *buttonCancel;
+    QGroupBox *groupSyntaxHighlighter;
+    QLabel *buttonCommentLabel;
+    ColorButton *buttonCommentColor;
+    QLabel *buttonKeywordLabel;
+    ColorButton *buttonKeywordColor;
+    QLabel *buttonQuotationLabel;
+    ColorButton *buttonQuotationColor;
+    QLabel *buttonNumericLabel;
+    ColorButton *buttonNumericColor;
+    QLabel *buttonFunctionLabel;
+    ColorButton *buttonFunctionColor;
+    QLabel *buttonClassLabel;
+    ColorButton *buttonClassColor;
 };
 
-#endif // CONFIGDIALOG_H
+#endif // NOTES_CONFIG_PAGE_H
