@@ -56,6 +56,8 @@ set(SOURCES
     src/core/CustomActionDialog.cpp
     src/core/FindDialog.cpp
     src/core/Folder.cpp
+    src/core/ProjectManager.cpp
+    src/core/ProjectSerializer.cpp
     src/core/ImportASCIIDialog.cpp
     src/core/Logger.cpp
     src/core/MdiSubWindow.cpp
@@ -244,6 +246,8 @@ set(HEADERS
     src/core/CustomActionDialog.h
     src/core/FindDialog.h
     src/core/Folder.h
+    src/core/ProjectManager.h
+    src/core/ProjectSerializer.h
     src/core/ImportASCIIDialog.h
     src/core/ImportExportPlugin.h
     src/core/Logger.h
