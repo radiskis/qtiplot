@@ -45,6 +45,7 @@
 #include <Table.h>
 #include "ApplicationSettings.h"
 #include "ProjectManager.h"
+#include "ActionManager.h"
 #include "ProjectSerializer.h"
 #include <ScriptingEnv.h>
 #include <Script.h>
@@ -158,6 +159,9 @@ class ApplicationWindow: public QMainWindow, public scripted
 #endif
 
 friend class ProjectManager;
+	friend class ActionManager;
+	friend class MenuBuilder;
+	friend class ActionTranslator;
 	friend class ProjectSerializer;
 
 public:
@@ -292,6 +296,7 @@ public:
 
 	ApplicationSettings *settings() const { return d_app_settings; }
 	ProjectManager *projectManager() const { return d_project_manager; }
+	ActionManager *actionManager() const { return d_action_manager; }
 
 public slots:
 	//! \name Projects and Project Files
@@ -1503,6 +1508,7 @@ private:
 	bool d_3D_scale_fonts;
 	ApplicationSettings *d_app_settings;
 	ProjectManager *d_project_manager;
+	ActionManager *d_action_manager;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);

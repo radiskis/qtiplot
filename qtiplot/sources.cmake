@@ -58,6 +58,9 @@ set(SOURCES
     src/core/Folder.cpp
     src/core/ProjectManager.cpp
     src/core/ProjectSerializer.cpp
+  src/core/ActionTranslator.cpp
+  src/core/MenuBuilder.cpp
+  src/core/ActionManager.cpp
     src/core/ImportASCIIDialog.cpp
     src/core/Logger.cpp
     src/core/MdiSubWindow.cpp
@@ -248,6 +251,9 @@ set(HEADERS
     src/core/Folder.h
     src/core/ProjectManager.h
     src/core/ProjectSerializer.h
+  src/core/ActionTranslator.h
+  src/core/MenuBuilder.h
+  src/core/ActionManager.h
     src/core/ImportASCIIDialog.h
     src/core/ImportExportPlugin.h
     src/core/Logger.h
