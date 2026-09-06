@@ -43,6 +43,7 @@
 #include <MultiLayer.h>
 #include <Graph.h>
 #include <Table.h>
+#include "ApplicationSettings.h"
 #include <ScriptingEnv.h>
 #include <Script.h>
 #include <TranslateCurveTool.h>
@@ -283,6 +284,8 @@ public:
 
 	bool scale3DPlotFonts(){return d_3D_scale_fonts;}
 	void setScale3DPlotFonts(bool on = true){d_3D_scale_fonts = on;}
+
+	ApplicationSettings *settings() const { return d_app_settings; }
 
 public slots:
 	//! \name Projects and Project Files
@@ -1492,6 +1495,7 @@ private:
 	int d_speed_mode_points;
 	bool d_speed_mode_export;
 	bool d_3D_scale_fonts;
+	ApplicationSettings *d_app_settings;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);

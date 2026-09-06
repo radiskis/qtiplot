@@ -42,6 +42,7 @@ set(SOURCES
     src/analysis/dialogs/StudentTestDialog.cpp
     src/analysis/dialogs/SubtractDataDialog.cpp
     # src/core
+    src/core/ApplicationSettings.cpp
     src/core/ApplicationWindow.cpp
     src/core/ConfigDialog.cpp
     src/core/CrashHandler.cpp
@@ -222,6 +223,7 @@ set(HEADERS
     src/analysis/dialogs/StudentTestDialog.h
     src/analysis/dialogs/SubtractDataDialog.h
     # src/core
+    src/core/ApplicationSettings.h
     src/core/ApplicationWindow.h
     src/core/ConfigDialog.h
     src/core/CrashHandler.h
