@@ -31,7 +31,6 @@
 #include <PlotCurve.h>
 #include <ColorBox.h>
 
-#include <QMessageBox>
 #include <QLocale>
 
 #include <gsl/gsl_fft_halfcomplex.h>
@@ -54,14 +53,12 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	int col2 = d_table->colIndex(colName2);
 
 	if (col1 < 0){
-		QMessageBox::warning((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
 		tr("The data set %1 does not exist!").arg(colName1));
-		d_init_err = true;
 		return false;
 	} else if (col2 < 0){
-		QMessageBox::warning((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
 		tr("The data set %1 does not exist!").arg(colName2));
-		d_init_err = true;
 		return false;
 	}
 
@@ -117,28 +114,33 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 
 void Correlation::output()
 {
-    // calculate the FFTs of the two functions
-	if( gsl_fft_real_radix2_transform( d_x, 1, d_n ) == 0 &&
-        gsl_fft_real_radix2_transform( d_y, 1, d_n ) == 0)
-	{
-		for(int i=0; i<d_n/2; i++ ){// multiply the FFT by its complex conjugate
-			if( i==0 || i==(d_n/2)-1 )
-				d_x[i] *= d_x[i];
-			else{
-				int ni = d_n-i;
-				double dReal = d_x[i] * d_y[i] + d_x[ni] * d_y[ni];
-				double dImag = d_x[i] * d_y[ni] - d_x[ni] * d_y[i];
-				d_x[i] = dReal;
-				d_x[ni] = dImag;
+	runAsync([this]() {
+		// calculate the FFTs of the two functions
+		if( gsl_fft_real_radix2_transform( d_x, 1, d_n ) == 0 &&
+			gsl_fft_real_radix2_transform( d_y, 1, d_n ) == 0)
+		{
+			for(int i=0; i<d_n/2; i++ ){// multiply the FFT by its complex conjugate
+				if( i==0 || i==(d_n/2)-1 )
+					d_x[i] *= d_x[i];
+				else{
+					int ni = d_n-i;
+					double dReal = d_x[i] * d_y[i] + d_x[ni] * d_y[ni];
+					double dImag = d_x[i] * d_y[ni] - d_x[ni] * d_y[i];
+					d_x[i] = dReal;
+					d_x[ni] = dImag;
+				}
 			}
+		} else {
+			reportError(tr("QtiPlot") + " - " + tr("Error"),
+								 tr("Error in GSL forward FFT operation!"));
+			return;
 		}
-	} else {
-		QMessageBox::warning((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-                             tr("Error in GSL forward FFT operation!"));
-		return;
-	}
 
-	gsl_fft_halfcomplex_radix2_inverse(d_x, 1, d_n );	//inverse FFT
+		gsl_fft_halfcomplex_radix2_inverse(d_x, 1, d_n );	//inverse FFT
+	}, tr("Calculating correlation..."));
+
+	if (d_canceled || d_init_err)
+		return;
 
 	addResultCurve();
     d_result_table = d_table;

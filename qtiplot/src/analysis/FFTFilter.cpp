@@ -28,7 +28,6 @@
  ***************************************************************************/
 #include "FFTFilter.h"
 
-#include <QMessageBox>
 #include <QLocale>
 
 #include <gsl/gsl_fft_halfcomplex.h>
@@ -84,9 +83,8 @@ void FFTFilter::setFilterType(int type)
 {
     if (type < 1 || type > 4)
     {
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+        reportError(tr("QtiPlot") + " - " + tr("Error"),
         tr("Unknown filter type. Valid values are: 1 - Low pass, 2 - High Pass, 3 - Band Pass, 4 - Band block."));
-        d_init_err = true;
         return;
     }
     d_filter_type = (FilterType)type;
@@ -106,9 +104,8 @@ void FFTFilter::setBand(double lowFreq, double highFreq)
         return;
     else if (lowFreq == highFreq)
     {
-        QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+        reportError(tr("QtiPlot") + " - " + tr("Error"),
         tr("Please enter different values for the band limits."));
-        d_init_err = true;
         return;
     }
 

@@ -244,8 +244,8 @@ bool tTest::setSample2(const QString& colName, bool paired)
 
 	unsigned int d_n2 = d_sample2->dataSize();
 	if (paired && d_n2 != d_n){
-		QMessageBox::information((QWidget *)parent(), QObject::tr("Attention!"),
-								 QObject::tr("Paired t-Test requires equal sample sizes."));
+		reportError(QObject::tr("Attention!"),
+					QObject::tr("Paired t-Test requires equal sample sizes."));
 		delete d_sample2;
 		d_sample2 = 0;
 		return false;
@@ -260,7 +260,7 @@ bool tTest::setSample2(const QString& colName, bool paired)
 
 		d_s12 = gsl_stats_sd(d_data, 1, d_n)/sqrt(d_n);
 		if (d_s12 == 0){
-			QMessageBox::warning((QWidget *)parent(), QObject::tr("Attention!"),
+			reportError(QObject::tr("Attention!"),
 			QObject::tr("The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0."));
 			delete d_sample2;
 			d_sample2 = 0;

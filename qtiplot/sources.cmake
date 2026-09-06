@@ -160,6 +160,7 @@ set(SOURCES
     src/scripting/PythonSyntaxHighlighter.cpp
     src/scripting/Script.cpp
     src/scripting/ScriptEdit.cpp
+    src/scripting/ScriptUndoScope.cpp
     src/scripting/ScriptWindow.cpp
     src/scripting/ScriptingEnv.cpp
     src/scripting/ScriptingLangDialog.cpp
@@ -342,6 +343,7 @@ set(HEADERS
     src/scripting/PythonSyntaxHighlighter.h
     src/scripting/Script.h
     src/scripting/ScriptEdit.h
+    src/scripting/ScriptUndoScope.h
     src/scripting/ScriptWindow.h
     src/scripting/ScriptingEnv.h
     src/scripting/ScriptingLangDialog.h

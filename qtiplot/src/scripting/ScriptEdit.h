@@ -93,6 +93,7 @@ class ScriptEdit: public QTextEdit, public scripted
 	void findPrevious();
 	void commentSelection();
 	void uncommentSelection();
+	void stopExecution();
 
   signals:
 	void dirPathChanged(const QString& path);

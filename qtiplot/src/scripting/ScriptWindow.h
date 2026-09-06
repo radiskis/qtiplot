@@ -61,6 +61,7 @@ public slots:
 
 		//! Enables/Disables the line number display
 		void showLineNumbers(bool show = true);
+		void stopExecution();
 
 private slots:
 		void setAlwaysOnTop(bool on);
@@ -102,6 +103,7 @@ private:
 		QAction *actionIncreaseIndent, *actionDecreaseIndent;
 		QDockWidget *consoleWindow;
 		QTextEdit *console;
+		QAction *actionStop;
 };
 
 #endif

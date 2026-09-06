@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
     File                 : ScriptWindow.cpp
     Project              : QtiPlot
     --------------------------------------------------------------------
@@ -222,6 +222,11 @@ void ScriptWindow::initActions()
 	connect(actionEval, &QAction::triggered, te, &ScriptEdit::evaluate);
 	run->addAction(actionEval);
 
+	actionStop = new QAction(QIcon(":/close.png"), tr("&Stop Execution"), this);
+	actionStop->setShortcut( tr("Ctrl+Break") );
+	connect(actionStop, &QAction::triggered, this, &ScriptWindow::stopExecution);
+	run->addAction(actionStop);
+
 	run->addSeparator();
 
 	actionShowConsole = consoleWindow->toggleViewAction();
@@ -312,6 +317,9 @@ void ScriptWindow::languageChange()
 
 	actionEval->setText(tr("&Evaluate Expression"));
 	actionEval->setShortcut(tr("CTRL+Return"));
+
+	actionStop->setText(tr("&Stop Execution"));
+	actionStop->setShortcut(tr("Ctrl+Break"));
 
 	actionShowConsole->setText(tr("Show Script &Output Panel"));
 	actionShowConsole->setToolTip(tr("Show Script Output Panel"));
@@ -483,4 +491,10 @@ void ScriptWindow::enableActions()
 	actionExecute->setEnabled(hasText);
 	actionExecuteAll->setEnabled(hasText);
 	actionEval->setEnabled(hasText);
+}
+
+void ScriptWindow::stopExecution()
+{
+	if (te && te->scriptingEnv())
+		te->scriptingEnv()->stopExecution();
 }

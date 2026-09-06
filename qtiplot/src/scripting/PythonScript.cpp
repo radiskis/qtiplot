@@ -43,6 +43,8 @@
 
 #include "PythonScript.h"
 #include "PythonScripting.h"
+#include "ScriptUndoScope.h"
+#include <memory>
 #include <QApplication>
 #include <ApplicationWindow.h>
 
@@ -205,15 +207,40 @@ QVariant PythonScript::eval()
 	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *topLevelGlobal = hasOldGlobals ? env()->globalDict() : modGlobalDict;
 	PyObject *topLevelLocal = hasOldGlobals ? modLocalDict : modGlobalDict;
-	PyObject *pyret;
+	PyObject *pyret = nullptr;
+	env()->startExecution();
+	PyEval_SetTrace((Py_tracefunc)PythonScripting::pythonTraceHook, env()->traceCapsule());
+
+	std::unique_ptr<ScriptUndoScope> undoScope;
+	if (ScriptUndoScope::isBatchRunnerActive()) {
+		ScriptUndoScope::setBatchRunnerActive(false);
+	} else {
+		undoScope = std::make_unique<ScriptUndoScope>(Name);
+	}
 	beginStdoutRedirect();
-	if (PyCallable_Check(PyCode)){
-		PyObject *empty_tuple = PyTuple_New(0);
-		pyret = PyObject_Call(PyCode, empty_tuple, topLevelLocal);
-		Py_DECREF(empty_tuple);
-	} else
-		pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
+	try {
+		if (PyCallable_Check(PyCode)){
+			PyObject *empty_tuple = PyTuple_New(0);
+			if (empty_tuple) {
+				pyret = PyObject_Call(PyCode, empty_tuple, topLevelLocal);
+				Py_DECREF(empty_tuple);
+			}
+		} else {
+			pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
+		}
+	} catch (const std::bad_alloc &) {
+		PyErr_NoMemory();
+		pyret = nullptr;
+	} catch (const std::exception &e) {
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		pyret = nullptr;
+	} catch (...) {
+		PyErr_SetString(PyExc_RuntimeError, "Unknown C++ exception occurred during script evaluation");
+		pyret = nullptr;
+	}
 	endStdoutRedirect();
+
+	PyEval_SetTrace(nullptr, nullptr);
 	if (!pyret){
 		if (PyErr_ExceptionMatches(PyExc_ValueError) ||
 			PyErr_ExceptionMatches(PyExc_ZeroDivisionError)){
@@ -282,22 +309,43 @@ bool PythonScript::exec()
 	PyGILState_STATE state = PyGILState_Ensure();
 	PyObject *topLevelGlobal = hasOldGlobals ? env()->globalDict() : modGlobalDict;
 	PyObject *topLevelLocal = hasOldGlobals ? modLocalDict : modGlobalDict;
-	PyObject *pyret;
+	PyObject *pyret = nullptr;
+	env()->startExecution();
+	PyEval_SetTrace((Py_tracefunc)PythonScripting::pythonTraceHook, env()->traceCapsule());
+
+	std::unique_ptr<ScriptUndoScope> undoScope;
+	if (!ScriptUndoScope::isBatchRunnerActive()) {
+		undoScope = std::make_unique<ScriptUndoScope>(Name);
+	}
 	beginStdoutRedirect();
-	if (PyCallable_Check(PyCode)){
-		PyObject *empty_tuple = PyTuple_New(0);
-		if (!empty_tuple) {
-			emit_error(env()->errorMsg(), 0);
-			PyGILState_Release(state);
-			return false;
+	try {
+		if (PyCallable_Check(PyCode)){
+			PyObject *empty_tuple = PyTuple_New(0);
+			if (!empty_tuple) {
+				endStdoutRedirect();
+				PyEval_SetTrace(nullptr, nullptr);
+				emit_error(env()->errorMsg(), 0);
+				PyGILState_Release(state);
+				return false;
+			}
+			pyret = PyObject_Call(PyCode,empty_tuple,topLevelLocal);
+			Py_DECREF(empty_tuple);
+		} else {
+			pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
 		}
-		pyret = PyObject_Call(PyCode,empty_tuple,topLevelLocal);
-		Py_DECREF(empty_tuple);
-	} else {
-		pyret = PyEval_EvalCode(PyCode, topLevelGlobal, topLevelLocal);
+	} catch (const std::bad_alloc &) {
+		PyErr_NoMemory();
+		pyret = nullptr;
+	} catch (const std::exception &e) {
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		pyret = nullptr;
+	} catch (...) {
+		PyErr_SetString(PyExc_RuntimeError, "Unknown C++ exception occurred during script execution");
+		pyret = nullptr;
 	}
 
 	endStdoutRedirect();
+	PyEval_SetTrace(nullptr, nullptr);
 	if (pyret) {
 		Py_DECREF(pyret);
 		PyGILState_Release(state);

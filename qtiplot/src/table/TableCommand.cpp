@@ -11,7 +11,7 @@
 TableEditCellCommand::TableEditCellCommand(Table *t, int row, int col, const QString& oldText,
 						const QString& newText, const QString & text,
 						bool hasOldVal, double oldVal, bool hasNewVal, double newVal):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_row(row),
 d_col(col),
@@ -52,7 +52,7 @@ void TableEditCellCommand::undo()
 /*************************************************************************/
 TableSetColNamesCommand::TableSetColNamesCommand(Table *t, int startCol, const QStringList& oldNames,
 						const QStringList& newNames, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_start_col(startCol),
 d_old_names(oldNames),
@@ -80,7 +80,7 @@ void TableSetColNamesCommand::undo()
 /*************************************************************************/
 TableSetColNameCommand::TableSetColNameCommand(Table *t, int col, const QString& oldName,
 						const QString& newName, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col),
 d_old_name(oldName),
@@ -108,7 +108,7 @@ void TableSetColNameCommand::undo()
 /*************************************************************************/
 TableSetColTypeCommand::TableSetColTypeCommand(Table *t, int col, Table::ColType oldType,
 						Table::ColType newType, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col),
 d_old_type(oldType),
@@ -136,7 +136,7 @@ void TableSetColTypeCommand::undo()
 /*************************************************************************/
 TableSetColFormatCommand::TableSetColFormatCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType,
 						const QString& oldFormat, const QString& newFormat, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col),
 d_old_type(oldType),
@@ -166,7 +166,7 @@ void TableSetColFormatCommand::undo()
 /*************************************************************************/
 TableSetColCommentCommand::TableSetColCommentCommand(Table *t, int col, const QString& oldComment,
 						const QString& newComment, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col),
 d_old_comment(oldComment),
@@ -194,7 +194,7 @@ void TableSetColCommentCommand::undo()
 /*************************************************************************/
 TableSetPlotDesignationCommand::TableSetPlotDesignationCommand(Table *t, int col,
 						Table::PlotDesignation oldPD, Table::PlotDesignation newPD, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col),
 d_old_pd(oldPD),
@@ -226,7 +226,7 @@ void TableSetPlotDesignationCommand::undo()
 /*************************************************************************/
 TableDeleteRowsCommand::TableDeleteRowsCommand(Table *t, int startRow, int endRow,
 						const QList<QStringList>& data, const QString& text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_start_row(startRow),
 d_end_row(endRow),
@@ -264,7 +264,7 @@ void TableDeleteRowsCommand::undo()
 /*           Class TableInsertRowCommand                                 */
 /*************************************************************************/
 TableInsertRowCommand::TableInsertRowCommand(Table *t, int row, int count, const QString& text):
-QUndoCommand(text.isEmpty() ? QObject::tr("Insert Rows") : text),
+TableCommand(text.isEmpty() ? QObject::tr("Insert Rows") : text),
 d_table(t),
 d_row(row),
 d_count(count)
@@ -290,7 +290,7 @@ void TableInsertRowCommand::undo()
 /*           Class TableAddColsCommand                                   */
 /*************************************************************************/
 TableAddColsCommand::TableAddColsCommand(Table *t, int startCol, int count, const QStringList& names, const QString& text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_start_col(startCol),
 d_count(count),
@@ -323,7 +323,7 @@ TableDeleteColsCommand::TableDeleteColsCommand(Table *t, int startCol, int endCo
 						const QStringList& comments, const QStringList& formats,
 						const QList<int>& types, const QList<int>& plotTypes,
 						const QStringList& widths, const QStringList& commands, const QString& text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_start_col(startCol),
 d_end_col(endCol),
@@ -375,7 +375,7 @@ void TableDeleteColsCommand::undo()
 /*           Class TableInsertColCommand                                 */
 /*************************************************************************/
 TableInsertColCommand::TableInsertColCommand(Table *t, int col, const QString& text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_col(col)
 {
@@ -401,7 +401,7 @@ void TableInsertColCommand::undo()
 /*************************************************************************/
 TableSetValuesCommand::TableSetValuesCommand(Table *t, int startRow, int endRow, const QList<int>& cols,
 						const QList<QStringList>& oldData, const QList<QStringList>& newData, const QString & text):
-QUndoCommand(text),
+TableCommand(text),
 d_table(t),
 d_start_row(startRow),
 d_end_row(endRow),
@@ -452,7 +452,7 @@ void TableSetValuesCommand::undo()
 /*           Class TableSwapColumnsCommand                               */
 /*************************************************************************/
 TableSwapColumnsCommand::TableSwapColumnsCommand(Table *t, int col1, int col2, const QString &text):
-QUndoCommand(text.isEmpty() ? QObject::tr("Swap Columns") : text),
+TableCommand(text.isEmpty() ? QObject::tr("Swap Columns") : text),
 d_table(t),
 d_col1(col1),
 d_col2(col2)
@@ -479,7 +479,7 @@ void TableSwapColumnsCommand::undo()
 /*           Class TableMoveColumnCommand                                */
 /*************************************************************************/
 TableMoveColumnCommand::TableMoveColumnCommand(Table *t, int from, int to, const QString &text):
-QUndoCommand(text.isEmpty() ? QObject::tr("Move Column") : text),
+TableCommand(text.isEmpty() ? QObject::tr("Move Column") : text),
 d_table(t),
 d_from(from),
 d_to(to)
@@ -507,7 +507,7 @@ void TableMoveColumnCommand::undo()
 /*************************************************************************/
 TableSetColumnWidthCommand::TableSetColumnWidthCommand(Table *t, int col, int oldWidth, int newWidth, bool allCols,
 													   const QList<int>& oldWidths, const QString &text):
-QUndoCommand(text.isEmpty() ? QObject::tr("Set Column Width") : text),
+TableCommand(text.isEmpty() ? QObject::tr("Set Column Width") : text),
 d_table(t),
 d_col(col),
 d_old_width(oldWidth),
@@ -545,7 +545,7 @@ void TableSetColumnWidthCommand::undo()
 /*           Class TableSetReadOnlyCommand                               */
 /*************************************************************************/
 TableSetReadOnlyCommand::TableSetReadOnlyCommand(Table *t, int col, bool oldState, bool newState, const QString &text):
-QUndoCommand(text.isEmpty() ? QObject::tr("Set Read Only") : text),
+TableCommand(text.isEmpty() ? QObject::tr("Set Read Only") : text),
 d_table(t),
 d_col(col),
 d_old_state(oldState),

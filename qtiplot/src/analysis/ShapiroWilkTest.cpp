@@ -47,7 +47,7 @@ d_w(qQNaN()),
 d_pValue(qQNaN())
 {
 	if (d_n < 3 || d_n > 5000){
-		QMessageBox::critical(parent, QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
+		reportError(QObject::tr("Attention!"), QObject::tr("Sample size must be between 3 and 5000."));
 		this->freeMemory();
 	} else {
 		setObjectName(QObject::tr("Shapiro-Wilk Normality Test"));

@@ -30,6 +30,7 @@
 #define FILTER_H
 
 #include <QObject>
+#include <functional>
 
 #include <ApplicationWindow.h>
 #include "PlotCurve.h"
@@ -106,11 +107,16 @@ class Filter : public QObject
 		//! Returns a pointer to the plot curve created to display the results
 		PlotCurve *resultCurve(){return d_result_curve;};
 
-        bool error() const { return d_init_err; }
+		bool error() const { return d_init_err; }
 		void setError(bool on = true) { d_init_err = on; }
 		QString errorMessage() const { return d_error_message; }
 		void setErrorMessage(const QString &msg) { d_error_message = msg; d_init_err = !msg.isEmpty(); }
 		void reportError(const QString &title, const QString &message);
+
+		bool isCanceled() const { return d_canceled; }
+		virtual void cancel() { d_canceled = true; }
+
+		void runAsync(const std::function<void()> &func, const QString &progressMessage = QString());
 
 		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
 
@@ -192,6 +198,7 @@ class Filter : public QObject
 		//! Error flag telling if something went wrong during the initialization phase.
 		bool d_init_err;
 		QString d_error_message;
+		bool d_canceled;
 
         //! Data interval
         double d_from, d_to;

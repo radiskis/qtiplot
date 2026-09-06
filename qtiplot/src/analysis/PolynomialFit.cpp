@@ -28,8 +28,8 @@
  ***************************************************************************/
 #include "PolynomialFit.h"
 
-#include <QMessageBox>
 #include <QLocale>
+#include <QApplication>
 
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_fit.h>
@@ -164,33 +164,41 @@ void PolynomialFit::fit()
 
 	if (d_p >= d_n){
 		d_init_err = true;
-		if (!qApp->arguments().contains("-X"))
-  			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+		reportError(tr("QtiPlot - Fit Error"),
   	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
   		return;
   	}
 
-	gsl_matrix *X = gsl_matrix_alloc (d_n, d_p);
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	for (int i = 0; i <d_n; i++){
-		for (int j= 0; j < d_p; j++)
-			gsl_matrix_set (X, i, j, pow(d_x[i],j));
+	runAsync([this]() {
+		gsl_matrix *X = gsl_matrix_alloc (d_n, d_p);
+
+		for (int i = 0; i <d_n; i++){
+			for (int j= 0; j < d_p; j++)
+				gsl_matrix_set (X, i, j, pow(d_x[i],j));
+		}
+
+		gsl_vector_view y = gsl_vector_view_array (d_y, d_n);
+		gsl_vector_view w = gsl_vector_view_array (d_w, d_n);
+		gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (d_n, d_p);
+
+		if (d_weighting == NoWeighting)
+			gsl_multifit_linear (X, &y.vector, d_param_init, covar, &chi_2, work);
+		else
+			gsl_multifit_wlinear (X, &w.vector, &y.vector, d_param_init, covar, &chi_2, work);
+
+		for (int i = 0; i < d_p; i++)
+			d_results[i] = gsl_vector_get(d_param_init, i);
+
+		gsl_multifit_linear_free (work);
+		gsl_matrix_free (X);
+	}, tr("Fitting polynomial..."));
+
+	if (d_canceled) {
+		QApplication::restoreOverrideCursor();
+		return;
 	}
-
-	gsl_vector_view y = gsl_vector_view_array (d_y, d_n);
-	gsl_vector_view w = gsl_vector_view_array (d_w, d_n);
-	gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (d_n, d_p);
-
-	if (d_weighting == NoWeighting)
-		gsl_multifit_linear (X, &y.vector, d_param_init, covar, &chi_2, work);
-	else
-		gsl_multifit_wlinear (X, &w.vector, &y.vector, d_param_init, covar, &chi_2, work);
-
-	for (int i = 0; i < d_p; i++)
-		d_results[i] = gsl_vector_get(d_param_init, i);
-
-	gsl_multifit_linear_free (work);
-	gsl_matrix_free (X);
 
 	generateFitCurve();
 
@@ -198,8 +206,10 @@ void PolynomialFit::fit()
 		showLegend();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog())
+	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
+
+	QApplication::restoreOverrideCursor();
 }
 
 QString PolynomialFit::legendInfo()
@@ -299,8 +309,7 @@ void LinearFit::fit()
 
 	if (d_p >= d_n){
 		d_init_err = true;
-		if (!qApp->arguments().contains("-X"))
-  			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+		reportError(tr("QtiPlot - Fit Error"),
   	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
   		return;
   	}
@@ -407,8 +416,7 @@ void LinearSlopeFit::fit()
 
 	if (d_p >= d_n){
 		d_init_err = true;
-		if (!qApp->arguments().contains("-X"))
-  			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+		reportError(tr("QtiPlot - Fit Error"),
   	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
   		return;
   	}

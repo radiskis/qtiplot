@@ -91,7 +91,7 @@ public slots:
   QString save();
   QString exportASCII(const QString &file=QString())/PyName=saveAs/;
   QString importASCII(const QString &file=QString());
-
+  void executeAll();
 
 };
 
@@ -441,6 +441,24 @@ Redoes the last undone operation on this table.
 %MethodCode
   if (sipCpp->undoStack())
     sipCpp->undoStack()->redo();
+%End
+
+  int undoStackCount() const;
+%Docstring
+undoStackCount() -> int
+Returns the number of commands currently stored on the table's undo stack.
+%End
+%MethodCode
+  sipRes = sipCpp->undoStack() ? sipCpp->undoStack()->count() : 0;
+%End
+
+  size_t undoMemoryUsage() const;
+%Docstring
+undoMemoryUsage() -> int
+Returns the estimated memory usage in bytes of the commands stored on the undo stack.
+%End
+%MethodCode
+  sipRes = sipCpp->undoMemoryUsage();
 %End
 
     void removeCol(SIP_PYOBJECT);
@@ -2879,6 +2897,11 @@ Redoes the last undone operation in the active window.
   sipCpp->redo();
 %End
 
+  int tableUndoStackSize() const;
+  void setTableUndoStackSize(int size);
+  int undoMemoryBudgetMB() const;
+  void setUndoMemoryBudgetMB(int mb);
+
   ApplicationWindow();
   enum MatrixToTableConversion{Direct, XYZ, YXZ};
 
@@ -3470,6 +3493,8 @@ public:
 
   virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
   virtual bool run();
+  bool isCanceled() const;
+  virtual void cancel();
 };
 
 class Differentiation : Filter

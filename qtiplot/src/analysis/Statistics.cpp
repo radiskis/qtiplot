@@ -32,11 +32,14 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QLocale>
+#include <QThread>
 
 #include <gsl/gsl_statistics.h>
 
 Statistics::Statistics(ApplicationWindow *parent, const QString& colName)
 : QObject(parent),
+d_init_err(false),
+d_error_message(QString()),
 d_col_name(QString()),
 d_result_log(true),
 d_n(0),
@@ -49,9 +52,8 @@ d_table(nullptr)
 bool Statistics::run()
 {
 	if (d_n <= 0){
-		if (!qApp->arguments().contains("-X"))
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-					tr("You didn't specify a valid data set for this operation!"));
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
+				tr("You didn't specify a valid data set for this operation!"));
 		return false;
 	}
 
@@ -74,7 +76,7 @@ bool Statistics::setData(const QString& colName)
 
 	int col = d_table->colIndex(colName);
 	if (col < 0){
-		QMessageBox::information((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 				tr("There is no sample dataset called %1 in this project.").arg(colName));
 		return false;
 	}
@@ -92,7 +94,7 @@ bool Statistics::setData(const QString& colName)
 			d_n++;
 	}
 	if (!d_n){
-		QMessageBox::information((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 		QObject::tr("The sample dataset (%1) must have at least one data point.").arg(colName));
 		return false;
 	}
@@ -172,12 +174,34 @@ QString Statistics::logInfo(bool header)
 	return s + lineSep;
 }
 
-void Statistics::memoryErrorMessage()
+void Statistics::reportError(const QString &title, const QString &message)
 {
+	d_init_err = true;
+	d_error_message = message;
 	QApplication::restoreOverrideCursor();
 
-	QMessageBox::critical((ApplicationWindow *)parent(),
-	tr("QtiPlot") + " - " + tr("Memory Allocation Error"), tr("Not enough memory, operation aborted!"));
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (app) {
+		if (QThread::currentThread() == qApp->thread()) {
+			app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+		} else {
+			QMetaObject::invokeMethod(app, [app, title, message]() {
+				app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+			}, Qt::QueuedConnection);
+		}
+	}
+
+	if (app && app->isVisible() && QThread::currentThread() == qApp->thread()) {
+		QMessageBox::critical(app, title, message);
+	} else {
+		qWarning("Statistics Error [%s]: %s", qPrintable(title), qPrintable(message));
+	}
+}
+
+void Statistics::memoryErrorMessage()
+{
+	reportError(tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
 }
 
 void Statistics::freeMemory()

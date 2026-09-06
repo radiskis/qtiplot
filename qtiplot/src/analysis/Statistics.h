@@ -66,10 +66,19 @@ class Statistics : public QObject
 
 		QString logInfo(bool header = true);
 
+		bool error() const { return d_init_err; }
+		void setError(bool on = true) { d_init_err = on; }
+		QString errorMessage() const { return d_error_message; }
+		void setErrorMessage(const QString &msg) { d_error_message = msg; d_init_err = !msg.isEmpty(); }
+		void reportError(const QString &title, const QString &message);
+
 	protected:
 		void memoryErrorMessage();
 		//! Frees the memory allocated for the X and Y data sets
 		virtual void freeMemory();
+
+		bool d_init_err;
+		QString d_error_message;
 
 		//! The name of the source data set
 		QString d_col_name;

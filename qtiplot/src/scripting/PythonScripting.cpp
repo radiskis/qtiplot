@@ -79,6 +79,57 @@ QString PythonScripting::toString(PyObject *object, bool decref)
 	return ret;
 }
 
+bool PythonScripting::isExecutionAborted() const
+{
+	return d_abortRequested.load();
+}
+
+void PythonScripting::setAbortRequested(bool abort)
+{
+	d_abortRequested.store(abort);
+}
+
+PyObject *PythonScripting::traceCapsule()
+{
+	if (!d_traceCapsule)
+		d_traceCapsule = PyCapsule_New(this, "PythonScripting", nullptr);
+	return d_traceCapsule;
+}
+
+int PythonScripting::pythonTraceHook(PyObject *obj, struct _frame *frame, int what, PyObject *arg)
+{
+	Q_UNUSED(frame);
+	Q_UNUSED(arg);
+
+	PythonScripting *scripting = static_cast<PythonScripting*>(PyCapsule_GetPointer(obj, "PythonScripting"));
+	if (!scripting)
+		return 0;
+
+	if (what == PyTrace_LINE || what == PyTrace_CALL) {
+		static thread_local unsigned long counter = 0;
+		if (++counter % 200 == 0) {
+			QCoreApplication::processEvents(QEventLoop::AllEvents, 5);
+		}
+
+		if (scripting->isExecutionAborted()) {
+			PyErr_SetString(PyExc_KeyboardInterrupt, "Script execution interrupted by user");
+			return -1;
+		}
+	}
+
+	return 0;
+}
+
+void PythonScripting::stopExecution()
+{
+	d_abortRequested.store(true);
+}
+
+void PythonScripting::startExecution()
+{
+	d_abortRequested.store(false);
+}
+
 PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const char *name)
 {
 	PyGILState_STATE state = PyGILState_Ensure();
@@ -88,12 +139,30 @@ PyObject *PythonScripting::eval(const QString &code, PyObject *argDict, const ch
 	else
 		args = globals;
 	PyObject *ret=nullptr;
-	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_eval_input);
-	if (co)
-	{
-		ret = PyEval_EvalCode(co, globals, args);
-		Py_DECREF(co);
+	d_abortRequested.store(false);
+	d_isExecuting.store(true);
+	PyEval_SetTrace((Py_tracefunc)pythonTraceHook, traceCapsule());
+
+	try {
+		PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_eval_input);
+		if (co)
+		{
+			ret = PyEval_EvalCode(co, globals, args);
+			Py_DECREF(co);
+		}
+	} catch (const std::bad_alloc &) {
+		PyErr_NoMemory();
+		ret = nullptr;
+	} catch (const std::exception &e) {
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		ret = nullptr;
+	} catch (...) {
+		PyErr_SetString(PyExc_RuntimeError, "Unknown C++ exception occurred during script evaluation");
+		ret = nullptr;
 	}
+
+	PyEval_SetTrace(nullptr, nullptr);
+	d_isExecuting.store(false);
 	PyGILState_Release(state);
 	return ret;
 }
@@ -108,12 +177,30 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 		// "local" variable assignments automatically become global:
 		args = globals;
 	PyObject *tmp = nullptr;
-	PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_file_input);
-	if (co)
-	{
-		tmp = PyEval_EvalCode(co, globals, args);
-		Py_DECREF(co);
+	d_abortRequested.store(false);
+	d_isExecuting.store(true);
+	PyEval_SetTrace((Py_tracefunc)pythonTraceHook, traceCapsule());
+
+	try {
+		PyObject *co = Py_CompileString(code.toUtf8().constData(), name, Py_file_input);
+		if (co)
+		{
+			tmp = PyEval_EvalCode(co, globals, args);
+			Py_DECREF(co);
+		}
+	} catch (const std::bad_alloc &) {
+		PyErr_NoMemory();
+		tmp = nullptr;
+	} catch (const std::exception &e) {
+		PyErr_SetString(PyExc_RuntimeError, e.what());
+		tmp = nullptr;
+	} catch (...) {
+		PyErr_SetString(PyExc_RuntimeError, "Unknown C++ exception occurred during script execution");
+		tmp = nullptr;
 	}
+
+	PyEval_SetTrace(nullptr, nullptr);
+	d_isExecuting.store(false);
 	if (tmp) Py_DECREF(tmp);
 	PyGILState_Release(state);
 	return (bool) tmp;
@@ -319,6 +406,7 @@ PythonScripting::~PythonScripting()
 	Py_XDECREF(globals);
 	Py_XDECREF(math);
 	Py_XDECREF(sys);
+	Py_XDECREF(d_traceCapsule);
 	PyGILState_Release(state);
 }
 

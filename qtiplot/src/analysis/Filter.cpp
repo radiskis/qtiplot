@@ -40,6 +40,11 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QLocale>
+#include <QThread>
+#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QProgressDialog>
+#include <QEventLoop>
 
 #include <gsl/gsl_sort.h>
 
@@ -87,6 +92,7 @@ void Filter::init()
 	d_result_curve = 0;
 	d_prec = ((ApplicationWindow *)parent())->fit_output_precision;
 	d_init_err = false;
+	d_canceled = false;
     d_sort_data = true;
     d_min_points = 2;
     d_explanation = objectName();
@@ -103,7 +109,7 @@ void Filter::init()
 void Filter::setInterval(double from, double to)
 {
 	if (!d_curve){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
 				tr("Please assign a curve first!"));
 		return;
 	}
@@ -126,16 +132,12 @@ void Filter::setDataCurve(PlotCurve *curve, double start, double end)
     	d_n = curveData(d_curve, start, end, &d_x, &d_y);
 
 	if (d_n == -1){
-		if (!qApp->arguments().contains("-X"))
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-					tr("Several data points have the same x value causing divisions by zero, operation aborted!"));
-		d_init_err = true;
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
+				tr("Several data points have the same x value causing divisions by zero, operation aborted!"));
         return;
 	}else if (d_n < d_min_points){
-		if (!qApp->arguments().contains("-X"))
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-					tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
-		d_init_err = true;
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
+				tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
         return;
 	}
 
@@ -241,9 +243,10 @@ void Filter::setColor(const QString& colorName)
 	else if (colorName == "darkYellow")
 		d_curveColor = Qt::darkYellow;
 	if (!ColorBox::isValidColor(c)){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Color Name Error"),
+		reportError(tr("QtiPlot - Color Name Error"),
 				tr("The color name '%1' is not valid, a default color (red) will be used instead!").arg(colorName));
 		d_curveColor = Qt::red;
+		d_init_err = false;
 		return;
 	}
 }
@@ -278,9 +281,8 @@ bool Filter::run()
 		return false;
 
 	if (d_n <= 0 || d_n < d_min_points){
-		if (!qApp->arguments().contains("-X"))
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
-					tr("You didn't specify a valid data set for this operation!"));
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
+				tr("You didn't specify a valid data set for this operation!"));
 		return false;
 	}
 
@@ -291,6 +293,50 @@ bool Filter::run()
 
 	QApplication::restoreOverrideCursor();
 	return true;
+}
+
+void Filter::runAsync(const std::function<void()> &func, const QString &progressMessage)
+{
+	if (!QCoreApplication::instance() || QThread::currentThread() != QCoreApplication::instance()->thread()) {
+		try {
+			func();
+		} catch (const std::bad_alloc &) {
+			memoryErrorMessage();
+		} catch (...) {
+			reportError(tr("Error"), tr("An unexpected error occurred during calculation."));
+		}
+		return;
+	}
+
+	QFuture<void> future = QtConcurrent::run([this, &func]() {
+		try {
+			func();
+		} catch (const std::bad_alloc &) {
+			memoryErrorMessage();
+		} catch (...) {
+			reportError(tr("Error"), tr("An unexpected error occurred during calculation."));
+		}
+	});
+
+	QWidget *parentWidget = d_graph ? (QWidget*)d_graph.get() : (QWidget*)parent();
+	QProgressDialog progress(progressMessage.isEmpty() ? tr("Processing...") : progressMessage,
+	                         tr("Cancel"), 0, 0, parentWidget);
+	progress.setWindowTitle(tr("QtiPlot"));
+	progress.setWindowModality(Qt::ApplicationModal);
+	progress.setMinimumDuration(1000);
+
+	QEventLoop loop;
+	QFutureWatcher<void> watcher;
+	QObject::connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
+	QObject::connect(&watcher, &QFutureWatcher<void>::finished, &progress, &QProgressDialog::reset);
+	QObject::connect(&progress, &QProgressDialog::canceled, this, &Filter::cancel);
+
+	watcher.setFuture(future);
+
+	if (!future.isFinished())
+		loop.exec();
+
+	future.waitForFinished();
 }
 
 void Filter::output()
@@ -307,8 +353,11 @@ void Filter::output()
 		return;
 	}
 
-	calculateOutputData(x, y); //does the data analysis
-	if (!d_init_err)
+	runAsync([this, x, y]() {
+		calculateOutputData(x, y);
+	}, tr("Calculating filter output..."));
+
+	if (!d_init_err && !d_canceled)
 		addResultCurve(x, y);
 	free(x);
 	free(y);
@@ -553,8 +602,7 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
 	}
 
 	if (size < d_min_points){
-		if (!qApp->arguments().contains("-X"))
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Error"),
+		reportError(tr("QtiPlot") + " - " + tr("Error"),
 			tr("You need at least %1 points in order to perform this operation!").arg(d_min_points));
         return false;
 	}
@@ -611,10 +659,17 @@ void Filter::reportError(const QString &title, const QString &message)
 	QApplication::restoreOverrideCursor();
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
-	if (app)
-		app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+	if (app) {
+		if (QThread::currentThread() == qApp->thread()) {
+			app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+		} else {
+			QMetaObject::invokeMethod(app, [app, title, message]() {
+				app->showResults(QString("ERROR: %1 - %2\n").arg(title, message), false);
+			}, Qt::QueuedConnection);
+		}
+	}
 
-	if (app && app->isVisible()) {
+	if (app && app->isVisible() && QThread::currentThread() == qApp->thread()) {
 		QMessageBox::critical(app, title, message);
 	} else {
 		qWarning("Filter Error [%s]: %s", qPrintable(title), qPrintable(message));

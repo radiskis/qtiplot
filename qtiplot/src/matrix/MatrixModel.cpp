@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include <QtGui>
 #include <QApplication>
+#include <QProgressDialog>
 #include <QFile>
 #include <QTextStream>
 
@@ -555,8 +556,27 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 	}
 
 	qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
+
+	QProgressDialog progress(d_matrix);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Reading file..."));
+	progress.setLabelText(fname);
+	progress.setRange(0, d_rows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
 	if (startCol){
 		for (int i = startRow; i < d_rows; i++){
+			if ((i - startRow) % 50 == 0) {
+				progress.setValue(i);
+				if (progress.wasCanceled()) {
+					f.close();
+					f.remove();
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			s = t.readLine();
 			if (simplifySpaces)
 				s = s.simplified();
@@ -577,6 +597,16 @@ bool MatrixModel::importASCII(const QString &fname, const QString &sep, int igno
 		}
 	} else {
 		for (int i = startRow; i < d_rows; i++){
+			if ((i - startRow) % 50 == 0) {
+				progress.setValue(i);
+				if (progress.wasCanceled()) {
+					f.close();
+					f.remove();
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			s = t.readLine();
 			if (simplifySpaces)
 				s = s.simplified();
@@ -921,6 +951,15 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	if (endRow >= d_rows)
 		setRowCount(endRow + 1);
 
+	int totalRows = endRow - startRow + 1;
+	QProgressDialog progress(d_matrix);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Calculating matrix..."));
+	progress.setLabelText(d_matrix ? d_matrix->name() : tr("Calculating..."));
+	progress.setRange(0, totalRows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
 	QVariant res;
 	double dx = d_matrix->dx();
 	double dy = d_matrix->dy();
@@ -928,6 +967,12 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	double y_start = d_matrix->yStart();
 	double r = 0.0, c = 0.0;
 	for(int row = startRow; row <= endRow; row++){
+		if (progress.wasCanceled()){
+			QApplication::restoreOverrideCursor();
+			return false;
+		}
+		progress.setValue(row - startRow);
+
 	    r = row + 1.0;
 		script->setDouble(r, "i");
 		script->setDouble(r, "row");

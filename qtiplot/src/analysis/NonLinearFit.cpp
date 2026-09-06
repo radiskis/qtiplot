@@ -34,6 +34,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QThread>
 
 NonLinearFit::NonLinearFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
@@ -92,7 +93,7 @@ void NonLinearFit::init()
 bool NonLinearFit::setFormula(const QString& s, bool guess)
 {
 	if (s.isEmpty()){
-		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"),
+		reportError(tr("QtiPlot - Input function error"),
 				tr("Please enter a valid non-empty expression! Operation aborted!"));
 		d_init_err = true;
 		return false;
@@ -104,7 +105,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 	if (guess)
 		setParametersList(guessParameters(s));
 	if (!d_p){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+		reportError(tr("QtiPlot - Fit Error"),
 				tr("There are no parameters specified for this fit operation. Please define a list of parameters first!"));
 		d_init_err = true;
 		return false;
@@ -130,7 +131,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 		parser.Eval() ;
 		delete[] param;
 	} catch(mu::ParserError &e){
-		QMessageBox::critical((ApplicationWindow *)parent(),  tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
+		reportError(tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		d_init_err = true;
 		return false;
 	}
@@ -143,7 +144,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 bool NonLinearFit::setParametersList(const QStringList& lst)
 {
 	if (lst.count() < 1){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
+		reportError(tr("QtiPlot - Fit Error"),
 				tr("You must provide a list containing at least one parameter for this type of fit. Operation aborted!"));
 		d_init_err = true;
 		if (d_p > 0)
@@ -353,22 +354,28 @@ bool NonLinearFit::removeDataSingularities()
 			parser.EvalRemoveSingularity(&xvar);
 		} catch(MyParser::Pole){
 			QApplication::restoreOverrideCursor();
-			if(confirm){
-				switch(QMessageBox::question((ApplicationWindow *)parent(), QObject::tr("QtiPlot"),
-				QObject::tr("Found non-removable singularity at x = %1.").arg(xvar) + "\n" + tr("Ignore") + "?",
-				QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel,
-				QMessageBox::Yes)){
-					case QMessageBox::YesToAll:
-						confirm = false;
-						removePole(i);
-					break;
-					case QMessageBox::Cancel:
-						return false;
-					default:
-						removePole(i);
-				}
-			} else
+			ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+			if (app && app->isVisible() && QThread::currentThread() == qApp->thread()){
+				if(confirm){
+					switch(QMessageBox::question(app, QObject::tr("QtiPlot"),
+					QObject::tr("Found non-removable singularity at x = %1.").arg(xvar) + "\n" + tr("Ignore") + "?",
+					QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel,
+					QMessageBox::Yes)){
+						case QMessageBox::YesToAll:
+							confirm = false;
+							removePole(i);
+						break;
+						case QMessageBox::Cancel:
+							return false;
+						default:
+							removePole(i);
+					}
+				} else
+					removePole(i);
+			} else {
+				qWarning("NonLinearFit: found non-removable singularity at x = %f, removing pole.", xvar);
 				removePole(i);
+			}
 		}
 	}
 	return true;

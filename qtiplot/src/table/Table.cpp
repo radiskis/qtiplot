@@ -28,6 +28,7 @@ Description          : Table worksheet class
 #include "Table.h"
 #include <cmath>
 #include "TableCommand.h"
+#include "ScriptUndoScope.h"
 #include "SortDialog.h"
 #include <ImportASCIIDialog.h>
 #include <muParserScript.h>
@@ -151,9 +152,47 @@ void Table::init(int rows, int cols)
 	// updated in MyTable::setText and in cellEdited. d_old_cell_text is no longer used.
 
 	d_undo_stack = new QUndoStack(this);
-	d_undo_stack->setUndoLimit(100);
+	int limit = applicationWindow() ? applicationWindow()->tableUndoStackSize() : 1000;
+	d_undo_stack->setUndoLimit(limit);
 
 	setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+}
+
+void Table::pushUndoCommand(QUndoCommand *cmd)
+{
+	if (!cmd)
+		return;
+
+	ScriptUndoScope::registerStack(d_undo_stack);
+	d_undo_stack->push(cmd);
+
+	if (applicationWindow()) {
+		size_t budget = (size_t)applicationWindow()->undoMemoryBudgetMB() * 1024 * 1024;
+		while (d_undo_stack->count() > 1 && undoMemoryUsage() > budget) {
+			int currentCount = d_undo_stack->count();
+			int currentLimit = d_undo_stack->undoLimit();
+			d_undo_stack->setUndoLimit(currentCount - 1);
+			d_undo_stack->setUndoLimit(currentLimit);
+		}
+	}
+}
+
+size_t Table::undoMemoryUsage() const
+{
+	if (!d_undo_stack)
+		return 0;
+
+	size_t total = sizeof(*d_undo_stack);
+	for (int i = 0; i < d_undo_stack->count(); ++i) {
+		const QUndoCommand *cmd = d_undo_stack->command(i);
+		if (!cmd)
+			continue;
+		if (auto *tc = dynamic_cast<const TableCommand*>(cmd))
+			total += tc->byteSize();
+		else
+			total += sizeof(*cmd) + 64;
+	}
+	return total;
 }
 
 void Table::setAutoUpdateValues(bool on)
@@ -402,7 +441,7 @@ void Table::cellEdited(int row, int col)
 		// Non-numeric: commit immediately, update UserRole now.
 		if (it)
 			it->setData(Qt::UserRole, newText);
-		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
+		pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
 		                                            hasOldVal, oldVal, false, 0.0));
 		return;
 	}
@@ -455,7 +494,7 @@ void Table::cellEdited(int row, int col)
 	if (it)
 		it->setData(Qt::UserRole, newText);
 
-	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
+	pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
 	                                            hasOldVal, oldVal, hasNewVal, newVal));
 }
 
@@ -550,7 +589,7 @@ void Table::setColPlotDesignation(int col, PlotDesignation pd, bool pushUndo)
 		return;
 
 	if (pushUndo){
-		d_undo_stack->push(new TableSetPlotDesignationCommand(this, col, (PlotDesignation)col_plot_type[col], pd, tr("Set Plot Designation")));
+		pushUndoCommand(new TableSetPlotDesignationCommand(this, col, (PlotDesignation)col_plot_type[col], pd, tr("Set Plot Designation")));
 		return;
 	}
 
@@ -723,10 +762,28 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 	for (int i = startRow; i <= endRow; i++)
 		oldData << d_table->text(i, col);
 
+	int totalRows = endRow - startRow + 1;
+	QProgressDialog progress(this);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Calculating..."));
+	progress.setLabelText(tr("Calculating column %1...").arg(colName(col)));
+	progress.setRange(0, totalRows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
     if (mup->codeLines() == 1){
 		if (colType == Date || colType == Time){
 			QString fmt = col_format[col];
 			for (int i = startRow; i <= endRow; i++){
+				if ((i - startRow) % 500 == 0) {
+					progress.setValue(i - startRow);
+					if (progress.wasCanceled()) {
+						setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+						QApplication::restoreOverrideCursor();
+						return false;
+					}
+				}
+
 				*r = i + 1.0;
 				double val = mup->evalSingleLine();
 				if (std::isfinite(val))
@@ -740,6 +797,15 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			char f;
 			columnNumericFormat(col, &f, &prec);
 			for (int i = startRow; i <= endRow; i++){
+				if ((i - startRow) % 500 == 0) {
+					progress.setValue(i - startRow);
+					if (progress.wasCanceled()) {
+						setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+						QApplication::restoreOverrideCursor();
+						return false;
+					}
+				}
+
 				*r = i + 1.0;
 				newData << mup->evalSingleLineToString(loc, f, prec);
 			}
@@ -748,6 +814,15 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 		if (colType == Date || colType == Time){
 			QString fmt = col_format[col];
 			for (int i = startRow; i <= endRow; i++){
+				if ((i - startRow) % 500 == 0) {
+					progress.setValue(i - startRow);
+					if (progress.wasCanceled()) {
+						setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+						QApplication::restoreOverrideCursor();
+						return false;
+					}
+				}
+
 				*r = i + 1.0;
 				QVariant ret = mup->eval();
 				if (ret.typeId() == QMetaType::Double){
@@ -768,6 +843,15 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 			columnNumericFormat(col, &f, &prec);
 
 			for (int i = startRow; i <= endRow; i++){
+				if ((i - startRow) % 500 == 0) {
+					progress.setValue(i - startRow);
+					if (progress.wasCanceled()) {
+						setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+						QApplication::restoreOverrideCursor();
+						return false;
+					}
+				}
+
 				*r = i + 1.0;
 				QVariant ret = mup->eval();
 				if (ret.typeId() == QMetaType::Double)
@@ -783,7 +867,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 	}
 
 	if (!newData.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 							QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Calculate Column")));
 
 	if (notifyChanges)
@@ -847,10 +931,28 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	for (int i = startRow; i <= endRow; i++)
 		oldData << d_table->text(i, col);
 
+	int totalRows = endRow - startRow + 1;
+	QProgressDialog progress(this);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Calculating..."));
+	progress.setLabelText(tr("Calculating column %1...").arg(colName(col)));
+	progress.setRange(0, totalRows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
 	int colType = colTypes[col];
 	if (colType == Date || colType == Time){
 		QString fmt = col_format[col];
 		for (int i = startRow; i <= endRow; i++){
+			if ((i - startRow) % 50 == 0) {
+				progress.setValue(i - startRow);
+				if (progress.wasCanceled()) {
+					setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
 			if (ret.typeId() == QMetaType::Double){
@@ -871,6 +973,15 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 		columnNumericFormat(col, &f, &prec);
 
 		for (int i = startRow; i <= endRow; i++){
+			if ((i - startRow) % 50 == 0) {
+				progress.setValue(i - startRow);
+				if (progress.wasCanceled()) {
+					setAutoUpdateValues(applicationWindow()->autoUpdateTableValues());
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			colscript->setDouble(i + 1.0, "i");
 			QVariant ret = colscript->eval();
 			if (ret.typeId() == QMetaType::Double)
@@ -885,7 +996,7 @@ bool Table::calculate(int col, int startRow, int endRow, bool forceMuParser, boo
 	}
 
 	if (!newData.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 							QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Calculate Column")));
 
 	if (notifyChanges)
@@ -1162,7 +1273,7 @@ void Table::setColComment(int col, const QString& s, bool pushUndo)
 		return;
 
 	if (pushUndo){
-		d_undo_stack->push(new TableSetColCommentCommand(this, col, comments[col], s, tr("Set Column Comment")));
+		pushUndoCommand(new TableSetColCommentCommand(this, col, comments[col], s, tr("Set Column Comment")));
 		return;
 	}
 
@@ -1180,7 +1291,7 @@ void Table::setColumnType(int col, ColType val, bool pushUndo)
 		return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColTypeCommand(this, col, (ColType)colTypes[col], val, tr("Set Column Type")));
+		pushUndoCommand(new TableSetColTypeCommand(this, col, (ColType)colTypes[col], val, tr("Set Column Type")));
 		return;
 	}
 
@@ -1205,7 +1316,7 @@ void Table::setColumnWidth(int width, bool allCols, bool pushUndo)
 			return;
 
 		if (pushUndo) {
-			d_undo_stack->push(new TableSetColumnWidthCommand(this, 0, 0, width, true, oldWidths, tr("Set Column Width")));
+			pushUndoCommand(new TableSetColumnWidthCommand(this, 0, 0, width, true, oldWidths, tr("Set Column Width")));
 			return;
 		}
 
@@ -1218,7 +1329,7 @@ void Table::setColumnWidth(int width, bool allCols, bool pushUndo)
 			return;
 
 		if (pushUndo) {
-			d_undo_stack->push(new TableSetColumnWidthCommand(this, selectedCol, d_table->columnWidth(selectedCol), width, false, QList<int>(), tr("Set Column Width")));
+			pushUndoCommand(new TableSetColumnWidthCommand(this, selectedCol, d_table->columnWidth(selectedCol), width, false, QList<int>(), tr("Set Column Width")));
 			return;
 		}
 
@@ -1253,7 +1364,7 @@ void Table::setColumnWidth(int col, int width, bool pushUndo)
 		return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColumnWidthCommand(this, col, d_table->columnWidth(col), width, false, QList<int>(), tr("Set Column Width")));
+		pushUndoCommand(new TableSetColumnWidthCommand(this, col, d_table->columnWidth(col), width, false, QList<int>(), tr("Set Column Width")));
 		return;
 	}
 
@@ -1309,7 +1420,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
 		n++;
 	}
 
-	d_undo_stack->push(new TableSetColNamesCommand(this, col, oldNames, newNames, tr("Set Column Names")));
+	pushUndoCommand(new TableSetColNamesCommand(this, col, oldNames, newNames, tr("Set Column Names")));
 }
 
 void Table::setColNames(int startCol, const QStringList& names)
@@ -1514,7 +1625,7 @@ void Table::insertCols(int start, int count, bool pushUndo)
 		names << QString::number(max + i);
 
 	if (pushUndo){
-		d_undo_stack->push(new TableAddColsCommand(this, start, count, names, tr("Insert Columns")));
+		pushUndoCommand(new TableAddColsCommand(this, start, count, names, tr("Insert Columns")));
 		return;
 	}
 
@@ -1581,7 +1692,7 @@ void Table::addCol(PlotDesignation pd)
 	max++;
 
 	QString label = QString::number(max);
-	d_undo_stack->push(new TableAddColsCommand(this, cols, 1, QStringList() << label, tr("Add Column")));
+	pushUndoCommand(new TableAddColsCommand(this, cols, 1, QStringList() << label, tr("Add Column")));
 	
 	// Apply PlotDesignation (this will push another command if we use setColPlotDesignation)
 	// But TableAddColsCommand only inserts. We might need a combined command or just set it manually here.
@@ -1604,7 +1715,7 @@ void Table::addColumns(int c)
 	for (int i=0; i<c; i++)
 		names << QString::number(max + i);
 
-	d_undo_stack->push(new TableAddColsCommand(this, cols, c, names, tr("Add Columns")));
+	pushUndoCommand(new TableAddColsCommand(this, cols, c, names, tr("Add Columns")));
 }
 
 void Table::clearCol()
@@ -1617,7 +1728,7 @@ void Table::clearCol()
 		if (d_table->isSelected(i, selectedCol)) {
 			QString old = d_table->text(i, selectedCol);
 			if (!old.isEmpty())
-				d_undo_stack->push(new TableEditCellCommand(this, i, selectedCol, old, "", tr("Clear Cell")));
+				pushUndoCommand(new TableEditCellCommand(this, i, selectedCol, old, "", tr("Clear Cell")));
 		}
 	}
 	d_undo_stack->endMacro();
@@ -1639,7 +1750,7 @@ void Table::clearCell(int row, int col)
 	if (oldText.isEmpty())
 		return;
 
-	d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, "", tr("Clear Cell")));
+	pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, "", tr("Clear Cell")));
 
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -1683,7 +1794,7 @@ void Table::deleteRows(int startRow, int endRow, bool pushUndo)
 				rowData << d_table->text(i, j);
 			data << rowData;
 		}
-		d_undo_stack->push(new TableDeleteRowsCommand(this, start + 1, end + 1, data, tr("Delete Rows")));
+		pushUndoCommand(new TableDeleteRowsCommand(this, start + 1, end + 1, data, tr("Delete Rows")));
 		return;
 	}
 
@@ -1698,7 +1809,7 @@ void Table::deleteRows(int startRow, int endRow, bool pushUndo)
 void Table::insertRows(int row, int count, bool pushUndo)
 {
 	if (pushUndo){
-		d_undo_stack->push(new TableInsertRowCommand(this, row, count, tr("Insert Rows")));
+		pushUndoCommand(new TableInsertRowCommand(this, row, count, tr("Insert Rows")));
 		return;
 	}
 
@@ -1801,7 +1912,7 @@ void Table::clearSelection()
 				}
 
 				if (hasNonEmptyCell && !colList.isEmpty()){
-					d_undo_stack->push(new TableSetValuesCommand(this, top, bottom, colList, oldData, newData, tr("Clear Cells")));
+					pushUndoCommand(new TableSetValuesCommand(this, top, bottom, colList, oldData, newData, tr("Clear Cells")));
 				}
 			}
 
@@ -2050,7 +2161,7 @@ void Table::pasteSelection()
 	}
 
 	if (!colList.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, top, top + rows - 1, colList, oldData, newData, tr("Paste")));
+		pushUndoCommand(new TableSetValuesCommand(this, top, top + rows - 1, colList, oldData, newData, tr("Paste")));
 
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
@@ -2105,7 +2216,7 @@ void Table::deleteColumns(const QStringList& list, bool pushUndo)
 		}
 		
 		if (startCol != -1)
-			d_undo_stack->push(new TableDeleteColsCommand(this, startCol, startCol + names.count() - 1,
+			pushUndoCommand(new TableDeleteColsCommand(this, startCol, startCol + names.count() - 1,
 								cellData, names, comments, formats, types, plotTypes, widths, columnCommands, tr("Delete Columns")));
 		return;
 	}
@@ -2213,7 +2324,7 @@ void Table::normalizeCol(int col)
 	}
 	gsl_vector_free(data);
 
-	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col,
+	pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col,
 					QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Normalize") + " " + colName(col)));
 }
 
@@ -2362,7 +2473,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		delete[] p;
 		
 		if (!colIndices.isEmpty())
-			d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, colIndices, oldDataList, newDataList, tr("Sort")));
+			pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, colIndices, oldDataList, newDataList, tr("Sort")));
 	}
 
 	for(int i = 0; i < cols; i++){// notify changes
@@ -2458,7 +2569,7 @@ void Table::sortColumn(int col, int order)
 		}
 	}
 
-	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col, QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Sort Column") + " " + colName(col)));
+	pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col, QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Sort Column") + " " + colName(col)));
 
 	emit modifiedData(this, colName(col));
 	emit modifiedWindow(this);
@@ -2586,7 +2697,7 @@ void Table::setText(int row, int col, const QString &text, bool pushUndo, const 
 	}
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell"),
+		pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, text, tr("Edit Cell"),
 		                                            hasOldRaw, oldRaw, hasNewRaw, newRaw));
 	} else {
 		bool blocked = d_table->blockSignals(true);
@@ -2680,7 +2791,7 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool
 		emit modifiedData(this, colName(col));
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Numeric,
+		pushUndoCommand(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Numeric,
 														col_format[col], newFormat, tr("Set Numeric Format")));
 		return;
 	}
@@ -2751,7 +2862,7 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool
 		return true;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Date,
+		pushUndoCommand(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Date,
 														col_format[col], format, tr("Set Date Format")));
 		return true;
 	}
@@ -2797,7 +2908,7 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool
 		return true;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Time,
+		pushUndoCommand(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Time,
 														col_format[col], format, tr("Set Time Format")));
 		return true;
 	}
@@ -2845,7 +2956,7 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells, boo
         return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Month,
+		pushUndoCommand(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Month,
 														col_format[col], format, tr("Set Month Format")));
 		return;
 	}
@@ -2888,7 +2999,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells, bool 
         return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Day,
+		pushUndoCommand(new TableSetColFormatCommand(this, col, (ColType)colTypes[col], Day,
 														col_format[col], format, tr("Set Day Format")));
 		return;
 	}
@@ -2957,7 +3068,7 @@ void Table::setRandomValues(int col, int startRow, int endRow)
 		oldData << d_table->text(i, col);
 		newData << locale().toString(double(rand())/double(RAND_MAX), f, prec);
 	}
-	d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+	pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Random Values")));
 
 	QApplication::restoreOverrideCursor();
@@ -3001,7 +3112,7 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 
 	gsl_rng_free (r);
 
-	d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
+	pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Normal Random Values")));
 
 	QApplication::restoreOverrideCursor();
@@ -3041,7 +3152,7 @@ void Table::setRandomValues()
 	}
 
 	if (!cols.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Random Values")));
+		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Random Values")));
 
 	emit modifiedWindow(this);
 }
@@ -3087,7 +3198,7 @@ void Table::setNormalRandomValues()
 	gsl_rng_free (r);
 
 	if (!cols.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Normal Random Values")));
+		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Normal Random Values")));
 
 	emit modifiedWindow(this);
 }
@@ -3305,7 +3416,7 @@ void Table::setAscValues()
 	}
 
 	if (!cols.isEmpty())
-		d_undo_stack->push(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Row Numbers")));
+		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Row Numbers")));
 
 	emit modifiedWindow(this);
 	QApplication::restoreOverrideCursor();
@@ -3866,8 +3977,28 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		}
 	}
 
+	int totalRows = (exportSelection && selectedCols) ? (bottomRow - topRow + 1) : rows;
+	QProgressDialog progress(this);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Exporting..."));
+	progress.setLabelText(fname);
+	progress.setRange(0, totalRows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
 	if (exportSelection && selectedCols){
 		for (int i = topRow; i <= bottomRow; i++){
+			if ((i - topRow) % 200 == 0) {
+				progress.setValue(i - topRow);
+				if (progress.wasCanceled()) {
+					f.close();
+					f.remove();
+					delete [] sCols;
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			for (int j = 0; j < aux; j++)
 				t << d_table->text(i, sCols[j]) + sep;
 			if (aux >= 0)
@@ -3876,6 +4007,16 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 		delete [] sCols;
 	} else {
 		for (int i = 0; i < rows; i++) {
+			if (i % 200 == 0) {
+				progress.setValue(i);
+				if (progress.wasCanceled()) {
+					f.close();
+					f.remove();
+					QApplication::restoreOverrideCursor();
+					return false;
+				}
+			}
+
 			for (int j = 0; j < aux; j++)
 				t << d_table->text(i, j) + sep;
 			t << d_table->text(i, aux) + eol;
@@ -4271,7 +4412,7 @@ void Table::clear()
 	if (!hasData || colList.isEmpty())
 		return;
 
-	d_undo_stack->push(new TableSetValuesCommand(this, 0, rows - 1, colList, oldData, newData, tr("Clear Table")));
+	pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, colList, oldData, newData, tr("Clear Table")));
 	emit modifiedWindow(this);
 }
 
@@ -4386,7 +4527,7 @@ void Table::setReadOnlyColumn(int col, bool on, bool pushUndo)
 		return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSetReadOnlyCommand(this, col, !on, on, tr("Set Read Only")));
+		pushUndoCommand(new TableSetReadOnlyCommand(this, col, !on, on, tr("Set Read Only")));
 		return;
 	}
 
@@ -4418,7 +4559,7 @@ void Table::swapColumns(int col1, int col2, bool pushUndo)
 		return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableSwapColumnsCommand(this, col1, col2, tr("Swap Columns")));
+		pushUndoCommand(new TableSwapColumnsCommand(this, col1, col2, tr("Swap Columns")));
 		return;
 	}
 
@@ -4453,7 +4594,7 @@ void Table::moveColumnBy(int cols, bool pushUndo)
 		return;
 
 	if (pushUndo) {
-		d_undo_stack->push(new TableMoveColumnCommand(this, oldPos, newPos, tr("Move Column")));
+		pushUndoCommand(new TableMoveColumnCommand(this, oldPos, newPos, tr("Move Column")));
 		return;
 	}
 

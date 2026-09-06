@@ -36,7 +36,6 @@
 #include <gsl/gsl_statistics.h>
 
 #include <QLocale>
-#include <QMessageBox>
 
 #include <vector>
 
@@ -280,7 +279,7 @@ void MultiPeakFit::generateFitCurve()
 	} else {
 		gsl_matrix * m = gsl_matrix_alloc (d_points, d_peaks);
 		if (!m){
-			QMessageBox::warning(app, tr("QtiPlot - Fit Error"),
+			reportError(tr("QtiPlot - Fit Error"),
 			tr("Could not allocate enough memory for the fit curves!"));
 			return;
 		}

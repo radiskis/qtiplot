@@ -29,7 +29,6 @@
 #include "PluginFit.h"
 
 #include <QLibrary>
-#include <QMessageBox>
 
 PluginFit::PluginFit(ApplicationWindow *parent, Graph *g)
 : Fit(parent, g)
@@ -81,7 +80,7 @@ void PluginFit::init()
 bool PluginFit::load(const QString& pluginName)
 {
 	if (!QFile::exists (pluginName)){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - File not found"),
+		reportError(tr("QtiPlot - File not found"),
 				tr("Plugin file: <p><b> %1 </b> <p>not found. Operation aborted!").arg(pluginName));
 		return false;
 	}

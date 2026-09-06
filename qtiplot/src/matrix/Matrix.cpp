@@ -45,6 +45,7 @@
 #include <QMouseEvent>
 #include <QHeaderView>
 #include <QApplication>
+#include <QProgressDialog>
 #include <QVarLengthArray>
 #include <QClipboard>
 #include <QShortcut>
@@ -1848,7 +1849,26 @@ bool Matrix::exportASCII(const QString& fname, const QString& separator, bool ex
 		}
 	}
 
+	int totalRows = bottomRow - topRow + 1;
+	QProgressDialog progress(this);
+	progress.setWindowTitle(tr("QtiPlot") + " - " + tr("Exporting..."));
+	progress.setLabelText(fname);
+	progress.setRange(0, totalRows);
+	progress.setAutoClose(true);
+	progress.setAutoReset(true);
+	progress.setMinimumDuration(1000);
+
 	for (int i = topRow; i <= bottomRow; i++){
+		if ((i - topRow) % 50 == 0) {
+			progress.setValue(i - topRow);
+			if (progress.wasCanceled()) {
+				f.close();
+				f.remove();
+				QApplication::restoreOverrideCursor();
+				return false;
+			}
+		}
+
 		for (int j = leftCol; j < rightCol; j++){
 			t << d_matrix_model->text(i, j);
 			t << sep;

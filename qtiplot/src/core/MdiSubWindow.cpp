@@ -110,7 +110,7 @@ void MdiSubWindow::resizeEvent( QResizeEvent* e )
 
 void MdiSubWindow::closeEvent( QCloseEvent *e )
 {
-	if (d_confirm_close){
+	if (d_confirm_close && !qApp->arguments().contains("-X")){
     	QMessageBox msgBox(QMessageBox::Information, tr("QtiPlot"),
 				tr("Do you want to hide or delete") + "<p><b>'" + objectName() + "'</b> ?",
 				QMessageBox::NoButton, this);

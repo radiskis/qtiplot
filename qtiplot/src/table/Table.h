@@ -318,6 +318,8 @@ public:
 public slots:
 	MyTable* table(){return d_table;};
 	QUndoStack *undoStack() const override {return d_undo_stack;};
+	void pushUndoCommand(QUndoCommand *cmd);
+	size_t undoMemoryUsage() const;
 	void copy(Table *m, bool values = true);
 	int numRows();
 	int numCols();

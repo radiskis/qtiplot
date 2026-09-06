@@ -32,6 +32,7 @@
 #include "ScriptingEnv.h"
 #include "PythonScript.h"
 #include <QCoreApplication>
+#include <atomic>
 
 class QObject;
 class QString;
@@ -100,12 +101,24 @@ class PythonScripting: public ScriptingEnv
 		PyObject *globalDict() { return globals; }
 		PyObject *sysDict() { return sys; }
 
+		void stopExecution() override;
+		void startExecution() override;
+		bool isExecutionAborted() const;
+		void setAbortRequested(bool abort);
+		//! Returns a PyCapsule wrapping `this`, for use with PyEval_SetTrace
+		PyObject *traceCapsule();
+
+		static int pythonTraceHook(PyObject *obj, struct _frame *frame, int what, PyObject *arg);
+
 	private:
 		bool loadInitFile(const QString &path);
 
 		PyObject *globals;		// PyDict of global environment
 		PyObject *math;		// PyDict of math functions
 		PyObject *sys;		// PyDict of sys module
+		std::atomic<bool> d_abortRequested{false};
+		std::atomic<bool> d_isExecuting{false};
+		PyObject *d_traceCapsule{nullptr};	// PyCapsule wrapping `this` for the trace hook
 };
 
 #endif

@@ -165,6 +165,7 @@ class Fit : public Filter
 		virtual bool removeDataSingularities(){return true;};
 
 	protected:
+		virtual void calculateFit(int &iterations, int &status);
 		//! Allocates the memory for the fit workspace
 		void initWorkspace(int par);
 		//! Frees the memory allocated for the fit workspace

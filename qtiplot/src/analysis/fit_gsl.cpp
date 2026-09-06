@@ -38,7 +38,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
-#include <QMessageBox>
 #include <gsl/gsl_blas.h>
 
 int expd3_f (const gsl_vector * x, void *params, gsl_vector * f){
@@ -549,7 +548,10 @@ int user_f(const gsl_vector * x, void *params, gsl_vector * f) {
          }
         delete[] parameters;
     } catch (mu::ParserError &e) {
-        QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
+        NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
+        if (fitter)
+            fitter->setErrorMessage(QString::fromStdWString(e.GetMsg()));
+        qWarning("QtiPlot - Input function error: %s", qPrintable(QString::fromStdWString(e.GetMsg())));
         return GSL_EINVAL;
     }
     return GSL_SUCCESS;
@@ -596,7 +598,10 @@ double user_d(const gsl_vector * x, void *params) {
         }
         delete[] parameters;
     } catch (mu::ParserError &e) {
-        QMessageBox::critical(0,"QtiPlot - Input function error",QString::fromStdWString(e.GetMsg()));
+        NonLinearFit *fitter = (NonLinearFit *)((struct FitData *) params)->fitter;
+        if (fitter)
+            fitter->setErrorMessage(QString::fromStdWString(e.GetMsg()));
+        qWarning("QtiPlot - Input function error: %s", qPrintable(QString::fromStdWString(e.GetMsg())));
         return GSL_EINVAL;
     }
     return val;

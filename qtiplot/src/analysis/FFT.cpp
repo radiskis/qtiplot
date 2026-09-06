@@ -118,60 +118,68 @@ void FFT::fftCurve()
 	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
 	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
-	if(!d_inverse){
-		gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
-		gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
+	runAsync([this, &aMax, result, amp, df, n2]() {
+		if(!d_inverse){
+			gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
+			gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
 
-		if(!work || !real){
-			memoryErrorMessage();
-			return;
-		}
-
-		gsl_fft_real_transform(d_y, 1, d_n, real, work);
-		gsl_fft_halfcomplex_unpack (d_y, result, 1, d_n);
-
-		gsl_fft_real_wavetable_free(real);
-		gsl_fft_real_workspace_free(work);
-	} else {
-		gsl_fft_real_unpack (d_y, result, 1, d_n);
-		gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
-		gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
-
-		if(!workspace || !wavetable){
-			memoryErrorMessage();
-			return;
-		}
-
-		gsl_fft_complex_inverse (result, 1, d_n, wavetable, workspace);
-		gsl_fft_complex_wavetable_free (wavetable);
-		gsl_fft_complex_workspace_free (workspace);
-	}
-
-	if (d_shift_order){
-		double *temp = (double *)malloc(2*d_n*sizeof(double));
-		if (temp) {
-			for (int i = 0; i < d_n; i++) {
-				d_x[i] = (i - n2)*df;
-				int src = (i + (d_n - n2)) % d_n;
-				temp[2*i] = result[2*src];
-				temp[2*i + 1] = result[2*src + 1];
+			if(!work || !real){
+				memoryErrorMessage();
+				return;
 			}
-			memcpy(result, temp, 2*d_n*sizeof(double));
-			free(temp);
-		}
-	} else {
-		for(int i = 0; i < d_n; i++)
-			d_x[i] = i*df;
-	}
 
-	for(int i = 0; i < d_n; i++) {
-		int i2 = 2*i;
-		double real_part = result[i2];
-		double im_part = result[i2+1];
-		double a = sqrt(real_part*real_part + im_part*im_part);
-		amp[i]= a;
-		if (a > aMax)
-			aMax = a;
+			gsl_fft_real_transform(d_y, 1, d_n, real, work);
+			gsl_fft_halfcomplex_unpack (d_y, result, 1, d_n);
+
+			gsl_fft_real_wavetable_free(real);
+			gsl_fft_real_workspace_free(work);
+		} else {
+			gsl_fft_real_unpack (d_y, result, 1, d_n);
+			gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
+			gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
+
+			if(!workspace || !wavetable){
+				memoryErrorMessage();
+				return;
+			}
+
+			gsl_fft_complex_inverse (result, 1, d_n, wavetable, workspace);
+			gsl_fft_complex_wavetable_free (wavetable);
+			gsl_fft_complex_workspace_free (workspace);
+		}
+
+		if (d_shift_order){
+			double *temp = (double *)malloc(2*d_n*sizeof(double));
+			if (temp) {
+				for (int i = 0; i < d_n; i++) {
+					d_x[i] = (i - n2)*df;
+					int src = (i + (d_n - n2)) % d_n;
+					temp[2*i] = result[2*src];
+					temp[2*i + 1] = result[2*src + 1];
+				}
+				memcpy(result, temp, 2*d_n*sizeof(double));
+				free(temp);
+			}
+		} else {
+			for(int i = 0; i < d_n; i++)
+				d_x[i] = i*df;
+		}
+
+		for(int i = 0; i < d_n; i++) {
+			int i2 = 2*i;
+			double real_part = result[i2];
+			double im_part = result[i2+1];
+			double a = sqrt(real_part*real_part + im_part*im_part);
+			amp[i]= a;
+			if (a > aMax)
+				aMax = a;
+		}
+	}, tr("Calculating FFT..."));
+
+	if (d_canceled || d_init_err) {
+		free(amp);
+		free(result);
+		return;
 	}
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
@@ -449,8 +457,9 @@ void FFT::fftMatrix()
 	bool errors = !d_im_matrix;
 	if (d_im_matrix && (d_im_matrix->numCols() != cols || d_im_matrix->numRows() != rows)){
 		errors = true;
-		QMessageBox::warning(app, tr("QtiPlot"),
-		tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
+		reportError(tr("QtiPlot"),
+			tr("The two matrices have different dimensions, the imaginary part will be neglected!"));
+		d_init_err = false;
 	}
 
 	double **x_int_re = Matrix::allocateMatrixData(rows, cols, true); // real coeff matrix

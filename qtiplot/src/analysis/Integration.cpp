@@ -33,7 +33,6 @@
 #include <LegendWidget.h>
 #include <PatternBox.h>
 
-#include <QMessageBox>
 #include <QApplication>
 #include <QDateTime>
 #include <QLocale>
@@ -146,8 +145,9 @@ double evalFunction(double x, void *params)
 		result = parser.Eval();
 	} catch (mu::ParserError &e){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(0, "QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
-		((Integration *)params)->setError();
+		Integration *it = (Integration *)params;
+		if (it)
+			it->reportError("QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
 	}
 
 	return result;

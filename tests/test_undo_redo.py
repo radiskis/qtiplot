@@ -729,5 +729,80 @@ def test_table_cell_typed_precision_and_undo_redo():
     assert abs(t.cell(1, 1) - exact_val) < 1e-12
 
 
+def test_scripted_edits_undo_macro_batching():
+    """Test C1: Batch scripted edits into a single undo macro.
+    When a script (e.g. executed via Note/ScriptEdit) performs multiple edits,
+    they must be grouped into a single undo command on the table's stack,
+    and a single undo() call must restore all cells at once.
+    """
+    app = qti.app
+    t = app.newTable("BatchMacroTable", 10, 2)
+    assert t is not None
+
+    # Initial undo stack count must be 0
+    assert t.undoStackCount() == 0
+
+    # Create a Note to execute scripted cell edits
+    note = app.newNote("BatchRunnerNote")
+    assert note is not None
+    script_code = (
+        "import qti\n"
+        "tbl = qti.app.table('BatchMacroTable')\n"
+        "for r in range(1, 11):\n"
+        "    tbl.setCell(1, r, float(r * 10))\n"
+    )
+    note.setText(script_code)
+    note.currentEditor().executeAll()
+
+    # All 10 cells must have their updated values
+    for r in range(1, 11):
+        assert t.cell(1, r) == float(r * 10)
+
+    # All 10 cell edits must be collapsed into EXACTLY 1 undo macro command (C1)
+    assert t.undoStackCount() == 1
+
+    # Undoing ONCE must revert all 10 cells simultaneously
+    t.undo()
+    for r in range(1, 11):
+        assert t.text(1, r) == ""
+
+    # Redoing ONCE must re-apply all 10 cells simultaneously
+    t.redo()
+    for r in range(1, 11):
+        assert t.cell(1, r) == float(r * 10)
+
+
+def test_table_undo_memory_budget_and_stack_size():
+    """Test C3: Configurable table undo limit and memory budget settings."""
+    app = qti.app
+    orig_limit = app.tableUndoStackSize()
+    orig_budget = app.undoMemoryBudgetMB()
+
+    assert orig_limit >= 100
+    assert orig_budget >= 1
+
+    try:
+        app.setTableUndoStackSize(500)
+        assert app.tableUndoStackSize() == 500
+
+        app.setUndoMemoryBudgetMB(128)
+        assert app.undoMemoryBudgetMB() == 128
+
+        # Create a table and verify memory usage calculation is tracking
+        t = app.newTable("MemoryBudgetTable", 20, 2)
+        initial_mem = t.undoMemoryUsage()
+        assert initial_mem > 0
+
+        # Perform edits and ensure memory usage increases
+        for i in range(1, 10):
+            t.setCell(1, i, float(i * 100))
+        assert t.undoMemoryUsage() > initial_mem
+        assert t.undoStackCount() == 9
+    finally:
+        app.setTableUndoStackSize(orig_limit)
+        app.setUndoMemoryBudgetMB(orig_budget)
+
+
+
 
 

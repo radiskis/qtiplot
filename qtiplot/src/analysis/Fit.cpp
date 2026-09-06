@@ -42,7 +42,6 @@
 #include <gsl/gsl_version.h>
 
 #include <QApplication>
-#include <QMessageBox>
 #include <QDateTime>
 #include <QLocale>
 #include <QTextStream>
@@ -163,7 +162,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 			d_results[i] = gsl_vector_get(s->x, i);
 
 		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
-	} while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	} while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 #if GSL_MAJOR_VERSION == 2
 	// allocate memory and calculate covariance matrix based on residuals
 	gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
@@ -236,7 +235,7 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 		size = gsl_multimin_fminimizer_size (s_min);
 		status = gsl_multimin_test_size (size, d_tolerance);
 	}
-	while (inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	iterations = iter;
 	gsl_vector_free(ss);
@@ -478,7 +477,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 		case Instrumental:
 			{
 				if (!d_graph && d_table){
-					QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+					reportError(tr("QtiPlot - Error"),
   	    				tr("You cannot use the instrumental weighting method."));
   	    			return false;
 				}
@@ -496,7 +495,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					}
                 }
 				if (error){
-					QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+					reportError(tr("QtiPlot - Error"),
 					tr("The curve %1 has no associated Y error bars. You cannot use instrumental weighting method.").arg(d_curve->title().text()));
 					return false;
 				}
@@ -529,7 +528,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					return false;
 
 				if (t->numRows() < d_n){
-  	            	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+  	            	reportError(tr("QtiPlot - Error"),
   	                tr("The column %1 has less points than the fitted data set. Please choose another column!").arg(colName));
   	                return false;
   	            }
@@ -554,7 +553,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 					return false;
 
 				if (t->numRows() < d_n){
-  	            	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Error"),
+  	            	reportError(tr("QtiPlot - Error"),
   	                tr("The column %1 has less points than the fitted data set. Please choose another column!").arg(colName));
   	                return false;
   	            }
@@ -921,42 +920,11 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		free (X);
 }
 
-void Fit::fit()
+void Fit::calculateFit(int &iterations, int &status)
 {
-	if (!(d_graph || d_table) || d_init_err)
-		return;
-
-	if (!d_n){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("You didn't specify a valid data set for this fit operation. Operation aborted!"));
-		return;
-	}
-	if (!d_p){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("There are no parameters specified for this fit operation. Operation aborted!"));
-		return;
-	}
-	if (d_p >= d_n){
-		d_init_err = true;
-		if (!qApp->arguments().contains("-X"))
-  			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-  	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
-  	    return;
-  	}
-	if (d_formula.isEmpty()){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Fit Error"),
-				tr("You must specify a valid fit function first. Operation aborted!"));
-		return;
-	}
-
-	if (!removeDataSingularities())
-		return;
-
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
 	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
 
-	int status, iterations = d_max_iterations;
+	iterations = d_max_iterations;
 	if(d_solver == NelderMeadSimplex){
 		gsl_multimin_function f;
 		f.f = d_fsimplex;
@@ -989,11 +957,54 @@ void Fit::fit()
 		chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
 		gsl_multifit_fdfsolver_free(s);
 	}
+}
+
+void Fit::fit()
+{
+	if (!(d_graph || d_table) || d_init_err)
+		return;
+
+	if (!d_n){
+		reportError(tr("QtiPlot - Fit Error"),
+				tr("You didn't specify a valid data set for this fit operation. Operation aborted!"));
+		return;
+	}
+	if (!d_p){
+		reportError(tr("QtiPlot - Fit Error"),
+				tr("There are no parameters specified for this fit operation. Operation aborted!"));
+		return;
+	}
+	if (d_p >= d_n){
+		d_init_err = true;
+		reportError(tr("QtiPlot - Fit Error"),
+  	    		tr("You need at least %1 data points for this fit operation. Operation aborted!").arg(d_p + 1));
+  	    return;
+  	}
+	if (d_formula.isEmpty()){
+		reportError(tr("QtiPlot - Fit Error"),
+				tr("You must specify a valid fit function first. Operation aborted!"));
+		return;
+	}
+
+	if (!removeDataSingularities())
+		return;
+
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+
+	int status = 0, iterations = d_max_iterations;
+	runAsync([this, &iterations, &status]() {
+		calculateFit(iterations, status);
+	}, tr("Fitting in progress..."));
+
+	if (d_canceled) {
+		QApplication::restoreOverrideCursor();
+		return;
+	}
 
 	generateFitCurve();
 
 	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog())
+	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(iterations, status));
 
 	QApplication::restoreOverrideCursor();
@@ -1008,13 +1019,13 @@ void Fit::generateFitCurve()
 	if (d_graphics_display && !d_gen_function){
 		X = (double *)malloc(d_points*sizeof(double));
 		if (!X){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot - Memory Allocation Error"),
+			reportError(tr("QtiPlot - Memory Allocation Error"),
 			tr("Could not allocate enough memory for the fit curves!"));
 			return;
 		}
 		Y = (double *)malloc(d_points*sizeof(double));
 		if (!Y){
-			QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot  - Memory Allocation Error"),
+			reportError(tr("QtiPlot  - Memory Allocation Error"),
 			tr("Could not allocate enough memory for the fit curves!"));
 			free(X);
 			return;
@@ -1067,8 +1078,7 @@ bool Fit::save(const QString& fileName)
 {
     QFile f(fileName);
 	if ( !f.open( QIODevice::WriteOnly ) ){
-		QApplication::restoreOverrideCursor();
-		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("File Save Error"),
+		reportError(tr("QtiPlot") + " - " + tr("File Save Error"),
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fileName));
 		return false;
 	}
@@ -1103,24 +1113,24 @@ bool Fit::load(const QString& fileName)
 {
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
-                              tr("Cannot read file %1:\n%2.")
-                              .arg(fileName)
-                              .arg(file.errorString()));
+        reportError(tr("QtiPlot Fit Model"),
+                      tr("Cannot read file %1:\n%2.")
+                      .arg(fileName)
+                      .arg(file.errorString()));
         return false;
     }
 
     QXmlStreamReader reader(&file);
 	if (reader.readNextStartElement()) {
 		if (reader.name() != QLatin1String("fit")) {
-			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+			reportError(tr("QtiPlot Fit Model"),
 								tr("The file is not a QtiPlot fit model file."));
 			return false;
 		}
 
 		QString version = reader.attributes().value("version").toString();
 		if (!version.isEmpty() && version != "1.0") {
-			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+			reportError(tr("QtiPlot Fit Model"),
 								tr("The file is not a QtiPlot fit model version 1.0 file."));
 			return false;
 		}
@@ -1154,7 +1164,7 @@ bool Fit::load(const QString& fileName)
 		}
 
 		if (reader.hasError()) {
-			QMessageBox::critical(((ApplicationWindow *)parent()), tr("QtiPlot Fit Model"),
+			reportError(tr("QtiPlot Fit Model"),
 								tr("Error reading file %1:\n%2.")
 								.arg(fileName)
 								.arg(reader.errorString()));

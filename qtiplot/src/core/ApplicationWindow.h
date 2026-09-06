@@ -202,6 +202,10 @@ public:
 
 	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);
+	int tableUndoStackSize() const { return d_table_undo_stack_size; }
+	void setTableUndoStackSize(int size);
+	int undoMemoryBudgetMB() const { return d_undo_memory_budget_mb; }
+	void setUndoMemoryBudgetMB(int mb) { d_undo_memory_budget_mb = mb; }
 
 	QString endOfLine();
 	static QString guessEndOfLine(const QString& sample);
@@ -1007,6 +1011,7 @@ public slots:
 	void execute();
 	void executeAll();
 	void evaluate();
+	void stopExecution();
 	void commentSelection();
 	void uncommentSelection();
 	//@}
@@ -1477,6 +1482,8 @@ private:
 	// Flag telling if table values should be automatically recalculated when values in a column are modified.
 	bool d_auto_update_table_values;
 	int d_matrix_undo_stack_size;
+	int d_table_undo_stack_size;
+	int d_undo_memory_budget_mb;
 	double d_Douglas_Peuker_tolerance;
 	int d_speed_mode_points;
 	bool d_speed_mode_export;
@@ -1632,5 +1639,6 @@ private:
 	bool d_has_excel;
 #endif
 	ExcelImportMethod d_excel_import_method;
+	QAction *actionNoteStop;
 };
 #endif

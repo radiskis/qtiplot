@@ -158,6 +158,7 @@ Description          : QtiPlot's main window
 #include <Note.h>
 #include <ScriptingLangDialog.h>
 #include <ScriptWindow.h>
+#include <ScriptUndoScope.h>
 #include <PythonSyntaxHighlighter.h>
 #include <CreateBinMatrixDialog.h>
 #include <StudentTestDialog.h>
@@ -520,6 +521,8 @@ void ApplicationWindow::setDefaultOptions()
 	d_show_table_paste_dialog = true;
 	d_active_window = nullptr;
     d_matrix_undo_stack_size = 10;
+    d_table_undo_stack_size = 1000;
+    d_undo_memory_budget_mb = 64;
 
 	d_opening_file = false;
 	d_is_appending_file = false;
@@ -878,6 +881,7 @@ void ApplicationWindow::initToolBars()
 #ifdef SCRIPTING_PYTHON
 	noteTools->addAction(actionNoteExecuteAll);
 	noteTools->addAction(actionNoteExecute);
+	noteTools->addAction(actionNoteStop);
 	noteTools->addAction(actionCommentSelection);
 	noteTools->addAction(actionUncommentSelection);
 #endif
@@ -5632,6 +5636,8 @@ void ApplicationWindow::readSettings()
 	d_force_muParser = settings.value("/ForceMuParser", d_force_muParser).toBool();
 
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
+    d_table_undo_stack_size = settings.value("/TableUndoStackSize", 1000).toInt();
+    d_undo_memory_budget_mb = settings.value("/UndoMemoryBudgetMB", 64).toInt();
 	d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
 
 	//restore dock windows and tool bars
@@ -6140,6 +6146,8 @@ void ApplicationWindow::saveSettings()
 	settings.setValue("/MuParserCLocale", d_muparser_c_locale);
 	settings.setValue("/ForceMuParser", d_force_muParser);
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
+    settings.setValue("/TableUndoStackSize", d_table_undo_stack_size);
+    settings.setValue("/UndoMemoryBudgetMB", d_undo_memory_budget_mb);
 	settings.setValue("/EndOfLine", (int)d_eol);
 	settings.setValue("/DockWindows", saveState());
 	settings.setValue("/ExplorerSplitter", explorerSplitter->saveState());
@@ -10139,6 +10147,7 @@ void ApplicationWindow::scriptingMenuAboutToShow()
 			if (scriptEnv->objectName() == QString("Python")){
 				scriptingMenu->addAction(actionNoteExecute);
 				scriptingMenu->addAction(actionNoteExecuteAll);
+				scriptingMenu->addAction(actionNoteStop);
 			}
 			scriptingMenu->addAction(actionNoteEvaluate);
 
@@ -15136,6 +15145,10 @@ void ApplicationWindow::createActions()
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
 	connect(actionNoteEvaluate, &QAction::triggered, this, &ApplicationWindow::evaluate);
 
+	actionNoteStop = new QAction(QIcon(":/close.png"), tr("&Stop Execution"), this);
+	actionNoteStop->setShortcut(tr("Ctrl+Break"));
+	connect(actionNoteStop, &QAction::triggered, this, &ApplicationWindow::stopExecution);
+
 	actionShowNoteLineNumbers = new QAction(tr("Show Line &Numbers"), this);
 	
 	connect(actionShowNoteLineNumbers, &QAction::toggled, this, &ApplicationWindow::showNoteLineNumbers);
@@ -15838,6 +15851,9 @@ void ApplicationWindow::translateActionsStrings()
 
 	actionNoteEvaluate->setText(tr("&Evaluate Expression"));
 	actionNoteEvaluate->setShortcut(tr("Ctrl+Return"));
+
+	actionNoteStop->setText(tr("&Stop Execution"));
+	actionNoteStop->setShortcut(tr("Ctrl+Break"));
 
 	actionShowNoteLineNumbers->setText(tr("Show Line &Numbers"));
 	actionRenameNoteTab->setText(tr("Rena&me Tab..."));
@@ -18349,6 +18365,7 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 		hide();
 		setScriptingLanguage("Python");
 
+		ScriptUndoScope::setBatchRunnerActive(true);
 		ScriptEdit *se = new ScriptEdit(scriptEnv, this);
 		se->importASCII(fn);
 		se->executeAll();
@@ -19210,6 +19227,26 @@ void ApplicationWindow::setMatrixUndoStackSize(int size)
 	}
 }
 
+void ApplicationWindow::setTableUndoStackSize(int size)
+{
+    if (d_table_undo_stack_size == size)
+        return;
+
+    d_table_undo_stack_size = size;
+    Folder *f = projectFolder();
+	while (f){
+		QList<MdiSubWindow *> folderWindows = f->windowsList();
+		for (MdiSubWindow *w : folderWindows){
+		    if (w->inherits("Table")){
+				QUndoStack *stack = ((Table *)w)->undoStack();
+				if (!stack->count())// undo limit can only be changed for empty stacks
+                	stack->setUndoLimit(size);
+			}
+		}
+		f = f->folderBelow();
+	}
+}
+
 QString ApplicationWindow::guessEndOfLine(const QString& sample)
 {//Try to guess which end-of-line character is used:
     if (sample.indexOf("\r\n") != -1)//Try \r\n first
@@ -19663,6 +19700,12 @@ void ApplicationWindow::evaluate()
 		return;
 
 	note->evaluate();
+}
+
+void ApplicationWindow::stopExecution()
+{
+	if (scriptEnv)
+		scriptEnv->stopExecution();
 }
 
 void ApplicationWindow::addWindowsListToCompleter()

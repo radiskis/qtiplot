@@ -283,6 +283,12 @@ void ScriptEdit::contextMenuEvent(QContextMenuEvent *e)
 		}
 		menu->addAction(actionEval);
 	}
+	if (python){
+		QAction *actionStop = new QAction(QIcon(":/close.png"), tr("&Stop Execution"), menu);
+		actionStop->setShortcut(tr("Ctrl+Break"));
+		connect(actionStop, &QAction::triggered, this, &ScriptEdit::stopExecution);
+		menu->addAction(actionStop);
+	}
 
 	if (sp && python){
 		QAction *actionAutoexec = new QAction(tr("Auto&exec"), menu);
@@ -482,6 +488,12 @@ void ScriptEdit::evaluate()
 
 	highlightErrorLine(startLineNumber - 2);//we need to substract a line due to __doit__ line prepended to Python scripts.
 	d_error = false;
+}
+
+void ScriptEdit::stopExecution()
+{
+	if (myScript && myScript->scriptingEnv())
+		myScript->scriptingEnv()->stopExecution();
 }
 
 void ScriptEdit::exportPDF(const QString& fileName)

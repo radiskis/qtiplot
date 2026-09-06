@@ -70,11 +70,11 @@ bool Anova::run()
 	if (!d_n)
 		return false;
 	if (d_two_way && d_data_samples.size() < 2){
-		QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 					QObject::tr("Two-Way ANOVA requires three or more data samples."));
 		return false;
 	} else if (!d_data_samples.size() && !d_two_way){
-		QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 					QObject::tr("One-Way ANOVA requires two or more data samples."));
 		return false;
 	}
@@ -107,13 +107,13 @@ bool Anova::twoWayANOVA()
 
 	if (aLevels.size() < 2){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 					QObject::tr("Factor A must have two or more levels."));
 		return false;
 	}
 	if (bLevels.size() < 2){
 		QApplication::restoreOverrideCursor();
-		QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+		reportError(QObject::tr("Attention!"),
 					QObject::tr("Factor B must have two or more levels."));
 		return false;
 	}
@@ -130,7 +130,7 @@ bool Anova::twoWayANOVA()
 
 			if (!levelCombinationExists){
 				QApplication::restoreOverrideCursor();
-				QMessageBox::critical((ApplicationWindow *)parent(), QObject::tr("Attention!"),
+				reportError(QObject::tr("Attention!"),
 				QObject::tr("There are no data points in Factor A '%1' and Factor B '%2' level combination.").arg(levelName(i)).arg(levelName(j, true)));
 				return false;
 			}

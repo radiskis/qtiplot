@@ -13,12 +13,37 @@
 #include <QPointer>
 #include <QStringList>
 
-class TableSetColNamesCommand: public QUndoCommand
+class TableCommand : public QUndoCommand
+{
+public:
+	TableCommand(const QString &text = QString(), QUndoCommand *parent = nullptr)
+		: QUndoCommand(text, parent) {}
+	virtual ~TableCommand() = default;
+
+	virtual size_t byteSize() const {
+		size_t sz = sizeof(*this) + text().length() * sizeof(QChar);
+		for (int i = 0; i < childCount(); ++i) {
+			if (auto *tc = dynamic_cast<const TableCommand*>(child(i)))
+				sz += tc->byteSize();
+			else
+				sz += 64;
+		}
+		return sz;
+	}
+};
+
+class TableSetColNamesCommand: public TableCommand
 {
 public:
 	TableSetColNamesCommand(Table *t, int startCol, const QStringList& oldNames, const QStringList& newNames, const QString & text);
 	virtual void redo();
 	virtual void undo();
+	size_t byteSize() const override {
+		size_t sz = sizeof(*this);
+		for (const QString &s : d_old_names) sz += s.length() * sizeof(QChar);
+		for (const QString &s : d_new_names) sz += s.length() * sizeof(QChar);
+		return sz;
+	}
 
 private:
 	QPointer<Table> d_table;
@@ -26,13 +51,16 @@ private:
 	QStringList d_old_names, d_new_names;
 };
 
-class TableEditCellCommand: public QUndoCommand
+class TableEditCellCommand: public TableCommand
 {
 public:
 	TableEditCellCommand(Table *t, int row, int col, const QString& oldText, const QString& newText, const QString & text,
 	                     bool hasOldVal = false, double oldVal = 0.0, bool hasNewVal = false, double newVal = 0.0);
 	virtual void redo();
 	virtual void undo();
+	size_t byteSize() const override {
+		return sizeof(*this) + (d_old_text.length() + d_new_text.length()) * sizeof(QChar);
+	}
 
 private:
 	QPointer<Table> d_table;
@@ -42,7 +70,7 @@ private:
 	double d_old_val, d_new_val;
 };
 
-class TableSetColNameCommand: public QUndoCommand
+class TableSetColNameCommand: public TableCommand
 {
 public:
 	TableSetColNameCommand(Table *t, int col, const QString& oldName, const QString& newName, const QString & text);
@@ -55,7 +83,7 @@ private:
 	QString d_old_name, d_new_name;
 };
 
-class TableSetColTypeCommand: public QUndoCommand
+class TableSetColTypeCommand: public TableCommand
 {
 public:
 	TableSetColTypeCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType, const QString & text);
@@ -68,7 +96,7 @@ private:
 	Table::ColType d_old_type, d_new_type;
 };
 
-class TableSetColFormatCommand: public QUndoCommand
+class TableSetColFormatCommand: public TableCommand
 {
 public:
 	TableSetColFormatCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType,
@@ -83,7 +111,7 @@ private:
 	QString d_old_format, d_new_format;
 };
 
-class TableSetColCommentCommand: public QUndoCommand
+class TableSetColCommentCommand: public TableCommand
 {
 public:
 	TableSetColCommentCommand(Table *t, int col, const QString& oldComment, const QString& newComment, const QString & text);
@@ -96,7 +124,7 @@ private:
 	QString d_old_comment, d_new_comment;
 };
 
-class TableSetPlotDesignationCommand: public QUndoCommand
+class TableSetPlotDesignationCommand: public TableCommand
 {
 public:
 	TableSetPlotDesignationCommand(Table *t, int col, Table::PlotDesignation oldPD, Table::PlotDesignation newPD, const QString & text);
@@ -111,12 +139,18 @@ private:
 
 
 
-class TableDeleteRowsCommand: public QUndoCommand
+class TableDeleteRowsCommand: public TableCommand
 {
 public:
 	TableDeleteRowsCommand(Table *t, int startRow, int endRow, const QList<QStringList>& data, const QString& text);
 	virtual void redo();
 	virtual void undo();
+	size_t byteSize() const override {
+		size_t sz = sizeof(*this);
+		for (const QStringList &lst : d_data)
+			for (const QString &s : lst) sz += s.length() * sizeof(QChar) + sizeof(QString);
+		return sz;
+	}
 
 private:
 	QPointer<Table> d_table;
@@ -124,7 +158,7 @@ private:
 	QList<QStringList> d_data;
 };
 
-class TableInsertRowCommand: public QUndoCommand
+class TableInsertRowCommand: public TableCommand
 {
 public:
 	TableInsertRowCommand(Table *t, int row, int count = 1, const QString& text = QString());
@@ -137,7 +171,7 @@ private:
 	int d_count;
 };
 
-class TableAddColsCommand: public QUndoCommand
+class TableAddColsCommand: public TableCommand
 {
 public:
 	TableAddColsCommand(Table *t, int startCol, int count, const QStringList& names, const QString& text);
@@ -150,7 +184,7 @@ private:
 	QStringList d_names;
 };
 
-class TableDeleteColsCommand: public QUndoCommand
+class TableDeleteColsCommand: public TableCommand
 {
 public:
 	TableDeleteColsCommand(Table *t, int startCol, int endCol, const QList<QStringList>& cellData,
@@ -160,6 +194,12 @@ public:
 							const QStringList& commands, const QString& text);
 	virtual void redo();
 	virtual void undo();
+	size_t byteSize() const override {
+		size_t sz = sizeof(*this);
+		for (const QStringList &lst : d_cell_data)
+			for (const QString &s : lst) sz += s.length() * sizeof(QChar) + sizeof(QString);
+		return sz;
+	}
 
 private:
 	QPointer<Table> d_table;
@@ -169,7 +209,7 @@ private:
 	QList<int> d_types, d_plot_types;
 };
 
-class TableInsertColCommand: public QUndoCommand
+class TableInsertColCommand: public TableCommand
 {
 public:
 	TableInsertColCommand(Table *t, int col, const QString& text);
@@ -181,13 +221,21 @@ private:
 	int d_col;
 };
 
-class TableSetValuesCommand: public QUndoCommand
+class TableSetValuesCommand: public TableCommand
 {
 public:
 	TableSetValuesCommand(Table *t, int startRow, int endRow, const QList<int>& cols,
 						const QList<QStringList>& oldData, const QList<QStringList>& newData, const QString & text);
 	virtual void redo();
 	virtual void undo();
+	size_t byteSize() const override {
+		size_t sz = sizeof(*this);
+		for (const QStringList &lst : d_old_data)
+			for (const QString &s : lst) sz += s.length() * sizeof(QChar) + sizeof(QString);
+		for (const QStringList &lst : d_new_data)
+			for (const QString &s : lst) sz += s.length() * sizeof(QChar) + sizeof(QString);
+		return sz;
+	}
 
 private:
 	QPointer<Table> d_table;
@@ -196,7 +244,7 @@ private:
 	QList<QStringList> d_old_data, d_new_data;
 };
 
-class TableSwapColumnsCommand: public QUndoCommand
+class TableSwapColumnsCommand: public TableCommand
 {
 public:
 	TableSwapColumnsCommand(Table *t, int col1, int col2, const QString &text = QString());
@@ -208,7 +256,7 @@ private:
 	int d_col1, d_col2;
 };
 
-class TableMoveColumnCommand: public QUndoCommand
+class TableMoveColumnCommand: public TableCommand
 {
 public:
 	TableMoveColumnCommand(Table *t, int from, int to, const QString &text = QString());
@@ -220,7 +268,7 @@ private:
 	int d_from, d_to;
 };
 
-class TableSetColumnWidthCommand: public QUndoCommand
+class TableSetColumnWidthCommand: public TableCommand
 {
 public:
 	TableSetColumnWidthCommand(Table *t, int col, int oldWidth, int newWidth, bool allCols = false,
@@ -236,7 +284,7 @@ private:
 	QList<int> d_old_widths;
 };
 
-class TableSetReadOnlyCommand: public QUndoCommand
+class TableSetReadOnlyCommand: public TableCommand
 {
 public:
 	TableSetReadOnlyCommand(Table *t, int col, bool oldState, bool newState, const QString &text = QString());
