@@ -251,7 +251,7 @@ void file_uncompress(char  *) {}
 using namespace std;
 
 ApplicationWindow::ApplicationWindow(bool factorySettings)
-: QMainWindow(), scripted(ScriptingLangManager::newEnv(this)), d_app_settings(new ApplicationSettings(this)), d_project_manager(new ProjectManager(this)), d_action_manager(new ActionManager(this))
+: QMainWindow(), scripted(ScriptingLangManager::newEnv(this)), d_app_settings(new ApplicationSettings(this)), d_project_manager(new ProjectManager(this)), d_action_manager(new ActionManager(this)), d_plot_controller_2d(new PlotController2D(this)), d_plot_controller_3d(new PlotController3D(this))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	init(factorySettings);
@@ -963,230 +963,156 @@ void ApplicationWindow::disableToolbars()
 
 void ApplicationWindow::plot3DRibbon()
 {
-	MdiSubWindow *w = activeWindow(TableWindow);
-    if (!w)
-		return;
-
-	Table *table = static_cast<Table*>(w);
-	if(table->selectedColumns().count() == 1){
-		if (!validFor3DPlot(table))
-			return;
-		plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Ribbon);
-	} else
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("You must select exactly one column for plotting!"));
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DRibbon();
 }
 
 void ApplicationWindow::plot3DWireframe()
 {
-	plot3DMatrix (0, Qwt3D::WIREFRAME);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DWireframe();
 }
 
 void ApplicationWindow::plot3DHiddenLine()
 {
-	plot3DMatrix (0, Qwt3D::HIDDENLINE);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DHiddenLine();
 }
 
 void ApplicationWindow::plot3DPolygons()
 {
-	plot3DMatrix (0, Qwt3D::FILLED);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DPolygons();
 }
 
 void ApplicationWindow::plot3DWireSurface()
 {
-	plot3DMatrix (0, Qwt3D::FILLEDMESH);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DWireSurface();
 }
 
 void ApplicationWindow::plot3DBars()
 {
-	MdiSubWindow *w = activeWindow();
-    if (!w)
-		return;
-
-	if (w->inherits("Table")){
-		Table *table = static_cast<Table *>(w);
-		if (!validFor3DPlot(table))
-			return;
-
-		if(table->selectedColumns().count() == 1)
-			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Bars);
-		else
-			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
-	}
-	else if(w->inherits("Matrix"))
-		plot3DMatrix(0, Qwt3D::USER);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DBars();
 }
 
 void ApplicationWindow::plot3DScatter()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if (w->inherits("Table"))
-	{
-		Table *table = static_cast<Table *>(w);
-		if (!validFor3DPlot(table))
-			return;
-
-		if(table->selectedColumns().count() == 1)
-			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Scatter);
-		else
-			QMessageBox::warning(this, tr("QtiPlot - Plot error"),tr("You must select exactly one column for plotting!"));
-	}
-	else if(w->inherits("Matrix"))
-		plot3DMatrix (0, Qwt3D::POINTS);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DScatter();
 }
 
 void ApplicationWindow::plot3DTrajectory()
 {
-	Table *table = (Table *)activeWindow(TableWindow);
-    if (!table)
-		return;
-    if (!validFor3DPlot(table))
-        return;
-
-    if(table->selectedColumns().count() == 1)
-        plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Trajectory);
-    else
-        QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("You must select exactly one column for plotting!"));
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plot3DTrajectory();
 }
 
 void ApplicationWindow::plotBox()
 {
-    generate2DGraph(Graph::Box);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotBox();
 }
 
 void ApplicationWindow::plotVerticalBars()
 {
-	generate2DGraph(Graph::VerticalBars);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVerticalBars();
 }
 
 void ApplicationWindow::plotHorizontalBars()
 {
-	generate2DGraph(Graph::HorizontalBars);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotHorizontalBars();
 }
 
 void ApplicationWindow::plotStackBar()
 {
-	generate2DGraph(Graph::StackBar);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotStackBar();
 }
 
 void ApplicationWindow::plotStackColumn()
 {
-	generate2DGraph(Graph::StackColumn);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotStackColumn();
 }
 
 MultiLayer* ApplicationWindow::plotHistogram()
 {
-    return generate2DGraph(Graph::Histogram);
+	return d_plot_controller_2d ? d_plot_controller_2d->plotHistogram() : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
 {
-	if (!m){
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MultiLayer* g = newGraph();
-	if (g)
-		g->activeLayer()->addHistogram(m);
-	QApplication::restoreOverrideCursor();
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->plotHistogram(m) : nullptr;
 }
 
 void ApplicationWindow::plotArea()
 {
-	generate2DGraph(Graph::Area);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotArea();
 }
 
 void ApplicationWindow::plotPie()
 {
-	Table *table = (Table *)activeWindow(TableWindow);
-    if (!table)
-		return;
-
-	if(table->selectedColumns().count() != 1){
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
-				tr("You must select exactly one column for plotting!"));
-		return;
-	}
-
-	QStringList s = table->selectedColumns();
-	if (s.count()>0){
-		QTableWidgetSelectionRange sel = table->getSelection();
-		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
-	} else
-		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotPie();
 }
 
 void ApplicationWindow::plotL()
 {
-	generate2DGraph(Graph::Line);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotL();
 }
 
 void ApplicationWindow::plotP()
 {
-	generate2DGraph(Graph::Scatter);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotP();
 }
 
 void ApplicationWindow::plotLP()
 {
-	generate2DGraph(Graph::LineSymbols);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotLP();
 }
 
 void ApplicationWindow::plotVerticalDropLines()
 {
-	generate2DGraph(Graph::VerticalDropLines);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVerticalDropLines();
 }
 
 void ApplicationWindow::plotSpline()
 {
-	generate2DGraph(Graph::Spline);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotSpline();
 }
 
 void ApplicationWindow::plotVertSteps()
 {
-	generate2DGraph(Graph::VerticalSteps);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVertSteps();
 }
 
 void ApplicationWindow::plotHorSteps()
 {
-	generate2DGraph(Graph::HorizontalSteps);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotHorSteps();
 }
 
 void ApplicationWindow::plotVectXYXY()
 {
-	Table *table = (Table *)activeWindow(TableWindow);
-    if (!table)
-		return;
-	if (!validFor2DPlot(table, Graph::VectXYXY))
-		return;
-
-	QStringList s = table->selectedColumns();
-	if (s.count() == 4) {
-	QTableWidgetSelectionRange sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
-	} else
-		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVectXYXY();
 }
 
 void ApplicationWindow::plotVectXYAM()
 {
-    Table *table = (Table *)activeWindow(TableWindow);
-    if (!table)
-		return;
-	if (!validFor2DPlot(table, Graph::VectXYAM))
-		return;
-
-	QStringList s = table->selectedColumns();
-	if (s.count() == 4){
-	QTableWidgetSelectionRange sel = table->getSelection();
-		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
-	} else
-		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select four columns for this operation!"));
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVectXYAM();
 }
 
 void ApplicationWindow::renameListViewItem(const QString& oldName,const QString& newName)
@@ -1293,273 +1219,93 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 
 void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
 {
-	if (!m)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
-			((Graph3D*)w)->clearData();
-		else if (w->inherits("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-			for (Graph *g : layers){
-				bool update = false;
-				QList<QwtPlotItem *> curvesList = g->curvesList();
-				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->matrix() == m){
-						g->removeCurve(it);
-						update = true;
-					} else if (((PlotCurve *)it)->rtti() == Graph::Histogram && ((QwtHistogram *)it)->matrix() == m){
-						g->removeCurve(it);
-						update = true;
-					}
-				}
-				if (update)
-					g->updatePlot();
-			}
-		}
-	}
-	QApplication::restoreOverrideCursor();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->remove3DMatrixPlots(m);
 }
 
 void ApplicationWindow::updateMatrixPlots(Matrix *m)
 {
-	if (!m)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
-			((Graph3D*)w)->updateMatrixData(m);
-		else if (w->inherits("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
-			for (Graph *g : layers){
-				bool update = false;
-				QList<QwtPlotItem *> curvesList = g->curvesList();
-				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-						Spectrogram *sp = (Spectrogram *)it;
-						if (sp->matrix() == m){
-							sp->updateData();
-							update = true;
-						}
-					} else if (((PlotCurve *)it)->rtti() == Graph::Histogram){
-						QwtHistogram *h = (QwtHistogram *)it;
-						if (h->matrix() == m){
-							h->loadData();
-							update = true;
-						}
-					}
-				}
-				if (update)
-					g->updatePlot();
-			}
-		}
-	}
-	QApplication::restoreOverrideCursor();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->updateMatrixPlots(m);
 }
 
 void ApplicationWindow::updateMatrixPlotLabels(Matrix *m)
 {
-	if (!m)
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		MultiLayer *plot2D = qobject_cast<MultiLayer *>(w);
-		Graph3D *plot3D = qobject_cast<Graph3D *>(w);
-		if (plot3D && plot3D->matrix() == m){
-			plot3D->resetAxesLabels();
-			plot3D->surface()->update();
-		} else if (plot2D){
-			QList<Graph *> layers = plot2D->layersList();
-			for (Graph *g : layers){
-				bool update = false;
-				QList<QwtPlotItem *> curvesList = g->curvesList();
-				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-						Spectrogram *sp = (Spectrogram *)it;
-						if (sp->matrix() == m){
-							g->updateAxesTitles();
-							update = true;
-						}
-					}
-				}
-				if (update)
-					g->updatePlot();
-			}
-		}
-	}
-
-	modifiedProject();
-
-	QApplication::restoreOverrideCursor();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->updateMatrixPlotLabels(m);
 }
 
 void ApplicationWindow::add3DData()
 {
-	if (!hasTable()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no tables available in this project.</h4>"
-					"<p><h4>Please create a table and try again!</h4>"));
-		return;
-	}
-
-	QStringList zColumns = columnsList(Table::Z);
-	if ((int)zColumns.count() <= 0){
-		QMessageBox::critical(this,tr("QtiPlot - Warning"),
-				tr("There are no available columns with plot designation set to Z!"));
-		return;
-	}
-
-	bool ok;
-	QString column = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
-									tr("Column") + ": ", zColumns, 0, false, &ok);
-	if (ok && !column.isEmpty())
-		insertNew3DData(column);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->add3DData();
 }
 
 void ApplicationWindow::change3DData()
 {
-	bool ok;
-	QString column = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
-									tr("Column") + ": ", columnsList(Table::Z), 0, false, &ok);
-	if (ok && !column.isEmpty())
-		change3DData(column);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->change3DData();
 }
 
 void ApplicationWindow::change3DMatrix()
 {
-	QStringList matrices = matrixNames();
-	int currentIndex = 0;
-	Graph3D* g = (Graph3D*)activeWindow(Plot3DWindow);
-	if (g && g->matrix())
-		currentIndex = matrices.indexOf(g->matrix()->objectName());
-
-	bool ok;
-	QString matrixName = QInputDialog::getItem(this, tr("QtiPlot - Choose matrix to plot"),
-							tr("Matrix") + ": ", matrices, currentIndex, false, &ok);
-	if (ok && !matrixName.isEmpty())
-		change3DMatrix(matrixName);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->change3DMatrix();
 }
 
 void ApplicationWindow::change3DMatrix(const QString& matrix_name)
 {
-	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
-    if (!g)
-		return;
-
-	Matrix *m = matrix(matrix_name);
-	if (!m)
-        return;
-
-	if (d_3D_autoscale)
-        g->addMatrixData(m);
-    else
-		g->addMatrixData(m, g->xStart(), g->xStop(), g->yStart(), g->yStop(), g->zStart(), g->zStop());
-
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->change3DMatrix(matrix_name);
 }
 
 void ApplicationWindow::add3DMatrixPlot()
 {
-	QStringList matrices = matrixNames();
-	if ((int)matrices.count() <= 0){
-		QMessageBox::warning(this, tr("QtiPlot - Warning"),
-				tr("<h4>There are no matrices available in this project.</h4>"
-					"<p><h4>Please create a matrix and try again!</h4>"));
-		return;
-	}
-
-	bool ok;
-	QString matrixName = QInputDialog::getItem(this, tr("QtiPlot - Choose matrix to plot"),
-							tr("Matrix") + ": ", matrices, 0, false, &ok);
-	if (ok && !matrixName.isEmpty())
-		insert3DMatrixPlot(matrixName);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->add3DMatrixPlot();
 }
 
 void ApplicationWindow::insert3DMatrixPlot(const QString& matrix_name)
 {
-	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
-    if (!g)
-		return;
-
-	g->addMatrixData(matrix(matrix_name));
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->insert3DMatrixPlot(matrix_name);
 }
 
 void ApplicationWindow::insertNew3DData(const QString& colName)
 {
-	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
-    if (!g)
-		return;
-
-	g->insertNewData(table(colName),colName);
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->insertNew3DData(colName);
 }
 
 void ApplicationWindow::change3DData(const QString& colName)
 {
-	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
-    if (!g)
-		return;
-
-	g->changeDataColumn(table(colName), colName, g->tablePlotType());
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->change3DData(colName);
 }
 
 void ApplicationWindow::editSurfacePlot()
 {
-	Graph3D *g = (Graph3D*)activeWindow(Plot3DWindow);
-    if (!g)
-		return;
-
-	SurfaceDialog* sd = new SurfaceDialog(this);
-	sd->setAttribute(Qt::WA_DeleteOnClose);
-
-	if (g->hasData() && g->userFunction())
-		sd->setFunction(g);
-	else if (g->hasData() && g->parametricSurface())
-		sd->setParametricSurface(g);
-	else
-		sd->setGraph(g);
-	sd->exec();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->editSurfacePlot();
 }
 
 void ApplicationWindow::newSurfacePlot()
 {
-	SurfaceDialog* sd = new SurfaceDialog(this);
-	sd->setAttribute(Qt::WA_DeleteOnClose);
-	sd->exec();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->newSurfacePlot();
 }
 
 Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, double xr,
 		double yl, double yr, double zl, double zr, int columns, int rows)
 {
-	Graph3D *plot = newPlot3D();
-	if (!plot)
-		return 0;
-	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
-	emit modified();
-	return plot;
+	return d_plot_controller_3d ? d_plot_controller_3d->plotSurface(formula, xl, xr, yl, yr, zl, zr, columns, rows) : nullptr;
 }
 
 Graph3D* ApplicationWindow::plotParametricSurface(const QString& xFormula, const QString& yFormula,
 		const QString& zFormula, double ul, double ur, double vl, double vr,
 		int columns, int rows, bool uPeriodic, bool vPeriodic)
 {
-	Graph3D *plot = newPlot3D();
-	if (!plot)
-		return 0;
-	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, columns, rows, uPeriodic, vPeriodic);
-	emit modified();
-	return plot;
+	return d_plot_controller_3d ? d_plot_controller_3d->plotParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, columns, rows, uPeriodic, vPeriodic) : nullptr;
 }
 
 void ApplicationWindow::updateSurfaceFuncList(const QString& s)
@@ -1572,123 +1318,40 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 
 Graph3D* ApplicationWindow::newPlot3D(const QString& title)
 {
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QString label = title;
-	if (label.isEmpty() || alreadyUsedName(label))
-		label = generateUniqueName(tr("Graph"));
-
-	Graph3D *plot = new Graph3D("", this, 0);
-	plot->setWindowTitle(label);
-	plot->setObjectName(label);
-
-	initPlot3D(plot);
-
-	emit modified();
-	QApplication::restoreOverrideCursor();
-	return plot;
+	return d_plot_controller_3d ? d_plot_controller_3d->newPlot3D(title) : nullptr;
 }
 
 Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int type)
 {
-	Graph3D *plot = newPlot3D();
-	if (!plot)
-		return 0;
-
-	int zCol = table->colIndex(zColName);
-	if (type == Graph3D::Ribbon){
-		int ycol = table->colY(zCol);
-		plot->addRibbon(table, table->colName(table->colX(ycol)), zColName);
-	} else
-		plot->addData(table, table->colX(zCol), table->colY(zCol), zCol, type);
-
-	emit modified();
-	return plot;
+	return d_plot_controller_3d ? d_plot_controller_3d->plotXYZ(table, zColName, type) : nullptr;
 }
 
 MdiSubWindow* ApplicationWindow::newPolarPlot(const QString& title)
 {
-	PolarGraph* w = new PolarGraph(generateUniqueName(title.isEmpty() ? tr("Polar") : title), this);
-	initPolarPlot(w);
-	return w;
+	return d_plot_controller_3d ? d_plot_controller_3d->newPolarPlot(title) : nullptr;
 }
 
 void ApplicationWindow::plotPolar()
 {
-	Table *table = (Table *)activeWindow(TableWindow);
-    if (!table)
-		return;
-
-	if (table->selectedColumns().count() < 2){
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
-				tr("You must select at least two columns for plotting!"));
-		return;
-	}
-
-	QStringList s = table->selectedColumns();
-    plotPolar(table, s);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->plotPolar();
 }
 
 MdiSubWindow* ApplicationWindow::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
 {
-    if (!table || colList.size() < 2) return 0;
-    
-    PolarGraph* w = (PolarGraph*)newPolarPlot();
-
-    // Check column designations: if one is X and one is Y, X is Theta and Y is Radius
-    QString thetaCol = colList[0];
-    QString rCol = colList[1];
-    int col0Index = table->colIndex(colList[0]);
-    int col1Index = table->colIndex(colList[1]);
-    if (col0Index >= 0 && col1Index >= 0) {
-        if (table->colPlotDesignation(col0Index) == Table::X && table->colPlotDesignation(col1Index) == Table::Y) {
-            thetaCol = colList[0];
-            rCol = colList[1];
-        } else if (table->colPlotDesignation(col0Index) == Table::Y && table->colPlotDesignation(col1Index) == Table::X) {
-            rCol = colList[0];
-            thetaCol = colList[1];
-        }
-    }
-
-    w->addCurve(table, rCol, thetaCol, startRow, endRow);
-    return w;
+	return d_plot_controller_3d ? d_plot_controller_3d->plotPolar(table, colList, startRow, endRow) : nullptr;
 }
 
 void ApplicationWindow::initPlot3D(Graph3D *plot)
 {
-	if (d_mdi_windows_area)
-		d_workspace->addSubWindow(plot);
-	else
-		plot->setParent(0);
-
-	connectSurfacePlot(plot);
-
-	plot->setWindowIcon(QPixmap(":/trajectory.png"));
-	plot->show();
-
-	addListViewItem(plot);
-
-	if (!plot3DTools->isVisible())
-		plot3DTools->show();
-
-	if (!plot3DTools->isEnabled())
-		plot3DTools->setEnabled(true);
-
-	windowActivated(plot);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->initPlot3D(plot);
 }
 
 void ApplicationWindow::initPolarPlot(PolarGraph *w)
 {
-	if (d_mdi_windows_area)
-		d_workspace->addSubWindow(w);
-	else
-		w->setParent(0);
-
-	w->setWindowIcon(QIcon(":/lpPlot.png"));
-	w->show();
-
-	addListViewItem(w);
-	windowActivated(w);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->initPolarPlot(w);
 }
 
 void ApplicationWindow::exportMatrix(const QString& exportFilter)
@@ -1809,172 +1472,38 @@ void ApplicationWindow::loadImage(const QString& fn)
 
 MultiLayer* ApplicationWindow::multilayerPlot(const QString& caption, int layers, int rows, int cols)
 {
-	MultiLayer* ml = new MultiLayer(this, layers, rows, cols);
-	initMultilayerPlot(ml, caption);
-	return ml;
+	return d_plot_controller_2d ? d_plot_controller_2d->multilayerPlot(caption, layers, rows, cols) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::newGraph(const QString& caption)
 {
-	QString name = caption;
-	while(alreadyUsedName(name))
-		name = generateUniqueName(tr("Graph"));
-
-	MultiLayer *ml = multilayerPlot(name);
-	if (ml){
-		Graph *g = ml->activeLayer();
-		if (g){
-			setPreferences(g);
-			g->newLegend();
-		}
-		ml->arrangeLayers(false, true);
-	}
-
-	return ml;
+	return d_plot_controller_2d ? d_plot_controller_2d->newGraph(caption) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::multilayerPlot(Table* w, const QStringList& colList, int style, int startRow, int endRow)
 {//used when plotting selected columns
-	if (!w)
-		return 0;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph *ag = g->activeLayer();
-	if (!ag)
-		return 0;
-
-	setPreferences(ag);
-	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
-
-	g->arrangeLayers(false, true);
-	ag->newLegend();
-
-	QApplication::restoreOverrideCursor();
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->multilayerPlot(w, colList, style, startRow, endRow) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::multilayerPlot(int c, int r, int style, const MultiLayer::AlignPolicy& align)
 {//used when plotting from the panel menu
-	Table *t = (Table *)activeWindow(TableWindow);
-    if (!t)
-		return 0;
-
-	if (!validFor2DPlot(t, (Graph::CurveType)style))
-		return 0;
-
-	QStringList list = t->drawableColumnSelection();
-	if((int)list.count() < 1) {
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
-		return 0;
-	}
-
-	int curves = list.count();
-	if (r < 0)
-		r = curves;
-
-	int layers = c*r;
-	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")), layers, r, c);
-	QList<Graph *> layersList = g->layersList();
-	int i = 0;
-	for (Graph *ag : layersList){
-		setPreferences(ag);
-		if (i < curves){
-			QStringList lst = QStringList() << list[i];
-			for (int j = 0; j < curves; j++){
-				int col = t->colIndex(list[j]);
-				if (t->colPlotDesignation(col) == Table::xErr ||
-					t->colPlotDesignation(col) == Table::yErr ||
-					t->colPlotDesignation(col) == Table::Label){
-					lst << list[j];
-				}
-			}
-			ag->addCurves(t, lst, style, defaultCurveLineWidth, defaultSymbolSize);
-		}
-		i++;
-	}
-
-	if (align == MultiLayer::AlignCanvases){
-		g->setAlignPolicy(align);
-		g->setSpacing(0, 0);
-		g->setCommonLayerAxes();
-		connect(layersList.last(), &Graph::updatedLayout, g, &MultiLayer::updateLayersLayout);
-	} else {
-		g->arrangeLayers(false, true);
-		for (Graph *ag : layersList){
-			if (ag->curveCount())
-				ag->newLegend();
-		}
-	}
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->multilayerPlot(c, r, style, align) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::waterfallPlot()
 {
-	Table *t = (Table *)activeWindow(TableWindow);
-    if (!t)
-		return 0;
-
-	return waterfallPlot(t, t->selectedYColumns());
+	return d_plot_controller_2d ? d_plot_controller_2d->waterfallPlot() : nullptr;
 }
 
 MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 {
-	if (!t)
-		return 0;
-
-	if(list.count() < 1){
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"),
-		tr("Please select a Y column to plot!"));
-		return 0;
-	}
-
-	MultiLayer* ml = new MultiLayer(this);
-
-	Graph *g = ml->activeLayer();
-	setPreferences(g);
-	g->enableAxis(QwtPlot::xTop, false);
-	g->enableAxis(QwtPlot::yRight, false);
-	g->setCanvasFrame(0);
-	g->setTitle(QString());
-	g->setContentsMargins(0, 0, 0, 0);
-	g->setFrame(0);
-	g->addCurves(t, list, Graph::Line);
-	g->setWaterfallOffset(10, 20);
-
-	initMultilayerPlot(ml);
-	ml->arrangeLayers(false, true);
-	ml->setWaterfallLayout();
-
-	g->newLegend()->move(QPoint(g->x() + g->canvas()->x() + 5, 5));
-
-	return ml;
+	return d_plot_controller_2d ? d_plot_controller_2d->waterfallPlot(t, list) : nullptr;
 }
 
 void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
 {
-	QString label = name;
-	while(alreadyUsedName(label))
-		label = generateUniqueName(tr("Graph"));
-
-	g->setWindowTitle(label);
-	g->setObjectName(label);
-	g->setWindowIcon(QPixmap(":/graph.png"));
-	g->setScaleLayersOnPrint(d_scale_plots_on_print);
-	g->printCropmarks(d_print_cropmarks);
-
-	if (d_mdi_windows_area)
-		d_workspace->addSubWindow(g);
-	else
-		g->setParent(0);
-
-	connectMultilayerPlot(g);
-	if (!qApp->arguments().contains("-X"))
-		g->showNormal();
-
-	addListViewItem(g);
-        windowActivated(g);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->initMultilayerPlot(g, name);
 }
 
 void ApplicationWindow::setAutoUpdateTableValues(bool on)
@@ -2011,64 +1540,8 @@ void ApplicationWindow::customTable(Table* w)
 
 void ApplicationWindow::setPreferences(Graph* g)
 {
-	if (!g)
-		return;
-
-	if (!g->isPiePlot()){
-		for (int i = 0; i < QwtPlot::axisCnt; i++){
-			bool show = d_show_axes[i];
-			g->enableAxis(i, show);
-			if(show){
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
-				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
-				sd->setSpacing(d_graph_tick_labels_dist);
-				if (i == QwtPlot::yRight && !d_show_axes_labels[i])
-					g->setAxisTitle(i, tr(" "));
-			}
-		}
-
-		g->grid()->copy(d_default_2D_grid);
-		g->showMissingDataGap(d_show_empty_cell_gap);
-
-		g->updateSecondaryAxis(QwtPlot::xTop);
-		g->updateSecondaryAxis(QwtPlot::yRight);
-
-		QList<int> ticksList;
-		ticksList<<majTicksStyle<<majTicksStyle<<majTicksStyle<<majTicksStyle;
-		g->setMajorTicksType(ticksList);
-		ticksList.clear();
-		ticksList<<minTicksStyle<<minTicksStyle<<minTicksStyle<<minTicksStyle;
-		g->setMinorTicksType(ticksList);
-
-		g->setTicksLength (minTicksLength, majTicksLength);
-		g->setAxesLinewidth(axesLineWidth);
-		g->drawAxesBackbones(drawBackbones);
-		g->setCanvasFrame(canvasFrameWidth, d_canvas_frame_color);
-		for (int i = 0; i < QwtPlot::axisCnt; i++)
-			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
-
-		g->enableSpeedMode(d_decimation_method, d_speed_mode_points, d_Douglas_Peuker_tolerance, false);
-	}
-
-	g->setAxisTitlePolicy(d_graph_axis_labeling);
-	g->setSynchronizedScaleDivisions(d_synchronize_graph_scales);
-	g->initFonts(plotAxesFont, plotNumbersFont);
-	g->initTitle(titleOn, plotTitleFont);
-
-	g->setContentsMargins(defaultPlotMargin, defaultPlotMargin, defaultPlotMargin, defaultPlotMargin);
-	g->enableAutoscaling(autoscale2DPlots);
-	g->setAutoscaleFonts(autoScaleFonts);
-	g->setAntialiasing(antialiasing2DPlots);
-	g->disableCurveAntialiasing(d_disable_curve_antialiasing, d_curve_max_antialising_size);
-	g->setFrame(d_graph_border_width, d_graph_border_color);
-
-	QColor c = d_graph_background_color;
-	c.setAlphaF(0.01*d_graph_background_opacity);
-	g->setBackgroundColor(c);
-
-	c = d_graph_canvas_color;
-	c.setAlphaF(0.01*d_graph_canvas_opacity);
-	g->setCanvasBackground(c);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->setPreferences(g);
 }
 
 /*
@@ -3196,52 +2669,15 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 												bool resizeLayers, bool antialiasing)
 {
-	if (autoscale2DPlots == autoscale &&
-		autoScaleFonts == scaleFonts &&
-		autoResizeLayers != resizeLayers &&
-		antialiasing2DPlots == antialiasing)
-		return;
-
-	autoscale2DPlots = autoscale;
-	autoScaleFonts = scaleFonts;
-	autoResizeLayers = !resizeLayers;
-	antialiasing2DPlots = antialiasing;
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		MultiLayer *ml = qobject_cast<MultiLayer*>(w);
-		if (!ml)
-			continue;
-
-		ml->setScaleLayersOnResize(autoResizeLayers);
-		QList<Graph *> layers = ml->layersList();
-		for (Graph *g : layers){
-			g->enableAutoscaling(autoscale2DPlots);
-			g->updateScale();
-			g->setAutoscaleFonts(autoScaleFonts);
-			g->setAntialiasing(antialiasing2DPlots);
-		}
-	}
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->setGraphDefaultSettings(autoscale, scaleFonts, resizeLayers, antialiasing);
 }
 
 void ApplicationWindow::setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
 		int headLength, int headAngle, bool fillHead)
 {
-	if (defaultArrowLineWidth == lineWidth &&
-		defaultArrowColor == c &&
-		defaultArrowLineStyle == style &&
-		defaultArrowHeadLength == headLength &&
-		defaultArrowHeadAngle == headAngle &&
-		defaultArrowHeadFill == fillHead)
-		return;
-
-	defaultArrowLineWidth = lineWidth;
-	defaultArrowColor = c;
-	defaultArrowLineStyle = style;
-	defaultArrowHeadLength = headLength;
-	defaultArrowHeadAngle = headAngle;
-	defaultArrowHeadFill = fillHead;
-	saveSettings();
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->setArrowDefaultSettings(lineWidth, c, style, headLength, headAngle, fillHead);
 }
 
 ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
@@ -6049,157 +5485,74 @@ void ApplicationWindow::showColMenu(int c)
 
 void ApplicationWindow::plotVerticalSharedAxisLayers()
 {
-	multilayerPlot(1, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotVerticalSharedAxisLayers();
 }
 
 void ApplicationWindow::plotHorizontalSharedAxisLayers()
 {
-	multilayerPlot(2, 1, defaultCurveStyle, MultiLayer::AlignCanvases);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotHorizontalSharedAxisLayers();
 }
 
 void ApplicationWindow::plotSharedAxesLayers()
 {
-	multilayerPlot(2, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotSharedAxesLayers();
 }
 
 void ApplicationWindow::plotStackSharedAxisLayers()
 {
-	multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotStackSharedAxisLayers();
 }
 
 void ApplicationWindow::plotCustomLayout(bool sharedAxes)
 {
-	Table *t = (Table *)activeWindow(TableWindow);
-	if (!t || !validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
-		return;
-
-	QStringList list = t->drawableColumnSelection();
-	int curves = list.count();
-	if(curves < 1){
-		QMessageBox::warning(this, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
-		return;
-	}
-
-	LayerDialog *id = new LayerDialog(this, true);
-	id->setLayers(curves);
-	id->setRows(curves);
-	id->setMargins(5, 5, 5, 5);
-	id->setLayerCanvasSize(d_layer_canvas_width, d_layer_canvas_height, d_layer_geometry_unit);
-	if (sharedAxes)
-		id->setSharedAxes();
-	id->exec();
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotCustomLayout(sharedAxes);
 }
 
 void ApplicationWindow::plot2VerticalLayers()
 {
-	multilayerPlot(1, 2, defaultCurveStyle);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plot2VerticalLayers();
 }
 
 void ApplicationWindow::plot2HorizontalLayers()
 {
-	multilayerPlot(2, 1, defaultCurveStyle);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plot2HorizontalLayers();
 }
 
 void ApplicationWindow::plot4Layers()
 {
-	multilayerPlot(2, 2, defaultCurveStyle);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plot4Layers();
 }
 
 void ApplicationWindow::plotStackedLayers()
 {
-	multilayerPlot(1, -1, defaultCurveStyle);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotStackedLayers();
 }
 
 void ApplicationWindow::plotStackedHistograms()
 {
-	multilayerPlot(1, -1, Graph::Histogram);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotStackedHistograms();
 }
 
 void ApplicationWindow::zoomRectanglePlot()
 {
-    Table *t = (Table *)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-    QStringList lst = t->selectedYColumns();
-    int cols = lst.size();
-	if (cols < 1){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("You need to select at least one Y column for this operation!"));
-		return;
-	}
-
-	QTableWidgetSelectionRange sel = t->getSelection();
-    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
-    if (ml){
-        Graph *ag = ml->activeLayer();
-        ag->setTitle("");
-        ag->setAxisTitle(QwtPlot::xBottom, " ");
-        ag->setAxisTitle(QwtPlot::yLeft, " ");
-        ag->setCanvasFrame();
-        ag->drawAxesBackbones(false);
-        ag->showGrid();
-        ag->removeLegend();
-
-        RectangleWidget *r = new RectangleWidget(ag);
-        QColor c = Qt::yellow;
-        c.setAlpha(100);
-        r->setBackgroundColor(c);
-        r->setFrameColor(Qt::blue);
-        ag->add(r, false);
-
-		Graph *g = ml->addLayer();
-        if (!g)
-            return;
-
-		setPreferences(g);
-        g->setTitle("");
-        g->setAxisTitle(QwtPlot::xBottom, " ");
-        g->setAxisTitle(QwtPlot::yLeft, " ");
-        g->copyCurves(ag);
-        g->drawAxesBackbones(false);
-        g->setCanvasFrame();
-        g->setCanvasBackground(c);
-
-        ml->setRows(2);
-        ml->setCols(1);
-        ml->arrangeLayers(false);
-
-        QRect canvasRect = ag->canvas()->geometry();
-        r->setRect(canvasRect.x(), canvasRect.bottom() - 50, 100, 50);
-
-        g->setCanvasCoordinates(r->boundingRect());
-        r->setLinkedLayer(1);
-    }
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->zoomRectanglePlot();
 }
 
 void ApplicationWindow::plotDoubleYAxis()
 {
-	Table *t = (Table *)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	QStringList lst = t->selectedYColumns();
-	int cols = lst.size();
-	if (cols < 2){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("You need at least two columns for this operation!"));
-		return;
-	}
-
-	QTableWidgetSelectionRange sel = t->getSelection();
-	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
-	if (ml){
-		Graph *g = ml->activeLayer();
-		g->enableAxis(QwtPlot::yRight);
-		QwtPlotCurve *c = g->curve(cols - 1);
-		if (c){
-			c->setYAxis(QwtPlot::yRight);
-			g->setAutoScale();
-		}
-		g->updateAxisTitle(QwtPlot::yRight);
-		g->setSynchronizedScaleDivisions(false);
-	}
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->plotDoubleYAxis();
 }
 
 void ApplicationWindow::showMatrixDialog()
@@ -9244,18 +8597,7 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 
 MultiLayer* ApplicationWindow::newFunctionPlot(QStringList &formulas, double start, double end, int points, const QString& var, int type)
 {
-	MultiLayer *ml = newGraph();
-	if (ml){
-		Graph *g = ml->activeLayer();
-		if (g){
-			g->enableAutoscaling();
-			g->addFunction(formulas, start, end, points, var, type);
-			g->enableAutoscaling(false);
-		}
-	}
-
-	updateFunctionLists(type, formulas);
-	return ml;
+	return d_plot_controller_2d ? d_plot_controller_2d->newFunctionPlot(formulas, start, end, points, var, type) : nullptr;
 }
 
 void ApplicationWindow::clearLogInfo()
@@ -9269,419 +8611,153 @@ void ApplicationWindow::clearLogInfo()
 
 void ApplicationWindow::setFramed3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFramed();
-	actionShowAxisDialog->setEnabled(true);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFramed3DPlot();
 }
 
 void ApplicationWindow::setBoxed3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setBoxed();
-	actionShowAxisDialog->setEnabled(true);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setBoxed3DPlot();
 }
 
 void ApplicationWindow::removeAxes3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setNoAxes();
-	actionShowAxisDialog->setEnabled(false);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->removeAxes3DPlot();
 }
 
 void ApplicationWindow::removeGrid3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setPolygonStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->removeGrid3DPlot();
 }
 
 void ApplicationWindow::setHiddenLineGrid3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setHiddenLineStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setHiddenLineGrid3DPlot();
 }
 
 void ApplicationWindow::setPoints3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setDotStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setPoints3DPlot();
 }
 
 void ApplicationWindow::setCones3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setConeStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setCones3DPlot();
 }
 
 void ApplicationWindow::setCrosses3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setCrossStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setCrosses3DPlot();
 }
 
 void ApplicationWindow::setBars3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setBarStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setBars3DPlot();
 }
 
 void ApplicationWindow::setLineGrid3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setWireframeStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setLineGrid3DPlot();
 }
 
 void ApplicationWindow::setFilledMesh3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFilledMeshStyle();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFilledMesh3DPlot();
 }
 
 void ApplicationWindow::setFloorData3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFloorData();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFloorData3DPlot();
 }
 
 void ApplicationWindow::setFloorIso3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFloorIsolines();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFloorIso3DPlot();
 }
 
 void ApplicationWindow::setEmptyFloor3DPlot()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setEmptyFloor();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setEmptyFloor3DPlot();
 }
 
 void ApplicationWindow::setFrontGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFrontGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFrontGrid3DPlot(on);
 }
 
 void ApplicationWindow::setBackGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setBackGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setBackGrid3DPlot(on);
 }
 
 void ApplicationWindow::setFloorGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setFloorGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setFloorGrid3DPlot(on);
 }
 
 void ApplicationWindow::setCeilGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setCeilGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setCeilGrid3DPlot(on);
 }
 
 void ApplicationWindow::setRightGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setRightGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setRightGrid3DPlot(on);
 }
 
 void ApplicationWindow::setLeftGrid3DPlot(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setLeftGrid(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setLeftGrid3DPlot(on);
 }
 
 void ApplicationWindow::pickPlotStyle( QAction* action )
 {
-	if (!action )
-		return;
-
-	if (action == polygon)
-		removeGrid3DPlot();
-	else if (action == filledmesh)
-		setFilledMesh3DPlot();
-	else if (action == wireframe)
-		setLineGrid3DPlot();
-	else if (action == hiddenline)
-		setHiddenLineGrid3DPlot();
-	else if (action == pointstyle)
-		setPoints3DPlot();
-	else if (action == conestyle)
-		setCones3DPlot();
-	else if (action == crossHairStyle)
-		setCrosses3DPlot();
-	else if (action == barstyle)
-		setBars3DPlot();
-
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->pickPlotStyle(action);
 }
 
 
 void ApplicationWindow::pickCoordSystem( QAction* action)
 {
-	if (!action)
-		return;
-
-	if (action == Box || action == Frame)
-	{
-		if (action == Box)
-			setBoxed3DPlot();
-		if (action == Frame)
-			setFramed3DPlot();
-		grids->setEnabled(true);
-	}
-	else if (action == None)
-	{
-		removeAxes3DPlot();
-		grids->setEnabled(false);
-	}
-
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->pickCoordSystem(action);
 }
 
 void ApplicationWindow::pickFloorStyle( QAction* action )
 {
-	if (!action)
-		return;
-
-	if (action == floordata)
-		setFloorData3DPlot();
-	else if (action == flooriso)
-		setFloorIso3DPlot();
-	else
-		setEmptyFloor3DPlot();
-
-	emit modified();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->pickFloorStyle(action);
 }
 
 void ApplicationWindow::custom3DActions(QMdiSubWindow *w)
 {
-	if (w && w->inherits("Graph3D"))
-	{
-		Graph3D* plot = (Graph3D*)w;
-		actionAnimate->setChecked(plot->isAnimated());
-		actionPerspective->setChecked(!plot->isOrthogonal());
-		switch(plot->plotStyle())
-		{
-			case FILLEDMESH:
-				wireframe->setChecked( false );
-				hiddenline->setChecked( false );
-				polygon->setChecked( false );
-				filledmesh->setChecked( true );
-				pointstyle->setChecked( false );
-				barstyle->setChecked( false );
-				conestyle->setChecked( false );
-				crossHairStyle->setChecked( false );
-				break;
-
-			case FILLED:
-				wireframe->setChecked( false );
-				hiddenline->setChecked( false );
-				polygon->setChecked( true );
-				filledmesh->setChecked( false );
-				pointstyle->setChecked( false );
-				barstyle->setChecked( false );
-				conestyle->setChecked( false );
-				crossHairStyle->setChecked( false );
-				break;
-
-			case Qwt3D::USER:
-				wireframe->setChecked( false );
-				hiddenline->setChecked( false );
-				polygon->setChecked( false );
-				filledmesh->setChecked( false );
-
-				if (plot->pointType() == Graph3D::VerticalBars)
-				{
-					pointstyle->setChecked( false );
-					conestyle->setChecked( false );
-					crossHairStyle->setChecked( false );
-					barstyle->setChecked( true );
-				}
-				else if (plot->pointType() == Graph3D::Dots)
-				{
-					pointstyle->setChecked( true );
-					barstyle->setChecked( false );
-					conestyle->setChecked( false );
-					crossHairStyle->setChecked( false );
-				}
-				else if (plot->pointType() == Graph3D::HairCross)
-				{
-					pointstyle->setChecked( false );
-					barstyle->setChecked( false );
-					conestyle->setChecked( false );
-					crossHairStyle->setChecked( true );
-				}
-				else if (plot->pointType() == Graph3D::Cones)
-				{
-					pointstyle->setChecked( false );
-					barstyle->setChecked( false );
-					conestyle->setChecked( true );
-					crossHairStyle->setChecked( false );
-				}
-				break;
-
-			case WIREFRAME:
-				wireframe->setChecked( true );
-				hiddenline->setChecked( false );
-				polygon->setChecked( false );
-				filledmesh->setChecked( false );
-				pointstyle->setChecked( false );
-				barstyle->setChecked( false );
-				conestyle->setChecked( false );
-				crossHairStyle->setChecked( false );
-				break;
-
-			case HIDDENLINE:
-				wireframe->setChecked( false );
-				hiddenline->setChecked( true );
-				polygon->setChecked( false );
-				filledmesh->setChecked( false );
-				pointstyle->setChecked( false );
-				barstyle->setChecked( false );
-				conestyle->setChecked( false );
-				crossHairStyle->setChecked( false );
-				break;
-
-			default:
-				break;
-		}
-
-		switch(plot->coordStyle())
-		{
-			case Qwt3D::NOCOORD:
-				None->setChecked( true );
-				Box->setChecked( false );
-				Frame->setChecked( false );
-				break;
-
-			case Qwt3D::BOX:
-				None->setChecked( false );
-				Box->setChecked( true );
-				Frame->setChecked( false );
-				break;
-
-			case Qwt3D::FRAME:
-				None->setChecked(false );
-				Box->setChecked( false );
-				Frame->setChecked(true );
-				break;
-		}
-
-		switch(plot->floorStyle())
-		{
-			case NOFLOOR:
-				floornone->setChecked( true );
-				flooriso->setChecked( false );
-				floordata->setChecked( false );
-				break;
-
-			case FLOORISO:
-				floornone->setChecked( false );
-				flooriso->setChecked( true );
-				floordata->setChecked( false );
-				break;
-
-			case FLOORDATA:
-				floornone->setChecked(false );
-				flooriso->setChecked( false );
-				floordata->setChecked(true );
-				break;
-		}
-		custom3DGrids(plot->grids());
-	}
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->custom3DActions(w);
 }
 
 void ApplicationWindow::custom3DGrids(int grids)
 {
-	if (Qwt3D::BACK & grids)
-		back->setChecked(true);
-	else
-		back->setChecked(false);
-
-	if (Qwt3D::FRONT & grids)
-		front->setChecked(true);
-	else
-		front->setChecked(false);
-
-	if (Qwt3D::CEIL & grids)
-		ceil->setChecked(true);
-	else
-		ceil->setChecked(false);
-
-	if (Qwt3D::FLOOR & grids)
-		floor->setChecked(true);
-	else
-		floor->setChecked(false);
-
-	if (Qwt3D::RIGHT & grids)
-		right->setChecked(true);
-	else
-		right->setChecked(false);
-
-	if (Qwt3D::LEFT & grids)
-		left->setChecked(true);
-	else
-		left->setChecked(false);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->custom3DGrids(grids);
 }
 
 void ApplicationWindow::initPlot3DToolBar()
@@ -9730,140 +8806,44 @@ void ApplicationWindow::intensityTable()
 
 void ApplicationWindow::autoArrangeLayers()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	plot->setMargins(5, 5, 5, 5);
-	//plot->setSpacing(5, 5);
-	plot->arrangeLayers(true, false);
-
-	if (plot->isWaterfallPlot())
-		plot->updateWaterfalls();
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->autoArrangeLayers();
 }
 
 void ApplicationWindow::extractGraphs()
 {
-    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-    if (plot->numLayers() < 2){
-        QMessageBox::critical(this, tr("QtiPlot - Error"),
-        tr("You must have more than one layer in the active window!"));
-		return;
-    }
-
-    QList<Graph *> lst = plot->layersList();
-    for (Graph *g : lst){
-		MultiLayer *nw = multilayerPlot(generateUniqueName(tr("Graph")), 0, plot->getRows(), plot->getCols());
-        nw->resize(plot->size());
-		Graph *ng = nw->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
-		if (ng)
-            ng->copy(g);
-    }
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->extractGraphs();
 }
 
 void ApplicationWindow::extractLayers()
 {
-	Graph *g = activePlotLayer(false);
-	if (!g)
-		return;
-	MultiLayer *plot = g->multiLayer();
-	if (!plot)
-		return;
-
-	int curves = g->curveCount();
-	if (curves < 2){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("You must have more than one dataset in the active layer!"));
-		return;
-	}
-
-	for(int i = 0; i < curves; i++){
-		Graph *ng = plot->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
-		if (ng){
-			ng->copy(g);
-			for(int j = 0; j < curves; j++){
-				if (j != i)
-					ng->removeCurve(j);
-			}
-		}
-	}
-	plot->removeLayer(g);
-	plot->arrangeLayers(true, false);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->extractLayers();
 }
 
 void ApplicationWindow::addInsetLayer(bool curves)
 {
-    MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-    Graph *al = plot->activeLayer();
-    if (!al)
-        return;
-
-    QRect r = al->geometry();
-	Graph *g = plot->addLayer(r.x() + r.width()/2, al->canvas()->y(), r.width()/2, r.height()/2, true);
-    if (g){
-        g->setTitle("");
-        g->setAxisTitle(QwtPlot::xBottom, "");
-        g->setAxisTitle(QwtPlot::yLeft, "");
-        g->enableAxis(QwtPlot::yRight, false);
-        g->enableAxis(QwtPlot::xTop, false);
-
-        QColor c = Qt::white;
-        c.setAlpha(0);
-        g->setBackgroundColor(c);
-        g->setCanvasBackground(c);
-        if (curves)
-            g->copyCurves(al);
-    }
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->addInsetLayer(curves);
 }
 
 void ApplicationWindow::addInsetCurveLayer()
 {
-    addInsetLayer(true);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->addInsetCurveLayer();
 }
 
 void ApplicationWindow::addLayer()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	if (plot->numLayers() == 0){
-		setPreferences(plot->addLayer());
-		return;
-	}
-
-	switch(QMessageBox::information(this,
-				tr("QtiPlot - Guess best origin for the new layer?"),
-				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: this will rearrange existing layers!"),
-				QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel ) ){
-		case QMessageBox::Yes:
-				setPreferences(plot->addLayer());
-				plot->arrangeLayers(true, true);
-		break;
-
-		case QMessageBox::No:
-			setPreferences(plot->addLayer(0, 0, plot->canvasRect().width(), plot->canvasRect().height()));
-		break;
-
-		case QMessageBox::Cancel:
-			return;
-			break;
-	}
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->addLayer();
 }
 
 void ApplicationWindow::deleteLayer()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	plot->confirmRemoveLayer();
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->deleteLayer();
 }
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
@@ -9893,17 +8873,8 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 
 void ApplicationWindow::copyActiveLayer()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = plot->activeLayer();
-	if (!g)
-		return;
-
-	lastCopiedLayer = g;
-	connect(g, &QObject::destroyed, this, &ApplicationWindow::closedLastCopiedLayer);
-	g->copyImage();
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->copyActiveLayer();
 }
 
 void ApplicationWindow::showDataSetDialog(Analysis operation)
@@ -10316,122 +9287,20 @@ void ApplicationWindow::pickDataTool( QAction* action )
 
 void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
 {
-	if (!plot)
-		return;
-
-	actionAddText->setChecked(false);
-	actionAddFormula->setChecked(false);
-	actionAddRectangle->setChecked(false);
-	actionAddEllipse->setChecked(false);
-
-	if (plot->activeLayer())
-		graphSelectionChanged(plot->activeLayer()->selectionMoveResizer());
-
-	QList<Graph *> layers = plot->layersList();
-    for (Graph *g : layers){
-    	PlotToolInterface *active_tool = g->activeTool();
-    	if (active_tool){
-			if (active_tool->rtti() == PlotToolInterface::Rtti_PlotTool){
-				btnPicker->setChecked(true);
-				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DataPicker){
-				switch(((DataPickerTool *)active_tool)->mode()){
-					case DataPickerTool::Display:
-						btnCursor->setChecked(true);
-					break;
-					case DataPickerTool::Move:
-						btnMovePoints->setChecked(true);
-					break;
-					case DataPickerTool::Remove:
-						btnRemovePoints->setChecked(true);
-					break;
-					case DataPickerTool::MoveCurve:
-						actionDragCurve->setChecked(true);
-					break;
-				}
-				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DrawDataPoints){
-				actionDrawPoints->setChecked(true);
-				return;
-			} else if (active_tool->rtti() == PlotToolInterface::Rtti_AddWidgetTool){
-				switch(((AddWidgetTool *)active_tool)->widgetType()){
-					case AddWidgetTool::Text:
-						actionAddText->setChecked(true);
-					break;
-					case AddWidgetTool::TexEquation:
-						actionAddFormula->setChecked(true);
-					break;
-					case AddWidgetTool::Rectangle:
-						actionAddRectangle->setChecked(true);
-					break;
-					case AddWidgetTool::Ellipse:
-						actionAddEllipse->setChecked(true);
-					break;
-					default:
-						break;
-				}
-				return;
-			}
-		} else if (g->hasPanningMagnifierEnabled()){
-			QwtPlotMagnifier *magnifier = g->magnifyTool();
-			if (!magnifier->isAxisEnabled(QwtPlot::xBottom) && !magnifier->isAxisEnabled(QwtPlot::xTop))
-				actionMagnifyVert->setChecked(true);
-			else if (!magnifier->isAxisEnabled(QwtPlot::yLeft) && !magnifier->isAxisEnabled(QwtPlot::yRight))
-				actionMagnifyHor->setChecked(true);
-			else
-				actionMagnify->setChecked(true);
-			return;
-		} else if (g->drawArrow()){
-			btnArrow->setChecked(true);
-			return;
-    	} else if (g->drawLineActive()){
-			btnLine->setChecked(true);
-			return;
-    	} else if (g->rangeSelectorsEnabled()){
-			btnSelect->setChecked(true);
-			return;
-		} else if (g->zoomOn()){
-    		btnZoomIn->setChecked(true);
-    		return;
-    	}
-    }
-	btnPointer->setChecked(true);
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->custom2DPlotTools(plot);
 }
 
 void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
 {
-	connect (plot, &Graph3D::showContextMenu, this, &ApplicationWindow::showWindowContextMenu);
-	connect (plot, &Graph3D::showOptionsDialog, this, &ApplicationWindow::showPlot3dDialog);
-	connect (plot, &Graph3D::closedWindow, this, &ApplicationWindow::closeWindow);
-	connect (plot, &Graph3D::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
-	connect (plot, &Graph3D::statusChanged, this, &ApplicationWindow::updateWindowStatus);
-	connect(plot, &Graph3D::modified, this, &ApplicationWindow::modified);
-
-	plot->askOnCloseEvent(confirmClosePlot3D);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->connectSurfacePlot(plot);
 }
 
 void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
 {
-	connect (g, &MultiLayer::showEnrichementDialog, this, &ApplicationWindow::showEnrichementDialog);
-	connect (g, &MultiLayer::showCurvesDialog, this, &ApplicationWindow::showCurvesDialog);
-	connect (g, &MultiLayer::drawLineEnded, btnPointer, &QAction::setChecked);
-	connect (g, &MultiLayer::showMarkerPopupMenu, this, &ApplicationWindow::showMarkerPopupMenu);
-	connect (g, &MultiLayer::closedWindow, this, &ApplicationWindow::closeWindow);
-	connect (g, &MultiLayer::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
-	connect (g, &MultiLayer::statusChanged, this, &ApplicationWindow::updateWindowStatus);
-	connect (g, &MultiLayer::cursorInfo, info, &QLineEdit::setText);
-	connect (g, &MultiLayer::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
-	connect (g, &MultiLayer::modifiedPlot, this, qOverload<>(&ApplicationWindow::modifiedProject));
-	connect (g, &MultiLayer::showLineDialog, this, &ApplicationWindow::showLineDialog);
-	connect (g, &MultiLayer::pasteMarker, this, &ApplicationWindow::pasteSelection);
-	connect (g, &MultiLayer::setPointerCursor, this, &ApplicationWindow::pickPointerCursor);
-	connect (g, &MultiLayer::currentFontChanged, this, &ApplicationWindow::setFormatBarFont);
-	connect (g, &MultiLayer::currentColorChanged, this, &ApplicationWindow::setFormatBarColor);
-
-	g->askOnCloseEvent(confirmClosePlot2D);
-
-	if (d_undo_group)
-		d_undo_group->addStack(g->undoStack());
+	if (d_plot_controller_2d)
+		d_plot_controller_2d->connectMultilayerPlot(g);
 }
 
 void ApplicationWindow::connectTable(Table* w)
@@ -10481,13 +9350,8 @@ void ApplicationWindow::setAppColors(const QColor& wc, const QColor& pc, const Q
 
 void ApplicationWindow::setPlot3DOptions()
 {
-	for (MdiSubWindow *w : windowsList()){
-		Graph3D *g = qobject_cast<Graph3D*>(w);
-		if (g){
-			g->setAutoscale(d_3D_autoscale);
-			g->setAntialiasing(d_3D_smooth_mesh);
-		}
-	}
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->setPlot3DOptions();
 }
 
 void ApplicationWindow::createActions()
@@ -10504,147 +9368,37 @@ void ApplicationWindow::translateActionsStrings()
 
 Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 {
-	if (!m){
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-	Graph3D *plot = newPlot3D();
-	if (!plot)
-		return 0;
-
-	QApplication::setOverrideCursor(Qt::WaitCursor);
-
-	plot->addMatrixData(m);
-	plot->customPlotStyle(style);
-
-	custom3DActions(plot);
-	emit modified();
-	QApplication::restoreOverrideCursor();
-	return plot;
+	return d_plot_controller_3d ? d_plot_controller_3d->plot3DMatrix(m, style) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotGrayScale(Matrix *m)
 {
-	if (!m) {
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-	return plotSpectrogram(m, Graph::GrayScale);
+	return d_plot_controller_2d ? d_plot_controller_2d->plotGrayScale(m) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotContour(Matrix *m)
 {
-	if (!m) {
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-	return plotSpectrogram(m, Graph::Contour);
+	return d_plot_controller_2d ? d_plot_controller_2d->plotContour(m) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
 {
-	if (!m) {
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-	return plotSpectrogram(m, Graph::ColorMap);
+	return d_plot_controller_2d ? d_plot_controller_2d->plotColorMap(m) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotImage(Matrix *m)
 {
-    if (!m) {
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-    MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->activeLayer();
-	setPreferences(plot);
-	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
-	if (!s)
-		return 0;
-
-	s->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
-	plot->enableAxis(QwtPlot::xTop, true);
-	plot->setScale(QwtPlot::xTop, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
-	plot->setScale(QwtPlot::xBottom, qMin(m->xStart(), m->xEnd()), qMax(m->xStart(), m->xEnd()));
-	plot->enableAxis(QwtPlot::xBottom, false);
-	plot->enableAxis(QwtPlot::yRight, false);
-	plot->setScale(QwtPlot::yLeft, qMin(m->yStart(), m->yEnd()), qMax(m->yStart(), m->yEnd()),
-					0.0, 5, 5, Graph::Linear, true);
-	plot->setAxisTitle(QwtPlot::yLeft, QString());
-	plot->setAxisTitle(QwtPlot::xTop, QString());
-	plot->setTitle(QString());
-
-	g->arrangeLayers(false, true);
-
-	emit modified();
-	QApplication::restoreOverrideCursor();
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->plotImage(m) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 {
-	if (type == Graph::ImagePlot)
-		return plotImage(m);
-	else if (type == Graph::Histogram)
-		return plotHistogram(m);
-
-	if (!m)
-		return 0;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	MultiLayer* g = multilayerPlot(generateUniqueName(tr("Graph")));
-	Graph* plot = g->activeLayer();
-	setPreferences(plot);
-
-	Spectrogram *sp = plot->plotSpectrogram(m, type);
-	if (sp && type == Graph::ColorMap)
-		sp->setCustomColorMap(m->colorMap());
-
-	g->arrangeLayers(false, true);
-	QApplication::restoreOverrideCursor();
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->plotSpectrogram(m, type) : nullptr;
 }
 
 MultiLayer* ApplicationWindow::plotImageProfiles(Matrix *m)
 {
-    if (!m) {
-		m = (Matrix*)activeWindow(MatrixWindow);
-		if (!m)
-			return 0;
-	}
-
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-    MultiLayer* g = multilayerPlot(generateUniqueName(tr("Profiles")), 0);
-    g->resize(650, 600);
-    g->plotProfiles(m);
-
-	Table *horTable = newHiddenTable(tr("Horizontal"), QString(), m->numCols(), 2);
-    Table *verTable = newHiddenTable(tr("Vertical"), QString(), m->numRows(), 2);
-
-	Graph *sg = g->layer(1);
-	if (sg){
-		ImageProfilesTool *ipt = new ImageProfilesTool(this, sg, m, horTable, verTable);
-		ipt->connectPlotLayers();
-		sg->setActiveTool(ipt);
-	}
-
-	QApplication::restoreOverrideCursor();
-	return g;
+	return d_plot_controller_2d ? d_plot_controller_2d->plotImageProfiles(m) : nullptr;
 }
 
 ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool factorySettings, bool newProject)
@@ -12188,11 +10942,8 @@ void ApplicationWindow::receivedVersionFile(bool)
   */
 void ApplicationWindow::toggle3DAnimation(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->animate(on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->toggle3DAnimation(on);
 }
 
 QString ApplicationWindow::generateUniqueName(const QString& name, bool increment)
@@ -12321,11 +11072,8 @@ void ApplicationWindow::showScriptWindow(bool parent)
   */
 void ApplicationWindow::togglePerspective(bool on)
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setOrthogonal(!on);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->togglePerspective(on);
 }
 
 /*!
@@ -12333,11 +11081,8 @@ void ApplicationWindow::togglePerspective(bool on)
   */
 void ApplicationWindow::resetRotation()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->setRotation(30, 0, 15);
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->resetRotation();
 }
 
 /*!
@@ -12345,11 +11090,8 @@ void ApplicationWindow::resetRotation()
   */
 void ApplicationWindow::fitFrameToLayer()
 {
-	Graph3D *g = (Graph3D *)activeWindow(Plot3DWindow);
-	if (!g)
-		return;
-
-	g->findBestLayout();
+	if (d_plot_controller_3d)
+		d_plot_controller_3d->fitFrameToLayer();
 }
 
 ApplicationWindow::~ApplicationWindow()
@@ -12474,57 +11216,17 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 
 bool ApplicationWindow::validFor2DPlot(Table *table, Graph::CurveType type)
 {
-	if (!table->selectedYColumns().count()){
-  		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
-  	    return false;
-  	} else if (type != Graph::Box && type != Graph::Histogram && type != Graph::Pie){
-		if (table->numCols() < 2) {
-			QMessageBox::critical(this, tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
-			return false;
-		} else if (table->noXColumn()) {
-			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please set a default X column for this table, first!"));
-			return false;
-		}
-	}
-	return true;
+	return d_plot_controller_2d ? d_plot_controller_2d->validFor2DPlot(table, type) : false;
 }
 
 MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return 0;
-
-    if (w->inherits("Table")){
-        Table *table = static_cast<Table *>(w);
-		QTableWidgetSelectionRange sel = table->getSelection();
-        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
-    } else if (w->inherits("Matrix")){
-        Matrix *m = static_cast<Matrix *>(w);
-        return plotHistogram(m);
-    }
-	return 0;
+	return d_plot_controller_2d ? d_plot_controller_2d->generate2DGraph(type) : nullptr;
 }
 
 bool ApplicationWindow::validFor3DPlot(Table *table)
 {
-	if (table->numCols()<2){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need at least two columns for this operation!"));
-		return false;
-	}
-	if (table->selectedColumn() < 0 || table->colPlotDesignation(table->selectedColumn()) != Table::Z){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("Please select a Z column for this operation!"));
-		return false;
-	}
-	if (table->noXColumn()){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need to define a X column first!"));
-		return false;
-	}
-	if (table->noYColumn()){
-		QMessageBox::critical(0,tr("QtiPlot - Error"),tr("You need to define a Y column first!"));
-		return false;
-	}
-	return true;
+	return d_plot_controller_3d ? d_plot_controller_3d->validFor3DPlot(table) : false;
 }
 
 void ApplicationWindow::hideSelectedWindows()
@@ -13297,122 +11999,12 @@ void ApplicationWindow::showFrequencyCountDialog()
 
 Note * ApplicationWindow::newStemPlot()
 {
-	Table *t = (Table *)activeWindow(TableWindow);
-	if (!t)
-		return nullptr;
-
-    int ts = t->table()->currentSelection();
-    if (ts < 0)
-		return nullptr;
-
-	Note *n = newNote();
-	if (!n)
-		return nullptr;
-	n->hide();
-
-	ScriptEdit* editor = n->currentEditor();
-	QStringList lst = t->selectedColumns();
-	if (lst.isEmpty()){
-		QTableWidgetSelectionRange sel = t->getSelection();
-			for (int i = sel.leftColumn(); i <= sel.rightColumn(); i++)
-				editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
-	} else {
-		for (int i = 0; i < lst.count(); i++)
-			editor->insertPlainText(stemPlot(t, lst[i], 1001) + "\n");
-	}
-
-	n->show();
-	return n;
+	return d_plot_controller_2d ? d_plot_controller_2d->newStemPlot() : nullptr;
 }
 
 QString ApplicationWindow::stemPlot(Table *t, const QString& colName, int power, int startRow, int endRow)
 {
-	if (!t)
-		return QString();
-
-	int col = t->colIndex(colName);
-	if (col < 0){
-		QMessageBox::critical(this, tr("QtiPlot - Error"),
-		tr("Data set: %1 doesn't exist!").arg(colName));
-		return QString();
-	}
-
-	startRow--;
-	endRow--;
-	if (startRow < 0 || startRow >= t->numRows())
-		startRow = 0;
-	if (endRow < 0 || endRow >= t->numRows())
-		endRow = t->numRows() - 1;
-
-	QString result = tr("Stem and leaf plot of dataset") + ": " + colName + " ";
-	result += tr("from row") + ": " + QString::number(startRow + 1) + " ";
-	result += tr("to row") + ": " + QString::number(endRow + 1) + "\n";
-
-	int rows = 0;
-	for (int j = startRow; j <= endRow; j++){
-		if (!t->text(j, col).isEmpty())
-		   rows++;
-	}
-
-	if (rows >= 1){
-		double *data = (double *)malloc(rows * sizeof (double));
-		if (!data){
-			result += tr("Not enough memory for this dataset!") + "\n";
-			return result;
-		}
-
-		result += "\n" + tr("Stem") + " | " + tr("Leaf");
-		result += "\n---------------------\n";
-
-		int row = 0;
-		for (int j = startRow; j <= endRow; j++){
-			if (!t->text(j, col).isEmpty()){
-				data[row] = t->cell(j, col);
-				row++;
-			}
-		}
-		gsl_sort (data, 1, rows);
-
-		if (power > 1e3){
-			power = std::ceil(log10(data[rows - 1] - data[0]) - log10(rows - 1));
-			bool ok;
-			int input = QInputDialog::getInt(this, tr("Please confirm the stem unit!"),
-                                      tr("Data set") + ": " + colName + ", " + tr("stem unit") + " = 10<sup>n</sup>, n = ",
-                                      power, -1000, 1000, 1, &ok);
-			if (ok)
-				power = input;
-		}
-
-		double stem_unit = pow(10.0, power);
-		double leaf_unit = stem_unit/10.0;
-
-		int prev_stem = int(data[0]/stem_unit);
-		result += "      " + QString::number(prev_stem) + " | ";
-
-		for (int j = 0; j <rows; j++){
-			double val = data[j];
-			int stem = int(val/stem_unit);
-			int leaf = int(qRound((val - stem*stem_unit)/leaf_unit));
-			for (int k = prev_stem + 1; k < stem + 1; k++)
-			  result += "\n      " + QString::number(k) + " | ";
-			result += QString::number(leaf);
-			prev_stem = stem;
-		}
-
-		result += "\n---------------------\n";
-		result += tr("Stem unit") + ": " + locale().toString(stem_unit) + "\n";
-		result += tr("Leaf unit") + ": " + locale().toString(leaf_unit) + "\n";
-
-		QString legend = tr("Key") + ": " + QString::number(prev_stem) + " | ";
-		int leaf = int(qRound((data[rows - 1] - prev_stem*stem_unit)/leaf_unit));
-		legend += QString::number(leaf);
-		legend += " " + tr("means") + ": " + locale().toString(prev_stem*stem_unit + leaf*leaf_unit) + "\n";
-
-		result += legend + "---------------------\n";
-		free(data);
-	} else
-		result += "\t" + tr("Input error: empty data set!") + "\n";
-	return result;
+	return d_plot_controller_2d ? d_plot_controller_2d->stemPlot(t, colName, power, startRow, endRow) : QString();
 }
 
 QMenu* ApplicationWindow::addCustomMenu(const QString& title, const QString& parentName)

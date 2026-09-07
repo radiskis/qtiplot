@@ -46,6 +46,8 @@
 #include "ApplicationSettings.h"
 #include "ProjectManager.h"
 #include "ActionManager.h"
+#include "PlotController2D.h"
+#include "PlotController3D.h"
 #include "ProjectSerializer.h"
 #include <ScriptingEnv.h>
 #include <Script.h>
@@ -160,6 +162,8 @@ class ApplicationWindow: public QMainWindow, public scripted
 
 friend class ProjectManager;
 	friend class ActionManager;
+	friend class PlotController2D;
+	friend class PlotController3D;
 	friend class MenuBuilder;
 	friend class ActionTranslator;
 	friend class ProjectSerializer;
@@ -297,6 +301,8 @@ public:
 	ApplicationSettings *settings() const { return d_app_settings; }
 	ProjectManager *projectManager() const { return d_project_manager; }
 	ActionManager *actionManager() const { return d_action_manager; }
+	PlotController2D *plotController2D() const { return d_plot_controller_2d; }
+	PlotController3D *plotController3D() const { return d_plot_controller_3d; }
 
 public slots:
 	//! \name Projects and Project Files
@@ -1509,6 +1515,8 @@ private:
 	ApplicationSettings *d_app_settings;
 	ProjectManager *d_project_manager;
 	ActionManager *d_action_manager;
+	PlotController2D *d_plot_controller_2d;
+	PlotController3D *d_plot_controller_3d;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);
