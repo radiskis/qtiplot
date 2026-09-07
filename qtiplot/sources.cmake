@@ -63,6 +63,8 @@ set(SOURCES
   src/core/ActionManager.cpp
   src/plot2D/PlotController2D.cpp
   src/plot3D/PlotController3D.cpp
+    src/analysis/AnalysisController.cpp
+    src/core/ExportManager.cpp
     src/core/ImportASCIIDialog.cpp
     src/core/Logger.cpp
     src/core/MdiSubWindow.cpp
@@ -258,6 +260,8 @@ set(HEADERS
   src/core/ActionManager.h
   src/plot2D/PlotController2D.h
   src/plot3D/PlotController3D.h
+    src/analysis/AnalysisController.h
+    src/core/ExportManager.h
     src/core/ImportASCIIDialog.h
     src/core/ImportExportPlugin.h
     src/core/Logger.h

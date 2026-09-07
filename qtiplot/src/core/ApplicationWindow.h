@@ -109,6 +109,8 @@ class ScriptEdit;
 class ExportDialog;
 class Grid;
 class ImportExportPlugin;
+class AnalysisController;
+class ExportManager;
 class QPrinter;
 class QUndoGroup;
 class QUndoStack;
@@ -164,6 +166,8 @@ friend class ProjectManager;
 	friend class ActionManager;
 	friend class PlotController2D;
 	friend class PlotController3D;
+	friend class AnalysisController;
+	friend class ExportManager;
 	friend class MenuBuilder;
 	friend class ActionTranslator;
 	friend class ProjectSerializer;
@@ -303,6 +307,8 @@ public:
 	ActionManager *actionManager() const { return d_action_manager; }
 	PlotController2D *plotController2D() const { return d_plot_controller_2d; }
 	PlotController3D *plotController3D() const { return d_plot_controller_3d; }
+	AnalysisController *analysisController() const { return d_analysis_controller; }
+	ExportManager *exportManager() const { return d_export_manager; }
 
 public slots:
 	//! \name Projects and Project Files
@@ -1517,6 +1523,8 @@ private:
 	ActionManager *d_action_manager;
 	PlotController2D *d_plot_controller_2d;
 	PlotController3D *d_plot_controller_3d;
+	AnalysisController *d_analysis_controller;
+	ExportManager *d_export_manager;
 
 	//! Workaround for the new colors introduced in rev 447
 	int convertOldToNewColorIndex(int cindex);

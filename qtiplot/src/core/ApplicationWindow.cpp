@@ -28,6 +28,8 @@ Description          : QtiPlot's main window
  ***************************************************************************/
 #include "globals.h"
 #include "ApplicationWindow.h"
+#include "AnalysisController.h"
+#include "ExportManager.h"
 #include <QtiPlotApplication.h>
 #include "Tracked.h"
 #include "Logger.h"
@@ -251,7 +253,7 @@ void file_uncompress(char  *) {}
 using namespace std;
 
 ApplicationWindow::ApplicationWindow(bool factorySettings)
-: QMainWindow(), scripted(ScriptingLangManager::newEnv(this)), d_app_settings(new ApplicationSettings(this)), d_project_manager(new ProjectManager(this)), d_action_manager(new ActionManager(this)), d_plot_controller_2d(new PlotController2D(this)), d_plot_controller_3d(new PlotController3D(this))
+: QMainWindow(), scripted(ScriptingLangManager::newEnv(this)), d_app_settings(new ApplicationSettings(this)), d_project_manager(new ProjectManager(this)), d_action_manager(new ActionManager(this)), d_plot_controller_2d(new PlotController2D(this)), d_plot_controller_3d(new PlotController3D(this)), d_analysis_controller(new AnalysisController(this)), d_export_manager(new ExportManager(this))
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	init(factorySettings);
@@ -1356,42 +1358,8 @@ void ApplicationWindow::initPolarPlot(PolarGraph *w)
 
 void ApplicationWindow::exportMatrix(const QString& exportFilter)
 {
-	Matrix* m = (Matrix*)activeWindow(MatrixWindow);
-	if (!m)
-		return;
-
-	ImageExportDialog *ied = new ImageExportDialog(m, this, d_extended_export_dialog);
-	ied->setDirectory(imagesDirPath);
-	ied->selectFile(m->objectName());
-	if (exportFilter.isEmpty())
-    	ied->selectFilter(d_image_export_filter);
-	else
-		ied->selectFilter(exportFilter);
-
-	if ( ied->exec() != QDialog::Accepted )
-		return;
-	imagesDirPath = ied->directory().path();
-
-	QString selected_filter = ied->selectedNameFilter().remove("*");
-	QString file_name = ied->selectedFiles()[0];
-	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
-		file_name.append(selected_filter);
-
-	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		m->exportVector(file_name, ied->vectorResolution(), ied->color());
-	else if (selected_filter.contains(".svg"))
-		m->exportSVG(file_name);
-	else if (selected_filter.contains(".emf"))
-		m->exportEMF(file_name);
-	else if (selected_filter.contains(".odf"))
-		m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution());
-	else {
-		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i = 0; i < list.count(); i++){
-			if (selected_filter.contains("." + list[i].toLower()))
-				m->exportRasterImage(file_name, ied->quality(), ied->bitmapResolution(), ied->compression());
-		}
-	}
+	if (d_export_manager)
+		d_export_manager->exportMatrix(exportFilter);
 }
 
 Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
@@ -2151,44 +2119,30 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 
 void ApplicationWindow::showChiSquareTestDialog()
 {
-	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	StudentTestDialog *std = new StudentTestDialog(StatisticTest::ChiSquareTest, t, false, this);
-	std->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showChiSquareTestDialog();
 }
 
 void ApplicationWindow::showStudentTestDialog(bool twoSamples)
 {
-	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	StudentTestDialog *std = new StudentTestDialog(StatisticTest::StudentTest, t, twoSamples, this);
-	std->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showStudentTestDialog(twoSamples);
 }
 
 void ApplicationWindow::testNormality()
 {
-	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	AnovaDialog *ad = new AnovaDialog(this, t, StatisticTest::NormalityTest);
-	ad->show();
+	if (d_analysis_controller)
+		d_analysis_controller->testNormality();
 }
 
 #ifdef HAVE_TAMUANOVA
+#ifdef HAVE_TAMUANOVA
 void ApplicationWindow::showANOVADialog(bool twoWay)
 {
-	Table *t = (Table*)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-	AnovaDialog *ad = new AnovaDialog(this, t, StatisticTest::AnovaTest, twoWay);
-	ad->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showANOVADialog(twoWay);
 }
+#endif
 #endif
 
 Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colName)
@@ -2732,30 +2686,14 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 
 void ApplicationWindow::exportExcel()
 {
-	ImportExportPlugin *ep = exportPlugin("xls");
-	if (!ep)
-		return;
-
-	ExportDialog *ed = showExportASCIIDialog();
-	if (ed){
-		ed->setWindowTitle(tr("Export Excel"));
-		ed->setNameFilters(QStringList() << "*.xls");
-		ed->updateAdvancedOptions(".xls");
-	}
+	if (d_export_manager)
+		d_export_manager->exportExcel();
 }
 
 void ApplicationWindow::exportOds()
 {
-	ImportExportPlugin *ep = exportPlugin("ods");
-	if (!ep)
-		return;
-
-	ExportDialog *ed = showExportASCIIDialog();
-	if (ed){
-		ed->setWindowTitle(tr("Export Open Document Spreadsheet"));
-		ed->setNameFilters(QStringList() << "*.ods");
-		ed->updateAdvancedOptions(".ods");
-	}
+	if (d_export_manager)
+		d_export_manager->exportOds();
 }
 
 #ifdef Q_OS_WIN
@@ -3958,337 +3896,26 @@ void ApplicationWindow::saveSettings()
 
 void ApplicationWindow::exportGraph(const QString& exportFilter)
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	MultiLayer *plot2D = qobject_cast<MultiLayer *>(w);
-	Graph3D *plot3D = qobject_cast<Graph3D *>(w);
-	PolarGraph *plotPolar = qobject_cast<PolarGraph *>(w);
-	if(plot2D && plot2D->isEmpty()){
-		QMessageBox::critical(this, tr("QtiPlot - Export Error"),
-					tr("<h4>There are no plot layers available in this window!</h4>"));
-		return;
-	}
-
-	if (!plot2D && !plot3D && !plotPolar)
-		return;
-
-	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog);
-	ied->setDirectory(imagesDirPath);
-	ied->selectFile(w->objectName());
-    if (exportFilter.isEmpty())
-    	ied->selectFilter(d_image_export_filter);
-	else
-		ied->selectFilter(exportFilter);
-
-	if ( ied->exec() != QDialog::Accepted )
-		return;
-	imagesDirPath = ied->directory().path();
-
-	QString selected_filter = ied->selectedNameFilter().remove("*");
-	QString file_name = ied->selectedFiles()[0];
-	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
-		file_name.append(selected_filter);
-
-    if (plot3D && selected_filter.contains(".pgf")){
-        plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode());
-        return;
-    }
-
-    if (plot2D && selected_filter.contains(".emf")){
-		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		return;
-    }
-    
-    if (plotPolar && selected_filter.contains(".emf")){
-        // Polar plots don't support EMF yet, but we could add it if there's a plugin
-        return;
-    }
-
-#ifdef TEX_OUTPUT
-	if (plot2D && selected_filter.contains(".tex")){
-		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		return;
-	}
-#endif
-
-	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") ||
-		selected_filter.contains(".ps") || selected_filter.contains(".svg")) {
-		if (plot3D)
-			plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode(),
-					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		else if (plot2D){
-			if (selected_filter.contains(".svg"))
-				plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-			else
-				plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		} else if (plotPolar){
-            if (selected_filter.contains(".svg"))
-                plotPolar->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-            else
-                plotPolar->exportVector(file_name, ied->vectorResolution(), ied->color(),
-                        ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		}
-	} else if (selected_filter.contains(".odf")){
-		if (plot2D)
-			plot2D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		else if (plot3D)
-			plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		else if (plotPolar)
-			plotPolar->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-
-	} else {
-		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i = 0; i < list.count(); i++){
-			if (selected_filter.contains("." + (list[i]).toLower())){
-				if (plot2D)
-					plot2D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
-				else if (plot3D){
-					plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
-				} else if (plotPolar){
-					plotPolar->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
-				}
-			}
-		}
-	}
+	if (d_export_manager)
+		d_export_manager->exportGraph(exportFilter);
 }
 
 void ApplicationWindow::exportLayer()
 {
-	MdiSubWindow *w = activeWindow(MultiLayerWindow);
-	if (!w)
-		return;
-
-	Graph* g = ((MultiLayer*)w)->activeLayer();
-	if (!g)
-		return;
-
-	ImageExportDialog *ied = new ImageExportDialog(w, this, d_extended_export_dialog, g);
-	ied->setDirectory(imagesDirPath);
-	ied->selectFile(w->objectName());
-	ied->selectFilter(d_image_export_filter);
-	if ( ied->exec() != QDialog::Accepted )
-		return;
-	imagesDirPath = ied->directory().path();
-
-	QString file_name = ied->selectedFiles()[0];
-	QString selected_filter = ied->selectedNameFilter().remove("*");
-	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
-		file_name.append(selected_filter);
-
-	if (selected_filter.contains(".eps") || selected_filter.contains(".pdf") || selected_filter.contains(".ps"))
-		g->exportVector(file_name, ied->vectorResolution(), ied->color(),
-			ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-	else if (selected_filter.contains(".svg"))
-		g->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-	else if (selected_filter.contains(".emf"))
-		g->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-#ifdef TEX_OUTPUT
-	else if (selected_filter.contains(".tex"))
-		g->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-#endif
-    else if (selected_filter.contains(".odf"))
-		g->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-    else {
-		QList<QByteArray> list = QImageWriter::supportedImageFormats();
-		for (int i = 0; i < list.count(); i++){
-			if (selected_filter.contains("." + (list[i]).toLower()))
-				g->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
-		}
-	}
+	if (d_export_manager)
+		d_export_manager->exportLayer();
 }
 
 void ApplicationWindow::exportPresentationODF()
 {
-	ImageExportDialog *ied = new ImageExportDialog(nullptr, this, d_extended_export_dialog);
-	ied->setDirectory(imagesDirPath);
-	ied->setNameFilter("*.odf");
-
-	if ( ied->exec() != QDialog::Accepted )
-		return;
-	imagesDirPath = ied->directory().path();
-
-	QString selected_filter = ied->selectedNameFilter().remove("*");
-	QString file_name = ied->selectedFiles()[0];
-	if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))
-		file_name.append(selected_filter);
-
-	QDialog *previewDlg = new QDialog(this);
-	previewDlg->setSizeGripEnabled(true);
-	previewDlg->setWindowTitle(tr("QtiPlot") + " - " + tr("Presentation Preview"));
-	previewDlg->resize(QSize(600, 400));
-
-	QHBoxLayout *bl = new QHBoxLayout();
-	bl->addStretch();
-	QPushButton *okBtn = new QPushButton(tr("&Save"));
-	connect(okBtn, &QPushButton::clicked, previewDlg, &QDialog::accept);
-	bl->addWidget(okBtn);
-
-	QPushButton *cancelBtn = new QPushButton(tr("&Cancel"));
-	connect(cancelBtn, &QPushButton::clicked, previewDlg, &QDialog::reject);
-	bl->addWidget(cancelBtn);
-	bl->addStretch();
-
-	QVBoxLayout *vl = new QVBoxLayout(previewDlg);
-	QTextEdit *te = new QTextEdit();
-	vl->addWidget(te);
-	vl->addLayout(bl);
-
-	QTextDocument *document = te->document();
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		if (qobject_cast<MultiLayer*>(w)){
-			MultiLayer *plot2D = qobject_cast<MultiLayer*>(w);
-			if (!plot2D->isEmpty())
-				plot2D->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		} else if (qobject_cast<Graph3D*>(w))
-			((Graph3D *)w)->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-	}
-
-	if (previewDlg->exec() == QDialog::Accepted){
-		QTextDocumentWriter writer(file_name);
-		writer.write(document);
-	}
+	if (d_export_manager)
+		d_export_manager->exportPresentationODF();
 }
 
 void ApplicationWindow::exportAllGraphs()
 {
-	ImageExportDialog *ied = new ImageExportDialog(nullptr, this, d_extended_export_dialog);
-	ied->setWindowTitle(tr("Choose a directory to export the graphs to"));
-	QStringList tmp = ied->nameFilters();
-	ied->setFileMode(QFileDialog::Directory);
-	ied->setNameFilters(tmp);
-	ied->setLabelText(QFileDialog::FileType, tr("Output format:"));
-	ied->setLabelText(QFileDialog::FileName, tr("Directory:"));
-	ied->setDirectory(imagesDirPath);
-    ied->selectFilter(d_image_export_filter);
-
-	if ( ied->exec() != QDialog::Accepted )
-		return;
-	imagesDirPath = ied->directory().path();
-	if (ied->selectedFiles().isEmpty())
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-	QString output_dir = ied->selectedFiles()[0];
-	QString file_suffix = ied->selectedNameFilter();
-	file_suffix = file_suffix.toLower();
-	file_suffix.remove("*");
-
-	bool confirm_overwrite = d_confirm_overwrite;
-	MultiLayer *plot2D;
-	Graph3D *plot3D;
-
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		if (w->inherits("MultiLayer")) {
-			plot3D = 0;
-			plot2D = (MultiLayer *)w;
-			if (plot2D->isEmpty()) {
-				QApplication::restoreOverrideCursor();
-				QMessageBox::warning(this, tr("QtiPlot - Warning"),
-						tr("There are no plot layers available in window <b>%1</b>.<br>"
-							"Graph window not exported!").arg(plot2D->objectName()));
-				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				continue;
-			}
-		} else if (w->inherits("Graph3D")) {
-			plot2D = 0;
-			plot3D = (Graph3D *)w;
-		} else
-			continue;
-
-		QString file_name = output_dir + "/" + w->objectName() + file_suffix;
-		QFile f(file_name);
-		if (f.exists() && confirm_overwrite) {
-			QApplication::restoreOverrideCursor();
-
-			QString msg = tr("A file called: <p><b>%1</b><p>already exists. ""Do you want to overwrite it?").arg(file_name);
-			QMessageBox msgBox(QMessageBox::Question, tr("QtiPlot - Overwrite file?"), msg,
-							  QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel,
-							  (ApplicationWindow *)this);
- 			msgBox.exec();
-			switch(msgBox.standardButton(msgBox.clickedButton())){
-				case QMessageBox::Yes:
-					QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				break;
-				case QMessageBox::YesToAll:
-					confirm_overwrite = false;
-				break;
-				case QMessageBox::No:
-					confirm_overwrite = true;
-					continue;
-				break;
-				case QMessageBox::Cancel:
-					return;
-				break;
-				default:
-					break;
-			}
-		}
-		if ( !f.open( QIODevice::WriteOnly ) ) {
-			QApplication::restoreOverrideCursor();
-			QMessageBox::critical(this, tr("QtiPlot - Export error"),
-					tr("Could not write to file: <br><h4>%1</h4><p>"
-						"Please verify that you have the right to write to this location!").arg(file_name));
-			return;
-		}
-		f.close();
-
-	if (plot2D && file_suffix.contains(".emf")){
-		plot2D->exportEMF(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		return;
-	}
-
-#ifdef TEX_OUTPUT
-	if (plot2D && file_suffix.contains(".tex")){
-		plot2D->exportTeX(file_name, ied->color(), ied->escapeStrings(), ied->exportFontSizes(), ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		return;
-	}
-#endif
-
-		if (file_suffix.contains(".eps") || file_suffix.contains(".pdf") ||
-			file_suffix.contains(".ps") || file_suffix.contains(".svg")) {
-			if (plot3D)
-				plot3D->exportVector(file_name, ied->textExportMode(), ied->sortMode(),
-					ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-			else if (plot2D){
-				if (file_suffix.contains(".svg"))
-					plot2D->exportSVG(file_name, ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-				else
-					plot2D->exportVector(file_name, ied->vectorResolution(), ied->color(),
-							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-			}
-		} else {
-			QList<QByteArray> list = QImageWriter::supportedImageFormats();
-			for (int i = 0; i < list.count(); i++){
-				if (file_suffix.contains("." + (list[i]).toLower())) {
-					if (plot2D)
-						plot2D->exportImage(file_name, ied->quality(), ied->transparency(),
-						ied->bitmapResolution(), ied->customExportSize(), ied->sizeUnit(),
-						ied->scaleFontsFactor(), ied->compression());
-					else if (plot3D)
-						plot3D->exportImage(file_name, ied->quality(), ied->transparency(), ied->bitmapResolution(),
-							ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor(), ied->compression());
-				}
-			}
-		}
-	}
-	QApplication::restoreOverrideCursor();
+	if (d_export_manager)
+		d_export_manager->exportAllGraphs();
 }
 
 QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
@@ -4914,67 +4541,15 @@ void ApplicationWindow::showAxisTitleDialog()
 
 ExportDialog* ApplicationWindow::showExportASCIIDialog()
 {
-    MdiSubWindow* t = activeWindow();
-    if (!t)
-		return 0;
-	if (!qobject_cast<Matrix*>(t) && !t->inherits("Table"))
-		return 0;
-
-    ExportDialog* ed = new ExportDialog(t, this, true);
-	ed->open();
-	return ed;
+	if (d_export_manager)
+		return d_export_manager->showExportASCIIDialog();
+	return nullptr;
 }
 
 void ApplicationWindow::exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection)
 {
-	if (dir.isEmpty())
-		return;
-
-	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	workingDir = dir;
-
-	bool confirmOverwrite = d_confirm_overwrite;
-	bool success = true;
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		if (w->inherits("Table") || w->inherits("Matrix")){
-			QString fileName = dir + "/" + w->objectName() + filter;
-			QFile f(fileName);
-			if (f.exists(fileName) && confirmOverwrite){
-				QApplication::restoreOverrideCursor();
-				switch(QMessageBox::question(this, tr("QtiPlot - Overwrite file?"),
-							tr("A file called: <p><b>%1</b><p>already exists. "
-								"Do you want to overwrite it?").arg(fileName), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel, QMessageBox::Yes))
-				{
-					case QMessageBox::Yes:
-						if (w->inherits("Table"))
-							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->inherits("Matrix"))
-							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-						break;
-
-					case QMessageBox::YesToAll:
-						confirmOverwrite = false;
-						if (w->inherits("Table"))
-							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->inherits("Matrix"))
-							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-						break;
-
-					case QMessageBox::Cancel:
-						return;
-						break;
-				}
-			} else if (w->inherits("Table"))
-				success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-			  else if (w->inherits("Matrix"))
-				success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
-
-			if (!success)
-				break;
-		}
-	}
-	QApplication::restoreOverrideCursor();
+	if (d_export_manager)
+		d_export_manager->exportAllTables(dir, filter, sep, colNames, colComments, expSelection);
 }
 
 void ApplicationWindow::showRowsDialog()
@@ -6067,324 +5642,149 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 
 void ApplicationWindow::exportPDF()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if(qobject_cast<MultiLayer *>(w) && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-			tr("<h4>There are no plot layers available in this window.</h4>"));
-		return;
-	}
-
-	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w) || qobject_cast<PolarGraph *>(w)){
-		exportGraph("*.pdf");
-		return;
-	} else if (qobject_cast<Matrix *>(w)){
-		exportMatrix("*.pdf");
-		return;
-	}
-
-    QString fname = getFileName(this, tr("Choose a filename to save under"),
-					imagesDirPath + "/" + w->objectName(), "*.pdf", 0, true, d_confirm_overwrite);
-	if (!fname.isEmpty() ){
-		QFileInfo fi(fname);
-		QString baseName = fi.fileName();
-		if (!baseName.contains("."))
-			fname.append(".pdf");
-
-        imagesDirPath = fi.absolutePath();
-
-        QFile f(fname);
-        if (!f.open(QIODevice::WriteOnly)){
-            QMessageBox::critical(this, tr("QtiPlot - Export error"),
-            tr("Could not write to file: <h4>%1</h4><p>Please verify that you have the right to write to this location or that the file is not being used by another application!").arg(fname));
-            return;
-        }
-
-		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        w->exportPDF(fname);
-		QApplication::restoreOverrideCursor();
-	}
+	if (d_export_manager)
+		d_export_manager->exportPDF();
 }
 
 //print active window
 void ApplicationWindow::print()
 {
-	MdiSubWindow* w = activeWindow();
-	if (!w)
-		return;
-
-    if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"));
-		return;
-	}
-	w->print();
+	if (d_export_manager)
+		d_export_manager->print();
 }
 
 //print preview for active window
 void ApplicationWindow::printPreview()
 {
-	MdiSubWindow* w = activeWindow();
-	if (!w)
-		return;
-
-	if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"));
-		return;
-	}
-
-	QPrinter p;
-	p.setPageSize(QPageSize((QPageSize::PageSizeId)d_print_paper_size));
-	p.setPageOrientation((QPageLayout::Orientation)d_printer_orientation);
-
-	QPrintPreviewDialog *preview = new QPrintPreviewDialog(&p, this, Qt::Window);
-	preview->setWindowTitle(tr("QtiPlot") + " - " + tr("Print preview of window: ") + w->objectName());
-	connect(preview, &QPrintPreviewDialog::paintRequested, w, qOverload<QPrinter*>(&MdiSubWindow::print));
-	connect(preview, &QPrintPreviewDialog::paintRequested, this, &ApplicationWindow::setPrintPreviewOptions);
-
-	preview->exec();
+	if (d_export_manager)
+		d_export_manager->printPreview();
 }
 
 
 void ApplicationWindow::setPrintPreviewOptions(QPrinter *printer)
 {
-	if (!printer)
-		return;
-
-	d_print_paper_size = printer->pageLayout().pageSize().id();
-	d_printer_orientation = printer->pageLayout().orientation();
+	if (d_export_manager)
+		d_export_manager->setPrintPreviewOptions(printer);
 }
 
 void ApplicationWindow::printAllPlots()
 {
-	QPrinter printer;
-	printer.setPageOrientation(QPageLayout::Landscape);
-	printer.setColorMode (QPrinter::Color);
-	printer.setFullPage(true);
-
-	QPrintDialog dialog(&printer, this);
-	if (dialog.exec() == QDialog::Accepted){
-		QPainter *paint = new QPainter (&printer);
-
-		int plots = 0;
-		QList<MdiSubWindow *> windows = windowsList();
-		for (MdiSubWindow *w : windows){
-			if (qobject_cast<MultiLayer*>(w))
-				plots++;
-		}
-
-		printer.setFromTo (0, plots);
-
-		for (MdiSubWindow *w : windows){
-			MultiLayer *ml = qobject_cast<MultiLayer*>(w);
-			if (ml){
-				ml->printAllLayers(paint);
-				if (w != windows.last())
-					printer.newPage();
-			}
-		}
-		paint->end();
-		delete paint;
-	}
+	if (d_export_manager)
+		d_export_manager->printAllPlots();
 }
 
 void ApplicationWindow::showExpGrowthDialog()
 {
-	showExpDecayDialog(-1);
+	if (d_analysis_controller)
+		d_analysis_controller->showExpGrowthDialog();
 }
 
 void ApplicationWindow::showExpDecayDialog()
 {
-	showExpDecayDialog(1);
+	if (d_analysis_controller)
+		d_analysis_controller->showExpDecayDialog();
 }
 
 void ApplicationWindow::showExpDecayDialog(int type)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	ExpDecayDialog *edd = new ExpDecayDialog(type, this);
-	edd->setGraph(g);
-	edd->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showExpDecayDialog(type);
 }
 
 void ApplicationWindow::showTwoExpDecayDialog()
 {
-	showExpDecayDialog(2);
+	if (d_analysis_controller)
+		d_analysis_controller->showTwoExpDecayDialog();
 }
 
 void ApplicationWindow::showExpDecay3Dialog()
 {
-	showExpDecayDialog(3);
+	if (d_analysis_controller)
+		d_analysis_controller->showExpDecay3Dialog();
 }
 
 void ApplicationWindow::showFitDialog()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	MultiLayer* plot = 0;
-	if(w->inherits("MultiLayer"))
-		plot = (MultiLayer*)w;
-	else if(w->inherits("Table")){
-		QStringList columnsLst = ((Table *)w)->drawableColumnSelection();
-		if (columnsLst.isEmpty()){
-			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-			tr("Please select a 'Y' column first!"));
-			return;
-		}
-		plot = multilayerPlot((Table *)w, columnsLst, Graph::LineSymbols);
-	}
-
-	if (!plot)
-		return;
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	FitDialog *fd = new FitDialog(g, this);
-	connect (plot, &Graph::destroyed, fd, &FindDialog::close);
-
-	fd->setSrcTables(tableList());
-	fd->show();
-	fd->resize(fd->minimumSize());
+	if (d_analysis_controller)
+		d_analysis_controller->showFitDialog();
 }
 
 void ApplicationWindow::showFilterDialog(int filter)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if ( g && g->validCurvesDataSize()){
-		FilterDialog *fd = new FilterDialog(filter, this);
-		fd->setGraph(g);
-		fd->exec();
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->showFilterDialog(filter);
 }
 
 void ApplicationWindow::lowPassFilterDialog()
 {
-	showFilterDialog(FFTFilter::LowPass);
+	if (d_analysis_controller)
+		d_analysis_controller->lowPassFilterDialog();
 }
 
 void ApplicationWindow::highPassFilterDialog()
 {
-	 showFilterDialog(FFTFilter::HighPass);
+	if (d_analysis_controller)
+		d_analysis_controller->highPassFilterDialog();
 }
 
 void ApplicationWindow::bandPassFilterDialog()
 {
-	showFilterDialog(FFTFilter::BandPass);
+	if (d_analysis_controller)
+		d_analysis_controller->bandPassFilterDialog();
 }
 
 void ApplicationWindow::bandBlockFilterDialog()
 {
-	showFilterDialog(FFTFilter::BandBlock);
+	if (d_analysis_controller)
+		d_analysis_controller->bandBlockFilterDialog();
 }
 
 void ApplicationWindow::showFFTDialog()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	FFTDialog *sd = 0;
-	if (qobject_cast<MultiLayer *>(w)){
-		Graph* g = ((MultiLayer*)w)->activeLayer();
-		if ( g && g->validCurvesDataSize() ){
-			sd = new FFTDialog(FFTDialog::onGraph, this);
-			sd->setGraph(g);
-		}
-	} else if (w->inherits("Table")){
-		sd = new FFTDialog(FFTDialog::onTable, this);
-		sd->setTable((Table*)w);
-	} else if (qobject_cast<Matrix *>(w)){
-		if (!((Matrix *)w)->isEmpty()){
-			sd = new FFTDialog(FFTDialog::onMatrix, this);
-			sd->setMatrix((Matrix *)w);
-		} else
-			showNoDataMessage();
-	}
-
-	if (sd)
-        sd->exec();
+	if (d_analysis_controller)
+		d_analysis_controller->showFFTDialog();
 }
 
 void ApplicationWindow::showSmoothDialog(int m)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	SmoothCurveDialog *sd = new SmoothCurveDialog(m, this);
-	sd->setGraph(g);
-	sd->exec();
+	if (d_analysis_controller)
+		d_analysis_controller->showSmoothDialog(m);
 }
 
 void ApplicationWindow::showSmoothSavGolDialog()
 {
-    showSmoothDialog(SmoothFilter::SavitzkyGolay);
+	if (d_analysis_controller)
+		d_analysis_controller->showSmoothSavGolDialog();
 }
 
 void ApplicationWindow::showSmoothFFTDialog()
 {
-	showSmoothDialog(SmoothFilter::FFT);
+	if (d_analysis_controller)
+		d_analysis_controller->showSmoothFFTDialog();
 }
 
 void ApplicationWindow::showSmoothAverageDialog()
 {
-	showSmoothDialog(SmoothFilter::Average);
+	if (d_analysis_controller)
+		d_analysis_controller->showSmoothAverageDialog();
 }
 
 void ApplicationWindow::showSmoothLowessDialog()
 {
-	showSmoothDialog(SmoothFilter::Lowess);
+	if (d_analysis_controller)
+		d_analysis_controller->showSmoothLowessDialog();
 }
 
 void ApplicationWindow::showInterpolationDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	InterpolationDialog *id = new InterpolationDialog(this);
-	id->setGraph(g);
-	id->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showInterpolationDialog();
 }
 
 void ApplicationWindow::showFitPolynomDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	PolynomFitDialog *pfd = new PolynomFitDialog(this);
-	pfd->setGraph(g);
-	pfd->show();
+	if (d_analysis_controller)
+		d_analysis_controller->showFitPolynomDialog();
 }
 
 void ApplicationWindow::updateLog(const QString& result)
@@ -6398,16 +5798,8 @@ void ApplicationWindow::updateLog(const QString& result)
 
 void ApplicationWindow::showFunctionIntegrationDialog()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g)
-		return;
-
-	IntDialog *id = new IntDialog(this, g);
-	id->exec();
+	if (d_analysis_controller)
+		d_analysis_controller->showFunctionIntegrationDialog();
 }
 
 void ApplicationWindow::showResults(bool ok)
@@ -8879,343 +8271,62 @@ void ApplicationWindow::copyActiveLayer()
 
 void ApplicationWindow::showDataSetDialog(Analysis operation)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph *g = plot->activeLayer();
-	if (!g)
-		return;
-
-	bool ok;
-	QStringList curves = g->analysableCurvesList();
-	QString txt = QInputDialog::getItem(this, tr("QtiPlot - Choose data set"),
-					tr("Curve") + ": ", curves, 0, false, &ok);
-	if (ok && !txt.isEmpty())
-		analyzeCurve(g, g->curve(txt), operation);
+	if (d_analysis_controller)
+		d_analysis_controller->showDataSetDialog(operation);
 }
 
 void ApplicationWindow::analyzeCurve(Graph *g,  QwtPlotCurve *c, Analysis operation)
 {
-	if (!g || !c)
-		return;
-
-	Fit *fitter = 0;
-	switch(operation){
-	    case NoAnalysis:
-	    break;
-		case Integrate:
-		{
-			Integration *i = new Integration(this, (PlotCurve*)c);
-			i->run();
-			delete i;
-		}
-		break;
-		case Diff:
-		{
-			Differentiation *diff = new Differentiation(this, (PlotCurve*)c);
-			diff->enableGraphicsDisplay(true);
-			diff->run();
-			delete diff;
-		}
-		break;
-		case FitLinear:
-			fitter = new LinearFit (this, g);
-		break;
-		case FitLorentz:
-			fitter = new LorentzFit(this, g);
-		break;
-		case FitGauss:
-			fitter = new GaussFit(this, g);
-		break;
-		case FitSigmoidal:
-		{
-			ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
-			if(se->type() == ScaleTransformation::Log10)
-				fitter = new LogisticFit (this, g);
-			else
-				fitter = new SigmoidalFit (this, g);
-		}
-		break;
-		case FitSlope:
-			fitter = new LinearSlopeFit (this, g);
-		break;
-	}
-
-	if (!fitter)
-		return;
-
-	if (fitter->setDataFromCurve((PlotCurve*)c)){
-		if (operation != FitLinear && operation != FitSlope){
-			fitter->guessInitialValues();
-			fitter->scaleErrors(fit_scale_errors);
-			fitter->generateFunction(generateUniformFitPoints, fitPoints);
-		} else if (d_2_linear_fit_points)
-			fitter->generateFunction(generateUniformFitPoints, 2);
-		fitter->setOutputPrecision(fit_output_precision);
-		fitter->fit();
-		if (pasteFitResultsToPlot)
-			fitter->showLegend();
-		delete fitter;
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->analyzeCurve(g, c, operation);
 }
 
 void ApplicationWindow::analysis(Analysis operation)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	if (g->rangeSelectorsEnabled()){
-		analyzeCurve(g, g->rangeSelectorTool()->selectedCurve(), operation);
-		return;
-	}
-
-	QStringList lst = g->analysableCurvesList();
-	if (lst.count() == 1)
-		analyzeCurve(g, g->curve(0), operation);
-	else
-		showDataSetDialog(operation);
+	if (d_analysis_controller)
+		d_analysis_controller->analysis(operation);
 }
 
 void ApplicationWindow::integrate()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if (w->inherits("MultiLayer")){
-		Graph* g = ((MultiLayer *)w)->activeLayer();
-		if (!g)
-			return;
-		IntegrationDialog *id = new IntegrationDialog(g, this);
-		id->show();
-	} else if (w->inherits("Matrix")){
-		if (!((Matrix *)w)->isEmpty()){
-			QDateTime dt = QDateTime::currentDateTime ();
-			QString info = dt.toString(Qt::TextDate);
-			info += "\n" + tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
-			info += QString::number(((Matrix *)w)->integrate()) + "\n";
-			info += "-------------------------------------------------------------\n";
-			current_folder->appendLogInfo(info);
-			showResults(true);
-		} else
-			showNoDataMessage();
-	} else if (w->inherits("Table")){
-		Table *t = (Table *)w;
-		QStringList lst = t->selectedYColumns();
-		int cols = lst.size();
-		QTableWidgetSelectionRange sel = t->getSelection();
-		if (!cols || sel.topRow() == sel.bottomRow()){
-			QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-			tr("Please select a 'Y' column first!"));
-			return;
-		}
-
-		IntegrationDialog *id = new IntegrationDialog(t, this);
-		id->show();
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->integrate();
 }
 
 void ApplicationWindow::differentiate()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if (qobject_cast<MultiLayer *>(w))
-		analysis(Diff);
-	else if (w->inherits("Table")){
-		Table *t = qobject_cast<Table *>(w);
-		QStringList lst = t->selectedYColumns();
-		int cols = lst.size();
-		if (!cols){
-			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
-			return;
-		}
-
-		Differentiation *diff = new Differentiation(this, nullptr, "", "");
-		diff->setUpdateOutputGraph(false);
-		int aux = 0;
-		for (QString yCol : lst){
-			int xCol = t->colX(t->colIndex(yCol));
-			diff->setDataFromTable(t, t->colName(xCol), yCol);
-			diff->run();
-			Graph *g = diff->outputGraph();
-			if (!g)
-				continue;
-
-			QwtPlotCurve *c = g->curve(aux);
-			if (c){
-				if (aux < d_indexed_colors.size()){
-					QPen pen = c->pen();
-					pen.setColor(d_indexed_colors[aux]);
-					c->setPen(pen);
-				}
-				aux++;
-			}
-		}
-
-		Graph *g = diff->outputGraph();
-		if (g){
-			g->newLegend();
-			g->updatePlot();
-		}
-
-		delete diff;
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->differentiate();
 }
 
 void ApplicationWindow::fitLinear()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if (qobject_cast<MultiLayer *>(w))
-		analysis(FitLinear);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
-		QStringList lst = t->selectedYColumns();
-		int cols = lst.size();
-		if (!cols){
-        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
-			return;
-		}
-
-		MultiLayer* g = multilayerPlot(t, t->drawableColumnSelection(), Graph::LineSymbols);
-		if (!g)
-			return;
-
-		QString legend = tr("Linear Regression of %1").arg(t->objectName());
-		g->setWindowLabel(legend);
-
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-
-		Table *result = newTable(cols, 5, "", legend);
-		result->setColName(0, tr("Column"));
-		result->setColName(1, tr("Slope"));
-		result->setColName(2, tr("Intercept"));
-		result->setColName(3, tr("Chi^2"));
-		result->setColName(4, tr("R^2"));
-
-		LinearFit *lf = new LinearFit (this, g->activeLayer());
-		lf->setUpdateOutputGraph(false);
-		if (d_2_linear_fit_points)
-			lf->generateFunction(generateUniformFitPoints, 2);
-		lf->setOutputPrecision(fit_output_precision);
-
-		int aux = 0;
-		for (QString yCol : lst){
-			if (!lf->setDataFromCurve(yCol))
-				continue;
-
-			lf->setColor(aux);
-			lf->fit();
-			double *res = lf->results();
-			result->setText(aux, 0, yCol);
-			result->setCell(aux, 1, res[1]);
-			result->setCell(aux, 2, res[0]);
-			result->setCell(aux, 3, lf->chiSquare());
-			result->setCell(aux, 4, lf->rSquare());
-			aux++;
-		}
-		for (int i = 0; i < result->numCols(); i++)
-			result->table()->adjustColumn(i);
-		result->show();
-
-		Graph *og = lf->outputGraph();
-		if (og)
-			og->updatePlot();
-		delete lf;
-
-		QApplication::restoreOverrideCursor();
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->fitLinear();
 }
 
 void ApplicationWindow::fitSlope()
 {
-	MdiSubWindow *w = activeWindow();
-	if (!w)
-		return;
-
-	if (qobject_cast<MultiLayer *>(w))
-		analysis(FitSlope);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
-		QStringList lst = t->selectedYColumns();
-		int cols = lst.size();
-		if (!cols){
-        	QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("Please select a 'Y' column first!"));
-			return;
-		}
-
-		MultiLayer* g = multilayerPlot(t, t->drawableColumnSelection(), Graph::LineSymbols);
-		if (!g)
-			return;
-
-		QApplication::setOverrideCursor(Qt::WaitCursor);
-
-		QString legend = tr("Linear Regression of %1").arg(t->objectName());
-		g->setWindowLabel(legend);
-
-		Table *result = newTable(cols, 4, "", legend);
-		result->setColName(0, tr("Column"));
-		result->setColName(1, tr("Slope"));
-		result->setColName(2, tr("Chi^2"));
-		result->setColName(3, tr("R^2"));
-
-		LinearSlopeFit *lf = new LinearSlopeFit (this, g->activeLayer());
-		lf->setUpdateOutputGraph(false);
-		if (d_2_linear_fit_points)
-			lf->generateFunction(generateUniformFitPoints, 2);
-		lf->setOutputPrecision(fit_output_precision);
-
-		int aux = 0;
-		for (QString yCol : lst){
-			if (!lf->setDataFromCurve(yCol))
-				continue;
-
-			lf->setColor(aux);
-			lf->fit();
-			double *res = lf->results();
-			result->setText(aux, 0, yCol);
-			result->setCell(aux, 1, res[0]);
-			result->setCell(aux, 2, lf->chiSquare());
-			result->setCell(aux, 3, lf->rSquare());
-			aux++;
-		}
-		for (int i = 0; i < result->numCols(); i++)
-			result->table()->adjustColumn(i);
-		result->show();
-
-		Graph *og = lf->outputGraph();
-		if (og)
-			og->updatePlot();
-		delete lf;
-
-		QApplication::restoreOverrideCursor();
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->fitSlope();
 }
 
 void ApplicationWindow::fitSigmoidal()
 {
-	analysis(FitSigmoidal);
+	if (d_analysis_controller)
+		d_analysis_controller->fitSigmoidal();
 }
 
 void ApplicationWindow::fitGauss()
 {
-	analysis(FitGauss);
+	if (d_analysis_controller)
+		d_analysis_controller->fitGauss();
 }
 
 void ApplicationWindow::fitLorentz()
-
 {
-	analysis(FitLorentz);
+	if (d_analysis_controller)
+		d_analysis_controller->fitLorentz();
 }
 
 void ApplicationWindow::pickPointerCursor()
@@ -9436,25 +8547,8 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 
 void ApplicationWindow::deleteFitTables()
 {
-	QList<MdiSubWindow *> windows = windowsList();
-	for (MdiSubWindow *w : windows){
-		MultiLayer *ml = qobject_cast<MultiLayer*>(w);
-		if (!ml)
-			continue;
-		QList<Graph *> layers = ml->layersList();
-		for (Graph *g : layers){
-			QList<QwtPlotCurve *> curves = g->fitCurvesList();
-			for (QwtPlotCurve *c : curves){
-				if (((PlotCurve *)c)->rtti() != Graph::Function){
-					Table *t = ((DataCurve *)c)->table();
-					if (!t)
-						continue;
-					t->askOnCloseEvent(false);
-					t->close();
-				}
-			}
-		}
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->deleteFitTables();
 }
 
 QList<MdiSubWindow *> ApplicationWindow::windowsList()
@@ -9636,107 +8730,38 @@ void ApplicationWindow::disregardCol()
 
 void ApplicationWindow::fitMultiPeakGauss()
 {
-	fitMultiPeak((int)MultiPeakFit::Gauss);
+	if (d_analysis_controller)
+		d_analysis_controller->fitMultiPeakGauss();
 }
 
 void ApplicationWindow::fitMultiPeakLorentz()
 {
-	fitMultiPeak((int)MultiPeakFit::Lorentz);
+	if (d_analysis_controller)
+		d_analysis_controller->fitMultiPeakLorentz();
 }
 
 void ApplicationWindow::fitMultiPeak(int profile)
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	if (g->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
-		return;
-	} else {
-		bool ok;
-		int peaks = QInputDialog::getInt(this, tr("QtiPlot - Enter the number of peaks"),
-				tr("Peaks"), 2, 2, 1000000, 1, &ok, windowFlags());
-		if (ok && peaks){
-			MultiPeakFitTool *tool = new MultiPeakFitTool(g, this, (MultiPeakFit::PeakProfile)profile, peaks);
-			connect(tool, &MultiPeakFitTool::statusText, info, &QLineEdit::setText);
-			g->setActiveTool(tool);
-			displayBar->show();
-		}
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->fitMultiPeak(profile);
 }
 
 void ApplicationWindow::subtractStraightLine()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-	if (plot->isEmpty()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("<h4>There are no plot layers available in this window.</h4>"
-					"<p><h4>Please add a layer and try again!</h4>"));
-		btnPointer->setChecked(true);
-		return;
-	}
-
-	Graph* g = (Graph*)plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	if (g->isPiePlot()){
-		QMessageBox::warning(this,tr("QtiPlot - Warning"),
-				tr("This functionality is not available for pie plots!"));
-		return;
-	} else {
-		SubtractLineTool *tool = new SubtractLineTool(g, this);
-		connect(tool, &SubtractLineTool::statusText, info, &QLineEdit::setText);
-		g->setActiveTool(tool);
-		displayBar->show();
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->subtractStraightLine();
 }
 
 void ApplicationWindow::subtractReferenceData()
 {
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	SubtractDataDialog *sdd = new SubtractDataDialog(this);
-	sdd->setGraph(g);
-	sdd->exec();
+	if (d_analysis_controller)
+		d_analysis_controller->subtractReferenceData();
 }
 
 void ApplicationWindow::baselineDialog()
 {
-	if (qApp->arguments().contains("-X"))
-		return;
-	MultiLayer *plot = (MultiLayer *)activeWindow(MultiLayerWindow);
-	if (!plot)
-		return;
-
-	Graph* g = plot->activeLayer();
-	if (!g || !g->validCurvesDataSize())
-		return;
-
-	BaselineDialog *bd = new BaselineDialog(this);
-	bd->setGraph(g);
-	bd->show();
+	if (d_analysis_controller)
+		d_analysis_controller->baselineDialog();
 }
 
 void ApplicationWindow::showSupportPage()
@@ -11449,31 +10474,8 @@ void ApplicationWindow::showToolBarsMenu()
 
 void ApplicationWindow::saveFitFunctions(const QStringList& lst)
 {
-	if (!lst.count())
-		return;
-
-    QString explain = tr("Starting with version 0.9.1 QtiPlot stores the user defined fit models to a different location.");
-    explain += " " + tr("If you want to save your already defined models, please choose a destination folder.");
-    if (QMessageBox::Ok != QMessageBox::information(this, tr("QtiPlot") + " - " + tr("Import fit models"), explain,
-                            QMessageBox::Ok, QMessageBox::Cancel)) return;
-
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Choose a directory to export the fit models to"), fitModelsPath, QFileDialog::ShowDirsOnly);
-	if (!dir.isEmpty()){
-	    fitModelsPath = dir;
-
-        for (int i = 0; i<lst.count(); i++){
-            QString s = lst[i].simplified();
-            if (!s.isEmpty()){
-                NonLinearFit *fit = new NonLinearFit(this, (Graph*)0);
-
-                QStringList l = s.split("=");
-                if (l.count() == 2)
-                    fit->setFormula(l[1]);
-
-                fit->save(fitModelsPath + "/" + fit->objectName() + ".fit");
-            }
-        }
-	}
+	if (d_analysis_controller)
+		d_analysis_controller->saveFitFunctions(lst);
 }
 
 void ApplicationWindow::matrixDirectFFT()
@@ -11972,29 +10974,8 @@ void ApplicationWindow::enableCompletion(bool on)
 
 void ApplicationWindow::showFrequencyCountDialog()
 {
-    Table *t = (Table *)activeWindow(TableWindow);
-	if (!t)
-		return;
-
-    int validRows = 0;
-    QTableWidgetSelectionRange sel = t->getSelection();
-    if (!t->table()->selectedRanges().isEmpty()){
-        if (sel.rowCount() > 1 && sel.columnCount() == 1){
-            int col = sel.leftColumn();
-            for (int i = sel.topRow(); i <= sel.bottomRow(); i++){
-                if (!t->text(i, col).isEmpty())
-                   validRows++;
-                if (validRows > 1){
-                    FrequencyCountDialog *fcd = new FrequencyCountDialog(t, this);
-                    fcd->exec();
-                    break;
-                }
-            }
-        }
-    }
-    if (validRows < 2)
-        QMessageBox::warning(this, tr("QtiPlot - Column selection error"),
-        tr("Please select exactly one column and more than one non empty cell!"));
+	if (d_analysis_controller)
+		d_analysis_controller->showFrequencyCountDialog();
 }
 
 Note * ApplicationWindow::newStemPlot()
