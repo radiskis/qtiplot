@@ -31,6 +31,7 @@
 #include <Graph.h>
 #include <MultiLayer.h>
 #include <ApplicationWindow.h>
+#include <PlotController2D.h>
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
 #include <PenStyleBox.h>
@@ -355,7 +356,7 @@ ApplicationWindow *app = (ApplicationWindow *)this->parent();
 if (!app)
 	return;
 
-app->setArrowDefaultSettings(widthBox->value(), colorBox->color(), styleBox->style(),
+app->plotController2D()->setArrowDefaultSettings(widthBox->value(), colorBox->color(), styleBox->style(),
 							boxHeadLength->value(), boxHeadAngle->value(), filledBox->isChecked());
 }
 

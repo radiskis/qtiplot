@@ -476,17 +476,17 @@ void ActionManager::createActions()
 
 	actionNewSurfacePlot = new QAction(QIcon(":/newFxy.png"), d_app->tr("New 3D &Surface Plot") + "...", d_app);
 	actionNewSurfacePlot->setShortcut( d_app->tr("Ctrl+ALT+Z") );
-	connect(actionNewSurfacePlot, &QAction::triggered, d_app, &ApplicationWindow::newSurfacePlot);
+	connect(actionNewSurfacePlot, &QAction::triggered, d_app->plotController3D(), &PlotController3D::newSurfacePlot);
 
 	actionOpen = new QAction(QIcon(":/fileopen.png"), d_app->tr("&Open..."), d_app);
 	actionOpen->setShortcut( d_app->tr("Ctrl+O") );
 	connect(actionOpen, &QAction::triggered, d_app, [app]{app->open();});
 
 	actionExportExcel = new QAction(QIcon(":/new_excel.png"), d_app->tr("Export Exce&l ..."), d_app);
-	connect(actionExportExcel, &QAction::triggered, d_app, &ApplicationWindow::exportExcel);
+	connect(actionExportExcel, &QAction::triggered, d_app->exportManager(), &ExportManager::exportExcel);
 
 	actionExportOds = new QAction(QIcon(":/new_ods.png"), d_app->tr("Export &Open Document Spreadsheet ..."), d_app);
-	connect(actionExportOds, &QAction::triggered, d_app, &ApplicationWindow::exportOds);
+	connect(actionExportOds, &QAction::triggered, d_app->exportManager(), &ExportManager::exportOds);
 
 	actionOpenExcel = new QAction(QIcon(":/open_excel.png"), d_app->tr("Open Exce&l ..."), d_app);
 	actionOpenExcel->setShortcut( d_app->tr("Ctrl+Shift+E") );
@@ -614,45 +614,45 @@ void ActionManager::createActions()
 
 	actionAddLayer = new QAction(QIcon(":/newLayer.png"), d_app->tr("Add La&yer"), d_app);
 	actionAddLayer->setShortcut( d_app->tr("ALT+L") );
-	connect(actionAddLayer, &QAction::triggered, d_app, &ApplicationWindow::addLayer);
+	connect(actionAddLayer, &QAction::triggered, d_app->plotController2D(), &PlotController2D::addLayer);
 
 	actionShowLayerDialog = new QAction(QIcon(":/arrangeLayers.png"), d_app->tr("Arran&ge Layers"), d_app);
 	actionShowLayerDialog->setShortcut( d_app->tr("Shift+A") );
 	connect(actionShowLayerDialog, &QAction::triggered, d_app, &ApplicationWindow::showLayerDialog);
 
 	actionAutomaticLayout = new QAction(QIcon(":/auto_layout.png"), d_app->tr("Automatic Layout"), d_app);
-	connect(actionAutomaticLayout, &QAction::triggered, d_app, &ApplicationWindow::autoArrangeLayers);
+	connect(actionAutomaticLayout, &QAction::triggered, d_app->plotController2D(), &PlotController2D::autoArrangeLayers);
 
 	actionExportLayer = new QAction(d_app->tr("&Layer") + "...", d_app);
 	actionExportLayer->setShortcut(d_app->tr("Ctrl+Shift+L"));
-	connect(actionExportLayer, &QAction::triggered, d_app, &ApplicationWindow::exportLayer);
+	connect(actionExportLayer, &QAction::triggered, d_app->exportManager(), &ExportManager::exportLayer);
 
 	actionExportGraph = new QAction(d_app->tr("&Window") + "...", d_app);
 	actionExportGraph->setShortcut( d_app->tr("Ctrl+Alt+G") );
-	connect(actionExportGraph, &QAction::triggered, d_app, [app]{app->exportGraph();});
+	connect(actionExportGraph, &QAction::triggered, d_app, [app]{app->exportManager()->exportGraph();});
 
 	actionExportAllGraphs = new QAction(d_app->tr("&All") + "...", d_app);
 	actionExportAllGraphs->setShortcut( d_app->tr("Alt+X") );
-	connect(actionExportAllGraphs, &QAction::triggered, d_app, [app]{app->exportAllGraphs();});
+	connect(actionExportAllGraphs, &QAction::triggered, d_app, [app]{app->exportManager()->exportAllGraphs();});
 	actionPresentationODF = new QAction(d_app->tr("Create Open &Document Presentation..."), d_app);
-	connect(actionPresentationODF, &QAction::triggered, d_app, &ApplicationWindow::exportPresentationODF);
+	connect(actionPresentationODF, &QAction::triggered, d_app->exportManager(), &ExportManager::exportPresentationODF);
 	actionExportPDF = new QAction(QIcon(":/pdf.png"), d_app->tr("&Export PDF") + "...", d_app);
 	actionExportPDF->setShortcut( d_app->tr("Ctrl+Alt+P") );
-	connect(actionExportPDF, &QAction::triggered, d_app, &ApplicationWindow::exportPDF);
+	connect(actionExportPDF, &QAction::triggered, d_app->exportManager(), &ExportManager::exportPDF);
 
 	actionPrint = new QAction(QIcon(":/fileprint.png"), d_app->tr("&Print..."), d_app);
 	actionPrint->setShortcut( d_app->tr("Ctrl+P") );
-	connect(actionPrint, &QAction::triggered, d_app, &ApplicationWindow::print);
+	connect(actionPrint, &QAction::triggered, d_app->exportManager(), &ExportManager::print);
 
 	actionPrintPreview = new QAction(QIcon(":/preview.png"), d_app->tr("Print Pre&view..."), d_app);
-	connect(actionPrintPreview, &QAction::triggered, d_app, &ApplicationWindow::printPreview);
+	connect(actionPrintPreview, &QAction::triggered, d_app->exportManager(), &ExportManager::printPreview);
 
 	actionPrintAllPlots = new QAction(d_app->tr("Print All Plo&ts"), d_app);
 	actionPrintAllPlots->setShortcut(d_app->tr("Ctrl+Shift+P"));
-	connect(actionPrintAllPlots, &QAction::triggered, d_app, &ApplicationWindow::printAllPlots);
+	connect(actionPrintAllPlots, &QAction::triggered, d_app->exportManager(), &ExportManager::printAllPlots);
 
 	actionShowExportASCIIDialog = new QAction(d_app->tr("E&xport ASCII..."), d_app);
-	connect(actionShowExportASCIIDialog, &QAction::triggered, d_app, &ApplicationWindow::showExportASCIIDialog);
+	connect(actionShowExportASCIIDialog, &QAction::triggered, d_app->exportManager(), &ExportManager::showExportASCIIDialog);
 
 	actionCloseAllWindows = new QAction(QIcon(":/quit.png"), d_app->tr("&Quit"), d_app);
 	actionCloseAllWindows->setShortcut( d_app->tr("Ctrl+Q") );
@@ -669,7 +669,7 @@ void ActionManager::createActions()
 	connect(actionClearLogInfo, &QAction::triggered, d_app, &ApplicationWindow::clearLogInfo);
 
 	actionDeleteFitTables = new QAction(QIcon(":/close.png"), d_app->tr("Delete &Fit Tables"), d_app);
-	connect(actionDeleteFitTables, &QAction::triggered, d_app, &ApplicationWindow::deleteFitTables);
+	connect(actionDeleteFitTables, &QAction::triggered, d_app->analysisController(), &AnalysisController::deleteFitTables);
 
 	actionShowPlotWizard = new QAction(QIcon(":/wizard.png"), d_app->tr("Plot &Wizard") + "...", d_app);
 	actionShowPlotWizard->setShortcut( d_app->tr("Ctrl+Alt+W") );
@@ -712,124 +712,124 @@ void ActionManager::createActions()
 	connect(actionAddImage, &QAction::triggered, d_app, &ApplicationWindow::addImage);
 
 	actionPlotL = new QAction(QIcon(":/lPlot.png"), d_app->tr("&Line"), d_app);
-	connect(actionPlotL, &QAction::triggered, d_app, &ApplicationWindow::plotL);
+	connect(actionPlotL, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotL);
 
 	actionPlotP = new QAction(QIcon(":/pPlot.png"), d_app->tr("&Scatter"), d_app);
-	connect(actionPlotP, &QAction::triggered, d_app, &ApplicationWindow::plotP);
+	connect(actionPlotP, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotP);
 
 	actionPlotLP = new QAction(QIcon(":/lpPlot.png"), d_app->tr("Line + S&ymbol"), d_app);
-	connect(actionPlotLP, &QAction::triggered, d_app, &ApplicationWindow::plotLP);
+	connect(actionPlotLP, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotLP);
 
 	actionPlotPolar = new QAction(QIcon(":/lpPlot.png"), d_app->tr("&Polar"), d_app);
-	connect(actionPlotPolar, &QAction::triggered, d_app, [app]{app->plotPolar();});
+	connect(actionPlotPolar, &QAction::triggered, d_app, [app]{app->plotController3D()->plotPolar();});
 
 	actionPlotVerticalDropLines = new QAction(QIcon(":/dropLines.png"), d_app->tr("Vertical &Drop Lines"), d_app);
-	connect(actionPlotVerticalDropLines, &QAction::triggered, d_app, &ApplicationWindow::plotVerticalDropLines);
+	connect(actionPlotVerticalDropLines, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVerticalDropLines);
 
 	actionPlotSpline = new QAction(QIcon(":/spline.png"), d_app->tr("&Spline"), d_app);
-	connect(actionPlotSpline, &QAction::triggered, d_app, &ApplicationWindow::plotSpline);
+	connect(actionPlotSpline, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotSpline);
 
 	actionPlotHorSteps = new QAction(QPixmap(":/hor_steps.png"), d_app->tr("&Horizontal Steps"), d_app);
-	connect(actionPlotHorSteps, &QAction::triggered, d_app, &ApplicationWindow::plotHorSteps);
+	connect(actionPlotHorSteps, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotHorSteps);
 
 	actionPlotVertSteps = new QAction(QIcon(":/vert_steps.png"), d_app->tr("&Vertical Steps"), d_app);
-	connect(actionPlotVertSteps, &QAction::triggered, d_app, &ApplicationWindow::plotVertSteps);
+	connect(actionPlotVertSteps, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVertSteps);
 
 	actionPlotVerticalBars = new QAction(QIcon(":/vertBars.png"), d_app->tr("&Columns"), d_app);
-	connect(actionPlotVerticalBars, &QAction::triggered, d_app, &ApplicationWindow::plotVerticalBars);
+	connect(actionPlotVerticalBars, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVerticalBars);
 
 	actionPlotHorizontalBars = new QAction(QIcon(":/hBars.png"), d_app->tr("&Rows"), d_app);
-	connect(actionPlotHorizontalBars, &QAction::triggered, d_app, &ApplicationWindow::plotHorizontalBars);
+	connect(actionPlotHorizontalBars, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotHorizontalBars);
 
 	actionStackBars = new QAction(QIcon(":/stack_bar.png"), d_app->tr("Stack &Bar"), d_app);
-	connect(actionStackBars, &QAction::triggered, d_app, &ApplicationWindow::plotStackBar);
+	connect(actionStackBars, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotStackBar);
 
 	actionStackColumns = new QAction(QIcon(":/stack_column.png"), d_app->tr("Stack &Column"), d_app);
-	connect(actionStackColumns, &QAction::triggered, d_app, &ApplicationWindow::plotStackColumn);
+	connect(actionStackColumns, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotStackColumn);
 
 	actionPlotArea = new QAction(QIcon(":/area.png"), d_app->tr("&Area"), d_app);
-	connect(actionPlotArea, &QAction::triggered, d_app, &ApplicationWindow::plotArea);
+	connect(actionPlotArea, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotArea);
 
 	actionPlotPie = new QAction(QIcon(":/pie.png"), d_app->tr("&Pie"), d_app);
-	connect(actionPlotPie, &QAction::triggered, d_app, &ApplicationWindow::plotPie);
+	connect(actionPlotPie, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotPie);
 
 	actionPlotVectXYAM = new QAction(QIcon(":/vectXYAM.png"), d_app->tr("Vectors XY&AM"), d_app);
-	connect(actionPlotVectXYAM, &QAction::triggered, d_app, &ApplicationWindow::plotVectXYAM);
+	connect(actionPlotVectXYAM, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVectXYAM);
 
 	actionPlotVectXYXY = new QAction(QIcon(":/vectXYXY.png"), d_app->tr("&Vectors &XYXY"), d_app);
-	connect(actionPlotVectXYXY, &QAction::triggered, d_app, &ApplicationWindow::plotVectXYXY);
+	connect(actionPlotVectXYXY, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVectXYXY);
 
 	actionPlotHistogram = new QAction(QIcon(":/histogram.png"), d_app->tr("&Histogram"), d_app);
-	connect(actionPlotHistogram, &QAction::triggered, d_app, [app]{app->plotHistogram();});
+	connect(actionPlotHistogram, &QAction::triggered, d_app, [app]{app->plotController2D()->plotHistogram();});
 
 	actionPlotStackedHistograms = new QAction(QIcon(":/stacked_hist.png"), d_app->tr("&Stacked Histogram"), d_app);
-	connect(actionPlotStackedHistograms, &QAction::triggered, d_app, &ApplicationWindow::plotStackedHistograms);
+	connect(actionPlotStackedHistograms, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotStackedHistograms);
 
 	actionStemPlot = new QAction(QIcon(":/leaf.png"), d_app->tr("Stem-and-&Leaf Plot"), d_app);
-	connect(actionStemPlot, &QAction::triggered, d_app, &ApplicationWindow::newStemPlot);
+	connect(actionStemPlot, &QAction::triggered, d_app->plotController2D(), &PlotController2D::newStemPlot);
 
 	actionPlot2VerticalLayers = new QAction(QIcon(":/panel_v2.png"), d_app->tr("&Vertical 2 Layers"), d_app);
-	connect(actionPlot2VerticalLayers, &QAction::triggered, d_app, &ApplicationWindow::plot2VerticalLayers);
+	connect(actionPlot2VerticalLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plot2VerticalLayers);
 
 	actionPlot2HorizontalLayers = new QAction(QIcon(":/panel_h2.png"), d_app->tr("&Horizontal 2 Layers"), d_app);
-	connect(actionPlot2HorizontalLayers, &QAction::triggered, d_app, &ApplicationWindow::plot2HorizontalLayers);
+	connect(actionPlot2HorizontalLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plot2HorizontalLayers);
 
 	actionPlot4Layers = new QAction(QIcon(":/panel_4.png"), d_app->tr("&4 Layers"), d_app);
-	connect(actionPlot4Layers, &QAction::triggered, d_app, &ApplicationWindow::plot4Layers);
+	connect(actionPlot4Layers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plot4Layers);
 
 	actionPlotStackedLayers = new QAction(QIcon(":/stacked.png"), d_app->tr("&Stacked Layers"), d_app);
-	connect(actionPlotStackedLayers, &QAction::triggered, d_app, &ApplicationWindow::plotStackedLayers);
+	connect(actionPlotStackedLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotStackedLayers);
 
 	actionVertSharedAxisLayers = new QAction(QIcon(":/panel_v2.png"), d_app->tr("&Vertical 2 Layers"), d_app);
-	connect(actionVertSharedAxisLayers, &QAction::triggered, d_app, &ApplicationWindow::plotVerticalSharedAxisLayers);
+	connect(actionVertSharedAxisLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotVerticalSharedAxisLayers);
 
 	actionHorSharedAxisLayers = new QAction(QIcon(":/panel_h2.png"), d_app->tr("&Horizontal 2 Layers"), d_app);
-	connect(actionHorSharedAxisLayers, &QAction::triggered, d_app, &ApplicationWindow::plotHorizontalSharedAxisLayers);
+	connect(actionHorSharedAxisLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotHorizontalSharedAxisLayers);
 
 	actionSharedAxesLayers = new QAction(QIcon(":/panel_4.png"), d_app->tr("&4 Layers"), d_app);
-	connect(actionSharedAxesLayers, &QAction::triggered, d_app, &ApplicationWindow::plotSharedAxesLayers);
+	connect(actionSharedAxesLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotSharedAxesLayers);
 
 	actionStackSharedAxisLayers = new QAction(QIcon(":/stacked.png"), d_app->tr("&Stacked Layers"), d_app);
-	connect(actionStackSharedAxisLayers, &QAction::triggered, d_app, &ApplicationWindow::plotStackSharedAxisLayers);
+	connect(actionStackSharedAxisLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotStackSharedAxisLayers);
 
 	actionCustomSharedAxisLayers = new QAction(QIcon(":/arrangeLayers.png"), d_app->tr("&Custom Layout..."), d_app);
-	connect(actionCustomSharedAxisLayers, &QAction::triggered, d_app, &ApplicationWindow::plotCustomLayoutSharedAxes);
+	connect(actionCustomSharedAxisLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotCustomLayoutSharedAxes);
 
 	actionCustomLayout = new QAction(QIcon(":/arrangeLayers.png"), d_app->tr("&Custom Layout..."), d_app);
-	connect(actionCustomLayout, &QAction::triggered, d_app, &ApplicationWindow::plotCustomLayout);
+	connect(actionCustomLayout, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotCustomLayout);
 
 	actionPlotDoubleYAxis = new QAction(QIcon(":/plot_double_y.png"), d_app->tr("D&ouble-Y"), d_app);
-	connect(actionPlotDoubleYAxis, &QAction::triggered, d_app, &ApplicationWindow::plotDoubleYAxis);
+	connect(actionPlotDoubleYAxis, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotDoubleYAxis);
 
 	actionAddZoomPlot = new QAction(QIcon(":/add_zoom_plot.png"), d_app->tr("&Zoom"), d_app);
-	connect(actionAddZoomPlot, &QAction::triggered, d_app, &ApplicationWindow::zoomRectanglePlot);
+	connect(actionAddZoomPlot, &QAction::triggered, d_app->plotController2D(), &PlotController2D::zoomRectanglePlot);
 
 	actionWaterfallPlot = new QAction(QIcon(":/waterfall_plot.png"), d_app->tr("&Waterfall Plot"), d_app);
-	connect(actionWaterfallPlot, &QAction::triggered, d_app, [app]{app->waterfallPlot();});
+	connect(actionWaterfallPlot, &QAction::triggered, d_app, [app]{app->plotController2D()->waterfallPlot();});
 
 	actionExtractGraphs = new QAction(QIcon(":/extract_graphs.png"), d_app->tr("E&xtract to Graphs"), d_app);
-	connect(actionExtractGraphs, &QAction::triggered, d_app, &ApplicationWindow::extractGraphs);
+	connect(actionExtractGraphs, &QAction::triggered, d_app->plotController2D(), &PlotController2D::extractGraphs);
 
 	actionExtractLayers = new QAction(QIcon(":/extract_layers.png"), d_app->tr("Extract to &Layers"), d_app);
-	connect(actionExtractLayers, &QAction::triggered, d_app, &ApplicationWindow::extractLayers);
+	connect(actionExtractLayers, &QAction::triggered, d_app->plotController2D(), &PlotController2D::extractLayers);
 
 	actionAddInsetLayer = new QAction(QIcon(":/add_inset_layer.png"), d_app->tr("Add Inset Layer"), d_app);
-	connect(actionAddInsetLayer, &QAction::triggered, d_app, &ApplicationWindow::addInsetLayer);
+	connect(actionAddInsetLayer, &QAction::triggered, d_app->plotController2D(), &PlotController2D::addInsetLayer);
 
 	actionAddInsetCurveLayer = new QAction(QIcon(":/add_inset_curve_layer.png"), d_app->tr("Add Inset Layer"), d_app);
-	connect(actionAddInsetCurveLayer, &QAction::triggered, d_app, &ApplicationWindow::addInsetCurveLayer);
+	connect(actionAddInsetCurveLayer, &QAction::triggered, d_app->plotController2D(), &PlotController2D::addInsetCurveLayer);
 
 	actionPlot3DRibbon = new QAction(QIcon(":/ribbon.png"), d_app->tr("&Ribbon"), d_app);
-	connect(actionPlot3DRibbon, &QAction::triggered, d_app, &ApplicationWindow::plot3DRibbon);
+	connect(actionPlot3DRibbon, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DRibbon);
 
 	actionPlot3DBars = new QAction(QIcon(":/bars.png"), d_app->tr("&Bars"), d_app);
-	connect(actionPlot3DBars, &QAction::triggered, d_app, &ApplicationWindow::plot3DBars);
+	connect(actionPlot3DBars, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DBars);
 
 	actionPlot3DScatter = new QAction(QIcon(":/scatter.png"), d_app->tr("&Scatter"), d_app);
-	connect(actionPlot3DScatter, &QAction::triggered, d_app, &ApplicationWindow::plot3DScatter);
+	connect(actionPlot3DScatter, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DScatter);
 
 	actionPlot3DTrajectory = new QAction(QIcon(":/trajectory.png"), d_app->tr("&Trajectory"), d_app);
-	connect(actionPlot3DTrajectory, &QAction::triggered, d_app, &ApplicationWindow::plot3DTrajectory);
+	connect(actionPlot3DTrajectory, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DTrajectory);
 
 	actionShowColStatistics = new QAction(QIcon(":/col_stat.png"), d_app->tr("Statistics on &Columns"), d_app);
 	connect(actionShowColStatistics, &QAction::triggered, d_app, &ApplicationWindow::showColStatistics);
@@ -838,77 +838,77 @@ void ActionManager::createActions()
 	connect(actionShowRowStatistics, &QAction::triggered, d_app, &ApplicationWindow::showRowStatistics);
 
 	actionIntegrate = new QAction(d_app->tr("&Integrate") + "...", d_app);
-	connect(actionIntegrate, &QAction::triggered, d_app, &ApplicationWindow::integrate);
+	connect(actionIntegrate, &QAction::triggered, d_app->analysisController(), &AnalysisController::integrate);
 
 	actionShowIntDialog = new QAction(d_app->tr("Integr&ate Function..."), d_app);
-	connect(actionShowIntDialog, &QAction::triggered, d_app, &ApplicationWindow::showFunctionIntegrationDialog);
+	connect(actionShowIntDialog, &QAction::triggered, d_app->analysisController(), &AnalysisController::showFunctionIntegrationDialog);
 
 	actionInterpolate = new QAction(d_app->tr("Inte&rpolate ..."), d_app);
-	connect(actionInterpolate, &QAction::triggered, d_app, &ApplicationWindow::showInterpolationDialog);
+	connect(actionInterpolate, &QAction::triggered, d_app->analysisController(), &AnalysisController::showInterpolationDialog);
 
 	actionLowPassFilter = new QAction(d_app->tr("&Low Pass..."), d_app);
-	connect(actionLowPassFilter, &QAction::triggered, d_app, &ApplicationWindow::lowPassFilterDialog);
+	connect(actionLowPassFilter, &QAction::triggered, d_app->analysisController(), &AnalysisController::lowPassFilterDialog);
 
 	actionHighPassFilter = new QAction(d_app->tr("&High Pass..."), d_app);
-	connect(actionHighPassFilter, &QAction::triggered, d_app, &ApplicationWindow::highPassFilterDialog);
+	connect(actionHighPassFilter, &QAction::triggered, d_app->analysisController(), &AnalysisController::highPassFilterDialog);
 
 	actionBandPassFilter = new QAction(d_app->tr("&Band Pass..."), d_app);
-	connect(actionBandPassFilter, &QAction::triggered, d_app, &ApplicationWindow::bandPassFilterDialog);
+	connect(actionBandPassFilter, &QAction::triggered, d_app->analysisController(), &AnalysisController::bandPassFilterDialog);
 
 	actionBandBlockFilter = new QAction(d_app->tr("&Band Block..."), d_app);
-	connect(actionBandBlockFilter, &QAction::triggered, d_app, &ApplicationWindow::bandBlockFilterDialog);
+	connect(actionBandBlockFilter, &QAction::triggered, d_app->analysisController(), &AnalysisController::bandBlockFilterDialog);
 
 	actionFFT = new QAction(d_app->tr("&FFT..."), d_app);
-	connect(actionFFT, &QAction::triggered, d_app, &ApplicationWindow::showFFTDialog);
+	connect(actionFFT, &QAction::triggered, d_app->analysisController(), &AnalysisController::showFFTDialog);
 
 	actionSmoothSavGol = new QAction(d_app->tr("&Savitzky-Golay..."), d_app);
-	connect(actionSmoothSavGol, &QAction::triggered, d_app, &ApplicationWindow::showSmoothSavGolDialog);
+	connect(actionSmoothSavGol, &QAction::triggered, d_app->analysisController(), &AnalysisController::showSmoothSavGolDialog);
 
 	actionSmoothFFT = new QAction(d_app->tr("&FFT Filter..."), d_app);
-	connect(actionSmoothFFT, &QAction::triggered, d_app, &ApplicationWindow::showSmoothFFTDialog);
+	connect(actionSmoothFFT, &QAction::triggered, d_app->analysisController(), &AnalysisController::showSmoothFFTDialog);
 
 	actionSmoothAverage = new QAction(d_app->tr("Moving Window &Average..."), d_app);
-	connect(actionSmoothAverage, &QAction::triggered, d_app, &ApplicationWindow::showSmoothAverageDialog);
+	connect(actionSmoothAverage, &QAction::triggered, d_app->analysisController(), &AnalysisController::showSmoothAverageDialog);
 
 	actionSmoothLowess = new QAction(d_app->tr("&Lowess..."), d_app);
-	connect(actionSmoothLowess, &QAction::triggered, d_app, &ApplicationWindow::showSmoothLowessDialog);
+	connect(actionSmoothLowess, &QAction::triggered, d_app->analysisController(), &AnalysisController::showSmoothLowessDialog);
 
 	actionDifferentiate = new QAction(d_app->tr("&Differentiate"), d_app);
-	connect(actionDifferentiate, &QAction::triggered, d_app, &ApplicationWindow::differentiate);
+	connect(actionDifferentiate, &QAction::triggered, d_app->analysisController(), &AnalysisController::differentiate);
 
 	actionFitSlope = new QAction(d_app->tr("Fit Slop&e"), d_app);
-	connect(actionFitSlope, &QAction::triggered, d_app, &ApplicationWindow::fitSlope);
+	connect(actionFitSlope, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitSlope);
 
 	actionFitLinear = new QAction(d_app->tr("Fit &Linear"), d_app);
-	connect(actionFitLinear, &QAction::triggered, d_app, &ApplicationWindow::fitLinear);
+	connect(actionFitLinear, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitLinear);
 
 	actionShowFitPolynomDialog = new QAction(d_app->tr("Fit &Polynomial ..."), d_app);
-	connect(actionShowFitPolynomDialog, &QAction::triggered, d_app, &ApplicationWindow::showFitPolynomDialog);
+	connect(actionShowFitPolynomDialog, &QAction::triggered, d_app->analysisController(), &AnalysisController::showFitPolynomDialog);
 
 	actionShowExpDecayDialog = new QAction(d_app->tr("&First Order ..."), d_app);
-	connect(actionShowExpDecayDialog, &QAction::triggered, d_app, [app]{app->showExpDecayDialog();});
+	connect(actionShowExpDecayDialog, &QAction::triggered, d_app, [app]{app->analysisController()->showExpDecayDialog();});
 
 	actionShowTwoExpDecayDialog = new QAction(d_app->tr("&Second Order ..."), d_app);
-	connect(actionShowTwoExpDecayDialog, &QAction::triggered, d_app, &ApplicationWindow::showTwoExpDecayDialog);
+	connect(actionShowTwoExpDecayDialog, &QAction::triggered, d_app->analysisController(), &AnalysisController::showTwoExpDecayDialog);
 
 	actionShowExpDecay3Dialog = new QAction(d_app->tr("&Third Order ..."), d_app);
-	connect(actionShowExpDecay3Dialog, &QAction::triggered, d_app, &ApplicationWindow::showExpDecay3Dialog);
+	connect(actionShowExpDecay3Dialog, &QAction::triggered, d_app->analysisController(), &AnalysisController::showExpDecay3Dialog);
 
 	actionFitExpGrowth = new QAction(d_app->tr("Fit Exponential Gro&wth ..."), d_app);
-	connect(actionFitExpGrowth, &QAction::triggered, d_app, &ApplicationWindow::showExpGrowthDialog);
+	connect(actionFitExpGrowth, &QAction::triggered, d_app->analysisController(), &AnalysisController::showExpGrowthDialog);
 
 	actionFitSigmoidal = new QAction(d_app->tr("Fit &Boltzmann (Sigmoidal)"), d_app);
-	connect(actionFitSigmoidal, &QAction::triggered, d_app, &ApplicationWindow::fitSigmoidal);
+	connect(actionFitSigmoidal, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitSigmoidal);
 
 	actionFitGauss = new QAction(d_app->tr("Fit &Gaussian"), d_app);
-	connect(actionFitGauss, &QAction::triggered, d_app, &ApplicationWindow::fitGauss);
+	connect(actionFitGauss, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitGauss);
 
 	actionFitLorentz = new QAction(d_app->tr("Fit Lorent&zian"), d_app);
-	connect(actionFitLorentz, &QAction::triggered, d_app, &ApplicationWindow::fitLorentz);
+	connect(actionFitLorentz, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitLorentz);
 
 	actionShowFitDialog = new QAction(d_app->tr("Fit &Wizard..."), d_app);
 	actionShowFitDialog->setShortcut( d_app->tr("Ctrl+Y") );
-	connect(actionShowFitDialog, &QAction::triggered, d_app, &ApplicationWindow::showFitDialog);
+	connect(actionShowFitDialog, &QAction::triggered, d_app->analysisController(), &AnalysisController::showFitDialog);
 
 	actionShowPlotDialog = new QAction(d_app->tr("&Plot ..."), d_app);
 	connect(actionShowPlotDialog, &QAction::triggered, d_app, &ApplicationWindow::showGeneralPlotDialog);
@@ -1018,7 +1018,7 @@ void ActionManager::createActions()
 
 	actionDeleteLayer = new QAction(QIcon(":/delete.png"), d_app->tr("&Remove Layer"), d_app);
 	actionDeleteLayer->setShortcut( d_app->tr("Alt+R") );
-	connect(actionDeleteLayer, &QAction::triggered, d_app, &ApplicationWindow::deleteLayer);
+	connect(actionDeleteLayer, &QAction::triggered, d_app->plotController2D(), &PlotController2D::deleteLayer);
 
 	actionResizeActiveWindow = new QAction(QIcon(":/resize.png"), d_app->tr("Window &Geometry..."), d_app);
 	connect(actionResizeActiveWindow, &QAction::triggered, d_app, &ApplicationWindow::resizeActiveWindow);
@@ -1059,10 +1059,10 @@ void ActionManager::createActions()
 	connect(actionResizeWindow, &QAction::triggered, d_app, &ApplicationWindow::resizeWindow);
 
 	actionEditSurfacePlot = new QAction(d_app->tr("&Surface..."), d_app);
-	connect(actionEditSurfacePlot, &QAction::triggered, d_app, &ApplicationWindow::editSurfacePlot);
+	connect(actionEditSurfacePlot, &QAction::triggered, d_app->plotController3D(), &PlotController3D::editSurfacePlot);
 
 	actionAdd3DData = new QAction(d_app->tr("&Data Set..."), d_app);
-	connect(actionAdd3DData, &QAction::triggered, d_app, &ApplicationWindow::add3DData);
+	connect(actionAdd3DData, &QAction::triggered, d_app->plotController3D(), &PlotController3D::add3DData);
 
 	actionSetMatrixProperties = new QAction(QIcon(":/configure.png"), d_app->tr("Set &Properties..."), d_app);
 	connect(actionSetMatrixProperties, &QAction::triggered, d_app, &ApplicationWindow::showMatrixDialog);
@@ -1076,10 +1076,10 @@ void ActionManager::createActions()
 	actionSetMatrixValues->setShortcut(d_app->tr("Alt+Q"));
 
 	actionImagePlot = new QAction(QIcon(":/image_plot.png"), d_app->tr("&Image Plot"), d_app);
-	connect(actionImagePlot, &QAction::triggered, d_app, [app]{app->plotImage();});
+	connect(actionImagePlot, &QAction::triggered, d_app, [app]{app->plotController2D()->plotImage();});
 
 	actionImageProfilesPlot = new QAction(QIcon(":/image_profiles.png"), d_app->tr("&Image Profiles"), d_app);
-	connect(actionImageProfilesPlot, &QAction::triggered, d_app, [app]{app->plotImageProfiles();});
+	connect(actionImageProfilesPlot, &QAction::triggered, d_app, [app]{app->plotController2D()->plotImageProfiles();});
 
 	actionTransposeMatrix = new QAction(d_app->tr("&Transpose"), d_app);
 	connect(actionTransposeMatrix, &QAction::triggered, d_app, &ApplicationWindow::transposeMatrix);
@@ -1143,7 +1143,7 @@ void ActionManager::createActions()
 	
 
 	actionExportMatrix = new QAction(QPixmap(":/monalisa.png"), d_app->tr("&Export Image ..."), d_app);
-	connect(actionExportMatrix, &QAction::triggered, d_app, [app]{app->exportMatrix();});
+	connect(actionExportMatrix, &QAction::triggered, d_app, [app]{app->exportManager()->exportMatrix();});
 
 	actionConvertMatrixDirect = new QAction(d_app->tr("&Direct"), d_app);
 	connect(actionConvertMatrixDirect, &QAction::triggered, d_app, &ApplicationWindow::convertMatrixToTableDirect);
@@ -1184,25 +1184,25 @@ void ActionManager::createActions()
 #endif
 
 	actionPlot3DWireFrame = new QAction(QIcon(":/lineMesh.png"), d_app->tr("3D &Wire Frame"), d_app);
-	connect(actionPlot3DWireFrame, &QAction::triggered, d_app, &ApplicationWindow::plot3DWireframe);
+	connect(actionPlot3DWireFrame, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DWireframe);
 
 	actionPlot3DHiddenLine = new QAction(QIcon(":/grid_only.png"), d_app->tr("3D &Hidden Line"), d_app);
-	connect(actionPlot3DHiddenLine, &QAction::triggered, d_app, &ApplicationWindow::plot3DHiddenLine);
+	connect(actionPlot3DHiddenLine, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DHiddenLine);
 
 	actionPlot3DPolygons = new QAction(QIcon(":/no_grid.png"), d_app->tr("3D &Polygons"), d_app);
-	connect(actionPlot3DPolygons, &QAction::triggered, d_app, &ApplicationWindow::plot3DPolygons);
+	connect(actionPlot3DPolygons, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DPolygons);
 
 	actionPlot3DWireSurface = new QAction(QIcon(":/grid_poly.png"), d_app->tr("3D Wire &Surface"), d_app);
-	connect(actionPlot3DWireSurface, &QAction::triggered, d_app, &ApplicationWindow::plot3DWireSurface);
+	connect(actionPlot3DWireSurface, &QAction::triggered, d_app->plotController3D(), &PlotController3D::plot3DWireSurface);
 
 	actionColorMap = new QAction(QIcon(":/color_map.png"), d_app->tr("Contour - &Color Fill"), d_app);
-	connect(actionColorMap, &QAction::triggered, d_app, [app]{app->plotColorMap();});
+	connect(actionColorMap, &QAction::triggered, d_app, [app]{app->plotController2D()->plotColorMap();});
 
 	actionContourMap = new QAction(QIcon(":/contour_map.png"), d_app->tr("Contour &Lines"), d_app);
-	connect(actionContourMap, &QAction::triggered, d_app, [app]{app->plotContour();});
+	connect(actionContourMap, &QAction::triggered, d_app, [app]{app->plotController2D()->plotContour();});
 
 	actionGrayMap = new QAction(QIcon(":/gray_map.png"), d_app->tr("&Gray Scale Map"), d_app);
-	connect(actionGrayMap, &QAction::triggered, d_app, [app]{app->plotGrayScale();});
+	connect(actionGrayMap, &QAction::triggered, d_app, [app]{app->plotController2D()->plotGrayScale();});
 
 	actionSortTable = new QAction(QIcon(":/sort.png"), d_app->tr("Sort Ta&ble") + "...", d_app);
 	connect(actionSortTable, &QAction::triggered, d_app, &ApplicationWindow::sortActiveTable);
@@ -1244,26 +1244,26 @@ void ActionManager::createActions()
 	connect(actionSetRandomNormalValues, &QAction::triggered, d_app, &ApplicationWindow::setNormalRandomValues);
 
 	actionFrequencyCount = new QAction(d_app->tr("&Frequency Count ..."), d_app);
-	connect(actionFrequencyCount, &QAction::triggered, d_app, &ApplicationWindow::showFrequencyCountDialog);
+	connect(actionFrequencyCount, &QAction::triggered, d_app->analysisController(), &AnalysisController::showFrequencyCountDialog);
 
 	actionShapiroWilk = new QAction(d_app->tr("&Normality Test (Shapiro - Wilk)") + "...", d_app);
-	connect(actionShapiroWilk, &QAction::triggered, d_app, &ApplicationWindow::testNormality);
+	connect(actionShapiroWilk, &QAction::triggered, d_app->analysisController(), &AnalysisController::testNormality);
 
 	actionChiSquareTest = new QAction(d_app->tr("Chi-square Test for &Variance..."), d_app);
-	connect(actionChiSquareTest, &QAction::triggered, d_app, &ApplicationWindow::showChiSquareTestDialog);
+	connect(actionChiSquareTest, &QAction::triggered, d_app->analysisController(), &AnalysisController::showChiSquareTestDialog);
 
 	actionOneSampletTest = new QAction(d_app->tr("&One Sample t-Test..."), d_app);
-	connect(actionOneSampletTest, &QAction::triggered, d_app, [app]{app->showStudentTestDialog();});
+	connect(actionOneSampletTest, &QAction::triggered, d_app->analysisController(), &AnalysisController::showOneSampleStudentTestDialog);
 
 	actionTwoSampletTest = new QAction(d_app->tr("&Two Sample t-Test..."), d_app);
-	connect(actionTwoSampletTest, &QAction::triggered, d_app, &ApplicationWindow::showTwoSampleStudentTestDialog);
+	connect(actionTwoSampletTest, &QAction::triggered, d_app->analysisController(), &AnalysisController::showTwoSampleStudentTestDialog);
 
 #ifdef HAVE_TAMUANOVA
 	actionOneWayANOVA = new QAction(d_app->tr("&One-Way ANOVA..."), d_app);
-	connect(actionOneWayANOVA, &QAction::triggered, d_app, [app]{app->showANOVADialog();});
+	connect(actionOneWayANOVA, &QAction::triggered, d_app->analysisController(), &AnalysisController::showOneWayANOVADialog);
 
 	actionTwoWayANOVA = new QAction(d_app->tr("&Two-Way ANOVA..."), d_app);
-	connect(actionTwoWayANOVA, &QAction::triggered, d_app, &ApplicationWindow::showTwoWayANOVADialog);
+	connect(actionTwoWayANOVA, &QAction::triggered, d_app->analysisController(), &AnalysisController::showTwoWayANOVADialog);
 #endif
 
     actionReadOnlyCol = new QAction(d_app->tr("&Read Only"), d_app);
@@ -1291,22 +1291,22 @@ void ActionManager::createActions()
 	connect(actionSetLabelCol, &QAction::triggered, d_app, &ApplicationWindow::setLabelCol);
 
 	actionBoxPlot = new QAction(QIcon(":/boxPlot.png"),d_app->tr("&Box Plot"), d_app);
-	connect(actionBoxPlot, &QAction::triggered, d_app, &ApplicationWindow::plotBox);
+	connect(actionBoxPlot, &QAction::triggered, d_app->plotController2D(), &PlotController2D::plotBox);
 
 	actionMultiPeakGauss = new QAction(d_app->tr("&Gaussian..."), d_app);
-	connect(actionMultiPeakGauss, &QAction::triggered, d_app, &ApplicationWindow::fitMultiPeakGauss);
+	connect(actionMultiPeakGauss, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitMultiPeakGauss);
 
 	actionMultiPeakLorentz = new QAction(d_app->tr("&Lorentzian..."), d_app);
-	connect(actionMultiPeakLorentz, &QAction::triggered, d_app, &ApplicationWindow::fitMultiPeakLorentz);
+	connect(actionMultiPeakLorentz, &QAction::triggered, d_app->analysisController(), &AnalysisController::fitMultiPeakLorentz);
 
 	actionSubtractLine = new QAction(d_app->tr("&Straight Line..."), d_app);
-	connect(actionSubtractLine, &QAction::triggered, d_app, &ApplicationWindow::subtractStraightLine);
+	connect(actionSubtractLine, &QAction::triggered, d_app->analysisController(), &AnalysisController::subtractStraightLine);
 
 	actionSubtractReference = new QAction(d_app->tr("&Reference Data..."), d_app);
-	connect(actionSubtractReference, &QAction::triggered, d_app, &ApplicationWindow::subtractReferenceData);
+	connect(actionSubtractReference, &QAction::triggered, d_app->analysisController(), &AnalysisController::subtractReferenceData);
 
 	actionBaseline = new QAction(d_app->tr("&Baseline..."), d_app);
-	connect(actionBaseline, &QAction::triggered, d_app, &ApplicationWindow::baselineDialog);
+	connect(actionBaseline, &QAction::triggered, d_app->analysisController(), &AnalysisController::baselineDialog);
 
 	actionCheckUpdates = new QAction(d_app->tr("Search for &Updates"), d_app);
 	connect(actionCheckUpdates, &QAction::triggered, d_app, &ApplicationWindow::searchForUpdates);
@@ -1860,7 +1860,7 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 			if(!plotTools->isVisible() && !qApp->arguments().contains("-X"))
 				plotTools->show();
 			plotTools->setEnabled (true);
-			d_app->custom2DPlotTools((MultiLayer *)w);
+			d_app->plotController2D()->custom2DPlotTools((MultiLayer *)w);
 		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
@@ -1888,7 +1888,7 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 			plot3DTools->show();
 
 		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
-		d_app->custom3DActions(w);
+		d_app->plotController3D()->custom3DActions(w);
 	} else if (qobject_cast<Note*>(w)){
 		if(d_format_tool_bar && !formatToolBar->isVisible() && !qApp->arguments().contains("-X"))
             formatToolBar->show();

@@ -130,7 +130,7 @@ void ExportManager::exportExcel()
 	if (!ep)
 		return;
 
-	ExportDialog *ed = d_app->showExportASCIIDialog();
+	ExportDialog *ed = showExportASCIIDialog();
 	if (ed){
 		ed->setWindowTitle(d_app->tr("Export Excel"));
 		ed->setNameFilters(QStringList() << "*.xls");
@@ -148,7 +148,7 @@ void ExportManager::exportOds()
 	if (!ep)
 		return;
 
-	ExportDialog *ed = d_app->showExportASCIIDialog();
+	ExportDialog *ed = showExportASCIIDialog();
 	if (ed){
 		ed->setWindowTitle(d_app->tr("Export Open Document Spreadsheet"));
 		ed->setNameFilters(QStringList() << "*.ods");
@@ -616,10 +616,10 @@ void ExportManager::exportPDF()
 	}
 
 	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w) || qobject_cast<PolarGraph *>(w)){
-		d_app->exportGraph("*.pdf");
+		exportGraph("*.pdf");
 		return;
 	} else if (qobject_cast<Matrix *>(w)){
-		d_app->exportMatrix("*.pdf");
+		exportMatrix("*.pdf");
 		return;
 	}
 
@@ -689,7 +689,7 @@ void ExportManager::printPreview()
 	QPrintPreviewDialog *preview = new QPrintPreviewDialog(&p, d_app, Qt::Window);
 	preview->setWindowTitle(d_app->tr("QtiPlot") + " - " + d_app->tr("Print preview of window: ") + w->objectName());
 	connect(preview, &QPrintPreviewDialog::paintRequested, w, qOverload<QPrinter*>(&MdiSubWindow::print));
-	connect(preview, &QPrintPreviewDialog::paintRequested, d_app, &ApplicationWindow::setPrintPreviewOptions);
+	connect(preview, &QPrintPreviewDialog::paintRequested, this, &ExportManager::setPrintPreviewOptions);
 
 	preview->exec();
 }

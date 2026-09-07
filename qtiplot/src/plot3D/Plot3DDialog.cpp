@@ -29,6 +29,7 @@ Description          : Surface plot options dialog
 #include <MyParser.h>
 #include <SymbolDialog.h>
 #include <ApplicationWindow.h>
+#include <PlotController3D.h>
 #include <TextFormatButtons.h>
 #include <DoubleSpinBox.h>
 #include <ColorMapEditor.h>
@@ -1136,7 +1137,7 @@ bool Plot3DDialog::updatePlot()
 			d_plot->setConeOptions(boxConesRad->text().toDouble(), boxQuality->value());
 			d_plot->setConeStyle();
         }
-        app->custom3DActions(d_plot);
+        app->plotController3D()->custom3DActions(d_plot);
 	} else if (generalDialog->currentWidget() == title){
 		d_plot->setTitle(boxTitle->toPlainText().remove("\n"), btnTitleColor->color(), titleFont);
 	} else if (generalDialog->currentWidget() == colors){

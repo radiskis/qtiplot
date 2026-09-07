@@ -51,10 +51,10 @@ public:
     explicit ExportManager(ApplicationWindow *app);
     virtual ~ExportManager();
 
-    void exportMatrix(const QString& exportFilter);
+    void exportMatrix(const QString& exportFilter = QString());
     void exportExcel();
     void exportOds();
-    void exportGraph(const QString& exportFilter);
+    void exportGraph(const QString& exportFilter = QString());
     void exportLayer();
     void exportPresentationODF();
     void exportAllGraphs();

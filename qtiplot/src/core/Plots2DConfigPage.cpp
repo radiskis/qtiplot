@@ -29,6 +29,7 @@
 #include "Plots2DConfigPage.h"
 #include <ApplicationWindow.h>
 #include <ApplicationSettings.h>
+#include <PlotController2D.h>
 #include <ColorButton.h>
 #include <ColorBox.h>
 #include <DoubleSpinBox.h>
@@ -794,7 +795,7 @@ void Plots2DConfigPage::apply(ApplicationWindow *app, ApplicationSettings *setti
 	app->d_graph_legend_display = (Graph::LegendDisplayMode)legendDisplayBox->currentIndex();
 	app->d_graph_axis_labeling = (Graph::AxisTitlePolicy)axisLabelingBox->currentIndex();
 	app->d_graph_attach_policy = (FrameWidget::AttachPolicy)attachToBox->currentIndex();
-	app->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
+	app->plotController2D()->setGraphDefaultSettings(boxAutoscaling->isChecked(), boxScaleFonts->isChecked(),
 		boxResize->isChecked(), antialiasingGroupBox->isChecked());
 
 	app->defaultCurveStyle = curveStyle();

@@ -963,159 +963,31 @@ void ApplicationWindow::disableToolbars()
 		d_action_manager->disableToolbars();
 }
 
-void ApplicationWindow::plot3DRibbon()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DRibbon();
-}
 
-void ApplicationWindow::plot3DWireframe()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DWireframe();
-}
 
-void ApplicationWindow::plot3DHiddenLine()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DHiddenLine();
-}
 
-void ApplicationWindow::plot3DPolygons()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DPolygons();
-}
 
-void ApplicationWindow::plot3DWireSurface()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DWireSurface();
-}
 
-void ApplicationWindow::plot3DBars()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DBars();
-}
 
-void ApplicationWindow::plot3DScatter()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DScatter();
-}
 
-void ApplicationWindow::plot3DTrajectory()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plot3DTrajectory();
-}
 
-void ApplicationWindow::plotBox()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotBox();
-}
 
-void ApplicationWindow::plotVerticalBars()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVerticalBars();
-}
 
-void ApplicationWindow::plotHorizontalBars()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotHorizontalBars();
-}
 
-void ApplicationWindow::plotStackBar()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotStackBar();
-}
 
-void ApplicationWindow::plotStackColumn()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotStackColumn();
-}
 
-MultiLayer* ApplicationWindow::plotHistogram()
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotHistogram() : nullptr;
-}
 
-MultiLayer* ApplicationWindow::plotHistogram(Matrix *m)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotHistogram(m) : nullptr;
-}
 
-void ApplicationWindow::plotArea()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotArea();
-}
 
-void ApplicationWindow::plotPie()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotPie();
-}
 
-void ApplicationWindow::plotL()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotL();
-}
 
-void ApplicationWindow::plotP()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotP();
-}
 
-void ApplicationWindow::plotLP()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotLP();
-}
 
-void ApplicationWindow::plotVerticalDropLines()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVerticalDropLines();
-}
 
-void ApplicationWindow::plotSpline()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotSpline();
-}
 
-void ApplicationWindow::plotVertSteps()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVertSteps();
-}
 
-void ApplicationWindow::plotHorSteps()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotHorSteps();
-}
 
-void ApplicationWindow::plotVectXYXY()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVectXYXY();
-}
 
-void ApplicationWindow::plotVectXYAM()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVectXYAM();
-}
 
 void ApplicationWindow::renameListViewItem(const QString& oldName,const QString& newName)
 {
@@ -1219,83 +1091,18 @@ void ApplicationWindow::changeMatrixName(const QString& oldName, const QString& 
 	}
 }
 
-void ApplicationWindow::remove3DMatrixPlots(Matrix *m)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->remove3DMatrixPlots(m);
-}
 
-void ApplicationWindow::updateMatrixPlots(Matrix *m)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->updateMatrixPlots(m);
-}
 
-void ApplicationWindow::updateMatrixPlotLabels(Matrix *m)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->updateMatrixPlotLabels(m);
-}
 
-void ApplicationWindow::add3DData()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->add3DData();
-}
 
-void ApplicationWindow::change3DData()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->change3DData();
-}
 
-void ApplicationWindow::change3DMatrix()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->change3DMatrix();
-}
 
-void ApplicationWindow::change3DMatrix(const QString& matrix_name)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->change3DMatrix(matrix_name);
-}
 
-void ApplicationWindow::add3DMatrixPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->add3DMatrixPlot();
-}
 
-void ApplicationWindow::insert3DMatrixPlot(const QString& matrix_name)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->insert3DMatrixPlot(matrix_name);
-}
 
-void ApplicationWindow::insertNew3DData(const QString& colName)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->insertNew3DData(colName);
-}
 
-void ApplicationWindow::change3DData(const QString& colName)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->change3DData(colName);
-}
 
-void ApplicationWindow::editSurfacePlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->editSurfacePlot();
-}
 
-void ApplicationWindow::newSurfacePlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->newSurfacePlot();
-}
 
 Graph3D* ApplicationWindow::plotSurface(const QString& formula, double xl, double xr,
 		double yl, double yr, double zl, double zr, int columns, int rows)
@@ -1328,39 +1135,11 @@ Graph3D* ApplicationWindow::plotXYZ(Table* table, const QString& zColName, int t
 	return d_plot_controller_3d ? d_plot_controller_3d->plotXYZ(table, zColName, type) : nullptr;
 }
 
-MdiSubWindow* ApplicationWindow::newPolarPlot(const QString& title)
-{
-	return d_plot_controller_3d ? d_plot_controller_3d->newPolarPlot(title) : nullptr;
-}
 
-void ApplicationWindow::plotPolar()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->plotPolar();
-}
 
-MdiSubWindow* ApplicationWindow::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
-{
-	return d_plot_controller_3d ? d_plot_controller_3d->plotPolar(table, colList, startRow, endRow) : nullptr;
-}
 
-void ApplicationWindow::initPlot3D(Graph3D *plot)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->initPlot3D(plot);
-}
 
-void ApplicationWindow::initPolarPlot(PolarGraph *w)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->initPolarPlot(w);
-}
 
-void ApplicationWindow::exportMatrix(const QString& exportFilter)
-{
-	if (d_export_manager)
-		d_export_manager->exportMatrix(exportFilter);
-}
 
 Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 {
@@ -1468,11 +1247,6 @@ MultiLayer* ApplicationWindow::waterfallPlot(Table *t, const QStringList& list)
 	return d_plot_controller_2d ? d_plot_controller_2d->waterfallPlot(t, list) : nullptr;
 }
 
-void ApplicationWindow::initMultilayerPlot(MultiLayer* g, const QString& name)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->initMultilayerPlot(g, name);
-}
 
 void ApplicationWindow::setAutoUpdateTableValues(bool on)
 {
@@ -2003,8 +1777,8 @@ void ApplicationWindow::initMatrix(Matrix* m, const QString& caption)
 		d_undo_group->addStack(m->undoStack());
 
 	connect(m, &Matrix::modifiedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
-	connect(m, &Matrix::modifiedLabel, this, &ApplicationWindow::updateMatrixPlotLabels);
-	connect(m, &Matrix::modifiedData, this, &ApplicationWindow::updateMatrixPlots);
+	connect(m, &Matrix::modifiedLabel, d_plot_controller_3d, &PlotController3D::updateMatrixPlotLabels);
+	connect(m, &Matrix::modifiedData, d_plot_controller_3d, &PlotController3D::updateMatrixPlots);
 	connect(m, &Matrix::resizedWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::modifiedProject));
 	connect(m, &Matrix::closedWindow, this, &ApplicationWindow::closeWindow);
 	connect(m, &Matrix::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
@@ -2117,31 +1891,11 @@ void ApplicationWindow::convertTableToMatrixRandomXYZ()
 }
 #endif
 
-void ApplicationWindow::showChiSquareTestDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showChiSquareTestDialog();
-}
 
-void ApplicationWindow::showStudentTestDialog(bool twoSamples)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showStudentTestDialog(twoSamples);
-}
 
-void ApplicationWindow::testNormality()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->testNormality();
-}
 
 #ifdef HAVE_TAMUANOVA
 #ifdef HAVE_TAMUANOVA
-void ApplicationWindow::showANOVADialog(bool twoWay)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showANOVADialog(twoWay);
-}
 #endif
 #endif
 
@@ -2620,19 +2374,7 @@ void ApplicationWindow::updateConfirmOptions(bool askTables, bool askMatrices, b
 	}
 }
 
-void ApplicationWindow::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
-												bool resizeLayers, bool antialiasing)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->setGraphDefaultSettings(autoscale, scaleFonts, resizeLayers, antialiasing);
-}
 
-void ApplicationWindow::setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
-		int headLength, int headAngle, bool fillHead)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->setArrowDefaultSettings(lineWidth, c, style, headLength, headAngle, fillHead);
-}
 
 ApplicationWindow * ApplicationWindow::plotFile(const QString& fn)
 {
@@ -2684,17 +2426,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	return 0;
 }
 
-void ApplicationWindow::exportExcel()
-{
-	if (d_export_manager)
-		d_export_manager->exportExcel();
-}
 
-void ApplicationWindow::exportOds()
-{
-	if (d_export_manager)
-		d_export_manager->exportOds();
-}
 
 #ifdef Q_OS_WIN
 void ApplicationWindow::detectExcel()
@@ -3894,29 +3626,9 @@ void ApplicationWindow::saveSettings()
 	settings.endGroup();
 }
 
-void ApplicationWindow::exportGraph(const QString& exportFilter)
-{
-	if (d_export_manager)
-		d_export_manager->exportGraph(exportFilter);
-}
 
-void ApplicationWindow::exportLayer()
-{
-	if (d_export_manager)
-		d_export_manager->exportLayer();
-}
 
-void ApplicationWindow::exportPresentationODF()
-{
-	if (d_export_manager)
-		d_export_manager->exportPresentationODF();
-}
 
-void ApplicationWindow::exportAllGraphs()
-{
-	if (d_export_manager)
-		d_export_manager->exportAllGraphs();
-}
 
 QString ApplicationWindow::windowGeometryInfo(MdiSubWindow *w)
 {
@@ -4539,18 +4251,7 @@ void ApplicationWindow::showAxisTitleDialog()
 	td->exec();
 }
 
-ExportDialog* ApplicationWindow::showExportASCIIDialog()
-{
-	if (d_export_manager)
-		return d_export_manager->showExportASCIIDialog();
-	return nullptr;
-}
 
-void ApplicationWindow::exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection)
-{
-	if (d_export_manager)
-		d_export_manager->exportAllTables(dir, filter, sep, colNames, colComments, expSelection);
-}
 
 void ApplicationWindow::showRowsDialog()
 {
@@ -5058,77 +4759,17 @@ void ApplicationWindow::showColMenu(int c)
 	contextMenu.exec(posMouse);
 }
 
-void ApplicationWindow::plotVerticalSharedAxisLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotVerticalSharedAxisLayers();
-}
 
-void ApplicationWindow::plotHorizontalSharedAxisLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotHorizontalSharedAxisLayers();
-}
 
-void ApplicationWindow::plotSharedAxesLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotSharedAxesLayers();
-}
 
-void ApplicationWindow::plotStackSharedAxisLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotStackSharedAxisLayers();
-}
 
-void ApplicationWindow::plotCustomLayout(bool sharedAxes)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotCustomLayout(sharedAxes);
-}
 
-void ApplicationWindow::plot2VerticalLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plot2VerticalLayers();
-}
 
-void ApplicationWindow::plot2HorizontalLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plot2HorizontalLayers();
-}
 
-void ApplicationWindow::plot4Layers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plot4Layers();
-}
 
-void ApplicationWindow::plotStackedLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotStackedLayers();
-}
 
-void ApplicationWindow::plotStackedHistograms()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotStackedHistograms();
-}
 
-void ApplicationWindow::zoomRectanglePlot()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->zoomRectanglePlot();
-}
 
-void ApplicationWindow::plotDoubleYAxis()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->plotDoubleYAxis();
-}
 
 void ApplicationWindow::showMatrixDialog()
 {
@@ -5640,152 +5281,32 @@ void ApplicationWindow::movePoints(bool wholeCurve)
 	}*/
 }
 
-void ApplicationWindow::exportPDF()
-{
-	if (d_export_manager)
-		d_export_manager->exportPDF();
-}
 
 //print active window
-void ApplicationWindow::print()
-{
-	if (d_export_manager)
-		d_export_manager->print();
-}
 
 //print preview for active window
-void ApplicationWindow::printPreview()
-{
-	if (d_export_manager)
-		d_export_manager->printPreview();
-}
 
 
-void ApplicationWindow::setPrintPreviewOptions(QPrinter *printer)
-{
-	if (d_export_manager)
-		d_export_manager->setPrintPreviewOptions(printer);
-}
 
-void ApplicationWindow::printAllPlots()
-{
-	if (d_export_manager)
-		d_export_manager->printAllPlots();
-}
 
-void ApplicationWindow::showExpGrowthDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showExpGrowthDialog();
-}
 
-void ApplicationWindow::showExpDecayDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showExpDecayDialog();
-}
 
-void ApplicationWindow::showExpDecayDialog(int type)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showExpDecayDialog(type);
-}
 
-void ApplicationWindow::showTwoExpDecayDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showTwoExpDecayDialog();
-}
 
-void ApplicationWindow::showExpDecay3Dialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showExpDecay3Dialog();
-}
 
-void ApplicationWindow::showFitDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFitDialog();
-}
 
-void ApplicationWindow::showFilterDialog(int filter)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFilterDialog(filter);
-}
 
-void ApplicationWindow::lowPassFilterDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->lowPassFilterDialog();
-}
 
-void ApplicationWindow::highPassFilterDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->highPassFilterDialog();
-}
 
-void ApplicationWindow::bandPassFilterDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->bandPassFilterDialog();
-}
 
-void ApplicationWindow::bandBlockFilterDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->bandBlockFilterDialog();
-}
 
-void ApplicationWindow::showFFTDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFFTDialog();
-}
 
-void ApplicationWindow::showSmoothDialog(int m)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showSmoothDialog(m);
-}
 
-void ApplicationWindow::showSmoothSavGolDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showSmoothSavGolDialog();
-}
 
-void ApplicationWindow::showSmoothFFTDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showSmoothFFTDialog();
-}
 
-void ApplicationWindow::showSmoothAverageDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showSmoothAverageDialog();
-}
 
-void ApplicationWindow::showSmoothLowessDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showSmoothLowessDialog();
-}
 
-void ApplicationWindow::showInterpolationDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showInterpolationDialog();
-}
 
-void ApplicationWindow::showFitPolynomDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFitPolynomDialog();
-}
 
 void ApplicationWindow::updateLog(const QString& result)
 {
@@ -5796,11 +5317,6 @@ void ApplicationWindow::updateLog(const QString& result)
 	}
 }
 
-void ApplicationWindow::showFunctionIntegrationDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFunctionIntegrationDialog();
-}
 
 void ApplicationWindow::showResults(bool ok)
 {
@@ -6188,7 +5704,7 @@ void ApplicationWindow::copySelection()
 		else if (g->markerSelected())
 			copyMarker();
 		else
-			copyActiveLayer();
+			d_plot_controller_2d->copyActiveLayer();
 	} else if (m->inherits("Note"))
 		((Note*)m)->currentEditor()->copy();
 }
@@ -6587,7 +6103,7 @@ void ApplicationWindow::removeWindowFromLists(MdiSubWindow* w)
 		if (g)
 			btnPointer->setChecked(true);
 	} else if (w->inherits("Matrix"))
-		remove3DMatrixPlots((Matrix*)w);
+		d_plot_controller_3d->remove3DMatrixPlots((Matrix*)w);
 
 	if (hiddenWindows->contains(w))
 		hiddenWindows->takeAt(hiddenWindows->indexOf(w));
@@ -7450,7 +6966,7 @@ void ApplicationWindow::showGraphContextMenu()
 
 	QMenu cm(this);
 	if (plot->isLayerSelected(ag)){
-		cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), this, &ApplicationWindow::copyActiveLayer);
+		cm.addAction(QPixmap(":/copy.png"), tr("&Copy"), d_plot_controller_2d, &PlotController2D::copyActiveLayer);
 		if (lastCopiedLayer)
 			cm.addAction(QPixmap(":/paste.png"), tr("&Paste Layer"), this, &ApplicationWindow::pasteSelection);
 		else if (d_enrichement_copy){
@@ -7514,7 +7030,7 @@ void ApplicationWindow::showGraphContextMenu()
 	}
 
 	QMenu copy(this);
-	copy.addAction(tr("&Layer"), this, &ApplicationWindow::copyActiveLayer);
+	copy.addAction(tr("&Layer"), d_plot_controller_2d, &PlotController2D::copyActiveLayer);
 	copy.addAction(tr("&Window"), static_cast<MultiLayer *>(plot), &MultiLayer::copyAllLayers);
 	copy.setTitle(tr("&Copy"));
 	copy.setIcon(QIcon(":/copy.png"));
@@ -7593,7 +7109,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionCopyWindow);
 		cm.addSeparator();
 		cm.addAction(QPixmap(":/copy.png"), tr("&Copy Page"), static_cast<MultiLayer *>(g), &MultiLayer::copyAllLayers);
-		cm.addAction(tr("E&xport Page"), this, [this]{ exportGraph(); });
+		cm.addAction(tr("E&xport Page"), this, [this]{ d_export_manager->exportGraph(); });
 		cm.addAction(actionPrint);
 		cm.addSeparator();
 		cm.addAction(tr("&Properties..."), this, &ApplicationWindow::showGeneralPlotDialog);
@@ -7607,13 +7123,13 @@ void ApplicationWindow::showWindowContextMenu()
 			if (hasTable())
 				plot3D.addAction(actionAdd3DData);
 			if (matrixNames().count())
-				plot3D.addAction(tr("&Matrix..."), this, &ApplicationWindow::add3DMatrixPlot);
+				plot3D.addAction(tr("&Matrix..."), d_plot_controller_3d, &PlotController3D::add3DMatrixPlot);
 			plot3D.addAction(actionEditSurfacePlot);
 		} else {
 			if (g->table())
-				cm.addAction(tr("Choose &Data Set..."), this, qOverload<>(&ApplicationWindow::change3DData));
+				cm.addAction(tr("Choose &Data Set..."), d_plot_controller_3d, qOverload<>(&PlotController3D::change3DData));
 			else if (g->matrix())
-				cm.addAction(tr("Choose &Matrix..."), this, qOverload<>(&ApplicationWindow::change3DMatrix));
+				cm.addAction(tr("Choose &Matrix..."), d_plot_controller_3d, qOverload<>(&PlotController3D::change3DMatrix));
 			else if (g->userFunction() || g->parametricSurface())
 				cm.addAction(actionEditSurfacePlot);
 			cm.addAction(QPixmap(":/erase.png"), tr("C&lear"), static_cast<Graph3D *>(g), &Graph3D::clearData);
@@ -7624,7 +7140,7 @@ void ApplicationWindow::showWindowContextMenu()
 		cm.addAction(actionCopyWindow);
 		cm.addSeparator();
 		cm.addAction(tr("&Copy Graph"), static_cast<Graph3D *>(g), &Graph3D::copyImage);
-		cm.addAction(tr("&Export") + "...", this, [this]{ exportGraph(); });
+		cm.addAction(tr("&Export") + "...", this, [this]{ d_export_manager->exportGraph(); });
 		cm.addAction(actionPrint);
 		cm.addSeparator();
 		cm.addAction(actionAnimate);
@@ -8001,156 +7517,31 @@ void ApplicationWindow::clearLogInfo()
 	}
 }
 
-void ApplicationWindow::setFramed3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFramed3DPlot();
-}
-
-void ApplicationWindow::setBoxed3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setBoxed3DPlot();
-}
-
-void ApplicationWindow::removeAxes3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->removeAxes3DPlot();
-}
-
-void ApplicationWindow::removeGrid3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->removeGrid3DPlot();
-}
-
-void ApplicationWindow::setHiddenLineGrid3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setHiddenLineGrid3DPlot();
-}
-
-void ApplicationWindow::setPoints3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setPoints3DPlot();
-}
-
-void ApplicationWindow::setCones3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setCones3DPlot();
-}
-
-void ApplicationWindow::setCrosses3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setCrosses3DPlot();
-}
-
-void ApplicationWindow::setBars3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setBars3DPlot();
-}
-
-void ApplicationWindow::setLineGrid3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setLineGrid3DPlot();
-}
-
-void ApplicationWindow::setFilledMesh3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFilledMesh3DPlot();
-}
-
-void ApplicationWindow::setFloorData3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFloorData3DPlot();
-}
-
-void ApplicationWindow::setFloorIso3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFloorIso3DPlot();
-}
-
-void ApplicationWindow::setEmptyFloor3DPlot()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setEmptyFloor3DPlot();
-}
-
-void ApplicationWindow::setFrontGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFrontGrid3DPlot(on);
-}
-
-void ApplicationWindow::setBackGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setBackGrid3DPlot(on);
-}
-
-void ApplicationWindow::setFloorGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setFloorGrid3DPlot(on);
-}
-
-void ApplicationWindow::setCeilGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setCeilGrid3DPlot(on);
-}
-
-void ApplicationWindow::setRightGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setRightGrid3DPlot(on);
-}
-
-void ApplicationWindow::setLeftGrid3DPlot(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setLeftGrid3DPlot(on);
-}
-
-void ApplicationWindow::pickPlotStyle( QAction* action )
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->pickPlotStyle(action);
-}
 
 
-void ApplicationWindow::pickCoordSystem( QAction* action)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->pickCoordSystem(action);
-}
 
-void ApplicationWindow::pickFloorStyle( QAction* action )
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->pickFloorStyle(action);
-}
 
-void ApplicationWindow::custom3DActions(QMdiSubWindow *w)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->custom3DActions(w);
-}
 
-void ApplicationWindow::custom3DGrids(int grids)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->custom3DGrids(grids);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void ApplicationWindow::initPlot3DToolBar()
 {
@@ -8196,47 +7587,12 @@ void ApplicationWindow::intensityTable()
 	}
 }
 
-void ApplicationWindow::autoArrangeLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->autoArrangeLayers();
-}
 
-void ApplicationWindow::extractGraphs()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->extractGraphs();
-}
 
-void ApplicationWindow::extractLayers()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->extractLayers();
-}
 
-void ApplicationWindow::addInsetLayer(bool curves)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->addInsetLayer(curves);
-}
 
-void ApplicationWindow::addInsetCurveLayer()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->addInsetCurveLayer();
-}
 
-void ApplicationWindow::addLayer()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->addLayer();
-}
 
-void ApplicationWindow::deleteLayer()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->deleteLayer();
-}
 
 Note* ApplicationWindow::openNote(ApplicationWindow* app, const QStringList &flist)
 {
@@ -8263,71 +7619,16 @@ Graph* ApplicationWindow::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 	return ProjectSerializer::openGraph(app, plot, list, app ? app->d_file_version : 0);
 }
 
-void ApplicationWindow::copyActiveLayer()
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->copyActiveLayer();
-}
 
-void ApplicationWindow::showDataSetDialog(Analysis operation)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showDataSetDialog(operation);
-}
 
-void ApplicationWindow::analyzeCurve(Graph *g,  QwtPlotCurve *c, Analysis operation)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->analyzeCurve(g, c, operation);
-}
 
-void ApplicationWindow::analysis(Analysis operation)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->analysis(operation);
-}
 
-void ApplicationWindow::integrate()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->integrate();
-}
 
-void ApplicationWindow::differentiate()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->differentiate();
-}
 
-void ApplicationWindow::fitLinear()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitLinear();
-}
 
-void ApplicationWindow::fitSlope()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitSlope();
-}
 
-void ApplicationWindow::fitSigmoidal()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitSigmoidal();
-}
 
-void ApplicationWindow::fitGauss()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitGauss();
-}
 
-void ApplicationWindow::fitLorentz()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitLorentz();
-}
 
 void ApplicationWindow::pickPointerCursor()
 {
@@ -8396,23 +7697,8 @@ void ApplicationWindow::pickDataTool( QAction* action )
 		magnify(1);
 }
 
-void ApplicationWindow::custom2DPlotTools(MultiLayer *plot)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->custom2DPlotTools(plot);
-}
 
-void ApplicationWindow::connectSurfacePlot(Graph3D *plot)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->connectSurfacePlot(plot);
-}
 
-void ApplicationWindow::connectMultilayerPlot(MultiLayer *g)
-{
-	if (d_plot_controller_2d)
-		d_plot_controller_2d->connectMultilayerPlot(g);
-}
 
 void ApplicationWindow::connectTable(Table* w)
 {
@@ -8459,11 +7745,6 @@ void ApplicationWindow::setAppColors(const QColor& wc, const QColor& pc, const Q
 	folders->setPalette(palette);
 }
 
-void ApplicationWindow::setPlot3DOptions()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->setPlot3DOptions();
-}
 
 void ApplicationWindow::createActions()
 {
@@ -8482,25 +7763,9 @@ Graph3D * ApplicationWindow::plot3DMatrix(Matrix *m, int style)
 	return d_plot_controller_3d ? d_plot_controller_3d->plot3DMatrix(m, style) : nullptr;
 }
 
-MultiLayer* ApplicationWindow::plotGrayScale(Matrix *m)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotGrayScale(m) : nullptr;
-}
 
-MultiLayer* ApplicationWindow::plotContour(Matrix *m)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotContour(m) : nullptr;
-}
 
-MultiLayer* ApplicationWindow::plotColorMap(Matrix *m)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotColorMap(m) : nullptr;
-}
 
-MultiLayer* ApplicationWindow::plotImage(Matrix *m)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->plotImage(m) : nullptr;
-}
 
 MultiLayer* ApplicationWindow::plotSpectrogram(Matrix *m, Graph::CurveType type)
 {
@@ -8545,11 +7810,6 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 	return 0;
 }
 
-void ApplicationWindow::deleteFitTables()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->deleteFitTables();
-}
 
 QList<MdiSubWindow *> ApplicationWindow::windowsList()
 {
@@ -8728,41 +7988,11 @@ void ApplicationWindow::disregardCol()
 	t->setPlotDesignation(Table::None);
 }
 
-void ApplicationWindow::fitMultiPeakGauss()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitMultiPeakGauss();
-}
 
-void ApplicationWindow::fitMultiPeakLorentz()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitMultiPeakLorentz();
-}
 
-void ApplicationWindow::fitMultiPeak(int profile)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->fitMultiPeak(profile);
-}
 
-void ApplicationWindow::subtractStraightLine()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->subtractStraightLine();
-}
 
-void ApplicationWindow::subtractReferenceData()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->subtractReferenceData();
-}
 
-void ApplicationWindow::baselineDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->baselineDialog();
-}
 
 void ApplicationWindow::showSupportPage()
 {
@@ -9965,11 +9195,6 @@ void ApplicationWindow::receivedVersionFile(bool)
 /*!
   Turns 3D animation on or off
   */
-void ApplicationWindow::toggle3DAnimation(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->toggle3DAnimation(on);
-}
 
 QString ApplicationWindow::generateUniqueName(const QString& name, bool increment)
 {
@@ -10095,29 +9320,14 @@ void ApplicationWindow::showScriptWindow(bool parent)
 /*!
   Turns perspective mode on or off
   */
-void ApplicationWindow::togglePerspective(bool on)
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->togglePerspective(on);
-}
 
 /*!
   Resets rotation of 3D plots to default values
   */
-void ApplicationWindow::resetRotation()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->resetRotation();
-}
 
 /*!
   Finds best layout for the 3D plot
   */
-void ApplicationWindow::fitFrameToLayer()
-{
-	if (d_plot_controller_3d)
-		d_plot_controller_3d->fitFrameToLayer();
-}
 
 ApplicationWindow::~ApplicationWindow()
 {
@@ -10239,20 +9449,8 @@ ApplicationWindow * ApplicationWindow::loadScript(const QString& fn, bool execut
 	return 0;
 }
 
-bool ApplicationWindow::validFor2DPlot(Table *table, Graph::CurveType type)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->validFor2DPlot(table, type) : false;
-}
 
-MultiLayer* ApplicationWindow::generate2DGraph(Graph::CurveType type)
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->generate2DGraph(type) : nullptr;
-}
 
-bool ApplicationWindow::validFor3DPlot(Table *table)
-{
-	return d_plot_controller_3d ? d_plot_controller_3d->validFor3DPlot(table) : false;
-}
 
 void ApplicationWindow::hideSelectedWindows()
 {
@@ -10472,11 +9670,6 @@ void ApplicationWindow::showToolBarsMenu()
 	}
 }
 
-void ApplicationWindow::saveFitFunctions(const QStringList& lst)
-{
-	if (d_analysis_controller)
-		d_analysis_controller->saveFitFunctions(lst);
-}
 
 void ApplicationWindow::matrixDirectFFT()
 {
@@ -10972,16 +10165,7 @@ void ApplicationWindow::enableCompletion(bool on)
 	}
 }
 
-void ApplicationWindow::showFrequencyCountDialog()
-{
-	if (d_analysis_controller)
-		d_analysis_controller->showFrequencyCountDialog();
-}
 
-Note * ApplicationWindow::newStemPlot()
-{
-	return d_plot_controller_2d ? d_plot_controller_2d->newStemPlot() : nullptr;
-}
 
 QString ApplicationWindow::stemPlot(Table *t, const QString& colName, int power, int startRow, int endRow)
 {

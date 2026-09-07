@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "PlotWizard.h"
 #include <ApplicationWindow.h>
+#include <PlotController2D.h>
 #include <Table.h>
 #include <Graph3D.h>
 #include <MultiLayer.h>
@@ -404,7 +405,7 @@ void PlotWizard::plot2D(const QStringList& colList)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = new MultiLayer(app);
-	app->initMultilayerPlot(g, "");
+	app->plotController2D()->initMultilayerPlot(g, "");
 
 	Graph *ag = g->activeLayer();
 	app->setPreferences(ag);

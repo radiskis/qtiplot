@@ -83,7 +83,7 @@ public:
     void plotHorizontalSharedAxisLayers();
     void plotSharedAxesLayers();
     void plotCustomLayout(bool sharedAxes = false);
-    void plotCustomLayoutSharedAxes();
+    void plotCustomLayoutSharedAxes() { plotCustomLayout(true); }
     MultiLayer * newFunctionPlot(QStringList &formulas, double start, double end, int points = 100, const QString& var = "x", int type = 0);
     void setPreferences(Graph* g);
     void setGraphDefaultSettings(bool autoscale,bool scaleFonts,bool resizeLayers,bool antialiasing);

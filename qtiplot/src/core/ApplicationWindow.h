@@ -48,6 +48,8 @@
 #include "ActionManager.h"
 #include "PlotController2D.h"
 #include "PlotController3D.h"
+#include "AnalysisController.h"
+#include "ExportManager.h"
 #include "ProjectSerializer.h"
 #include <ScriptingEnv.h>
 #include <Script.h>
@@ -109,8 +111,6 @@ class ScriptEdit;
 class ExportDialog;
 class Grid;
 class ImportExportPlugin;
-class AnalysisController;
-class ExportManager;
 class QPrinter;
 class QUndoGroup;
 class QUndoStack;
@@ -193,7 +193,6 @@ public:
 	even if 'name' is not used in the project, by setting /param increment = true (the default)
 	*/
 	QString generateUniqueName(const QString& name, bool increment = true);
-	void saveFitFunctions(const QStringList& lst);
 
 	//! \name User custom actions
 	//@{
@@ -381,37 +380,13 @@ public slots:
 	MultiLayer* multilayerPlot(const QString& caption, int layers = 1, int rows = 1, int cols = 1);
 	MultiLayer* waterfallPlot();
 	MultiLayer* waterfallPlot(Table *t, const QStringList& list);
-	void connectMultilayerPlot(MultiLayer *g);
-	void addLayer();
-	void addInsetLayer(bool curves = false);
-	void addInsetCurveLayer();
-	void deleteLayer();
-	void extractGraphs();
-    void extractLayers();
 
 	//! Creates a new spectrogram graph
   	MultiLayer* plotSpectrogram(Matrix *m, Graph::CurveType type);
-  	MultiLayer* plotGrayScale(Matrix *m = 0);
-  	MultiLayer* plotContour(Matrix *m = 0);
-  	MultiLayer* plotColorMap(Matrix *m = 0);
-  	MultiLayer* plotImage(Matrix *m = 0);
   	MultiLayer* plotImageProfiles(Matrix *m = 0);
 
 	//! Rearrange the layersin order to fit to the size of the plot window
-  	void autoArrangeLayers();
-	void initMultilayerPlot(MultiLayer* g, const QString& name = QString());
-	void plot2VerticalLayers();
-	void plot2HorizontalLayers();
-	void plot4Layers();
-	void plotStackedLayers();
-	void plotStackedHistograms();
 
-	void plotStackSharedAxisLayers();
-	void plotVerticalSharedAxisLayers();
-	void plotHorizontalSharedAxisLayers();
-	void plotSharedAxesLayers();
-	void plotCustomLayout(bool sharedAxes = false);
-	void plotCustomLayoutSharedAxes(){plotCustomLayout(true);};
 	//@}
 
 	//! \name 3D Data Plots
@@ -419,9 +394,6 @@ public slots:
 	Graph3D* newPlot3D(const QString& title = QString());
 	Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
 
-	MdiSubWindow* newPolarPlot(const QString& title = QString());
-	MdiSubWindow* plotPolar(Table* table, const QStringList& colList, int startRow = 0, int endRow = -1);
-	void plotPolar();
 
 	//@}
 
@@ -433,32 +405,10 @@ public slots:
 						const QString& zFormula, double ul, double ur, double vl, double vr,
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
 
-	void connectSurfacePlot(Graph3D *plot);
-	void newSurfacePlot();
-	void editSurfacePlot();
-	void remove3DMatrixPlots(Matrix *m);
-	void updateMatrixPlots(Matrix *);
-	void updateMatrixPlotLabels(Matrix *);
-	void add3DData();
-	void change3DData();
-	void change3DData(const QString& colName);
-	void change3DMatrix();
-	void change3DMatrix(const QString& matrix_name);
-	void insertNew3DData(const QString& colName);
-	void add3DMatrixPlot();
-	void insert3DMatrixPlot(const QString& matrix_name);
 
-	void plot3DWireframe();
-	void plot3DHiddenLine();
-	void plot3DPolygons();
-	void plot3DWireSurface();
 
 	Graph3D* plot3DMatrix(Matrix *m = 0, int style = 5);
 
-	void plot3DRibbon();
-	void plot3DScatter();
-	void plot3DTrajectory();
-	void plot3DBars();
 	//@}
 
 	//! \name User-defined Functions
@@ -471,7 +421,6 @@ public slots:
 	void clearLogInfo();
 	void updateFunctionLists(int type, QStringList &formulas);
 	void updateSurfaceFuncList(const QString& s);
-	void initPolarPlot(PolarGraph *w);
 	//@}
 
 	//! \name Matrices
@@ -502,7 +451,6 @@ public slots:
 	void rotateMatrixMinus90();
 	void viewMatrixImage();
 	void viewMatrixTable();
-	void exportMatrix(const QString& exportFilter = QString());
 	void setMatrixDefaultScale();
 	void setMatrixGrayScale();
 	void setMatrixRainbowScale();
@@ -556,8 +504,6 @@ public slots:
 	void customTable(Table* w);
 	Table* importOdfSpreadsheet(const QString& = QString(), int sheet = -1);
 	Table* importExcel(const QString& = QString(), int sheet = -1);
-	void exportExcel();
-	void exportOds();
 
 	Table* importDatabase(const QString& = QString(), int sheet = -1);
 	Table* importWaveFile();
@@ -566,7 +512,6 @@ public slots:
         bool local_strip_spaces, bool local_simplify_spaces, bool local_import_comments,
 		QLocale local_separators, const QString& local_comment_string, bool import_read_only, int endLineChar,
 		const QList<int>& colTypes = QList<int>(), const QStringList& colFormats = QStringList());
-	void exportAllTables(const QString& dir, const QString& filter, const QString& sep, bool colNames, bool colComments, bool expSelection);
 
 	//! recalculate selected cells of current table
 	void recalculateTable();
@@ -577,39 +522,12 @@ public slots:
 	//! \name Graphs
 	//@{
 	void setPreferences(Graph* g);
-	void setGraphDefaultSettings(bool autoscale,bool scaleFonts,bool resizeLayers,bool antialiasing);
-	void setArrowDefaultSettings(double lineWidth,  const QColor& c, Qt::PenStyle style,
-								int headLength, int headAngle, bool fillHead);
 
-	void plotL();
-	void plotP();
-	void plotLP();
-	void plotPie();
-	void plotVerticalBars();
-	void plotHorizontalBars();
-	void plotStackBar();
-	void plotStackColumn();
-	void plotArea();
-	void plotVertSteps();
-	void plotHorSteps();
-	void plotSpline();
-	void plotVerticalDropLines();
-	MultiLayer* plotHistogram();
-	MultiLayer* plotHistogram(Matrix *m);
-	void plotVectXYXY();
-	void plotVectXYAM();
-	void plotBox();
-	void plotDoubleYAxis();
-	void zoomRectanglePlot();
 	QString stemPlot(Table *t = 0, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
-	Note *newStemPlot();
 
     //! Check whether a table is valid for a 3D plot and display an appropriate error if not
-    bool validFor3DPlot(Table *table);
     //! Check whether a table is valid for a 2D plot and display an appropriate error if not
-    bool validFor2DPlot(Table *table, Graph::CurveType type);
     //! Generate a new 2D graph
-    MultiLayer* generate2DGraph(Graph::CurveType type);
 	//@}
 
 	//! \name Image Analysis
@@ -623,15 +541,6 @@ public slots:
 
 	//! \name Export and Print
 	//@{
-	void exportLayer();
-	void exportGraph(const QString& exportFilter = QString());
-	void exportAllGraphs();
-	void exportPresentationODF();
-	void exportPDF();
-	void print();
-	void printPreview();
-	void setPrintPreviewOptions(QPrinter *);
-	void printAllPlots();
 	//@}
 
 	QStringList columnsList(Table::PlotDesignation plotType = Table::All);
@@ -713,7 +622,6 @@ public slots:
 	void copyMarker();
 	void pasteSelection();
 	void clearSelection();
-	void copyActiveLayer();
 
 	void newProject();
 
@@ -743,13 +651,7 @@ public slots:
 	void moveTableRowUp();
 	void moveTableRowDown();
 	void adjustColumnWidth();
-	void showChiSquareTestDialog();
-	void showStudentTestDialog(bool twoSamples = false);
-	void showTwoSampleStudentTestDialog(){return showStudentTestDialog(true);};
-	void testNormality();
 #ifdef HAVE_TAMUANOVA
-	void showANOVADialog(bool twoWay = false);
-	void showTwoWayANOVADialog(){return showANOVADialog(true);};
 #endif
 	//@}
 
@@ -788,24 +690,10 @@ public slots:
 
 	//! \name Fitting
 	//@{
-	void deleteFitTables();
-	void fitLinear();
-	void fitSigmoidal();
-	void fitGauss();
-	void fitLorentz();
-	void fitMultiPeak(int profile);
-	void fitMultiPeakGauss();
-	void fitMultiPeakLorentz();
-	void fitSlope();
 	//@}
 
 	//! \name Calculus
 	//@{
-	void integrate();
-	void differentiate();
-	void analysis(Analysis operation);
-	void analyzeCurve(Graph *g, QwtPlotCurve *c, Analysis operation);
-	void showDataSetDialog(Analysis operation);
 	//@}
 
 	void addErrorBars();
@@ -841,7 +729,6 @@ public slots:
 	void showEnrichementDialog();
 	void showLineDialog();
 	void showTitleDialog();
-	ExportDialog* showExportASCIIDialog();
 	void showCurvesDialog();
 	void showCurveRangeDialog();
 	CurveRangeDialog* showCurveRangeDialog(Graph *g, int curve);
@@ -879,40 +766,16 @@ public slots:
 	static void showStandAloneHelp();
 	void chooseHelpFolder();
 	void showPlotWizard();
-	void showFitPolynomDialog();
-    void showFrequencyCountDialog();
-	void showFunctionIntegrationDialog();
-	void showInterpolationDialog();
-	void showExpGrowthDialog();
-	void showExpDecayDialog();
-	void showExpDecayDialog(int type);
-	void showTwoExpDecayDialog();
-	void showExpDecay3Dialog();
 	void showRowStatistics();
 	void showColStatistics();
-	void showFitDialog();
 	void showLayerDialog();
 	void showPreferencesDialog();
 	void showMatrixDialog();
 	void showMatrixSizeDialog();
 	void showMatrixValuesDialog();
-	void showSmoothSavGolDialog();
-	void showSmoothFFTDialog();
-	void showSmoothAverageDialog();
-	void showSmoothLowessDialog();
-    void showSmoothDialog(int m);
-	void showFilterDialog(int filter);
-	void lowPassFilterDialog();
-	void highPassFilterDialog();
-	void bandPassFilterDialog();
-	void bandBlockFilterDialog();
-	void showFFTDialog();
 	void showColorMapDialog();
 	//@}
 
-	void baselineDialog();
-	void subtractReferenceData();
-	void subtractStraightLine();
 	void translateCurveHor();
 	void translateCurve(TranslateCurveTool::Direction direction = TranslateCurveTool::Vertical);
 
@@ -946,38 +809,9 @@ public slots:
 
 	//! \name Plot3D Tools
 	//@{
-	void toggle3DAnimation(bool on = true);
 	 //! Turns perspective mode on or off
-  	void togglePerspective(bool on = true);
   	//! Resets rotation of 3D plots to default values
-  	void resetRotation();
   	//! Finds best layout for the 3D plot
-  	void fitFrameToLayer();
-	void setFramed3DPlot();
-	void setBoxed3DPlot();
-	void removeAxes3DPlot();
-	void removeGrid3DPlot();
-	void setHiddenLineGrid3DPlot();
-	void setLineGrid3DPlot();
-	void setPoints3DPlot();
-	void setCrosses3DPlot();
-	void setCones3DPlot();
-	void setBars3DPlot();
-	void setFilledMesh3DPlot();
-	void setEmptyFloor3DPlot();
-	void setFloorData3DPlot();
-	void setFloorIso3DPlot();
-	void setFloorGrid3DPlot(bool on);
-	void setCeilGrid3DPlot(bool on);
-	void setRightGrid3DPlot(bool on);
-	void setLeftGrid3DPlot(bool on);
-	void setFrontGrid3DPlot(bool on);
-	void setBackGrid3DPlot(bool on);
-	void pickPlotStyle( QAction* action );
-	void pickCoordSystem( QAction* action);
-	void pickFloorStyle( QAction* action);
-	void custom3DActions(QMdiSubWindow *w);
-	void custom3DGrids(int grids);
 	//@}
 
 	void updateRecentProjectsList(const QString& fn = QString());
@@ -1195,7 +1029,6 @@ private:
 	void initMainMenu();
 	void initToolBars();
 	void initPlot3DToolBar();
-	void initPlot3D(Graph3D *plot);
 	void insertTranslatedStrings();
 	void translateActionsStrings();
 	//@}
@@ -1221,7 +1054,6 @@ private slots:
 	void customToolBars(QMdiSubWindow* w);
 	void customMenu(QMdiSubWindow* w);
 	void windowActivated(QMdiSubWindow *w);
-	void custom2DPlotTools(MultiLayer *);
 	void updateExplorerWindowLayout(Qt::DockWidgetArea);
 
 	void analysisMenuAboutToShow();
@@ -1498,7 +1330,6 @@ public:
 	int d_3D_major_style, d_3D_minor_style;
 	double d_3D_major_width, d_3D_minor_width;
 
-    void setPlot3DOptions();
 	//@}
 
 private:

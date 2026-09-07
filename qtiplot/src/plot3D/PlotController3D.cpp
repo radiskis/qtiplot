@@ -74,9 +74,9 @@ void PlotController3D::plot3DRibbon()
 
 	Table *table = static_cast<Table*>(w);
 	if(table->selectedColumns().count() == 1){
-		if (!d_app->validFor3DPlot(table))
+		if (!validFor3DPlot(table))
 			return;
-		d_app->plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Ribbon);
+		plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Ribbon);
 	} else
 		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"), d_app->tr("You must select exactly one column for plotting!"));
 }
@@ -87,7 +87,7 @@ void PlotController3D::plot3DWireframe()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->plot3DMatrix(0, Qwt3D::WIREFRAME);
+	plot3DMatrix(0, Qwt3D::WIREFRAME);
 }
 
 void PlotController3D::plot3DHiddenLine()
@@ -96,7 +96,7 @@ void PlotController3D::plot3DHiddenLine()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->plot3DMatrix(0, Qwt3D::HIDDENLINE);
+	plot3DMatrix(0, Qwt3D::HIDDENLINE);
 }
 
 void PlotController3D::plot3DPolygons()
@@ -105,7 +105,7 @@ void PlotController3D::plot3DPolygons()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->plot3DMatrix(0, Qwt3D::FILLED);
+	plot3DMatrix(0, Qwt3D::FILLED);
 }
 
 void PlotController3D::plot3DWireSurface()
@@ -114,7 +114,7 @@ void PlotController3D::plot3DWireSurface()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->plot3DMatrix(0, Qwt3D::FILLEDMESH);
+	plot3DMatrix(0, Qwt3D::FILLEDMESH);
 }
 
 void PlotController3D::plot3DBars()
@@ -129,16 +129,16 @@ void PlotController3D::plot3DBars()
 
 	if (w->inherits("Table")){
 		Table *table = static_cast<Table *>(w);
-		if (!d_app->validFor3DPlot(table))
+		if (!validFor3DPlot(table))
 			return;
 
 		if(table->selectedColumns().count() == 1)
-			d_app->plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Bars);
+			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Bars);
 		else
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
 	else if(w->inherits("Matrix"))
-		d_app->plot3DMatrix(0, Qwt3D::USER);
+		plot3DMatrix(0, Qwt3D::USER);
 }
 
 void PlotController3D::plot3DScatter()
@@ -154,16 +154,16 @@ void PlotController3D::plot3DScatter()
 	if (w->inherits("Table"))
 	{
 		Table *table = static_cast<Table *>(w);
-		if (!d_app->validFor3DPlot(table))
+		if (!validFor3DPlot(table))
 			return;
 
 		if(table->selectedColumns().count() == 1)
-			d_app->plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Scatter);
+			plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Scatter);
 		else
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
 	else if(w->inherits("Matrix"))
-		d_app->plot3DMatrix(0, Qwt3D::POINTS);
+		plot3DMatrix(0, Qwt3D::POINTS);
 }
 
 void PlotController3D::plot3DTrajectory()
@@ -175,11 +175,11 @@ void PlotController3D::plot3DTrajectory()
 	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
     if (!table)
 		return;
-    if (!d_app->validFor3DPlot(table))
+    if (!validFor3DPlot(table))
         return;
 
     if(table->selectedColumns().count() == 1)
-        d_app->plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Trajectory);
+        plotXYZ(table, table->colName(table->selectedColumn()), Graph3D::Trajectory);
     else
         QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"), d_app->tr("You must select exactly one column for plotting!"));
 }
@@ -331,7 +331,7 @@ void PlotController3D::add3DData()
 	QString column = QInputDialog::getItem(d_app, d_app->tr("QtiPlot - Choose data set"),
 									d_app->tr("Column") + ": ", zColumns, 0, false, &ok);
 	if (ok && !column.isEmpty())
-		d_app->insertNew3DData(column);
+		insertNew3DData(column);
 }
 
 void PlotController3D::change3DData()
@@ -344,7 +344,7 @@ void PlotController3D::change3DData()
 	QString column = QInputDialog::getItem(d_app, d_app->tr("QtiPlot - Choose data set"),
 									d_app->tr("Column") + ": ", d_app->columnsList(Table::Z), 0, false, &ok);
 	if (ok && !column.isEmpty())
-		d_app->change3DData(column);
+		change3DData(column);
 }
 
 void PlotController3D::change3DMatrix()
@@ -363,7 +363,7 @@ void PlotController3D::change3DMatrix()
 	QString matrixName = QInputDialog::getItem(d_app, d_app->tr("QtiPlot - Choose matrix to plot"),
 							d_app->tr("Matrix") + ": ", matrices, currentIndex, false, &ok);
 	if (ok && !matrixName.isEmpty())
-		d_app->change3DMatrix(matrixName);
+		change3DMatrix(matrixName);
 }
 
 void PlotController3D::change3DMatrix(const QString& matrix_name)
@@ -407,7 +407,7 @@ void PlotController3D::add3DMatrixPlot()
 	QString matrixName = QInputDialog::getItem(d_app, d_app->tr("QtiPlot - Choose matrix to plot"),
 							d_app->tr("Matrix") + ": ", matrices, 0, false, &ok);
 	if (ok && !matrixName.isEmpty())
-		d_app->insert3DMatrixPlot(matrixName);
+		insert3DMatrixPlot(matrixName);
 }
 
 void PlotController3D::insert3DMatrixPlot(const QString& matrix_name)
@@ -492,7 +492,7 @@ Graph3D* PlotController3D::plotSurface(const QString& formula, double xl, double
 	if (!d_app) return nullptr;
 	ApplicationWindow *app = d_app;
 
-	Graph3D *plot = d_app->newPlot3D();
+	Graph3D *plot = newPlot3D();
 	if (!plot)
 		return 0;
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
@@ -508,7 +508,7 @@ Graph3D* PlotController3D::plotParametricSurface(const QString& xFormula, const 
 	if (!d_app) return nullptr;
 	ApplicationWindow *app = d_app;
 
-	Graph3D *plot = d_app->newPlot3D();
+	Graph3D *plot = newPlot3D();
 	if (!plot)
 		return 0;
 	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, columns, rows, uPeriodic, vPeriodic);
@@ -532,7 +532,7 @@ Graph3D* PlotController3D::newPlot3D(const QString& title)
 	plot->setWindowTitle(label);
 	plot->setObjectName(label);
 
-	d_app->initPlot3D(plot);
+	initPlot3D(plot);
 
 	emit d_app->modified();
 	QApplication::restoreOverrideCursor();
@@ -545,7 +545,7 @@ Graph3D* PlotController3D::plotXYZ(Table* table, const QString& zColName, int ty
 	if (!d_app) return nullptr;
 	ApplicationWindow *app = d_app;
 
-	Graph3D *plot = d_app->newPlot3D();
+	Graph3D *plot = newPlot3D();
 	if (!plot)
 		return 0;
 
@@ -567,7 +567,7 @@ MdiSubWindow* PlotController3D::newPolarPlot(const QString& title)
 	ApplicationWindow *app = d_app;
 
 	PolarGraph* w = new PolarGraph(d_app->generateUniqueName(title.isEmpty() ? d_app->tr("Polar") : title), d_app);
-	d_app->initPolarPlot(w);
+	initPolarPlot(w);
 	return w;
 }
 
@@ -588,7 +588,7 @@ void PlotController3D::plotPolar()
 	}
 
 	QStringList s = table->selectedColumns();
-    d_app->plotPolar(table, s);
+    plotPolar(table, s);
 }
 
 MdiSubWindow* PlotController3D::plotPolar(Table* table, const QStringList& colList, int startRow, int endRow)
@@ -599,7 +599,7 @@ MdiSubWindow* PlotController3D::plotPolar(Table* table, const QStringList& colLi
 
     if (!table || colList.size() < 2) return 0;
     
-    PolarGraph* w = (PolarGraph*)d_app->newPolarPlot();
+    PolarGraph* w = (PolarGraph*)newPolarPlot();
 
     // Check column designations: if one is X and one is Y, X is Theta and Y is Radius
     QString thetaCol = colList[0];
@@ -634,7 +634,7 @@ void PlotController3D::initPlot3D(Graph3D *plot)
 	else
 		plot->setParent(0);
 
-	d_app->connectSurfacePlot(plot);
+	connectSurfacePlot(plot);
 
 	plot->setWindowIcon(QPixmap(":/trajectory.png"));
 	plot->show();
@@ -954,21 +954,21 @@ void PlotController3D::pickPlotStyle( QAction* action )
 		return;
 
 	if (action == polygon)
-		d_app->removeGrid3DPlot();
+		removeGrid3DPlot();
 	else if (action == filledmesh)
-		d_app->setFilledMesh3DPlot();
+		setFilledMesh3DPlot();
 	else if (action == wireframe)
-		d_app->setLineGrid3DPlot();
+		setLineGrid3DPlot();
 	else if (action == hiddenline)
-		d_app->setHiddenLineGrid3DPlot();
+		setHiddenLineGrid3DPlot();
 	else if (action == pointstyle)
-		d_app->setPoints3DPlot();
+		setPoints3DPlot();
 	else if (action == conestyle)
-		d_app->setCones3DPlot();
+		setCones3DPlot();
 	else if (action == crossHairStyle)
-		d_app->setCrosses3DPlot();
+		setCrosses3DPlot();
 	else if (action == barstyle)
-		d_app->setBars3DPlot();
+		setBars3DPlot();
 
 	emit d_app->modified();
 }
@@ -989,14 +989,14 @@ void PlotController3D::pickCoordSystem( QAction* action)
 	if (action == Box || action == Frame)
 	{
 		if (action == Box)
-			d_app->setBoxed3DPlot();
+			setBoxed3DPlot();
 		if (action == Frame)
-			d_app->setFramed3DPlot();
+			setFramed3DPlot();
 		grids->setEnabled(true);
 	}
 	else if (action == None)
 	{
-		d_app->removeAxes3DPlot();
+		removeAxes3DPlot();
 		grids->setEnabled(false);
 	}
 
@@ -1015,11 +1015,11 @@ void PlotController3D::pickFloorStyle( QAction* action )
 		return;
 
 	if (action == floordata)
-		d_app->setFloorData3DPlot();
+		setFloorData3DPlot();
 	else if (action == flooriso)
-		d_app->setFloorIso3DPlot();
+		setFloorIso3DPlot();
 	else
-		d_app->setEmptyFloor3DPlot();
+		setEmptyFloor3DPlot();
 
 	emit d_app->modified();
 }
@@ -1179,7 +1179,7 @@ void PlotController3D::custom3DActions(QMdiSubWindow *w)
 				floordata->setChecked(true );
 				break;
 		}
-		d_app->custom3DGrids(plot->grids());
+		custom3DGrids(plot->grids());
 	}
 }
 
@@ -1272,7 +1272,7 @@ Graph3D * PlotController3D::plot3DMatrix(Matrix *m, int style)
 			return 0;
 	}
 
-	Graph3D *plot = d_app->newPlot3D();
+	Graph3D *plot = newPlot3D();
 	if (!plot)
 		return 0;
 
@@ -1281,7 +1281,7 @@ Graph3D * PlotController3D::plot3DMatrix(Matrix *m, int style)
 	plot->addMatrixData(m);
 	plot->customPlotStyle(style);
 
-	d_app->custom3DActions(plot);
+	custom3DActions(plot);
 	emit d_app->modified();
 	QApplication::restoreOverrideCursor();
 	return plot;

@@ -99,7 +99,7 @@ void PlotController2D::plotBox()
 	ApplicationWindow *app = d_app;
 	auto &Box = d_app->Box;
 
-    d_app->generate2DGraph(Graph::Box);
+    generate2DGraph(Graph::Box);
 }
 
 void PlotController2D::plotVerticalBars()
@@ -108,7 +108,7 @@ void PlotController2D::plotVerticalBars()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::VerticalBars);
+	generate2DGraph(Graph::VerticalBars);
 }
 
 void PlotController2D::plotHorizontalBars()
@@ -117,7 +117,7 @@ void PlotController2D::plotHorizontalBars()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::HorizontalBars);
+	generate2DGraph(Graph::HorizontalBars);
 }
 
 void PlotController2D::plotStackBar()
@@ -126,7 +126,7 @@ void PlotController2D::plotStackBar()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::StackBar);
+	generate2DGraph(Graph::StackBar);
 }
 
 void PlotController2D::plotStackColumn()
@@ -135,7 +135,7 @@ void PlotController2D::plotStackColumn()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::StackColumn);
+	generate2DGraph(Graph::StackColumn);
 }
 
 MultiLayer* PlotController2D::plotHistogram()
@@ -144,7 +144,7 @@ MultiLayer* PlotController2D::plotHistogram()
 	if (!d_app) return nullptr;
 	ApplicationWindow *app = d_app;
 
-    return d_app->generate2DGraph(Graph::Histogram);
+    return generate2DGraph(Graph::Histogram);
 }
 
 MultiLayer* PlotController2D::plotHistogram(Matrix *m)
@@ -160,7 +160,7 @@ MultiLayer* PlotController2D::plotHistogram(Matrix *m)
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MultiLayer* g = d_app->newGraph();
+	MultiLayer* g = newGraph();
 	if (g)
 		g->activeLayer()->addHistogram(m);
 	QApplication::restoreOverrideCursor();
@@ -173,7 +173,7 @@ void PlotController2D::plotArea()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::Area);
+	generate2DGraph(Graph::Area);
 }
 
 void PlotController2D::plotPie()
@@ -187,17 +187,17 @@ void PlotController2D::plotPie()
 		return;
 
 	if(table->selectedColumns().count() != 1){
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),
-				d_app->tr("You must select exactly one column for plotting!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"),
+				tr("You must select exactly one column for plotting!"));
 		return;
 	}
 
 	QStringList s = table->selectedColumns();
 	if (s.count()>0){
 		QTableWidgetSelectionRange sel = table->getSelection();
-		d_app->multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::Pie, sel.topRow(), sel.bottomRow());
 	} else
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Error"), d_app->tr("Please select a column to plot!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Error"), tr("Please select a column to plot!"));
 }
 
 void PlotController2D::plotL()
@@ -206,7 +206,7 @@ void PlotController2D::plotL()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::Line);
+	generate2DGraph(Graph::Line);
 }
 
 void PlotController2D::plotP()
@@ -215,7 +215,7 @@ void PlotController2D::plotP()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::Scatter);
+	generate2DGraph(Graph::Scatter);
 }
 
 void PlotController2D::plotLP()
@@ -224,7 +224,7 @@ void PlotController2D::plotLP()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::LineSymbols);
+	generate2DGraph(Graph::LineSymbols);
 }
 
 void PlotController2D::plotVerticalDropLines()
@@ -233,7 +233,7 @@ void PlotController2D::plotVerticalDropLines()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::VerticalDropLines);
+	generate2DGraph(Graph::VerticalDropLines);
 }
 
 void PlotController2D::plotSpline()
@@ -242,7 +242,7 @@ void PlotController2D::plotSpline()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::Spline);
+	generate2DGraph(Graph::Spline);
 }
 
 void PlotController2D::plotVertSteps()
@@ -251,7 +251,7 @@ void PlotController2D::plotVertSteps()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::VerticalSteps);
+	generate2DGraph(Graph::VerticalSteps);
 }
 
 void PlotController2D::plotHorSteps()
@@ -260,7 +260,7 @@ void PlotController2D::plotHorSteps()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->generate2DGraph(Graph::HorizontalSteps);
+	generate2DGraph(Graph::HorizontalSteps);
 }
 
 void PlotController2D::plotVectXYXY()
@@ -272,15 +272,15 @@ void PlotController2D::plotVectXYXY()
 	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
     if (!table)
 		return;
-	if (!d_app->validFor2DPlot(table, Graph::VectXYXY))
+	if (!validFor2DPlot(table, Graph::VectXYXY))
 		return;
 
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4) {
 	QTableWidgetSelectionRange sel = table->getSelection();
-		d_app->multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::VectXYXY, sel.topRow(), sel.bottomRow());
 	} else
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Error"), d_app->tr("Please select four columns for d_app operation!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Error"), tr("Please select four columns for d_app operation!"));
 }
 
 void PlotController2D::plotVectXYAM()
@@ -292,15 +292,15 @@ void PlotController2D::plotVectXYAM()
     Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
     if (!table)
 		return;
-	if (!d_app->validFor2DPlot(table, Graph::VectXYAM))
+	if (!validFor2DPlot(table, Graph::VectXYAM))
 		return;
 
 	QStringList s = table->selectedColumns();
 	if (s.count() == 4){
 	QTableWidgetSelectionRange sel = table->getSelection();
-		d_app->multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
+		multilayerPlot(table, s, Graph::VectXYAM, sel.topRow(), sel.bottomRow());
 	} else
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Error"), d_app->tr("Please select four columns for d_app operation!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Error"), tr("Please select four columns for d_app operation!"));
 }
 
 MultiLayer* PlotController2D::multilayerPlot(const QString& caption, int layers, int rows, int cols)
@@ -310,7 +310,7 @@ MultiLayer* PlotController2D::multilayerPlot(const QString& caption, int layers,
 	ApplicationWindow *app = d_app;
 
 	MultiLayer* ml = new MultiLayer(d_app, layers, rows, cols);
-	d_app->initMultilayerPlot(ml, caption);
+	initMultilayerPlot(ml, caption);
 	return ml;
 }
 
@@ -322,13 +322,13 @@ MultiLayer* PlotController2D::newGraph(const QString& caption)
 
 	QString name = caption;
 	while(d_app->alreadyUsedName(name))
-		name = d_app->generateUniqueName(d_app->tr("Graph"));
+		name = d_app->generateUniqueName(tr("Graph"));
 
-	MultiLayer *ml = d_app->multilayerPlot(name);
+	MultiLayer *ml = multilayerPlot(name);
 	if (ml){
 		Graph *g = ml->activeLayer();
 		if (g){
-			d_app->setPreferences(g);
+			setPreferences(g);
 			g->newLegend();
 		}
 		ml->arrangeLayers(false, true);
@@ -350,12 +350,12 @@ MultiLayer* PlotController2D::multilayerPlot(Table* w, const QStringList& colLis
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Graph")));
+	MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Graph")));
 	Graph *ag = g->activeLayer();
 	if (!ag)
 		return 0;
 
-	d_app->setPreferences(ag);
+	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
 
 	g->arrangeLayers(false, true);
@@ -377,12 +377,12 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
     if (!t)
 		return 0;
 
-	if (!d_app->validFor2DPlot(t, (Graph::CurveType)style))
+	if (!validFor2DPlot(t, (Graph::CurveType)style))
 		return 0;
 
 	QStringList list = t->drawableColumnSelection();
 	if((int)list.count() < 1) {
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"), d_app->tr("Please select a Y column to plot!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return 0;
 	}
 
@@ -391,11 +391,11 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
 		r = curves;
 
 	int layers = c*r;
-	MultiLayer* g = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Graph")), layers, r, c);
+	MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Graph")), layers, r, c);
 	QList<Graph *> layersList = g->layersList();
 	int i = 0;
 	for (Graph *ag : layersList){
-		d_app->setPreferences(ag);
+		setPreferences(ag);
 		if (i < curves){
 			QStringList lst = QStringList() << list[i];
 			for (int j = 0; j < curves; j++){
@@ -436,7 +436,7 @@ MultiLayer* PlotController2D::waterfallPlot()
     if (!t)
 		return 0;
 
-	return d_app->waterfallPlot(t, t->selectedYColumns());
+	return waterfallPlot(t, t->selectedYColumns());
 }
 
 MultiLayer* PlotController2D::waterfallPlot(Table *t, const QStringList& list)
@@ -449,15 +449,15 @@ MultiLayer* PlotController2D::waterfallPlot(Table *t, const QStringList& list)
 		return 0;
 
 	if(list.count() < 1){
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),
-		d_app->tr("Please select a Y column to plot!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"),
+		tr("Please select a Y column to plot!"));
 		return 0;
 	}
 
 	MultiLayer* ml = new MultiLayer(d_app);
 
 	Graph *g = ml->activeLayer();
-	d_app->setPreferences(g);
+	setPreferences(g);
 	g->enableAxis(QwtPlot::xTop, false);
 	g->enableAxis(QwtPlot::yRight, false);
 	g->setCanvasFrame(0);
@@ -467,7 +467,7 @@ MultiLayer* PlotController2D::waterfallPlot(Table *t, const QStringList& list)
 	g->addCurves(t, list, Graph::Line);
 	g->setWaterfallOffset(10, 20);
 
-	d_app->initMultilayerPlot(ml);
+	initMultilayerPlot(ml);
 	ml->arrangeLayers(false, true);
 	ml->setWaterfallLayout();
 
@@ -488,7 +488,7 @@ void PlotController2D::initMultilayerPlot(MultiLayer* g, const QString& name)
 
 	QString label = name;
 	while(d_app->alreadyUsedName(label))
-		label = d_app->generateUniqueName(d_app->tr("Graph"));
+		label = d_app->generateUniqueName(tr("Graph"));
 
 	g->setWindowTitle(label);
 	g->setObjectName(label);
@@ -501,7 +501,7 @@ void PlotController2D::initMultilayerPlot(MultiLayer* g, const QString& name)
 	else
 		g->setParent(0);
 
-	d_app->connectMultilayerPlot(g);
+	connectMultilayerPlot(g);
 	if (!qApp->arguments().contains("-X"))
 		g->showNormal();
 
@@ -562,7 +562,7 @@ void PlotController2D::setPreferences(Graph* g)
 				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
 				sd->setSpacing(d_graph_tick_labels_dist);
 				if (i == QwtPlot::yRight && !d_show_axes_labels[i])
-					g->setAxisTitle(i, d_app->tr(" "));
+					g->setAxisTitle(i, tr(" "));
 			}
 		}
 
@@ -686,7 +686,7 @@ void PlotController2D::plotVerticalSharedAxisLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(1, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+	multilayerPlot(1, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
 }
 
 void PlotController2D::plotHorizontalSharedAxisLayers()
@@ -696,7 +696,7 @@ void PlotController2D::plotHorizontalSharedAxisLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(2, 1, defaultCurveStyle, MultiLayer::AlignCanvases);
+	multilayerPlot(2, 1, defaultCurveStyle, MultiLayer::AlignCanvases);
 }
 
 void PlotController2D::plotSharedAxesLayers()
@@ -706,7 +706,7 @@ void PlotController2D::plotSharedAxesLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(2, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
+	multilayerPlot(2, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
 }
 
 void PlotController2D::plotStackSharedAxisLayers()
@@ -716,7 +716,7 @@ void PlotController2D::plotStackSharedAxisLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
+	multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
 }
 
 void PlotController2D::plotCustomLayout(bool sharedAxes)
@@ -730,13 +730,13 @@ void PlotController2D::plotCustomLayout(bool sharedAxes)
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
-	if (!t || !d_app->validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
+	if (!t || !validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
 		return;
 
 	QStringList list = t->drawableColumnSelection();
 	int curves = list.count();
 	if(curves < 1){
-		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"), d_app->tr("Please select a Y column to plot!"));
+		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return;
 	}
 
@@ -757,7 +757,7 @@ void PlotController2D::plot2VerticalLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(1, 2, defaultCurveStyle);
+	multilayerPlot(1, 2, defaultCurveStyle);
 }
 
 void PlotController2D::plot2HorizontalLayers()
@@ -767,7 +767,7 @@ void PlotController2D::plot2HorizontalLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(2, 1, defaultCurveStyle);
+	multilayerPlot(2, 1, defaultCurveStyle);
 }
 
 void PlotController2D::plot4Layers()
@@ -777,7 +777,7 @@ void PlotController2D::plot4Layers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(2, 2, defaultCurveStyle);
+	multilayerPlot(2, 2, defaultCurveStyle);
 }
 
 void PlotController2D::plotStackedLayers()
@@ -787,7 +787,7 @@ void PlotController2D::plotStackedLayers()
 	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	d_app->multilayerPlot(1, -1, defaultCurveStyle);
+	multilayerPlot(1, -1, defaultCurveStyle);
 }
 
 void PlotController2D::plotStackedHistograms()
@@ -796,7 +796,7 @@ void PlotController2D::plotStackedHistograms()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->multilayerPlot(1, -1, Graph::Histogram);
+	multilayerPlot(1, -1, Graph::Histogram);
 }
 
 void PlotController2D::zoomRectanglePlot()
@@ -812,13 +812,13 @@ void PlotController2D::zoomRectanglePlot()
     QStringList lst = t->selectedYColumns();
     int cols = lst.size();
 	if (cols < 1){
-		QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),
-		d_app->tr("You need to select at least one Y column for d_app operation!"));
+		QMessageBox::critical(d_app, tr("QtiPlot - Error"),
+		tr("You need to select at least one Y column for d_app operation!"));
 		return;
 	}
 
 	QTableWidgetSelectionRange sel = t->getSelection();
-    MultiLayer *ml = d_app->multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+    MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
     if (ml){
         Graph *ag = ml->activeLayer();
         ag->setTitle("");
@@ -840,7 +840,7 @@ void PlotController2D::zoomRectanglePlot()
         if (!g)
             return;
 
-		d_app->setPreferences(g);
+		setPreferences(g);
         g->setTitle("");
         g->setAxisTitle(QwtPlot::xBottom, " ");
         g->setAxisTitle(QwtPlot::yLeft, " ");
@@ -874,13 +874,13 @@ void PlotController2D::plotDoubleYAxis()
 	QStringList lst = t->selectedYColumns();
 	int cols = lst.size();
 	if (cols < 2){
-		QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),
-		d_app->tr("You need at least two columns for d_app operation!"));
+		QMessageBox::critical(d_app, tr("QtiPlot - Error"),
+		tr("You need at least two columns for d_app operation!"));
 		return;
 	}
 
 	QTableWidgetSelectionRange sel = t->getSelection();
-	MultiLayer *ml = d_app->multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
+	MultiLayer *ml = multilayerPlot(t, lst, Graph::LineSymbols, sel.topRow(), sel.bottomRow());
 	if (ml){
 		Graph *g = ml->activeLayer();
 		g->enableAxis(QwtPlot::yRight);
@@ -900,7 +900,7 @@ MultiLayer* PlotController2D::newFunctionPlot(QStringList &formulas, double star
 	if (!d_app) return nullptr;
 	ApplicationWindow *app = d_app;
 
-	MultiLayer *ml = d_app->newGraph();
+	MultiLayer *ml = newGraph();
 	if (ml){
 		Graph *g = ml->activeLayer();
 		if (g){
@@ -943,14 +943,14 @@ void PlotController2D::extractGraphs()
 		return;
 
     if (plot->numLayers() < 2){
-        QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),
-        d_app->tr("You must have more than one layer in the active window!"));
+        QMessageBox::critical(d_app, tr("QtiPlot - Error"),
+        tr("You must have more than one layer in the active window!"));
 		return;
     }
 
     QList<Graph *> lst = plot->layersList();
     for (Graph *g : lst){
-		MultiLayer *nw = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Graph")), 0, plot->getRows(), plot->getCols());
+		MultiLayer *nw = multilayerPlot(d_app->generateUniqueName(tr("Graph")), 0, plot->getRows(), plot->getCols());
         nw->resize(plot->size());
 		Graph *ng = nw->addLayer(g->pos().x(), g->pos().y(), g->width(), g->height());
 		if (ng)
@@ -973,8 +973,8 @@ void PlotController2D::extractLayers()
 
 	int curves = g->curveCount();
 	if (curves < 2){
-		QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),
-		d_app->tr("You must have more than one dataset in the active layer!"));
+		QMessageBox::critical(d_app, tr("QtiPlot - Error"),
+		tr("You must have more than one dataset in the active layer!"));
 		return;
 	}
 
@@ -1030,7 +1030,7 @@ void PlotController2D::addInsetCurveLayer()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-    d_app->addInsetLayer(true);
+    addInsetLayer(true);
 }
 
 void PlotController2D::addLayer()
@@ -1044,21 +1044,21 @@ void PlotController2D::addLayer()
 		return;
 
 	if (plot->numLayers() == 0){
-		d_app->setPreferences(plot->addLayer());
+		setPreferences(plot->addLayer());
 		return;
 	}
 
 	switch(QMessageBox::information(d_app,
-				d_app->tr("QtiPlot - Guess best origin for the new layer?"),
-				d_app->tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: d_app will rearrange existing layers!"),
+				tr("QtiPlot - Guess best origin for the new layer?"),
+				tr("Do you want QtiPlot to guess the best position for the new layer?\n Warning: d_app will rearrange existing layers!"),
 				QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel, QMessageBox::Cancel ) ){
 		case QMessageBox::Yes:
-				d_app->setPreferences(plot->addLayer());
+				setPreferences(plot->addLayer());
 				plot->arrangeLayers(true, true);
 		break;
 
 		case QMessageBox::No:
-			d_app->setPreferences(plot->addLayer(0, 0, plot->canvasRect().width(), plot->canvasRect().height()));
+			setPreferences(plot->addLayer(0, 0, plot->canvasRect().width(), plot->canvasRect().height()));
 		break;
 
 		case QMessageBox::Cancel:
@@ -1250,7 +1250,7 @@ MultiLayer* PlotController2D::plotGrayScale(Matrix *m)
 			return 0;
 	}
 
-	return d_app->plotSpectrogram(m, Graph::GrayScale);
+	return plotSpectrogram(m, Graph::GrayScale);
 }
 
 MultiLayer* PlotController2D::plotContour(Matrix *m)
@@ -1265,7 +1265,7 @@ MultiLayer* PlotController2D::plotContour(Matrix *m)
 			return 0;
 	}
 
-	return d_app->plotSpectrogram(m, Graph::Contour);
+	return plotSpectrogram(m, Graph::Contour);
 }
 
 MultiLayer* PlotController2D::plotColorMap(Matrix *m)
@@ -1280,7 +1280,7 @@ MultiLayer* PlotController2D::plotColorMap(Matrix *m)
 			return 0;
 	}
 
-	return d_app->plotSpectrogram(m, Graph::ColorMap);
+	return plotSpectrogram(m, Graph::ColorMap);
 }
 
 MultiLayer* PlotController2D::plotImage(Matrix *m)
@@ -1297,9 +1297,9 @@ MultiLayer* PlotController2D::plotImage(Matrix *m)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    MultiLayer* g = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Graph")));
+    MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Graph")));
 	Graph* plot = g->activeLayer();
-	d_app->setPreferences(plot);
+	setPreferences(plot);
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
 		return 0;
@@ -1330,18 +1330,18 @@ MultiLayer* PlotController2D::plotSpectrogram(Matrix *m, Graph::CurveType type)
 	ApplicationWindow *app = d_app;
 
 	if (type == Graph::ImagePlot)
-		return d_app->plotImage(m);
+		return plotImage(m);
 	else if (type == Graph::Histogram)
-		return d_app->plotHistogram(m);
+		return plotHistogram(m);
 
 	if (!m)
 		return 0;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-	MultiLayer* g = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Graph")));
+	MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Graph")));
 	Graph* plot = g->activeLayer();
-	d_app->setPreferences(plot);
+	setPreferences(plot);
 
 	Spectrogram *sp = plot->plotSpectrogram(m, type);
 	if (sp && type == Graph::ColorMap)
@@ -1366,12 +1366,12 @@ MultiLayer* PlotController2D::plotImageProfiles(Matrix *m)
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-    MultiLayer* g = d_app->multilayerPlot(d_app->generateUniqueName(d_app->tr("Profiles")), 0);
+    MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Profiles")), 0);
     g->resize(650, 600);
     g->plotProfiles(m);
 
-	Table *horTable = d_app->newHiddenTable(d_app->tr("Horizontal"), QString(), m->numCols(), 2);
-    Table *verTable = d_app->newHiddenTable(d_app->tr("Vertical"), QString(), m->numRows(), 2);
+	Table *horTable = d_app->newHiddenTable(tr("Horizontal"), QString(), m->numCols(), 2);
+    Table *verTable = d_app->newHiddenTable(tr("Vertical"), QString(), m->numRows(), 2);
 
 	Graph *sg = g->layer(1);
 	if (sg){
@@ -1392,14 +1392,14 @@ bool PlotController2D::validFor2DPlot(Table *table, Graph::CurveType type)
 	auto &Box = d_app->Box;
 
 	if (!table->selectedYColumns().count()){
-  		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Error"), d_app->tr("Please select a Y column to plot!"));
+  		QMessageBox::warning(d_app, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
   	    return false;
   	} else if (type != Graph::Box && type != Graph::Histogram && type != Graph::Pie){
 		if (table->numCols() < 2) {
-			QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),d_app->tr("You need at least two columns for d_app operation!"));
+			QMessageBox::critical(d_app, tr("QtiPlot - Error"),tr("You need at least two columns for d_app operation!"));
 			return false;
 		} else if (table->noXColumn()) {
-			QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"), d_app->tr("Please set a default X column for d_app table, first!"));
+			QMessageBox::critical(d_app, tr("QtiPlot - Error"), tr("Please set a default X column for d_app table, first!"));
 			return false;
 		}
 	}
@@ -1419,10 +1419,10 @@ MultiLayer* PlotController2D::generate2DGraph(Graph::CurveType type)
     if (w->inherits("Table")){
         Table *table = static_cast<Table *>(w);
 		QTableWidgetSelectionRange sel = table->getSelection();
-        return d_app->multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
+        return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
     } else if (w->inherits("Matrix")){
         Matrix *m = static_cast<Matrix *>(w);
-        return d_app->plotHistogram(m);
+        return plotHistogram(m);
     }
 	return 0;
 }
@@ -1451,10 +1451,10 @@ Note * PlotController2D::newStemPlot()
 	if (lst.isEmpty()){
 		QTableWidgetSelectionRange sel = t->getSelection();
 			for (int i = sel.leftColumn(); i <= sel.rightColumn(); i++)
-				editor->insertPlainText(d_app->stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
+				editor->insertPlainText(stemPlot(t, t->colName(i), 1001, sel.topRow() + 1, sel.bottomRow() + 1) + "\n");
 	} else {
 		for (int i = 0; i < lst.count(); i++)
-			editor->insertPlainText(d_app->stemPlot(t, lst[i], 1001) + "\n");
+			editor->insertPlainText(stemPlot(t, lst[i], 1001) + "\n");
 	}
 
 	n->show();
@@ -1473,8 +1473,8 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 
 	int col = t->colIndex(colName);
 	if (col < 0){
-		QMessageBox::critical(d_app, d_app->tr("QtiPlot - Error"),
-		d_app->tr("Data set: %1 doesn't exist!").arg(colName));
+		QMessageBox::critical(d_app, tr("QtiPlot - Error"),
+		tr("Data set: %1 doesn't exist!").arg(colName));
 		return QString();
 	}
 
@@ -1485,9 +1485,9 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 	if (endRow < 0 || endRow >= t->numRows())
 		endRow = t->numRows() - 1;
 
-	QString result = d_app->tr("Stem and leaf plot of dataset") + ": " + colName + " ";
-	result += d_app->tr("from row") + ": " + QString::number(startRow + 1) + " ";
-	result += d_app->tr("to row") + ": " + QString::number(endRow + 1) + "\n";
+	QString result = tr("Stem and leaf plot of dataset") + ": " + colName + " ";
+	result += tr("from row") + ": " + QString::number(startRow + 1) + " ";
+	result += tr("to row") + ": " + QString::number(endRow + 1) + "\n";
 
 	int rows = 0;
 	for (int j = startRow; j <= endRow; j++){
@@ -1498,11 +1498,11 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 	if (rows >= 1){
 		double *data = (double *)malloc(rows * sizeof (double));
 		if (!data){
-			result += d_app->tr("Not enough memory for d_app dataset!") + "\n";
+			result += tr("Not enough memory for d_app dataset!") + "\n";
 			return result;
 		}
 
-		result += "\n" + d_app->tr("Stem") + " | " + d_app->tr("Leaf");
+		result += "\n" + tr("Stem") + " | " + tr("Leaf");
 		result += "\n---------------------\n";
 
 		int row = 0;
@@ -1517,8 +1517,8 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 		if (power > 1e3){
 			power = std::ceil(log10(data[rows - 1] - data[0]) - log10(rows - 1));
 			bool ok;
-			int input = QInputDialog::getInt(d_app, d_app->tr("Please confirm the stem unit!"),
-                                      d_app->tr("Data set") + ": " + colName + ", " + d_app->tr("stem unit") + " = 10<sup>n</sup>, n = ",
+			int input = QInputDialog::getInt(d_app, tr("Please confirm the stem unit!"),
+                                      tr("Data set") + ": " + colName + ", " + tr("stem unit") + " = 10<sup>n</sup>, n = ",
                                       power, -1000, 1000, 1, &ok);
 			if (ok)
 				power = input;
@@ -1541,17 +1541,17 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 		}
 
 		result += "\n---------------------\n";
-		result += d_app->tr("Stem unit") + ": " + d_app->locale().toString(stem_unit) + "\n";
-		result += d_app->tr("Leaf unit") + ": " + d_app->locale().toString(leaf_unit) + "\n";
+		result += tr("Stem unit") + ": " + d_app->locale().toString(stem_unit) + "\n";
+		result += tr("Leaf unit") + ": " + d_app->locale().toString(leaf_unit) + "\n";
 
-		QString legend = d_app->tr("Key") + ": " + QString::number(prev_stem) + " | ";
+		QString legend = tr("Key") + ": " + QString::number(prev_stem) + " | ";
 		int leaf = int(qRound((data[rows - 1] - prev_stem*stem_unit)/leaf_unit));
 		legend += QString::number(leaf);
-		legend += " " + d_app->tr("means") + ": " + d_app->locale().toString(prev_stem*stem_unit + leaf*leaf_unit) + "\n";
+		legend += " " + tr("means") + ": " + d_app->locale().toString(prev_stem*stem_unit + leaf*leaf_unit) + "\n";
 
 		result += legend + "---------------------\n";
 		free(data);
 	} else
-		result += "\t" + d_app->tr("Input error: empty data set!") + "\n";
+		result += "\t" + tr("Input error: empty data set!") + "\n";
 	return result;
 }

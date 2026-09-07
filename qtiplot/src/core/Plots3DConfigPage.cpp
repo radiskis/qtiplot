@@ -29,6 +29,7 @@
 #include "Plots3DConfigPage.h"
 #include <ApplicationWindow.h>
 #include <ApplicationSettings.h>
+#include <PlotController3D.h>
 #include <ColorButton.h>
 #include <ColorMapEditor.h>
 #include <DoubleSpinBox.h>
@@ -252,7 +253,7 @@ void Plots3DConfigPage::apply(ApplicationWindow *app, ApplicationSettings *setti
 	app->d_3D_smooth_mesh = boxSmoothMesh->isChecked();
 	app->d_3D_autoscale = boxAutoscale3DPlots->isChecked();
 	app->setScale3DPlotFonts(boxScaleFonts3DPlots->isChecked());
-	app->setPlot3DOptions();
+	app->plotController3D()->setPlot3DOptions();
 
 	app->d_3D_grid_color = btnGrid->color();
 	app->d_3D_minor_grid_color = btnGridMinor->color();

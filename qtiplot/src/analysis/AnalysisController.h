@@ -52,10 +52,14 @@ public:
     virtual ~AnalysisController();
 
     void showChiSquareTestDialog();
-    void showStudentTestDialog(bool twoSamples);
+    void showStudentTestDialog(bool twoSamples = false);
+    void showOneSampleStudentTestDialog() { showStudentTestDialog(false); }
+    void showTwoSampleStudentTestDialog() { showStudentTestDialog(true); }
     void testNormality();
 #ifdef HAVE_TAMUANOVA
-    void showANOVADialog(bool twoWay);
+    void showANOVADialog(bool twoWay = false);
+    void showOneWayANOVADialog() { showANOVADialog(false); }
+    void showTwoWayANOVADialog() { showANOVADialog(true); }
 #endif
     void showExpGrowthDialog();
     void showExpDecayDialog();

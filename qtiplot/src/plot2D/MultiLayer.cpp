@@ -75,6 +75,7 @@ Description          : Multi layer widget
 #include "Spectrogram.h"
 #include "SelectionMoveResizer.h"
 #include <ApplicationWindow.h>
+#include <PlotController2D.h>
 #include <Matrix.h>
 #include <ColorButton.h>
 #include <ScaleEngine.h>
@@ -152,7 +153,7 @@ d_common_axes_layout(false)
 	d_add_layer_btn->setIcon(QIcon(":/plus.png"));
 	d_add_layer_btn->setMaximumWidth(LayerButton::btnSize());
 	d_add_layer_btn->setMaximumHeight(LayerButton::btnSize());
-	connect (d_add_layer_btn, &QPushButton::clicked, this->applicationWindow(), &ApplicationWindow::addLayer);
+	connect (d_add_layer_btn, &QPushButton::clicked, this->applicationWindow()->plotController2D(), &PlotController2D::addLayer);
 	toolbuttonsBox->addWidget(d_add_layer_btn);
 
 	d_remove_layer_btn = new QPushButton();

@@ -30,6 +30,7 @@
 
 #include "MenuBuilder.h"
 #include "ApplicationWindow.h"
+#include "PlotController3D.h"
 #include "Folder.h"
 #include "Table.h"
 #include "Matrix.h"
@@ -165,19 +166,19 @@ void MenuBuilder::initPlot3DToolBar(ApplicationWindow *app)
 	actionPerspective->setIcon(QIcon(":/perspective.png"));
 	plot3DTools->addAction( actionPerspective );
 	actionPerspective->setChecked(!d_3D_orthogonal);
-	QObject::connect(actionPerspective, &QAction::toggled, app, &ApplicationWindow::togglePerspective);
+	QObject::connect(actionPerspective, &QAction::toggled, app->plotController3D(), &PlotController3D::togglePerspective);
 
 	actionResetRotation = new QAction( app );
 	actionResetRotation->setCheckable( false );
 	actionResetRotation->setIcon(QIcon(":/reset_rotation.png"));
 	plot3DTools->addAction( actionResetRotation );
-	QObject::connect(actionResetRotation, &QAction::triggered, app, &ApplicationWindow::resetRotation);
+	QObject::connect(actionResetRotation, &QAction::triggered, app->plotController3D(), &PlotController3D::resetRotation);
 
 	actionFitFrame = new QAction( app );
 	actionFitFrame->setCheckable( false );
 	actionFitFrame->setIcon(QIcon(":/fit_frame.png"));
 	plot3DTools->addAction( actionFitFrame );
-	QObject::connect(actionFitFrame, &QAction::triggered, app, &ApplicationWindow::fitFrameToLayer);
+	QObject::connect(actionFitFrame, &QAction::triggered, app->plotController3D(), &PlotController3D::fitFrameToLayer);
 
 	plot3DTools->addSeparator();
 
@@ -255,17 +256,17 @@ void MenuBuilder::initPlot3DToolBar(ApplicationWindow *app)
 
 	plot3DTools->hide();
 
-	QObject::connect(actionAnimate, &QAction::toggled, app, &ApplicationWindow::toggle3DAnimation);
-	QObject::connect( coord, &QActionGroup::triggered, app, &ApplicationWindow::pickCoordSystem);
-	QObject::connect( floorstyle, &QActionGroup::triggered, app, &ApplicationWindow::pickFloorStyle);
-	QObject::connect( plotstyle, &QActionGroup::triggered, app, &ApplicationWindow::pickPlotStyle);
+	QObject::connect(actionAnimate, &QAction::toggled, app->plotController3D(), &PlotController3D::toggle3DAnimation);
+	QObject::connect( coord, &QActionGroup::triggered, app->plotController3D(), &PlotController3D::pickCoordSystem);
+	QObject::connect( floorstyle, &QActionGroup::triggered, app->plotController3D(), &PlotController3D::pickFloorStyle);
+	QObject::connect( plotstyle, &QActionGroup::triggered, app->plotController3D(), &PlotController3D::pickPlotStyle);
 
-	QObject::connect( left, &QAction::triggered, app, &ApplicationWindow::setLeftGrid3DPlot);
-	QObject::connect( right, &QAction::triggered, app, &ApplicationWindow::setRightGrid3DPlot);
-	QObject::connect( ceil, &QAction::triggered, app, &ApplicationWindow::setCeilGrid3DPlot);
-	QObject::connect( floor, &QAction::triggered, app, &ApplicationWindow::setFloorGrid3DPlot);
-	QObject::connect( back, &QAction::triggered, app, &ApplicationWindow::setBackGrid3DPlot);
-	QObject::connect( front, &QAction::triggered, app, &ApplicationWindow::setFrontGrid3DPlot);
+	QObject::connect( left, &QAction::triggered, app->plotController3D(), &PlotController3D::setLeftGrid3DPlot);
+	QObject::connect( right, &QAction::triggered, app->plotController3D(), &PlotController3D::setRightGrid3DPlot);
+	QObject::connect( ceil, &QAction::triggered, app->plotController3D(), &PlotController3D::setCeilGrid3DPlot);
+	QObject::connect( floor, &QAction::triggered, app->plotController3D(), &PlotController3D::setFloorGrid3DPlot);
+	QObject::connect( back, &QAction::triggered, app->plotController3D(), &PlotController3D::setBackGrid3DPlot);
+	QObject::connect( front, &QAction::triggered, app->plotController3D(), &PlotController3D::setFrontGrid3DPlot);
 }
 
 

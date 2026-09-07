@@ -28,6 +28,7 @@
  ***************************************************************************/
 #include "ExportDialog.h"
 #include "ApplicationWindow.h"
+#include <ExportManager.h>
 #include <MdiSubWindow.h>
 #include <Matrix.h>
 
@@ -212,7 +213,7 @@ void ExportDialog::accept()
 
 	QString selected_filter = selectedNameFilter().remove("*");
 	if (boxAllTables->isChecked())
-		app->exportAllTables(directory().absolutePath(), selected_filter, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
+		app->exportManager()->exportAllTables(directory().absolutePath(), selected_filter, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
 	else {
 		QString file_name = selectedFiles()[0];
 		if(!file_name.endsWith(selected_filter, Qt::CaseInsensitive))

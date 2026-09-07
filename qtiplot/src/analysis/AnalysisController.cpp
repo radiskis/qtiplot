@@ -161,7 +161,7 @@ void AnalysisController::showExpGrowthDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showExpDecayDialog(-1);
+	showExpDecayDialog(-1);
 }
 
 void AnalysisController::showExpDecayDialog()
@@ -170,7 +170,7 @@ void AnalysisController::showExpDecayDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showExpDecayDialog(1);
+	showExpDecayDialog(1);
 }
 
 void AnalysisController::showExpDecayDialog(int type)
@@ -198,7 +198,7 @@ void AnalysisController::showTwoExpDecayDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showExpDecayDialog(2);
+	showExpDecayDialog(2);
 }
 
 void AnalysisController::showExpDecay3Dialog()
@@ -207,7 +207,7 @@ void AnalysisController::showExpDecay3Dialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showExpDecayDialog(3);
+	showExpDecayDialog(3);
 }
 
 void AnalysisController::showFitDialog()
@@ -272,7 +272,7 @@ void AnalysisController::lowPassFilterDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showFilterDialog(FFTFilter::LowPass);
+	showFilterDialog(FFTFilter::LowPass);
 }
 
 void AnalysisController::highPassFilterDialog()
@@ -281,7 +281,7 @@ void AnalysisController::highPassFilterDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	 d_app->showFilterDialog(FFTFilter::HighPass);
+	 showFilterDialog(FFTFilter::HighPass);
 }
 
 void AnalysisController::bandPassFilterDialog()
@@ -290,7 +290,7 @@ void AnalysisController::bandPassFilterDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showFilterDialog(FFTFilter::BandPass);
+	showFilterDialog(FFTFilter::BandPass);
 }
 
 void AnalysisController::bandBlockFilterDialog()
@@ -299,7 +299,7 @@ void AnalysisController::bandBlockFilterDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showFilterDialog(FFTFilter::BandBlock);
+	showFilterDialog(FFTFilter::BandBlock);
 }
 
 void AnalysisController::showFFTDialog()
@@ -359,7 +359,7 @@ void AnalysisController::showSmoothSavGolDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-    d_app->showSmoothDialog(SmoothFilter::SavitzkyGolay);
+    showSmoothDialog(SmoothFilter::SavitzkyGolay);
 }
 
 void AnalysisController::showSmoothFFTDialog()
@@ -368,7 +368,7 @@ void AnalysisController::showSmoothFFTDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showSmoothDialog(SmoothFilter::FFT);
+	showSmoothDialog(SmoothFilter::FFT);
 }
 
 void AnalysisController::showSmoothAverageDialog()
@@ -377,7 +377,7 @@ void AnalysisController::showSmoothAverageDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showSmoothDialog(SmoothFilter::Average);
+	showSmoothDialog(SmoothFilter::Average);
 }
 
 void AnalysisController::showSmoothLowessDialog()
@@ -386,7 +386,7 @@ void AnalysisController::showSmoothLowessDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->showSmoothDialog(SmoothFilter::Lowess);
+	showSmoothDialog(SmoothFilter::Lowess);
 }
 
 void AnalysisController::showInterpolationDialog()
@@ -625,7 +625,7 @@ void AnalysisController::differentiate()
 		return;
 
 	if (qobject_cast<MultiLayer *>(w))
-		d_app->analysis(ApplicationWindow::Diff);
+		analysis(ApplicationWindow::Diff);
 	else if (w->inherits("Table")){
 		Table *t = qobject_cast<Table *>(w);
 		QStringList lst = t->selectedYColumns();
@@ -682,7 +682,7 @@ void AnalysisController::fitLinear()
 		return;
 
 	if (qobject_cast<MultiLayer *>(w))
-		d_app->analysis(ApplicationWindow::FitLinear);
+		analysis(ApplicationWindow::FitLinear);
 	else if (w->inherits("Table")){
 		Table *t = (Table *)w;
 		QStringList lst = t->selectedYColumns();
@@ -757,7 +757,7 @@ void AnalysisController::fitSlope()
 		return;
 
 	if (qobject_cast<MultiLayer *>(w))
-		d_app->analysis(ApplicationWindow::FitSlope);
+		analysis(ApplicationWindow::FitSlope);
 	else if (w->inherits("Table")){
 		Table *t = (Table *)w;
 		QStringList lst = t->selectedYColumns();
@@ -821,7 +821,7 @@ void AnalysisController::fitSigmoidal()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->analysis(ApplicationWindow::FitSigmoidal);
+	analysis(ApplicationWindow::FitSigmoidal);
 }
 
 void AnalysisController::fitGauss()
@@ -830,7 +830,7 @@ void AnalysisController::fitGauss()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->analysis(ApplicationWindow::FitGauss);
+	analysis(ApplicationWindow::FitGauss);
 }
 
 void AnalysisController::fitLorentz()
@@ -840,7 +840,7 @@ void AnalysisController::fitLorentz()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->analysis(ApplicationWindow::FitLorentz);
+	analysis(ApplicationWindow::FitLorentz);
 }
 
 void AnalysisController::deleteFitTables()
@@ -876,7 +876,7 @@ void AnalysisController::fitMultiPeakGauss()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->fitMultiPeak((int)MultiPeakFit::Gauss);
+	fitMultiPeak((int)MultiPeakFit::Gauss);
 }
 
 void AnalysisController::fitMultiPeakLorentz()
@@ -885,7 +885,7 @@ void AnalysisController::fitMultiPeakLorentz()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	d_app->fitMultiPeak((int)MultiPeakFit::Lorentz);
+	fitMultiPeak((int)MultiPeakFit::Lorentz);
 }
 
 void AnalysisController::fitMultiPeak(int profile)
