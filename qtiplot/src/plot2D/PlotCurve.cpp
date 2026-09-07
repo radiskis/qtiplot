@@ -542,6 +542,44 @@ void DataCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleM
 	if (!g)
 		return;
 
+	int maxPoints = g->speedModeMaxPoints();
+	Graph::DecimationMethod method = g->decimationMethod();
+	double speedTol = g->getDouglasPeukerTolerance();
+	if (maxPoints > 2 && dataSize() >= (size_t)maxPoints && (method != Graph::NoDecimation || speedTol > 0.0)){
+		QVector<QPointF> raw;
+		raw.reserve(dataSize());
+		for (size_t i = 0; i < dataSize(); ++i)
+			raw.append(sample(i));
+
+		QVector<QPointF> decimated;
+		if (method == Graph::LTTB)
+			decimated = CurveDecimator::decimateLTTB(raw, maxPoints);
+		else if (method == Graph::MinMax)
+			decimated = CurveDecimator::decimateMinMax(raw, maxPoints);
+		else if (method == Graph::DouglasPeucker || speedTol > 0.0){
+			if (speedTol <= 0.0)
+				speedTol = 1.0;
+			QwtWeedingCurveFitter fitter(speedTol);
+			decimated = fitter.fitCurve(raw);
+		}
+
+		if (d_side_lines)
+			drawSideLines(p, xMap, yMap, from, to);
+
+		if (!decimated.isEmpty()) {
+			QwtPlotCurve tempCurve;
+			tempCurve.setStyle(style());
+			tempCurve.setPen(pen());
+			tempCurve.setBrush(brush());
+			if (symbol() && symbol()->style() != QwtSymbol::NoSymbol)
+				tempCurve.setSymbol(new QwtSymbol(symbol()->style(), symbol()->brush(), symbol()->pen(), symbol()->size()));
+			tempCurve.setBaseline(baseline());
+			tempCurve.setSamples(decimated);
+			tempCurve.drawSeries(p, xMap, yMap, canvasRect, 0, decimated.size() - 1);
+		}
+		return;
+	}
+
 	if (d_data_ranges.empty() || !g->isMissingDataGapEnabled())
 		return PlotCurve::drawSeries(p, xMap, yMap, canvasRect, from, to);
 
@@ -657,23 +695,6 @@ void DataCurve::loadData()
 			g->grid()->setZ(-g->curveCount() - 1);
 	}
 
-	int maxPoints = g->speedModeMaxPoints();
-	Graph::DecimationMethod method = g->decimationMethod();
-	double speedTol = g->getDouglasPeukerTolerance();
-	if (maxPoints > 2 && size >= maxPoints){
-		if (method == Graph::LTTB)
-			data = CurveDecimator::decimateLTTB(data, maxPoints);
-		else if (method == Graph::MinMax)
-			data = CurveDecimator::decimateMinMax(data, maxPoints);
-		else if (method == Graph::DouglasPeucker || (method == Graph::NoDecimation && speedTol > 0.0)){
-			if (speedTol > 0.0){
-				QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(speedTol);
-				data = fitter->fitCurve(data);
-				delete fitter;
-			}
-		}
-	}
-
 	if (d_type == Graph::HorizontalBars){
 		size = data.size();
 		for (int i = 0; i < size; i++){
@@ -684,7 +705,7 @@ void DataCurve::loadData()
 
 	setSamples(data);
 	for (ErrorBarsCurve *c : d_error_bars)
-		c->setSamples(data);
+		c->loadData();
 
 	if (xColType == Table::Text)
 		g->setLabelsTextFormat(xAxis, ScaleDraw::Text, d_x_column, xLabels);

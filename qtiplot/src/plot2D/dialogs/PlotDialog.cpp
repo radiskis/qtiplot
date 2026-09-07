@@ -924,6 +924,8 @@ void PlotDialog::initLayerSpeedPage()
 	connect(boxDecimationMethod, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index){
 		int method = boxDecimationMethod->itemData(index).toInt();
 		boxDouglasPeukerTolerance->setEnabled(method == Graph::DouglasPeucker);
+		if (method == Graph::DouglasPeucker && boxDouglasPeukerTolerance->value() == 0.0)
+			boxDouglasPeukerTolerance->setValue(1.0);
 		acceptParams();
 	});
 	connect(boxDouglasPeukerTolerance, &DoubleSpinBox::valueChanged, this, [this](double){ acceptParams(); });

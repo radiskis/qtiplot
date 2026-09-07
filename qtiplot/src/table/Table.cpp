@@ -163,18 +163,15 @@ void Table::pushUndoCommand(QUndoCommand *cmd)
 	if (!cmd)
 		return;
 
-	ScriptUndoScope::registerStack(d_undo_stack);
-	d_undo_stack->push(cmd);
-
 	if (applicationWindow()) {
 		size_t budget = (size_t)applicationWindow()->undoMemoryBudgetMB() * 1024 * 1024;
-		while (d_undo_stack->count() > 1 && undoMemoryUsage() > budget) {
-			int currentCount = d_undo_stack->count();
-			int currentLimit = d_undo_stack->undoLimit();
-			d_undo_stack->setUndoLimit(currentCount - 1);
-			d_undo_stack->setUndoLimit(currentLimit);
+		if (budget > 0 && d_undo_stack->count() > 0 && undoMemoryUsage() > budget) {
+			d_undo_stack->clear();
 		}
 	}
+
+	ScriptUndoScope::registerStack(d_undo_stack);
+	d_undo_stack->push(cmd);
 }
 
 size_t Table::undoMemoryUsage() const

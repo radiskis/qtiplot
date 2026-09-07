@@ -109,23 +109,34 @@ void ProjectManager::checkRecoveryOnStartup()
 	QFileInfo fi(latest);
 
 	QString timeStr = fi.lastModified().toString("yyyy-MM-dd hh:mm:ss");
+	QString prompt = (recoveryFiles.size() > 1) ?
+		tr("QtiPlot detected %1 unsaved session(s).<br>"
+		   "Would you like to recover the most recent session from <b>%2</b> (%3)?")
+			.arg(recoveryFiles.size()).arg(fi.fileName(), timeStr) :
+		tr("QtiPlot detected an unsaved or recovered session from <b>%1</b> (%2).<br>"
+		   "Would you like to recover it?").arg(fi.fileName(), timeStr);
+
 	int choice = QMessageBox::question(d_app, tr("QtiPlot - Session Recovery"),
-		tr("QtiPlot detected an unsaved or recovered session from <b>%1</b>.<br>"
-		   "Would you like to recover it?").arg(timeStr),
-		QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+		prompt, QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
 
 	if (choice == QMessageBox::Yes) {
 		qCInfo(lcIo) << "User chose to recover previous session from:" << latest;
 		d_app->open(latest, false, false);
 	} else {
-		qCInfo(lcIo) << "User declined to recover session; removing stale recovery file:" << latest;
-		QFile::remove(latest);
+		qCInfo(lcIo) << "User declined to recover session; removing stale recovery file(s)";
+		for (const QString &fn : recoveryFiles) {
+			QFile::remove(recDir + "/" + fn);
+		}
 	}
 }
 
 bool ProjectManager::handleTimerEvent(QTimerEvent *e)
 {
 	if (d_app && e->timerId() == d_app->savingTimerId) {
+		if (d_autosave_suspended) {
+			qCDebug(lcIo) << "Autosave suspended during background calculation, skipping this interval";
+			return true;
+		}
 		autoSaveRecovery();
 		return true;
 	}

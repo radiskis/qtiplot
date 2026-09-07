@@ -92,7 +92,7 @@ void Filter::init()
 	d_result_curve = 0;
 	d_prec = ((ApplicationWindow *)parent())->fit_output_precision;
 	d_init_err = false;
-	d_canceled = false;
+	d_canceled.store(false, std::memory_order_relaxed);
     d_sort_data = true;
     d_min_points = 2;
     d_explanation = objectName();
@@ -318,6 +318,17 @@ void Filter::runAsync(const std::function<void()> &func, const QString &progress
 		}
 	});
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app && d_graph)
+		app = qobject_cast<ApplicationWindow *>(d_graph->parent());
+	if (app)
+		app->suspendAutosave();
+
+	struct AutosaveResumer {
+		ApplicationWindow *m_app;
+		~AutosaveResumer() { if (m_app) m_app->resumeAutosave(); }
+	} resumer{app};
+
 	QWidget *parentWidget = d_graph ? (QWidget*)d_graph.get() : (QWidget*)parent();
 	QProgressDialog progress(progressMessage.isEmpty() ? tr("Processing...") : progressMessage,
 	                         tr("Cancel"), 0, 0, parentWidget);
@@ -329,7 +340,10 @@ void Filter::runAsync(const std::function<void()> &func, const QString &progress
 	QFutureWatcher<void> watcher;
 	QObject::connect(&watcher, &QFutureWatcher<void>::finished, &loop, &QEventLoop::quit);
 	QObject::connect(&watcher, &QFutureWatcher<void>::finished, &progress, &QProgressDialog::reset);
-	QObject::connect(&progress, &QProgressDialog::canceled, this, &Filter::cancel);
+	QObject::connect(&progress, &QProgressDialog::canceled, this, [this, &progress]() {
+		cancel();
+		progress.setLabelText(tr("Finishing current step..."));
+	});
 
 	watcher.setFuture(future);
 
@@ -656,7 +670,10 @@ void Filter::reportError(const QString &title, const QString &message)
 {
 	d_init_err = true;
 	d_error_message = message;
-	QApplication::restoreOverrideCursor();
+	if (QThread::currentThread() == qApp->thread())
+		QApplication::restoreOverrideCursor();
+	else
+		QMetaObject::invokeMethod(qApp, [](){ QApplication::restoreOverrideCursor(); }, Qt::QueuedConnection);
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app) {

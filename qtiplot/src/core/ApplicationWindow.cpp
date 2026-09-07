@@ -921,6 +921,18 @@ void ApplicationWindow::checkRecoveryOnStartup()
 		d_project_manager->checkRecoveryOnStartup();
 }
 
+void ApplicationWindow::suspendAutosave()
+{
+	if (d_project_manager)
+		d_project_manager->suspendAutosave();
+}
+
+void ApplicationWindow::resumeAutosave()
+{
+	if (d_project_manager)
+		d_project_manager->resumeAutosave();
+}
+
 void ApplicationWindow::plotDataMenuAboutToShow()
 {
 	if (d_action_manager)
@@ -3306,6 +3318,11 @@ void ApplicationWindow::readSettings()
 		proxy.setPort(d_app_settings->d_proxy_port);
 		proxy.setUser(d_app_settings->d_proxy_user);
 		QNetworkProxy::setApplicationProxy(proxy);
+	}
+
+	if (settings.contains("/FitFunctions") && analysisController()) {
+		analysisController()->saveFitFunctions(settings.value("/FitFunctions").toStringList());
+		settings.remove("/FitFunctions");
 	}
 }
 

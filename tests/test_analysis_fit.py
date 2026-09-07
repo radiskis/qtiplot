@@ -149,3 +149,50 @@ def test_fit_degrees_of_freedom_guard():
     success = poly.run()
     assert success is False
 
+def test_large_dataset_linear_fit_decimation_parity():
+    # T10: Verify 10,000 points fitted with and without decimation enabled on the graph
+    # yields identical fit parameters and fits all 10,000 points (T6 verification)
+    n_points = 10000
+    t = qti.app.newTable("LargeFitData", n_points, 2)
+    t.setColName(1, "X")
+    t.setColName(2, "Y")
+    for i in range(1, n_points + 1):
+        x = float(i)
+        y = 2.5 * x + 10.0
+        t.setCell(1, i, x)
+        t.setCell(2, i, y)
+
+    g = qti.app.newGraph("LargeFitGraph", 1, 1, 1)
+    l = g.activeLayer()
+    assert l.insertCurve(t, "LargeFitData_Y", 1)
+    c = l.curve(0)
+    assert c.dataSize() == n_points
+
+    # Fit without decimation
+    fit_raw = qti.LinearFit(qti.app, l, "LargeFitData_Y")
+    assert fit_raw.run() is True
+    assert len(fit_raw.residuals()) == n_points
+    slope_raw = fit_raw.results()[1]
+    intercept_raw = fit_raw.results()[0]
+
+    # Now enable speed mode / LTTB decimation (3000 points) on layer
+    DM = qti.Layer.DecimationMethod
+    l.enableSpeedMode(DM.LTTB, 3000, 0.0)
+    assert l.decimationMethod() == DM.LTTB
+    # Verify curve data was NOT decimated in memory!
+    assert c.dataSize() == n_points
+
+    # Fit with decimation enabled on the plot
+    fit_dec = qti.LinearFit(qti.app, l, "LargeFitData_Y")
+    assert fit_dec.run() is True
+    # Crucial: Fit must operate on all 10,000 points, NOT 3,000 decimated points!
+    assert len(fit_dec.residuals()) == n_points
+    slope_dec = fit_dec.results()[1]
+    intercept_dec = fit_dec.results()[0]
+
+    assert abs(slope_raw - slope_dec) < 1e-9
+    assert abs(intercept_raw - intercept_dec) < 1e-9
+    assert abs(slope_dec - 2.5) < 1e-3
+    assert abs(intercept_dec - 10.0) < 0.2
+
+

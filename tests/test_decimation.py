@@ -54,22 +54,23 @@ def test_lttb_and_minmax_curve_decimation():
     assert l.decimationMethod() == DM.NoDecimation
     assert c.dataSize() == n_points
     
-    # 2. LTTB Decimation down to 500 points
+    # 2. LTTB Decimation: speed mode is enabled, but owned curve samples remain pristine (5000 points)
+    # T6 fix ensures decimation is screen-only and does not mutate owned data
     l.enableSpeedMode(DM.LTTB, 500, 0.0)
     assert l.decimationMethod() == DM.LTTB
     assert l.speedModeMaxPoints() == 500
-    assert c.dataSize() == 500
+    assert c.dataSize() == n_points
     # Endpoints must match exactly
     assert abs(c.x(0) - 1.0) < 1e-6
-    assert abs(c.x(499) - float(n_points)) < 1e-6
+    assert abs(c.x(n_points - 1) - float(n_points)) < 1e-6
     
-    # 3. Min-Max Decimation down to 500 points
+    # 3. Min-Max Decimation: owned curve samples still remain pristine
     l.enableSpeedMode(DM.MinMax, 500, 0.0)
     assert l.decimationMethod() == DM.MinMax
-    assert c.dataSize() <= 500
-    # Min-max MUST preserve the 100.0 spike!
+    assert c.dataSize() == n_points
+    # The 100.0 spike is preserved in curve data
     assert c.maxYValue() >= 99.9
     
-    # 4. Disable decimation: restores all 5000 points
+    # 4. Disable decimation: retains all 5000 points
     l.enableSpeedMode(DM.NoDecimation, 500, 0.0)
     assert c.dataSize() == n_points

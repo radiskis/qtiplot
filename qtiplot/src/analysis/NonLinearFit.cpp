@@ -353,7 +353,10 @@ bool NonLinearFit::removeDataSingularities()
 		try {
 			parser.EvalRemoveSingularity(&xvar);
 		} catch(MyParser::Pole){
-			QApplication::restoreOverrideCursor();
+			if (QThread::currentThread() == qApp->thread())
+				QApplication::restoreOverrideCursor();
+			else
+				QMetaObject::invokeMethod(qApp, [](){ QApplication::restoreOverrideCursor(); }, Qt::QueuedConnection);
 			ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 			if (app && app->isVisible() && QThread::currentThread() == qApp->thread()){
 				if(confirm){

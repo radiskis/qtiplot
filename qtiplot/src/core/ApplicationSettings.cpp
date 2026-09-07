@@ -63,7 +63,7 @@ void ApplicationSettings::init()
     tableTextColor = QColor("#000000");
     tableHeaderColor = QColor("#000000");
 
-    d_decimation_method = Graph::LTTB;
+    d_decimation_method = Graph::NoDecimation;
     d_Douglas_Peuker_tolerance = 0.0;
     d_speed_mode_points = 3000;
     d_speed_mode_export = false;

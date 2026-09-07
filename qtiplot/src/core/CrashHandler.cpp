@@ -18,36 +18,46 @@
 
 namespace {
     QString s_currentRecoveryFile;
+    char s_reportPathBuf[512] = {0};
+    char s_recoveryPathBuf[512] = {0};
 
-    void writeCrashReport(const QString &reason)
+    void writeCrashReport(const char *reason)
     {
-        QString dir = CrashHandler::recoveryDirPath();
-        QDir().mkpath(dir);
+        if (s_reportPathBuf[0] == '\0')
+            return;
 
-        QString timeStamp = QDateTime::currentDateTime().toString("yyyyMMdd_hhmmss");
-        qint64 pid = QCoreApplication::applicationPid();
-        QString reportPath = QString("%1/crash_%2_%3.txt").arg(dir).arg(pid).arg(timeStamp);
-
-        QFile f(reportPath);
-        if (f.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            QTextStream out(&f);
-            out << "QtiPlot Crash Report\n";
-            out << "Timestamp: " << QDateTime::currentDateTime().toString(Qt::ISODate) << "\n";
-            out << "PID: " << pid << "\n";
-            out << "Reason: " << reason << "\n";
-            if (!s_currentRecoveryFile.isEmpty()) {
-                out << "Active Autosave / Recovery File: " << s_currentRecoveryFile << "\n";
+#if defined(_WIN32) || defined(WIN32)
+        HANDLE hFile = CreateFileA(s_reportPathBuf, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (hFile != INVALID_HANDLE_VALUE) {
+            char buf[1024];
+            int len = snprintf(buf, sizeof(buf), "QtiPlot Crash Report\nPID: %lu\nReason: %s\nActive Autosave: %s\n",
+                               (unsigned long)GetCurrentProcessId(), reason, s_recoveryPathBuf);
+            if (len > 0) {
+                DWORD written = 0;
+                WriteFile(hFile, buf, (DWORD)len, &written, NULL);
             }
-            out.flush();
-            f.close();
+            CloseHandle(hFile);
         }
+#else
+        int fd = ::open(s_reportPathBuf, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        if (fd >= 0) {
+            char buf[1024];
+            int len = snprintf(buf, sizeof(buf), "QtiPlot Crash Report\nPID: %d\nReason: %s\nActive Autosave: %s\n",
+                               (int)getpid(), reason, s_recoveryPathBuf);
+            if (len > 0) {
+                ::write(fd, buf, len);
+            }
+            ::close(fd);
+        }
+#endif
     }
 
 #if defined(_WIN32) || defined(WIN32)
     LONG WINAPI windowsUnhandledExceptionFilter(EXCEPTION_POINTERS *ep)
     {
-        QString reason = QString("Unhandled Windows Exception code: 0x%1")
-            .arg((ulong)ep->ExceptionRecord->ExceptionCode, 8, 16, QChar('0'));
+        char reason[128];
+        snprintf(reason, sizeof(reason), "Unhandled Windows Exception code: 0x%08lx",
+                 (unsigned long)ep->ExceptionRecord->ExceptionCode);
         writeCrashReport(reason);
         return EXCEPTION_CONTINUE_SEARCH;
     }
@@ -67,7 +77,7 @@ namespace {
         else if (sig == SIGFPE)  sigName = "SIGFPE (Floating Point Exception)";
         else if (sig == SIGILL)  sigName = "SIGILL (Illegal Instruction)";
 
-        writeCrashReport(QString("Received signal: %1").arg(sigName));
+        writeCrashReport(sigName);
         std::signal(sig, SIG_DFL);
         std::raise(sig);
     }
@@ -86,6 +96,8 @@ QString recoveryDirPath()
 void setSessionRecoveryFile(const QString &filePath)
 {
     s_currentRecoveryFile = filePath;
+    strncpy(s_recoveryPathBuf, filePath.toUtf8().constData(), sizeof(s_recoveryPathBuf) - 1);
+    s_recoveryPathBuf[sizeof(s_recoveryPathBuf) - 1] = '\0';
 }
 
 QString sessionRecoveryFile()
@@ -98,6 +110,7 @@ void cleanSessionRecoveryFiles()
     if (!s_currentRecoveryFile.isEmpty() && QFile::exists(s_currentRecoveryFile)) {
         QFile::remove(s_currentRecoveryFile);
         s_currentRecoveryFile.clear();
+        s_recoveryPathBuf[0] = '\0';
     }
 }
 
@@ -109,11 +122,54 @@ QStringList findRecoveryFiles()
 
     QStringList filters;
     filters << "*.qti";
-    return dir.entryList(filters, QDir::Files, QDir::Time);
+    QStringList allFiles = dir.entryList(filters, QDir::Files, QDir::Time);
+    QStringList result;
+
+    qint64 currentPid = QCoreApplication::applicationPid();
+
+    for (const QString &fn : allFiles) {
+        QFileInfo fi(fn);
+        QString baseName = fi.completeBaseName();
+        int lastUnderscore = baseName.lastIndexOf('_');
+        if (lastUnderscore >= 0) {
+            bool ok = false;
+            qint64 pid = baseName.mid(lastUnderscore + 1).toLongLong(&ok);
+            if (ok) {
+                if (pid == currentPid)
+                    continue; // Skip our own running instance
+
+#if defined(_WIN32) || defined(WIN32)
+                HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)pid);
+                if (hProcess != NULL) {
+                    DWORD exitCode = 0;
+                    if (GetExitCodeProcess(hProcess, &exitCode) && exitCode == STILL_ACTIVE) {
+                        CloseHandle(hProcess);
+                        continue; // Process is still running
+                    }
+                    CloseHandle(hProcess);
+                }
+#else
+                if (kill((pid_t)pid, 0) == 0) {
+                    continue; // Process is still running
+                }
+#endif
+            }
+        }
+        result << fn;
+    }
+    return result;
 }
 
 void initCrashHandler()
 {
+    QString dir = recoveryDirPath();
+    QDir().mkpath(dir);
+
+    qint64 pid = QCoreApplication::applicationPid();
+    QString reportPath = QString("%1/crash_%2.txt").arg(dir).arg(pid);
+    strncpy(s_reportPathBuf, reportPath.toUtf8().constData(), sizeof(s_reportPathBuf) - 1);
+    s_reportPathBuf[sizeof(s_reportPathBuf) - 1] = '\0';
+
 #if defined(_WIN32) || defined(WIN32)
     SetUnhandledExceptionFilter(windowsUnhandledExceptionFilter);
 #endif

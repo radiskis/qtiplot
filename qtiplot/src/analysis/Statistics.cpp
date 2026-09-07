@@ -178,7 +178,10 @@ void Statistics::reportError(const QString &title, const QString &message)
 {
 	d_init_err = true;
 	d_error_message = message;
-	QApplication::restoreOverrideCursor();
+	if (QThread::currentThread() == qApp->thread())
+		QApplication::restoreOverrideCursor();
+	else
+		QMetaObject::invokeMethod(qApp, [](){ QApplication::restoreOverrideCursor(); }, Qt::QueuedConnection);
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app) {

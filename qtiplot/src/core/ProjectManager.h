@@ -73,6 +73,9 @@ public:
 	void checkRecoveryOnStartup();
 	bool handleTimerEvent(QTimerEvent *e);
 	void resetAutosaveTimer();
+	void suspendAutosave() { d_autosave_suspended = true; }
+	void resumeAutosave() { d_autosave_suspended = false; }
+	bool isAutosaveSuspended() const { return d_autosave_suspended; }
 
 	//! Recent projects and UI helpers
 	void updateRecentProjectsList(const QString& fn = QString());
@@ -83,6 +86,7 @@ public:
 
 private:
 	ApplicationWindow *d_app;
+	bool d_autosave_suspended{false};
 };
 
 #endif // PROJECT_MANAGER_H

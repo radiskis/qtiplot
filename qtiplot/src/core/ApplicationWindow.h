@@ -834,6 +834,8 @@ public slots:
 	void openLogFolder();
 	void autoSaveRecovery();
 	void checkRecoveryOnStartup();
+	void suspendAutosave();
+	void resumeAutosave();
 	//! Show download page in external browser
 	void downloadManual();
 	//! Show translations page in external browser

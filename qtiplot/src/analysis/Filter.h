@@ -31,6 +31,7 @@
 
 #include <QObject>
 #include <functional>
+#include <atomic>
 
 #include <ApplicationWindow.h>
 #include "PlotCurve.h"
@@ -113,8 +114,8 @@ class Filter : public QObject
 		void setErrorMessage(const QString &msg) { d_error_message = msg; d_init_err = !msg.isEmpty(); }
 		void reportError(const QString &title, const QString &message);
 
-		bool isCanceled() const { return d_canceled; }
-		virtual void cancel() { d_canceled = true; }
+		bool isCanceled() const { return d_canceled.load(std::memory_order_relaxed); }
+		virtual void cancel() { d_canceled.store(true, std::memory_order_relaxed); }
 
 		void runAsync(const std::function<void()> &func, const QString &progressMessage = QString());
 
@@ -198,7 +199,7 @@ class Filter : public QObject
 		//! Error flag telling if something went wrong during the initialization phase.
 		bool d_init_err;
 		QString d_error_message;
-		bool d_canceled;
+		std::atomic<bool> d_canceled{false};
 
         //! Data interval
         double d_from, d_to;
