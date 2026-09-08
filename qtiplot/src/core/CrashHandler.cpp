@@ -10,10 +10,18 @@
 #include <csignal>
 #include <iostream>
 
+#include <cstdio>
+
 #if defined(_WIN32) || defined(WIN32)
 #include <windows.h>
 #include <dbghelp.h>
 #pragma comment(lib, "dbghelp.lib")
+#else
+// Async-signal-safe I/O in the crash path: ::open/::write/::close, plus
+// getpid() and kill() for the stale-lock liveness check.
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
 #endif
 
 namespace {
