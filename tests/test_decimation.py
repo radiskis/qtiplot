@@ -71,6 +71,11 @@ def test_speed_mode_never_mutates_curve_data():
     assert not l.speedModeEnabled()
     assert c.dataSize() == n_points
 
+    t.confirmClose(False)
+    t.close()
+    g.confirmClose(False)
+    g.close()
+
 
 def _round_trip(tmp_path, name, tolerance, max_points):
     """Save a one-layer project with the given speed mode, reopen it, return the layer."""
@@ -84,25 +89,45 @@ def _round_trip(tmp_path, name, tolerance, max_points):
 
     path = str(tmp_path / (name + ".qti"))
     qti.app.saveProjectAs(path, False)
-    qti.app.open(path)
+
+    # Close initial windows before reloading into same application window
+    g.confirmClose(False)
+    g.close()
+    t.confirmClose(False)
+    t.close()
+
+    qti.app.open(path, False, False)
 
     g2 = qti.app.graph(name)
     assert g2 is not None
     l2 = g2.activeLayer()
     assert l2.curve(0).dataSize() == n_points
-    return l2
+    return l2, g2
 
 
 def test_speed_mode_on_survives_project_round_trip(tmp_path):
-    l = _round_trip(tmp_path, "RoundTripOn", 2.5, 1500)
+    l, g = _round_trip(tmp_path, "RoundTripOn", 2.5, 1500)
     assert l.speedModeEnabled()
     assert l.speedModeMaxPoints() == 1500
     assert abs(l.getDouglasPeukerTolerance() - 2.5) < 1e-9
+    g.confirmClose(False)
+    g.close()
+    t = qti.app.table("RoundTripOnData")
+    if t:
+        t.confirmClose(False)
+        t.close()
 
 
 def test_speed_mode_off_survives_project_round_trip(tmp_path):
     """An absent <SpeedMode> tag inherits the application preference, so a layer
     with speed mode switched off must persist that explicitly."""
     qti.app.setSpeedMaxPoints(3000)   # preference is ON, so "off" cannot be implicit
-    l = _round_trip(tmp_path, "RoundTripOff", 0.0, 0)
+    l, g = _round_trip(tmp_path, "RoundTripOff", 0.0, 0)
     assert not l.speedModeEnabled()
+    g.confirmClose(False)
+    g.close()
+    t = qti.app.table("RoundTripOffData")
+    if t:
+        t.confirmClose(False)
+        t.close()
+
