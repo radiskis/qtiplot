@@ -10,8 +10,15 @@ jobs:
         with:
           version: '6.7.2'
       - uses: ilammy/msvc-dev-cmd@v1
-      - name: Install Python test dependencies
-        run: python -m pip install --upgrade pip pytest numpy
+      - name: Install Python build and test dependencies
+        run: python -m pip install --upgrade pip pytest numpy "sip>=6,<7" PyQt6
+      # The qtiplot target compiles PythonScripting.cpp with -DSCRIPTING_PYTHON
+      # and globs build/sip_temp/qti/*.cpp at configure time, so the bindings and
+      # sip.h have to exist before cmake is run.
+      - name: Generate SIP bindings
+        run: |
+          sip-build --no-compile --build-dir build/sip_temp
+          sip-module --abi-version 13.9 --sip-h --target-dir build/sip_temp PyQt6.sip
       - run: cmake -B build -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
       - run: cmake --build build
       - run: ctest --test-dir build --output-on-failure
@@ -27,8 +34,12 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgsl-dev zlib1g-dev python3-sip-dev pybind11-dev libglu1-mesa-dev libgl1-mesa-dev
-      - name: Install Python test dependencies
-        run: python3 -m pip install --upgrade pip pytest numpy
+      - name: Install Python build and test dependencies
+        run: python3 -m pip install --upgrade pip pytest numpy "sip>=6,<7" PyQt6
+      - name: Generate SIP bindings
+        run: |
+          sip-build --no-compile --build-dir build/sip_temp
+          sip-module --abi-version 13.9 --sip-h --target-dir build/sip_temp PyQt6.sip
       - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
       - run: cmake --build build
       - run: ctest --test-dir build --output-on-failure
