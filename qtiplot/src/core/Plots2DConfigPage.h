@@ -254,8 +254,6 @@ private:
 
     // Speed tab
     QGroupBox *speedModeBox;
-    QLabel *decimationMethodLabel;
-    QComboBox *boxDecimationMethod;
     QLabel *maxPointsLabel;
     QSpinBox *boxMaxPoints;
     QLabel *toleranceLabel;

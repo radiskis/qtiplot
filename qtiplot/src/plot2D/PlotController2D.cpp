@@ -522,7 +522,6 @@ void PlotController2D::setPreferences(Graph* g)
 	auto &d_Douglas_Peuker_tolerance = d_app->d_Douglas_Peuker_tolerance;
 	auto &d_canvas_frame_color = d_app->d_canvas_frame_color;
 	auto &d_curve_max_antialising_size = d_app->d_curve_max_antialising_size;
-	auto &d_decimation_method = d_app->d_decimation_method;
 	auto &d_default_2D_grid = d_app->d_default_2D_grid;
 	auto &d_disable_curve_antialiasing = d_app->d_disable_curve_antialiasing;
 	auto &d_graph_axes_labels_dist = d_app->d_graph_axes_labels_dist;
@@ -586,7 +585,7 @@ void PlotController2D::setPreferences(Graph* g)
 		for (int i = 0; i < QwtPlot::axisCnt; i++)
 			g->setAxisTitleDistance(i, d_graph_axes_labels_dist);
 
-		g->enableSpeedMode(d_decimation_method, d_speed_mode_points, d_Douglas_Peuker_tolerance, false);
+		g->enableDouglasPeukerSpeedMode(d_Douglas_Peuker_tolerance, d_speed_mode_points, false);
 	}
 
 	g->setAxisTitlePolicy(d_graph_axis_labeling);

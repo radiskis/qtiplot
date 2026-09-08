@@ -295,9 +295,6 @@ public:
 	double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;}
 	void setDouglasPeukerTolerance(double tolerance){d_Douglas_Peuker_tolerance = tolerance;}
 
-	Graph::DecimationMethod defaultDecimationMethod() const { return d_decimation_method; }
-	void setDefaultDecimationMethod(Graph::DecimationMethod method) { d_decimation_method = method; }
-
 	bool scale3DPlotFonts(){return d_3D_scale_fonts;}
 	void setScale3DPlotFonts(bool on = true){d_3D_scale_fonts = on;}
 
@@ -1347,7 +1344,6 @@ private:
 	int d_table_undo_stack_size;
 	int d_undo_memory_budget_mb;
 	double d_Douglas_Peuker_tolerance;
-	Graph::DecimationMethod d_decimation_method;
 	int d_speed_mode_points;
 	bool d_speed_mode_export;
 	bool d_3D_scale_fonts;

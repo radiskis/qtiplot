@@ -2193,12 +2193,9 @@ public:
 			Spline, HorizontalSteps, Histogram, HorizontalBars, VectXYXY, ErrorBars,
 			Box, VectXYAM, VerticalSteps, ColorMap, GrayScale, Contour, Function, ImagePlot,
 			StackBar, StackColumn};
-  enum DecimationMethod{NoDecimation, LTTB, MinMax, DouglasPeucker};
 
   void enableDouglasPeukerSpeedMode(double tolerance, int maxPoints = 3000, bool update = true);
-  void enableSpeedMode(Graph::DecimationMethod method, int maxPoints = 3000, double tolerance = 0.0, bool update = true);
-  Graph::DecimationMethod decimationMethod() const;
-  void setDecimationMethod(Graph::DecimationMethod method);
+  bool speedModeEnabled() const;
   int speedModeMaxPoints();
   double getDouglasPeukerTolerance();
 
@@ -2910,12 +2907,12 @@ Redoes the last undone operation in the active window.
   int undoMemoryBudgetMB() const;
   void setUndoMemoryBudgetMB(int mb);
 
-  Graph::DecimationMethod defaultDecimationMethod() const;
-  void setDefaultDecimationMethod(Graph::DecimationMethod method);
   int speedModeMaxPoints();
   void setSpeedMaxPoints(int points);
   double getDouglasPeukerTolerance();
   void setDouglasPeukerTolerance(double tolerance);
+  int speedModeExport();
+  void setSpeedModeExport(bool on = true);
 
   ApplicationWindow();
   enum MatrixToTableConversion{Direct, XYZ, YXZ};

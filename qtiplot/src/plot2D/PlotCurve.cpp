@@ -27,7 +27,6 @@
  *                                                                         *
  ***************************************************************************/
 #include "PlotCurve.h"
-#include "CurveDecimator.h"
 #include "ErrorBarsCurve.h"
 #include "BoxCurve.h"
 #include "Graph.h"
@@ -542,44 +541,10 @@ void DataCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleM
 	if (!g)
 		return;
 
-	int maxPoints = g->speedModeMaxPoints();
-	Graph::DecimationMethod method = g->decimationMethod();
-	double speedTol = g->getDouglasPeukerTolerance();
-	if (maxPoints > 2 && dataSize() >= (size_t)maxPoints && (method != Graph::NoDecimation || speedTol > 0.0)){
-		QVector<QPointF> raw;
-		raw.reserve(dataSize());
-		for (size_t i = 0; i < dataSize(); ++i)
-			raw.append(sample(i));
-
-		QVector<QPointF> decimated;
-		if (method == Graph::LTTB)
-			decimated = CurveDecimator::decimateLTTB(raw, maxPoints);
-		else if (method == Graph::MinMax)
-			decimated = CurveDecimator::decimateMinMax(raw, maxPoints);
-		else if (method == Graph::DouglasPeucker || speedTol > 0.0){
-			if (speedTol <= 0.0)
-				speedTol = 1.0;
-			QwtWeedingCurveFitter fitter(speedTol);
-			decimated = fitter.fitCurve(raw);
-		}
-
-		if (d_side_lines)
-			drawSideLines(p, xMap, yMap, from, to);
-
-		if (!decimated.isEmpty()) {
-			QwtPlotCurve tempCurve;
-			tempCurve.setStyle(style());
-			tempCurve.setPen(pen());
-			tempCurve.setBrush(brush());
-			if (symbol() && symbol()->style() != QwtSymbol::NoSymbol)
-				tempCurve.setSymbol(new QwtSymbol(symbol()->style(), symbol()->brush(), symbol()->pen(), symbol()->size()));
-			tempCurve.setBaseline(baseline());
-			tempCurve.setSamples(decimated);
-			tempCurve.drawSeries(p, xMap, yMap, canvasRect, 0, decimated.size() - 1);
-		}
-		return;
-	}
-
+	// Speed mode is not applied here: it is configured on the curve as a Qwt
+	// paint attribute / curve fitter by Graph::applySpeedMode(), so the base
+	// implementation below already draws the reduced polygon without this
+	// curve ever losing a sample. See Graph::applySpeedMode().
 	if (d_data_ranges.empty() || !g->isMissingDataGapEnabled())
 		return PlotCurve::drawSeries(p, xMap, yMap, canvasRect, from, to);
 
@@ -670,6 +635,8 @@ void DataCurve::loadData()
 		g->setLabelsTextFormat(QwtPlot::yLeft, ScaleDraw::Text, title().text(), yLabels);
 
 	setRenderHint(QwtPlotItem::RenderAntialiased, g->isCurveAntialiasingEnabled(this));
+	// The sample count may have changed, so re-evaluate whether speed mode engages.
+	g->applySpeedMode(this);
 
 	if (!d_labels_list.isEmpty()){
 		((Graph*)plot())->updatePlot();

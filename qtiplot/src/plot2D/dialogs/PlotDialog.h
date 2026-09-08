@@ -350,8 +350,6 @@ private:
 	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox, *sizeApplyToBox;
 	QSpinBox *boxMaxPoints;
 	DoubleSpinBox *boxDouglasPeukerTolerance;
-	QComboBox *boxDecimationMethod;
-	QLabel *decimationMethodLabel;
 	QGroupBox *speedModeBox;
 	QCheckBox *boxApplyColorTo;
 

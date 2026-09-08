@@ -63,7 +63,6 @@ void ApplicationSettings::init()
     tableTextColor = QColor("#000000");
     tableHeaderColor = QColor("#000000");
 
-    d_decimation_method = Graph::NoDecimation;
     d_Douglas_Peuker_tolerance = 0.0;
     d_speed_mode_points = 3000;
     d_speed_mode_export = false;
@@ -588,7 +587,6 @@ void ApplicationSettings::load(QSettings &settings)
     d_disable_curve_antialiasing = settings.value("/DisableAntialiasing", d_disable_curve_antialiasing).toBool();
     d_curve_max_antialising_size = settings.value("/MaxCurveAntialisingSize", d_curve_max_antialising_size).toInt();
     d_Douglas_Peuker_tolerance = settings.value("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance).toDouble();
-    d_decimation_method = (Graph::DecimationMethod)settings.value("/DecimationMethod", (int)d_decimation_method).toInt();
     d_speed_mode_points = settings.value("/MaxPoints", d_speed_mode_points).toInt();
     d_speed_mode_export = settings.value("/SpeedModeExport", d_speed_mode_export).toBool();
     settings.endGroup(); // Curves
@@ -1076,7 +1074,6 @@ void ApplicationSettings::save(QSettings &settings)
     settings.setValue("/DisableAntialiasing", d_disable_curve_antialiasing);
     settings.setValue("/MaxCurveAntialisingSize", d_curve_max_antialising_size);
     settings.setValue("/DouglasPeukerTolerance", d_Douglas_Peuker_tolerance);
-    settings.setValue("/DecimationMethod", (int)d_decimation_method);
     settings.setValue("/MaxPoints", d_speed_mode_points);
     settings.setValue("/SpeedModeExport", d_speed_mode_export);
     settings.endGroup(); // Curves

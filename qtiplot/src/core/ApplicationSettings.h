@@ -201,7 +201,6 @@ public:
     bool d_disable_curve_antialiasing;
     int d_curve_max_antialising_size;
     double d_Douglas_Peuker_tolerance;
-    Graph::DecimationMethod d_decimation_method;
     int d_speed_mode_points;
     bool d_speed_mode_export;
     int majTicksStyle;

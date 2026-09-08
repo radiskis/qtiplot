@@ -635,7 +635,6 @@ void ApplicationWindow::setDefaultOptions()
 	tableTextColor = QColor("#000000");
 	tableHeaderColor = QColor("#000000");
 
-	d_decimation_method = Graph::LTTB;
 	d_Douglas_Peuker_tolerance = 0.0;
 	d_speed_mode_points = 3000;
 	d_speed_mode_export = false;
@@ -3137,7 +3136,6 @@ void ApplicationWindow::readSettings()
 	d_disable_curve_antialiasing = d_app_settings->d_disable_curve_antialiasing;
 	d_curve_max_antialising_size = d_app_settings->d_curve_max_antialising_size;
 	d_Douglas_Peuker_tolerance = d_app_settings->d_Douglas_Peuker_tolerance;
-	d_decimation_method = d_app_settings->d_decimation_method;
 	d_speed_mode_points = d_app_settings->d_speed_mode_points;
 	d_speed_mode_export = d_app_settings->d_speed_mode_export;
 	majTicksStyle = d_app_settings->majTicksStyle;
@@ -3487,7 +3485,6 @@ void ApplicationWindow::saveSettings()
 	d_app_settings->d_disable_curve_antialiasing = d_disable_curve_antialiasing;
 	d_app_settings->d_curve_max_antialising_size = d_curve_max_antialising_size;
 	d_app_settings->d_Douglas_Peuker_tolerance = d_Douglas_Peuker_tolerance;
-	d_app_settings->d_decimation_method = d_decimation_method;
 	d_app_settings->d_speed_mode_points = d_speed_mode_points;
 	d_app_settings->d_speed_mode_export = d_speed_mode_export;
 	d_app_settings->majTicksStyle = majTicksStyle;

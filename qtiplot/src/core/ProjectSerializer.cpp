@@ -1029,9 +1029,9 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			}
 		} else if (s.startsWith ("<SpeedMode>") && s.endsWith ("</SpeedMode>")){
 			QStringList lst = s.remove("<SpeedMode>").remove("</SpeedMode>").split("\t");
-			if (lst.size() >= 3)
-				ag->enableSpeedMode((Graph::DecimationMethod)lst[2].toInt(), lst[1].toInt(), lst[0].toDouble());
-			else if (lst.size() == 2)
+			// Two fields upstream; a third (an obsolete decimation method index)
+			// was written by intermediate builds and is ignored.
+			if (lst.size() >= 2)
 				ag->enableDouglasPeukerSpeedMode(lst[0].toDouble(), lst[1].toInt());
 		} else if (s.startsWith ("<ImageProfileTool>") && s.endsWith ("</ImageProfileTool>")){
 			QStringList lst = s.remove("<ImageProfileTool>").remove("</ImageProfileTool>").split("\t");

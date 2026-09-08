@@ -33,6 +33,8 @@ Description          : Graph widget
 
 #include "Graph.h"
 #include <qwt_curve_fitter.h>
+#include <qwt_weeding_curve_fitter.h>
+#include <qwt_spline_curve_fitter.h>
 #include <QMimeData>
 #include <qwt_plot_renderer.h>
 #include "MultiLayer.h"
@@ -154,9 +156,8 @@ Graph::Graph(int x, int y, int width, int height, QWidget* parent, Qt::WindowFla
 	d_tex_escape_strings = true;
 #endif
 	d_axis_title_policy = ColComment;
-	d_decimation_method = NoDecimation;
 	d_Douglas_Peuker_tolerance = 0.0;
-	d_speed_mode_points = 3000;
+	d_speed_mode_points = 0;
 	d_synchronize_scales = false;
 	d_missing_data_gap = false;
 	d_clip_data = true;
@@ -3320,6 +3321,9 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 		break;
 		case Spline:
 			c->setStyle(QwtPlotCurve::Lines);
+			// Claim the curve fitter slot back from a Douglas-Peucker speed mode
+			// fitter, which applySpeedMode() may have installed earlier.
+			c->setCurveFitter(new QwtSplineCurveFitter);
 			c->setCurveAttribute(QwtPlotCurve::Fitted);
 		break;
 		case VerticalSteps:
@@ -4533,11 +4537,8 @@ QString Graph::saveToString(bool saveAsTemplate)
 	s+=saveTickLabelsSpace();
 	s+=saveEnabledTickLabels();
 	s+=saveMarkers();
-	if (d_decimation_method != NoDecimation && (d_decimation_method != DouglasPeucker || d_Douglas_Peuker_tolerance > 0.0)){
-		s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
-		s += QString::number(d_speed_mode_points) + "\t";
-		s += QString::number((int)d_decimation_method) + "</SpeedMode>\n";
-	}
+	s += "<SpeedMode>" + QString::number(d_Douglas_Peuker_tolerance) + "\t";
+	s += QString::number(d_speed_mode_points) + "</SpeedMode>\n";
 
 	if (d_image_profiles_tool){
 		s += "<ImageProfileTool>" +  d_image_profiles_tool->matrix()->objectName();
@@ -5044,7 +5045,6 @@ void Graph::copy(Graph* g)
 	setCanvasFrame(g->canvasFrameWidth(), g->canvasFrameColor());
 	setAxesLinewidth(g->axesLinewidth());
 
-	d_decimation_method = g->decimationMethod();
 	d_Douglas_Peuker_tolerance = g->getDouglasPeukerTolerance();
 	d_speed_mode_points = g->speedModeMaxPoints();
 
@@ -5070,6 +5070,11 @@ void Graph::copy(Graph* g)
 
 	autoScaleFonts = g->autoscaleFonts();
 	d_synchronize_scales = g->hasSynchronizedScaleDivisions();
+
+	// copyCurves() carries the Fitted attribute over verbatim; re-derive the
+	// speed mode state so a copy never ends up with Fitted set but the wrong
+	// curve fitter behind it.
+	applySpeedModeToCurves();
 }
 
 void Graph::copyCurves(Graph* g)
@@ -5163,13 +5168,9 @@ void Graph::copyCurves(Graph* g)
 			else
 				c->setSymbol(nullptr);
 
-			if (cv->testCurveAttribute (QwtPlotCurve::Fitted)){
+			if (cv->testCurveAttribute (QwtPlotCurve::Fitted))
 				c->setCurveAttribute(QwtPlotCurve::Fitted, true);
-				if (d_Douglas_Peuker_tolerance > 0.0 && c->dataSize() >= (size_t)d_speed_mode_points){
-					//QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(d_Douglas_Peuker_tolerance);
-					//c->setCurveFitter(fitter);
-				}
-			} else if (cv->testCurveAttribute (QwtPlotCurve::Inverted))
+			else if (cv->testCurveAttribute (QwtPlotCurve::Inverted))
 				c->setCurveAttribute(QwtPlotCurve::Inverted, true);
 
 			c->setRenderHint(QwtPlotItem::RenderAntialiased, cv->testRenderHint(QwtPlotItem::RenderAntialiased));
@@ -5254,6 +5255,7 @@ void Graph::setCurveStyle(int index, int s)
 
 	if (s == 5){//ancient spline style in Qwt 4.2.0
 		s = QwtPlotCurve::Lines;
+		c->setCurveFitter(new QwtSplineCurveFitter);
 		c->setCurveAttribute(QwtPlotCurve::Fitted, true);
 		c->setPlotStyle(Spline);
 	} else if (s == 6){// Vertical Steps
@@ -6607,6 +6609,8 @@ void Graph::insertCurve(QwtPlotItem *c)
 		d_curves.append(c);
 
 	c->setRenderHint(QwtPlotItem::RenderAntialiased, d_antialiasing);
+	if (c->rtti() == QwtPlotItem::Rtti_PlotCurve)
+		applySpeedMode((QwtPlotCurve *)c);
 	c->attach(this);
 }
 
@@ -6796,9 +6800,19 @@ void Graph::print(QPainter *painter, const QRect &plotRect, double fontFactor)
     if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
         return;
 
+    // Qwt drops its pixel level filtering by itself for the PDF and SVG paint
+    // engines, but the Douglas-Peucker fitter is paint engine agnostic, so the
+    // "apply speed mode to export" preference has to be honoured explicitly.
+    ApplicationWindow *app = multiLayer() ? multiLayer()->applicationWindow() : nullptr;
+    const bool suppressSpeedMode = d_Douglas_Peuker_tolerance > 0.0 && app && !app->speedModeExport();
+    if (suppressSpeedMode)
+        applySpeedModeToCurves(true);
+
     d_is_printing = true;
-    auto printingGuard = qScopeGuard([this]() {
+    auto printingGuard = qScopeGuard([this, suppressSpeedMode]() {
         d_is_printing = false;
+        if (suppressSpeedMode)
+            applySpeedModeToCurves(false);
     });
 
     QwtPlotRenderer renderer;
@@ -7150,29 +7164,74 @@ void Graph::dropEvent(QDropEvent* event)
 		clone->copy(g);
 }
 
-void Graph::enableSpeedMode(DecimationMethod method, int maxPoints, double tolerance, bool update)
+/*!
+ * Speed mode is expressed entirely through Qwt's own mechanisms:
+ *
+ * - QwtPlotCurve::FilterPointsAggressive reduces each chunk of samples mapped
+ *   to a single x pixel to (first, min, max, last). It is a streaming O(n) pass
+ *   allocating nothing beyond its output, and Qwt turns it off by itself for
+ *   the PDF and SVG paint engines, so vector export keeps every sample.
+ * - A positive Douglas-Peucker tolerance additionally installs a
+ *   QwtWeedingCurveFitter, which Qwt applies to the mapped polygon at paint
+ *   time.
+ *
+ * Neither touches the samples a curve owns, so analysis, fitting and the
+ * Python API always see the full series.
+ */
+void Graph::applySpeedMode(QwtPlotCurve *c, bool forExport) const
 {
-	if (d_decimation_method == method && d_speed_mode_points == maxPoints && d_Douglas_Peuker_tolerance == tolerance)
+	if (!c)
 		return;
 
-	d_decimation_method = method;
+	const bool engaged = speedModeEnabled() && c->dataSize() >= (size_t)d_speed_mode_points;
+
+	// Qwt's own pixel filtering: a no-op when it does not engage, and disabled
+	// by Qwt itself whenever the paint device is not pixel aligned.
+	c->setPaintAttribute(QwtPlotCurve::FilterPointsAggressive,
+						 engaged && c->style() == QwtPlotCurve::Lines);
+
+	// Douglas-Peucker is opt-in and lives in the curve fitter slot, which the
+	// Spline plot style already owns - never steal it from a spline.
+	PlotCurve *pc = dynamic_cast<PlotCurve *>(c);
+	if (pc && pc->plotStyle() == Spline)
+		return;
+
+	if (engaged && d_Douglas_Peuker_tolerance > 0.0 && !forExport){
+		QwtWeedingCurveFitter *fitter = new QwtWeedingCurveFitter(d_Douglas_Peuker_tolerance);
+		// Bound the O(n*n) worst case of the algorithm on huge polygons.
+		fitter->setChunkSize(1000);
+		c->setCurveFitter(fitter);	// takes ownership, deletes the previous fitter
+		c->setCurveAttribute(QwtPlotCurve::Fitted, true);
+	} else if (c->testCurveAttribute(QwtPlotCurve::Fitted))
+		c->setCurveAttribute(QwtPlotCurve::Fitted, false);
+}
+
+void Graph::applySpeedModeToCurves(bool forExport)
+{
+	const QList<QwtPlotItem *> items = curvesList();
+	for (QwtPlotItem *it : items){
+		if (it->rtti() == QwtPlotItem::Rtti_PlotCurve)
+			applySpeedMode((QwtPlotCurve *)it, forExport);
+	}
+}
+
+void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool update)
+{
+	if (d_speed_mode_points == maxPoints && d_Douglas_Peuker_tolerance == tolerance)
+		return;
+
 	d_speed_mode_points = maxPoints;
 	d_Douglas_Peuker_tolerance = tolerance;
 
-	bool speedEnabled = (d_decimation_method != NoDecimation && (d_decimation_method != DouglasPeucker || d_Douglas_Peuker_tolerance > 0.0));
 	if (multiLayer())
-		multiLayer()->setLayerButtonSpeedMode(this, speedEnabled);
+		multiLayer()->setLayerButtonSpeedMode(this, speedModeEnabled());
+
+	applySpeedModeToCurves();
 
 	if (!update)
 		return;
 
 	replot();
-}
-
-void Graph::enableDouglasPeukerSpeedMode(double tolerance, int maxPoints, bool update)
-{
-	DecimationMethod method = (tolerance > 0.0) ? DouglasPeucker : NoDecimation;
-	enableSpeedMode(method, maxPoints, tolerance, update);
 }
 
 QList<FrameWidget*> Graph::stackingOrderEnrichmentsList() const

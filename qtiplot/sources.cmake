@@ -107,7 +107,6 @@ set(SOURCES
     src/plot2D/ArrowMarker.cpp
     src/plot2D/BoxCurve.cpp
     src/plot2D/CanvasPicker.cpp
-    src/plot2D/CurveDecimator.cpp
     src/plot2D/DataPickerTool.cpp
     src/plot2D/EllipseWidget.cpp
     src/plot2D/ErrorBarsCurve.cpp
@@ -308,7 +307,6 @@ set(HEADERS
     src/plot2D/ArrowMarker.h
     src/plot2D/BoxCurve.h
     src/plot2D/CanvasPicker.h
-    src/plot2D/CurveDecimator.h
     src/plot2D/DataPickerTool.h
     src/plot2D/EllipseWidget.h
     src/plot2D/ErrorBarsCurve.h

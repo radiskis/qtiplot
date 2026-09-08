@@ -2,75 +2,107 @@ import pytest
 import qti
 import math
 
-def test_decimation_enum_and_api():
-    DM = qti.Layer.DecimationMethod
-    assert hasattr(DM, 'NoDecimation')
-    assert hasattr(DM, 'LTTB')
-    assert hasattr(DM, 'MinMax')
-    assert hasattr(DM, 'DouglasPeucker')
-    
-    assert DM.NoDecimation.value == 0
-    assert DM.LTTB.value == 1
-    assert DM.MinMax.value == 2
-    assert DM.DouglasPeucker.value == 3
 
-    # Test ApplicationWindow defaults
+def test_speed_mode_api():
     app = qti.app
-    app.setDefaultDecimationMethod(DM.LTTB)
-    assert app.defaultDecimationMethod() == DM.LTTB
-    app.setDefaultDecimationMethod(DM.MinMax)
-    assert app.defaultDecimationMethod() == DM.MinMax
-    
+
     app.setSpeedMaxPoints(2500)
     assert app.speedModeMaxPoints() == 2500
 
-def test_lttb_and_minmax_curve_decimation():
-    DM = qti.Layer.DecimationMethod
-    # Create large dataset: 5000 points
-    n_points = 5000
-    t = qti.app.newTable("DecimationData", n_points, 2)
+    app.setDouglasPeukerTolerance(0.0)
+    assert app.getDouglasPeukerTolerance() == 0.0
+
+    app.setSpeedModeExport(False)
+    assert not app.speedModeExport()
+    app.setSpeedModeExport(True)
+    assert app.speedModeExport()
+
+
+def _spiked_sine_table(name, n_points, spike_row):
+    t = qti.app.newTable(name, n_points, 2)
     t.setColName(1, "X")
     t.setColName(2, "Y")
-    
     for i in range(1, n_points + 1):
-        x = float(i)
-        # Sine wave with a sharp spike in the middle
-        y = math.sin(x * 0.05)
-        if i == 2500:
-            y = 100.0 # Spike
-        t.setCell(1, i, x)
+        y = 100.0 if i == spike_row else math.sin(i * 0.05)
+        t.setCell(1, i, float(i))
         t.setCell(2, i, y)
-        
-    g = qti.app.newGraph("DecimationPlot", 1, 1, 1)
+    return t
+
+
+def test_speed_mode_never_mutates_curve_data():
+    """Speed mode is a Qwt paint attribute, so the curve keeps every sample.
+
+    This is the invariant that matters: analysis, fitting and the Python API
+    must always see the full series no matter how the layer is rendered.
+    """
+    n_points = 5000
+    t = _spiked_sine_table("SpeedModeData", n_points, 2500)
+
+    g = qti.app.newGraph("SpeedModePlot", 1, 1, 1)
     l = g.activeLayer()
     assert l is not None
-    
-    assert l.insertCurve(t, "DecimationData_Y", 1)
+    assert l.insertCurve(t, "SpeedModeData_Y", 1)
     c = l.curve(0)
     assert c is not None
-    
-    # 1. No decimation: curve should contain all 5000 points
-    l.enableSpeedMode(DM.NoDecimation, 500, 0.0)
-    assert l.decimationMethod() == DM.NoDecimation
+
+    # Off: a point budget of 0 disables speed mode.
+    l.enableDouglasPeukerSpeedMode(0.0, 0)
+    assert not l.speedModeEnabled()
     assert c.dataSize() == n_points
-    
-    # 2. LTTB Decimation: speed mode is enabled, but owned curve samples remain pristine (5000 points)
-    # T6 fix ensures decimation is screen-only and does not mutate owned data
-    l.enableSpeedMode(DM.LTTB, 500, 0.0)
-    assert l.decimationMethod() == DM.LTTB
+
+    # On, pixel filtering only (tolerance 0).
+    l.enableDouglasPeukerSpeedMode(0.0, 500)
+    assert l.speedModeEnabled()
     assert l.speedModeMaxPoints() == 500
     assert c.dataSize() == n_points
-    # Endpoints must match exactly
     assert abs(c.x(0) - 1.0) < 1e-6
     assert abs(c.x(n_points - 1) - float(n_points)) < 1e-6
-    
-    # 3. Min-Max Decimation: owned curve samples still remain pristine
-    l.enableSpeedMode(DM.MinMax, 500, 0.0)
-    assert l.decimationMethod() == DM.MinMax
-    assert c.dataSize() == n_points
-    # The 100.0 spike is preserved in curve data
     assert c.maxYValue() >= 99.9
-    
-    # 4. Disable decimation: retains all 5000 points
-    l.enableSpeedMode(DM.NoDecimation, 500, 0.0)
+
+    # On, with a Douglas-Peucker tolerance.
+    l.enableDouglasPeukerSpeedMode(1.0, 500)
+    assert l.speedModeEnabled()
+    assert abs(l.getDouglasPeukerTolerance() - 1.0) < 1e-12
     assert c.dataSize() == n_points
+    assert c.maxYValue() >= 99.9
+
+    # Off again.
+    l.enableDouglasPeukerSpeedMode(0.0, 0)
+    assert not l.speedModeEnabled()
+    assert c.dataSize() == n_points
+
+
+def _round_trip(tmp_path, name, tolerance, max_points):
+    """Save a one-layer project with the given speed mode, reopen it, return the layer."""
+    n_points = 4000
+    t = _spiked_sine_table(name + "Data", n_points, 2000)
+
+    g = qti.app.newGraph(name, 1, 1, 1)
+    l = g.activeLayer()
+    assert l.insertCurve(t, name + "Data_Y", 1)
+    l.enableDouglasPeukerSpeedMode(tolerance, max_points)
+
+    path = str(tmp_path / (name + ".qti"))
+    qti.app.saveProjectAs(path, False)
+    qti.app.open(path)
+
+    g2 = qti.app.graph(name)
+    assert g2 is not None
+    l2 = g2.activeLayer()
+    assert l2.curve(0).dataSize() == n_points
+    return l2
+
+
+def test_speed_mode_on_survives_project_round_trip(tmp_path):
+    l = _round_trip(tmp_path, "RoundTripOn", 2.5, 1500)
+    assert l.speedModeEnabled()
+    assert l.speedModeMaxPoints() == 1500
+    assert abs(l.getDouglasPeukerTolerance() - 2.5) < 1e-9
+
+
+def test_speed_mode_off_survives_project_round_trip(tmp_path):
+    """An absent <SpeedMode> tag inherits the application preference, so a layer
+    with speed mode switched off must persist that explicitly."""
+    qti.app.setSpeedMaxPoints(3000)   # preference is ON, so "off" cannot be implicit
+    l = _round_trip(tmp_path, "RoundTripOff", 0.0, 0)
+    assert not l.speedModeEnabled()

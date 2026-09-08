@@ -175,10 +175,9 @@ def test_large_dataset_linear_fit_decimation_parity():
     slope_raw = fit_raw.results()[1]
     intercept_raw = fit_raw.results()[0]
 
-    # Now enable speed mode / LTTB decimation (3000 points) on layer
-    DM = qti.Layer.DecimationMethod
-    l.enableSpeedMode(DM.LTTB, 3000, 0.0)
-    assert l.decimationMethod() == DM.LTTB
+    # Now enable speed mode (3000 point budget) on the layer
+    l.enableDouglasPeukerSpeedMode(0.0, 3000)
+    assert l.speedModeEnabled()
     # Verify curve data was NOT decimated in memory!
     assert c.dataSize() == n_points
 

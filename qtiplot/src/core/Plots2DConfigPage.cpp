@@ -562,30 +562,22 @@ void Plots2DConfigPage::initLayerSpeedTab()
 	speedModeBox->setCheckable(true);
 	QGridLayout * sl = new QGridLayout( speedModeBox );
 
-	decimationMethodLabel = new QLabel(tr("Decimation"));
-	sl->addWidget(decimationMethodLabel, 0, 0);
-	boxDecimationMethod = new QComboBox();
-	boxDecimationMethod->addItem(tr("Douglas-Peucker"), Graph::DouglasPeucker);
-	boxDecimationMethod->addItem(tr("Largest-Triangle-Three-Buckets (LTTB)"), Graph::LTTB);
-	boxDecimationMethod->addItem(tr("Min-Max"), Graph::MinMax);
-	sl->addWidget(boxDecimationMethod, 0, 1);
-
 	maxPointsLabel = new QLabel(tr("Maximum number of points"));
-	sl->addWidget(maxPointsLabel, 1, 0);
+	sl->addWidget(maxPointsLabel, 0, 0);
 	boxMaxPoints = new QSpinBox();
 	boxMaxPoints->setRange(100, 10000000);
 	boxMaxPoints->setSingleStep(1000);
-	sl->addWidget(boxMaxPoints, 1, 1);
+	sl->addWidget(boxMaxPoints, 0, 1);
 
-	toleranceLabel = new QLabel(tr("Tolerance"));
-	sl->addWidget(toleranceLabel, 2, 0);
+	toleranceLabel = new QLabel(tr("Douglas-Peucker tolerance"));
+	sl->addWidget(toleranceLabel, 1, 0);
 	boxDouglasPeukerTolerance = new DoubleSpinBox();
 	boxDouglasPeukerTolerance->setRange(0, 1000);
 	boxDouglasPeukerTolerance->setSingleStep(0.1);
-	sl->addWidget(boxDouglasPeukerTolerance, 2, 1);
+	sl->addWidget(boxDouglasPeukerTolerance, 1, 1);
 
 	applySpeedExportBox = new QCheckBox();
-	sl->addWidget(applySpeedExportBox, 3, 0, 1, 2);
+	sl->addWidget(applySpeedExportBox, 2, 0, 1, 2);
 
 	speedLayout->addWidget( speedModeBox );
 
@@ -755,10 +747,10 @@ void Plots2DConfigPage::init(ApplicationWindow *app, ApplicationSettings *settin
 	curveSizeBox->setValue(app->d_curve_max_antialising_size);
 	enableCurveAntialiasingSizeBox(app->d_disable_curve_antialiasing);
 
-	speedModeBox->setChecked(app->defaultDecimationMethod() != Graph::NoDecimation || app->speedModeMaxPoints() > 0);
-	int decIdx = boxDecimationMethod->findData((int)app->defaultDecimationMethod());
-	boxDecimationMethod->setCurrentIndex(decIdx >= 0 ? decIdx : 0);
-	boxMaxPoints->setValue(app->speedModeMaxPoints());
+	// A point budget of 0 means speed mode is off; keep the spin box showing a
+	// usable value so re-enabling it does not start from the range minimum.
+	speedModeBox->setChecked(app->speedModeMaxPoints() > 2);
+	boxMaxPoints->setValue(app->speedModeMaxPoints() > 2 ? app->speedModeMaxPoints() : 3000);
 	boxDouglasPeukerTolerance->setValue(app->getDouglasPeukerTolerance());
 	applySpeedExportBox->setChecked(app->speedModeExport());
 
@@ -848,11 +840,7 @@ void Plots2DConfigPage::apply(ApplicationWindow *app, ApplicationSettings *setti
 
 	app->d_curve_max_antialising_size = curveSizeBox->value();
 	app->d_disable_curve_antialiasing = disableAntialiasingBox->isChecked();
-	app->setSpeedMaxPoints(boxMaxPoints->value());
-	Graph::DecimationMethod decMethod = (Graph::DecimationMethod)boxDecimationMethod->currentData().toInt();
-	if (!speedModeBox->isChecked())
-		decMethod = Graph::NoDecimation;
-	app->setDefaultDecimationMethod(decMethod);
+	app->setSpeedMaxPoints(speedModeBox->isChecked() ? boxMaxPoints->value() : 0);
 	app->setDouglasPeukerTolerance(speedModeBox->isChecked() ? boxDouglasPeukerTolerance->value() : 0.0);
 	app->setSpeedModeExport(applySpeedExportBox->isChecked());
 
@@ -1000,8 +988,7 @@ void Plots2DConfigPage::retranslateUi()
 
 	speedModeBox->setTitle(tr("Speed Mode, Maximum Data Points"));
 	maxPointsLabel->setText(tr("Maximum number of points"));
-	decimationMethodLabel->setText(tr("Decimation"));
-	toleranceLabel->setText(tr("Tolerance"));
+	toleranceLabel->setText(tr("Douglas-Peucker tolerance"));
 	applySpeedExportBox->setText(tr("Apply to &export"));
 
 	antialiasingGroupBox->setTitle(tr("Antialiasing"));
