@@ -1103,36 +1103,36 @@ private slots:
 
 // TODO: a lot of this stuff should be private
 public:
-	bool d_fft_norm_amp;
-	bool d_fft_shift_res;
-	bool d_fft_power2;
-	bool d_int_sort_data;
-	bool d_int_show_plot;
-	bool d_int_results_table;
-	bool d_show_empty_cell_gap;
-	bool d_show_table_paste_dialog;
-	double d_stats_significance_level;
-	bool d_stats_result_table;
-	bool d_stats_result_log;
-	bool d_stats_result_notes;
-	bool d_stats_confidence;
-	bool d_stats_power;
-	bool d_stats_output;
-	bool d_descriptive_stats;
-	bool d_confirm_modif_2D_points;
-	bool d_ask_web_connection;
-	bool d_open_last_project;
-	int d_curve_max_antialising_size;
-	bool d_disable_curve_antialiasing;
-	bool d_force_muParser;
-	bool d_keep_aspect_ration;
-	int d_print_paper_size;
-	int d_printer_orientation;
-	bool d_muparser_c_locale;
-	Graph::LegendDisplayMode d_graph_legend_display;
-	Graph::AxisTitlePolicy d_graph_axis_labeling;
-	int d_graph_attach_policy;
-	bool d_synchronize_graph_scales;
+	bool d_fft_norm_amp = false;
+	bool d_fft_shift_res = true;
+	bool d_fft_power2 = true;
+	bool d_int_sort_data = false;
+	bool d_int_show_plot = true;
+	bool d_int_results_table = true;
+	bool d_show_empty_cell_gap = true;
+	bool d_show_table_paste_dialog = true;
+	double d_stats_significance_level = 0.05;
+	bool d_stats_result_table = false;
+	bool d_stats_result_log = true;
+	bool d_stats_result_notes = false;
+	bool d_stats_confidence = true;
+	bool d_stats_power = true;
+	bool d_stats_output = true;
+	bool d_descriptive_stats = true;
+	bool d_confirm_modif_2D_points = true;
+	bool d_ask_web_connection = true;
+	bool d_open_last_project = false;
+	int d_curve_max_antialising_size = 1000;
+	bool d_disable_curve_antialiasing = false;
+	bool d_force_muParser = true;
+	bool d_keep_aspect_ration = true;
+	int d_print_paper_size = 0;
+	int d_printer_orientation = 0;
+	bool d_muparser_c_locale = true;
+	Graph::LegendDisplayMode d_graph_legend_display = Graph::Auto;
+	Graph::AxisTitlePolicy d_graph_axis_labeling = Graph::Default;
+	int d_graph_attach_policy = 0;
+	bool d_synchronize_graph_scales = true;
 	int d_latex_compiler;
 	QString d_latex_compiler_path;
 	QString d_java_path;
@@ -1284,11 +1284,11 @@ public:
 	QColor tableBkgdColor, tableTextColor, tableHeaderColor;
 	QString projectname,columnSeparator, helpFilePath, appLanguage;
 	QString configFilePath, fitPluginsPath, fitModelsPath, asciiDirPath, imagesDirPath, scriptsDirPath;
-	int ignoredLines, savingTimerId;
-	QAction *recentMenuAction;
-	bool renameColumns, strip_spaces, simplify_spaces;
+	int ignoredLines = 0, savingTimerId = 0;
+	QAction *recentMenuAction = nullptr;
+	bool renameColumns = false, strip_spaces = false, simplify_spaces = false;
 	QStringList recentProjects;
-	bool saved;
+	bool saved = true;
 	QStringList locales;
 	QStringList d_recent_functions; //user-defined functions;
 	QStringList xFunctions, yFunctions, rFunctions, thetaFunctions; // user functions for parametric and polar plots
@@ -1299,12 +1299,12 @@ public:
 
 	//! \name variables used when user copy/paste markers
 	//@{
-	FrameWidget *d_enrichement_copy;
-	ArrowMarker *d_arrow_copy;
+	FrameWidget *d_enrichement_copy = nullptr;
+	ArrowMarker *d_arrow_copy = nullptr;
 	//@}
 
 	//! Equals true if an automatical search for updates was performed on start-up otherwise is set to false;
-	bool autoSearchUpdatesRequest;
+	bool autoSearchUpdatesRequest = false;
 
 	//! The scripting language to use for new projects.
 	QString defaultScriptingLang;

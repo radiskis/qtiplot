@@ -136,6 +136,7 @@ void ApplicationSettings::init()
     d_symbol_style = 0;
     d_indexed_symbols = true;
     d_keep_aspect_ration = true;
+    d_show_empty_cell_gap = true;
 
     d_disable_curve_antialiasing = true;
     d_curve_max_antialising_size = 1000;

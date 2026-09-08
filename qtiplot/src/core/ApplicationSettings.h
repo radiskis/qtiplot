@@ -184,10 +184,10 @@ public:
     QVector<bool> d_show_axes_labels;
     Graph::LegendDisplayMode d_graph_legend_display;
     Graph::AxisTitlePolicy d_graph_axis_labeling;
-    bool d_keep_aspect_ration;
-    bool d_synchronize_graph_scales;
-    bool d_show_empty_cell_gap;
-    int d_graph_attach_policy;
+    bool d_keep_aspect_ration = true;
+    bool d_synchronize_graph_scales = true;
+    bool d_show_empty_cell_gap = true;
+    int d_graph_attach_policy = 0;
     int defaultCurveStyle;
     double defaultCurveLineWidth;
     int d_curve_line_style;
