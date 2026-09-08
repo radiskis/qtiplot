@@ -32,6 +32,7 @@
 
 %Module qti
 
+%MinimumABIVersion "13.0"
 
 %ModuleCode
 #include <QObject>

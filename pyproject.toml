@@ -6,6 +6,7 @@ build-backend = "sipbuild.api"
 name = "qti"
 
 [tool.sip.project]
+abi-version = "13.9"
 sip-files-dir = "qtiplot/src/scripting"
 sip-include-dirs = [
     "/usr/lib/python3/dist-packages/PyQt6/bindings",

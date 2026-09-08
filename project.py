@@ -5,6 +5,7 @@ from sipbuild import Project
 class QtiProject(Project):
     def update(self, tool):
         self.target_abi = (13, 9)
+        self.abi_version = "13.9"
         # Dynamically find PyQt6 bindings
         try:
             import PyQt6
