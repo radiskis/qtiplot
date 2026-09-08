@@ -17,6 +17,8 @@ if(QTIPLOT_SANITIZE)
         set(QTIPLOT_SANITIZE_COMPILE_OPTIONS -fsanitize=address,undefined -fno-omit-frame-pointer -g)
         set(QTIPLOT_SANITIZE_LINK_OPTIONS -fsanitize=address,undefined)
     endif()
+    add_compile_options(${QTIPLOT_SANITIZE_COMPILE_OPTIONS})
+    add_link_options(${QTIPLOT_SANITIZE_LINK_OPTIONS})
 endif()
 
 option(QTIPLOT_LEDGER "Track object lifetimes and assert a clean ledger at project close" ON)
@@ -83,10 +85,6 @@ target_include_directories(test_object_registry PRIVATE
 target_link_libraries(test_object_registry PRIVATE
     Qt6::Core
 )
-if(QTIPLOT_SANITIZE)
-    target_compile_options(test_object_registry PRIVATE ${QTIPLOT_SANITIZE_COMPILE_OPTIONS})
-    target_link_options(test_object_registry PRIVATE ${QTIPLOT_SANITIZE_LINK_OPTIONS})
-endif()
 add_test(NAME test_object_registry COMMAND test_object_registry)
 
 add_test(NAME python_suite
