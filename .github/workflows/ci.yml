@@ -17,6 +17,7 @@ jobs:
       # sip.h have to exist before cmake is run.
       - name: Generate SIP bindings
         run: |
+          mkdir -p build/sip_temp
           sip-build --no-compile --build-dir build/sip_temp
           sip-module --abi-version 13.9 --sip-h --target-dir build/sip_temp PyQt6.sip
       - run: cmake -B build -G "Ninja" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
@@ -38,6 +39,7 @@ jobs:
         run: python3 -m pip install --upgrade pip pytest numpy "sip>=6,<7" PyQt6
       - name: Generate SIP bindings
         run: |
+          mkdir -p build/sip_temp
           sip-build --no-compile --build-dir build/sip_temp
           sip-module --abi-version 13.9 --sip-h --target-dir build/sip_temp PyQt6.sip
       - run: cmake -B build -DCMAKE_BUILD_TYPE=Debug -DQTIPLOT_SANITIZE=ON -DQTIPLOT_LEDGER=ON
