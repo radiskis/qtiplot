@@ -142,6 +142,7 @@ set(SOURCES
     src/plot2D/SelectionMoveResizer.cpp
     src/plot2D/Spectrogram.cpp
     src/plot2D/SubtractLineTool.cpp
+    src/plot2D/TableSeriesData.cpp
     src/plot2D/TexWidget.cpp
     src/plot2D/TitlePicker.cpp
     src/plot2D/TranslateCurveTool.cpp

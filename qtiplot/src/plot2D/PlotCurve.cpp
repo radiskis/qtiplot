@@ -609,10 +609,6 @@ void DataCurve::loadData()
 
 	int xColType = d_x_table->columnType(xcol);
 	int yColType = d_table->columnType(ycol);
-	int r = abs(d_end_row - d_start_row) + 1;
-
-	QPolygonF data;
-	data.reserve(r);
 
 	QStringList xLabels, yLabels;// store text labels
 
@@ -620,56 +616,23 @@ void DataCurve::loadData()
 	if (d_type == Graph::HorizontalBars)
 		xAxis = QwtPlot::yLeft;
 
-	QString date_time_fmt = d_table->columnFormat(xcol);
-	int size = 0, from = 0;
-	d_data_ranges.clear();
-	for (int i = d_start_row; i <= d_end_row; i++ ){
-		QString xval = d_x_table->text(i, xcol);
-		QString yval = d_table->text(i, ycol);
-		if (!xval.isEmpty() && !yval.isEmpty()){
-			bool valid_data = true;
-			QPointF p;
-			if (xColType == Table::Text){
-				xLabels << xval;
-				p.setX((double)(size + 1));
-			} else if (xColType == Table::Time)
-				p.setX(Table::fromTime(QTime::fromString(xval.trimmed(), date_time_fmt)));
-			else if (xColType == Table::Date)
-				p.setX(Table::fromDateTime(QDateTime::fromString(xval.trimmed(), date_time_fmt)));
-			else
-				p.setX(g->locale().toDouble(xval, &valid_data));
-
-			if (yColType == Table::Text){
-				yLabels << yval;
-				p.setY((double)(size + 1));
-			} else
-				p.setY(g->locale().toDouble(yval, &valid_data));
-
-			if (valid_data){
-				data << p;
-				size++;
-			}
-		} else if (from < size){
-			DataRange range;
-			range.from = from;
-			range.to = size - 1;
-			d_data_ranges.push_back(range);
-			from = size;
-		}
-	}
-
-	if (d_data_ranges.size() && from < size){
-		DataRange range;
-		range.from = from;
-		range.to = size - 1;
-		d_data_ranges.push_back(range);
-	}
-
-	if (!size){
+	TableSeriesData *series = new TableSeriesData(d_table, ycol, d_x_table, xcol,
+												  d_start_row, d_end_row, d_type);
+	if (!series->load(d_table, ycol, d_x_table, xcol, d_start_row, d_end_row, d_type,
+					  0.0, 0.0, g->locale(), &xLabels, &yLabels)){
+		delete series;
 		remove();
 		return;
 	}
-	data.resize(size);
+
+	d_data_ranges.clear();
+	const auto &ranges = series->dataRanges();
+	for (const auto &r : ranges){
+		DataRange dr;
+		dr.from = r.from;
+		dr.to = r.to;
+		d_data_ranges.push_back(dr);
+	}
 
 	if (g->isWaterfallPlot()){
 		int index = g->curveIndex(this);
@@ -686,7 +649,9 @@ void DataCurve::loadData()
 
 			setZ(-index);
 			setBaseline(d_y_offset);
-			data.translate(d_x_offset, d_y_offset);
+			series->setOffsets(d_x_offset, d_y_offset);
+			series->load(d_table, ycol, d_x_table, xcol, d_start_row, d_end_row, d_type,
+						 d_x_offset, d_y_offset, g->locale(), nullptr, nullptr);
 		} else {
 			setZ(0);
 			setBaseline(0.0);
@@ -695,15 +660,7 @@ void DataCurve::loadData()
 			g->grid()->setZ(-g->curveCount() - 1);
 	}
 
-	if (d_type == Graph::HorizontalBars){
-		size = data.size();
-		for (int i = 0; i < size; i++){
-			QPointF p = data.at(i);
-			data[i] = QPointF(p.y(), p.x());
-		}
-	}
-
-	setSamples(data);
+	setData(series);
 	for (ErrorBarsCurve *c : d_error_bars)
 		c->loadData();
 
@@ -761,6 +718,13 @@ int DataCurve::tableRow(int point)
 {
 	if (!d_table)
 		return -1;
+
+	const TableSeriesData *series = dynamic_cast<const TableSeriesData *>(data());
+	if (series) {
+		int r = series->tableRow(point);
+		if (r >= 0)
+			return r;
+	}
 
 	if (d_type == Graph::Pie){
 		double y_val = y(point);

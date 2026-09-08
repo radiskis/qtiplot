@@ -37,6 +37,7 @@
 #include <Table.h>
 #include <Tracked.h>
 #include "Ref.h"
+#include "TableSeriesData.h"
 
 class PlotMarker;
 class Table;
@@ -83,6 +84,8 @@ public:
 	void setSkipSymbolsCount(int count);
 	//! Returns the number of symbols not to be drawn
 	int skipSymbolsCount(){return d_skip_symbols;};
+
+	virtual void loadData(){};
 
 	QRectF boundingRect() const;
 

@@ -1030,7 +1030,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 
 		QList<Graph*> lst = stackOrderedLayersList();
 		for (Graph *g : lst)
-			g->print(&p, g->geometry(), ScaledFontsPrintFilter(1.0));
+			g->print(&p, g->geometry(), 1.0);
 
 		p.end();
 		return pic;
@@ -1048,8 +1048,6 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		pic.fill();
 	QPainter p(&pic);
 
-	ScaledFontsPrintFilter filter = ScaledFontsPrintFilter(scaleFontsFactor, yScale);
-
 	QList<Graph*> lst = stackOrderedLayersList();
 	for (Graph *g : lst){
 		int gx = qRound(g->x()*xScale);
@@ -1057,7 +1055,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		int gw = qRound(g->width()*xScale);
 		int gh = qRound(g->height()*yScale);
 
-		g->print(&p, QRect(gx, gy, gw, gh), filter);
+		g->print(&p, QRect(gx, gy, gw, gh), scaleFontsFactor);
 	}
 
 	p.end();
@@ -1227,7 +1225,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 			if (fontsFactor == 0.0)
 				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
 
-			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+			g->print(&paint, r, fontsFactor);
 		}
 		paint.end();
 	} else if (res && res != printer->resolution()){
@@ -1241,7 +1239,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 			QRect r = g->geometry();
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
-			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+			g->print(&paint, r, fontsFactor);
 		}
 		paint.end();
 	} else {
@@ -1249,7 +1247,7 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 		QPainter paint(printer);
 		QList<Graph*> lst = stackOrderedLayersList();
 		for (Graph *g : lst)
-			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
+			g->print(&paint, g->geometry(), fontsFactor);
 		paint.end();
 	}
 }
@@ -1289,12 +1287,12 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 			if (fontsFactor == 0.0)
 				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
 
-			g->print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+			g->print(&paint, r, fontsFactor);
 		}
 	} else {
 		QList<Graph*> lst = stackOrderedLayersList();
 		for (Graph *g : lst)
-			g->print(&paint, g->geometry(), ScaledFontsPrintFilter(fontsFactor));
+			g->print(&paint, g->geometry(), fontsFactor);
 	}
 	paint.end();
 	QApplication::restoreOverrideCursor();
@@ -1469,7 +1467,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 			int width = int(g->frameGeometry().width()*scaleFactorX);
 			int height = int(g->frameGeometry().height()*scaleFactorY);
 
-			g->print(painter, QRect(pos, QSize(width,height)), ScaledFontsPrintFilter(scaleFactorY));
+			g->print(painter, QRect(pos, QSize(width,height)), scaleFactorY);
 		}
 	} else {
 		int x_margin = (pageRect.width() - canvasRect.width())/2;
@@ -1485,7 +1483,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 		for (Graph *g : graphsList){
 			QPoint pos = g->pos();
 			pos = QPoint(x_margin + pos.x(), y_margin + pos.y());
-			g->print(painter, QRect(pos, g->size()), ScaledFontsPrintFilter(1.0));
+			g->print(painter, QRect(pos, g->size()), 1.0);
 		}
 	}
 

@@ -112,24 +112,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 	int left = left_margin;
 	int top = top_margin;
 
-    // Scale options removed/simplified for Qwt 6 port
-	/*
-	double xfactor = 1.0, yfactor = 1.0, scaleFactor = ((ScaledFontsPrintFilter *)(&pfilter))->scaleFactor();
-	if (scaleFactor != 1.0){
-		xfactor = scaleFactor;
-		top_margin *= scaleFactor;
-		d_frame_pen.setWidthF(scaleFactor*d_frame_pen.widthF());
-	} else {// calculate resolution factor
-		xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-		yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
-	}
-    
-	h_space = int(h_space*xfactor);
-	left_margin = int(left_margin*xfactor);
-	top_margin = int(top_margin*yfactor);
-
-	const int dfy = qRound(d_frame_pen.width()*yfactor);
-    */
+    // QwtPlotRenderer handles resolution scaling; compute device scale factors:
     // Fallback: no scaling or use simple scaling if needed. 
     // QwtPlotRenderer scales the context. We just draw.
     // However, if we need resolution independence for frame widths:

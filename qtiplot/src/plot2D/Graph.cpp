@@ -1625,7 +1625,7 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 		else
 			pixmap.fill();
 		QPainter p(&pixmap);
-		print(&p, r, ScaledFontsPrintFilter(1.0));
+		print(&p, r, 1.0);
 		p.end();
 		return pixmap;
 	}
@@ -1648,7 +1648,7 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 		pixmap.fill();
 
 	QPainter p(&pixmap);
-	print(&p, r, ScaledFontsPrintFilter(scaleFontsFactor, scaleFactor));
+	print(&p, r, scaleFontsFactor);
 	p.end();
 
 	return pixmap;
@@ -1781,7 +1781,7 @@ void Graph::exportVector(QPrinter *printer, int res, bool color,
 	printer->setPageOrientation(QPageLayout::Portrait);
 
 	QPainter paint(printer);
-	print(&paint, r, ScaledFontsPrintFilter(fontsFactor));
+	print(&paint, r, fontsFactor);
 	paint.end();
 }
 
@@ -1865,7 +1865,7 @@ void Graph::print()
 			paint.restore();
 		}
 
-		print(&paint, plotRect, ScaledFontsPrintFilter(fontFactor));
+		print(&paint, plotRect, fontFactor);
 	}
 }
 
@@ -1907,7 +1907,7 @@ void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 	}
 
 	QPainter p(device);
-	print(&p, r, ScaledFontsPrintFilter(fontsFactor));
+	print(&p, r, fontsFactor);
 	p.end();
 
 	QApplication::restoreOverrideCursor();
@@ -6183,29 +6183,6 @@ QColor Graph::frameColor()
 	return palette().color(QPalette::WindowText);
 }
 
-void Graph::printFrame(QPainter *painter, const QRect &rect) const
-{
-	painter->save();
-
-	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*lineWidth());
-	if (lw){
-		QColor color = palette().color(QPalette::WindowText);
-		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::FlatCap, Qt::MiterJoin));
-	} else
-		painter->setPen(QPen(Qt::NoPen));
-
-	int lw2 = lw/2;
-	QRect r = rect;
-	if (lw % 2)
-		r.adjust(lw2, lw2, -(lw2 + 1), -(lw2 + 1));
-	else
-		r.adjust(lw2, lw2, -lw2, -lw2);
-
-	QwtPainter::fillRect(painter, r, palette().color(QPalette::Window));
-	painter->drawRect(r);
-	painter->restore();
-}
-
 void Graph::setCanvasBackgroundImage(const QString & fn, bool update)
 {
 	if (fn == d_canvas_bkg_path)
@@ -6247,36 +6224,8 @@ void Graph::setCanvasBackground(const QBrush &brush)
 	}
 }
 
-void Graph::printCanvas(QPainter *painter, const QRectF &canvasRect,
-						const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const
-{
-	painter->save();
-
-	QRect fillRect = canvasRect.toRect().adjusted(0, 0, -1, -1);
-	QwtPainter::fillRect(painter, fillRect, canvasBackground());
-
-	if (d_clip_data){
-		painter->setClipping(true);
-		painter->setClipRect(canvasRect);
-	}
-
-	drawItems(painter, canvasRect, map, pfilter);
-
-	painter->restore();
-
-	const QFrame* plotCanvas = qobject_cast<const QFrame*>(canvas());
-	int lw = qRound((double)painter->device()->logicalDpiX()/(double)logicalDpiX()*plotCanvas->lineWidth());
-	if (lw > 0){
-		painter->save();
-		QColor color = plotCanvas->palette().color(QPalette::WindowText);
-		painter->setPen (QPen(color, lw, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
-		painter->drawRect(fillRect);
-		painter->restore();
-	}
-}
-
-void Graph::drawItems (QPainter *painter, const QRectF &rect,
-						const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &/*pfilter*/) const
+void Graph::drawItems(QPainter *painter, const QRectF &rect,
+					  const QwtScaleMap map[axisCnt]) const
 {	
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
 		if (!axisEnabled(i) || d_is_printing)
@@ -6836,13 +6785,13 @@ void Graph::showEvent (QShowEvent * event)
 
 /*!
   \brief Paint the plot into a given rectangle.
-  Paint the contents of a QwtPlot instance into a given rectangle (Qwt modified code).
+  Paint the contents of a QwtPlot instance into a given rectangle.
 
   \param painter Painter
   \param plotRect Bounding rectangle
-  \param pfilter Print filter
+  \param fontFactor Font scaling factor
 */
-void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFilter &pfilter)
+void Graph::print(QPainter *painter, const QRect &plotRect, double fontFactor)
 {
     if (painter == 0 || !painter->isActive() || !plotRect.isValid() || size().isNull())
         return;
@@ -6854,12 +6803,8 @@ void Graph::print(QPainter *painter, const QRect &plotRect, const QwtPlotPrintFi
 
     QwtPlotRenderer renderer;
 
-    double factor = 1.0;
-    const ScaledFontsPrintFilter *sff = dynamic_cast<const ScaledFontsPrintFilter *>(&pfilter);
-    if (sff)
-        factor = sff->scaleFontsFactor();
-
-    if (factor > 0.0 && fabs(factor - 1.0) > 1e-4) {
+    if (fontFactor > 0.0 && fabs(fontFactor - 1.0) > 1e-4) {
+        double factor = fontFactor;
         // Title font scaling
         QFont origTitleFont = title().font();
         QFont origAxisFont[QwtPlot::axisCnt];
@@ -7588,28 +7533,3 @@ void Graph::undoSetTitle(const QString &newTitle)
 	t.setText(newTitle);
 	undoSetTitle(t);
 }
-
-
-#if 0 // Commented out legacy ScaledFontsPrintFilter
-/*************************************************************************/
-/*           Class ScaledFontsPrintFilter                                */
-/*************************************************************************/
-
-ScaledFontsPrintFilter::ScaledFontsPrintFilter(double factor, double scaleFactor):
-d_factor(factor),
-d_dpi_factor(scaleFactor)
-{}
-
-QFont ScaledFontsPrintFilter::font(const QFont &f, Item item) const
-{
-	return f;
-}
-
-void ScaledFontsPrintFilter::apply(QwtPlotItem *item) const
-{
-}
-
-void ScaledFontsPrintFilter::reset(QwtPlotItem *item) const
-{
-}
-#endif

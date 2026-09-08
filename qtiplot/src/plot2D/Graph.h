@@ -55,42 +55,6 @@
 
 class QwtPlotPanner;
 class QwtPlotMagnifier;
-
-class QwtPlotPrintFilter
-{
-public:
-	enum Options { PrintMargin = 1, PrintTitle = 2, PrintLegend = 4, PrintFrameWithScales = 8, PrintAll = 15 };
-	QwtPlotPrintFilter(){d_options = PrintAll;};
-	virtual ~QwtPlotPrintFilter(){};
-
-	int options() const {return d_options;};
-	void setOptions(int opts){d_options = opts;};
-
-	virtual void apply(QwtPlot *) const {};
-	virtual void reset(QwtPlot *) const {};
-
-	enum Item { Title, AxisTitle, AxisScale, Legend, Curve, CurveSymbol, Marker };
-
-private:
-	int d_options;
-};
-
-class ScaledFontsPrintFilter: public QwtPlotPrintFilter
-{
-public:
-	ScaledFontsPrintFilter(double factor, double scaleFactor = 1.0)
-		: QwtPlotPrintFilter(), d_factor(factor), d_dpi_factor(scaleFactor) {};
-
-	virtual QFont font(const QFont &f, Item) const {return f;};
-
-	double scaleFontsFactor() const {return d_factor;}
-	double scaleFactor() const {return d_dpi_factor;}
-
-private:
-	double d_factor;
-	double d_dpi_factor;
-};
-class QwtPlotMagnifier;
 class QwtPlotCurve;
 class QwtPlotZoomer;
 class PieCurve;
@@ -241,7 +205,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		QColor frameColor();
 		const QColor & paletteBackgroundColor() const;
 
-		void print(QPainter *, const QRect &rect, const QwtPlotPrintFilter & = QwtPlotPrintFilter());
+		void print(QPainter *painter, const QRect &rect, double fontFactor = 1.0);
 		void updateLayout();
 		void setCanvasGeometry(const QRect &canvasRect);
 		//!Convenience function for scripts
@@ -937,14 +901,9 @@ signals:
 		void dropEvent(QDropEvent*);
 		void dragEnterEvent(QDragEnterEvent*);
 		void showEvent (QShowEvent * event);
-	private:
-    	void printFrame(QPainter *painter, const QRect &rect) const;
-		void printCanvas(QPainter *painter, const QRectF &canvasRect,
-   			 const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
-
 	protected:
-		virtual void drawItems (QPainter *painter, const QRectF &rect,
-			const QwtScaleMap map[axisCnt], const QwtPlotPrintFilter &pfilter) const;
+		void drawItems(QPainter *painter, const QRectF &rect,
+			const QwtScaleMap map[axisCnt]) const override;
 	private:
 
 		void drawInwardTicks(QPainter *painter, const QRect &rect,
