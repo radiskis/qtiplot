@@ -909,7 +909,6 @@ signals:
 	protected:
 		void drawItems(QPainter *painter, const QRectF &rect,
 			const QwtScaleMap map[axisCnt]) const override;
-		void drawCanvas(QPainter *painter) override;
 	private:
 
 		void drawInwardTicks(QPainter *painter, const QRect &rect,

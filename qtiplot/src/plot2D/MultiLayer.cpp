@@ -175,8 +175,6 @@ d_common_axes_layout(false)
 	hbox->addLayout(waterfallBox);
 
 	d_canvas = new QWidget();
-	d_canvas->setObjectName("multiLayerCanvas");
-	d_canvas->setAutoFillBackground(true);
 
 	QWidget *mainWidget = new QWidget();
 	mainWidget->setAutoFillBackground(true);
@@ -199,9 +197,6 @@ d_common_axes_layout(false)
 	QPalette pal = palette();
 	pal.setColor(QPalette::Window, QColor(Qt::white));
 	setPalette(pal);
-	mainWidget->setPalette(pal);
-	d_canvas->setPalette(pal);
-	d_canvas->setStyleSheet("#multiLayerCanvas { background-color: white; }");
 
 	for (int i = 0; i < layers; i++)
 		addLayer();

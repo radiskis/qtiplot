@@ -125,6 +125,8 @@ void Table::init(int rows, int cols)
 	head->setMouseTracking(true);
 	head->setSectionResizeMode(QHeaderView::Interactive);
 	head->installEventFilter(this);
+	if (head->viewport())
+		head->viewport()->installEventFilter(this);
 	connect(head, &QHeaderView::sectionResized, this, &Table::colWidthModified);
 
 	col_plot_type[0] = X;
@@ -136,6 +138,8 @@ void Table::init(int rows, int cols)
 
 	d_table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	d_table->verticalHeader()->installEventFilter(this);
+	if (d_table->verticalHeader()->viewport())
+		d_table->verticalHeader()->viewport()->installEventFilter(this);
 
 	setWidget(d_table);
 
@@ -145,11 +149,10 @@ void Table::init(int rows, int cols)
 	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_A), this);
 	connect(accelAll, &QShortcut::activated, this, &Table::selectAllTable);
 
-	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
-	connect(d_table, &QTableWidget::cellDoubleClicked, this, &Table::cellDoubleClicked);
-	connect(d_table, &QTableWidget::cellPressed, this, &Table::cellDoubleClicked);
-	// Note: old-value tracking is done via Qt::UserRole on each QTableWidgetItem,
-	// updated in MyTable::setText and in cellEdited. d_old_cell_text is no longer used.
+	connect(d_table, &MyTable::cellChanged, this, &Table::cellEdited);
+	connect(d_table, &MyTable::cellDoubleClicked, this, &Table::cellDoubleClicked);
+	connect(d_table, &MyTable::cellPressed, this, &Table::cellDoubleClicked);
+	// Note: old-value tracking is managed cleanly by TableModel/MyTable previousText/previousRaw caches.
 
 	d_undo_stack = new QUndoStack(this);
 	int limit = applicationWindow() ? applicationWindow()->tableUndoStackSize() : 1000;
@@ -377,7 +380,7 @@ void MyTable::keyPressEvent(QKeyEvent *e)
 		// When the delegate editor is active, let the base class commit and
 		// closeEditor() will handle navigation — don't advance twice.
 		if (state() == QAbstractItemView::EditingState) {
-			QTableWidget::keyPressEvent(e);
+			QTableView::keyPressEvent(e);
 			return;
 		}
 		int r = currentRow();
@@ -390,14 +393,14 @@ void MyTable::keyPressEvent(QKeyEvent *e)
 			return;
 		}
 	}
-	QTableWidget::keyPressEvent(e);
+	QTableView::keyPressEvent(e);
 }
 
 void MyTable::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 {
 	int r = currentRow();
 	int c = currentColumn();
-	QTableWidget::closeEditor(editor, hint);
+	QTableView::closeEditor(editor, hint);
 	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::EditNextItem) {
 		if (r >= 0 && c >= 0) {
 			int nextRow = r + 1;
@@ -421,25 +424,20 @@ void Table::cellDoubleClicked(int row, int col)
 
 void Table::cellEdited(int row, int col)
 {
-	QTableWidgetItem *it = d_table->item(row, col);
-	QString oldText = it ? it->data(Qt::UserRole).toString() : QString();
+	CellState prev = d_table->previousCellState(row, col);
 	QString text = d_table->text(row, col).trimmed();
 	QString newText = d_table->text(row, col);
 
-	bool hasOldVal = d_table->hasRawValue(row, col);
-	double oldVal = d_table->rawValue(row, col);
 	bool hasNewVal = false;
 	double newVal = 0.0;
 
-	if (newText == oldText)
+	if (newText == prev.text)
 		return;
 
 	if (columnType(col) != Numeric || text.isEmpty()){
-		// Non-numeric: commit immediately, update UserRole now.
-		if (it)
-			it->setData(Qt::UserRole, newText);
-		pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
-		                                            hasOldVal, oldVal, false, 0.0));
+		d_table->setPreviousCellState(row, col, newText, 0.0, false);
+		pushUndoCommand(new TableEditCellCommand(this, row, col, prev.text, newText, tr("Edit Cell"),
+		                                            prev.hasRaw, prev.raw, false, 0.0));
 		return;
 	}
 
@@ -488,11 +486,10 @@ void Table::cellEdited(int row, int col)
   		}
   	}
 
-	if (it)
-		it->setData(Qt::UserRole, newText);
+	d_table->setPreviousCellState(row, col, newText, newVal, hasNewVal);
 
-	pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
-	                                            hasOldVal, oldVal, hasNewVal, newVal));
+	pushUndoCommand(new TableEditCellCommand(this, row, col, prev.text, newText, tr("Edit Cell"),
+	                                            prev.hasRaw, prev.raw, hasNewVal, newVal));
 }
 
 int Table::colX(int col)
@@ -4051,8 +4048,10 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 {
 	QHeaderView *hheader = d_table->horizontalHeader();
 	QHeaderView *vheader = d_table->verticalHeader();
+	bool isHHeader = (object == (QObject*)hheader || (hheader && object == (QObject*)hheader->viewport()));
+	bool isVHeader = (object == (QObject*)vheader || (vheader && object == (QObject*)vheader->viewport()));
 
-	if (e->type() == QEvent::MouseButtonDblClick && object == (QObject*)hheader) {
+	if (e->type() == QEvent::MouseButtonDblClick && isHHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		selectedCol = hheader->logicalIndexAt (me->pos().x());
 
@@ -4067,7 +4066,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			emit optionsDialog();
         if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 		return true;
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
+	} else if (e->type() == QEvent::MouseButtonPress && isHHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		if (me->button() == Qt::LeftButton){
 			int col = hheader->logicalIndexAt (me->pos().x());
@@ -4075,7 +4074,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				if (!d_table->isColumnSelected(col, true)){
 					selectedCol = col;
 					d_table->selectColumn (col);
-					d_table->setCurrentCell (0, col);
+					if (d_table->numRows() > 0)
+						d_table->setCurrentCell (0, col);
 				} else {//deselect already selected column: dirty hack to be modified when porting Table to Qt4
 					QVector<int> sel;
 					int cols = 0;
@@ -4118,37 +4118,63 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			selectedCol = hheader->logicalIndexAt (me->pos().x());
 			d_table->clearSelection();
 			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
+			if (d_table->numRows() > 0)
+				d_table->setCurrentCell (0, selectedCol);
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 			return false;
 		}
 
-		if (me->button() == Qt::RightButton && selectedColsNumber() <= 1){
-			selectedCol = hheader->logicalIndexAt (me->pos().x());
-			d_table->clearSelection();
-			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
+		if (me->button() == Qt::RightButton){
+			int col = hheader->logicalIndexAt(me->pos().x());
+			if (col >= 0 && col < d_table->numCols()){
+				if (!d_table->isColumnSelected(col, true)){
+					selectedCol = col;
+					d_table->clearSelection();
+					d_table->selectColumn(selectedCol);
+					if (d_table->numRows() > 0)
+						d_table->setCurrentCell(0, selectedCol);
+				}
+			}
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 			return false;
 		}
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)vheader) {
+	} else if (e->type() == QEvent::MouseButtonPress && isVHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
-		if (me->button() == Qt::RightButton && numSelectedRows() <= 1) {
-			d_table->clearSelection();
+		if (me->button() == Qt::RightButton) {
 			int row = vheader->logicalIndexAt(me->pos().y());
-			d_table->selectRow (row);
-			d_table->setCurrentCell (row, 0);
+			if (row >= 0 && row < d_table->numRows()){
+				if (!d_table->isRowSelected(row, true)){
+					d_table->clearSelection();
+					d_table->selectRow(row);
+					d_table->setCurrentCell(row, 0);
+				}
+			}
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
+			return false;
 		}
-	} else if (e->type() == QEvent::ContextMenu && object == (QObject*)d_table){
+	} else if (e->type() == QEvent::ContextMenu && (object == (QObject*)d_table || isHHeader || isVHeader)){
         const QContextMenuEvent *ce = (const QContextMenuEvent *)e;
-        QRect r(d_table->horizontalHeader()->sectionPosition(d_table->numCols()-1), 0, d_table->horizontalHeader()->sectionSize(d_table->numCols()-1), d_table->horizontalHeader()->height());
         setFocus();
-        if (ce->pos().x() > r.right() + d_table->verticalHeader()->width())
-            emit showContextMenu(false);
-        else if (d_table->numCols() > 0 && d_table->numRows() > 0)
-            emit showContextMenu(true);
-    } else if (e->type() == QEvent::MouseMove && object == (QObject*)hheader){
+        if (isHHeader) {
+            int lastCol = d_table->numCols() - 1;
+            int rightEdge = (lastCol >= 0) ? (hheader->sectionPosition(lastCol) + hheader->sectionSize(lastCol)) : 0;
+            if (ce->pos().x() > rightEdge)
+                emit showContextMenu(false);
+            else if (d_table->numCols() > 0)
+                emit showContextMenu(true);
+        } else if (isVHeader) {
+            if (d_table->numCols() > 0 && d_table->numRows() > 0)
+                emit showContextMenu(true);
+        } else {
+            int lastCol = d_table->numCols() - 1;
+            int rightEdge = (lastCol >= 0) ? (d_table->horizontalHeader()->sectionPosition(lastCol) + d_table->horizontalHeader()->sectionSize(lastCol) + d_table->verticalHeader()->width()) : 0;
+            if (ce->pos().x() > rightEdge)
+                emit showContextMenu(false);
+            else if (d_table->numCols() > 0 && d_table->numRows() > 0)
+                emit showContextMenu(true);
+        }
+        return true;
+    } else if (e->type() == QEvent::MouseMove && isHHeader){
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		int col = hheader->logicalIndexAt (me->pos().x());
 		QRect r(hheader->sectionPosition(col), 0, hheader->sectionSize(col), hheader->height());
@@ -4440,14 +4466,10 @@ void Table::setColumnHeader(int index, const QString& label)
 		int lines = d_table->columnWidth(index)/head->fontMetrics().boundingRect("_").width();
 		if (index >= 0 && index < comments.size()){
 			QString headerText = s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index];
-			QTableWidgetItem *it = d_table->horizontalHeaderItem(index);
-			if (!it) d_table->setHorizontalHeaderItem(index, new QTableWidgetItem(headerText));
-			else it->setText(headerText);
+			d_table->setHeaderText(index, headerText);
 		}
 	} else {
-		QTableWidgetItem *it = d_table->horizontalHeaderItem(index);
-		if (!it) d_table->setHorizontalHeaderItem(index, new QTableWidgetItem(label));
-		else it->setText(label);
+		d_table->setHeaderText(index, label);
 	}
 }
 
@@ -4798,28 +4820,58 @@ double Table::maxColumnValue(int col, int startRow, int endRow)
  *
  *****************************************************************************/
 
+void MyTable::setupConnections()
+{
+	setModel(d_model);
+	connect(d_model, &QAbstractItemModel::dataChanged, this, [this](const QModelIndex &tl, const QModelIndex &br) {
+		if (signalsBlocked())
+			return;
+		for (int r = tl.row(); r <= br.row(); ++r) {
+			for (int c = tl.column(); c <= br.column(); ++c) {
+				emit cellChanged(r, c);
+			}
+		}
+	});
+	if (selectionModel()) {
+		connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, [this]() {
+			if (!signalsBlocked())
+				emit itemSelectionChanged();
+		});
+	}
+	connect(this, &QTableView::doubleClicked, this, [this](const QModelIndex &idx) {
+		if (idx.isValid()) emit cellDoubleClicked(idx.row(), idx.column());
+	});
+	connect(this, &QTableView::pressed, this, [this](const QModelIndex &idx) {
+		if (idx.isValid()) emit cellPressed(idx.row(), idx.column());
+	});
+}
+
 MyTable::MyTable(QWidget * parent, const char * name)
-:QTableWidget(parent)
-{ setObjectName(name); }
+: QTableView(parent), d_model(new TableModel(0, 0, this))
+{
+	if (name) setObjectName(name);
+	setupConnections();
+}
 
 MyTable::MyTable(int numRows, int numCols, QWidget * parent, const char * name)
-:QTableWidget(numRows, numCols, parent)
-{ setObjectName(name); }
+: QTableView(parent), d_model(new TableModel(numRows, numCols, this))
+{
+	if (name) setObjectName(name);
+	setupConnections();
+}
 
 void MyTable::activateNextCell()
 {
 	int row = currentRow();
 	int col = currentColumn();
 
-	clearSelection(); // qAbstractItemView::clearSelection
+	clearSelection();
 
     if(row+1 >= numRows())
         setNumRows(row + 11);
 
     setCurrentCell (row + 1, col);
-    // selectCells(row+1, col, row+1, col); // Q3Table
-    QTableWidgetSelectionRange range(row+1, col, row+1, col);
-    setRangeSelected(range, true);
+    setRangeSelected(QTableWidgetSelectionRange(row + 1, col, row + 1, col), true);
 }
 
 QTableWidgetSelectionRange Table::getSelection()

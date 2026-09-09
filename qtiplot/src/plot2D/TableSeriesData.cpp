@@ -76,6 +76,16 @@ bool TableSeriesData::load(Table *t, int ycol, Table *xt, int xcol,
     int size = 0, from = 0;
 
     for (int i = d_start_row; i <= d_end_row; i++) {
+        if (xColType == Table::Numeric && yColType == Table::Numeric &&
+            d_x_table->table()->hasRawValue(i, d_x_col) && d_table->table()->hasRawValue(i, d_y_col)) {
+            QPointF p(d_x_table->table()->rawValue(i, d_x_col),
+                      d_table->table()->rawValue(i, d_y_col));
+            m_samples.append(p);
+            d_table_rows.append(i);
+            size++;
+            continue;
+        }
+
         QString xval = d_x_table->text(i, d_x_col);
         QString yval = d_table->text(i, d_y_col);
         if (!xval.isEmpty() && !yval.isEmpty()) {
