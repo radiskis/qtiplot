@@ -7,3 +7,9 @@ leak:libfontconfig
 leak:QFontconfigDatabase
 leak:libglib
 leak:libdbus
+leak:PyQt6
+leak:QtCore.abi3.so
+leak:QtGui.abi3.so
+leak:QtWidgets.abi3.so
+leak:Chimera
+leak:qpycore

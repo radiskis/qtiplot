@@ -70,8 +70,13 @@ class PythonScript : public Script
 		void beginStdoutRedirect();
 		void endStdoutRedirect();
 
-		PyObject *PyCode, *modLocalDict, *modGlobalDict, *stdoutSave, *stderrSave;
-		bool isFunction, hasOldGlobals;
+		PyObject *PyCode = nullptr;
+		PyObject *modLocalDict = nullptr;
+		PyObject *modGlobalDict = nullptr;
+		PyObject *stdoutSave = nullptr;
+		PyObject *stderrSave = nullptr;
+		bool isFunction = false;
+		bool hasOldGlobals = false;
 };
 
 
