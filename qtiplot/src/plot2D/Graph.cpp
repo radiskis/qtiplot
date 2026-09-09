@@ -4716,7 +4716,7 @@ void Graph::setBackgroundColor(const QColor& color)
 	p.setColor(QPalette::Window, color);
     setPalette(p);
 
-    setAutoFillBackground(color.alpha() > 0);
+    setAutoFillBackground(true);
 	emit modifiedGraph();
 }
 
@@ -6221,19 +6221,9 @@ void Graph::setCanvasBackground(const QBrush &brush)
 	QwtPlotCanvas* plCanvas = qobject_cast<QwtPlotCanvas*>(canvas());
 	if (plCanvas) {
 		const bool opaque = (brush.color().alpha() == 255);
-		plCanvas->setPaintAttribute(QwtPlotCanvas::BackingStore, opaque);
 		plCanvas->setPaintAttribute(QwtPlotCanvas::Opaque, opaque);
 		plCanvas->setAttribute(Qt::WA_OpaquePaintEvent, opaque);
-		plCanvas->setAutoFillBackground(opaque);
 	}
-}
-
-void Graph::drawCanvas(QPainter *painter)
-{
-	if (canvasBackground().color().alpha() > 0 && canvasBackground().color().alpha() < 255)
-		painter->fillRect(canvas()->contentsRect(), canvasBackground());
-
-	QwtPlot::drawCanvas(painter);
 }
 
 void Graph::drawItems(QPainter *painter, const QRectF &rect,
