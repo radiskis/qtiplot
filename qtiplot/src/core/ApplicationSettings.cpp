@@ -554,7 +554,7 @@ void ApplicationSettings::load(QSettings &settings)
     d_graph_canvas_color = settings.value("/CanvasColor", d_graph_canvas_color).value<QColor>();
     d_graph_border_color = settings.value("/FrameColor", d_graph_border_color).value<QColor>();
     d_graph_background_opacity = settings.value("/BackgroundOpacity", d_graph_background_opacity).toInt();
-    d_graph_canvas_opacity = settings.value("/BackgroundOpacity", d_graph_canvas_opacity).toInt();
+    d_graph_canvas_opacity = settings.value("/CanvasOpacity", d_graph_canvas_opacity).toInt();
     d_graph_border_width = settings.value("/FrameWidth", d_graph_border_width).toInt();
     d_canvas_frame_color = settings.value("/FrameColor", QColor(Qt::black)).value<QColor>();
     d_graph_axes_labels_dist = settings.value("/LabelsAxesDist", d_graph_axes_labels_dist).toInt();
@@ -1041,6 +1041,7 @@ void ApplicationSettings::save(QSettings &settings)
     settings.setValue("/CanvasColor", d_graph_canvas_color);
     settings.setValue("/FrameColor", d_graph_border_color);
     settings.setValue("/BackgroundOpacity", d_graph_background_opacity);
+    settings.setValue("/CanvasOpacity", d_graph_canvas_opacity);
     settings.setValue("/FrameWidth", d_graph_border_width);
     settings.setValue("/LabelsAxesDist", d_graph_axes_labels_dist);
     settings.setValue("/TickLabelsDist", d_graph_tick_labels_dist);
