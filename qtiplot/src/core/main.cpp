@@ -124,11 +124,23 @@ If you want to contribute code, please read the notes on \ref style "coding styl
 #include "Logger.h"
 #include "CrashHandler.h"
 
+#include <QStyleHints>
+
 int main( int argc, char ** argv )
 {
 	gsl_set_error_handler_off();
 	Logger::initLogging();
 	CrashHandler::initCrashHandler();
+
+#ifdef Q_OS_WIN
+	// Force light mode on Windows to prevent dark theme palette conflicts with plot styling
+	const QByteArray qpa = qgetenv("QT_QPA_PLATFORM");
+	if (qpa.isEmpty()) {
+		qputenv("QT_QPA_PLATFORM", "windows:darkmode=0");
+	} else if (!qpa.contains("darkmode")) {
+		qputenv("QT_QPA_PLATFORM", qpa + ";darkmode=0");
+	}
+#endif
 
 //	Q_IMPORT_PLUGIN(QtiPlotdBasePlugin);
 //	Q_IMPORT_PLUGIN(QtiPlotCsvPlugin);
@@ -140,6 +152,11 @@ int main( int argc, char ** argv )
 //	Q_IMPORT_PLUGIN(QtiPlotDatabasePlugin);
 
 	QtiPlotApplication app( argc, argv );
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+	if (QGuiApplication::styleHints())
+		QGuiApplication::styleHints()->setColorScheme(Qt::ColorScheme::Light);
+#endif
 	QObject::connect(&app, &QtiPlotApplication::lastWindowClosed, &app, &QtiPlotApplication::quit);
 	int ret = 0;
 	try {
