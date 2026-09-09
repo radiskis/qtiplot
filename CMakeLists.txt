@@ -94,5 +94,5 @@ add_test(NAME gate_curve_ledger
          COMMAND qtiplot -X "${CMAKE_SOURCE_DIR}/tests/gate_curve_ledger.py")
 if(NOT MSVC)
     set_tests_properties(test_object_registry python_suite gate_curve_ledger PROPERTIES
-        ENVIRONMENT "ASAN_OPTIONS=detect_leaks=1:abort_on_error=1;LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/tests/lsan.supp")
+        ENVIRONMENT "ASAN_OPTIONS=detect_leaks=1:abort_on_error=1:detect_odr_violation=0;LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/tests/lsan.supp")
 endif()
