@@ -36,7 +36,6 @@ class TableModel : public QAbstractTableModel
 
 public:
     explicit TableModel(int rows = 0, int cols = 0, QObject *parent = nullptr);
-    ~TableModel() override;
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override { return parent.isValid() ? 0 : m_rowCount; }
     int columnCount(const QModelIndex &parent = QModelIndex()) const override { return parent.isValid() ? 0 : m_columns.size(); }
@@ -74,7 +73,7 @@ public:
 
 private:
     int m_rowCount = 0;
-    QVector<ColumnData*> m_columns;
+    QVector<ColumnData> m_columns;   // value semantics — no heap per column
     CellState m_lastEdited;
 };
 

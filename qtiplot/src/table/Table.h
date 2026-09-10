@@ -32,7 +32,6 @@
 #include <algorithm>
 #include <functional>
 
-#include <QTableWidget>
 #include <QHeaderView>
 #include <QItemSelection>
 #include <QVarLengthArray>
@@ -46,7 +45,6 @@
 #include <QTableView>
 #include <QTableWidgetSelectionRange>
 #include <QItemSelectionModel>
-#include <QHeaderView>
 
 class Table;
 
@@ -178,9 +176,8 @@ private:
 
 /*!\brief MDI window providing a spreadsheet table with column logic.
  *
- * \section future Future Plans
- * Port to the Model/View approach used in Qt4 and get rid of the Qt3Support dependancy.
- * [ assigned to thzs ]
+ * \section impl Implementation
+ * Spreadsheet table using Qt Model/View (QTableView + TableModel).
  */
 class Table: public MdiSubWindow, public scripted
 {
@@ -293,8 +290,6 @@ public slots:
 	void showAllColumns();
 	void hideColumn(int col, bool = true);
 	bool isColumnHidden(int col){return d_table->isColumnHidden(col);};
-    // QTableWidget doesn't have currentColumn(), it has currentColumn() (same name)
-    // Q3Table::currentColumn() -> QTableWidget::currentColumn().
 	//@}
 
 	//! \name Sorting

@@ -1,22 +1,14 @@
 #include "TableModel.h"
+#include <algorithm>
 
 TableModel::TableModel(int rows, int cols, QObject *parent)
     : QAbstractTableModel(parent),
       m_rowCount(std::max(0, rows))
 {
     int colCount = std::max(0, cols);
-    m_columns.reserve(colCount);
-    for (int i = 0; i < colCount; ++i) {
-        auto *col = new ColumnData();
-        col->resize(m_rowCount);
-        m_columns.append(col);
-    }
-}
-
-TableModel::~TableModel()
-{
-    qDeleteAll(m_columns);
-    m_columns.clear();
+    m_columns.resize(colCount);
+    for (ColumnData &col : m_columns)
+        col.resize(m_rowCount);
 }
 
 QVariant TableModel::data(const QModelIndex &index, int role) const
@@ -29,11 +21,11 @@ QVariant TableModel::data(const QModelIndex &index, int role) const
     if (r < 0 || r >= m_rowCount || c < 0 || c >= m_columns.size())
         return {};
 
-    const ColumnData *col = m_columns[c];
+    const ColumnData &col = m_columns[c];
     if (role == Qt::DisplayRole || role == Qt::EditRole)
-        return col->text[r];
+        return col.text[r];
     if (role == Qt::TextAlignmentRole)
-        return static_cast<int>(col->hasRaw[r] ? (Qt::AlignRight | Qt::AlignVCenter)
+        return static_cast<int>(col.hasRaw[r] ? (Qt::AlignRight | Qt::AlignVCenter)
                                                : (Qt::AlignLeft | Qt::AlignVCenter));
 
     return {};
@@ -49,12 +41,12 @@ bool TableModel::setData(const QModelIndex &index, const QVariant &value, int ro
     if (r < 0 || r >= m_rowCount || c < 0 || c >= m_columns.size())
         return false;
 
-    ColumnData *col = m_columns[c];
-    m_lastEdited = {r, c, col->text[r], col->rawValues[r], col->hasRaw[r]};
+    ColumnData &col = m_columns[c];
+    m_lastEdited = {r, c, col.text[r], col.rawValues[r], col.hasRaw[r]};
 
-    col->text[r] = value.toString();
-    col->hasRaw[r] = false;
-    col->rawValues[r] = 0.0;
+    col.text[r] = value.toString();
+    col.hasRaw[r] = false;
+    col.rawValues[r] = 0.0;
 
     emit dataChanged(index, index, {Qt::DisplayRole, Qt::EditRole, Qt::TextAlignmentRole});
     return true;
@@ -67,7 +59,7 @@ Qt::ItemFlags TableModel::flags(const QModelIndex &index) const
 
     Qt::ItemFlags f = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     int c = index.column();
-    if (c >= 0 && c < m_columns.size() && !m_columns[c]->readOnly)
+    if (c >= 0 && c < m_columns.size() && !m_columns[c].readOnly)
         f |= Qt::ItemIsEditable;
     return f;
 }
@@ -76,7 +68,7 @@ QVariant TableModel::headerData(int section, Qt::Orientation orientation, int ro
 {
     if (role == Qt::DisplayRole) {
         if (orientation == Qt::Horizontal && section >= 0 && section < m_columns.size()) {
-            const QString &hdr = m_columns[section]->headerText;
+            const QString &hdr = m_columns[section].headerText;
             return hdr.isEmpty() ? QString::number(section + 1) : hdr;
         }
         return QString::number(section + 1);
@@ -90,7 +82,7 @@ bool TableModel::setHeaderData(int section, Qt::Orientation orientation, const Q
 {
     if (orientation == Qt::Horizontal && section >= 0 && section < m_columns.size() &&
         (role == Qt::DisplayRole || role == Qt::EditRole)) {
-        m_columns[section]->headerText = value.toString();
+        m_columns[section].headerText = value.toString();
         emit headerDataChanged(Qt::Horizontal, section, section);
         return true;
     }
@@ -104,10 +96,10 @@ bool TableModel::insertRows(int row, int count, const QModelIndex &parent)
 
     beginInsertRows(parent, row, row + count - 1);
     m_rowCount += count;
-    for (ColumnData *col : m_columns) {
-        col->text.insert(col->text.begin() + row, count, QString());
-        col->rawValues.insert(col->rawValues.begin() + row, count, 0.0);
-        col->hasRaw.insert(col->hasRaw.begin() + row, count, false);
+    for (ColumnData &col : m_columns) {
+        col.text.insert(col.text.begin() + row, count, QString());
+        col.rawValues.insert(col.rawValues.begin() + row, count, 0.0);
+        col.hasRaw.insert(col.hasRaw.begin() + row, count, false);
     }
     endInsertRows();
     return true;
@@ -120,11 +112,11 @@ bool TableModel::removeRows(int row, int count, const QModelIndex &parent)
 
     beginRemoveRows(parent, row, row + count - 1);
     m_rowCount -= count;
-    for (ColumnData *col : m_columns) {
+    for (ColumnData &col : m_columns) {
         int end = row + count;
-        col->text.erase(col->text.begin() + row, col->text.begin() + end);
-        col->rawValues.erase(col->rawValues.begin() + row, col->rawValues.begin() + end);
-        col->hasRaw.erase(col->hasRaw.begin() + row, col->hasRaw.begin() + end);
+        col.text.erase(col.text.begin() + row, col.text.begin() + end);
+        col.rawValues.erase(col.rawValues.begin() + row, col.rawValues.begin() + end);
+        col.hasRaw.erase(col.hasRaw.begin() + row, col.hasRaw.begin() + end);
     }
     endRemoveRows();
     return true;
@@ -137,9 +129,9 @@ bool TableModel::insertColumns(int column, int count, const QModelIndex &parent)
 
     beginInsertColumns(parent, column, column + count - 1);
     for (int i = 0; i < count; ++i) {
-        auto *col = new ColumnData();
-        col->resize(m_rowCount);
-        m_columns.insert(column + i, col);
+        ColumnData col;
+        col.resize(m_rowCount);
+        m_columns.insert(column + i, std::move(col));
     }
     endInsertColumns();
     return true;
@@ -151,8 +143,7 @@ bool TableModel::removeColumns(int column, int count, const QModelIndex &parent)
         return false;
 
     beginRemoveColumns(parent, column, column + count - 1);
-    for (int i = 0; i < count; ++i)
-        delete m_columns.takeAt(column);
+    m_columns.remove(column, count);
     endRemoveColumns();
     return true;
 }
@@ -191,12 +182,10 @@ void TableModel::swapRows(int row1, int row2)
     if (row1 == row2 || row1 < 0 || row2 < 0 || row1 >= m_rowCount || row2 >= m_rowCount)
         return;
 
-    for (ColumnData *col : m_columns) {
-        std::swap(col->text[row1], col->text[row2]);
-        std::swap(col->rawValues[row1], col->rawValues[row2]);
-        bool hr = col->hasRaw[row1];
-        col->hasRaw[row1] = col->hasRaw[row2];
-        col->hasRaw[row2] = hr;
+    for (ColumnData &col : m_columns) {
+        std::swap(col.text[row1], col.text[row2]);
+        std::swap(col.rawValues[row1], col.rawValues[row2]);
+        std::iter_swap(col.hasRaw.begin() + row1, col.hasRaw.begin() + row2);
     }
     emit dataChanged(index(std::min(row1, row2), 0),
                      index(std::max(row1, row2), m_columns.size() - 1),
@@ -205,7 +194,7 @@ void TableModel::swapRows(int row1, int row2)
 
 QString TableModel::text(int r, int c) const
 {
-    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c]->text[r] : QString();
+    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c].text[r] : QString();
 }
 
 void TableModel::setText(int r, int c, const QString &t)
@@ -217,13 +206,13 @@ void TableModel::setText(int r, int c, const QString &t)
     if (r < 0)
         return;
 
-    m_columns[c]->text[r] = t;
+    m_columns[c].text[r] = t;
     emit dataChanged(index(r, c), index(r, c), {Qt::DisplayRole, Qt::EditRole, Qt::TextAlignmentRole});
 }
 
 double TableModel::rawValue(int r, int c) const
 {
-    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c]->rawValues[r] : 0.0;
+    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c].rawValues[r] : 0.0;
 }
 
 void TableModel::setRawValue(int r, int c, double val)
@@ -235,35 +224,35 @@ void TableModel::setRawValue(int r, int c, double val)
     if (r < 0)
         return;
 
-    m_columns[c]->rawValues[r] = val;
-    m_columns[c]->hasRaw[r] = true;
+    m_columns[c].rawValues[r] = val;
+    m_columns[c].hasRaw[r] = true;
     emit dataChanged(index(r, c), index(r, c), {Qt::TextAlignmentRole});
 }
 
 bool TableModel::hasRawValue(int r, int c) const
 {
-    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c]->hasRaw[r] : false;
+    return (r >= 0 && r < m_rowCount && c >= 0 && c < m_columns.size()) ? m_columns[c].hasRaw[r] : false;
 }
 
 void TableModel::clearRawValue(int r, int c)
 {
     if (r < 0 || r >= m_rowCount || c < 0 || c >= m_columns.size())
         return;
-    m_columns[c]->rawValues[r] = 0.0;
-    m_columns[c]->hasRaw[r] = false;
+    m_columns[c].rawValues[r] = 0.0;
+    m_columns[c].hasRaw[r] = false;
     emit dataChanged(index(r, c), index(r, c), {Qt::TextAlignmentRole});
 }
 
 bool TableModel::isColumnReadOnly(int col) const
 {
-    return (col >= 0 && col < m_columns.size()) ? m_columns[col]->readOnly : false;
+    return (col >= 0 && col < m_columns.size()) ? m_columns[col].readOnly : false;
 }
 
 void TableModel::setColumnReadOnly(int col, bool ro)
 {
     if (col < 0 || col >= m_columns.size())
         return;
-    m_columns[col]->readOnly = ro;
+    m_columns[col].readOnly = ro;
     if (m_rowCount > 0)
         emit dataChanged(index(0, col), index(m_rowCount - 1, col));
 }
@@ -275,7 +264,7 @@ void TableModel::setHeaderText(int col, const QString &text)
 
 QString TableModel::headerText(int col) const
 {
-    return (col >= 0 && col < m_columns.size()) ? m_columns[col]->headerText : QString();
+    return (col >= 0 && col < m_columns.size()) ? m_columns[col].headerText : QString();
 }
 
 CellState TableModel::previousCellState(int r, int c) const
