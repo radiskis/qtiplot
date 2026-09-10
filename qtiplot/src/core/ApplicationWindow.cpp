@@ -7716,7 +7716,7 @@ void ApplicationWindow::pickDataTool( QAction* action )
 
 void ApplicationWindow::connectTable(Table* w)
 {
-    connect (w->table(), &QTableWidget::itemSelectionChanged, this, &ApplicationWindow::customColumnActions);
+    connect (w->table(), &MyTable::itemSelectionChanged, this, &ApplicationWindow::customColumnActions);
 	connect (w, &Table::statusChanged, this, &ApplicationWindow::updateWindowStatus);
 	connect (w, &Table::hiddenWindow, this, qOverload<MdiSubWindow*>(&ApplicationWindow::hideWindow));
 	connect (w, &Table::closedWindow, this, &ApplicationWindow::closeWindow);

@@ -191,6 +191,7 @@ set(SOURCES
     src/table/Table.cpp
     src/table/TableCommand.cpp
     src/table/TableDialog.cpp
+    src/table/TableModel.cpp
     src/table/TableStatistics.cpp
 )
 
@@ -392,5 +393,6 @@ set(HEADERS
     src/table/Table.h
     src/table/TableCommand.h
     src/table/TableDialog.h
+    src/table/TableModel.h
     src/table/TableStatistics.h
 )

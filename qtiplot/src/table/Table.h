@@ -42,234 +42,136 @@
 #include <ScriptingEnv.h>
 #include <Script.h>
 #include <QUndoStack>
-#include <QKeyEvent>
+#include "TableModel.h"
+#include <QTableView>
+#include <QTableWidgetSelectionRange>
+#include <QItemSelectionModel>
+#include <QHeaderView>
 
 class Table;
 
-class MyTable : public QTableWidget
+class MyTable : public QTableView
 {
+    Q_OBJECT
+
 public:
-    MyTable(QWidget * parent = 0, const char * name = 0);
-    MyTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
+    MyTable(QWidget * parent = nullptr, const char * name = nullptr);
+    MyTable(int numRows, int numCols, QWidget * parent = nullptr, const char * name = nullptr);
 
-    int numRows() const { return rowCount(); }
-    int numCols() const { return columnCount(); }
-    void setNumRows(int r) { setRowCount(r); }
-    void setNumCols(int c) { setColumnCount(c); }
+    TableModel* tableModel() const { return d_model; }
 
-    QString text(int r, int c) const {
-        QTableWidgetItem *it = item(r, c);
-        return it ? it->text() : QString();
-    }
-    void setText(int r, int c, const QString &t) {
-        QTableWidgetItem *it = item(r, c);
-        if (!it) {
-            it = new QTableWidgetItem(t);
-            it->setData(Qt::UserRole, t);
-            it->setData(Qt::UserRole + 1, QVariant());
-            if (isColumnReadOnly(c)) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
-            setItem(r, c, it);
-        } else {
-            it->setText(t);
-            it->setData(Qt::UserRole, t);
-            it->setData(Qt::UserRole + 1, QVariant());
-        }
-    }
+    int numRows() const { return d_model ? d_model->rowCount() : 0; }
+    int numCols() const { return d_model ? d_model->columnCount() : 0; }
+    int rowCount() const { return numRows(); }
+    int columnCount() const { return numCols(); }
+    void setNumRows(int r) { if (d_model) d_model->setRowCount(r); }
+    void setNumCols(int c) { if (d_model) d_model->setColumnCount(c); }
+    void setRowCount(int r) { setNumRows(r); }
+    void setColumnCount(int c) { setNumCols(c); }
 
-    void setRawValue(int r, int c, double val) {
-        QTableWidgetItem *it = item(r, c);
-        if (it)
-            it->setData(Qt::UserRole + 1, val);
-    }
-    void clearRawValue(int r, int c) {
-        QTableWidgetItem *it = item(r, c);
-        if (it)
-            it->setData(Qt::UserRole + 1, QVariant());
-    }
-    bool hasRawValue(int r, int c) const {
-        QTableWidgetItem *it = item(r, c);
-        return it && it->data(Qt::UserRole + 1).isValid();
-    }
-    double rawValue(int r, int c) const {
-        QTableWidgetItem *it = item(r, c);
-        if (it && it->data(Qt::UserRole + 1).isValid())
-            return it->data(Qt::UserRole + 1).toDouble();
-        return 0.0;
+    int currentRow() const { return currentIndex().isValid() ? currentIndex().row() : -1; }
+    int currentColumn() const { return currentIndex().isValid() ? currentIndex().column() : -1; }
+
+    QString text(int r, int c) const { return d_model ? d_model->text(r, c) : QString(); }
+    void setText(int r, int c, const QString &t) { if (d_model) d_model->setText(r, c, t); }
+    double rawValue(int r, int c) const { return d_model ? d_model->rawValue(r, c) : 0.0; }
+    void setRawValue(int r, int c, double val) { if (d_model) d_model->setRawValue(r, c, val); }
+    bool hasRawValue(int r, int c) const { return d_model ? d_model->hasRawValue(r, c) : false; }
+    void clearRawValue(int r, int c) { if (d_model) d_model->clearRawValue(r, c); }
+
+    bool isColumnReadOnly(int col) const { return d_model ? d_model->isColumnReadOnly(col) : false; }
+    void setColumnReadOnly(int col, bool ro) { if (d_model) d_model->setColumnReadOnly(col, ro); }
+
+    void setHeaderText(int col, const QString &text) { if (d_model) d_model->setHeaderText(col, text); }
+    CellState previousCellState(int r, int c) const { return d_model ? d_model->previousCellState(r, c) : CellState{}; }
+    void setPreviousCellState(int r, int c, const QString &text, double val, bool hasVal) {
+        if (d_model) d_model->setPreviousCellState(r, c, text, val, hasVal);
     }
 
-    bool isColumnReadOnly(int col) const {
-        return d_readOnlyCols.contains(col);
-    }
-
-    void setColumnReadOnly(int col, bool ro) {
-        if (ro) {
-            if (!d_readOnlyCols.contains(col)) d_readOnlyCols.append(col);
-        } else {
-            d_readOnlyCols.removeAll(col);
-        }
-        for(int i=0; i<rowCount(); ++i) {
-            QTableWidgetItem *it = item(i, col);
-            if(it) {
-                if (ro) it->setFlags(it->flags() & ~Qt::ItemIsEditable);
-                else    it->setFlags(it->flags() | Qt::ItemIsEditable);
-            }
-        }
-    }
-
-    void setPaletteBackgroundColor(const QColor &c) {
-        QPalette p = palette();
-        p.setColor(QPalette::Base, c);
-        setPalette(p);
-    }
-
-    void setPaletteForegroundColor(const QColor &c) {
-        QPalette p = palette();
-        p.setColor(QPalette::Text, c);
-        setPalette(p);
-    }
-    
-    void setLeftMargin(int m) {
-        verticalHeader()->setFixedWidth(m);
-    }
-
-    void setColumnWidth(int col, int w) {
-        QTableWidget::setColumnWidth(col, w);
-    }
-    
-    int columnWidth(int col) const {
-        return QTableWidget::columnWidth(col);
-    }
-
+    void setPaletteBackgroundColor(const QColor &c) { QPalette p = palette(); p.setColor(QPalette::Base, c); setPalette(p); }
+    void setPaletteForegroundColor(const QColor &c) { QPalette p = palette(); p.setColor(QPalette::Text, c); setPalette(p); }
+    void setLeftMargin(int m) { verticalHeader()->setFixedWidth(m); }
     void adjustColumn(int col) { resizeColumnToContents(col); }
 
+    QList<QTableWidgetSelectionRange> selectedRanges() const {
+        QList<QTableWidgetSelectionRange> ranges;
+        if (selectionModel()) {
+            for (const QItemSelectionRange &r : selectionModel()->selection())
+                ranges.append(QTableWidgetSelectionRange(r.top(), r.left(), r.bottom(), r.right()));
+        }
+        return ranges;
+    }
+
+    void setRangeSelected(const QTableWidgetSelectionRange &range, bool select) {
+        if (!d_model || !selectionModel()) return;
+        int top = qMax(0, range.topRow()), bottom = qMin(d_model->rowCount() - 1, range.bottomRow());
+        int left = qMax(0, range.leftColumn()), right = qMin(d_model->columnCount() - 1, range.rightColumn());
+        if (top <= bottom && left <= right) {
+            selectionModel()->select(QItemSelection(d_model->index(top, left), d_model->index(bottom, right)),
+                                     select ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
+        }
+    }
+
     bool isRowSelected(int row, bool full = false) {
-        QList<QTableWidgetSelectionRange> ranges = selectedRanges();
-        for(int i=0; i<ranges.count(); ++i) {
-            if (ranges[i].topRow() <= row && ranges[i].bottomRow() >= row) {
-                if (full) {
-                    if (ranges[i].leftColumn() == 0 && ranges[i].rightColumn() == columnCount() - 1)
-                        return true;
-                } else {
-                    return true;
-                }
-            }
+        for (const auto &r : selectedRanges()) {
+            if (r.topRow() <= row && r.bottomRow() >= row)
+                return !full || (r.leftColumn() == 0 && r.rightColumn() == numCols() - 1);
         }
         return false;
     }
     
     bool isColumnSelected(int col, bool full = false) {
-        QList<QTableWidgetSelectionRange> ranges = selectedRanges();
-        for(int i=0; i<ranges.count(); ++i) {
-            if (ranges[i].leftColumn() <= col && ranges[i].rightColumn() >= col) {
-                if (full) {
-                    if (ranges[i].topRow() == 0 && ranges[i].bottomRow() == rowCount() - 1)
-                        return true;
-                } else {
-                    return true;
-                }
-            }
+        for (const auto &r : selectedRanges()) {
+            if (r.leftColumn() <= col && r.rightColumn() >= col)
+                return !full || (r.topRow() == 0 && r.bottomRow() == numRows() - 1);
         }
         return false;
     }
 
-    void ensureCellVisible(int row, int col) { scrollToItem(item(row, col)); }
-    
-    void setCurrentCell(int r, int c) { setCurrentItem(item(r, c)); }
+    void ensureCellVisible(int row, int col) { if (d_model) scrollTo(d_model->index(row, col)); }
+    void setCurrentCell(int r, int c) { if (d_model) setCurrentIndex(d_model->index(r, c)); }
+    int currentSelection() { return selectedRanges().isEmpty() ? -1 : 0; }
 
-    int currentSelection() {
-        return selectedRanges().count() > 0 ? 0 : -1;
+    void insertColumn(int col) { if (d_model) d_model->insertColumn(col); }
+    void removeColumn(int col) { if (d_model) d_model->removeColumn(col); }
+    void insertColumns(int col, int count = 1) { if (d_model) d_model->insertColumns(col, count); }
+    void insertRows(int row, int count = 1) { if (d_model) d_model->insertRows(row, count); }
+    void insertRow(int row) { insertRows(row, 1); }
+    void removeRow(int row) { if (d_model) d_model->removeRows(row, 1); }
+    void swapColumns(int col1, int col2) { if (d_model) d_model->swapColumns(col1, col2); }
+    void swapRows(int row1, int row2) { if (d_model) d_model->swapRows(row1, row2); }
+    void updateContents() { viewport()->update(); }
+    void activateNextCell();
+
+    QTableWidgetSelectionRange selection(int index) {
+        auto ranges = selectedRanges();
+        return (index >= 0 && index < ranges.count()) ? ranges[index] : QTableWidgetSelectionRange();
     }
-
-	void insertColumn(int col) {
-		QTableWidget::insertColumn(col);
-		for (int i = 0; i < d_readOnlyCols.size(); i++) {
-			if (d_readOnlyCols[i] >= col)
-				d_readOnlyCols[i]++;
-		}
-	}
-
-	void removeColumn(int col) {
-		QTableWidget::removeColumn(col);
-		d_readOnlyCols.removeAll(col);
-		for (int i = 0; i < d_readOnlyCols.size(); i++) {
-			if (d_readOnlyCols[i] > col)
-				d_readOnlyCols[i]--;
-		}
-	}
-
-	void insertColumns(int col, int count = 1) {
-		for (int i = 0; i < count; i++)
-			insertColumn(col + i);
-	}
-
-	void insertRows(int row, int count = 1) {
-		for (int i = 0; i < count; i++)
-			insertRow(row + i);
-	}
-
-	void swapColumns(int col1, int col2) {
-		bool ro1 = isColumnReadOnly(col1);
-		bool ro2 = isColumnReadOnly(col2);
-		for (int i = 0; i < rowCount(); i++) {
-			QTableWidgetItem *it1 = takeItem(i, col1);
-			QTableWidgetItem *it2 = takeItem(i, col2);
-			setItem(i, col1, it2);
-			setItem(i, col2, it1);
-		}
-		if (ro1 != ro2) {
-			setColumnReadOnly(col1, ro2);
-			setColumnReadOnly(col2, ro1);
-		}
-	}
-
-	void swapRows(int row1, int row2) {
-		for (int i = 0; i < columnCount(); i++) {
-			QTableWidgetItem *it1 = takeItem(row1, i);
-			QTableWidgetItem *it2 = takeItem(row2, i);
-			setItem(row1, i, it2);
-			setItem(row2, i, it1);
-		}
-	}
-
-	void updateContents() { viewport()->update(); }
-
-	void activateNextCell();
-
-	QTableWidgetSelectionRange selection(int index) {
-		QList<QTableWidgetSelectionRange> ranges = selectedRanges();
-		if (index >= 0 && index < ranges.count()) {
-			return ranges[index];
-		}
-		return QTableWidgetSelectionRange();
-	}
-
-	void addSelection(const QTableWidgetSelectionRange &sel) {
-		setRangeSelected(sel, true);
-	}
-
-	void removeRows(const QVector<int> &rows) {
-		QList<int> sortedRows;
-		for(int i=0; i<rows.count(); i++) sortedRows << rows[i];
-		std::sort(sortedRows.begin(), sortedRows.end(), std::greater<int>());
-		for(int i=0; i<sortedRows.count(); i++) removeRow(sortedRows[i]);
-	}
-
-    bool isSelected(int r, int c) {
-        QTableWidgetItem *it = item(r, c);
-        return it ? it->isSelected() : false;
+    void addSelection(const QTableWidgetSelectionRange &sel) { setRangeSelected(sel, true); }
+    void removeRows(const QVector<int> &rows) {
+        QList<int> sorted = rows.toList();
+        std::sort(sorted.begin(), sorted.end(), std::greater<int>());
+        for (int r : sorted) removeRow(r);
     }
-
+    bool isSelected(int r, int c) { return d_model && selectionModel() && selectionModel()->isSelected(d_model->index(r, c)); }
     void setReadOnly(bool ro) {
-        if (ro) setEditTriggers(QAbstractItemView::NoEditTriggers);
-        else setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked | QAbstractItemView::EditKeyPressed);
+        setEditTriggers(ro ? QAbstractItemView::NoEditTriggers
+                           : (QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked | QAbstractItemView::EditKeyPressed));
     }
+
+signals:
+    void itemSelectionChanged();
+    void cellChanged(int row, int col);
+    void cellDoubleClicked(int row, int col);
+    void cellPressed(int row, int col);
 
 protected:
     void keyPressEvent(QKeyEvent *e) override;
     void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint) override;
 
 private:
-    QList<int> d_readOnlyCols;
+    void setupConnections();
+    TableModel *d_model;
 };
 
 

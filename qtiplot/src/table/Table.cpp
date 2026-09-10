@@ -145,11 +145,10 @@ void Table::init(int rows, int cols)
 	QShortcut *accelAll = new QShortcut(QKeySequence(Qt::CTRL|Qt::Key_A), this);
 	connect(accelAll, &QShortcut::activated, this, &Table::selectAllTable);
 
-	connect(d_table, &QTableWidget::cellChanged, this, &Table::cellEdited);
-	connect(d_table, &QTableWidget::cellDoubleClicked, this, &Table::cellDoubleClicked);
-	connect(d_table, &QTableWidget::cellPressed, this, &Table::cellDoubleClicked);
-	// Note: old-value tracking is done via Qt::UserRole on each QTableWidgetItem,
-	// updated in MyTable::setText and in cellEdited. d_old_cell_text is no longer used.
+	connect(d_table, &MyTable::cellChanged, this, &Table::cellEdited);
+	connect(d_table, &MyTable::cellDoubleClicked, this, &Table::cellDoubleClicked);
+	connect(d_table, &MyTable::cellPressed, this, &Table::cellDoubleClicked);
+	// Note: old-value tracking is managed cleanly by TableModel/MyTable previousText/previousRaw caches.
 
 	d_undo_stack = new QUndoStack(this);
 	int limit = applicationWindow() ? applicationWindow()->tableUndoStackSize() : 1000;
@@ -377,7 +376,7 @@ void MyTable::keyPressEvent(QKeyEvent *e)
 		// When the delegate editor is active, let the base class commit and
 		// closeEditor() will handle navigation — don't advance twice.
 		if (state() == QAbstractItemView::EditingState) {
-			QTableWidget::keyPressEvent(e);
+			QTableView::keyPressEvent(e);
 			return;
 		}
 		int r = currentRow();
@@ -390,14 +389,14 @@ void MyTable::keyPressEvent(QKeyEvent *e)
 			return;
 		}
 	}
-	QTableWidget::keyPressEvent(e);
+	QTableView::keyPressEvent(e);
 }
 
 void MyTable::closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint)
 {
 	int r = currentRow();
 	int c = currentColumn();
-	QTableWidget::closeEditor(editor, hint);
+	QTableView::closeEditor(editor, hint);
 	if (hint == QAbstractItemDelegate::SubmitModelCache || hint == QAbstractItemDelegate::EditNextItem) {
 		if (r >= 0 && c >= 0) {
 			int nextRow = r + 1;
@@ -421,25 +420,20 @@ void Table::cellDoubleClicked(int row, int col)
 
 void Table::cellEdited(int row, int col)
 {
-	QTableWidgetItem *it = d_table->item(row, col);
-	QString oldText = it ? it->data(Qt::UserRole).toString() : QString();
+	CellState prev = d_table->previousCellState(row, col);
 	QString text = d_table->text(row, col).trimmed();
 	QString newText = d_table->text(row, col);
 
-	bool hasOldVal = d_table->hasRawValue(row, col);
-	double oldVal = d_table->rawValue(row, col);
 	bool hasNewVal = false;
 	double newVal = 0.0;
 
-	if (newText == oldText)
+	if (newText == prev.text)
 		return;
 
 	if (columnType(col) != Numeric || text.isEmpty()){
-		// Non-numeric: commit immediately, update UserRole now.
-		if (it)
-			it->setData(Qt::UserRole, newText);
-		pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
-		                                            hasOldVal, oldVal, false, 0.0));
+		d_table->setPreviousCellState(row, col, newText, 0.0, false);
+		pushUndoCommand(new TableEditCellCommand(this, row, col, prev.text, newText, tr("Edit Cell"),
+		                                            prev.hasRaw, prev.raw, false, 0.0));
 		return;
 	}
 
@@ -488,11 +482,10 @@ void Table::cellEdited(int row, int col)
   		}
   	}
 
-	if (it)
-		it->setData(Qt::UserRole, newText);
+	d_table->setPreviousCellState(row, col, newText, newVal, hasNewVal);
 
-	pushUndoCommand(new TableEditCellCommand(this, row, col, oldText, newText, tr("Edit Cell"),
-	                                            hasOldVal, oldVal, hasNewVal, newVal));
+	pushUndoCommand(new TableEditCellCommand(this, row, col, prev.text, newText, tr("Edit Cell"),
+	                                            prev.hasRaw, prev.raw, hasNewVal, newVal));
 }
 
 int Table::colX(int col)
@@ -4440,14 +4433,10 @@ void Table::setColumnHeader(int index, const QString& label)
 		int lines = d_table->columnWidth(index)/head->fontMetrics().boundingRect("_").width();
 		if (index >= 0 && index < comments.size()){
 			QString headerText = s.remove("\n") + "\n" + QString(lines, '_') + "\n" + comments[index];
-			QTableWidgetItem *it = d_table->horizontalHeaderItem(index);
-			if (!it) d_table->setHorizontalHeaderItem(index, new QTableWidgetItem(headerText));
-			else it->setText(headerText);
+			d_table->setHeaderText(index, headerText);
 		}
 	} else {
-		QTableWidgetItem *it = d_table->horizontalHeaderItem(index);
-		if (!it) d_table->setHorizontalHeaderItem(index, new QTableWidgetItem(label));
-		else it->setText(label);
+		d_table->setHeaderText(index, label);
 	}
 }
 
@@ -4798,28 +4787,58 @@ double Table::maxColumnValue(int col, int startRow, int endRow)
  *
  *****************************************************************************/
 
+void MyTable::setupConnections()
+{
+	setModel(d_model);
+	connect(d_model, &QAbstractItemModel::dataChanged, this, [this](const QModelIndex &tl, const QModelIndex &br) {
+		if (signalsBlocked())
+			return;
+		for (int r = tl.row(); r <= br.row(); ++r) {
+			for (int c = tl.column(); c <= br.column(); ++c) {
+				emit cellChanged(r, c);
+			}
+		}
+	});
+	if (selectionModel()) {
+		connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, [this]() {
+			if (!signalsBlocked())
+				emit itemSelectionChanged();
+		});
+	}
+	connect(this, &QTableView::doubleClicked, this, [this](const QModelIndex &idx) {
+		if (idx.isValid()) emit cellDoubleClicked(idx.row(), idx.column());
+	});
+	connect(this, &QTableView::pressed, this, [this](const QModelIndex &idx) {
+		if (idx.isValid()) emit cellPressed(idx.row(), idx.column());
+	});
+}
+
 MyTable::MyTable(QWidget * parent, const char * name)
-:QTableWidget(parent)
-{ setObjectName(name); }
+: QTableView(parent), d_model(new TableModel(0, 0, this))
+{
+	if (name) setObjectName(name);
+	setupConnections();
+}
 
 MyTable::MyTable(int numRows, int numCols, QWidget * parent, const char * name)
-:QTableWidget(numRows, numCols, parent)
-{ setObjectName(name); }
+: QTableView(parent), d_model(new TableModel(numRows, numCols, this))
+{
+	if (name) setObjectName(name);
+	setupConnections();
+}
 
 void MyTable::activateNextCell()
 {
 	int row = currentRow();
 	int col = currentColumn();
 
-	clearSelection(); // qAbstractItemView::clearSelection
+	clearSelection();
 
     if(row+1 >= numRows())
         setNumRows(row + 11);
 
     setCurrentCell (row + 1, col);
-    // selectCells(row+1, col, row+1, col); // Q3Table
-    QTableWidgetSelectionRange range(row+1, col, row+1, col);
-    setRangeSelected(range, true);
+    setRangeSelected(QTableWidgetSelectionRange(row + 1, col, row + 1, col), true);
 }
 
 QTableWidgetSelectionRange Table::getSelection()
