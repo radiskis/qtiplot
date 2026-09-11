@@ -172,7 +172,7 @@ void PlotController3D::plot3DTrajectory()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
     if (!table)
 		return;
     if (!validFor3DPlot(table))
@@ -577,7 +577,7 @@ void PlotController3D::plotPolar()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
     if (!table)
 		return;
 

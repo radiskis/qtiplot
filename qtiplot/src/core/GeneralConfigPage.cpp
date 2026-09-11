@@ -33,6 +33,7 @@
 #include <Script.h>
 #include <Table.h>
 #include <Matrix.h>
+#include <MyParser.h>
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -526,6 +527,7 @@ void GeneralConfigPage::apply(ApplicationWindow *app, ApplicationSettings *setti
     app->setLocale(locale);
 	QLocale::setDefault(locale);
 	app->d_muparser_c_locale = boxMuParserCLocale->isChecked();
+	MyParser::setCLocale(app->d_muparser_c_locale);
 
 	if (appTabWidget->currentWidget() == numericFormatPage){
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));

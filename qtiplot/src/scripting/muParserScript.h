@@ -71,24 +71,41 @@ class muParserScript: public Script
     double tableCell(int col, int row);
     double *addVariable(const char *name);
     double *addVariableR(const char *name);
-	static double mu_avg(const mu::char_type *arg, double start = 1, double end = -1) {return current->avg(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));}
-	static double mu_sum(const mu::char_type *arg, double start = 1, double end = -1) {return current->sum(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));}
-	static double mu_min(const mu::char_type *arg, double start = 1, double end = -1) {return current->min(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));}
-	static double mu_max(const mu::char_type *arg, double start = 1, double end = -1) {return current->max(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));}
-	static double mu_col(const mu::char_type *arg) { return current->col(QString::fromWCharArray(arg)); }
-    static double mu_cell(double row, double col) { return current->cell(qRound(row), qRound(col)); }
-    static double mu_tableCell(double col, double row) { return current->tableCell(qRound(col), qRound(row)); }
-    static double mu_tablecol(const mu::char_type *arg) { return current->tablecol(QString::fromWCharArray(arg)); }
-    static double *mu_addVariable(const mu::char_type *name, void *){ return current->addVariable(QString::fromWCharArray(name).toLocal8Bit().constData()); }
-    static double *mu_addVariableR(const mu::char_type *name, void *) { return current->addVariableR(QString::fromWCharArray(name).toLocal8Bit().constData()); }
-    static QString compileColArg(const QString& in);
+	static double mu_avg(void *pUserData, const mu::char_type *arg, double start, double end) {
+		return static_cast<muParserScript*>(pUserData)->avg(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));
+	}
+	static double mu_sum(void *pUserData, const mu::char_type *arg, double start, double end) {
+		return static_cast<muParserScript*>(pUserData)->sum(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));
+	}
+	static double mu_min(void *pUserData, const mu::char_type *arg, double start, double end) {
+		return static_cast<muParserScript*>(pUserData)->min(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));
+	}
+	static double mu_max(void *pUserData, const mu::char_type *arg, double start, double end) {
+		return static_cast<muParserScript*>(pUserData)->max(QString::fromWCharArray(arg), qRound(start - 1), qRound(end - 1));
+	}
+	static double mu_col(void *pUserData, const mu::char_type *arg) {
+		return static_cast<muParserScript*>(pUserData)->col(QString::fromWCharArray(arg));
+	}
+	static double mu_cell(void *pUserData, double row, double col) {
+		return static_cast<muParserScript*>(pUserData)->cell(qRound(row), qRound(col));
+	}
+	static double mu_tableCell(void *pUserData, double col, double row) {
+		return static_cast<muParserScript*>(pUserData)->tableCell(qRound(col), qRound(row));
+	}
+	static double mu_tablecol(void *pUserData, const mu::char_type *arg) {
+		return static_cast<muParserScript*>(pUserData)->tablecol(QString::fromWCharArray(arg));
+	}
+	static double *mu_addVariable(const mu::char_type *name, void *pUserData) {
+		return static_cast<muParserScript*>(pUserData)->addVariable(QString::fromWCharArray(name).toLocal8Bit().constData());
+	}
+	static double *mu_addVariableR(const mu::char_type *name, void *pUserData) {
+		return static_cast<muParserScript*>(pUserData)->addVariableR(QString::fromWCharArray(name).toLocal8Bit().constData());
+	}
+	static QString compileColArg(const QString& in);
 
-    MyParser parser, rparser;
-    QMap<QString, double*> variables, rvariables;
-    QStringList muCode;
-
-  public:
-    static muParserScript *current;
+	MyParser parser, rparser;
+	QMap<QString, double*> variables, rvariables;
+	QStringList muCode;
 };
 
 #endif

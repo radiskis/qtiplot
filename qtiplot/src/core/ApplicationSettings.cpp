@@ -7,6 +7,7 @@
 #include <PatternBox.h>
 #include <PenStyleBox.h>
 #include <qwt3d_types.h>
+#include <MyParser.h>
 
 ApplicationSettings::ApplicationSettings(QObject *parent)
     : QObject(parent),
@@ -381,6 +382,7 @@ void ApplicationSettings::load(QSettings &settings)
     d_decimal_digits = settings.value("/DecimalDigits", 13).toInt();
     d_clipboard_locale = QLocale(settings.value("/ClipboardLocale", QLocale::system().name()).toString());
     d_muparser_c_locale = settings.value("/MuParserCLocale", true).toBool();
+    MyParser::setCLocale(d_muparser_c_locale);
     d_force_muParser = settings.value("/ForceMuParser", d_force_muParser).toBool();
 
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();

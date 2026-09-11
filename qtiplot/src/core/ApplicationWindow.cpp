@@ -39,6 +39,7 @@ Description          : QtiPlot's main window
 #include <qwt3d_global.h>
 #include <gsl/gsl_version.h>
 #include <muParser.h>
+#include <MyParser.h>
 #include <zlib.h>
 
 #ifdef SCRIPTING_PYTHON
@@ -659,6 +660,7 @@ void ApplicationWindow::setDefaultOptions()
 
 	d_decimal_digits = 13;
 	d_muparser_c_locale = true;
+	MyParser::setCLocale(true);
 
 	d_extended_open_dialog = true;
 	d_extended_export_dialog = true;
@@ -3006,6 +3008,7 @@ void ApplicationWindow::readSettings()
 	d_decimal_digits = d_app_settings->d_decimal_digits;
 	d_clipboard_locale = d_app_settings->d_clipboard_locale;
 	d_muparser_c_locale = d_app_settings->d_muparser_c_locale;
+	MyParser::setCLocale(d_muparser_c_locale);
 	d_force_muParser = d_app_settings->d_force_muParser;
 	d_matrix_undo_stack_size = d_app_settings->d_matrix_undo_stack_size;
 	d_table_undo_stack_size = d_app_settings->d_table_undo_stack_size;

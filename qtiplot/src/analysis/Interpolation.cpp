@@ -31,6 +31,7 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
+#include <vector>
 
 Interpolation::Interpolation(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
@@ -194,15 +195,11 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		return 0;
 
 	int n = c->dataSize();
-	double *xtemp = (double *)malloc(n*sizeof(double));
-	if (!xtemp)
-		memoryErrorMessage();
+	if (n <= 0)
+		return 0;
 
-	double *ytemp = (double *)malloc(n*sizeof(double));
-	if (!ytemp){
-		free(xtemp);
-		memoryErrorMessage();
-	}
+	std::vector<double> xtemp(n);
+	std::vector<double> ytemp(n);
 
 	if (c->curveType() == PlotCurve::Yfx){
 		for (int i = 0; i < n; i++){
@@ -216,32 +213,16 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		}
 	}
 
-	size_t *p = (size_t *)malloc(n*sizeof(size_t));
-	if (!p){
-		free(xtemp); free(ytemp);
-		memoryErrorMessage();
-	}
-	gsl_sort_index(p, xtemp, 1, n);
+	std::vector<size_t> p(n);
+	gsl_sort_index(p.data(), xtemp.data(), 1, n);
 
-	double *xtemp2 = (double *)malloc(n*sizeof(double));
-	if (!xtemp2){
-		free(xtemp); free(ytemp); free(p);
-		memoryErrorMessage();
-	}
-
-	double *ytemp2 = (double *)malloc(n*sizeof(double));
-	if (!ytemp2){
-		free(xtemp); free(ytemp); free(p); free(xtemp2);
-		memoryErrorMessage();
-	}
+	std::vector<double> xtemp2(n);
+	std::vector<double> ytemp2(n);
 
 	for (int i = 0; i < n; i++){
 		xtemp2[i] = xtemp[p[i]];
 		ytemp2[i] = ytemp[p[i]];
 	}
-	free(xtemp);
-	free(ytemp);
-	free(p);
 
 	int i_start = 0, i_end = n;
 	for (int i = 0; i < i_end; i++)
@@ -258,17 +239,21 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 	n = i_end - i_start + 1;
 	if (n > c->dataSize())
 		n = c->dataSize();
+	if (n <= 0)
+		return 0;
 
 	(*x) = (double *)malloc(n*sizeof(double));
-	if (!x){
-		free(xtemp2); free(ytemp2);
+	if (!(*x)){
 		memoryErrorMessage();
+		return 0;
 	}
 
 	(*y) = (double *)malloc(n*sizeof(double));
-	if (!y){
-		free(xtemp2); free(ytemp2); free(x);
+	if (!(*y)){
+		free(*x);
+		*x = nullptr;
 		memoryErrorMessage();
+		return 0;
 	}
 
 	int j = 0;
@@ -277,8 +262,6 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		(*y)[j] = ytemp2[i];
 		j++;
 	}
-	free(xtemp2);
-	free(ytemp2);
 
 	double pr_x = (*x)[0];
 	for (int i = 1; i < n; i++){

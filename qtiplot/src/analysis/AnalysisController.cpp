@@ -220,23 +220,23 @@ void AnalysisController::showFitDialog()
 	if (!w)
 		return;
 
-	MultiLayer* plot = 0;
-	if(w->inherits("MultiLayer"))
-		plot = (MultiLayer*)w;
-	else if(w->inherits("Table")){
-		QStringList columnsLst = ((Table *)w)->drawableColumnSelection();
+	MultiLayer* plot = nullptr;
+	if (MultiLayer *ml = qobject_cast<MultiLayer*>(w))
+		plot = ml;
+	else if (Table *t = qobject_cast<Table*>(w)){
+		QStringList columnsLst = t->drawableColumnSelection();
 		if (columnsLst.isEmpty()){
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Column selection error"),
 			d_app->tr("Please select a 'Y' column first!"));
 			return;
 		}
-		plot = d_app->multilayerPlot((Table *)w, columnsLst, Graph::LineSymbols);
+		plot = d_app->multilayerPlot(t, columnsLst, Graph::LineSymbols);
 	}
 
 	if (!plot)
 		return;
 
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -586,19 +586,18 @@ void AnalysisController::integrate()
 			return;
 		IntegrationDialog *id = new IntegrationDialog(g, d_app);
 		id->show();
-	} else if (w->inherits("Matrix")){
-		if (!((Matrix *)w)->isEmpty()){
+	} else 	if (Matrix *m = qobject_cast<Matrix *>(w)){
+		if (!m->isEmpty()){
 			QDateTime dt = QDateTime::currentDateTime ();
 			QString info = dt.toString(Qt::TextDate);
 			info += "\n" + d_app->tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
-			info += QString::number(((Matrix *)w)->integrate()) + "\n";
+			info += QString::number(m->integrate()) + "\n";
 			info += "-------------------------------------------------------------\n";
 			current_folder->appendLogInfo(info);
 			d_app->showResults(true);
 		} else
 			d_app->showNoDataMessage();
-	} else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	} else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		QTableWidgetSelectionRange sel = t->getSelection();
@@ -683,8 +682,7 @@ void AnalysisController::fitLinear()
 
 	if (qobject_cast<MultiLayer *>(w))
 		analysis(ApplicationWindow::FitLinear);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
@@ -758,8 +756,7 @@ void AnalysisController::fitSlope()
 
 	if (qobject_cast<MultiLayer *>(w))
 		analysis(ApplicationWindow::FitSlope);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
@@ -1045,7 +1042,7 @@ void AnalysisController::showFrequencyCountDialog()
 	if (!d_app) return;
 	ApplicationWindow *app = d_app;
 
-    Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+    Table *t = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
 	if (!t)
 		return;
 

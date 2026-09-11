@@ -46,29 +46,27 @@ muParserScript::muParserScript(ScriptingEnv *env, const QString &code, QObject *
   //rvariables.setAutoDelete(true);
 
   if (Context->inherits("Table")) {
-	  parser.DefineFun("col", mu_col, false);
-	  parser.DefineFun("cell", mu_tableCell);
-	  parser.DefineFun("tablecol", mu_tablecol, false);
-	  parser.DefineFun("AVG", mu_avg, false);
-	  parser.DefineFun("SUM", mu_sum, false);
-	  parser.DefineFun("MIN", mu_min, false);
-	  parser.DefineFun("MAX", mu_max, false);
+	  parser.DefineFunUserData("col", mu_col, this, false);
+	  parser.DefineFunUserData("cell", mu_tableCell, this);
+	  parser.DefineFunUserData("tablecol", mu_tablecol, this, false);
+	  parser.DefineFunUserData("AVG", mu_avg, this, false);
+	  parser.DefineFunUserData("SUM", mu_sum, this, false);
+	  parser.DefineFunUserData("MIN", mu_min, this, false);
+	  parser.DefineFunUserData("MAX", mu_max, this, false);
   } else if (Context->inherits("Matrix"))
-	  parser.DefineFun("cell", mu_cell);
+	  parser.DefineFunUserData("cell", mu_cell, this);
 
 	parser.addGSLConstants();
 	rparser = parser;
 	if (Context->inherits("Table") || Context->inherits("Matrix")){
 		connect(this, &Script::print, env, &ScriptingEnv::print);
 		if (code.count("\n") > 0){//autodetect new variables only for scripts having minimum 2 lines
-			parser.SetVarFactory((mu::facfun_type)mu_addVariable);
-			rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
+			parser.SetVarFactory((mu::facfun_type)mu_addVariable, this);
+			rparser.SetVarFactory((mu::facfun_type)mu_addVariableR, this);
 		}
 	} else {
-		parser.SetVarFactory((mu::facfun_type)mu_addVariable);
-		rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
-		parser.SetVarFactory((mu::facfun_type)mu_addVariable);
-		rparser.SetVarFactory((mu::facfun_type)mu_addVariableR);
+		parser.SetVarFactory((mu::facfun_type)mu_addVariable, this);
+		rparser.SetVarFactory((mu::facfun_type)mu_addVariableR, this);
 	}
 }
 
@@ -400,7 +398,6 @@ bool muParserScript::compile(bool)
 	compiled = Script::isCompiled;
 
 	if (muCode.size() == 1){
-	    current = this;
         parser.SetExpr(muCode[0].toStdWString());
 
         try {
@@ -445,15 +442,12 @@ double muParserScript::evalSingleLine()
     return val;
 }
 
-muParserScript *muParserScript::current = nullptr;
-
 QVariant muParserScript::eval()
 {
 	if (compiled != Script::isCompiled && !compile())
 		return QVariant();
 	double val = 0.0;
 	try {
-		current = this;
 		for (QStringList::iterator i=muCode.begin(); i != muCode.end(); i++) {
 			parser.SetExpr(i->toStdWString());
 			val = parser.Eval();
@@ -472,7 +466,6 @@ bool muParserScript::exec()
 	if (compiled != Script::isCompiled && !compile())
 		return false;
 	try {
-		current = this;
 		for (QStringList::iterator i=muCode.begin(); i != muCode.end(); i++) {
 			parser.SetExpr(i->toStdWString());
 			parser.Eval();

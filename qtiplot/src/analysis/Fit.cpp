@@ -40,6 +40,7 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_version.h>
+#include "GslRAII.h"
 
 #include <QApplication>
 #include <QDateTime>
@@ -183,16 +184,19 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex2;
 
 	//size of the simplex
-	gsl_vector *ss;
-	//initial vertex size vector
-	ss = gsl_vector_alloc (f.n);
+	GslRAII::UniqueVector ss(gsl_vector_alloc (f.n));
+	if (!ss) {
+		iterations = 0;
+		status = GSL_ENOMEM;
+		return nullptr;
+	}
 	//set all step sizes to 1 can be increased to converge faster
-	gsl_vector_set_all (ss, 10.0);
+	gsl_vector_set_all (ss.get(), 10.0);
 
 	gsl_set_error_handler_off();
 
 	gsl_multimin_fminimizer *s_min = gsl_multimin_fminimizer_alloc (T, f.n);
-	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
+	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss.get());
 
 	double size;
 	size_t iter = 0;
@@ -208,7 +212,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 
 	if (status) {
 	    iterations = 0;
-	    gsl_vector_free(ss);
 	    return s_min;
 	}
 
@@ -238,7 +241,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	iterations = iter;
-	gsl_vector_free(ss);
 	return s_min;
 }
 

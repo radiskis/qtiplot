@@ -57,22 +57,18 @@ MyParser::MyParser()
 	setLocale(getLocale());
 }
 
+static bool s_muparser_c_locale = true;
+
+void MyParser::setCLocale(bool cLocale)
+{
+	s_muparser_c_locale = cLocale;
+}
+
 QLocale MyParser::getLocale()
 {
-	bool cLocale = true;
-	for (QWidget *w : QApplication::allWidgets()){
-		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(w);
-		if (app){
-			cLocale = app->d_muparser_c_locale;
-			break;
-		}
-	}
-
-	QLocale locale = QLocale::c();
-	if (!cLocale)
-		locale = QLocale();
-
-	return locale;
+	if (!s_muparser_c_locale)
+		return QLocale();
+	return QLocale::c();
 }
 
 void MyParser::setLocale(const QLocale& locale)

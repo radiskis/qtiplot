@@ -1793,11 +1793,14 @@ void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
 #endif
         analysisMenu->addSeparator();
 
-		bool columns = ((Table *)w)->selectedColumns().count() > 1;
+		Table *table = qobject_cast<Table *>(w);
+		bool columns = table ? table->selectedColumns().count() > 1 : false;
 		QString sortMenuText = columns ? "&" + app->tr("Sort Columns") : app->tr("Sort Colu&mn");
 		QMenu *sortMenu = analysisMenu->addMenu(sortMenuText);
-		sortMenu->addAction(QIcon(":/sort_ascending.png"), app->tr("&Ascending"), static_cast<Table *>(w), &Table::sortColAsc);
-		sortMenu->addAction(QIcon(":/sort_descending.png"), app->tr("&Descending"), static_cast<Table *>(w), &Table::sortColDesc);
+		if (table){
+			sortMenu->addAction(QIcon(":/sort_ascending.png"), app->tr("&Ascending"), table, &Table::sortColAsc);
+			sortMenu->addAction(QIcon(":/sort_descending.png"), app->tr("&Descending"), table, &Table::sortColDesc);
+		}
 		if (columns)
 			sortMenu->addAction(actionSortSelection);
 		analysisMenu->addMenu(sortMenu);

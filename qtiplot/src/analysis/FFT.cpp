@@ -38,6 +38,8 @@
 
 #include <gsl/gsl_fft_complex.h>
 #include <gsl/gsl_fft_halfcomplex.h>
+#include "GslRAII.h"
+#include <vector>
 
 FFT::FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName, int from, int to)
 : Filter(parent, t)
@@ -108,58 +110,46 @@ void FFT::init()
 void FFT::fftCurve()
 {
 	int n2 = d_n/2;
-	double *amp = (double *)malloc(d_n*sizeof(double));
-	double *result = (double *)malloc(2*d_n*sizeof(double));
-	if(!amp || !result){
-		memoryErrorMessage();
-		return;
-	}
+	std::vector<double> amp(d_n);
+	std::vector<double> result(2 * d_n);
 
 	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
 	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
-	runAsync([this, &aMax, result, amp, df, n2]() {
+	runAsync([this, &aMax, &result, &amp, df, n2]() {
 		if(!d_inverse){
-			gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
-			gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
+			GslRAII::UniqueFftRealWorkspace work(gsl_fft_real_workspace_alloc(d_n));
+			GslRAII::UniqueFftRealWavetable real(gsl_fft_real_wavetable_alloc(d_n));
 
 			if(!work || !real){
 				memoryErrorMessage();
 				return;
 			}
 
-			gsl_fft_real_transform(d_y, 1, d_n, real, work);
-			gsl_fft_halfcomplex_unpack (d_y, result, 1, d_n);
-
-			gsl_fft_real_wavetable_free(real);
-			gsl_fft_real_workspace_free(work);
+			gsl_fft_real_transform(d_y, 1, d_n, real.get(), work.get());
+			gsl_fft_halfcomplex_unpack (d_y, result.data(), 1, d_n);
 		} else {
-			gsl_fft_real_unpack (d_y, result, 1, d_n);
-			gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
-			gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
+			gsl_fft_real_unpack (d_y, result.data(), 1, d_n);
+			GslRAII::UniqueFftComplexWavetable wavetable(gsl_fft_complex_wavetable_alloc (d_n));
+			GslRAII::UniqueFftComplexWorkspace workspace(gsl_fft_complex_workspace_alloc (d_n));
 
 			if(!workspace || !wavetable){
 				memoryErrorMessage();
 				return;
 			}
 
-			gsl_fft_complex_inverse (result, 1, d_n, wavetable, workspace);
-			gsl_fft_complex_wavetable_free (wavetable);
-			gsl_fft_complex_workspace_free (workspace);
+			gsl_fft_complex_inverse (result.data(), 1, d_n, wavetable.get(), workspace.get());
 		}
 
 		if (d_shift_order){
-			double *temp = (double *)malloc(2*d_n*sizeof(double));
-			if (temp) {
-				for (int i = 0; i < d_n; i++) {
-					d_x[i] = (i - n2)*df;
-					int src = (i + (d_n - n2)) % d_n;
-					temp[2*i] = result[2*src];
-					temp[2*i + 1] = result[2*src + 1];
-				}
-				memcpy(result, temp, 2*d_n*sizeof(double));
-				free(temp);
+			std::vector<double> temp(2 * d_n);
+			for (int i = 0; i < d_n; i++) {
+				d_x[i] = (i - n2)*df;
+				int src = (i + (d_n - n2)) % d_n;
+				temp[2*i] = result[2*src];
+				temp[2*i + 1] = result[2*src + 1];
 			}
+			memcpy(result.data(), temp.data(), 2*d_n*sizeof(double));
 		} else {
 			for(int i = 0; i < d_n; i++)
 				d_x[i] = i*df;
@@ -176,13 +166,14 @@ void FFT::fftCurve()
 		}
 	}, tr("Calculating FFT..."));
 
-	if (d_canceled || d_init_err) {
-		free(amp);
-		free(result);
+	if (d_canceled || d_init_err)
 		return;
-	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app && d_graph)
+		app = qobject_cast<ApplicationWindow *>(d_graph->parent());
+	if (!app)
+		return;
 	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 	for (int i = 0; i < d_n; i++){
@@ -196,18 +187,15 @@ void FFT::fftCurve()
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
 		d_result_table->setText(i, 4, locale.toString(atan2(result[i2 + 1], result[i2]), 'g', prec));
 	}
-
-	free(amp);
-	free(result);
 }
 
 void FFT::fftTable()
 {
-	double *amp = (double *)malloc(d_n*sizeof(double));
-	gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
-	gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
+	std::vector<double> amp(d_n);
+	GslRAII::UniqueFftComplexWavetable wavetable(gsl_fft_complex_wavetable_alloc (d_n));
+	GslRAII::UniqueFftComplexWorkspace workspace(gsl_fft_complex_workspace_alloc (d_n));
 
-	if(!amp || !wavetable || !workspace){
+	if(!wavetable || !workspace){
 		memoryErrorMessage();
 		return;
 	}
@@ -216,26 +204,20 @@ void FFT::fftTable()
 	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	if(d_inverse)
-		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable, workspace);
+		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable.get(), workspace.get());
 	else
-		gsl_fft_complex_forward (d_y, 1, d_n, wavetable, workspace);
-
-	gsl_fft_complex_wavetable_free (wavetable);
-	gsl_fft_complex_workspace_free (workspace);
+		gsl_fft_complex_forward (d_y, 1, d_n, wavetable.get(), workspace.get());
 
 	if (d_shift_order) {
 		int n2 = d_n/2;
-		double *temp = (double *)malloc(2*d_n*sizeof(double));
-		if (temp) {
-			for (int i = 0; i < d_n; i++) {
-				d_x[i] = (i - n2)*df;
-				int src = (i + (d_n - n2)) % d_n;
-				temp[2*i] = d_y[2*src];
-				temp[2*i + 1] = d_y[2*src + 1];
-			}
-			memcpy(d_y, temp, 2*d_n*sizeof(double));
-			free(temp);
+		std::vector<double> temp(2 * d_n);
+		for (int i = 0; i < d_n; i++) {
+			d_x[i] = (i - n2)*df;
+			int src = (i + (d_n - n2)) % d_n;
+			temp[2*i] = d_y[2*src];
+			temp[2*i + 1] = d_y[2*src + 1];
 		}
+		memcpy(d_y, temp.data(), 2*d_n*sizeof(double));
 	} else {
 		for(int i = 0; i < d_n; i++)
 			d_x[i] = i*df;
@@ -249,7 +231,11 @@ void FFT::fftTable()
 			aMax = a;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app && d_graph)
+		app = qobject_cast<ApplicationWindow *>(d_graph->parent());
+	if (!app)
+		return;
 	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 	for (int i = 0; i < d_n; i++) {
@@ -263,7 +249,6 @@ void FFT::fftTable()
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
 		d_result_table->setText(i, 4, locale.toString(atan2(d_y[i2 + 1], d_y[i2]), 'g', prec));
 	}
-	free(amp);
 }
 
 void FFT::output()

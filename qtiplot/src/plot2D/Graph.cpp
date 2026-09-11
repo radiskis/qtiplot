@@ -3053,22 +3053,22 @@ PlotCurve *Graph::curve(int index)
 {
 	int curves = d_curves.size();
 	if (!curves || index >= curves || index < 0)
-		return 0;
+		return nullptr;
 
 	QwtPlotItem *it = d_curves.at(index);
-	if (it && it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram)
-		return (PlotCurve*)it;
+	if (!it || it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+		return nullptr;
 
-	return 0;
+	return dynamic_cast<PlotCurve*>(it);
 }
 
 DataCurve * Graph::dataCurve(int index)
 {
 	PlotCurve *c = curve(index);
 	if (c && c->type() != Function)
-		return (DataCurve*)c;
+		return dynamic_cast<DataCurve*>(c);
 
-	return 0;
+	return nullptr;
 }
 
 int Graph::curveIndex(const QString &title)
@@ -3077,13 +3077,18 @@ int Graph::curveIndex(const QString &title)
 		int index = -1;
 		for (QwtPlotItem *it : d_curves){
 			index++;
-			if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
+			if (!it || it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
 				continue;
-			int type = ((PlotCurve*)it)->type();
+			PlotCurve *pc = dynamic_cast<PlotCurve*>(it);
+			if (!pc)
+				continue;
+			int type = pc->type();
 			if (type == ErrorBars || type == Function)
 				continue;
 
-			DataCurve *c = (DataCurve*)it;
+			DataCurve *c = dynamic_cast<DataCurve*>(it);
+			if (!c)
+				continue;
 			QString s = c->title().text() + " [" + QString::number(c->startRow() + 1) + ":" + QString::number(c->endRow() + 1) + "]";
 			if (s == title)
 				return index;
@@ -3984,21 +3989,28 @@ void Graph::removeCurve(QwtPlotItem *it)
 	removeLegendItem(index);
 
 	if (it->rtti() != QwtPlotItem::Rtti_PlotSpectrogram){
-		int curveType = ((PlotCurve *)it)->type();
-		if (curveType == ErrorBars)
-			((ErrorBarsCurve *)it)->detachFromMasterCurve();
-		else if (curveType != Function){
-			((DataCurve *)it)->clearErrorBars();
-			((DataCurve *)it)->clearLabels();
+		if (PlotCurve *pc = dynamic_cast<PlotCurve *>(it)){
+			int curveType = pc->type();
+			if (curveType == ErrorBars){
+				if (ErrorBarsCurve *ebc = dynamic_cast<ErrorBarsCurve *>(it))
+					ebc->detachFromMasterCurve();
+			} else if (curveType != Function){
+				if (DataCurve *dc = dynamic_cast<DataCurve *>(it)){
+					dc->clearErrorBars();
+					dc->clearLabels();
+				}
+			}
 		}
-		if (d_fit_curves.contains((QwtPlotCurve *)it)){
-			int i = d_fit_curves.indexOf((QwtPlotCurve *)it);
-			if (i >= 0 && i < d_fit_curves.size())
-				d_fit_curves.removeAt(i);
+		if (QwtPlotCurve *qpc = dynamic_cast<QwtPlotCurve *>(it)){
+			if (d_fit_curves.contains(qpc)){
+				int i = d_fit_curves.indexOf(qpc);
+				if (i >= 0 && i < d_fit_curves.size())
+					d_fit_curves.removeAt(i);
+			}
 		}
-	} else {
-		((Spectrogram *)it)->clearLabels();
-		QwtScaleWidget *colorAxis = axisWidget(((Spectrogram *)it)->colorScaleAxis());
+	} else if (Spectrogram *sp = dynamic_cast<Spectrogram *>(it)) {
+		sp->clearLabels();
+		QwtScaleWidget *colorAxis = axisWidget(sp->colorScaleAxis());
 		if (colorAxis)
 			colorAxis->setColorBarEnabled(false);
 	}
