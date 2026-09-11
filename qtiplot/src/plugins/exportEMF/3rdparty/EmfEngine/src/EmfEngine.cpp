@@ -240,15 +240,8 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	SetWorldTransform(metaDC, &xf);
 
 #ifdef Q_OS_WIN
-	wchar_t *wtext = (wchar_t *)malloc(size*sizeof(wchar_t));
-	if (!wtext){
-		qWarning("EmfEngine: Not enough memory in drawTextItem().");
-		return;
-	}
-	
-	size = text.toWCharArray(wtext);
-	TextOutW(metaDC, qRound(p.x()), qRound(p.y() - 0.85*fm.height()), wtext, size);
-	free(wtext);
+	std::wstring wtext = text.toStdWString();
+	TextOutW(metaDC, qRound(p.x()), qRound(p.y() - 0.85*fm.height()), wtext.c_str(), (int)wtext.length());
 #else
 	TextOutA(metaDC, qRound(p.x()), qRound(p.y() - 0.85*fm.height()), text.toLocal8Bit().data(), size);
 #endif

@@ -31,6 +31,7 @@
 
 #include <QDialog>
 
+class ApplicationWindow;
 class QGroupBox;
 class QPushButton;
 class QRadioButton;
@@ -65,6 +66,7 @@ private slots:
 	void enableDeleteMenuBtn(const QString &);
 
 private:
+	ApplicationWindow *app() const;
 	void init();
 	void updateDisplayList();
 	QAction* actionAt(int row);

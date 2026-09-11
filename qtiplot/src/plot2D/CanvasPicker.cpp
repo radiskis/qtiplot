@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "CanvasPicker.h"
+#include "Graph.h"
 #include "ArrowMarker.h"
 #include "PlotCurve.h"
 #include <Spectrogram.h>
@@ -50,9 +51,14 @@ CanvasPicker::CanvasPicker(Graph *graph):
 	canvas->installEventFilter(this);
 }
 
+Graph *CanvasPicker::plot()
+{
+	return qobject_cast<Graph*>(parent());
+}
+
 bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 {
-	if (object != (QObject *)plot()->canvas())
+	if (object != plot()->canvas())
 		return false;
 
 	Graph *g = plot();
@@ -60,7 +66,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 	switch(e->type()){
 		case QEvent::MouseButtonPress:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 
 				if (!(me->modifiers() & Qt::ShiftModifier))
 					g->deselect();
@@ -87,7 +93,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 					for (FrameWidget *fw : eLst){
 						QPoint p = plot()->canvas()->mapTo(plot()->multiLayer()->canvas(), me->position().toPoint());
 						if (fw->frameGeometry().contains(p)){
-							fw->mousePressEvent((QMouseEvent *)e);
+							fw->mousePressEvent(static_cast<QMouseEvent *>(e));
 							if (me->button() == Qt::RightButton)
 								emit showMarkerPopupMenu();
 
@@ -128,7 +134,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
                 	emit showPlotDialog(0);
                     return true;
 				} else {
-					const QMouseEvent *me = (const QMouseEvent *)e;
+					const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
                     int dist, point;
                     QwtPlotItem *c = g->closestCurve(me->position().toPoint().x(), me->position().toPoint().y(), dist, point);
                     if (c && dist < 10)
@@ -142,7 +148,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 		case QEvent::MouseMove:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 				if (!(me->buttons() & Qt::LeftButton))
   	            	return true;
 
@@ -150,10 +156,10 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 				QwtPlotItem *c = g->selectedCurveLabels();
 				if (c){
-					if (c->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-						((Spectrogram *)c)->moveLabel(pos);
-					else
-						((DataCurve *)c)->moveLabels(pos);
+					if (auto *sp = dynamic_cast<Spectrogram *>(c))
+						sp->moveLabel(pos);
+					else if (auto *dc = dynamic_cast<DataCurve *>(c))
+						dc->moveLabels(pos);
 					return true;
 				}
 
@@ -168,7 +174,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 		case QEvent::MouseButtonRelease:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 				if (g->drawLineActive()) {
 					ApplicationWindow *app = g->multiLayer()->applicationWindow();
 					if (!app)

@@ -52,9 +52,9 @@ ExpDecayDialog::ExpDecayDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
-	int precision = app->fit_output_precision;
-	QLocale l = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	int precision = app ? app->fit_output_precision : 4;
+	QLocale l = app ? app->locale() : QLocale();
 
 	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *gl1 = new QGridLayout();
@@ -180,7 +180,7 @@ void ExpDecayDialog::activateCurve(const QString& s)
 	if (!c)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
         return;
 
@@ -213,12 +213,14 @@ void ExpDecayDialog::fit()
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
         return;
 
-	if (fitter)
+	if (fitter) {
         delete fitter;
+        fitter = nullptr;
+    }
 
 	if (slopes == 3){
 		double x_init[7] = {1.0, boxFirst->value(), 1.0, boxSecond->value(), 1.0, boxThird->value(), boxYOffset->value()};
@@ -234,7 +236,7 @@ void ExpDecayDialog::fit()
 		fitter->setInitialGuesses(x_init);
 	}
 
-	if (fitter->setDataFromCurve(c, boxStart->value(), c->maxXValue())){
+	if (fitter && fitter->setDataFromCurve(c, boxStart->value(), c->maxXValue())){
 		fitter->setColor(boxColor->color());
 		fitter->scaleErrors(app->fit_scale_errors);
         fitter->setOutputPrecision(app->fit_output_precision);
@@ -261,11 +263,12 @@ void ExpDecayDialog::closeEvent (QCloseEvent * e )
 {
 	if(fitter)
 	{
-        ApplicationWindow *app = (ApplicationWindow *)this->parent();
+        ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
         if (app && app->pasteFitResultsToPlot)
             fitter->showLegend();
 
         delete fitter;
+        fitter = nullptr;
 	}
 
 	e->accept();

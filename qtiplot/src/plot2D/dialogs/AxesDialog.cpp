@@ -107,9 +107,14 @@ AxesDialog::AxesDialog( QWidget* parent, Qt::WindowFlags fl )
 	connect(generalDialog, &QTabWidget::currentChanged, this, [this](int index){ pageChanged(generalDialog->widget(index)); });
 }
 
+ApplicationWindow *AxesDialog::app() const
+{
+	return qobject_cast<ApplicationWindow *>(parent());
+}
+
 void AxesDialog::initScalesPage()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = this->app();
 	scalesPage = new QWidget();
 
 	QGroupBox * middleBox = new QGroupBox(QString());
@@ -346,14 +351,14 @@ void AxesDialog::initGridPage()
 	rightLayout->addWidget( new QLabel(tr( "Thickness" )), 3, 0 );
 
 	boxWidthMajor = new DoubleSpinBox('f');
-	boxWidthMajor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMajor->setLocale(app() ? app()->locale() : QLocale());
 	boxWidthMajor->setSingleStep(0.1);
 	boxWidthMajor->setRange(0.1, 20);
 	boxWidthMajor->setValue(1);
 	rightLayout->addWidget( boxWidthMajor, 3, 1);
 
 	boxWidthMinor = new DoubleSpinBox('f');
-	boxWidthMinor->setLocale(((ApplicationWindow *)parent())->locale());
+	boxWidthMinor->setLocale(app() ? app()->locale() : QLocale());
 	boxWidthMinor->setSingleStep(0.1);
 	boxWidthMinor->setRange(0.1, 20);
 	boxWidthMinor->setValue(1);
@@ -860,7 +865,7 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->show();
 			boxFormat->setEditable(true);
 
-			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
+			ScaleDraw *scaleDraw = d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
 				QString formatInfo = scaleDraw->formatString();
 				boxFormat->addItem(formatInfo);
@@ -893,7 +898,7 @@ void AxesDialog::showAxisFormatOptions(int format)
 			boxFormat->show();
 			boxFormat->setEditable(true);
 
-			ScaleDraw *scaleDraw = (ScaleDraw *) d_graph->axisScaleDraw(axis);
+			ScaleDraw *scaleDraw = d_graph->axisScaleDraw(axis);
 			if (scaleDraw){
 				QString formatInfo = scaleDraw->formatString();
 				boxFormat->addItem(formatInfo);
@@ -920,7 +925,7 @@ void AxesDialog::showAxisFormatOptions(int format)
         {
             labelTable->show();
             QString tableName = d_graph->axisFormatInfo(axis);
-			if (((ApplicationWindow *)parent())->tableNames().contains(tableName))
+			if (app() && app()->tableNames().contains(tableName))
                 boxTableName->setCurrentText(tableName);
             boxTableName->show();
         }
@@ -1014,14 +1019,14 @@ void AxesDialog::updateGrid()
 
         case 2:
         {
-            ApplicationWindow *app = (ApplicationWindow *)parent();
+            ApplicationWindow *app = this->app();
             if (!app)
                 return;
 
             QList<MdiSubWindow *> windows = app->windowsList();
             for (MdiSubWindow *w : windows){
-                if (w->inherits("MultiLayer")){
-                    QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+                if (MultiLayer *ml = qobject_cast<MultiLayer*>(w)){
+                    QList<Graph *> layers = ml->layersList();
                     for (Graph *g : layers){
                         if (g->isPiePlot())
                             continue;
@@ -1063,7 +1068,7 @@ void AxesDialog::applyChangesToGrid(Grid *grid)
 
 void AxesDialog::showGridSettings(int axis)
 {
-    Grid *grd = (Grid *)d_graph->grid();
+    Grid *grd = d_graph->grid();
     if (!grd)
         return;
 
@@ -1305,7 +1310,7 @@ bool AxesDialog::updatePlot(QWidget *page)
 
 void AxesDialog::setGraph(Graph *g)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = this->app();
 	if (!app)
 		return;
 
@@ -1396,7 +1401,8 @@ void AxesDialog::updateScale()
 
     ScaleDraw::ScaleType type = d_graph->axisType(a);
 	if (type == ScaleDraw::Date){
-		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
+		ScaleDraw *sd = d_graph->axisScaleDraw(a);
+		QString format = sd ? sd->formatString() : QString();
 
 		boxStart->hide();
 		boxStartDateTime->show();
@@ -1441,7 +1447,8 @@ void AxesDialog::updateScale()
 
 		boxStep->setSingleStep(1);
 	} else if (type == ScaleDraw::Time){
-		QString format = ((ScaleDraw *)d_graph->axisScaleDraw(a))->formatString();
+		ScaleDraw *sd = d_graph->axisScaleDraw(a);
+		QString format = sd ? sd->formatString() : QString();
 		boxStart->hide();
 		boxStartDateTime->show();
 		boxStartDateTime->setDisplayFormat(format);
@@ -1486,7 +1493,7 @@ void AxesDialog::updateScale()
 	}
 
     double range = fabs(scDiv.range());
-    ScaleEngine *sc_engine = (ScaleEngine *)d_graph->axisScaleEngine(a);
+    ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_graph->axisScaleEngine(a));
     if (sc_engine->axisBreakLeft() > -DBL_MAX)
         boxBreakStart->setValue(sc_engine->axisBreakLeft());
     else
@@ -1585,21 +1592,21 @@ void AxesDialog::setCurrentScale(int axisPos)
 			axis = 2;
 		break;
 		}
-	if (generalDialog->currentWidget()==(QWidget*)scalesPage)
+	if (generalDialog->currentWidget() == scalesPage)
 		axesList->setCurrentRow(axis);
-	else if (generalDialog->currentWidget()==(QWidget*)axesPage)
+	else if (generalDialog->currentWidget() == axesPage)
 		axesTitlesList->setCurrentRow(axis);
 }
 
 void AxesDialog::showAxesPage()
 {
-	if (generalDialog->currentWidget()!=(QWidget*)axesPage)
+	if (generalDialog->currentWidget() != axesPage)
 		generalDialog->setCurrentWidget(axesPage);
 }
 
 void AxesDialog::showGridPage()
 {
-	if (generalDialog->currentWidget()!=(QWidget*)gridPage)
+	if (generalDialog->currentWidget() != gridPage)
 		generalDialog->setCurrentWidget(gridPage);
 }
 
@@ -1746,11 +1753,7 @@ void AxesDialog::updateMinorTicksList(int scaleType)
 	int functions = 0;
 	QList<QwtPlotItem *> cvs = d_graph->curvesList();
 	for (QwtPlotItem *item : cvs){
-		if(item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram)
-			continue;
-
-		FunctionCurve *c = (FunctionCurve *)item;
-		if (c->type() == Graph::Function){
+		if (FunctionCurve *c = dynamic_cast<FunctionCurve *>(item)){
 			c->loadData();
 			functions++;
 		}
@@ -1764,7 +1767,7 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 		int prec, int rotation, int baselineDist, const QString& formula, const QColor& labelsColor,
 		int spacing, bool backbone, int showTicks)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = this->app();
 	if (!app)
 		return;
 
@@ -1799,7 +1802,7 @@ void AxesDialog::applyCanvasFormat()
     if (generalDialog->currentWidget() != frame)
 		return;
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = this->app();
 	switch(canvasFrameApplyToBox->currentIndex()){
 		case 0://this layer
 			applyCanvasFormatTo(d_graph);
@@ -1836,7 +1839,7 @@ void AxesDialog::applyCanvasFormat()
 
 void AxesDialog::setFrameDefaultValues()
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = this->app();
 	if (!app)
 		return;
 
@@ -1879,10 +1882,12 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 							boxMinorTicksLength->value(), boxMajorTicksLength->value());
 		g->setAxisFont(i, d_graph->axisFont(mapToQwtAxisId()));
 
-		ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(i);
-		sd->setSpacing(boxTickLabelDistance->value());
-		sd->enableComponent (QwtAbstractScaleDraw::Backbone, boxAxisBackbone->isChecked());
-		sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)showTicksPolicyBox->currentIndex());
+		ScaleDraw *sd = g->axisScaleDraw(i);
+		if (sd){
+			sd->setSpacing(boxTickLabelDistance->value());
+			sd->enableComponent (QwtAbstractScaleDraw::Backbone, boxAxisBackbone->isChecked());
+			sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)showTicksPolicyBox->currentIndex());
+		}
 
 		axis->repaint();
 	}
@@ -1895,7 +1900,7 @@ void AxesDialog::applyAxisFormat()
     if (generalDialog->currentWidget() != axesPage)
 		return;
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = this->app();
 	switch(axisFormatApplyToBox->currentIndex()){
 		case 0://current axis
 		break;
@@ -2000,7 +2005,7 @@ void AxesDialog::showAxisSettings(int a)
 		boxPrecision->blockSignals(false);
 	}
 
-	ScaleDraw *sd = (ScaleDraw *)d_graph->axisScaleDraw(axis);
+	ScaleDraw *sd = d_graph->axisScaleDraw(axis);
 	if (sd){
 		boxAxisBackbone->blockSignals(true);
 		boxAxisBackbone->setChecked(sd->hasComponent(QwtAbstractScaleDraw::Backbone));

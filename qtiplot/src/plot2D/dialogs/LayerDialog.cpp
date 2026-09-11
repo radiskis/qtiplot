@@ -129,8 +129,9 @@ multi_layer(nullptr)
 	boxCanvasHeight->setDecimals(6);
 	gl5->addWidget(boxCanvasHeight, 2, 1);
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 	keepRatioBox = new QCheckBox(tr("&Keep aspect ratio"));
-	keepRatioBox->setChecked(((ApplicationWindow*)parent)->d_keep_aspect_ration);
+	keepRatioBox->setChecked(app ? app->d_keep_aspect_ration : true);
 	gl5->addWidget(keepRatioBox, 3, 1);
 
 	fixedSizeBox = new QCheckBox(tr("&Fixed size"));
@@ -301,7 +302,9 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 void LayerDialog::update()
 {
 	if (!multi_layer){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+		if (!app)
+			return;
 		multi_layer = app->multilayerPlot(1, -1, app->defaultCurveStyle, MultiLayer::AlignLayers);
 		QList<Graph *> layersList = multi_layer->layersList();
 		for (Graph *g : layersList)
@@ -319,7 +322,7 @@ void LayerDialog::update()
 		QPushButton *continueButton = msgBox.addButton(tr("&Continue"), QMessageBox::AcceptRole);
 		msgBox.addButton(tr("&Cancel"), QMessageBox::RejectRole);
 		msgBox.exec();
-		if (msgBox.clickedButton() != (QAbstractButton *)continueButton)
+		if (msgBox.clickedButton() != continueButton)
 			return;
 	}
 
@@ -329,9 +332,11 @@ void LayerDialog::update()
 		return;
 
 	if (dn < 0){// Customize new layers with user default settings
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
-		for (int i = old_graphs+1; i <= graphs; i++)
-			app->setPreferences(multi_layer->layer(i));
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+		if (app) {
+			for (int i = old_graphs+1; i <= graphs; i++)
+				app->setPreferences(multi_layer->layer(i));
+		}
 	}
 
 	int cols = boxX->value();

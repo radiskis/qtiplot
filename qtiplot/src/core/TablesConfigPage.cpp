@@ -141,7 +141,7 @@ void TablesConfigPage::apply(ApplicationWindow *app, ApplicationSettings *settin
 	sep.replace(tr("SPACE"), " ");
 	sep.replace("\\s", " ");
 
-	if (sep.contains(QRegularExpression("[0-9.eE+-]")) != 0){
+	if (sep.contains(QRegularExpression("[0-9.eE+-]"))){
 		QMessageBox::warning(this, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;
@@ -164,8 +164,7 @@ void TablesConfigPage::apply(ApplicationWindow *app, ApplicationSettings *settin
 
 	QList<MdiSubWindow *> windows = app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (w->inherits("Table")){
-			Table *t = (Table*)w;
+		if (Table *t = qobject_cast<Table *>(w)){
 			w->setPalette(palette);
 			t->setHeaderColor(buttonHeader->color());
 			t->setTextFont(textFont);

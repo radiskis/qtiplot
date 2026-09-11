@@ -134,7 +134,7 @@ void RenameWindowDialog::accept()
 	if (text == name && label == window->windowLabel() && window->captionPolicy() == policy)
 		close();
 
-	ApplicationWindow *app = (ApplicationWindow *)parentWidget();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parentWidget());
 	if (!app || !app->setWindowName(window, text))
 		return;
 

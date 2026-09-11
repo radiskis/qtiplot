@@ -57,7 +57,7 @@ IntegrationDialog::IntegrationDialog(Graph *g, QWidget* parent, Qt::WindowFlags 
 	boxName = new QComboBox();
 	gl1->addWidget(boxName, 0, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 
 	gl1->addWidget(new QLabel(tr("From Xmin")), 1, 0);
 	boxStart = new DoubleSpinBox();
@@ -113,7 +113,7 @@ IntegrationDialog::IntegrationDialog(Table *t, QWidget* parent, Qt::WindowFlags 
 	QGroupBox *gb1 = new QGroupBox();
 	QGridLayout *gl1 = new QGridLayout(gb1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 
 	int rows = t->numRows();
 	gl1->addWidget(new QLabel(tr("From row")), 0, 0);
@@ -186,9 +186,9 @@ void IntegrationDialog::integrateCurve()
 		return;
 	}
 
-	Integration *i = new Integration((ApplicationWindow *)parent());
+	Integration *i = new Integration(qobject_cast<ApplicationWindow *>(parent()));
 	i->setSortData(boxSortData->isChecked());
-	if (i->setDataFromCurve((PlotCurve *)d_graph->curve(curveName), from, to)){
+	if (i->setDataFromCurve(d_graph->curve(curveName), from, to)){
 		i->enableGraphicsDisplay(boxShowPlot->isChecked());
 		i->run();
 	}
@@ -217,11 +217,11 @@ void IntegrationDialog::activateCurve(const QString& s)
 	if (!d_graph)
 		return;
 
-	PlotCurve *c = (PlotCurve *)d_graph->curve(s);
+	PlotCurve *c = d_graph->curve(s);
 	if (!c)
 		return;
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
     if(!app)
         return;
 
@@ -236,7 +236,7 @@ void IntegrationDialog::changeDataRange()
 	if (!d_graph)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if(!app)
 		return;
 
@@ -276,7 +276,7 @@ void IntegrationDialog::integrateTable()
 	if (!d_table)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if(!app)
 		return;
 
@@ -316,7 +316,7 @@ void IntegrationDialog::integrateTable()
 
 void IntegrationDialog::closeEvent (QCloseEvent * e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if(app){
 		app->d_int_sort_data = boxSortData->isChecked();
 		app->d_int_show_plot = boxShowPlot->isChecked();

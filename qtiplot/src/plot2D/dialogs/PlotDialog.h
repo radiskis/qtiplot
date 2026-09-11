@@ -68,6 +68,7 @@ class DataCurve;
 class ContourLinesEditor;
 class FunctionDialog;
 class EnrichmentDialog;
+class ApplicationWindow;
 
 //! Custom plot/curves dialog
 class PlotDialog : public QDialog
@@ -76,6 +77,7 @@ class PlotDialog : public QDialog
 
 public:
     PlotDialog(bool showExtended, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    ApplicationWindow *app() const;
     void initFonts(const QFont& titlefont, const QFont& axesfont, const QFont& numbersfont, const QFont& legendfont);
 	void insertColumnsList(const QStringList& names){columnNames = names;};
 	void setMultiLayer(MultiLayer *ml);
@@ -416,10 +418,14 @@ public:
     enum {PlotCurveTreeItem = 1002};
     CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QString& s);
 
-    Graph* graph(){return ((LayerItem *)parent())->graph();};
+    Graph* graph(){
+        LayerItem *p = static_cast<LayerItem *>(parent());
+        return p ? p->graph() : nullptr;
+    }
     void setActive(bool on);
 
-    const QwtPlotItem *plotItem() { return d_curve; };
+    QwtPlotItem *plotItem() { return d_curve; };
+    const QwtPlotItem *plotItem() const { return d_curve; };
     int plotItemType();
     int plotItemStyle();
     int plotItemIndex();
@@ -440,7 +446,10 @@ public:
 	enum {FrameWidgetItem = 1003};
 	FrameWidgetTreeItem(FrameWidget *w, LayerItem *parent, const QString& s);
 
-	Graph* graph(){return ((LayerItem *)parent())->graph();};
+	Graph* graph(){
+        LayerItem *p = static_cast<LayerItem *>(parent());
+        return p ? p->graph() : nullptr;
+    }
 	FrameWidget *frameWidget(){return d_widget;};
 
 	 void setActive(bool on);

@@ -32,6 +32,7 @@
 #include <ColorBox.h>
 
 #include <QLocale>
+#include <vector>
 
 #include <gsl/gsl_fft_halfcomplex.h>
 
@@ -79,31 +80,20 @@ bool Correlation::setDataFromTable(Table *t, const QString& colName1, const QStr
 	while (d_n < rows)
 		d_n *= 2;
 
-	if (d_x) {
-		free(d_x);
-		d_x = nullptr;
-	}
-	if (d_y) {
-		free(d_y);
-		d_y = nullptr;
-	}
+	freeMemory();
 
-    d_x = (double *)malloc(d_n*sizeof(double));
+    d_x = static_cast<double *>(calloc(d_n, sizeof(double)));
 	if (!d_x){
 		memoryErrorMessage();
 		return false;
 	};
 
-	d_y = (double *)malloc(d_n*sizeof(double));
+	d_y = static_cast<double *>(calloc(d_n, sizeof(double)));
 	if (!d_y){
 		memoryErrorMessage();
-		free(d_x);
-		d_x = nullptr;
+		freeMemory();
 		return false;
 	};
-
-	memset( d_x, 0, d_n * sizeof( double ) ); // zero-pad the two arrays...
-	memset( d_y, 0, d_n * sizeof( double ) );
 	for(int i = 0; i < rows; i++){
 		int j = i + from;
 		d_x[i] = d_table->cell(j, col1);
@@ -148,7 +138,7 @@ void Correlation::output()
 
 void Correlation::addResultCurve()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
     if (!app)
         return;
 
@@ -163,8 +153,8 @@ void Correlation::addResultCurve()
 	d_table->addCol();
 	int n = d_n/2;
 
-	double *x_temp = new double[d_n];
-	double *y_temp = new double[d_n];
+	std::vector<double> x_temp(d_n);
+	std::vector<double> y_temp(d_n);
 	for (int i = 0; i<d_n; i++){
 	    double x = i - n;
         x_temp[i] = x;
@@ -194,11 +184,9 @@ void Correlation::addResultCurve()
 			createOutputGraph();
 
     	DataCurve *c = new DataCurve(d_table, d_table->colName(cols), d_table->colName(cols2));
-		c->setSamples(x_temp, y_temp, d_n);
+		c->setSamples(x_temp.data(), y_temp.data(), d_n);
 		c->setPen(QPen(d_curveColor, 1));
 		d_output_graph->insertPlotItem(c, Graph::Line);
 		d_output_graph->updatePlot();
 	}
-	delete[] x_temp;
-	delete[] y_temp;
 }

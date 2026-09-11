@@ -192,8 +192,7 @@ class SelectionMoveResizer : public QWidget
 		QPoint d_op_dp;
 
 	private slots:
-		//! A non-typesafe version of remvoveAll(QWidget*) needed for QObject::destroyed().
-		void removeWidget(QObject* w) { removeAll((QWidget*) w); }
+		void removeWidget(QObject* w) { if (QWidget *qw = qobject_cast<QWidget*>(w)) removeAll(qw); }
 };
 
 #endif // ifndef SELECTION_MOVE_RESIZER_H

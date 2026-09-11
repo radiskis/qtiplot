@@ -38,25 +38,26 @@ TitlePicker::TitlePicker(Graph *plot):
 	QObject(plot)
 {
     d_selected = false;
-	title = (QwtTextLabel *)plot->titleLabel();
-	title->setFocusPolicy(Qt::StrongFocus);
-	if (title)
+	title = plot ? plot->titleLabel() : nullptr;
+	if (title){
+		title->setFocusPolicy(Qt::StrongFocus);
 		title->installEventFilter(this);
+	}
 }
 
 bool TitlePicker::eventFilter(QObject *object, QEvent *e)
 {
-	if (object != (QObject *)title)
+	if (object != title)
 		return false;
 
-    if ( object->inherits("QwtTextLabel") && e->type() == QEvent::MouseButtonDblClick){
+    if (e->type() == QEvent::MouseButtonDblClick){
         emit doubleClicked();
 		d_selected = true;
         return true;
     }
 
-	 if ( object->inherits("QwtTextLabel") &&  e->type() == QEvent::MouseButtonPress ){
-		 const QMouseEvent *me = (const QMouseEvent *)e;
+	if (e->type() == QEvent::MouseButtonPress){
+		 const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 
 		 emit clicked();
 
@@ -68,9 +69,9 @@ bool TitlePicker::eventFilter(QObject *object, QEvent *e)
 		 return !(me->modifiers() & Qt::ShiftModifier);
     }
 
-	if ( object->inherits("QwtTextLabel") &&
-        e->type() == QEvent::KeyPress){
-		switch (((const QKeyEvent *)e)->key())
+	if (e->type() == QEvent::KeyPress){
+		const QKeyEvent *ke = static_cast<const QKeyEvent *>(e);
+		switch (ke->key())
 			{
 			case Qt::Key_Delete:
 			emit removeTitle();
@@ -94,5 +95,6 @@ void TitlePicker::setSelected(bool select)
     else
         text.setBorderPen(QPen(Qt::NoPen));
 
-    ((QwtPlot *)parent())->setTitle(text);
+    if (QwtPlot *p = qobject_cast<QwtPlot *>(parent()))
+        p->setTitle(text);
 }

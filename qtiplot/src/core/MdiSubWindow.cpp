@@ -193,10 +193,10 @@ bool MdiSubWindow::eventFilter(QObject *object, QEvent *e)
 	}
 
 	if (e->type() == QEvent::Move && object == widget()){
-		QObjectList lst = children();
-		for (QObject *o : lst){
-			if (o->inherits("QMenu") && d_app){
-			    d_app->customWindowTitleBarMenu(this, (QMenu *)o);
+		for (QObject *o : children()){
+			if (QMenu *menu = qobject_cast<QMenu *>(o)){
+				if (d_app)
+					d_app->customWindowTitleBarMenu(this, menu);
 				break;
 			}
 		}

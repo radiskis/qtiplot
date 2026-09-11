@@ -58,6 +58,8 @@
 #include <ScreenPickerTool.h>
 #include <Graph3D.h>
 #include <BoxCurve.h>
+#include <ErrorBarsCurve.h>
+#include <FunctionCurve.h>
 #include <SymbolBox.h>
 
 #include "qwt_plot_canvas.h"
@@ -190,7 +192,7 @@ bool ImportOPJ::createProjectTree(const OriginFile& opj)
 	tree<Origin::ProjectNode>::iterator root = projectTree->begin(projectTree->begin());
 	if(!root.node)
 		return false;
-	FolderListItem* item = (FolderListItem*)mw->folders->invisibleRootItem()->child(0);
+	FolderListItem* item = static_cast<FolderListItem*>(mw->folders->invisibleRootItem()->child(0));
 	item->setText(0, root->name.c_str());
 	item->folder()->setObjectName(root->name.c_str());
 	Folder* projectFolder = mw->projectFolder();
@@ -825,11 +827,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 					if(style==Graph::ErrorBars){
 						int flags=_curve.symbolShape;
-						curve = (PlotCurve*)graph->addErrorBars(QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()),
+						curve = graph->addErrorBars(QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()),
 							((flags&0x10)==0x10?0:1), ceil(_curve.lineWidth), ceil(_curve.symbolSize), QColor(Qt::black),
 							(flags&0x40)==0x40, (flags&2)==2, (flags&1)==1);
 					} else if(style==Graph::Histogram)
-						curve = (PlotCurve*)graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+						curve = graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 					else if(style==Graph::Pie || style==Graph::Box){
 						QStringList names;
 						names << QString("%1_%2").arg(tableName, _curve.yColumnName.c_str());
@@ -837,7 +839,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 						if(style == Graph::Box){
 							curve = graph->curve(c);
-							((BoxCurve *)curve)->setBoxWidth(_curve.boxWidth);
+							if (BoxCurve *bc = dynamic_cast<BoxCurve *>(curve))
+								bc->setBoxWidth(_curve.boxWidth);
 							boxWhiskersPlot = true;
 						}
 					} else if(style==Graph::VectXYXY){
@@ -901,9 +904,9 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 							break;
 						m->setHidden();
 
-						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
+						Spectrogram *sp = graph->plotSpectrogram(m, Graph::ColorMap);
 						_curve.colorMap.levels.pop_back();
-						importSpectrogram(graph, (Spectrogram*)curve, layer, _curve, fFontScaleFactor);
+						importSpectrogram(graph, sp, layer, _curve, fFontScaleFactor);
 
 						XYZContourCurve = _curve;
 						XYZContourTable = table;
@@ -915,7 +918,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						} else
 							showColorScale = true;
 					} else
-						curve = (PlotCurve *)graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
+						curve = graph->insertCurve(table, QString("%1_%2").arg(tableName, _curve.xColumnName.c_str()), QString("%1_%2").arg(tableName, _curve.yColumnName.c_str()), style);
 
 					break;
 				}
@@ -928,8 +931,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 					if(_curve.type == Origin::GraphCurve::Contour){
 						showColorScale = true;
-						curve = (PlotCurve*)graph->plotSpectrogram(m, Graph::ColorMap);
-						importSpectrogram(graph, (Spectrogram*)curve, layer, _curve, fFontScaleFactor);
+						Spectrogram *sp = graph->plotSpectrogram(m, Graph::ColorMap);
+						importSpectrogram(graph, sp, layer, _curve, fFontScaleFactor);
 					} else if(style == Origin::GraphCurve::MatrixImage){
 						Spectrogram* sp = graph->plotSpectrogram(m, Graph::GrayScale);
 						if (!sp)
@@ -937,7 +940,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						sp->setGrayScale();
 						matrixImage = true;
 					} else if (style == Graph::Histogram)
-						curve = (PlotCurve*)graph->addHistogram(m);
+						curve = graph->addHistogram(m);
 
 					break;
 				}
@@ -958,7 +961,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						start = function.begin;
 						end = function.end;
 					}
-					curve = (PlotCurve*)graph->addFunction(formulas, start, end, function.totalPoints, "x", type, function.name.c_str());
+					curve = graph->addFunction(formulas, start, end, function.totalPoints, "x", type, function.name.c_str());
 					graph->setCanvasFrame(1, Qt::black);
 					mw->updateFunctionLists(type, formulas);
 					break;
@@ -1031,7 +1034,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 						cl.sType=0;
 				}
 
-				switch(_curve.symbolShape>>8){
+				switch(_curve.symbolInterior){
 					case 0:
 						cl.fillCol = ColorBox::defaultColor(_curve.symbolFillColor.regular);
 						if((style==Graph::Scatter || style==Graph::LineSymbols || style==Graph::Area || style==Graph::Box)&&
@@ -1081,38 +1084,40 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					graph->updateCurveLayout(curve, &cl);
 
 				if(style == Graph::VerticalBars || style == Graph::HorizontalBars){
-					QwtBarCurve *b = (QwtBarCurve*)graph->curve(c);
+					QwtBarCurve *b = dynamic_cast<QwtBarCurve*>(graph->curve(c));
 					if (b)
 						b->setGap(qRound(100 -_curve.symbolSize*10));
 				} else if(style == Graph::Histogram){
-					QwtHistogram *h = (QwtHistogram*)graph->curve(c);
+					QwtHistogram *h = dynamic_cast<QwtHistogram*>(graph->curve(c));
 					if(h){
 						h->setBinning(false, layer.histogramBin, layer.histogramBegin, layer.histogramEnd);
 						h->loadData();
 					}
 				} else if(style == Graph::Pie){
-					PieCurve *p = (PieCurve *)graph->curve(c);
-					cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
-					p->setPen(QPen(cl.lCol, cl.lWidth, (Qt::PenStyle)cl.lStyle));
-					p->setBrushStyle(PatternBox::brushStyle(cl.aStyle));
-					if(_curve.fillAreaColor.type == Origin::Color::Increment)
-						p->setFirstColor(_curve.fillAreaColor.starting);
-					//geometry
-					p->setRadius(_curve.pie.radius);
-					p->setThickness(_curve.pie.thickness);
-					p->setViewAngle(_curve.pie.viewAngle);
-					p->setStartAzimuth(_curve.pie.rotation);
-					p->setCounterClockwise(_curve.pie.clockwiseRotation);
-					p->setHorizontalOffset(_curve.pie.horizontalOffset);
-					//labels
-					p->setLabelsEdgeDistance(_curve.pie.distance);
-					p->setLabelsAutoFormat(false);
-					p->setLabelPercentagesFormat(_curve.pie.formatPercentages);
-					p->setLabelValuesFormat(_curve.pie.formatValues);
-					p->setLabelCategories(_curve.pie.formatCategories);
-					p->setFixedLabelsPosition(_curve.pie.positionAssociate);
+					PieCurve *p = dynamic_cast<PieCurve *>(graph->curve(c));
+					if (p){
+						cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
+						p->setPen(QPen(cl.lCol, cl.lWidth, (Qt::PenStyle)cl.lStyle));
+						p->setBrushStyle(PatternBox::brushStyle(cl.aStyle));
+						if(_curve.fillAreaColor.type == Origin::Color::Increment)
+							p->setFirstColor(_curve.fillAreaColor.starting);
+						//geometry
+						p->setRadius(_curve.pie.radius);
+						p->setThickness(_curve.pie.thickness);
+						p->setViewAngle(_curve.pie.viewAngle);
+						p->setStartAzimuth(_curve.pie.rotation);
+						p->setCounterClockwise(_curve.pie.clockwiseRotation);
+						p->setHorizontalOffset(_curve.pie.horizontalOffset);
+						//labels
+						p->setLabelsEdgeDistance(_curve.pie.distance);
+						p->setLabelsAutoFormat(false);
+						p->setLabelPercentagesFormat(_curve.pie.formatPercentages);
+						p->setLabelValuesFormat(_curve.pie.formatValues);
+						p->setLabelCategories(_curve.pie.formatCategories);
+						p->setFixedLabelsPosition(_curve.pie.positionAssociate);
 
-					graph->setFrame(0);
+						graph->setFrame(0);
+					}
 				} else if(style == Graph::VectXYXY || style == Graph::VectXYAM){
 					graph->updateVectorsLayout(c, cl.symCol, _curve.vector.width,
 						floor(_curve.vector.arrowLength*fVectorArrowScaleFactor + 0.5), _curve.vector.arrowAngle, _curve.vector.arrowClosed, _curve.vector.position);
@@ -1313,7 +1318,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					if (scale){
 						scale->setColorBarEnabled(true);
 						scale->setColorBarWidth(qRound(layer.colorScale.colorBarThickness*0.01*scale->font().pointSize()));
-						ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
+						ScaleDraw *sd = static_cast<ScaleDraw *>(scale->scaleDraw());
 						if (sd){
 							sd->enableComponent(QwtAbstractScaleDraw::Labels);
 							sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
@@ -1381,7 +1386,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				addText(layer.texts[i], graph, fFontScaleFactor, fScale);
 
 			if (style == Graph::Pie)
-				setPieTexts((PieCurve *)graph->curve(0), graph, layer, fFontScaleFactor, fScale);
+				setPieTexts(dynamic_cast<PieCurve *>(graph->curve(0)), graph, layer, fFontScaleFactor, fScale);
 
 			for(unsigned int i = 0; i < layer.lines.size(); ++i){
 				ArrowMarker mrk;
@@ -1481,8 +1486,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if (boxWhiskersPlot){
 				QStringList curveNames;
 				for (int i = 0; i < graph->curveCount(); i++){
-					BoxCurve *box = (BoxCurve *)graph->curve(i);
-					if (!box || box->type() != Graph::Box)
+					BoxCurve *box = dynamic_cast<BoxCurve *>(graph->curve(i));
+					if (!box)
 						continue;
 					Table *t = box->table();
 					if (t)
@@ -1585,12 +1590,12 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 					box->setMinStyle(originToQwtSymbolStyle(layer.percentile.minSymbolType));
 					box->setP1Style(originToQwtSymbolStyle(layer.percentile.p1SymbolType));
 				}
-				ScaleDraw *sd = (ScaleDraw *)graph->axisScaleDraw(QwtPlot::xBottom);
+				ScaleDraw *sd = static_cast<ScaleDraw *>(graph->axisScaleDraw(QwtPlot::xBottom));
 				sd->setLabelsList(curveNames);
 				sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
 				graph->setAxisScaleDraw(QwtPlot::xBottom, sd);
 
-				sd = (ScaleDraw *)graph->axisScaleDraw(QwtPlot::xTop);
+				sd = static_cast<ScaleDraw *>(graph->axisScaleDraw(QwtPlot::xTop));
 				sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
 				graph->setAxisScaleDraw(QwtPlot::xTop, sd);
 				graph->replot();
@@ -1609,7 +1614,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		if (imageProfileTool){
 			Graph *graph = ml->layer(1);
 			if (graph){
-				Spectrogram *sp = (Spectrogram *) graph->plotItem(0);
+				Spectrogram *sp = dynamic_cast<Spectrogram *>(graph->plotItem(0));
 				if (sp){
 					Table *vt = NULL;
 					Table *ht = NULL;

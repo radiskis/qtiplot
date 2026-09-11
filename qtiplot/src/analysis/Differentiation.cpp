@@ -31,6 +31,7 @@
 #include <LegendWidget.h>
 
 #include <QLocale>
+#include <vector>
 
 Differentiation::Differentiation(ApplicationWindow *parent, Graph *g)
 : Filter(parent, g)
@@ -85,8 +86,7 @@ void Differentiation::output()
 	if (d_n < 3)
 		return;
 
-    double *result = new double[d_n - 1];
-    result[0] = 0.0;
+    std::vector<double> result(d_n - 1, 0.0);
 	for (int i = 1; i < d_n - 1; i++){
 		double xl = d_x[i - 1];
 		double xc = d_x[i];
@@ -102,7 +102,9 @@ void Differentiation::output()
 			result[i] = result[i - 1];
 	}
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+    if (!app)
+        return;
     QLocale locale = app->locale();
     QString tableName = app->generateUniqueName(QString(objectName()));
     QString dataSet;
@@ -127,8 +129,6 @@ void Differentiation::output()
 		for (int i = 1; i < d_n-1; i++)
 			d_result_table->setText(i - 1, col, locale.toString(result[i], 'g', prec));
 	}
-
-    delete[] result;
 
 	if (d_graphics_display){
 		if (!d_output_graph){

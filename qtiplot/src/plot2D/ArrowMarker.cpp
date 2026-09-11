@@ -432,7 +432,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 	switch(e->type()) {
 		case QEvent::MouseButtonPress:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 				if (me->button() != Qt::LeftButton)
 					return false;
 				QRect handler = QRect (QPoint(0,0), QSize(10, 10));
@@ -458,7 +458,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 			}
 		case QEvent::MouseMove:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 				switch(d_op) {
 					case MoveStart:
 						setStartPoint(me->pos());
@@ -482,7 +482,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 			}
 		case QEvent::MouseButtonRelease:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 
 				switch(d_op) {
 					case MoveStart:
@@ -515,7 +515,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 			}
 		case QEvent::MouseButtonDblClick:
 			{
-				const QMouseEvent *me = (const QMouseEvent *)e;
+				const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 				if (me->button() != Qt::LeftButton)
 					return false;
 				LineDialog *ld = new LineDialog(this, plot()->window());
@@ -526,7 +526,9 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 			{
 				const QKeyEvent *ke = (const QKeyEvent *)e;
 				if (ke->key() == Qt::Key_Escape){
-					((Graph *)plot())->deselectMarker();
+					Graph *g = qobject_cast<Graph *>(plot());
+					if (g)
+						g->deselectMarker();
 					return true;
 				}
 				break;
@@ -540,7 +542,7 @@ bool ArrowMarker::eventFilter(QObject *, QEvent *e)
 
 void ArrowMarker::displayInfo(bool clear)
 {
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (!g)
 		return;
 

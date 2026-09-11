@@ -34,6 +34,7 @@
 #include <QLocale>
 
 #include <qwt_scale_draw.h>
+#include <memory>
 
 class Graph;
 	
@@ -52,12 +53,14 @@ public:
 	ScaleDraw(Graph *plot, const QString& formula = QString());
 	ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
+    virtual ~ScaleDraw();
+
 	Graph *plot(){return d_plot;};
 
 	QString formatString(){return d_format_info;}
 
 	QString formula() {return d_formula;};
-	void setFormula(const QString& formula) {d_formula = formula;};
+	void setFormula(const QString& formula);
 
 	double transformValue(double value) const;
 	virtual QwtText label(double value) const;
@@ -141,5 +144,8 @@ private:
 
 	ShowTicksPolicy d_show_ticks_policy;
 	QString d_prefix, d_suffix;
+
+	struct FormulaEngine;
+	std::shared_ptr<FormulaEngine> d_formula_engine;
 };
 #endif

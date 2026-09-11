@@ -94,10 +94,10 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WindowFlags fl )
 
 void SurfaceDialog::initFunctionPage()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	QLocale locale = QLocale();
 
-	boxFunction = new ScriptEdit(app->scriptingEnv());
+	boxFunction = new ScriptEdit(app ? app->scriptingEnv() : nullptr);
 	boxFunction->enableShortcuts();
 	boxFunction->setFocus();
 
@@ -198,22 +198,22 @@ void SurfaceDialog::initFunctionPage()
 
 void SurfaceDialog::initParametricSurfacePage()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	QLocale locale = QLocale();
 	int prec = 6;
 	if (app)
 		prec = app->d_decimal_digits;
 
 	int maxH = 80;
-	boxX = new ScriptEdit(app->scriptingEnv());
+	boxX = new ScriptEdit(app ? app->scriptingEnv() : nullptr);
 	boxX->setMaximumHeight(maxH);
 	boxX->enableShortcuts();
 
-	boxY = new ScriptEdit(app->scriptingEnv());
+	boxY = new ScriptEdit(app ? app->scriptingEnv() : nullptr);
 	boxY->setMaximumHeight(maxH);
 	boxY->enableShortcuts();
 
-	boxZ = new ScriptEdit(app->scriptingEnv());
+	boxZ = new ScriptEdit(app ? app->scriptingEnv() : nullptr);
 	boxZ->setMaximumHeight(maxH);
 	boxZ->enableShortcuts();
 
@@ -362,7 +362,9 @@ void SurfaceDialog::accept()
 
 void SurfaceDialog::acceptParametricSurface()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	MyParser parser;
 	double u = 1.0, v = 1.0;
@@ -435,7 +437,9 @@ void SurfaceDialog::acceptParametricSurface()
 
 void SurfaceDialog::acceptFunction()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	double fromX = boxXFrom->value();
 	double toX = boxXTo->value();
@@ -514,7 +518,7 @@ void SurfaceDialog::setParametricSurface(Graph3D *g)
 
 void SurfaceDialog::showFunctionLog()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -531,7 +535,7 @@ void SurfaceDialog::showFunctionLog()
 
 void SurfaceDialog::showXLog()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -548,7 +552,7 @@ void SurfaceDialog::showXLog()
 
 void SurfaceDialog::showYLog()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -565,7 +569,7 @@ void SurfaceDialog::showYLog()
 
 void SurfaceDialog::showZLog()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 	

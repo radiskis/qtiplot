@@ -51,6 +51,7 @@ public:
 	void addGSLConstants();
 	void setLocale(const QLocale& locale);
 	static QLocale getLocale();
+	static void setCLocale(bool cLocale);
 
 	void DefineVar(const string_type& name, double* var) { Parser::DefineVar(name, var); }
 	void DefineVar(const char* name, double* var) { Parser::DefineVar(QString(name).toStdWString(), var); }
@@ -67,6 +68,15 @@ public:
 	void DefineFun(const char* name, double (*fun)(const mu::char_type*), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
 	void DefineFun(const char* name, double (*fun)(const mu::char_type*, double), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
 	void DefineFun(const char* name, double (*fun)(const mu::char_type*, double, double), bool allowOpt = true) { Parser::DefineFun(QString(name).toStdWString(), fun, allowOpt); }
+
+	template<typename T>
+	void DefineFunUserData(const char* name, T fun, void* pUserData, bool allowOpt = true) {
+		Parser::DefineFunUserData(QString(name).toStdWString(), fun, pUserData, allowOpt);
+	}
+	template<typename T>
+	void DefineFunUserData(const string_type& name, T fun, void* pUserData, bool allowOpt = true) {
+		Parser::DefineFunUserData(name, fun, pUserData, allowOpt);
+	}
 
 	const static QStringList functionsList();
 	const static QStringList functionNamesList();

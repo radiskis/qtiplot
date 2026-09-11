@@ -36,6 +36,7 @@
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_statistics.h>
 #include <gsl/gsl_sort.h>
+#include <vector>
 #include <math.h>
 
 TableStatistics::TableStatistics(ScriptingEnv *env, ApplicationWindow *parent, Table *base, Type t, QList<int> targets, int start, int end)
@@ -210,22 +211,20 @@ void TableStatistics::update(Table *t, const QString& colName)
 			}
 
 			if (m > 0){
-				double *dat = new double[m];
-				gsl_vector *y = gsl_vector_alloc (m);
+				std::vector<double> dat(m);
 				int aux = 0;
 				for (j = d_start; j <= d_end; j++){
 					QString text = d_base->text(i,j);
 					if (!text.isEmpty() && d_base->columnType(j) == Numeric && !d_base->isColumnHidden(j)){
 						double val = d_base->cell(i, j);
-						gsl_vector_set (y, aux, val);
 						dat[aux] = val;
 						aux++;
 					}
 				}
-				double mean = gsl_stats_mean (dat, 1, m);
-				double sd = gsl_stats_sd(dat, 1, m);
+				double mean = gsl_stats_mean (dat.data(), 1, m);
+				double sd = gsl_stats_sd(dat.data(), 1, m);
 				double min, max;
-				gsl_vector_minmax (y, &min, &max);
+				gsl_stats_minmax (&min, &max, dat.data(), 1, m);
 
 				for (int k = 0; k < d_stats_col_type.size(); k++){
 					switch (d_stats_col_type[k]){
@@ -242,7 +241,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 							setCell(r, k, sd/sqrt((double)m));
 						break;
 						case Variance:
-							setCell(r, k, gsl_stats_variance(dat, 1, m));
+							setCell(r, k, gsl_stats_variance(dat.data(), 1, m));
 						break;
 						case Sum:
 							setCell(r, k, mean*m);
@@ -264,14 +263,11 @@ void TableStatistics::update(Table *t, const QString& colName)
 				for (int k = 0; k < d_stats_col_type.size(); k++){
 					if (d_stats_col_type[k] != Median)
 						continue;
-					gsl_sort(dat, 1, m); //sort data
-					double median = gsl_stats_median_from_sorted_data(dat, 1, m); //get median
+					gsl_sort(dat.data(), 1, m); //sort data
+					double median = gsl_stats_median_from_sorted_data(dat.data(), 1, m); //get median
 					setCell(r, k, median);
 					break;
 				}
-
-				gsl_vector_free (y);
-				delete[] dat;
 			}
 		}
 	} else if (d_type == column){
@@ -297,19 +293,16 @@ void TableStatistics::update(Table *t, const QString& colName)
 				if (start < 0)
 					return;
 
-				double *dat = new double[m];
-				gsl_vector *y = gsl_vector_alloc (m);
+				std::vector<double> dat(m);
 
 				int aux = 0, min_index = start, max_index = start;
 				double val = d_base->cell(start, i);
-				gsl_vector_set (y, 0, val);
 				dat[0] = val;
 				double min = val, max = val;
 				for (j = start + 1; j <= d_end; j++){
 					if (!d_base->text(j, i).isEmpty()){
 						aux++;
 						val = d_base->cell(j, i);
-						gsl_vector_set (y, aux, val);
 						dat[aux] = val;
 						if (val < min){
 							min = val;
@@ -321,8 +314,8 @@ void TableStatistics::update(Table *t, const QString& colName)
 						}
 					}
 				}
-				double mean = gsl_stats_mean (dat, 1, m);
-				double sd = gsl_stats_sd(dat, 1, m);
+				double mean = gsl_stats_mean (dat.data(), 1, m);
+				double sd = gsl_stats_sd(dat.data(), 1, m);
 				for (int k = 0; k < d_stats_col_type.size(); k++){
 					switch (d_stats_col_type[k]){
 						case Col:
@@ -341,7 +334,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 							setCell(c, k, sd/sqrt((double)m));
 						break;
 						case Variance:
-							setCell(c, k, gsl_stats_variance(dat, 1, m));
+							setCell(c, k, gsl_stats_variance(dat.data(), 1, m));
 						break;
 						case Sum:
 							setCell(c, k, mean*m);
@@ -370,14 +363,11 @@ void TableStatistics::update(Table *t, const QString& colName)
 				for (int k = 0; k < d_stats_col_type.size(); k++){
 					if (d_stats_col_type[k] != Median)
 						continue;
-					gsl_sort(dat, 1, m); //sort data
-					double median = gsl_stats_median_from_sorted_data(dat, 1, m); //get median
+					gsl_sort(dat.data(), 1, m); //sort data
+					double median = gsl_stats_median_from_sorted_data(dat.data(), 1, m); //get median
 					setCell(c, k, median);
 					break;
 				}
-
-				gsl_vector_free (y);
-				delete[] dat;
 			}
 		}
 	}

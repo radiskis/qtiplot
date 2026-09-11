@@ -71,7 +71,7 @@ PolynomFitDialog::PolynomFitDialog( QWidget* parent, Qt::WindowFlags fl )
     boxPoints->setSpecialValueText(tr("Not enough points"));
     gl1->addWidget(boxPoints, 2, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 
     gl1->addWidget(new QLabel( tr("Fit curve Xmin")), 3, 0);
 	boxStart = new DoubleSpinBox();
@@ -127,9 +127,9 @@ void PolynomFitDialog::fit()
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     PolynomialFit *fitter = new PolynomialFit(app, graph, boxOrder->value(), boxShowFormula->isChecked());
-	if (fitter->setDataFromCurve((PlotCurve *)graph->curve(curveName), boxStart->value(), boxEnd->value())){
+	if (fitter->setDataFromCurve(graph->curve(curveName), boxStart->value(), boxEnd->value())){
 		fitter->setColor(boxColor->color());
         fitter->setOutputPrecision(app->fit_output_precision);
 		fitter->generateFunction(app->generateUniformFitPoints, app->fitPoints);
@@ -158,7 +158,7 @@ void PolynomFitDialog::setGraph(Graph *g)
 void PolynomFitDialog::activateCurve(const QString& s)
 {
 	double start, end;
-	int n_points = graph->range((PlotCurve *)graph->curve(s), &start, &end);
+	int n_points = graph->range(graph->curve(s), &start, &end);
 
 	boxStart->setValue(start);
 	boxEnd->setValue(end);

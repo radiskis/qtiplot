@@ -105,13 +105,14 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	double d_yOffset = 0.0;
 
 	QList <QwtBarCurve *> stack;
-	if (d_master_curve->type() == Graph::VerticalBars){
-		d_xOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
-		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
-	} else if (d_master_curve->type() == Graph::HorizontalBars){
-		d_yOffset = ((QwtBarCurve *)d_master_curve)->dataOffset();
-		stack = ((QwtBarCurve *)d_master_curve)->stackedCurvesList();
-	} else {
+	QwtBarCurve *barCurve = dynamic_cast<QwtBarCurve *>(d_master_curve);
+	if (barCurve && d_master_curve->type() == Graph::VerticalBars){
+		d_xOffset = barCurve->dataOffset();
+		stack = barCurve->stackedCurvesList();
+	} else if (barCurve && d_master_curve->type() == Graph::HorizontalBars){
+		d_yOffset = barCurve->dataOffset();
+		stack = barCurve->stackedCurvesList();
+	} else if (d_master_curve) {
 		const QwtSymbol *symbol = d_master_curve->symbol();
 		if (symbol && symbol->style() != QwtSymbol::NoSymbol){
 			sh2 = int(0.5*y_factor*symbol->size().height());
@@ -120,10 +121,10 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	}
 	bool addStackOffset = !stack.isEmpty();
 
-	ScaleEngine *yScaleEngine = (ScaleEngine *)plot()->axisScaleEngine(yAxis());
-	bool logYScale = (yScaleEngine->type() == ScaleTransformation::Log10) ? true : false;
+	ScaleEngine *yScaleEngine = dynamic_cast<ScaleEngine *>(plot()->axisScaleEngine(yAxis()));
+	bool logYScale = (yScaleEngine && yScaleEngine->type() == ScaleTransformation::Log10);
 
-	int skipPoints = d_master_curve->skipSymbolsCount() + d_skip_symbols;
+	int skipPoints = (d_master_curve ? d_master_curve->skipSymbolsCount() : 0) + d_skip_symbols;
 	if (d_skip_symbols > 0)
 		skipPoints--;
 	if (skipPoints == 0)
@@ -132,11 +133,11 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	for (int i = from; i <= to; i += skipPoints){
 		double xStackOffset = 0.0;
 		double yStackOffset = 0.0;
-		if (addStackOffset){
-			if (d_master_curve->type() == Graph::VerticalBars)
-				yStackOffset = ((QwtBarCurve *)d_master_curve)->stackOffset(i, stack);
-			else if (d_master_curve->type() == Graph::HorizontalBars)
-				xStackOffset = ((QwtBarCurve *)d_master_curve)->stackOffset(i, stack);
+		if (addStackOffset && barCurve){
+			if (d_master_curve && d_master_curve->type() == Graph::VerticalBars)
+				yStackOffset = barCurve->stackOffset(i, stack);
+			else if (d_master_curve && d_master_curve->type() == Graph::HorizontalBars)
+				xStackOffset = barCurve->stackOffset(i, stack);
 		}
 
 		const double xval = x(i) + xStackOffset;

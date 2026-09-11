@@ -106,8 +106,11 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	QHBoxLayout *hbox3 = new QHBoxLayout();
 
 	commands = new ScriptEdit( scriptEnv);
-	commands->setTabStopDistance(((ApplicationWindow *)parent)->d_notes_tab_length);
-    commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app){
+		commands->setTabStopDistance(app->d_notes_tab_length);
+		commands->setFont(app->d_notes_font);
+	}
 	commands->setFocus();
 	hbox3->addWidget(commands);
 
@@ -133,7 +136,8 @@ MatrixValuesDialog::MatrixValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	boxMuParser = nullptr;
 	if (scriptEnv->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
-		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);
+		if (app)
+			boxMuParser->setChecked(app->d_force_muParser);
 		connect(boxMuParser, &QCheckBox::toggled, this, &MatrixValuesDialog::updateFunctionsList);
 		updateFunctionsList(boxMuParser->isChecked());
 		vbox3->addWidget(boxMuParser);
@@ -171,7 +175,7 @@ QSize MatrixValuesDialog::sizeHint() const
 void MatrixValuesDialog::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
-		scriptingChangeEvent((ScriptingChangeEvent*)e);
+		scriptingChangeEvent(static_cast<ScriptingChangeEvent*>(e));
 }
 
 bool MatrixValuesDialog::apply()
@@ -260,7 +264,7 @@ void MatrixValuesDialog::closeEvent(QCloseEvent* e)
 {
 #ifdef SCRIPTING_PYTHON
 	if (boxMuParser){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 		if (app)
 			app->d_force_muParser = boxMuParser->isChecked();
 	}

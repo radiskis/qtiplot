@@ -121,7 +121,7 @@ bool ScreenPickerTool::eventFilter(QObject *obj, QEvent *event)
 
 		case QEvent::KeyPress:
 			{
-				QKeyEvent *ke = (QKeyEvent*) event;
+				QKeyEvent *ke = static_cast<QKeyEvent *>(event);
 				switch(ke->key()) {
 					case Qt::Key_Enter:
 					case Qt::Key_Return:
@@ -209,7 +209,7 @@ bool DrawPointTool::eventFilter(QObject *obj, QEvent *event)
 			return true;
 		case QEvent::KeyPress:
 			{
-				QKeyEvent *ke = (QKeyEvent*) event;
+				QKeyEvent *ke = static_cast<QKeyEvent *>(event);
 				switch(ke->key()) {
 					case Qt::Key_Enter:
 					case Qt::Key_Return:

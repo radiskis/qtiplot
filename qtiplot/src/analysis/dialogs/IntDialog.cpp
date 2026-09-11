@@ -81,7 +81,8 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
 	vl1->addStretch();
 	gl1->addLayout(vl1, 0, 0);
 
-	boxFunction = new ScriptEdit(((ApplicationWindow *)parent)->scriptingEnv());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	boxFunction = new ScriptEdit(app ? app->scriptingEnv() : nullptr);
 	boxFunction->enableShortcuts();
 	gl1->addWidget(boxFunction, 0, 1);
 
@@ -97,7 +98,7 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
 	boxSteps->setSingleStep(100);
 	gl1->addWidget(boxSteps, 2, 1);
 
-	QLocale locale = ((ApplicationWindow *)parent)->locale();
+	QLocale locale = app ? app->locale() : QLocale();
 	gl1->addWidget(new QLabel(tr("Tolerance")),3, 0);
 	boxTol = new DoubleSpinBox();
 	boxTol->setLocale(locale);
@@ -141,7 +142,7 @@ IntDialog::IntDialog(QWidget* parent, Graph *g, Qt::WindowFlags fl )
 
 void IntDialog::accept()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (!app)
 		return;
 
@@ -153,7 +154,7 @@ void IntDialog::accept()
 
 	Integration *i = new Integration(function, boxVariable->text(), app, d_graph, boxStart->value(), boxEnd->value());
 	if (!i->error()){
-		i->setTolerance(boxTol->text().toDouble());
+		i->setTolerance(boxTol->value());
 		i->setWorkspaceSize(boxSteps->value());
 		i->enableGraphicsDisplay(d_graph && boxPlot->isChecked(), d_graph);
 		i->run();
@@ -238,7 +239,7 @@ void IntDialog::clearFunction()
 
 void IntDialog::showFunctionLog()
 {
-	ApplicationWindow *d_app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *d_app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (!d_app)
 		return;
 

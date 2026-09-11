@@ -160,7 +160,7 @@ void QtiPlotApplication::activateWindow(ApplicationWindow *w)
 	if (qApp->arguments().contains("-X"))
 		return;
 
-	((QWidget *)w)->activateWindow();
+	w->activateWindow();
 	w->raise();
 
 

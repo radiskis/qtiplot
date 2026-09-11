@@ -39,6 +39,9 @@
 
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_integration.h>
+#include "GslRAII.h"
+#include <vector>
+#include <algorithm>
 
 Integration::Integration(const QString& formula, const QString& var, ApplicationWindow *parent, Graph *g, double start, double end)
 : Filter(parent, g),
@@ -109,64 +112,76 @@ void Integration::init()
 
 double Integration::trapez()
 {
+	if (d_n <= 0)
+		return 0.0;
 	double sum = 0.0;
-	double *result = (double *)malloc(d_n*sizeof(double));
+	std::vector<double> result(d_n);
 	int size = d_n - 1;
 	for(int i=0; i < size; i++){
 		int j = i + 1;
-		if (result)
-            result[i] = sum;
+		result[i] = sum;
 		sum += 0.5*(d_y[j] + d_y[i])*(d_x[j] - d_x[i]);
 	}
 
-    if (result){
-        result[size] = sum;
-        d_points = d_n;
-        addResultCurve(d_x, result);
-        free(result);
-    }
-    return sum;
+	result[size] = sum;
+	d_points = d_n;
+	addResultCurve(d_x, result.data());
+	return sum;
 }
+
+namespace {
+struct EvalContext {
+	MyParser parser;
+	double x{0.0};
+	Integration *integration{nullptr};
+};
 
 double evalFunction(double x, void *params)
 {
-	if (((Integration *)params)->error())
+	EvalContext *ctx = static_cast<EvalContext *>(params);
+	if (!ctx || !ctx->integration || ctx->integration->error())
 		return 0.0;
 
+	ctx->x = x;
 	double result = 0.0;
-	QString var = ((Integration *)params)->variable();
-	QString formula = ((Integration *)params)->formula();
-
-	MyParser parser;
-	parser.DefineVar(var.toStdWString(), &x);
-	parser.SetExpr(formula.toStdWString());
-
 	try {
-		result = parser.Eval();
+		result = ctx->parser.Eval();
 	} catch (mu::ParserError &e){
 		QApplication::restoreOverrideCursor();
-		Integration *it = (Integration *)params;
-		if (it)
-			it->reportError("QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
+		ctx->integration->reportError("QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
 	}
 
 	return result;
 }
+} // namespace
 
 double Integration::gslIntegration()
 {
 	if (d_init_err)
 		return 0.0;
 
-	gsl_integration_workspace * w = gsl_integration_workspace_alloc (d_workspace_size);
+	GslRAII::UniqueIntegrationWorkspace w(gsl_integration_workspace_alloc(d_workspace_size));
+	if (!w) {
+		memoryErrorMessage();
+		return 0.0;
+	}
+
+	EvalContext ctx;
+	ctx.integration = this;
+	try {
+		ctx.parser.DefineVar(d_variable.toStdWString(), &ctx.x);
+		ctx.parser.SetExpr(d_formula.toStdWString());
+	} catch (mu::ParserError &e) {
+		reportError("QtiPlot - Input error", QString::fromStdWString(e.GetMsg()));
+		return 0.0;
+	}
 
 	gsl_function F;
 	F.function = &evalFunction;
-	F.params = this;
+	F.params = &ctx;
 
-	gsl_integration_qags (&F, d_from, d_to, 0, d_tolerance, d_workspace_size, w, &d_area, &d_error);
+	gsl_integration_qags (&F, d_from, d_to, 0, d_tolerance, d_workspace_size, w.get(), &d_area, &d_error);
 
-	gsl_integration_workspace_free (w);
 	return d_area;
 }
 
@@ -175,9 +190,9 @@ QString Integration::logInfo()
 	if (d_init_err)
 		return QString();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
-    int prec = app->d_decimal_digits;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+    QLocale locale = app ? app->locale() : QLocale();
+    int prec = app ? app->d_decimal_digits : 6;
 
 	QString logInfo = "[" + QDateTime::currentDateTime().toString(Qt::TextDate);
 	if (d_integrand == AnalyticalFunction){
@@ -202,12 +217,16 @@ QString Integration::logInfo()
 		logInfo += tr("Points") + ": " + QString::number(d_n) + " " + tr("from") + " x = " + locale.toString(d_from, 'g', prec) + " ";
     	logInfo += tr("to") + " x = " + locale.toString(d_to, 'g', prec) + "\n";
 
-		// use GSL to find maximum value of data set
-		gsl_vector *aux = gsl_vector_alloc(d_n);
-		for(int i=0; i < d_n; i++)
-			gsl_vector_set (aux, i, fabs(d_y[i]));
-		int maxID = gsl_vector_max_index (aux);
-		gsl_vector_free(aux);
+		// Find maximum value of data set
+		int maxID = 0;
+		double maxVal = (d_n > 0) ? fabs(d_y[0]) : 0.0;
+		for(int i=1; i < d_n; i++) {
+			double v = fabs(d_y[i]);
+			if (v > maxVal) {
+				maxVal = v;
+				maxID = i;
+			}
+		}
 
     	logInfo += tr("Peak at") + " x = " + locale.toString(d_x[maxID], 'g', prec)+"\t";
 		logInfo += "y = " + locale.toString(d_y[maxID], 'g', prec)+"\n";
@@ -228,7 +247,7 @@ void Integration::output()
 	if (c){
 		QColor color = c->pen().color();
 		Qt::BrushStyle brushStyle = Qt::BDiagPattern;
-		ApplicationWindow *app = (ApplicationWindow *)parent();
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 		if (app){
 			color.setAlphaF(0.01*app->defaultCurveAlpha);
 			brushStyle = PatternBox::brushStyle(app->defaultCurveBrush);

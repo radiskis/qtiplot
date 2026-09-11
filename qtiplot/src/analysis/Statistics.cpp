@@ -43,7 +43,6 @@ d_error_message(QString()),
 d_col_name(QString()),
 d_result_log(true),
 d_n(0),
-d_data(0),
 d_table(nullptr)
 {
 	setData(colName);
@@ -58,15 +57,18 @@ bool Statistics::run()
 	}
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
-	if (d_result_log)
-		((ApplicationWindow *)parent())->updateLog(logInfo());
+	if (d_result_log){
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+		if (app)
+			app->updateLog(logInfo());
+	}
 	QApplication::restoreOverrideCursor();
 	return true;
 }
 
 bool Statistics::setData(const QString& colName)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return false;
 
@@ -99,8 +101,11 @@ bool Statistics::setData(const QString& colName)
 		return false;
 	}
 
-	d_data = (double *)malloc(d_n*sizeof(double));
-	if (!d_data){
+	try {
+		d_data.resize(d_n);
+	} catch (const std::bad_alloc &) {
+		d_data.clear();
+		d_n = 0;
 		memoryErrorMessage();
 		return false;
 	}
@@ -112,9 +117,9 @@ bool Statistics::setData(const QString& colName)
 			aux++;
 		}
 	}
-	d_mean = gsl_stats_mean (d_data, 1, d_n);
-	d_variance = gsl_stats_variance(d_data, 1, d_n);
-	d_sd = gsl_stats_sd(d_data, 1, d_n);
+	d_mean = gsl_stats_mean (d_data.data(), 1, d_n);
+	d_variance = gsl_stats_variance(d_data.data(), 1, d_n);
+	d_sd = gsl_stats_sd(d_data.data(), 1, d_n);
 	d_se = d_sd/sqrt(d_n);
 
 	return true;
@@ -122,7 +127,9 @@ bool Statistics::setData(const QString& colName)
 
 QString Statistics::logInfo(bool header)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return QString();
 	QLocale l = app->locale();
 	int p = app->d_decimal_digits;
 
@@ -209,14 +216,11 @@ void Statistics::memoryErrorMessage()
 
 void Statistics::freeMemory()
 {
-	if (d_data && d_n > 0) {
-		free(d_data);
-		d_data = nullptr;
-		d_n = 0;
-	}
+	d_data.clear();
+	d_data.shrink_to_fit();
+	d_n = 0;
 }
 
 Statistics::~Statistics()
 {
-	freeMemory();
 }

@@ -47,6 +47,11 @@ ScalePicker::ScalePicker(Graph *plot):
 	refresh();
 }
 
+Graph *ScalePicker::plot()
+{
+	return qobject_cast<Graph*>(parent());
+}
+
 bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 {
 	QwtScaleWidget *scale = qobject_cast<QwtScaleWidget *>(object);
@@ -55,13 +60,13 @@ bool ScalePicker::eventFilter(QObject *object, QEvent *e)
 
 	if (e->type() == QEvent::MouseButtonDblClick){
 		d_current_axis = scale;
-		mouseDblClicked(scale, ((QMouseEvent *)e)->pos());
+		mouseDblClicked(scale, static_cast<const QMouseEvent *>(e)->pos());
 		return true;
 	}
 
 	if (e->type() == QEvent::MouseButtonPress){
 		d_current_axis = scale;
-		const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		QPoint pos = me->pos();
 
 		scale->setFocus();
@@ -180,7 +185,7 @@ QRect ScalePicker::scaleRect(const QwtScaleWidget *scale) const
 void ScalePicker::refresh()
 {
 	for ( uint i = 0; i < QwtPlot::axisCnt; i++ ){
-		QwtScaleWidget *scale = (QwtScaleWidget *)plot()->axisWidget(i);
+		QwtScaleWidget *scale = plot()->axisWidget(i);
 		if ( scale )
 			scale->installEventFilter(this);
 	}
@@ -284,8 +289,9 @@ void ScalePicker::selectLabels(QwtScaleWidget *scale, bool select)
 	g->notifyFontChange(scale->font());
 	g->notifyColorChange(scale->palette().color(QPalette::Active, QPalette::Text));
 
-	ScaleDraw *sc_draw = (ScaleDraw *)scale->scaleDraw();
-	sc_draw->setSelected(select);
+	ScaleDraw *sc_draw = dynamic_cast<ScaleDraw *>(scale->scaleDraw());
+	if (sc_draw)
+		sc_draw->setSelected(select);
 	scale->repaint();
 }
 
@@ -301,8 +307,9 @@ void ScalePicker::deselect()
     title.setBorderPen(QPen(Qt::NoPen));
     d_selected_axis->setTitle(title);
 
-	ScaleDraw *sc_draw = (ScaleDraw *)d_selected_axis->scaleDraw();
-	sc_draw->setSelected(false);
+	ScaleDraw *sc_draw = dynamic_cast<ScaleDraw *>(d_selected_axis->scaleDraw());
+	if (sc_draw)
+		sc_draw->setSelected(false);
 
     d_selected_axis->repaint();
 	d_selected_axis = nullptr;

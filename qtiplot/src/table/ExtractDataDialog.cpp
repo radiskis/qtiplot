@@ -103,8 +103,11 @@ ExtractDataDialog::ExtractDataDialog( ScriptingEnv *env, QWidget* parent, Qt::Wi
 	hbox2->addWidget(gb);
 
 	commands = new ScriptEdit(scriptEnv);
-	commands->setTabStopDistance(((ApplicationWindow *)parent)->d_notes_tab_length);
-    commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app) {
+		commands->setTabStopDistance(app->d_notes_tab_length);
+		commands->setFont(app->d_notes_font);
+	}
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));

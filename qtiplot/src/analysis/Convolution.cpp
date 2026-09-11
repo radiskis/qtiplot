@@ -92,12 +92,11 @@ void Convolution::setDataFromTable(Table *t, const QString& signalColName, const
 	while (d_n_signal < d_n + d_n_response/2)
 		d_n_signal *= 2;
 
-    d_x = new double[d_n_signal]; //signal
-	d_y = new double[d_n_response]; //response
+	d_x = static_cast<double *>(calloc(d_n_signal, sizeof(double))); // zero-padded signal
+	d_y = static_cast<double *>(malloc(d_n_response * sizeof(double))); // response
 
-    if(d_y && d_x)
+	if (d_y && d_x)
 	{
-		memset( d_x, 0, d_n_signal * sizeof( double ) );// zero-pad signal data array
 		for(int i=0; i<d_n; i++)
 			d_x[i] = d_table->cell(i, signal_col);
 		for(int i=0; i<d_n_response; i++)
@@ -105,6 +104,7 @@ void Convolution::setDataFromTable(Table *t, const QString& signalColName, const
 	}
 	else
 	{
+		freeMemory();
 		reportError(tr("QtiPlot") + " - " + tr("Error"),
                         tr("Could not allocate memory, operation aborted!"));
 		d_n = 0;
@@ -126,7 +126,7 @@ void Convolution::output()
 
 void Convolution::addResultCurve()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
     if (!app)
         return;
 
@@ -169,8 +169,7 @@ void Convolution::addResultCurve()
 
 void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 {
-	double *res = new double[n];
-	memset(res,0,n*sizeof(double));
+	std::vector<double> res(n, 0.0);
 	int i, m2 = m/2;
 	for (i=0;i<m2;i++)
 	{//store the response in wrap around order, see Numerical Recipes doc
@@ -181,7 +180,7 @@ void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 	res[m2] = dres[m-1];
 
 	// calculate ffts
-	gsl_fft_real_radix2_transform(res,1,n);
+	gsl_fft_real_radix2_transform(res.data(),1,n);
 	gsl_fft_real_radix2_transform(sig,1,n);
 
 	double re, im, size;
@@ -223,7 +222,6 @@ void Convolution::convlv(double *sig, int n, double *dres, int m, int sign)
 			sig[ni] = im;
 		}
 	}
-	delete[] res;
 	gsl_fft_halfcomplex_radix2_inverse(sig,1,n);// inverse fft
 }
  /**************************************************************************

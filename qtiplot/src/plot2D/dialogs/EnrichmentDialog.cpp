@@ -811,7 +811,7 @@ void EnrichmentDialog::updateForm(QNetworkReply *reply)
 			}
         }
     } else {
-		QMessageBox::critical((QWidget *)parent(), tr("QtiPlot") + " - " + tr("Network connection error"),
+		QMessageBox::critical(parentWidget(), tr("QtiPlot") + " - " + tr("Network connection error"),
 		tr("Error while trying to connect to host %1:").arg("mathtran.org") + "\n\n'" +
 		reply->errorString() + "'\n\n" + tr("Please verify your network connection!"));
 	}

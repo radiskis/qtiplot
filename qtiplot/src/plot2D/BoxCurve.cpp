@@ -35,6 +35,7 @@
 
 #include <qwt_painter.h>
 #include <qwt_scale_map.h>
+#include <vector>
 
 BoxCurve::BoxCurve(Table *t, const QString& name, int startRow, int endRow):
 	DataCurve(t, QString(), name, startRow, endRow),
@@ -99,18 +100,14 @@ void BoxCurve::draw(QPainter *painter,
 	pen.setCapStyle(Qt::FlatCap);
 	painter->setPen(pen);
 
-	double *dat = (double *)malloc(size*sizeof(double));
-	if (!dat)
-		return;
-
+	std::vector<double> dat(size);
 	for (int i = from; i<= to; i++)
 		dat[i] = y(i);
 
-	drawBox(painter, xMap, yMap, dat, size);
-	drawSymbols(painter, xMap, yMap, dat, size);
+	drawBox(painter, xMap, yMap, dat.data(), size);
+	drawSymbols(painter, xMap, yMap, dat.data(), size);
 
 	painter->restore();
-	free(dat);
 }
 
 void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
@@ -366,11 +363,13 @@ void BoxCurve::loadData()
 	QVector<double> Y(abs(d_end_row - d_start_row) + 1);
     int ycol = d_table->colIndex(title().text());
 	int size = 0;
+	Graph *g = qobject_cast<Graph *>(plot());
+	QLocale loc = g ? g->locale() : QLocale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString s = d_table->text(i, ycol);
         if (!s.isEmpty()){
             bool valid_data = true;
-            Y[size] = ((Graph *)plot())->locale().toDouble(s, &valid_data);
+            Y[size] = loc.toDouble(s, &valid_data);
             if (valid_data)
                 size++;
         }
@@ -396,18 +395,18 @@ QString BoxCurve::statistics()
 		return QString();
 
 	int size = dataSize();
-	double *dat = (double *)malloc(size*sizeof(double));
-	if (!dat)
+	if (size <= 0)
 		return QString();
 
+	std::vector<double> dat(size);
 	for (int i = 0; i < size; i++)
 		dat[i] = y(i);
 
-	double median = gsl_stats_median_from_sorted_data (dat, 1, size);
-	double d1 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.1);
-	double d9 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.9);
-	double q1 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.25);
-	double q3 = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.75);
+	double median = gsl_stats_median_from_sorted_data (dat.data(), 1, size);
+	double d1 = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.1);
+	double d9 = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.9);
+	double q1 = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.25);
+	double q3 = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.75);
 
 	QLocale locale = plot()->locale();
 
@@ -420,7 +419,6 @@ QString BoxCurve::statistics()
 	s += QObject::tr("Max") + " = " + QString::number(dat[size - 1]) + "\n";
 	s += QObject::tr("Size") + " = " + QString::number(size) + "\n";
 
-	free (dat);
 	return s;
 }
 
@@ -430,16 +428,14 @@ double BoxCurve::quantile(double f)
 		return 0.0;
 
 	int size = dataSize();
-	double *dat = (double *)malloc(size*sizeof(double));
-	if (!dat)
+	if (size <= 0)
 		return 0.0;
 
+	std::vector<double> dat(size);
 	for (int i = 0; i< size; i++)
 		dat[i] = y(i);
 
-	double q = gsl_stats_quantile_from_sorted_data (dat, 1, size, f);
-	free (dat);
-
+	double q = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, f);
 	return q;
 }
 
@@ -550,16 +546,13 @@ QString BoxCurve::labelPercentage(int index)
 	return s;
 }
 
-double * BoxCurve::statisticValues()
+std::vector<double> BoxCurve::statisticValues()
 {
 	int size = this->dataSize();
 	if (!size)
-		return 0;
+		return {};
 
-	double *dat = (double *)malloc(size*sizeof(double));
-	if (!dat)
-		return 0;
-
+	std::vector<double> dat(size);
 	for (int i = 0; i < size; i++)
 		dat[i] = y(i);
 
@@ -567,9 +560,9 @@ double * BoxCurve::statisticValues()
 	double sd = 0.0, se = 0.0, mean = 0.0;
 	if(w_range == SD || w_range == SE || b_range == SD || b_range == SE)
 	{
-		sd = gsl_stats_sd(dat, 1, size);
+		sd = gsl_stats_sd(dat.data(), 1, size);
 		se = sd/sqrt((double)size);
-		mean = gsl_stats_mean(dat, 1, size);
+		mean = gsl_stats_mean(dat.data(), 1, size);
 	}
 
 	if(b_range == SD)
@@ -584,8 +577,8 @@ double * BoxCurve::statisticValues()
 	}
 	else
 	{
-		b_lowerq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 1 - 0.01*b_coeff);
-		b_upperq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.01*b_coeff);
+		b_lowerq = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 1 - 0.01*b_coeff);
+		b_upperq = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.01*b_coeff);
 	}
 
 	double w_upperq, w_lowerq;
@@ -596,33 +589,24 @@ double * BoxCurve::statisticValues()
 		w_lowerq = mean - se*w_coeff;
 		w_upperq = mean + se*w_coeff;
 	} else {
-		w_lowerq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 1 - 0.01*w_coeff);
-		w_upperq = gsl_stats_quantile_from_sorted_data (dat, 1, size, 0.01*w_coeff);
+		w_lowerq = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 1 - 0.01*w_coeff);
+		w_upperq = gsl_stats_quantile_from_sorted_data (dat.data(), 1, size, 0.01*w_coeff);
 	}
 
-	double *v = new double[5];
-	v[0] = w_lowerq;
-	v[1] = b_lowerq;
-	v[2] = gsl_stats_median_from_sorted_data (dat, 1, size);
-	v[3] = b_upperq;
-	v[4] = w_upperq;
-
-	free (dat);
-	return v;
+	return {w_lowerq, b_lowerq, gsl_stats_median_from_sorted_data (dat.data(), 1, size), b_upperq, w_upperq};
 }
 
 void BoxCurve::loadLabels()
 {
 	clearLabels();
 
-	double *v = statisticValues();
-	if (!v)
+	std::vector<double> v = statisticValues();
+	if (v.empty())
 		return;
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 5 && i < (int)v.size(); i++)
 		createLabel(v[i]);
 
-	delete[] v;
 	d_show_labels = true;
 }
 
@@ -703,8 +687,8 @@ void BoxCurve::updateLabels(bool updateText)
 	if (!d_plot)
 		return;
 
-	double *v = statisticValues();
-	if (!v)
+	std::vector<double> v = statisticValues();
+	if (v.empty())
 		return;
 
 	int x_axis = xAxis();
@@ -719,6 +703,8 @@ void BoxCurve::updateLabels(bool updateText)
 
 	for (PlotMarker *m : d_labels_list){
 		int index = m->index();
+		if (index < 0 || index >= (int)v.size())
+			continue;
 		double val = v[index];
 		if (updateText){
 			QwtText t = m->label();
@@ -762,6 +748,4 @@ void BoxCurve::updateLabels(bool updateText)
 		m->setXValue(d_plot->invTransform(x_axis, x2));
 		m->setYValue(d_plot->invTransform(y_axis, y2));
 	}
-
-	delete[] v;
 }

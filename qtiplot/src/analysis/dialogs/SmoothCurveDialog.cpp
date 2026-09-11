@@ -135,7 +135,7 @@ SmoothCurveDialog::SmoothCurveDialog(int method, QWidget* parent, Qt::WindowFlag
 
 void SmoothCurveDialog::smooth()
 {
-	SmoothFilter *sf = new SmoothFilter((ApplicationWindow *)parent(), graph->curve(boxName->currentText()), smooth_method);
+	SmoothFilter *sf = new SmoothFilter(qobject_cast<ApplicationWindow *>(parent()), graph->curve(boxName->currentText()), smooth_method);
 	if (smooth_method == SmoothFilter::SavitzkyGolay){
 		sf->setSmoothPoints(boxPointsLeft->value(), boxPointsRight->value());
 		sf->setPolynomOrder(boxOrder->value());

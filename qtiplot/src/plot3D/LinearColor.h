@@ -41,12 +41,12 @@ public:
 	LinearColor(Qwt3D::Plot3D*, const Qwt3D::ColorVector&);
 	Qwt3D::RGBA operator()(double x, double y, double z) const;
 
-	double alpha(){return d_alpha;}
+	double alpha() const {return d_alpha;}
 	void setAlpha(double a);
 	void resetAlpha();
 
 	LinearColorMap* colorMapPointer(){return &d_color_map;}
-	LinearColorMap colorMap(){return d_color_map;}
+	LinearColorMap colorMap() const {return d_color_map;}
 	void setColorMap(const LinearColorMap&);
 
 	std::vector<double> colorStops() const;

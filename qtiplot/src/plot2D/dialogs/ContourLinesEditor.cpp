@@ -95,8 +95,10 @@ void ContourLinesEditor::updateContourLevels()
 
 	int rows = table->rowCount();
 	QList<double> levels;
-	for (int i = 0; i < rows; i++)
-		levels << ((DoubleSpinBox*)table->cellWidget(i, 0))->value();
+	for (int i = 0; i < rows; i++) {
+		if (DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(i, 0)))
+			levels << sb->value();
+	}
 
 	d_spectrogram->setContourLevels(levels);
 }
@@ -170,16 +172,15 @@ void ContourLinesEditor::insertLevel()
 		return;
 
 	int row = table->currentRow();
-	DoubleSpinBox *sb = (DoubleSpinBox*)table->cellWidget(row, 0);
+	DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(row, 0));
 	if (!sb)
 		return;
 
 	QwtInterval range = d_spectrogram->data()->interval(Qt::ZAxis);
 	double current_value = sb->value();
 	double previous_value = range.minValue ();
-	sb = (DoubleSpinBox*)table->cellWidget(row - 1, 0);
-	if (sb)
-		previous_value = sb->value();
+	if (DoubleSpinBox *prevSb = qobject_cast<DoubleSpinBox *>(table->cellWidget(row - 1, 0)))
+		previous_value = prevSb->value();
 
 	double val = 0.5*(current_value + previous_value);
 
@@ -351,7 +352,7 @@ void ContourLinesEditor::updatePen()
 bool ContourLinesEditor::eventFilter(QObject *object, QEvent *e)
 {
 	if (e->type() == QEvent::MouseMove && object == table->viewport()){
-        const QMouseEvent *me = (const QMouseEvent *)e;
+        const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
         QPoint pos = table->viewport()->mapToParent(me->pos());
         int row = table->rowAt(pos.y() - table->horizontalHeader()->height());
         if (table->columnAt(pos.x()) == 1 && row >= 0 && row < table->rowCount())
@@ -363,7 +364,7 @@ bool ContourLinesEditor::eventFilter(QObject *object, QEvent *e)
 		setCursor(QCursor(Qt::ArrowCursor));
 		return true;
 	} else if (e->type() == QEvent::KeyPress && object == table){
-		QKeyEvent *ke = (QKeyEvent *)e;
+		QKeyEvent *ke = static_cast<QKeyEvent *>(e);
 		if (ke->key() == Qt::Key_Return && table->currentColumn() == 1){
 			showPenDialog(table->currentRow(), 1);
 			return true;
@@ -389,8 +390,7 @@ void ContourLinesEditor::spinBoxActivated(DoubleSpinBox *sb)
 
 	int rows = table->rowCount();
 	for (int i = 0; i < rows; i++){
-		DoubleSpinBox *box = (DoubleSpinBox*)table->cellWidget(i, 0);
-		if (box && box == sb){
+		if (table->cellWidget(i, 0) == sb){
 			table->setCurrentCell(i, 0);
 			enableButtons(i);
 			return;

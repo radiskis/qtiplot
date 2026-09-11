@@ -27,6 +27,7 @@
  *                                                                         *
  ***************************************************************************/
 #include "AnovaDialog.h"
+#include <memory>
 #ifdef HAVE_TAMUANOVA
 	#include <Anova.h>
 #endif
@@ -53,7 +54,7 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 	d_test_type(type),
 	d_two_way(twoWay)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 	d_table = nullptr;
 	d_note = nullptr;
 
@@ -67,7 +68,8 @@ AnovaDialog::AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestTyp
 
 	availableSamples = new QListWidget();
 	availableSamples->setSelectionMode (QAbstractItemView::ExtendedSelection);
-	availableSamples->addItems(((ApplicationWindow *)parent)->columnsList());
+	if (app)
+		availableSamples->addItems(app->columnsList());
 
 	selectedSamples = new QTreeWidget();
 	selectedSamples->setRootIsDecorated(false);
@@ -257,15 +259,17 @@ void AnovaDialog::enableDescriptiveStatistics()
 void AnovaDialog::showCurrentFolder(bool currentFolder)
 {
 	availableSamples->clear();
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	if (currentFolder){
 		QStringList list;
 		QList<MdiSubWindow *> windows = app->currentFolder()->windowsList();
 		for (MdiSubWindow *w : windows){
-			if (!w->inherits("Table"))
+			Table *t = qobject_cast<Table *>(w);
+			if (!t)
 				continue;
 
-			Table *t = (Table *)w;
 			for (int i = 0; i < t->numCols(); i++)
 					list << t->colName(i);
 		}
@@ -290,13 +294,15 @@ void AnovaDialog::updateLevelBoxes()
 		if (!item)
 			continue;
 
-		QComboBox *box = (QComboBox *)selectedSamples->itemWidget(item, 1);
-		box->clear();
-		box->addItems(aLevels);
+		if (QComboBox *box = qobject_cast<QComboBox *>(selectedSamples->itemWidget(item, 1))){
+			box->clear();
+			box->addItems(aLevels);
+		}
 
-		box = (QComboBox *)selectedSamples->itemWidget(item, 2);
-		box->clear();
-		box->addItems(bLevels);
+		if (QComboBox *box = qobject_cast<QComboBox *>(selectedSamples->itemWidget(item, 2))){
+			box->clear();
+			box->addItems(bLevels);
+		}
 	}
 }
 
@@ -356,14 +362,16 @@ void AnovaDialog::accept()
 
 void AnovaDialog::acceptNormalityTest()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	for (int i = 0; i < selectedSamples->topLevelItemCount(); i++){
 		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
 		if (!item)
 			continue;
 
 		QString s = QString();
-		ShapiroWilkTest *sw = new ShapiroWilkTest(app, item->text(0));
+		auto sw = std::make_unique<ShapiroWilkTest>(app, item->text(0));
 		unsigned int n = sw->dataSize();
 		if (n >= 3 && n <= 5000){
 			sw->setSignificanceLevel(boxSignificance->value());
@@ -372,23 +380,27 @@ void AnovaDialog::acceptNormalityTest()
 			else
 				s = sw->logInfo();
 		}
-		outputResults(sw, s);
-		delete sw;
+		outputResults(sw.get(), s);
 	}
 }
 
 #ifdef HAVE_TAMUANOVA
 void AnovaDialog::acceptAnova()
 {
-	Anova anova((ApplicationWindow *)parent(), d_two_way, boxSignificance->value());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
+	Anova anova(app, d_two_way, boxSignificance->value());
 	for (int i = 0; i < selectedSamples->topLevelItemCount(); i++){
 		QTreeWidgetItem *item = selectedSamples->topLevelItem(i);
 		if (!item)
 			continue;
 
 		if (d_two_way){
-			QComboBox *box1 = (QComboBox *)selectedSamples->itemWidget(item, 1);
-			QComboBox *box2 = (QComboBox *)selectedSamples->itemWidget(item, 2);
+			QComboBox *box1 = qobject_cast<QComboBox *>(selectedSamples->itemWidget(item, 1));
+			QComboBox *box2 = qobject_cast<QComboBox *>(selectedSamples->itemWidget(item, 2));
+			if (!box1 || !box2)
+				continue;
 			if (!anova.addSample(item->text(0), box1->currentIndex() + 1, box2->currentIndex() + 1))
 				return;
 		} else if (!anova.addSample(item->text(0)))
@@ -414,7 +426,9 @@ void AnovaDialog::outputResults(StatisticTest* stats, const QString& s)
 	if (!stats)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	if (boxResultsLog->isChecked())
 		app->updateLog(s);
 
@@ -464,7 +478,7 @@ void AnovaDialog::outputResults(StatisticTest* stats, const QString& s)
 
 void AnovaDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app){
 		app->d_stats_significance_level = boxSignificance->value();
 		app->d_stats_result_table = boxResultsTable->isChecked();

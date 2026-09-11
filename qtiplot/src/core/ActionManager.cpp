@@ -112,9 +112,6 @@ void ActionManager::windowsMenuAboutToShow() { MenuBuilder::windowsMenuAboutToSh
 void ActionManager::createActions()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
-	auto &Box = d_app->Box;
-	auto &Frame = d_app->Frame;
 	auto &actionAbout = d_app->actionAbout;
 	auto &actionActivateWindow = d_app->actionActivateWindow;
 	auto &actionAdd3DData = d_app->actionAdd3DData;
@@ -417,7 +414,6 @@ void ActionManager::createActions()
 	auto &explorerWindow = d_app->explorerWindow;
 	auto &logWindow = d_app->logWindow;
 	auto &undoStackWindow = d_app->undoStackWindow;
-	auto &view = d_app->view;
 #ifdef HAVE_ALGLIB
 	auto &actionConvertTableRandomXYZ = d_app->actionConvertTableRandomXYZ;
 	auto &actionExpandMatrix = d_app->actionExpandMatrix;
@@ -1492,7 +1488,6 @@ void ActionManager::createActions()
 void ActionManager::customMenu(QMdiSubWindow* w)
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &actionAddColToTable = d_app->actionAddColToTable;
 	auto &actionAddFormula = d_app->actionAddFormula;
 	auto &actionAddFunctionCurve = d_app->actionAddFunctionCurve;
@@ -1530,7 +1525,9 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 	auto &plot2DMenu = d_app->plot2DMenu;
 	auto &plot3DMenu = d_app->plot3DMenu;
 	auto &plotDataMenu = d_app->plotDataMenu;
+#ifndef SCRIPTING_PYTHON
 	auto &scriptingMenu = d_app->scriptingMenu;
+#endif
 	auto &tableMenu = d_app->tableMenu;
 #ifdef HAVE_ALGLIB
 #endif
@@ -1543,7 +1540,6 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
     analysisMenu->menuAction()->setVisible(false);
     tableMenu->menuAction()->setVisible(false);
     plotDataMenu->menuAction()->setVisible(false);
@@ -1620,7 +1616,7 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 		else
 			actionShowExportASCIIDialog->setEnabled(false);
 
-		if (w->inherits("MultiLayer")) {
+		if (qobject_cast<MultiLayer *>(w)) {
 			actionAddFunctionCurve->setEnabled(true);
 			actionShowCurvesDialog->setEnabled(true);
 			actionAddFormula->setEnabled(true);
@@ -1639,7 +1635,7 @@ void ActionManager::customMenu(QMdiSubWindow* w)
             format->addSeparator();
             format->addAction(actionShowGridDialog);
 			format->addAction(actionShowTitleDialog);
-		} else if (w->inherits("Graph3D")) {
+		} else if (Graph3D *plot3d = qobject_cast<Graph3D*>(w)) {
 			disableActions();
 
 			actionPrint->setEnabled(true);
@@ -1653,9 +1649,9 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 			format->addAction(actionShowScaleDialog);
 			format->addAction(actionShowAxisDialog);
 			format->addAction(actionShowTitleDialog);
-			if (((Graph3D*)w)->coordStyle() == Qwt3D::NOCOORD)
+			if (plot3d->coordStyle() == Qwt3D::NOCOORD)
 				actionShowAxisDialog->setEnabled(false);
-		} else if (w->inherits("Table")) {
+		} else if (qobject_cast<Table *>(w)) {
 			tableMenuAboutToShow();
 
 			plot2DMenu->menuAction()->setVisible(true);
@@ -1677,16 +1673,16 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 			plot3DMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
 			matrixMenu->menuAction()->setVisible(true);
-		} else if (qobject_cast<Note*>(w)){
+		} else if (Note *n = qobject_cast<Note*>(w)){
 			#ifndef SCRIPTING_PYTHON
 			scriptingMenu->menuAction()->setVisible(true);
 			#endif
 			actionSaveTemplate->setEnabled(false);
 			actionNoteEvaluate->setEnabled(true);
 			actionFind->setEnabled(true);
-			if (ScriptEdit *editor = ((Note *)w)->currentEditor())
+			if (ScriptEdit *editor = n->currentEditor())
 				d_app->connectScriptEditor(editor);
-		} else if (w->inherits("PolarGraph")) {
+		} else if (qobject_cast<PolarGraph *>(w)) {
 			actionExportGraph->setEnabled(true);
 			plotDataMenu->menuAction()->setVisible(true);
 			analysisMenu->menuAction()->setVisible(true);
@@ -1710,7 +1706,6 @@ void ActionManager::customMenu(QMdiSubWindow* w)
 void ActionManager::disableActions()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &actionClearSelection = d_app->actionClearSelection;
 	auto &actionCopySelection = d_app->actionCopySelection;
 	auto &actionCutSelection = d_app->actionCutSelection;
@@ -1730,7 +1725,6 @@ void ActionManager::disableActions()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	actionSaveTemplate->setEnabled(false);
 	actionSaveWindow->setEnabled(false);
 	actionPrintAllPlots->setEnabled(false);
@@ -1746,7 +1740,6 @@ void ActionManager::disableActions()
 void ActionManager::customColumnActions()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &actionAdjustColumnWidth = d_app->actionAdjustColumnWidth;
 	auto &actionDisregardCol = d_app->actionDisregardCol;
 	auto &actionMoveColFirst = d_app->actionMoveColFirst;
@@ -1770,7 +1763,6 @@ void ActionManager::customColumnActions()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	actionAdjustColumnWidth->setEnabled(false);
     actionMoveColFirst->setEnabled(false);
     actionMoveColLeft->setEnabled(false);
@@ -1784,7 +1776,7 @@ void ActionManager::customColumnActions()
     actionDisregardCol->setEnabled(false);
     actionSwapColumns->setEnabled(false);
 
-	Table *t = (Table*)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
     if (!t)
 		return;
 
@@ -1820,7 +1812,6 @@ void ActionManager::customColumnActions()
 void ActionManager::customToolBars(QMdiSubWindow* w)
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &actionTextColor = d_app->actionTextColor;
 	auto &columnTools = d_app->columnTools;
 	auto &d_column_tool_bar = d_app->d_column_tool_bar;
@@ -1847,27 +1838,26 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
     disableToolbars();
 	if (!w)
         return;
 
 	actionTextColor->setVisible(false);
 
-	if (qobject_cast<MultiLayer*>(w)){
+	if (MultiLayer *ml = qobject_cast<MultiLayer*>(w)){
 		actionTextColor->setVisible(true);
 		if (d_plot_tool_bar){
 			if(!plotTools->isVisible() && !qApp->arguments().contains("-X"))
 				plotTools->show();
 			plotTools->setEnabled (true);
-			d_app->plotController2D()->custom2DPlotTools((MultiLayer *)w);
+			d_app->plotController2D()->custom2DPlotTools(ml);
 		}
 		if(d_format_tool_bar && !formatToolBar->isVisible()){
 			formatToolBar->setEnabled (true);
             if (!qApp->arguments().contains("-X"))
                 formatToolBar->show();
 		}
-    } else if (w->inherits("Table")){
+    } else if (qobject_cast<Table *>(w)){
         if(d_table_tool_bar){
             if(!tableTools->isVisible() && !qApp->arguments().contains("-X"))
                 tableTools->show();
@@ -1883,13 +1873,13 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 		 if(d_matrix_tool_bar && !plotMatrixBar->isVisible() && !qApp->arguments().contains("-X"))
             plotMatrixBar->show();
         plotMatrixBar->setEnabled (true);
-	} else if (qobject_cast<Graph3D*>(w)){
+	} else if (Graph3D *g3d = qobject_cast<Graph3D*>(w)){
 		if(d_plot3D_tool_bar && !plot3DTools->isVisible() && !qApp->arguments().contains("-X"))
 			plot3DTools->show();
 
-		plot3DTools->setEnabled(((Graph3D*)w)->plotStyle() != Qwt3D::NOPLOT);
-		d_app->plotController3D()->custom3DActions(w);
-	} else if (qobject_cast<Note*>(w)){
+		plot3DTools->setEnabled(g3d->plotStyle() != Qwt3D::NOPLOT);
+		d_app->plotController3D()->custom3DActions(g3d);
+	} else if (Note *n = qobject_cast<Note*>(w)){
 		if(d_format_tool_bar && !formatToolBar->isVisible() && !qApp->arguments().contains("-X"))
             formatToolBar->show();
 		if(d_notes_tool_bar && !noteTools->isVisible() && !qApp->arguments().contains("-X"))
@@ -1897,7 +1887,8 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 
         formatToolBar->setEnabled (true);
         noteTools->setEnabled (true);
-        d_app->setFormatBarFont(((Note*)w)->currentEditor()->currentFont());
+        if (ScriptEdit *editor = n->currentEditor())
+            d_app->setFormatBarFont(editor->currentFont());
     } else if (qobject_cast<PolarGraph*>(w)){
 		actionTextColor->setVisible(true);
 		if (d_plot_tool_bar){
@@ -1917,7 +1908,6 @@ void ActionManager::customToolBars(QMdiSubWindow* w)
 void ActionManager::disableToolbars()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &columnTools = d_app->columnTools;
 	auto &noteTools = d_app->noteTools;
 	auto &plot3DTools = d_app->plot3DTools;
@@ -1935,7 +1925,6 @@ void ActionManager::disableToolbars()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	plotTools->setEnabled(false);
 	tableTools->setEnabled(false);
 	columnTools->setEnabled(false);
@@ -1948,7 +1937,6 @@ void ActionManager::disableToolbars()
 void ActionManager::showCustomActionDialog()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 #ifdef HAVE_ALGLIB
 #endif
 #ifdef HAVE_TAMUANOVA
@@ -1960,7 +1948,6 @@ void ActionManager::showCustomActionDialog()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	if (qApp->arguments().contains("-X"))
 		return;
     CustomActionDialog *ad = new CustomActionDialog(d_app);
@@ -1973,7 +1960,6 @@ void ActionManager::showCustomActionDialog()
 void ActionManager::addCustomAction(QAction *action, const QString& parentName, int index)
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_actions = d_app->d_user_actions;
 	auto &d_user_menus = d_app->d_user_menus;
 #ifdef HAVE_ALGLIB
@@ -1987,7 +1973,6 @@ void ActionManager::addCustomAction(QAction *action, const QString& parentName, 
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
     if (!action) {
         return;
     }
@@ -2038,7 +2023,6 @@ void ActionManager::addCustomAction(QAction *action, const QString& parentName, 
 void ActionManager::reloadCustomActions()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_actions = d_app->d_user_actions;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2051,7 +2035,6 @@ void ActionManager::reloadCustomActions()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	reloadCustomMenus();
 
     QList<QMenu *> menus = customizableMenusList();
@@ -2074,7 +2057,6 @@ void ActionManager::reloadCustomActions()
 void ActionManager::removeCustomAction(QAction *action)
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_actions = d_app->d_user_actions;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2087,7 +2069,6 @@ void ActionManager::removeCustomAction(QAction *action)
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
     int index = d_user_actions.indexOf(action);
     if (index >= 0 && index < d_user_actions.count()){
         d_user_actions.removeAt(index);
@@ -2112,7 +2093,6 @@ void ActionManager::performCustomAction(QAction *action)
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	if (!action || !d_user_actions.contains(action))
 		return;
 
@@ -2136,7 +2116,6 @@ void ActionManager::performCustomAction(QAction *action)
 void ActionManager::loadCustomActions()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &customActionsDirPath = d_app->customActionsDirPath;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2149,7 +2128,6 @@ void ActionManager::loadCustomActions()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
     QString path = customActionsDirPath + "/";
 	QDir dir(path);
 	QStringList lst = dir.entryList(QDir::Files|QDir::NoSymLinks, QDir::Name);
@@ -2229,7 +2207,6 @@ void ActionManager::loadCustomActions()
 QList<QMenu *> ActionManager::customizableMenusList()
 {
 	if (!d_app) return QList<QMenu *>();
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &analysisMenu = d_app->analysisMenu;
 	auto &decayMenu = d_app->decayMenu;
 	auto &edit = d_app->edit;
@@ -2264,7 +2241,6 @@ QList<QMenu *> ActionManager::customizableMenusList()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	QList<QMenu *> lst;
 	lst << windowsMenu << view << graphMenu << fileMenu << format << edit;
 	lst << help << plot2DMenu;
@@ -2278,7 +2254,6 @@ QList<QMenu *> ActionManager::customizableMenusList()
 QList<QMenu *> ActionManager::menusList()
 {
 	if (!d_app) return QList<QMenu *>();
-	auto scriptEnv = d_app->scriptingEnv();
 #ifdef HAVE_ALGLIB
 #endif
 #ifdef HAVE_TAMUANOVA
@@ -2290,12 +2265,10 @@ QList<QMenu *> ActionManager::menusList()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	QList<QMenu *> lst;
-	QObjectList children = d_app->children();
-	for (QObject *w : children){
-        if (w->inherits("QMenu"))
-            lst << (QMenu *)w;
+	for (QObject *w : d_app->children()){
+        if (QMenu *m = qobject_cast<QMenu *>(w))
+            lst << m;
     }
 	return lst;
 }
@@ -2304,7 +2277,6 @@ QList<QMenu *> ActionManager::menusList()
 QList<QToolBar *> ActionManager::toolBarsList()
 {
 	if (!d_app) return QList<QToolBar *>();
-	auto scriptEnv = d_app->scriptingEnv();
 #ifdef HAVE_ALGLIB
 #endif
 #ifdef HAVE_TAMUANOVA
@@ -2316,13 +2288,14 @@ QList<QToolBar *> ActionManager::toolBarsList()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	QList<QToolBar *> lst;
-	QObjectList children = d_app->children();
-	for (QObject *w : children){
-        if (w->inherits("QToolBar"))
-            lst << (QToolBar *)w;
-    }
+	if (!d_app)
+		return lst;
+
+	for (QObject *w : d_app->children()){
+		if (QToolBar *tb = qobject_cast<QToolBar *>(w))
+			lst << tb;
+	}
 	return lst;
 }
 
@@ -2330,7 +2303,6 @@ QList<QToolBar *> ActionManager::toolBarsList()
 QMenu* ActionManager::addCustomMenu(const QString& title, const QString& parentName)
 {
 	if (!d_app) return nullptr;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_menus = d_app->d_user_menus;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2343,7 +2315,6 @@ QMenu* ActionManager::addCustomMenu(const QString& title, const QString& parentN
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	if (parentName == d_app->menuBar()->objectName()){
 		QMenu *menu = d_app->menuBar()->addMenu(title);
 		if (menu){
@@ -2372,7 +2343,6 @@ QMenu* ActionManager::addCustomMenu(const QString& title, const QString& parentN
 void ActionManager::removeCustomMenu(const QString& title)
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_menus = d_app->d_user_menus;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2385,7 +2355,6 @@ void ActionManager::removeCustomMenu(const QString& title)
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	for (QMenu *m : d_user_menus){
 		if (m->objectName() == title){
 			int index = d_user_menus.indexOf(m);
@@ -2402,7 +2371,6 @@ void ActionManager::removeCustomMenu(const QString& title)
 void ActionManager::reloadCustomMenus()
 {
 	if (!d_app) return;
-	auto scriptEnv = d_app->scriptingEnv();
 	auto &d_user_menus = d_app->d_user_menus;
 #ifdef HAVE_ALGLIB
 #endif
@@ -2415,11 +2383,11 @@ void ActionManager::reloadCustomMenus()
 #ifdef Q_OS_WIN
 #endif
 
-	ApplicationWindow *app = d_app;
 	for (QMenu *m : d_user_menus){
-		QWidget *parent = m->parentWidget();
-		if (parent && !parent->children().contains(m))
-			((QMenu *)parent)->addMenu(m);
+		if (QMenu *parent = qobject_cast<QMenu *>(m->parentWidget())){
+			if (!parent->children().contains(m))
+				parent->addMenu(m);
+		}
 	}
 }
 

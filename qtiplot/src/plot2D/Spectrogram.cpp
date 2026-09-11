@@ -739,6 +739,7 @@ bool Spectrogram::setUseMatrixFormula(bool on)
 
 QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area, const QSize &imageSize) const
 {
+	Q_UNUSED(imageSize);
 	if (area.isEmpty())
 		return QImage();
 
@@ -751,7 +752,7 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 	QwtScaleMap xxMap = xMap;
 	QwtScaleMap yyMap = yMap;
 
-	MatrixData *d_data = (MatrixData *)static_cast<const MatrixData *>(QwtPlotSpectrogram::data())->copy();
+	MatrixData *d_data = static_cast<MatrixData *>(static_cast<const MatrixData *>(QwtPlotSpectrogram::data())->copy());
 	const QSize res = d_data->rasterHint(area);
 	if (res.isValid()){
 		rect.setSize(rect.size().boundedTo(res));
@@ -794,7 +795,7 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 
 	for (int y = rect.top(); y <= rect.bottom(); y++){
 		const double ty = yyMap.invTransform(y);
-		QRgb *line = (QRgb *)image.scanLine(y - rect.top());
+		QRgb *line = reinterpret_cast<QRgb *>(image.scanLine(y - rect.top()));
 		for (int x = rect.left(); x <= rect.right(); x++){
 			const double tx = xxMap.invTransform(x);
 			*line++ = color_map.rgb(intensityRange, d_data->value(tx, ty));

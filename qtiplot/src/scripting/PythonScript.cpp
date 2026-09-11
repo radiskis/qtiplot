@@ -47,6 +47,8 @@
 #include <memory>
 #include <QApplication>
 #include <ApplicationWindow.h>
+#include <Table.h>
+#include <Matrix.h>
 
 #include <QObject>
 #include <QVariant>
@@ -113,7 +115,7 @@ bool PythonScript::compile(bool for_eval)
 	hasOldGlobals = Code.contains("\nglobal ") || (0 == Code.indexOf("global "));
 	PyObject *topLevelLocal = hasOldGlobals ? modLocalDict : modGlobalDict;
 
-	if(Context->inherits("Table")) {
+	if(qobject_cast<Table *>(Context)) {
 		PyObject *ret = PyRun_String(
 				"def col(c,*arg):\n"
 				"\ttry: return self.cell(c,arg[0])\n"
@@ -132,7 +134,7 @@ bool PythonScript::compile(bool for_eval)
 			Py_DECREF(ret);
 		else
 			PyErr_Print();
-	} else if(Context->inherits("Matrix")) {
+	} else if(qobject_cast<Matrix *>(Context)) {
 		PyObject *ret = PyRun_String(
 				"def cell(*arg):\n"
 				"\ttry: return self.cell(arg[0],arg[1])\n"

@@ -58,6 +58,7 @@
 #include "AssociationsDialog.h"
 #include "LayerDialog.h"
 #include "DataPickerTool.h"
+#include <vector>
 #include "ScreenPickerTool.h"
 #include "RangeSelectorTool.h"
 #include "TranslateCurveTool.h"
@@ -94,10 +95,7 @@ PlotController2D::~PlotController2D()
 
 void PlotController2D::plotBox()
 {
-
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
-	auto &Box = d_app->Box;
 
     generate2DGraph(Graph::Box);
 }
@@ -106,7 +104,6 @@ void PlotController2D::plotVerticalBars()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::VerticalBars);
 }
@@ -115,7 +112,6 @@ void PlotController2D::plotHorizontalBars()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::HorizontalBars);
 }
@@ -124,7 +120,6 @@ void PlotController2D::plotStackBar()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::StackBar);
 }
@@ -133,7 +128,6 @@ void PlotController2D::plotStackColumn()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::StackColumn);
 }
@@ -142,7 +136,6 @@ MultiLayer* PlotController2D::plotHistogram()
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
     return generate2DGraph(Graph::Histogram);
 }
@@ -151,10 +144,9 @@ MultiLayer* PlotController2D::plotHistogram(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!m){
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -171,7 +163,6 @@ void PlotController2D::plotArea()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::Area);
 }
@@ -180,9 +171,8 @@ void PlotController2D::plotPie()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = d_app->activeWindow<Table>();
     if (!table)
 		return;
 
@@ -204,7 +194,6 @@ void PlotController2D::plotL()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::Line);
 }
@@ -213,7 +202,6 @@ void PlotController2D::plotP()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::Scatter);
 }
@@ -222,7 +210,6 @@ void PlotController2D::plotLP()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::LineSymbols);
 }
@@ -231,7 +218,6 @@ void PlotController2D::plotVerticalDropLines()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::VerticalDropLines);
 }
@@ -240,7 +226,6 @@ void PlotController2D::plotSpline()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::Spline);
 }
@@ -249,7 +234,6 @@ void PlotController2D::plotVertSteps()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::VerticalSteps);
 }
@@ -258,7 +242,6 @@ void PlotController2D::plotHorSteps()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	generate2DGraph(Graph::HorizontalSteps);
 }
@@ -267,9 +250,8 @@ void PlotController2D::plotVectXYXY()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = d_app->activeWindow<Table>();
     if (!table)
 		return;
 	if (!validFor2DPlot(table, Graph::VectXYXY))
@@ -287,9 +269,8 @@ void PlotController2D::plotVectXYAM()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-    Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+    Table *table = d_app->activeWindow<Table>();
     if (!table)
 		return;
 	if (!validFor2DPlot(table, Graph::VectXYAM))
@@ -307,7 +288,6 @@ MultiLayer* PlotController2D::multilayerPlot(const QString& caption, int layers,
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	MultiLayer* ml = new MultiLayer(d_app, layers, rows, cols);
 	initMultilayerPlot(ml, caption);
@@ -318,7 +298,6 @@ MultiLayer* PlotController2D::newGraph(const QString& caption)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	QString name = caption;
 	while(d_app->alreadyUsedName(name))
@@ -341,7 +320,6 @@ MultiLayer* PlotController2D::multilayerPlot(Table* w, const QStringList& colLis
 {//used when plotting selected columns
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveLineWidth = d_app->defaultCurveLineWidth;
 	auto &defaultSymbolSize = d_app->defaultSymbolSize;
 
@@ -369,11 +347,10 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
 {//used when plotting from the panel menu
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveLineWidth = d_app->defaultCurveLineWidth;
 	auto &defaultSymbolSize = d_app->defaultSymbolSize;
 
-	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
     if (!t)
 		return 0;
 
@@ -430,9 +407,8 @@ MultiLayer* PlotController2D::waterfallPlot()
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
     if (!t)
 		return 0;
 
@@ -443,7 +419,6 @@ MultiLayer* PlotController2D::waterfallPlot(Table *t, const QStringList& list)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!t)
 		return 0;
@@ -480,7 +455,6 @@ void PlotController2D::initMultilayerPlot(MultiLayer* g, const QString& name)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_mdi_windows_area = d_app->d_mdi_windows_area;
 	auto &d_print_cropmarks = d_app->d_print_cropmarks;
 	auto &d_scale_plots_on_print = d_app->d_scale_plots_on_print;
@@ -513,7 +487,6 @@ void PlotController2D::setPreferences(Graph* g)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &antialiasing2DPlots = d_app->antialiasing2DPlots;
 	auto &autoScaleFonts = d_app->autoScaleFonts;
 	auto &autoscale2DPlots = d_app->autoscale2DPlots;
@@ -557,7 +530,7 @@ void PlotController2D::setPreferences(Graph* g)
 			bool show = d_show_axes[i];
 			g->enableAxis(i, show);
 			if(show){
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw (i);
+				ScaleDraw *sd = static_cast<ScaleDraw *>(g->axisScaleDraw(i));
 				sd->enableComponent(QwtAbstractScaleDraw::Labels, d_show_axes_labels[i]);
 				sd->setSpacing(d_graph_tick_labels_dist);
 				if (i == QwtPlot::yRight && !d_show_axes_labels[i])
@@ -614,7 +587,6 @@ void PlotController2D::setGraphDefaultSettings(bool autoscale, bool scaleFonts,
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &antialiasing2DPlots = d_app->antialiasing2DPlots;
 	auto &autoResizeLayers = d_app->autoResizeLayers;
 	auto &autoScaleFonts = d_app->autoScaleFonts;
@@ -653,7 +625,6 @@ void PlotController2D::setArrowDefaultSettings(double lineWidth,  const QColor& 
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultArrowColor = d_app->defaultArrowColor;
 	auto &defaultArrowHeadAngle = d_app->defaultArrowHeadAngle;
 	auto &defaultArrowHeadFill = d_app->defaultArrowHeadFill;
@@ -682,7 +653,6 @@ void PlotController2D::plotVerticalSharedAxisLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(1, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
@@ -692,7 +662,6 @@ void PlotController2D::plotHorizontalSharedAxisLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(2, 1, defaultCurveStyle, MultiLayer::AlignCanvases);
@@ -702,7 +671,6 @@ void PlotController2D::plotSharedAxesLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(2, 2, defaultCurveStyle, MultiLayer::AlignCanvases);
@@ -712,7 +680,6 @@ void PlotController2D::plotStackSharedAxisLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(1, -1, defaultCurveStyle, MultiLayer::AlignCanvases);
@@ -722,13 +689,12 @@ void PlotController2D::plotCustomLayout(bool sharedAxes)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_layer_canvas_height = d_app->d_layer_canvas_height;
 	auto &d_layer_canvas_width = d_app->d_layer_canvas_width;
 	auto &d_layer_geometry_unit = d_app->d_layer_geometry_unit;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
-	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t || !validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
 		return;
 
@@ -753,7 +719,6 @@ void PlotController2D::plot2VerticalLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(1, 2, defaultCurveStyle);
@@ -763,7 +728,6 @@ void PlotController2D::plot2HorizontalLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(2, 1, defaultCurveStyle);
@@ -773,7 +737,6 @@ void PlotController2D::plot4Layers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(2, 2, defaultCurveStyle);
@@ -783,7 +746,6 @@ void PlotController2D::plotStackedLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	multilayerPlot(1, -1, defaultCurveStyle);
@@ -793,7 +755,6 @@ void PlotController2D::plotStackedHistograms()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	multilayerPlot(1, -1, Graph::Histogram);
 }
@@ -802,9 +763,8 @@ void PlotController2D::zoomRectanglePlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-    Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+    Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -864,9 +824,8 @@ void PlotController2D::plotDoubleYAxis()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -897,7 +856,6 @@ MultiLayer* PlotController2D::newFunctionPlot(QStringList &formulas, double star
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	MultiLayer *ml = newGraph();
 	if (ml){
@@ -917,9 +875,8 @@ void PlotController2D::autoArrangeLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -935,9 +892,8 @@ void PlotController2D::extractGraphs()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-    MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+    MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -961,7 +917,6 @@ void PlotController2D::extractLayers()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	Graph *g = d_app->activePlotLayer(false);
 	if (!g)
@@ -995,9 +950,8 @@ void PlotController2D::addInsetLayer(bool curves)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-    MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+    MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -1027,7 +981,6 @@ void PlotController2D::addInsetCurveLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
     addInsetLayer(true);
 }
@@ -1036,9 +989,8 @@ void PlotController2D::addLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -1070,9 +1022,8 @@ void PlotController2D::deleteLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -1083,10 +1034,9 @@ void PlotController2D::copyActiveLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &lastCopiedLayer = d_app->lastCopiedLayer;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -1103,7 +1053,6 @@ void PlotController2D::custom2DPlotTools(MultiLayer *plot)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &actionAddEllipse = d_app->actionAddEllipse;
 	auto &actionAddFormula = d_app->actionAddFormula;
 	auto &actionAddRectangle = d_app->actionAddRectangle;
@@ -1142,7 +1091,7 @@ void PlotController2D::custom2DPlotTools(MultiLayer *plot)
 				btnPicker->setChecked(true);
 				return;
 			} else if (active_tool->rtti() == PlotToolInterface::Rtti_DataPicker){
-				switch(((DataPickerTool *)active_tool)->mode()){
+				switch(static_cast<DataPickerTool *>(active_tool)->mode()){
 					case DataPickerTool::Display:
 						btnCursor->setChecked(true);
 					break;
@@ -1161,7 +1110,7 @@ void PlotController2D::custom2DPlotTools(MultiLayer *plot)
 				actionDrawPoints->setChecked(true);
 				return;
 			} else if (active_tool->rtti() == PlotToolInterface::Rtti_AddWidgetTool){
-				switch(((AddWidgetTool *)active_tool)->widgetType()){
+				switch(static_cast<AddWidgetTool *>(active_tool)->widgetType()){
 					case AddWidgetTool::Text:
 						actionAddText->setChecked(true);
 					break;
@@ -1209,7 +1158,6 @@ void PlotController2D::connectMultilayerPlot(MultiLayer *g)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &btnPointer = d_app->btnPointer;
 	auto &confirmClosePlot2D = d_app->confirmClosePlot2D;
 	auto &d_undo_group = d_app->d_undo_group;
@@ -1241,10 +1189,9 @@ MultiLayer* PlotController2D::plotGrayScale(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!m) {
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1256,10 +1203,9 @@ MultiLayer* PlotController2D::plotContour(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!m) {
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1271,10 +1217,9 @@ MultiLayer* PlotController2D::plotColorMap(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!m) {
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1286,10 +1231,9 @@ MultiLayer* PlotController2D::plotImage(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
     if (!m) {
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1326,7 +1270,6 @@ MultiLayer* PlotController2D::plotSpectrogram(Matrix *m, Graph::CurveType type)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (type == Graph::ImagePlot)
 		return plotImage(m);
@@ -1355,10 +1298,9 @@ MultiLayer* PlotController2D::plotImageProfiles(Matrix *m)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
     if (!m) {
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1385,10 +1327,7 @@ MultiLayer* PlotController2D::plotImageProfiles(Matrix *m)
 
 bool PlotController2D::validFor2DPlot(Table *table, Graph::CurveType type)
 {
-
 	if (!d_app) return false;
-	ApplicationWindow *app = d_app;
-	auto &Box = d_app->Box;
 
 	if (!table->selectedYColumns().count()){
   		QMessageBox::warning(d_app, tr("QtiPlot - Error"), tr("Please select a Y column to plot!"));
@@ -1409,18 +1348,15 @@ MultiLayer* PlotController2D::generate2DGraph(Graph::CurveType type)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return 0;
 
-    if (w->inherits("Table")){
-        Table *table = static_cast<Table *>(w);
+    if (Table *table = qobject_cast<Table *>(w)){
 		QTableWidgetSelectionRange sel = table->getSelection();
         return multilayerPlot(table, table->drawableColumnSelection(), type, sel.topRow(), sel.bottomRow());
-    } else if (w->inherits("Matrix")){
-        Matrix *m = static_cast<Matrix *>(w);
+    } else if (Matrix *m = qobject_cast<Matrix *>(w)){
         return plotHistogram(m);
     }
 	return 0;
@@ -1430,9 +1366,8 @@ Note * PlotController2D::newStemPlot()
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return nullptr;
 
@@ -1462,10 +1397,7 @@ Note * PlotController2D::newStemPlot()
 
 QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, int startRow, int endRow)
 {
-
 	if (!d_app) return QString();
-	ApplicationWindow *app = d_app;
-	auto &ceil = d_app->ceil;
 
 	if (!t)
 		return QString();
@@ -1495,11 +1427,7 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 	}
 
 	if (rows >= 1){
-		double *data = (double *)malloc(rows * sizeof (double));
-		if (!data){
-			result += tr("Not enough memory for d_app dataset!") + "\n";
-			return result;
-		}
+		std::vector<double> data(rows, 0.0);
 
 		result += "\n" + tr("Stem") + " | " + tr("Leaf");
 		result += "\n---------------------\n";
@@ -1511,7 +1439,7 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 				row++;
 			}
 		}
-		gsl_sort (data, 1, rows);
+		gsl_sort (data.data(), 1, rows);
 
 		if (power > 1e3){
 			power = std::ceil(log10(data[rows - 1] - data[0]) - log10(rows - 1));
@@ -1549,7 +1477,6 @@ QString PlotController2D::stemPlot(Table *t, const QString& colName, int power, 
 		legend += " " + tr("means") + ": " + d_app->locale().toString(prev_stem*stem_unit + leaf*leaf_unit) + "\n";
 
 		result += legend + "---------------------\n";
-		free(data);
 	} else
 		result += "\t" + tr("Input error: empty data set!") + "\n";
 	return result;

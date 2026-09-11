@@ -38,8 +38,8 @@ public:
 	virtual ImageSymbol *clone() const;
 	virtual void draw(QPainter *p, const QRect &r) const;
 
-	QPixmap pixmap(){return d_pixmap;};
-	QString imagePath(){return d_image_path;};
+	const QPixmap &pixmap() const { return d_pixmap; }
+	QString imagePath() const { return d_image_path; }
 
 private:
 	QString d_image_path;

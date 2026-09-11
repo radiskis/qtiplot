@@ -121,16 +121,18 @@ FindDialog::FindDialog( QWidget* parent, Qt::WindowFlags fl )
 
 void FindDialog::setStartPath()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	labelStart->setText(app->current_folder->path());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (app && app->current_folder)
+		labelStart->setText(app->current_folder->path());
 }
 
 void FindDialog::accept()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
-	app->find(boxFind->currentText(), boxWindowNames->isChecked(), boxWindowLabels->isChecked(),
-			boxFolderNames->isChecked(), boxCaseSensitive->isChecked(), boxPartialMatch->isChecked(),
-			boxSubfolders->isChecked());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+	if (app)
+		app->find(boxFind->currentText(), boxWindowNames->isChecked(), boxWindowLabels->isChecked(),
+				boxFolderNames->isChecked(), boxCaseSensitive->isChecked(), boxPartialMatch->isChecked(),
+				boxSubfolders->isChecked());
 	// add the combo box's current text to the list when the find button is pressed
 	QString text = boxFind->currentText();
 	if(!text.isEmpty() && boxFind->findText(text) == -1){ // no duplicates

@@ -60,7 +60,7 @@ public:
 	void refresh();
 
 	//! Return my parent casted to Graph.
-	Graph *plot() {return (Graph *)parent();};
+	Graph *plot();
 
 	void deselect();
 	

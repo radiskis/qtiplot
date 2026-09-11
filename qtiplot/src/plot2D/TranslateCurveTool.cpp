@@ -45,10 +45,11 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 {
 
 	// Phase 1: select curve point
-	d_sub_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display);
-	connect((DataPickerTool*)d_sub_tool, &DataPickerTool::statusText,
+	auto *picker = new DataPickerTool(d_graph, app, DataPickerTool::Display);
+	d_sub_tool = picker;
+	connect(picker, &DataPickerTool::statusText,
 			this, &TranslateCurveTool::statusText);
-	connect((DataPickerTool*)d_sub_tool, &DataPickerTool::selected,
+	connect(picker, &DataPickerTool::selected,
 			this, &TranslateCurveTool::selectCurvePoint);
 
 	emit statusText(tr("Double-click on plot to select a data point!"));
@@ -59,8 +60,7 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	if (!curve)
 		return;
 
-	if(((PlotCurve *)curve)->type() != Graph::Function){
-		DataCurve *c = (DataCurve *)curve;
+	if (DataCurve *c = dynamic_cast<DataCurve *>(curve)){
 		Table *t = c->table();
 		if (!t)
 			return;
@@ -85,15 +85,16 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	delete d_sub_tool;
 
 	// Phase 2: select destination
-	d_sub_tool = new ScreenPickerTool(d_graph);
-	connect((ScreenPickerTool*)d_sub_tool, &ScreenPickerTool::statusText,
+	auto *spt = new ScreenPickerTool(d_graph);
+	d_sub_tool = spt;
+	connect(spt, &ScreenPickerTool::statusText,
 			this, &TranslateCurveTool::statusText);
-	((ScreenPickerTool*)d_sub_tool)->append(d_curve_point);
+	spt->append(d_curve_point);
 	ScreenPickerTool::MoveRestriction moveRestriction = ScreenPickerTool::Vertical;
 	if (d_dir == Horizontal)
 		moveRestriction = ScreenPickerTool::Horizontal;
-	((ScreenPickerTool*)d_sub_tool)->setMoveRestriction(moveRestriction);
-	connect((ScreenPickerTool*)d_sub_tool, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &TranslateCurveTool::selectDestination);
+	spt->setMoveRestriction(moveRestriction);
+	connect(spt, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &TranslateCurveTool::selectDestination);
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));
 }
 
@@ -105,12 +106,11 @@ void TranslateCurveTool::selectDestination(const QPointF &point)
 
 	// Phase 3: execute the translation
 
-	if(((PlotCurve *)d_selected_curve)->type() == Graph::Function){
+	if (FunctionCurve *func = dynamic_cast<FunctionCurve *>(d_selected_curve)){
 	    if (d_dir == Horizontal){
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("This operation cannot be performed on function curves."));
         } else {
-            FunctionCurve *func = (FunctionCurve *)d_selected_curve;
             if (func->functionType() == FunctionCurve::Normal){
                 QString formula = func->formulas().first();
                 double d = point.y() - d_curve_point.y();
@@ -123,8 +123,7 @@ void TranslateCurveTool::selectDestination(const QPointF &point)
         }
 	    d_graph->setActiveTool(nullptr);
 	    return;
-    } else {
-    	DataCurve *c = (DataCurve *)d_selected_curve;
+    } else if (DataCurve *c = dynamic_cast<DataCurve *>(d_selected_curve)){
 		double d = 0.0;
 		QString col_name;
 		switch(d_dir) {

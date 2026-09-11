@@ -324,7 +324,7 @@ bool PlotWizard::noCurves()
 
 void PlotWizard::plot3DRibbon(const QStringList& lst)
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     if (!app)
         return;
 
@@ -358,7 +358,7 @@ void PlotWizard::plot3DRibbon(const QStringList& lst)
 
 void PlotWizard::plot3D(const QStringList& lst)
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     if (!app)
         return;
 
@@ -398,7 +398,7 @@ void PlotWizard::plot3D(const QStringList& lst)
 
 void PlotWizard::plot2D(const QStringList& colList)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (!app)
 		return;
 
@@ -421,7 +421,7 @@ void PlotWizard::plot2D(const QStringList& colList)
 		QString s = colList[i];
 		int pos = s.indexOf(":", 0);
 		QString caption = s.left(pos) + "_";
-		Table *w = (Table *)app->table(caption);
+		Table *w = app->table(caption);
 
 		int posX = s.indexOf("(X)", pos);
 		QString xColName = caption + s.mid(pos+2, posX-pos-2);
@@ -443,9 +443,9 @@ void PlotWizard::plot2D(const QStringList& colList)
 			}
 
 			QString errColName = caption+s.mid(posY+2, posErr-posY-2);
-			c = (PlotCurve *)ag->addErrorBars(xColName, yColName, w, errColName, errType);
+			c = ag->addErrorBars(xColName, yColName, w, errColName, errType);
 		} else
-			c = (PlotCurve *)ag->insertCurve(w, xColName, yColName, app->defaultCurveStyle);
+			c = ag->insertCurve(w, xColName, yColName, app->defaultCurveStyle);
 
 		CurveLayout cl = ag->initCurveLayout(app->defaultCurveStyle, curves - errorBars);
 		cl.lWidth = app->defaultCurveLineWidth;

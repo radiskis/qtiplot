@@ -123,19 +123,19 @@ void Plot3DDialog::initScalesPage()
 	axesList->setFixedWidth(50);
 	axesList->setCurrentRow(0);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 
 	QGridLayout *gl1 = new QGridLayout();
 	gl1->addWidget(new QLabel(tr("From")), 0, 0);
 	boxFrom = new DoubleSpinBox();
-	boxFrom->setLocale(app->locale());
-	boxFrom->setDecimals(app->d_decimal_digits);
+	boxFrom->setLocale(app ? app->locale() : QLocale());
+	boxFrom->setDecimals(app ? app->d_decimal_digits : 6);
 	gl1->addWidget(boxFrom, 0, 1);
 
 	gl1->addWidget(new QLabel(tr("To")), 1, 0);
 	boxTo = new DoubleSpinBox();
-	boxTo->setLocale(app->locale());
-	boxTo->setDecimals(app->d_decimal_digits);
+	boxTo->setLocale(app ? app->locale() : QLocale());
+	boxTo->setDecimals(app ? app->d_decimal_digits : 6);
 	gl1->addWidget(boxTo, 1, 1);
 
 	gl1->addWidget(new QLabel(tr("Type")), 2, 0);
@@ -222,19 +222,19 @@ void Plot3DDialog::initAxesPage()
     hb1->addStretch();
     gl1->addLayout(hb1, 1, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 
     gl1->addWidget(new QLabel(tr("Major Ticks Length")), 2, 0);
 	boxMajorLength = new DoubleSpinBox();
-	boxMajorLength->setLocale(app->locale());
-    boxMajorLength->setDecimals(app->d_decimal_digits);
+	boxMajorLength->setLocale(app ? app->locale() : QLocale());
+    boxMajorLength->setDecimals(app ? app->d_decimal_digits : 6);
 	boxMajorLength->setMinimum(0.0);
     gl1->addWidget(boxMajorLength, 2, 1);
 
     gl1->addWidget(new QLabel(tr("Minor Ticks Length")), 3, 0);
 	boxMinorLength = new DoubleSpinBox();
-	boxMinorLength->setLocale(app->locale());
-    boxMinorLength->setDecimals(app->d_decimal_digits);
+	boxMinorLength->setLocale(app ? app->locale() : QLocale());
+    boxMinorLength->setDecimals(app ? app->d_decimal_digits : 6);
 	boxMinorLength->setMinimum(0.0);
 
     gl1->addWidget(boxMinorLength, 3, 1);
@@ -297,8 +297,8 @@ void Plot3DDialog::initColorsPage()
 
 	QHBoxLayout* hb = new QHBoxLayout(linearColorMapGroupBox);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	d_color_map_editor = new ColorMapEditor(app->locale(), app->d_decimal_digits);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	d_color_map_editor = new ColorMapEditor(app ? app->locale() : QLocale(), app ? app->d_decimal_digits : 6);
 	hb->addWidget(d_color_map_editor);
 
     colorMapFileGroupBox = new QGroupBox(tr( "Color map &file" ));
@@ -402,7 +402,7 @@ void Plot3DDialog::initColorsPage()
 
 void Plot3DDialog::initGeneralPage()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -582,15 +582,15 @@ void Plot3DDialog::initGridPage()
 
 	gl1->addWidget(new QLabel(tr("Width")), 3, 0);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 
 	boxMajorGridWidth = new DoubleSpinBox();
-	boxMajorGridWidth->setLocale(app->locale());
+	boxMajorGridWidth->setLocale(app ? app->locale() : QLocale());
 	boxMajorGridWidth->setMinimum(0.0);
 	gl1->addWidget(boxMajorGridWidth, 3, 1);
 
 	boxMinorGridWidth = new DoubleSpinBox();
-	boxMinorGridWidth->setLocale(app->locale());
+	boxMinorGridWidth->setLocale(app ? app->locale() : QLocale());
 	boxMinorGridWidth->setMinimum(0.0);
 	gl1->addWidget(boxMinorGridWidth, 3, 2);
 
@@ -620,13 +620,13 @@ void Plot3DDialog::initPointsOptionsStack()
 	optionStack->setFrameShape( QFrame::StyledPanel );
 	optionStack->setFrameShadow( QStackedWidget::Plain );
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 
     QGridLayout *gl1 = new QGridLayout();
     gl1->addWidget(new QLabel( tr( "Width" )), 0, 0);
 	boxSize = new DoubleSpinBox();
-	boxSize->setLocale(app->locale());
-    boxSize->setDecimals(app->d_decimal_digits);
+	boxSize->setLocale(app ? app->locale() : QLocale());
+    boxSize->setDecimals(app ? app->d_decimal_digits : 6);
     boxSize->setMinimum(0.0);
 	boxSize->setValue(5);
     gl1->addWidget(boxSize, 0, 1);
@@ -916,10 +916,10 @@ void Plot3DDialog::showBarsTab()
 	QGridLayout* hb = new QGridLayout(bars);
 	hb->addWidget(new QLabel( tr( "Width" )), 0, 0);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	boxBarsRad = new DoubleSpinBox();
-	boxBarsRad->setLocale(app->locale());
-    boxBarsRad->setDecimals(app->d_decimal_digits);
+	boxBarsRad->setLocale(app ? app->locale() : QLocale());
+    boxBarsRad->setDecimals(app ? app->d_decimal_digits : 6);
 	boxBarsRad->setValue(d_plot->barsRadius());
 	boxBarsRad->setMinimum(0.0);
 	hb->addWidget(boxBarsRad, 0, 1);
@@ -1092,7 +1092,7 @@ void Plot3DDialog::accept()
 
 void Plot3DDialog::changeZoom(int)
 {
-	if (generalDialog->currentWidget() != (QWidget*)general)
+	if (generalDialog->currentWidget() != general)
 		return;
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1104,7 +1104,7 @@ void Plot3DDialog::changeZoom(int)
 
 void Plot3DDialog::changeTransparency(int val)
 {
-	if (generalDialog->currentWidget() != (QWidget*)colors)
+	if (generalDialog->currentWidget() != colors)
 		return;
 
 	d_plot->changeTransparency(val*0.01);
@@ -1116,7 +1116,7 @@ bool Plot3DDialog::updatePlot()
 	if (!d_plot)
 		return false;
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
     if (!app)
         return false;
 
@@ -1170,7 +1170,7 @@ bool Plot3DDialog::updatePlot()
 		d_plot->setZoom(zoom*boxZoom->value()*0.01);
 		d_plot->setScale(xScale*boxXScale->value()*0.01, yScale*boxYScale->value()*0.01, zScale*boxZScale->value()*0.01);
 		d_plot->setRotation(boxXRotation->value(), boxYRotation->value(), boxZRotation->value());
-	} else if (generalDialog->currentWidget() == (QWidget*)scale){
+	} else if (generalDialog->currentWidget() == scale){
 		double start = qMin(boxFrom->value(), boxTo->value());
 		double end = qMax(boxFrom->value(), boxTo->value());
 		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value() - 1, boxMinors->value() + 1, (Qwt3D::SCALETYPE)boxType->currentIndex());

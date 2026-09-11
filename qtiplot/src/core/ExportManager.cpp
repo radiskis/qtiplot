@@ -77,12 +77,11 @@ void ExportManager::exportMatrix(const QString& exportFilter)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_extended_export_dialog = d_app->d_extended_export_dialog;
 	auto &d_image_export_filter = d_app->d_image_export_filter;
 	auto &imagesDirPath = d_app->imagesDirPath;
 
-	Matrix* m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+	Matrix* m = d_app->activeWindow<Matrix>();
 	if (!m)
 		return;
 
@@ -124,7 +123,6 @@ void ExportManager::exportExcel()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	ImportExportPlugin *ep = d_app->exportPlugin("xls");
 	if (!ep)
@@ -142,7 +140,6 @@ void ExportManager::exportOds()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	ImportExportPlugin *ep = d_app->exportPlugin("ods");
 	if (!ep)
@@ -160,7 +157,6 @@ void ExportManager::exportGraph(const QString& exportFilter)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_extended_export_dialog = d_app->d_extended_export_dialog;
 	auto &d_image_export_filter = d_app->d_image_export_filter;
 	auto &imagesDirPath = d_app->imagesDirPath;
@@ -272,16 +268,15 @@ void ExportManager::exportLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_extended_export_dialog = d_app->d_extended_export_dialog;
 	auto &d_image_export_filter = d_app->d_image_export_filter;
 	auto &imagesDirPath = d_app->imagesDirPath;
 
-	MdiSubWindow *w = d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *w = d_app->activeWindow<MultiLayer>();
 	if (!w)
 		return;
 
-	Graph* g = ((MultiLayer*)w)->activeLayer();
+	Graph* g = w->activeLayer();
 	if (!g)
 		return;
 
@@ -326,7 +321,6 @@ void ExportManager::exportPresentationODF()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_extended_export_dialog = d_app->d_extended_export_dialog;
 	auto &imagesDirPath = d_app->imagesDirPath;
 
@@ -368,13 +362,12 @@ void ExportManager::exportPresentationODF()
 
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (qobject_cast<MultiLayer*>(w)){
-			MultiLayer *plot2D = qobject_cast<MultiLayer*>(w);
+		if (MultiLayer *plot2D = qobject_cast<MultiLayer*>(w)){
 			if (!plot2D->isEmpty())
 				plot2D->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
-		} else if (qobject_cast<Graph3D*>(w))
-			((Graph3D *)w)->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
+		} else if (Graph3D *plot3D = qobject_cast<Graph3D*>(w))
+			plot3D->exportImage(document, ied->quality(), ied->transparency(), ied->bitmapResolution(),
 						ied->customExportSize(), ied->sizeUnit(), ied->scaleFontsFactor());
 	}
 
@@ -388,13 +381,10 @@ void ExportManager::exportAllGraphs()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_confirm_overwrite = d_app->d_confirm_overwrite;
 	auto &d_extended_export_dialog = d_app->d_extended_export_dialog;
 	auto &d_image_export_filter = d_app->d_image_export_filter;
-	auto &format = d_app->format;
 	auto &imagesDirPath = d_app->imagesDirPath;
-	auto &right = d_app->right;
 
 	ImageExportDialog *ied = new ImageExportDialog(nullptr, d_app, d_extended_export_dialog);
 	ied->setWindowTitle(d_app->tr("Choose a directory to export the graphs to"));
@@ -425,9 +415,9 @@ void ExportManager::exportAllGraphs()
 
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (w->inherits("MultiLayer")) {
+		if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)) {
 			plot3D = 0;
-			plot2D = (MultiLayer *)w;
+			plot2D = ml;
 			if (plot2D->isEmpty()) {
 				QApplication::restoreOverrideCursor();
 				QMessageBox::warning(d_app, d_app->tr("QtiPlot - Warning"),
@@ -436,9 +426,9 @@ void ExportManager::exportAllGraphs()
 				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 				continue;
 			}
-		} else if (w->inherits("Graph3D")) {
+		} else if (Graph3D *g3d = qobject_cast<Graph3D *>(w)) {
 			plot2D = 0;
-			plot3D = (Graph3D *)w;
+			plot3D = g3d;
 		} else
 			continue;
 
@@ -450,7 +440,7 @@ void ExportManager::exportAllGraphs()
 			QString msg = d_app->tr("A file called: <p><b>%1</b><p>already exists. ""Do you want to overwrite it?").arg(file_name);
 			QMessageBox msgBox(QMessageBox::Question, d_app->tr("QtiPlot - Overwrite file?"), msg,
 							  QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::Cancel,
-							  (ApplicationWindow *)d_app);
+							  d_app);
  			msgBox.exec();
 			switch(msgBox.standardButton(msgBox.clickedButton())){
 				case QMessageBox::Yes:
@@ -525,12 +515,11 @@ ExportDialog* ExportManager::showExportASCIIDialog()
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
     MdiSubWindow* t = d_app->activeWindow();
     if (!t)
 		return 0;
-	if (!qobject_cast<Matrix*>(t) && !t->inherits("Table"))
+	if (!qobject_cast<Matrix*>(t) && !qobject_cast<Table*>(t))
 		return 0;
 
     ExportDialog* ed = new ExportDialog(t, d_app, true);
@@ -542,7 +531,6 @@ void ExportManager::exportAllTables(const QString& dir, const QString& filter, c
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_confirm_overwrite = d_app->d_confirm_overwrite;
 	auto &workingDir = d_app->workingDir;
 
@@ -556,8 +544,18 @@ void ExportManager::exportAllTables(const QString& dir, const QString& filter, c
 	bool success = true;
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (w->inherits("Table") || w->inherits("Matrix")){
+		Table *tbl = qobject_cast<Table *>(w);
+		Matrix *mat = qobject_cast<Matrix *>(w);
+		if (tbl || mat){
 			QString fileName = dir + "/" + w->objectName() + filter;
+			auto doExport = [&]() -> bool {
+				if (tbl)
+					return tbl->exportASCII(fileName, sep, colNames, colComments, expSelection);
+				if (mat)
+					return mat->exportASCII(fileName, sep, expSelection);
+				return false;
+			};
+
 			QFile f(fileName);
 			if (f.exists(fileName) && confirmOverwrite){
 				QApplication::restoreOverrideCursor();
@@ -566,28 +564,21 @@ void ExportManager::exportAllTables(const QString& dir, const QString& filter, c
 								"Do you want to overwrite it?").arg(fileName), QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::Cancel, QMessageBox::Yes))
 				{
 					case QMessageBox::Yes:
-						if (w->inherits("Table"))
-							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->inherits("Matrix"))
-							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+						success = doExport();
 						break;
 
 					case QMessageBox::YesToAll:
 						confirmOverwrite = false;
-						if (w->inherits("Table"))
-							success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-						else if (w->inherits("Matrix"))
-							success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+						success = doExport();
 						break;
 
 					case QMessageBox::Cancel:
 						return;
 						break;
 				}
-			} else if (w->inherits("Table"))
-				success = ((Table*)w)->exportASCII(fileName, sep, colNames, colComments, expSelection);
-			  else if (w->inherits("Matrix"))
-				success = ((Matrix*)w)->exportASCII(fileName, sep, expSelection);
+			} else {
+				success = doExport();
+			}
 
 			if (!success)
 				break;
@@ -600,19 +591,19 @@ void ExportManager::exportPDF()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_confirm_overwrite = d_app->d_confirm_overwrite;
 	auto &imagesDirPath = d_app->imagesDirPath;
-	auto &right = d_app->right;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return;
 
-	if(qobject_cast<MultiLayer *>(w) && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
-			d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
-		return;
+	if(MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+		if (ml->isEmpty()){
+			QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
+				d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
+			return;
+		}
 	}
 
 	if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w) || qobject_cast<PolarGraph *>(w)){
@@ -650,16 +641,17 @@ void ExportManager::print()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow* w = d_app->activeWindow();
 	if (!w)
 		return;
 
-    if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
-				d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
-		return;
+    if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+		if (ml->isEmpty()){
+			QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
+					d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
+			return;
+		}
 	}
 	w->print();
 }
@@ -668,7 +660,6 @@ void ExportManager::printPreview()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_print_paper_size = d_app->d_print_paper_size;
 	auto &d_printer_orientation = d_app->d_printer_orientation;
 
@@ -676,10 +667,12 @@ void ExportManager::printPreview()
 	if (!w)
 		return;
 
-	if (w->inherits("MultiLayer") && ((MultiLayer *)w)->isEmpty()){
-		QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
-				d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
-		return;
+	if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+		if (ml->isEmpty()){
+			QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
+					d_app->tr("<h4>There are no plot layers available in d_app window.</h4>"));
+			return;
+		}
 	}
 
 	QPrinter p;
@@ -698,7 +691,6 @@ void ExportManager::setPrintPreviewOptions(QPrinter *printer)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_print_paper_size = d_app->d_print_paper_size;
 	auto &d_printer_orientation = d_app->d_printer_orientation;
 
@@ -713,7 +705,6 @@ void ExportManager::printAllPlots()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	QPrinter printer;
 	printer.setPageOrientation(QPageLayout::Landscape);

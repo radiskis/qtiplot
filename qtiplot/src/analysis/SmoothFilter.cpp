@@ -38,6 +38,7 @@
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_poly.h>
+#include "GslRAII.h"
 
 SmoothFilter::SmoothFilter(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
@@ -133,24 +134,27 @@ void SmoothFilter::smoothFFT(double *x, double *y)
 	if (fabs(dx) <= 0.0)
 		return;
 
-	gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
-	gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
-	gsl_fft_real_transform (y, 1, d_n, real, work);//FFT forward
-	gsl_fft_real_wavetable_free (real);
+	GslRAII::UniqueFftRealWorkspace work(gsl_fft_real_workspace_alloc(d_n));
+	GslRAII::UniqueFftRealWavetable real(gsl_fft_real_wavetable_alloc(d_n));
+	if (!work || !real)
+		return;
+
+	gsl_fft_real_transform(y, 1, d_n, real.get(), work.get()); // FFT forward
 
 	double df = 1.0/(double)dx;
-	double lf = df/(double)d_smooth_points;//frequency cutoff
+	double lf = df/(double)d_smooth_points; // frequency cutoff
 	df = 0.5*df/(double)d_n;
 
-    for (int i = 0; i < d_n; i++){
-	   x[i] = d_x[i];
-	   y[i] = i*df > lf ? 0 : y[i];//filtering frequencies
+	for (int i = 0; i < d_n; i++) {
+		x[i] = d_x[i];
+		y[i] = i*df > lf ? 0 : y[i]; // filtering frequencies
 	}
 
-	gsl_fft_halfcomplex_wavetable *hc = gsl_fft_halfcomplex_wavetable_alloc (d_n);
-	gsl_fft_halfcomplex_inverse (y, 1, d_n, hc, work);//FFT inverse
-	gsl_fft_halfcomplex_wavetable_free (hc);
-	gsl_fft_real_workspace_free (work);
+	GslRAII::UniqueFftHalfcomplexWavetable hc(gsl_fft_halfcomplex_wavetable_alloc(d_n));
+	if (!hc)
+		return;
+
+	gsl_fft_halfcomplex_inverse(y, 1, d_n, hc.get(), work.get()); // FFT inverse
 }
 
 void SmoothFilter::smoothAverage(double *, double *y)
@@ -166,7 +170,7 @@ void SmoothFilter::smoothAverage(double *, double *y)
 
 	double m = double(2*p2+1);
 	double aux = 0.0;
-    double *s = new double[d_n];
+    std::vector<double> s(d_n);
 
 	s[0] = y[0];
 	for (int i=1; i<p2; i++){
@@ -194,8 +198,6 @@ void SmoothFilter::smoothAverage(double *, double *y)
 
     for (int i = 0; i<d_n; i++)
         y[i] = s[i];
-
-    delete[] s;
 }
 
 /**
@@ -217,43 +219,53 @@ int SmoothFilter::savitzkyGolayCoefficients(int points, int polynom_order, gsl_m
 	int error = 0; // catch GSL error codes
 
 	// compute Vandermonde matrix
-	gsl_matrix *vandermonde = gsl_matrix_alloc(points, polynom_order + 1);
+	GslRAII::UniqueMatrix vandermonde(gsl_matrix_alloc(points, polynom_order + 1));
+	if (!vandermonde)
+		return GSL_ENOMEM;
+
 	for (int i = 0; i < points; ++i){
-		gsl_matrix_set(vandermonde, i, 0, 1.0);
+		gsl_matrix_set(vandermonde.get(), i, 0, 1.0);
 		for (int j = 1; j <= polynom_order; ++j)
-			gsl_matrix_set(vandermonde, i, j, gsl_matrix_get(vandermonde, i, j - 1) * i);
+			gsl_matrix_set(vandermonde.get(), i, j, gsl_matrix_get(vandermonde.get(), i, j - 1) * i);
 	}
 
 	// compute V^TV
-	gsl_matrix *vtv = gsl_matrix_alloc(polynom_order + 1, polynom_order + 1);
-	error = gsl_blas_dgemm(CblasTrans, CblasNoTrans, 1.0, vandermonde, vandermonde, 0.0, vtv);
+	GslRAII::UniqueMatrix vtv(gsl_matrix_alloc(polynom_order + 1, polynom_order + 1));
+	if (!vtv)
+		return GSL_ENOMEM;
+
+	error = gsl_blas_dgemm(CblasTrans, CblasNoTrans, 1.0, vandermonde.get(), vandermonde.get(), 0.0, vtv.get());
 
 	if (!error){
 		// compute (V^TV)^(-1) using LU decomposition
-		gsl_permutation *p = gsl_permutation_alloc(polynom_order + 1);
+		GslRAII::UniquePermutation p(gsl_permutation_alloc(polynom_order + 1));
+		if (!p)
+			return GSL_ENOMEM;
+
 		int signum;
-		error = gsl_linalg_LU_decomp(vtv, p, &signum);
+		error = gsl_linalg_LU_decomp(vtv.get(), p.get(), &signum);
 
 		if (!error){
-			gsl_matrix *vtv_inv = gsl_matrix_alloc(polynom_order + 1, polynom_order + 1);
-			error = gsl_linalg_LU_invert(vtv, p, vtv_inv);
+			GslRAII::UniqueMatrix vtv_inv(gsl_matrix_alloc(polynom_order + 1, polynom_order + 1));
+			if (!vtv_inv)
+				return GSL_ENOMEM;
+
+			error = gsl_linalg_LU_invert(vtv.get(), p.get(), vtv_inv.get());
 			if (!error) {
 				// compute (V^TV)^(-1)V^T
-				gsl_matrix *vtv_inv_vt = gsl_matrix_alloc(polynom_order + 1, points);
-				error = gsl_blas_dgemm(CblasNoTrans, CblasTrans, 1.0, vtv_inv, vandermonde, 0.0, vtv_inv_vt);
+				GslRAII::UniqueMatrix vtv_inv_vt(gsl_matrix_alloc(polynom_order + 1, points));
+				if (!vtv_inv_vt)
+					return GSL_ENOMEM;
+
+				error = gsl_blas_dgemm(CblasNoTrans, CblasTrans, 1.0, vtv_inv.get(), vandermonde.get(), 0.0, vtv_inv_vt.get());
 
 				if (!error) {
 					// finally, compute H = V(V^TV)^(-1)V^T
-					error = gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, vandermonde, vtv_inv_vt, 0.0, h);
+					error = gsl_blas_dgemm(CblasNoTrans, CblasNoTrans, 1.0, vandermonde.get(), vtv_inv_vt.get(), 0.0, h);
 				}
-				gsl_matrix_free(vtv_inv_vt);
 			}
-			gsl_matrix_free(vtv_inv);
 		}
-		gsl_permutation_free(p);
 	}
-	gsl_matrix_free(vtv);
-	gsl_matrix_free(vandermonde);
 
 	return error;
 }
@@ -291,33 +303,32 @@ void SmoothFilter::smoothSavGol(double *, double *y_inout)
 	}
 
 	// Savitzky-Golay coefficient matrix, y' = H y
-	gsl_matrix *h = gsl_matrix_alloc(points, points);
-	if (int error = savitzkyGolayCoefficients(points, d_polynom_order, h)){
+	GslRAII::UniqueMatrix h(gsl_matrix_alloc(points, points));
+	if (!h) {
+		memoryErrorMessage();
+		return;
+	}
+	if (int error = savitzkyGolayCoefficients(points, d_polynom_order, h.get())){
 		reportError(tr("QtiPlot") + " - " + tr("Error"),
 				tr("Internal error in Savitzky-Golay algorithm.\n") + gsl_strerror(error));
-		gsl_matrix_free(h);
 		return;
 	}
 
 	// allocate memory for the result (temporary; don't overwrite y_inout while we still read from it)
-	double *result = (double *)malloc(d_n*sizeof(double));
-	if (!result){
-		memoryErrorMessage();
-		return;
-	}
+	std::vector<double> result(d_n);
 
 	// handle left edge by zero padding
 	for (int i = 0; i < d_sav_gol_points; i++){
 		double convolution = 0.0;
 		for (int k = d_sav_gol_points - i; k < points; k++)
-			convolution += gsl_matrix_get(h, d_sav_gol_points, k) * y_inout[i - d_sav_gol_points + k];
+			convolution += gsl_matrix_get(h.get(), d_sav_gol_points, k) * y_inout[i - d_sav_gol_points + k];
 		result[i] = convolution;
 	}
 	// central part: convolve with fixed row of h (as given by number of left points to use)
 	for (int i = d_sav_gol_points; i < d_n - d_smooth_points; i++){
 		double convolution = 0.0;
 		for (int k = 0; k < points; k++)
-			convolution += gsl_matrix_get(h, d_sav_gol_points, k) * y_inout[i - d_sav_gol_points + k];
+			convolution += gsl_matrix_get(h.get(), d_sav_gol_points, k) * y_inout[i - d_sav_gol_points + k];
 		result[i] = convolution;
 	}
 
@@ -328,19 +339,14 @@ void SmoothFilter::smoothSavGol(double *, double *y_inout)
 		for (int k = 0; k < points && i - d_sav_gol_points + k < d_n; k++){
 			int y_idx = i - d_sav_gol_points + k;
 			if (y_idx >= 0 && y_idx < d_n)
-				convolution += gsl_matrix_get(h, d_sav_gol_points, k) * y_inout[y_idx];
+				convolution += gsl_matrix_get(h.get(), d_sav_gol_points, k) * y_inout[y_idx];
 		}
 		result[i] = convolution;
 	}
 
-	// deallocate memory
-	gsl_matrix_free(h);
-
 	// write result into *y_inout
 	for (int i = 0; i < d_n; i++)
 		y_inout[i] = result[i];
-
-	free(result);
 }
 
 void SmoothFilter::setSmoothPoints(int points, int left_points)

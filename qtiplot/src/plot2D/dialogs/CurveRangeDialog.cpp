@@ -114,7 +114,7 @@ void CurveRangeDialog::setCurveToModify(Graph *g, int curve)
 		return;
 
 	d_graph = g;
-	DataCurve *d_curve = (DataCurve *)d_graph->curve(curve);
+	DataCurve *d_curve = dynamic_cast<DataCurve *>(d_graph->curve(curve));
 	if (!d_curve)
 		return;
 
@@ -140,7 +140,7 @@ void CurveRangeDialog::setCurvesToModify(Graph *g, const QList<int>& indexes)
 
 	QStringList curveNames;
 	for (int i : indexes){
-		DataCurve *c = (DataCurve *)d_graph->curve(i);
+		DataCurve *c = dynamic_cast<DataCurve *>(d_graph->curve(i));
 		if (c){
 			d_curves << c;
 			curveNames << c->title().text();

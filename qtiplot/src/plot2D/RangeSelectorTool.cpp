@@ -111,10 +111,10 @@ void RangeSelectorTool::pointSelected(const QPoint &pos)
 {
 	int dist, point;
 	QwtPlotItem *item = d_graph->closestCurve(pos.x(), pos.y(), dist, point);
-	if (!item || item->rtti() == QwtPlotItem::Rtti_PlotSpectrogram || dist >= 5) // 5 pixels tolerance
+	if (!item || item->rtti() != QwtPlotItem::Rtti_PlotCurve || dist >= 5) // 5 pixels tolerance
 		return;
 
-	QwtPlotCurve *curve = (QwtPlotCurve *)item;
+	QwtPlotCurve *curve = static_cast<QwtPlotCurve *>(item);
 	if (curve == d_selected_curve)
 		setActivePoint(point);
 	else {
@@ -157,8 +157,9 @@ void RangeSelectorTool::setActivePoint(int point)
 void RangeSelectorTool::emitStatusText()
 {
     QLocale locale = d_graph->multiLayer()->locale();
-	if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
-		((PlotCurve *)d_selected_curve)->type() == Graph::Histogram){
+	PlotCurve *pc = dynamic_cast<PlotCurve *>(d_selected_curve);
+	int ctype = pc ? pc->type() : -1;
+	if (ctype == Graph::Function || ctype == Graph::Histogram){
 		 double x = d_selected_curve->sample(d_active_point).x();
 		 double y = d_selected_curve->sample(d_active_point).y();
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; dx=%6; dy=%7")
@@ -169,16 +170,18 @@ void RangeSelectorTool::emitStatusText()
 			.arg(locale.toString(y, 'G', 16))
 			.arg(locale.toString(qAbs(x - d_selected_curve->sample(d_inactive_point).x()), 'G', 16))
 			.arg(locale.toString(qAbs(y - d_selected_curve->sample(d_inactive_point).y()), 'G', 16)));
-    } else if (((PlotCurve *)d_selected_curve)->type() == Graph::ErrorBars){
+    } else if (ctype == Graph::ErrorBars){
          emit statusText(QString("%1 <=> %2[%3]: x=%4; y=%5; err=%6")
 			.arg(d_active_marker.xValue() > d_inactive_marker.xValue() ? tr("Right") : tr("Left"))
 			.arg(d_selected_curve->title().text())
 			.arg(d_active_point + 1)
 			.arg(locale.toString(d_selected_curve->sample(d_active_point).x(), 'G', 16))
 			.arg(locale.toString(d_selected_curve->sample(d_active_point).y(), 'G', 16))
-			.arg(locale.toString(((ErrorBarsCurve*)d_selected_curve)->errorValue(d_active_point), 'G', 16)));
+			.arg(locale.toString(static_cast<ErrorBarsCurve *>(d_selected_curve)->errorValue(d_active_point), 'G', 16)));
     } else {
-		DataCurve *c = (DataCurve*)d_selected_curve;
+		DataCurve *c = dynamic_cast<DataCurve *>(d_selected_curve);
+		if (!c)
+			return;
 		Table *t = c->table();
 		Table *xt = c->xTable();
 		if (!t || !xt)
@@ -231,7 +234,7 @@ bool RangeSelectorTool::eventFilter(QObject *obj, QEvent *event)
 {
 	switch(event->type()) {
 		case QEvent::KeyPress:
-			if (keyEventFilter((QKeyEvent*)event))
+			if (keyEventFilter(static_cast<QKeyEvent *>(event)))
 				return true;
 			break;
 		default:
@@ -354,16 +357,18 @@ void RangeSelectorTool::copySelectedCurve()
 bool RangeSelectorTool::mightNeedMultipleSelection()
 {
 	int count = 0;
-	if (((PlotCurve*)d_selected_curve)->type() != Graph::Function){
-		QString xCol = ((DataCurve*)d_selected_curve)->xColumnName();
-		for (int i = 0; i < d_graph->curveCount(); i++){
-			PlotCurve *curve = (PlotCurve*)d_graph->curve(i);
-			if (curve->type() != Graph::Function &&
-				((DataCurve *)curve)->xColumnName() == xCol)
-				count++;
+	if (DataCurve *selectedDc = dynamic_cast<DataCurve *>(d_selected_curve)){
+		if (selectedDc->type() != Graph::Function){
+			QString xCol = selectedDc->xColumnName();
+			for (int i = 0; i < d_graph->curveCount(); i++){
+				if (DataCurve *curve = dynamic_cast<DataCurve *>(d_graph->curve(i))){
+					if (curve->type() != Graph::Function && curve->xColumnName() == xCol)
+						count++;
+				}
+			}
 		}
 	}
-	return count > 1 ? true : false;
+	return count > 1;
 }
 
 void RangeSelectorTool::cutMultipleSelection()
@@ -381,11 +386,13 @@ void RangeSelectorTool::copyMultipleSelection()
 	int end_point = qMax(d_active_point, d_inactive_point);
 	QLocale locale = d_graph->multiLayer()->locale();
 	QString text;
-	QList <PlotCurve*> cvs;
+	QList<PlotCurve *> cvs;
 	for (int j = 0; j < d_selection_lst.count(); j++){
 		QCheckBox *box = d_selection_lst[j];
-		if (box->isChecked())
-			cvs << (PlotCurve*)d_graph->curve(box->text());
+		if (box->isChecked()){
+			if (PlotCurve *pc = dynamic_cast<PlotCurve *>(d_graph->curve(box->text())))
+				cvs << pc;
+		}
 	}
 
 	int curves = cvs.size();
@@ -394,7 +401,7 @@ void RangeSelectorTool::copyMultipleSelection()
 		for (int j = 0; j < curves; j++){
 			PlotCurve *curve = cvs[j];
 			if (curve->type() == Graph::ErrorBars)
-				text += "\t" + locale.toString(((ErrorBarsCurve*)curve)->errorValue(i), 'G', 16);
+				text += "\t" + locale.toString(static_cast<ErrorBarsCurve *>(curve)->errorValue(i), 'G', 16);
 			else
 				text += "\t" + locale.toString(curve->sample(i).y(), 'G', 16);
 		}
@@ -409,19 +416,23 @@ void RangeSelectorTool::clearMultipleSelection()
 	if (d_selection_dialog)
 		d_selection_dialog->hide();
 
+	DataCurve *selectedDc = dynamic_cast<DataCurve *>(d_selected_curve);
+	if (!selectedDc)
+		return;
+
 	int start_point = qMin(d_active_point, d_inactive_point);
-	int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+	int start_row = selectedDc->tableRow(start_point);
 	int end_point = qMax(d_active_point, d_inactive_point);
-	int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+	int end_row = selectedDc->tableRow(end_point);
 
 	for (int j = 0; j < d_selection_lst.count(); j++){
 		QCheckBox *box = d_selection_lst[j];
 		if (box->isChecked()){
-			PlotCurve *curve = (PlotCurve*)d_graph->curve(box->text());
+			DataCurve *curve = dynamic_cast<DataCurve *>(d_graph->curve(box->text()));
 			if (!curve || curve->type() == Graph::Function)
 				continue;
 
-			Table *t = ((DataCurve*)curve)->table();
+			Table *t = curve->table();
 			if (!t)
 				continue;
 			QString name = curve->title().text();
@@ -469,17 +480,20 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 
 	QVBoxLayout *vb = new QVBoxLayout(d_selection_dialog);
 
-	QString xCol = ((DataCurve*)d_selected_curve)->xColumnName();
+	DataCurve *selectedDc = dynamic_cast<DataCurve *>(d_selected_curve);
+	if (!selectedDc)
+		return;
+
+	QString xCol = selectedDc->xColumnName();
 	for (int i = 0; i < d_graph->curveCount(); i++){
-		PlotCurve *curve = (PlotCurve*)d_graph->curve(i);
-		if (curve->type() != Graph::Function &&
-			((DataCurve *)curve)->xColumnName() == xCol){
+		DataCurve *curve = dynamic_cast<DataCurve *>(d_graph->curve(i));
+		if (curve && curve->type() != Graph::Function && curve->xColumnName() == xCol){
 			QCheckBox *box = new QCheckBox(curve->title().text());
 			box->setChecked(true);
 			vb->addWidget(box);
 			d_selection_lst << box;
 
-			QList<ErrorBarsCurve *> errorBars = ((DataCurve *)curve)->errorBarsList();
+			QList<ErrorBarsCurve *> errorBars = curve->errorBarsList();
 			for (ErrorBarsCurve *err : errorBars){
 				box = new QCheckBox(err->title().text());
 				box->setChecked(true);
@@ -519,14 +533,15 @@ void RangeSelectorTool::clearSelectedCurve()
 	if (!d_selected_curve)
 		return;
 
-	if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
-        Table *t = ((DataCurve*)d_selected_curve)->table();
+	DataCurve *dc = dynamic_cast<DataCurve *>(d_selected_curve);
+	if (dc && dc->type() != Graph::Function){
+        Table *t = dc->table();
         if (!t)
             return;
 
-		if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
+		if (t->isReadOnlyColumn(t->colIndex(dc->xColumnName()))){
     		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
-        	tr("The column '%1' is read-only! Operation aborted!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
+        	tr("The column '%1' is read-only! Operation aborted!").arg(dc->xColumnName()));
 			return;
 		} else if (t->isReadOnlyColumn(t->colIndex(d_selected_curve->title().text()))){
     		QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
@@ -535,9 +550,9 @@ void RangeSelectorTool::clearSelectedCurve()
    		}
 
         int start_point = qMin(d_active_point, d_inactive_point);
-        int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+        int start_row = dc->tableRow(start_point);
         int end_point = qMax(d_active_point, d_inactive_point);
-        int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+        int end_row = dc->tableRow(end_point);
         int col = t->colIndex(d_selected_curve->title().text());
         bool ok_update = (end_point - start_point + 1) < d_selected_curve->dataSize() ? true : false;
         for (int i = start_row; i <= end_row; i++){
@@ -564,17 +579,17 @@ void RangeSelectorTool::pasteSelection()
 	if (text.isEmpty())
 		return;
 
-    if (((PlotCurve *)d_selected_curve)->type() == Graph::Function ||
-		((PlotCurve *)d_selected_curve)->type() == Graph::Graph::ErrorBars)
+    DataCurve *dc = dynamic_cast<DataCurve *>(d_selected_curve);
+    if (!dc || dc->type() == Graph::Function || dc->type() == Graph::ErrorBars)
         return;
 
-    Table *t = ((DataCurve*)d_selected_curve)->table();
+    Table *t = dc->table();
     if (!t)
         return;
 
-	if (t->isReadOnlyColumn(t->colIndex(((DataCurve *)d_selected_curve)->xColumnName()))){
+	if (t->isReadOnlyColumn(t->colIndex(dc->xColumnName()))){
     	QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
-        tr("The column '%1' is read-only! Operation aborted!").arg(((DataCurve *)d_selected_curve)->xColumnName()));
+        tr("The column '%1' is read-only! Operation aborted!").arg(dc->xColumnName()));
 		return;
 	} else if (t->isReadOnlyColumn(t->colIndex(d_selected_curve->title().text()))){
     	QMessageBox::warning(d_graph, tr("QtiPlot - Warning"),
@@ -586,9 +601,9 @@ void RangeSelectorTool::pasteSelection()
 
 	QTextStream ts( &text, QIODevice::ReadOnly );
     int start_point = qMin(d_active_point, d_inactive_point);
-    int start_row = ((DataCurve*)d_selected_curve)->tableRow(start_point);
+    int start_row = dc->tableRow(start_point);
     int end_point = qMax(d_active_point, d_inactive_point);
-    int end_row = ((DataCurve*)d_selected_curve)->tableRow(end_point);
+    int end_row = dc->tableRow(end_point);
     int col = t->colIndex(d_selected_curve->title().text());
 
     int prec; char f;
@@ -629,11 +644,13 @@ void RangeSelectorTool::setCurveRange()
     if (!d_selected_curve)
         return;
 
-    if (((PlotCurve *)d_selected_curve)->type() != Graph::Function){
-        ((DataCurve*)d_selected_curve)->setRowRange(qMin(d_active_point, d_inactive_point),
-                                    qMax(d_active_point, d_inactive_point));
-        d_graph->updatePlot();
-        d_graph->notifyChanges();
+    if (DataCurve *dc = dynamic_cast<DataCurve *>(d_selected_curve)){
+        if (dc->type() != Graph::Function){
+            dc->setRowRange(qMin(d_active_point, d_inactive_point),
+                            qMax(d_active_point, d_inactive_point));
+            d_graph->updatePlot();
+            d_graph->notifyChanges();
+        }
     }
 }
 

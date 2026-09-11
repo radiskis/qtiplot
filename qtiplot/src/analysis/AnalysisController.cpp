@@ -100,9 +100,8 @@ void AnalysisController::showChiSquareTestDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table*)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -114,9 +113,8 @@ void AnalysisController::showStudentTestDialog(bool twoSamples)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table*)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -128,9 +126,8 @@ void AnalysisController::testNormality()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table*)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -143,9 +140,8 @@ void AnalysisController::showANOVADialog(bool twoWay)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *t = (Table*)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *t = d_app->activeWindow<Table>();
 	if (!t)
 		return;
 
@@ -159,7 +155,6 @@ void AnalysisController::showExpGrowthDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showExpDecayDialog(-1);
 }
@@ -168,7 +163,6 @@ void AnalysisController::showExpDecayDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showExpDecayDialog(1);
 }
@@ -177,9 +171,8 @@ void AnalysisController::showExpDecayDialog(int type)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -196,7 +189,6 @@ void AnalysisController::showTwoExpDecayDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showExpDecayDialog(2);
 }
@@ -205,7 +197,6 @@ void AnalysisController::showExpDecay3Dialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showExpDecayDialog(3);
 }
@@ -214,29 +205,28 @@ void AnalysisController::showFitDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return;
 
-	MultiLayer* plot = 0;
-	if(w->inherits("MultiLayer"))
-		plot = (MultiLayer*)w;
-	else if(w->inherits("Table")){
-		QStringList columnsLst = ((Table *)w)->drawableColumnSelection();
+	MultiLayer* plot = nullptr;
+	if (MultiLayer *ml = qobject_cast<MultiLayer*>(w))
+		plot = ml;
+	else if (Table *t = qobject_cast<Table*>(w)){
+		QStringList columnsLst = t->drawableColumnSelection();
 		if (columnsLst.isEmpty()){
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Column selection error"),
 			d_app->tr("Please select a 'Y' column first!"));
 			return;
 		}
-		plot = d_app->multilayerPlot((Table *)w, columnsLst, Graph::LineSymbols);
+		plot = d_app->multilayerPlot(t, columnsLst, Graph::LineSymbols);
 	}
 
 	if (!plot)
 		return;
 
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -252,9 +242,8 @@ void AnalysisController::showFilterDialog(int filter)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -270,7 +259,6 @@ void AnalysisController::lowPassFilterDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showFilterDialog(FFTFilter::LowPass);
 }
@@ -279,7 +267,6 @@ void AnalysisController::highPassFilterDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	 showFilterDialog(FFTFilter::HighPass);
 }
@@ -288,7 +275,6 @@ void AnalysisController::bandPassFilterDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showFilterDialog(FFTFilter::BandPass);
 }
@@ -297,7 +283,6 @@ void AnalysisController::bandBlockFilterDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showFilterDialog(FFTFilter::BandBlock);
 }
@@ -306,26 +291,25 @@ void AnalysisController::showFFTDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return;
 
 	FFTDialog *sd = 0;
-	if (qobject_cast<MultiLayer *>(w)){
-		Graph* g = ((MultiLayer*)w)->activeLayer();
+	if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+		Graph* g = ml->activeLayer();
 		if ( g && g->validCurvesDataSize() ){
 			sd = new FFTDialog(FFTDialog::onGraph, d_app);
 			sd->setGraph(g);
 		}
-	} else if (w->inherits("Table")){
+	} else if (Table *t = qobject_cast<Table *>(w)){
 		sd = new FFTDialog(FFTDialog::onTable, d_app);
-		sd->setTable((Table*)w);
-	} else if (qobject_cast<Matrix *>(w)){
-		if (!((Matrix *)w)->isEmpty()){
+		sd->setTable(t);
+	} else if (Matrix *m = qobject_cast<Matrix *>(w)){
+		if (!m->isEmpty()){
 			sd = new FFTDialog(FFTDialog::onMatrix, d_app);
-			sd->setMatrix((Matrix *)w);
+			sd->setMatrix(m);
 		} else
 			d_app->showNoDataMessage();
 	}
@@ -338,9 +322,8 @@ void AnalysisController::showSmoothDialog(int m)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -357,7 +340,6 @@ void AnalysisController::showSmoothSavGolDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
     showSmoothDialog(SmoothFilter::SavitzkyGolay);
 }
@@ -366,7 +348,6 @@ void AnalysisController::showSmoothFFTDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showSmoothDialog(SmoothFilter::FFT);
 }
@@ -375,7 +356,6 @@ void AnalysisController::showSmoothAverageDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showSmoothDialog(SmoothFilter::Average);
 }
@@ -384,7 +364,6 @@ void AnalysisController::showSmoothLowessDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	showSmoothDialog(SmoothFilter::Lowess);
 }
@@ -393,9 +372,8 @@ void AnalysisController::showInterpolationDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -412,9 +390,8 @@ void AnalysisController::showFitPolynomDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -431,9 +408,8 @@ void AnalysisController::showFunctionIntegrationDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -449,9 +425,8 @@ void AnalysisController::showDataSetDialog(int operation)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -471,7 +446,6 @@ void AnalysisController::analyzeCurve(Graph *g,  QwtPlotCurve *c, int operation)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_2_linear_fit_points = d_app->d_2_linear_fit_points;
 	auto &fitPoints = d_app->fitPoints;
 	auto &fit_output_precision = d_app->fit_output_precision;
@@ -482,20 +456,24 @@ void AnalysisController::analyzeCurve(Graph *g,  QwtPlotCurve *c, int operation)
 	if (!g || !c)
 		return;
 
+	PlotCurve *pc = dynamic_cast<PlotCurve *>(c);
+	if (!pc)
+		return;
+
 	Fit *fitter = 0;
 	switch(operation){
 	    case ApplicationWindow::NoAnalysis:
 	    break;
 		case ApplicationWindow::Integrate:
 		{
-			Integration *i = new Integration(d_app, (PlotCurve*)c);
+			Integration *i = new Integration(d_app, pc);
 			i->run();
 			delete i;
 		}
 		break;
 		case ApplicationWindow::Diff:
 		{
-			Differentiation *diff = new Differentiation(d_app, (PlotCurve*)c);
+			Differentiation *diff = new Differentiation(d_app, pc);
 			diff->enableGraphicsDisplay(true);
 			diff->run();
 			delete diff;
@@ -512,8 +490,8 @@ void AnalysisController::analyzeCurve(Graph *g,  QwtPlotCurve *c, int operation)
 		break;
 		case ApplicationWindow::FitSigmoidal:
 		{
-			ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine(c->xAxis());
-			if(se->type() == ScaleTransformation::Log10)
+			ScaleEngine *se = dynamic_cast<ScaleEngine *>(g->axisScaleEngine(c->xAxis()));
+			if(se && se->type() == ScaleTransformation::Log10)
 				fitter = new LogisticFit (d_app, g);
 			else
 				fitter = new SigmoidalFit (d_app, g);
@@ -527,7 +505,7 @@ void AnalysisController::analyzeCurve(Graph *g,  QwtPlotCurve *c, int operation)
 	if (!fitter)
 		return;
 
-	if (fitter->setDataFromCurve((PlotCurve*)c)){
+	if (fitter->setDataFromCurve(pc)){
 		if (operation != ApplicationWindow::FitLinear && operation != ApplicationWindow::FitSlope){
 			fitter->guessInitialValues();
 			fitter->scaleErrors(fit_scale_errors);
@@ -546,9 +524,8 @@ void AnalysisController::analysis(int operation)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -572,33 +549,30 @@ void AnalysisController::integrate()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &current_folder = d_app->current_folder;
-	auto &info = d_app->info;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return;
 
-	if (w->inherits("MultiLayer")){
-		Graph* g = ((MultiLayer *)w)->activeLayer();
+	if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+		Graph* g = ml->activeLayer();
 		if (!g)
 			return;
 		IntegrationDialog *id = new IntegrationDialog(g, d_app);
 		id->show();
-	} else if (w->inherits("Matrix")){
-		if (!((Matrix *)w)->isEmpty()){
+	} else 	if (Matrix *m = qobject_cast<Matrix *>(w)){
+		if (!m->isEmpty()){
 			QDateTime dt = QDateTime::currentDateTime ();
 			QString info = dt.toString(Qt::TextDate);
 			info += "\n" + d_app->tr("Integration of %1 from zero is").arg(QString(w->objectName())) + ":\t";
-			info += QString::number(((Matrix *)w)->integrate()) + "\n";
+			info += QString::number(m->integrate()) + "\n";
 			info += "-------------------------------------------------------------\n";
 			current_folder->appendLogInfo(info);
 			d_app->showResults(true);
 		} else
 			d_app->showNoDataMessage();
-	} else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	} else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		QTableWidgetSelectionRange sel = t->getSelection();
@@ -617,8 +591,6 @@ void AnalysisController::differentiate()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
-	auto &d_indexed_colors = d_app->d_indexed_colors;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
@@ -626,8 +598,7 @@ void AnalysisController::differentiate()
 
 	if (qobject_cast<MultiLayer *>(w))
 		analysis(ApplicationWindow::Diff);
-	else if (w->inherits("Table")){
-		Table *t = qobject_cast<Table *>(w);
+	else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
@@ -648,9 +619,9 @@ void AnalysisController::differentiate()
 
 			QwtPlotCurve *c = g->curve(aux);
 			if (c){
-				if (aux < d_indexed_colors.size()){
+				if (aux < d_app->d_indexed_colors.size()){
 					QPen pen = c->pen();
-					pen.setColor(d_indexed_colors[aux]);
+					pen.setColor(d_app->d_indexed_colors[aux]);
 					c->setPen(pen);
 				}
 				aux++;
@@ -671,11 +642,9 @@ void AnalysisController::fitLinear()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_2_linear_fit_points = d_app->d_2_linear_fit_points;
 	auto &fit_output_precision = d_app->fit_output_precision;
 	auto &generateUniformFitPoints = d_app->generateUniformFitPoints;
-	auto &results = d_app->results;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
@@ -683,8 +652,7 @@ void AnalysisController::fitLinear()
 
 	if (qobject_cast<MultiLayer *>(w))
 		analysis(ApplicationWindow::FitLinear);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
@@ -746,11 +714,9 @@ void AnalysisController::fitSlope()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_2_linear_fit_points = d_app->d_2_linear_fit_points;
 	auto &fit_output_precision = d_app->fit_output_precision;
 	auto &generateUniformFitPoints = d_app->generateUniformFitPoints;
-	auto &results = d_app->results;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
@@ -758,8 +724,7 @@ void AnalysisController::fitSlope()
 
 	if (qobject_cast<MultiLayer *>(w))
 		analysis(ApplicationWindow::FitSlope);
-	else if (w->inherits("Table")){
-		Table *t = (Table *)w;
+	else if (Table *t = qobject_cast<Table *>(w)){
 		QStringList lst = t->selectedYColumns();
 		int cols = lst.size();
 		if (!cols){
@@ -819,7 +784,6 @@ void AnalysisController::fitSigmoidal()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	analysis(ApplicationWindow::FitSigmoidal);
 }
@@ -828,7 +792,6 @@ void AnalysisController::fitGauss()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	analysis(ApplicationWindow::FitGauss);
 }
@@ -838,7 +801,6 @@ void AnalysisController::fitLorentz()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	analysis(ApplicationWindow::FitLorentz);
 }
@@ -847,7 +809,6 @@ void AnalysisController::deleteFitTables()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
@@ -858,8 +819,8 @@ void AnalysisController::deleteFitTables()
 		for (Graph *g : layers){
 			QList<QwtPlotCurve *> curves = g->fitCurvesList();
 			for (QwtPlotCurve *c : curves){
-				if (((PlotCurve *)c)->rtti() != Graph::Function){
-					Table *t = ((DataCurve *)c)->table();
+				if (DataCurve *dc = dynamic_cast<DataCurve *>(c)){
+					Table *t = dc->table();
 					if (!t)
 						continue;
 					t->askOnCloseEvent(false);
@@ -874,7 +835,6 @@ void AnalysisController::fitMultiPeakGauss()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	fitMultiPeak((int)MultiPeakFit::Gauss);
 }
@@ -883,7 +843,6 @@ void AnalysisController::fitMultiPeakLorentz()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	fitMultiPeak((int)MultiPeakFit::Lorentz);
 }
@@ -892,12 +851,11 @@ void AnalysisController::fitMultiPeak(int profile)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &btnPointer = d_app->btnPointer;
 	auto &displayBar = d_app->displayBar;
 	auto &info = d_app->info;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 	if (plot->isEmpty()){
@@ -908,7 +866,7 @@ void AnalysisController::fitMultiPeak(int profile)
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -933,12 +891,11 @@ void AnalysisController::subtractStraightLine()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &btnPointer = d_app->btnPointer;
 	auto &displayBar = d_app->displayBar;
 	auto &info = d_app->info;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 	if (plot->isEmpty()){
@@ -949,7 +906,7 @@ void AnalysisController::subtractStraightLine()
 		return;
 	}
 
-	Graph* g = (Graph*)plot->activeLayer();
+	Graph* g = plot->activeLayer();
 	if (!g || !g->validCurvesDataSize())
 		return;
 
@@ -969,9 +926,8 @@ void AnalysisController::subtractReferenceData()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -988,11 +944,10 @@ void AnalysisController::baselineDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	if (qApp->arguments().contains("-X"))
 		return;
-	MultiLayer *plot = (MultiLayer *)d_app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = d_app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 
@@ -1009,7 +964,6 @@ void AnalysisController::saveFitFunctions(const QStringList& lst)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &fitModelsPath = d_app->fitModelsPath;
 
 	if (!lst.count())
@@ -1027,7 +981,7 @@ void AnalysisController::saveFitFunctions(const QStringList& lst)
         for (int i = 0; i<lst.count(); i++){
             QString s = lst[i].simplified();
             if (!s.isEmpty()){
-                NonLinearFit *fit = new NonLinearFit(d_app, (Graph*)0);
+                NonLinearFit *fit = new NonLinearFit(d_app, static_cast<Graph *>(nullptr));
 
                 QStringList l = s.split("=");
                 if (l.count() == 2)
@@ -1043,9 +997,8 @@ void AnalysisController::showFrequencyCountDialog()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-    Table *t = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+    Table *t = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
 	if (!t)
 		return;
 

@@ -258,6 +258,7 @@ void Note::save(const QString &fn, const QString &info, bool)
 			return;
 	}
 	QTextStream t( &f );
+	t.setEncoding(QStringConverter::Utf8);
 
 	t << "<note>\n";
 	t << QString(name()) + "\t" + birthDate() + "\n";
@@ -266,6 +267,7 @@ void Note::save(const QString &fn, const QString &info, bool)
 	t << "AutoExec\t" + QString(autoExec ? "1" : "0") + "\n";
 	t << "<LineNumbers>" + QString::number(d_line_number_enabled) + "</LineNumbers>\n";
 
+	t.flush();
 	f.close();
 	for (int i = 0; i < tabs(); i++)
 		saveTab(i, fn);
@@ -273,7 +275,10 @@ void Note::save(const QString &fn, const QString &info, bool)
 	if (!f.open(QIODevice::Append))
 		return;
 
+	t.setDevice(&f);
 	t << "</note>\n";
+	t.flush();
+	f.close();
 }
 
 void Note::saveTab(int index, const QString &fn)
@@ -283,6 +288,7 @@ void Note::saveTab(int index, const QString &fn)
 		return;
 
 	QTextStream t( &f );
+	t.setEncoding(QStringConverter::Utf8);
 
 	t << "<tab>\n";
 	if (d_tab_widget->currentIndex() == index)
@@ -292,6 +298,7 @@ void Note::saveTab(int index, const QString &fn)
 	t << "<content>\n" + editor(index)->toPlainText().trimmed() + "\n</content>";
 	t << "\n</tab>\n";
 
+	t.flush();
 	f.close();
 }
 

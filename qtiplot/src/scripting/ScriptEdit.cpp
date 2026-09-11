@@ -160,7 +160,7 @@ void ScriptEdit::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
 	{
-		scriptingChangeEvent((ScriptingChangeEvent*)e);
+		scriptingChangeEvent(static_cast<ScriptingChangeEvent*>(e));
 		delete myScript;
 		myScript = scriptEnv->newScript("", this, objectName());
 		connect(myScript, &Script::error, this, &ScriptEdit::insertErrorMsg);
@@ -341,8 +341,10 @@ void ScriptEdit::insertErrorMsg(const QString &message)
 #ifdef SCRIPTING_CONSOLE
 	QTextEdit *console = scriptEnv->application()->scriptingConsole();
 	console->setPlainText(err);
-	if (!console->isVisible())
-		((QDockWidget *)console->parent())->show();
+	if (!console->isVisible()){
+		if (auto *dock = qobject_cast<QDockWidget *>(console->parent()))
+			dock->show();
+	}
 #else
 	int start = printCursor.position();
 	printCursor.insertText(err);
@@ -754,7 +756,7 @@ void ScriptEdit::showFindDialog(bool replace)
 	if (toPlainText().isEmpty())
 		return;
 
-	FindReplaceDialog *frd = new FindReplaceDialog(this, replace, (QWidget *)scriptingEnv()->application());
+	FindReplaceDialog *frd = new FindReplaceDialog(this, replace, qobject_cast<QWidget *>(scriptingEnv()->application()));
 	frd->exec();
 }
 

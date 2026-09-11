@@ -33,6 +33,7 @@
 
 #include <gsl/gsl_multifit.h>
 #include <gsl/gsl_fit.h>
+#include "GslRAII.h"
 
 PolynomialFit::PolynomialFit(ApplicationWindow *parent, Graph *g, int order, bool legend)
 : Fit(parent, g), d_order(order), show_legend(legend)
@@ -172,27 +173,24 @@ void PolynomialFit::fit()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	runAsync([this]() {
-		gsl_matrix *X = gsl_matrix_alloc (d_n, d_p);
+		GslRAII::UniqueMatrix X(gsl_matrix_alloc(d_n, d_p));
 
-		for (int i = 0; i <d_n; i++){
-			for (int j= 0; j < d_p; j++)
-				gsl_matrix_set (X, i, j, pow(d_x[i],j));
+		for (int i = 0; i < d_n; i++) {
+			for (int j = 0; j < d_p; j++)
+				gsl_matrix_set(X.get(), i, j, pow(d_x[i], j));
 		}
 
-		gsl_vector_view y = gsl_vector_view_array (d_y, d_n);
-		gsl_vector_view w = gsl_vector_view_array (d_w, d_n);
-		gsl_multifit_linear_workspace * work = gsl_multifit_linear_alloc (d_n, d_p);
+		gsl_vector_view y = gsl_vector_view_array(d_y, d_n);
+		gsl_vector_view w = gsl_vector_view_array(d_w, d_n);
+		GslRAII::UniqueMultifitLinearWorkspace work(gsl_multifit_linear_alloc(d_n, d_p));
 
 		if (d_weighting == NoWeighting)
-			gsl_multifit_linear (X, &y.vector, d_param_init, covar, &chi_2, work);
+			gsl_multifit_linear(X.get(), &y.vector, d_param_init, covar, &chi_2, work.get());
 		else
-			gsl_multifit_wlinear (X, &w.vector, &y.vector, d_param_init, covar, &chi_2, work);
+			gsl_multifit_wlinear(X.get(), &w.vector, &y.vector, d_param_init, covar, &chi_2, work.get());
 
 		for (int i = 0; i < d_p; i++)
 			d_results[i] = gsl_vector_get(d_param_init, i);
-
-		gsl_multifit_linear_free (work);
-		gsl_matrix_free (X);
 	}, tr("Fitting polynomial..."));
 
 	if (d_canceled) {
@@ -205,7 +203,7 @@ void PolynomialFit::fit()
 	if (show_legend)
 		showLegend();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 
@@ -214,8 +212,8 @@ void PolynomialFit::fit()
 
 QString PolynomialFit::legendInfo()
 {
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+    QLocale locale = app ? app->locale() : QLocale();
 	QString legend = "Y=" + locale.toString(d_results[0], 'g', d_prec);
 	for (int j = 1; j < d_p; j++){
 		double cj = d_results[j];
@@ -286,13 +284,7 @@ void LinearFit::init()
 	d_scale_errors = false;
 
 	d_p = 2;
-    d_min_points = d_p;
-
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
-
-    d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
+	initWorkspace(d_p);
 
 	is_non_linear = false;
 	d_formula = "A*x+B";
@@ -330,8 +322,8 @@ void LinearFit::fit()
 
 	generateFitCurve();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog())
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 }
 
@@ -393,13 +385,7 @@ void LinearSlopeFit::init()
 	d_scale_errors = false;
 
 	d_p = 1;
-    d_min_points = d_p;
-
-	covar = gsl_matrix_alloc (d_p, d_p);
-	d_results = new double[d_p];
-
-    d_param_init = gsl_vector_alloc(d_p);
-	gsl_vector_set_all (d_param_init, 1.0);
+	initWorkspace(d_p);
 
 	is_non_linear = false;
 	d_formula = "A*x";
@@ -432,8 +418,8 @@ void LinearSlopeFit::fit()
 	gsl_matrix_set(covar, 0, 0, cov11);
 	generateFitCurve();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	if (app->writeFitResultsToLog())
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(0, 0));
 }
 

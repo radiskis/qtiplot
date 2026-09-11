@@ -38,6 +38,7 @@
 #include <QLocale>
 
 #include <vector>
+#include "GslRAII.h"
 
 MultiPeakFit::MultiPeakFit(ApplicationWindow *parent, Graph *g, PeakProfile profile, int peaks)
 : Fit(parent, g), d_profile(profile)
@@ -249,7 +250,7 @@ void MultiPeakFit::insertPeakFunctionCurve(int peak)
 
 void MultiPeakFit::generateFitCurve()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!d_gen_function)
 		d_points = d_n;
 
@@ -277,24 +278,18 @@ void MultiPeakFit::generateFitCurve()
 			d_output_graph->replot();
 		}
 	} else {
-		gsl_matrix * m = gsl_matrix_alloc (d_points, d_peaks);
+		GslRAII::UniqueMatrix m(gsl_matrix_alloc (d_points, d_peaks));
 		if (!m){
 			reportError(tr("QtiPlot - Fit Error"),
 			tr("Could not allocate enough memory for the fit curves!"));
 			return;
 		}
 
-		double *X = (double *)malloc(d_points*sizeof(double));
-		if (!X){
-			memoryErrorMessage();
+		std::vector<double> X(d_points);
+		std::vector<double> Y(d_points);
+
+		if (!app)
 			return;
-		}
-		double *Y = (double *)malloc(d_points*sizeof(double));
-		if (!Y){
-			memoryErrorMessage();
-			free(X);
-			return;
-		}
 
 		QString tableName = app->generateUniqueName(tr("Fit"));
 		QString dataSet;
@@ -329,7 +324,7 @@ void MultiPeakFit::generateFitCurve()
 				yi += y_aux;
 				y_aux += d_results[d_p - 1];
 				d_result_table->setText(i, j+1, locale.toString(y_aux, 'e', d_prec));
-				gsl_matrix_set(m, i, j, y_aux);
+				gsl_matrix_set(m.get(), i, j, y_aux);
 			}
 			Y[i] = yi + d_results[d_p - 1];//add offset
 			if (d_peaks > 1)
@@ -354,9 +349,9 @@ void MultiPeakFit::generateFitCurve()
 				c->setPen(QPen(d_curveColor, 1));
 
 			if (c->curveType() == PlotCurve::Xfy)
-				c->setSamples(Y, X, d_points);
+				c->setSamples(Y.data(), X.data(), d_points);
 			else
-				c->setSamples(X, Y, d_points);
+				c->setSamples(X.data(), Y.data(), d_points);
 
 			d_output_graph->insertPlotItem(c, Graph::Line);
 			d_output_graph->addFitCurve(c);
@@ -364,7 +359,7 @@ void MultiPeakFit::generateFitCurve()
 			if (generate_peak_curves){
 				for (i=0; i<peaks_aux; i++){//add the peak curves
 					for (j=0; j<d_points; j++)
-						Y[j] = gsl_matrix_get (m, j, i);
+						Y[j] = gsl_matrix_get (m.get(), j, i);
 
 					label = tableName + "_" + tr("peak") + QString::number(i+1);
 					c = new DataCurve(d_result_table, tableName + "_1", label);
@@ -376,9 +371,9 @@ void MultiPeakFit::generateFitCurve()
 					}
 
 					if (c->curveType() == PlotCurve::Xfy)
-						c->setSamples(Y, X, d_points);
+						c->setSamples(Y.data(), X.data(), d_points);
 					else
-						c->setSamples(X, Y, d_points);
+						c->setSamples(X.data(), Y.data(), d_points);
 
 					d_output_graph->insertPlotItem(c, Graph::Line);
 					d_output_graph->addFitCurve(c);
@@ -386,9 +381,6 @@ void MultiPeakFit::generateFitCurve()
 			}
 			d_output_graph->replot();
 		}
-		gsl_matrix_free(m);
-		free(X);
-		free(Y);
 	}
 }
 
@@ -418,8 +410,8 @@ QString MultiPeakFit::logFitInfo(int iterations, int status)
 	if (d_peaks == 1)
 		return info;
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+    QLocale locale = app ? app->locale() : QLocale();
 
 	info += tr("Peak") + "\t" + tr("Area") + "\t";
 	info += tr("Center") + "\t" + tr("Width") + "\t" + tr("Height") + "\n";

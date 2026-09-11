@@ -53,7 +53,9 @@ d_keep_input_file(keepInputFile)
 
 void ExcelFileConverter::startOpenOfficeServer()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	soffice = new QProcess(app);
 	connect(soffice, &QProcess::started, this, &ExcelFileConverter::startConvertion);
 	connect(soffice, &QProcess::errorOccurred,
@@ -86,7 +88,9 @@ void ExcelFileConverter::startConvertion()
 	if (QFile::exists(d_output_file) || java)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	java = new QProcess(app);
 	connect(java, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
@@ -109,12 +113,14 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 {
 	QApplication::restoreOverrideCursor();
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (exitStatus != QProcess::NormalExit){
-		QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot"), tr("Operation failed"));
+		QMessageBox::critical(app, tr("QtiPlot"), tr("Operation failed"));
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	if (!app)
+		return;
 	if (!QFile::exists(d_output_file)){
 		if (!QFile::exists(app->d_jodconverter_path)){
 			QMessageBox::critical(app, tr("Operation failed"),
@@ -197,5 +203,6 @@ void ExcelFileConverter::displayError(const QString& process, QProcess::ProcessE
 	}
 
 	QApplication::restoreOverrideCursor();
-	QMessageBox::critical((ApplicationWindow *)parent(), tr("Operation failed"), msg + "!");
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QMessageBox::critical(app, tr("Operation failed"), msg + "!");
 }

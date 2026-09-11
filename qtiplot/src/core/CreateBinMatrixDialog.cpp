@@ -38,6 +38,7 @@
 #include <QFormLayout>
 
 #include <gsl/gsl_histogram2d.h>
+#include <GslRAII.h>
 
 CreateBinMatrixDialog::CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent,  Qt::WindowFlags fl )
 : QDialog( parent, fl ), d_table(t),
@@ -122,36 +123,42 @@ void CreateBinMatrixDialog::accept()
 	size_t nx = (size_t)colsBox->value();
 	size_t ny = (size_t)rowsBox->value();
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
+
 	if (INT_MAX/ny < nx){ //avoid integer overflow
-    	QMessageBox::critical((ApplicationWindow *)parent(), tr("QtiPlot") + " - " + tr("Input Size Error"),
+    	QMessageBox::critical(app, tr("QtiPlot") + " - " + tr("Input Size Error"),
     	tr("The dimensions you have specified are not acceptable!") + "\n" +
 		tr("Please enter positive values for which the product rows*columns does not exceed the maximum integer value available on your system!"));
 		return;
 	}
 
-	gsl_histogram2d *h = gsl_histogram2d_alloc(nx, ny);
+	GslRAII::UniqueHistogram2D h(gsl_histogram2d_alloc(nx, ny));
 	if (!h){
 		ApplicationWindow::memoryAllocationError();
 		return;
 	}
 
-	Matrix* m = ((ApplicationWindow *)parent())->newMatrix((int)ny, (int)nx);
-	if (m->numRows() != (int)ny || m->numCols() != (int)nx){
+	Matrix* m = app->newMatrix((int)ny, (int)nx);
+	if (!m || m->numRows() != (int)ny || m->numCols() != (int)nx){
 		//There was not enough memory to create the Matrix window with specified dimensions
-		m->hide();
-		m->askOnCloseEvent(false);
-		((ApplicationWindow *)parent())->closeWindow(m);
+		if (m) {
+			m->hide();
+			m->askOnCloseEvent(false);
+			app->closeWindow(m);
+		}
 		return;
 	}
 
-	gsl_histogram2d_set_ranges_uniform(h, xmin, xmax, ymin, ymax);
+	gsl_histogram2d_set_ranges_uniform(h.get(), xmin, xmax, ymin, ymax);
 
-	QLocale l = ((ApplicationWindow *)parent())->locale();
+	QLocale l = app->locale();
 	for (int i = d_start_row; i <= d_end_row; i++){
 		QString xs = d_table->text(i, d_x_col);
 		QString ys = d_table->text(i, d_y_col);
 		if (!xs.isEmpty() && !ys.isEmpty())
-			gsl_histogram2d_increment(h, l.toDouble(xs), l.toDouble(ys));
+			gsl_histogram2d_increment(h.get(), l.toDouble(xs), l.toDouble(ys));
 	}
 
 	double dx = 0.5*fabs(xmax - xmin)/(double)nx;
@@ -160,9 +167,7 @@ void CreateBinMatrixDialog::accept()
 
 	for (size_t i = 0; i < nx; i++)
 		for (size_t j = 0; j < ny; j++)
-			m->setCell(j, i, gsl_histogram2d_get (h, i, j));
-
-	gsl_histogram2d_free(h);
+			m->setCell(j, i, gsl_histogram2d_get (h.get(), i, j));
 
 	m->showNormal();
 	close();

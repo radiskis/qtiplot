@@ -143,7 +143,7 @@ void FrameWidget::setCoordinates(double left, double top, double right, double b
         return;
 
 	QWidget *layerCanvas = d_plot->canvas();
-	QWidget *windowCanvas = (QWidget *)d_plot->parent();
+	QWidget *windowCanvas = d_plot->parentWidget();
 
 	QPoint pos(d_plot->transform(QwtPlot::xBottom, d_x), d_plot->transform(QwtPlot::yLeft, d_y));
 	pos = layerCanvas->mapTo(windowCanvas, pos);

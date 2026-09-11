@@ -30,7 +30,7 @@
 #define FREQUENCYCOUNTDIALOG_H
 
 #include <QDialog>
-#include <gsl/gsl_vector.h>
+#include "GslRAII.h"
 #include "Ref.h"
 
 class QPushButton;
@@ -54,7 +54,7 @@ private:
     Ref<Table> d_source_table;
     Ref<Table> d_result_table;
     QString d_col_name;
-    gsl_vector *d_col_values;
+    GslRAII::UniqueVector d_col_values;
 	int d_bins;
 
     QPushButton* buttonApply;

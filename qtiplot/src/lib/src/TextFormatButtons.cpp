@@ -48,7 +48,9 @@ d_buttons(buttons)
 
 void TextFormatButtons::init(Buttons buttons)
 {
-	QHBoxLayout *layout = (QHBoxLayout*)this->layout();
+	QHBoxLayout *layout = qobject_cast<QHBoxLayout*>(this->layout());
+	if (!layout)
+		return;
 	QLayoutItem *child;
 	while ((child = layout->takeAt(0)) != 0){
 		if (child->widget())

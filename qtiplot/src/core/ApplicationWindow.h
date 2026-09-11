@@ -213,6 +213,16 @@ public:
 	QList<QToolBar *> toolBarsList();
 
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
+	template <typename T>
+	T *activeWindow()
+	{
+		return qobject_cast<T *>(activeWindow(NoWindow));
+	}
+	template <typename T>
+	T *activeWindow() const
+	{
+		return qobject_cast<T *>(const_cast<ApplicationWindow *>(this)->activeWindow(NoWindow));
+	}
 	void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
 	QMdiArea* workspace(){return d_workspace;};
     void setVisible(bool visible) override;

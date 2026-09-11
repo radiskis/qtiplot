@@ -62,40 +62,44 @@ ImportASCIIDialog::ImportASCIIDialog(bool new_windows_only, QWidget * parent, bo
 	setEditableFilter();
 
 	// get rembered option values
-	ApplicationWindow *app = (ApplicationWindow *)parent;
-	setLocale(app->locale());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app) {
+		setLocale(app->locale());
 
-	d_strip_spaces->setChecked(app->strip_spaces);
-	d_simplify_spaces->setChecked(app->simplify_spaces);
-	d_ignored_lines->setValue(app->ignoredLines);
-	d_rename_columns->setChecked(app->renameColumns);
-	setColumnSeparator(app->columnSeparator);
-    d_comment_string->setText(app->d_ASCII_comment_string);
-    d_import_comments->setChecked(app->d_ASCII_import_comments);
-    d_first_line_role->setCurrentIndex(app->d_ASCII_import_first_row_role);
-    d_read_only->setChecked(app->d_ASCII_import_read_only);
+		d_strip_spaces->setChecked(app->strip_spaces);
+		d_simplify_spaces->setChecked(app->simplify_spaces);
+		d_ignored_lines->setValue(app->ignoredLines);
+		d_rename_columns->setChecked(app->renameColumns);
+		setColumnSeparator(app->columnSeparator);
+		d_comment_string->setText(app->d_ASCII_comment_string);
+		d_import_comments->setChecked(app->d_ASCII_import_comments);
+		d_first_line_role->setCurrentIndex(app->d_ASCII_import_first_row_role);
+		d_read_only->setChecked(app->d_ASCII_import_read_only);
 
-	if (app->d_ASCII_import_locale.name() == QLocale::c().name())
-        boxDecimalSeparator->setCurrentIndex(1);
-    else if (app->d_ASCII_import_locale.name() == QLocale(QLocale::German).name())
-        boxDecimalSeparator->setCurrentIndex(2);
-    else if (app->d_ASCII_import_locale.name() == QLocale(QLocale::French).name())
-        boxDecimalSeparator->setCurrentIndex(3);
+		if (app->d_ASCII_import_locale.name() == QLocale::c().name())
+			boxDecimalSeparator->setCurrentIndex(1);
+		else if (app->d_ASCII_import_locale.name() == QLocale(QLocale::German).name())
+			boxDecimalSeparator->setCurrentIndex(2);
+		else if (app->d_ASCII_import_locale.name() == QLocale(QLocale::French).name())
+			boxDecimalSeparator->setCurrentIndex(3);
 
-	QLocale::NumberOptions groupSep = app->d_ASCII_import_locale.numberOptions();
-	d_omit_thousands_sep->setChecked(groupSep & QLocale::OmitGroupSeparator);
+		QLocale::NumberOptions groupSep = app->d_ASCII_import_locale.numberOptions();
+		d_omit_thousands_sep->setChecked(groupSep & QLocale::OmitGroupSeparator);
 
-	connect(d_import_mode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportASCIIDialog::updateImportMode);
-	if (app->d_ASCII_import_mode < d_import_mode->count())
-		d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
+		connect(d_import_mode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportASCIIDialog::updateImportMode);
+		if (app->d_ASCII_import_mode < d_import_mode->count())
+			d_import_mode->setCurrentIndex(app->d_ASCII_import_mode);
 
-	d_preview_lines_box->setValue(app->d_preview_lines);
-	d_preview_button->setChecked(app->d_ASCII_import_preview);
+		d_preview_lines_box->setValue(app->d_preview_lines);
+		d_preview_button->setChecked(app->d_ASCII_import_preview);
 
-    boxEndLine->setCurrentIndex((int)app->d_ASCII_end_line);
+		boxEndLine->setCurrentIndex((int)app->d_ASCII_end_line);
 
-	if (!app->d_ASCII_import_preview)
-		d_preview_stack->hide();
+		if (!app->d_ASCII_import_preview)
+			d_preview_stack->hide();
+	} else {
+		connect(d_import_mode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ImportASCIIDialog::updateImportMode);
+	}
 
 	initPreview(d_import_mode->currentIndex());
 
@@ -260,7 +264,7 @@ void ImportASCIIDialog::initPreview(int previewMode)
 	if (previewMode < NewTables || previewMode > Overwrite)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -296,14 +300,14 @@ void ImportASCIIDialog::initPreview(int previewMode)
 			if (!w)
 				return;
 
-			if (w->inherits("Table")){
-				d_preview_table = new PreviewTable(30, ((Table*)w)->numCols(), this);
+			if (Table *t = qobject_cast<Table *>(w)){
+				d_preview_table = new PreviewTable(30, t->numCols(), this);
 				d_preview_table->setNumericPrecision(app->d_decimal_digits);
 				d_preview_stack->addWidget(d_preview_table);
 				connect(d_preview_table, &PreviewTable::modifiedColumnType, this, QOverload<>::of(&ImportASCIIDialog::preview));
 				enableTableOptions(true);
-			} else if (w->inherits("Matrix")){
-				d_preview_matrix = new PreviewMatrix(app, (Matrix *)w);
+			} else if (Matrix *m = qobject_cast<Matrix *>(w)){
+				d_preview_matrix = new PreviewMatrix(app, m);
 				d_preview_stack->addWidget(d_preview_matrix);
 				enableTableOptions(false);
 			}
@@ -399,7 +403,7 @@ void ImportASCIIDialog::updateImportMode(int mode)
 
 void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app){
 		app->d_extended_import_ASCII_dialog = this->isExtended();
 		app->d_ASCII_file_filter = this->selectedNameFilter();
@@ -1033,7 +1037,7 @@ PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
 {
 	d_matrix_model = new MatrixModel(32, 32, m);
 	if (!m){
-		ApplicationWindow *app = (ApplicationWindow *)parent;
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 		if (app){
 			d_matrix_model->setLocale(app->locale());
 			d_matrix_model->setNumericFormat('f', app->d_decimal_digits);

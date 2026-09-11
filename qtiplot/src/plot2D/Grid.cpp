@@ -126,7 +126,7 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 	const int y1 = rect.top();
 	const int y2 = rect.bottom();
 
-	Graph *g = (Graph *)this->plot();
+	Graph *g = qobject_cast<Graph *>(this->plot());
 	if (g && g->canvasFrameWidth()){
 		for (uint i = 0; i < (uint)values.count(); i++){
 			const int value = map.transform(values[i]);
@@ -154,7 +154,7 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 
 void Grid::load(const QStringList& grid)
 {
-	Graph *d_plot = (Graph *)plot();
+	Graph *d_plot = qobject_cast<Graph *>(plot());
 	if (!d_plot)
 		return;
 
@@ -214,7 +214,7 @@ void Grid::load(const QStringList& grid)
 
 void Grid::enableZeroLineX(bool enable)
 {
-	Graph *d_plot = (Graph *)plot();
+	Graph *d_plot = qobject_cast<Graph *>(plot());
 	if (!d_plot)
 		return;
 
@@ -242,7 +242,7 @@ void Grid::enableZeroLineX(bool enable)
 
 void Grid::enableZeroLineY(bool enable)
 {
-	Graph *d_plot = (Graph *)plot();
+	Graph *d_plot = qobject_cast<Graph *>(plot());
 	if (!d_plot)
 		return;
 

@@ -634,8 +634,7 @@ QColor ColorPickerPopup::color(int index) const
     if (index < 0 || index > (int) items.count() - 1)
         return QColor();
 
-    ColorPickerPopup *that = (ColorPickerPopup *)this;
-    return that->items.at(index)->color();
+    return items.at(index)->color();
 }
 
 /*! \internal
@@ -660,16 +659,14 @@ void ColorPickerPopup::updateSelected()
     int i = 0;
     while ((layoutItem = grid->itemAt(i)) != 0) {
 	QWidget *w = layoutItem->widget();
-	if (w && w->inherits("ColorPickerItem")) {
-	    ColorPickerItem *litem = reinterpret_cast<ColorPickerItem *>(layoutItem->widget());
+	if (ColorPickerItem *litem = qobject_cast<ColorPickerItem *>(w)) {
 	    if (litem != sender())
 		litem->setSelected(false);
 	}
 	++i;
     }
 
-    if (sender() && sender()->inherits("ColorPickerItem")) {
-	ColorPickerItem *item = (ColorPickerItem *)sender();
+    if (ColorPickerItem *item = qobject_cast<ColorPickerItem *>(sender())) {
 	lastSel = item->color();
 	emit selected(item->color());
     }
@@ -738,17 +735,14 @@ void ColorPickerPopup::keyPressEvent(QKeyEvent *e)
 	case Qt::Key_Return:
 	case Qt::Key_Enter: {
 	    QWidget *w = widgetAt[curRow][curCol];
-	    if (w && w->inherits("ColorPickerItem")) {
-		ColorPickerItem *wi = reinterpret_cast<ColorPickerItem *>(w);
+	    if (ColorPickerItem *wi = qobject_cast<ColorPickerItem *>(w)) {
 		wi->setSelected(true);
 
 		QLayoutItem *layoutItem;
                 int i = 0;
 		while ((layoutItem = grid->itemAt(i)) != 0) {
-		    QWidget *w = layoutItem->widget();
-		    if (w && w->inherits("ColorPickerItem")) {
-			ColorPickerItem *litem
-			    = reinterpret_cast<ColorPickerItem *>(layoutItem->widget());
+		    QWidget *itemWidget = layoutItem->widget();
+		    if (ColorPickerItem *litem = qobject_cast<ColorPickerItem *>(itemWidget)) {
 			if (litem != wi)
 			    litem->setSelected(false);
 		    }
@@ -758,26 +752,8 @@ void ColorPickerPopup::keyPressEvent(QKeyEvent *e)
 		lastSel = wi->color();
 		emit selected(wi->color());
 		hide();
-	    } else if (w && w->inherits("QPushButton")) {
-		ColorPickerItem *wi = reinterpret_cast<ColorPickerItem *>(w);
-		wi->setSelected(true);
-
-		QLayoutItem *layoutItem;
-                int i = 0;
-		while ((layoutItem = grid->itemAt(i)) != 0) {
-		    QWidget *w = layoutItem->widget();
-		    if (w && w->inherits("ColorPickerItem")) {
-			ColorPickerItem *litem
-			    = reinterpret_cast<ColorPickerItem *>(layoutItem->widget());
-			if (litem != wi)
-			    litem->setSelected(false);
-		    }
-		    ++i;
-		}
-
-		lastSel = wi->color();
-		emit selected(wi->color());
-		hide();
+	    } else if (qobject_cast<ColorPickerButton *>(w)) {
+		getColorFromDialog();
 	    }
 	}
 	break;
@@ -825,10 +801,9 @@ void ColorPickerPopup::showEvent(QShowEvent *)
     bool foundSelected = false;
     for (int i = 0; i < grid->columnCount(); ++i) {
 	for (int j = 0; j < grid->rowCount(); ++j) {
-	    QWidget *w = widgetAt[j][i];
-	    if (w && w->inherits("ColorPickerItem")) {
-		if (((ColorPickerItem *)w)->isSelected()) {
-		    w->setFocus();
+	    if (ColorPickerItem *item = qobject_cast<ColorPickerItem *>(widgetAt[j][i])) {
+		if (item->isSelected()) {
+		    item->setFocus();
 		    foundSelected = true;
 		    break;
 		}

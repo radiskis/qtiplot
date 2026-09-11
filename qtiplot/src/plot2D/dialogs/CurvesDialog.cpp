@@ -214,7 +214,7 @@ void CurvesDialog::showCurveBtn(int)
         return;
     }
 
-    PlotCurve *c = (PlotCurve *)it;
+    PlotCurve *c = dynamic_cast<PlotCurve *>(it);
     if (c){
 		btnEditFunction->setEnabled(c->type() == Graph::Function);
 		btnRange->setEnabled(c->type() != Graph::Function && c->type() != Graph::ErrorBars);
@@ -242,7 +242,7 @@ void CurvesDialog::showPlotAssociations()
 	if (curve < 0)
 		curve = 0;
 
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     close();
 
     if (app)
@@ -251,7 +251,7 @@ void CurvesDialog::showPlotAssociations()
 
 void CurvesDialog::showFunctionDialog()
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     int currentRow = contents->currentRow();
     close();
 
@@ -308,7 +308,7 @@ void CurvesDialog::contextMenuEvent(QContextMenuEvent *e)
 
 void CurvesDialog::init()
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
     if (app){
 		bool currentFolderOnly = app->d_show_current_folder;
         boxShowCurrentFolder->setChecked(currentFolderOnly);
@@ -351,7 +351,7 @@ void CurvesDialog::setGraph(Graph *graph)
 
 void CurvesDialog::addCurves()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (!app)
 		return;
 
@@ -384,9 +384,9 @@ void CurvesDialog::addCurves()
 				if (!t)
 					continue;
 
-				QStringList lst = t->YColumns();
-				for(int i = 0; i < lst.size(); i++){
-					QString s = lst[i];
+				QStringList yColumns = t->YColumns();
+				for(int i = 0; i < yColumns.size(); i++){
+					QString s = yColumns[i];
 					if (!addCurveFromTable(app, t, s))
 						emptyColumns << s;
 				}
@@ -455,12 +455,13 @@ bool CurvesDialog::addCurveFromTable(ApplicationWindow *app, Table *t, const QSt
 	int style = curveStyle();
 	DataCurve *c = nullptr;
 	if (style == Graph::Histogram){
-		c = new QwtHistogram(t, name);
-		if (c){
-			d_graph->insertCurve(c);
-			((QwtHistogram *)c)->loadData();
+		QwtHistogram *h = new QwtHistogram(t, name);
+		if (h){
+			d_graph->insertCurve(h);
+			h->loadData();
 			d_graph->addLegendItem();
 		}
+		c = h;
 	} else
 		c = d_graph->insertCurve(t, name, style);
 
@@ -611,8 +612,7 @@ void CurvesDialog::showCurveRange(bool on)
 			if (!it)
 				continue;
 
-			if (it->rtti() == QwtPlotItem::Rtti_PlotCurve && ((PlotCurve *)it)->type() != Graph::Function){
-				DataCurve *c = (DataCurve *)it;
+			if (DataCurve *c = dynamic_cast<DataCurve *>(it)){
 				lst << c->title().text() + "[" + QString::number(c->startRow() + 1) + ":" + QString::number(c->endRow() + 1) + "]";
 			} else
 				lst << it->title().text();
@@ -637,7 +637,7 @@ void CurvesDialog::updateCurveRange()
 
 void CurvesDialog::showCurrentFolder(bool currentFolder)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (!app)
 		return;
 
@@ -656,11 +656,11 @@ void CurvesDialog::showCurrentFolder(bool currentFolder)
 		TreeWidgetFolderItem *folderItem = nullptr;
 		while (f){
 			if (f->depth() > 1){
-				Folder *parentFolder = (Folder *)f->parent();
+				Folder *parentFolder = qobject_cast<Folder *>(f->parent());
 				QTreeWidgetItemIterator it(available);
 				 while (*it) {
-					 TreeWidgetFolderItem *fi = (TreeWidgetFolderItem *)(*it);
-					 if (fi->folder() == parentFolder){
+					 TreeWidgetFolderItem *fi = dynamic_cast<TreeWidgetFolderItem *>(*it);
+					 if (fi && fi->folder() == parentFolder){
 						 folderItem = new TreeWidgetFolderItem(fi, f);
 						 break;
 					 }
@@ -683,9 +683,7 @@ void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
 		return;
 
 	for (MdiSubWindow *w : f->windowsList()){
-		if (w->inherits("Table")){
-			Table *t = (Table *)w;
-
+		if (Table *t = qobject_cast<Table *>(w)){
 			QTreeWidgetItem *tableItem;
 			if (!parent)
 				tableItem = new QTreeWidgetItem(available, QStringList(t->objectName()), TableItem);
@@ -718,7 +716,7 @@ void CurvesDialog::addFolderItems(Folder *f, QTreeWidgetItem* parent)
 
 void CurvesDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app)
 		app->d_add_curves_dialog_size = this->size();
 

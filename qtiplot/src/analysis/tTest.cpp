@@ -155,9 +155,9 @@ double tTest::ucl(double confidenceLevel)
 
 QString tTest::logInfo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale l = app->locale();
-	int p = app->d_decimal_digits;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale l = app ? app->locale() : QLocale();
+	int p = app ? app->d_decimal_digits : 6;
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
 	QString s = "[" + QDateTime::currentDateTime().toString(Qt::TextDate)+ " \"" + d_table->objectName() + "\"]\t";
@@ -240,7 +240,7 @@ QString tTest::logInfo()
 
 bool tTest::setSample2(const QString& colName, bool paired)
 {
-	d_sample2 = new Statistics((ApplicationWindow *)this->parent(), colName);
+	d_sample2 = new Statistics(qobject_cast<ApplicationWindow *>(this->parent()), colName);
 
 	unsigned int d_n2 = d_sample2->dataSize();
 	if (paired && d_n2 != d_n){
@@ -258,7 +258,7 @@ bool tTest::setSample2(const QString& colName, bool paired)
 		for (unsigned int i = 0; i < d_n; i++)
 			d_data[i] = d_data[i] - data2[i];
 
-		d_s12 = gsl_stats_sd(d_data, 1, d_n)/sqrt(d_n);
+		d_s12 = gsl_stats_sd(d_data.data(), 1, d_n)/sqrt(d_n);
 		if (d_s12 == 0){
 			reportError(QObject::tr("Attention!"),
 			QObject::tr("The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0."));

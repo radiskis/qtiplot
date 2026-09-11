@@ -40,6 +40,7 @@
 SubtractLineTool::SubtractLineTool(Graph *graph, ApplicationWindow *app)
 	: PlotToolInterface(graph)
 {
+	Q_UNUSED(app);
 	d_selected_points = 0;
 	d_picker_tool = new ScreenPickerTool(d_graph);
 	connect(d_picker_tool, &ScreenPickerTool::statusText, this, &SubtractLineTool::statusText);
@@ -90,7 +91,7 @@ void SubtractLineTool::finalize()
 	delete d_first_point_marker;
 
 	if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
-		((RangeSelectorTool *)d_graph->activeTool())->setEnabled();
+		static_cast<RangeSelectorTool *>(d_graph->activeTool())->setEnabled();
 	} else
 		d_graph->canvas()->unsetCursor();
 

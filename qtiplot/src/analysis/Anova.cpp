@@ -51,7 +51,7 @@ bool Anova::addSample(const QString& colName, int aLevel, int bLevel)
 		return setData(colName);
 	}
 
-	Statistics *sample = new Statistics((ApplicationWindow *)this->parent(), colName);
+	Statistics *sample = new Statistics(qobject_cast<ApplicationWindow *>(parent()), colName);
 	if (!sample->dataSize()){
 		delete sample;
 		return false;
@@ -214,9 +214,9 @@ QString Anova::levelName(int level, bool b)
 
 QString Anova::logInfo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale l = app->locale();
-	int p = app->d_decimal_digits;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale l = app ? app->locale() : QLocale();
+	int p = app ? app->d_decimal_digits : 6;
 	QString sep = "\t";
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
@@ -378,8 +378,10 @@ void Anova::outputResultsTo(Table *t)
 
 Table * Anova::resultTable(const QString& name)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	Table *t = 0;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
+	Table *t = nullptr;
 	if (d_two_way){
 		t = app->newTable(5, 6);
 

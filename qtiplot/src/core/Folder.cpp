@@ -28,6 +28,11 @@
  ***************************************************************************/
 #include "Folder.h"
 #include "ApplicationWindow.h"
+#include "Table.h"
+#include "Matrix.h"
+#include "MultiLayer.h"
+#include "Note.h"
+#include "Graph3D.h"
 
 #include <QApplication>
 #include <QDateTime>
@@ -48,8 +53,10 @@ Folder::Folder( Folder *parent, const QString &name )
 QList<Folder*> Folder::folders()
 {
 	QList<Folder*> lst;
-	for (QObject *f : children())
-		lst.append((Folder*) f);
+	for (QObject *f : children()){
+		if (Folder *folder = qobject_cast<Folder*>(f))
+			lst.append(folder);
+	}
 	return lst;
 }
 
@@ -58,8 +65,7 @@ QStringList Folder::subfolders()
 	QStringList list = QStringList();
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
-		QObject * f;
-		for (auto f : folderList)
+		for (QObject *f : folderList)
 			list << static_cast<Folder *>(f)->objectName();
 	}
 	return list;
@@ -68,10 +74,10 @@ QStringList Folder::subfolders()
 QString Folder::path()
 {
     QString s = "/" + QString(objectName()) + "/";
-    Folder *parentFolder = (Folder *)parent();
+    Folder *parentFolder = qobject_cast<Folder*>(parent());
     while (parentFolder){
         s.prepend("/" + QString(parentFolder->objectName()));
-        parentFolder = (Folder *)parentFolder->parent();
+        parentFolder = qobject_cast<Folder*>(parentFolder->parent());
 	}
     return s;
 }
@@ -79,10 +85,10 @@ QString Folder::path()
 int Folder::depth()
 {
 	int d = 0;
-    Folder *parentFolder = (Folder *)parent();
+    Folder *parentFolder = qobject_cast<Folder*>(parent());
     while (parentFolder){
         ++d;
-        parentFolder = (Folder *)parentFolder->parent();
+        parentFolder = qobject_cast<Folder*>(parentFolder->parent());
 	}
     return d;
 }
@@ -93,7 +99,7 @@ Folder* Folder::folderBelow()
 	if (!lst.isEmpty())
 		return lst.first();
 
-	Folder *parentFolder = (Folder *)parent();
+	Folder *parentFolder = qobject_cast<Folder*>(parent());
 	Folder *childFolder = this;
 	while (parentFolder && childFolder){
 		lst = parentFolder->folders();
@@ -102,7 +108,7 @@ Folder* Folder::folderBelow()
 			return lst.at(pos);
 
 		childFolder = parentFolder;
-		parentFolder = (Folder *)parentFolder->parent();
+		parentFolder = qobject_cast<Folder*>(parentFolder->parent());
 	}
 	return nullptr;
 }
@@ -111,22 +117,24 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 {
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
-		QObject * f;
-		for (auto f : folderList){
-			QString name = static_cast<Folder *>(f)->objectName();
+		for (QObject *f : folderList){
+			Folder *sub = qobject_cast<Folder *>(f);
+			if (!sub)
+				continue;
+			QString name = sub->objectName();
 			if (partialMatch){
 				if (caseSensitive && name.startsWith(s,Qt::CaseSensitive))
-					return static_cast<Folder *>(f);
+					return sub;
 				else if (!caseSensitive && name.startsWith(s,Qt::CaseInsensitive))
-					return static_cast<Folder *>(f);
+					return sub;
 			} else {// partialMatch == false
 				if (caseSensitive && name == s)
-					return static_cast<Folder *>(f);
+					return sub;
 				else if ( !caseSensitive && (name.toLower() == s.toLower()) )
-					return static_cast<Folder *>(f);
+					return sub;
 			}
 
-			Folder* folder = ((Folder*)f)->findSubfolder(s, caseSensitive, partialMatch);
+			Folder* folder = sub->findSubfolder(s, caseSensitive, partialMatch);
             if(folder)
                 return folder;
 		}
@@ -137,8 +145,7 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
 MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels,
 							 bool caseSensitive, bool partialMatch)
 {
-	MdiSubWindow* w;
-	for (auto w : lstWindows){
+	for (MdiSubWindow *w : lstWindows){
 		if (windowNames){
 			QString name = w->objectName();
 			if (partialMatch && name.contains(s, caseSensitive ? Qt::CaseSensitive : Qt::CaseInsensitive))
@@ -177,10 +184,37 @@ MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursiv
 
 	if (!recursive) return nullptr;
 	for (QObject *f : children()){
-		MdiSubWindow *w = ((Folder*)f)->window(name, cls, true);
-		if (w) return w;
+		if (Folder *folder = qobject_cast<Folder*>(f)){
+			MdiSubWindow *w = folder->window(name, cls, true);
+			if (w) return w;
+		}
 	}
 	return nullptr;
+}
+
+Table *Folder::table(const QString &name, bool recursive)
+{
+	return qobject_cast<Table*>(window(name, "Table", recursive));
+}
+
+Matrix *Folder::matrix(const QString &name, bool recursive)
+{
+	return qobject_cast<Matrix*>(window(name, "Matrix", recursive));
+}
+
+MultiLayer *Folder::graph(const QString &name, bool recursive)
+{
+	return qobject_cast<MultiLayer*>(window(name, "MultiLayer", recursive));
+}
+
+Note *Folder::note(const QString &name, bool recursive)
+{
+	return qobject_cast<Note*>(window(name, "Note", recursive));
+}
+
+Graph3D *Folder::plot3D(const QString &name, bool recursive)
+{
+	return qobject_cast<Graph3D*>(window(name, "Graph3D", recursive));
 }
 
 void Folder::addWindow( MdiSubWindow *w )
@@ -216,13 +250,11 @@ QString Folder::sizeToString()
 
 	QObjectList folderList = children();
 	if (!folderList.isEmpty()){
-		QObject *f;
-		for (auto f : folderList)
+		for (QObject *f : folderList)
 			size +=  sizeof(static_cast<Folder *>(f)); // FIXME: Doesn't this function add the size of pointers together? For what?
 	}
 
-	MdiSubWindow * w;
-	for (auto w : lstWindows)
+	for (MdiSubWindow *w : lstWindows)
 		size += sizeof(w);
 
 	return QString::number(8*size/1024.0,'f',1)+" "+tr("kB")+" ("+QString::number(8*size)+" "+tr("bytes")+")";
@@ -231,8 +263,12 @@ QString Folder::sizeToString()
 Folder* Folder::rootFolder()
 {
 	Folder *i = this;
-	while(i->parent())
-		i = (Folder*)i->parent();
+	while (i->parent()){
+		Folder *p = qobject_cast<Folder*>(i->parent());
+		if (!p)
+			break;
+		i = p;
+	}
 	return i;
 }
 
@@ -277,12 +313,12 @@ void FolderListItem::setActive( bool o )
 
 bool FolderListItem::isChildOf(FolderListItem *src)
 {
-	FolderListItem *parent = (FolderListItem *)this->parent();
-	while (parent){
-		if (parent == src)
+	QTreeWidgetItem *p = this->parent();
+	while (p){
+		if (p == src)
 			return true;
 
-		parent = (FolderListItem *)parent->parent();
+		p = p->parent();
 	}
 	return false;
 }
@@ -302,9 +338,10 @@ FolderListView::FolderListView( QWidget *parent, const char *name )
     viewport()->setAcceptDrops( true );
     setDragEnabled(true);
 
-	if (parent){
-		connect(this, &FolderListView::itemCollapsed, (ApplicationWindow *)parent, [parent](){ ((ApplicationWindow *)parent)->modifiedProject(); });
-		connect(this, &FolderListView::itemExpanded, (ApplicationWindow *)parent, [parent](){ ((ApplicationWindow *)parent)->modifiedProject(); });
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app){
+		connect(this, &FolderListView::itemCollapsed, app, [app](){ app->modifiedProject(); });
+		connect(this, &FolderListView::itemExpanded, app, [app](){ app->modifiedProject(); });
 		connect(this, &FolderListView::itemExpanded, this, &FolderListView::expandedItem);
         connect(this, &FolderListView::itemChanged, this, &FolderListView::onItemChanged);
 	}
@@ -325,6 +362,7 @@ void FolderListView::contextMenuEvent( QContextMenuEvent *e )
 
 void FolderListView::expandedItem(QTreeWidgetItem *item)
 {
+    Q_UNUSED(item);
     // itemBelow equivalent in QTreeWidget?
     // We might need to iterate.
     // For now, let's skip the selection logic update or implement a simple next item check.

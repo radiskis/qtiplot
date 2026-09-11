@@ -87,21 +87,21 @@ public:
 
 	void showContourLineLabels(bool show = true);
 
-	QFont labelsFont(){return d_labels_font;};
+	QFont labelsFont() const {return d_labels_font;};
 	void setLabelsFont(const QFont& font);
 
-	QColor labelsColor(){return d_labels_color;};
+	QColor labelsColor() const {return d_labels_color;};
 	void setLabelsColor(const QColor& c);
 
-	bool labelsWhiteOut(){return d_white_out_labels;};
+	bool labelsWhiteOut() const {return d_white_out_labels;};
 	void setLabelsWhiteOut(bool whiteOut);
 
-	double labelsXOffset(){return d_labels_x_offset;};
-    double labelsYOffset(){return d_labels_y_offset;};
+	double labelsXOffset() const {return d_labels_x_offset;};
+    double labelsYOffset() const {return d_labels_y_offset;};
     void setLabelsOffset(double x, double y);
 	void setLabelOffset(int index, double x, double y);
 
-	double labelsRotation(){return d_labels_angle;};
+	double labelsRotation() const {return d_labels_angle;};
     void setLabelsRotation(double angle);
 
     bool selectedLabels(const QPoint& pos);
@@ -248,7 +248,6 @@ public:
 							if (aux >= max_z)
 								max_z = aux;
 						}
-						qApp->processEvents();
 					}
 				}
 			}

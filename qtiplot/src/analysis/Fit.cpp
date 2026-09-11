@@ -40,6 +40,8 @@
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_version.h>
+#include "GslRAII.h"
+#include <vector>
 
 #include <QApplication>
 #include <QDateTime>
@@ -93,7 +95,8 @@ void Fit::init()
 	d_adjusted_r_square = NAN;
 	d_scale_errors = false;
 	d_sort_data = false;
-	d_prec = (((ApplicationWindow *)parent())->fit_output_precision);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	d_prec = app ? app->fit_output_precision : 4;
 	d_param_table = 0;
 	d_cov_matrix = nullptr;
 	covar = 0;
@@ -111,7 +114,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	else
 		T = gsl_multifit_fdfsolver_lmsder;
 
-	gsl_set_error_handler_off();
+	GslRAII::ScopedErrorHandler errorHandlerGuard;
 
 	gsl_multifit_fdfsolver *s = gsl_multifit_fdfsolver_alloc (T, d_n, d_p);
 	status = gsl_multifit_fdfsolver_set (s, &f, d_param_init);
@@ -129,12 +132,10 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	if (status){
 	    // allocate memory and calculate covariance matrix based on residuals
 #if GSL_MAJOR_VERSION == 2
-	    gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
-	    gsl_multifit_fdfsolver_jac(s, J);
-	    gsl_multifit_covar (J, 0.0, covar);
+	    GslRAII::UniqueMatrix J(gsl_matrix_alloc(d_n, d_p));
+	    gsl_multifit_fdfsolver_jac(s, J.get());
+	    gsl_multifit_covar (J.get(), 0.0, covar);
 	    iterations = 0;
-	    // free previousely allocated memory
-	    gsl_matrix_free (J);
 #else
 	    gsl_multifit_covar (s->J, 0.0, covar);
 	    iterations = 0;
@@ -165,12 +166,10 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 	} while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 #if GSL_MAJOR_VERSION == 2
 	// allocate memory and calculate covariance matrix based on residuals
-	gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
-	gsl_multifit_fdfsolver_jac(s, J);
-	gsl_multifit_covar (J, 0.0, covar);
+	GslRAII::UniqueMatrix J(gsl_matrix_alloc(d_n, d_p));
+	gsl_multifit_fdfsolver_jac(s, J.get());
+	gsl_multifit_covar (J.get(), 0.0, covar);
 	iterations = iter;
-	// free previousely allocated memory
-	gsl_matrix_free (J);
 #else
 	gsl_multifit_covar (s->J, 0.0, covar);
 	iterations = iter;
@@ -183,16 +182,19 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	const gsl_multimin_fminimizer_type *T = gsl_multimin_fminimizer_nmsimplex2;
 
 	//size of the simplex
-	gsl_vector *ss;
-	//initial vertex size vector
-	ss = gsl_vector_alloc (f.n);
+	GslRAII::UniqueVector ss(gsl_vector_alloc (f.n));
+	if (!ss) {
+		iterations = 0;
+		status = GSL_ENOMEM;
+		return nullptr;
+	}
 	//set all step sizes to 1 can be increased to converge faster
-	gsl_vector_set_all (ss, 10.0);
+	gsl_vector_set_all (ss.get(), 10.0);
 
-	gsl_set_error_handler_off();
+	GslRAII::ScopedErrorHandler errorHandlerGuard;
 
 	gsl_multimin_fminimizer *s_min = gsl_multimin_fminimizer_alloc (T, f.n);
-	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss);
+	status = gsl_multimin_fminimizer_set (s_min, &f, d_param_init, ss.get());
 
 	double size;
 	size_t iter = 0;
@@ -208,7 +210,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 
 	if (status) {
 	    iterations = 0;
-	    gsl_vector_free(ss);
 	    return s_min;
 	}
 
@@ -238,7 +239,6 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 	while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
 
 	iterations = iter;
-	gsl_vector_free(ss);
 	return s_min;
 }
 
@@ -248,7 +248,7 @@ bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yCo
     	if (d_w)
 			free(d_w);
 
-    	d_w = (double *)malloc(d_n*sizeof(double));
+    	d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
         if (!d_w){
             memoryErrorMessage();
             return false;
@@ -265,17 +265,21 @@ void Fit::setDataCurve(PlotCurve *curve, double start, double end)
 {
     Filter::setDataCurve(curve, start, end);
 
-    if (!d_w){
-        d_w = (double *)malloc(d_n*sizeof(double));
-        if (!d_w){
-            memoryErrorMessage();
-            return;
-        }
-	}
+    if (d_w) {
+        free(d_w);
+        d_w = nullptr;
+    }
 
-    if (d_graph && d_curve && ((PlotCurve *)d_curve)->type() != Graph::Function)
+    d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
+    if (!d_w){
+        memoryErrorMessage();
+        return;
+    }
+
+    DataCurve *dc = dynamic_cast<DataCurve *>(d_curve);
+    if (d_graph && dc && dc->type() != Graph::Function)
     {
-		QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
+		QList<ErrorBarsCurve *> lst = dc->errorBarsList();
 		for (ErrorBarsCurve *er : lst){
             if (!er->xErrors()){
                 d_weighting = Instrumental;
@@ -347,8 +351,8 @@ QString Fit::logFitInfo(int iterations, int status)
 	}
 	info +="\n";
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale locale = app ? app->locale() : QLocale();
 	if (is_non_linear){
 		if (d_solver == NelderMeadSimplex)
 			info+=tr("Nelder-Mead Simplex");
@@ -434,8 +438,8 @@ QString Fit::legendInfo()
 	QString info = "<b>" + tr("Dataset") + "</b>: " + dataSet + "\n";
 	info += "<b>" + tr("Function") + "</b>: " + d_formula + "\n";
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale locale = app ? app->locale() : QLocale();
 
 	double chi_2_dof = chi_2/(d_n - d_p);
 	info += "<b>" + tr("Chi^2/doF") + "</b> = " + locale.toString(chi_2_dof, 'e', d_prec) + "\n";
@@ -459,7 +463,7 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 	if (d_w)
 		free(d_w);
 
-	d_w = (double *)malloc(d_n*sizeof(double));
+	d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
 	if (!d_w){
 		memoryErrorMessage();
 		return false;
@@ -483,12 +487,14 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				}
 
 				bool error = true;
-				ErrorBarsCurve *er = 0;
-				if (((PlotCurve *)d_curve)->type() != Graph::Function){
-					QList<ErrorBarsCurve *> lst = ((DataCurve *)d_curve)->errorBarsList();
-					for (ErrorBarsCurve *er : lst){
-                    	if (!er->xErrors()){
-                        	weighting_dataset = er->title().text();
+				ErrorBarsCurve *er = nullptr;
+				DataCurve *dc = dynamic_cast<DataCurve *>(d_curve);
+				if (dc && dc->type() != Graph::Function){
+					QList<ErrorBarsCurve *> lst = dc->errorBarsList();
+					for (ErrorBarsCurve *e : lst){
+                    	if (!e->xErrors()){
+							er = e;
+                        	weighting_dataset = e->title().text();
                         	error = false;
                         	break;
                     	}
@@ -523,7 +529,11 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				if (colName.isEmpty())
 					return false;
 
-				Table* t = ((ApplicationWindow *)parent())->table(colName);
+				ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+				if (!app)
+					return false;
+
+				Table* t = app->table(colName);
 				if (!t)
 					return false;
 
@@ -548,7 +558,11 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 				if (colName.isEmpty())
 					return false;
 
-				Table* t = ((ApplicationWindow *)parent())->table(colName);
+				ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+				if (!app)
+					return false;
+
+				Table* t = app->table(colName);
 				if (!t)
 					return false;
 
@@ -573,7 +587,9 @@ bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 
 Table* Fit::parametersTable(const QString& tableName)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
 	d_param_table = app->table(tableName);
 	if (!d_param_table || d_param_table->objectName() != tableName){
 		d_param_table = app->newTable(app->generateUniqueName(tableName, false), d_p, 3);
@@ -603,8 +619,8 @@ void Fit::writeParametersToTable(Table *t, bool append)
 		t->setNumRows(rows + d_p);
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale locale = app ? app->locale() : QLocale();
 
 	double chi_2_dof = chi_2/(d_n - d_p);
 
@@ -625,7 +641,9 @@ void Fit::writeParametersToTable(Table *t, bool append)
 
 Matrix* Fit::covarianceMatrix(const QString& matrixName)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
 	d_cov_matrix = app->matrix(matrixName);
 	if (!d_cov_matrix || d_cov_matrix->objectName() != matrixName)
 		d_cov_matrix = app->newMatrix(app->generateUniqueName(matrixName, false), d_p, d_p);
@@ -678,7 +696,9 @@ PlotCurve* Fit::showResiduals()
 	if (!d_graphics_display)
 		return nullptr;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
 	Table *outputTable = app->newTable(d_n, 2, app->generateUniqueName(tr("FitResiduals"), true), tr("Residuals of %1").arg(d_explanation));
 	if (!outputTable)
 		return nullptr;
@@ -702,7 +722,7 @@ PlotCurve* Fit::showResiduals()
 
 	d_output_graph->insertPlotItem(c, Graph::Line);
     d_output_graph->updatePlot();
-	return (PlotCurve*)c;
+	return c;
 }
 
 void Fit::showConfidenceLimits(double confidenceLevel)
@@ -716,33 +736,25 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = nullptr;
+	std::vector<double> genX;
+	const double *X = nullptr;
 	if (d_gen_function){
-		X = (double *)malloc(d_points*sizeof(double));
-		if (!X){
-			memoryErrorMessage();
-			return;
-		}
+		genX.resize(d_points);
 		points = d_points;
 		double X0 = d_from;
 		double step = fabs(d_from - d_to)/(points - 1);
 		for (int i = 0; i < points; i++)
-			X[i] = X0 + i*step;
+			genX[i] = X0 + i*step;
+		X = genX.data();
 	} else
 		X = d_x;
 
-	double *lcl = (double *)malloc(d_points*sizeof(double));
-	if (!lcl){
-		memoryErrorMessage();
-		return;
-	}
-	double *ucl = (double *)malloc(d_points*sizeof(double));
-	if (!ucl){
-		memoryErrorMessage();
-		return;
-	}
+	std::vector<double> lcl(d_points);
+	std::vector<double> ucl(d_points);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	Table *outputTable = app->newTable(points, 3, app->generateUniqueName(tr("FitStats"), true), tr("Confidence Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
@@ -787,20 +799,16 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LCL");
-	c->setSamples(X, lcl, points);
+	c->setSamples(X, lcl.data(), points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UCL");
-	c->setSamples(X, ucl, points);
+	c->setSamples(X, ucl.data(), points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 2), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
     d_output_graph->updatePlot();
-	free (lcl);
-	free (ucl);
-	if (d_gen_function)
-		free (X);
 }
 
 double Fit::lcl(int parIndex, double confidenceLevel)
@@ -834,33 +842,25 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	}
 
 	int points = d_n;
-	double *X = nullptr;
+	std::vector<double> genX;
+	const double *X = nullptr;
 	if (d_gen_function){
-		X = (double *)malloc(d_points*sizeof(double));
-		if (!X){
-			memoryErrorMessage();
-			return;
-		}
+		genX.resize(d_points);
 		points = d_points;
 		double X0 = d_from;
-		double step = fabs(d_to - d_from)/(points - 1);
+		double step = fabs(d_from - d_to)/(points - 1);
 		for (int i = 0; i < points; i++)
-			X[i] = X0 + i*step;
+			genX[i] = X0 + i*step;
+		X = genX.data();
 	} else
 		X = d_x;
 
-	double *lcl = (double *)malloc(d_points*sizeof(double));
-	if (!lcl){
-		memoryErrorMessage();
-		return;
-	}
-	double *ucl = (double *)malloc(d_points*sizeof(double));
-	if (!ucl){
-		memoryErrorMessage();
-		return;
-	}
+	std::vector<double> lcl(d_points);
+	std::vector<double> ucl(d_points);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	Table *outputTable = app->newTable(points, 3, app->generateUniqueName(tr("FitStats"), true), tr("Prediction Limits of %1").arg(d_explanation));
 	if (!outputTable)
 		return;
@@ -904,20 +904,16 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_LPL");
-	c->setSamples(X, lcl, points);
+	c->setSamples(X, lcl.data(), points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
 	c = new DataCurve(outputTable, tableName + "_1", tableName + "_UPL");
-	c->setSamples(X, ucl, points);
+	c->setSamples(X, ucl.data(), points);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 3), 1));
 	d_output_graph->insertPlotItem(c, Graph::Line);
 
     d_output_graph->updatePlot();
-	free (lcl);
-	free (ucl);
-	if (d_gen_function)
-		free (X);
 }
 
 void Fit::calculateFit(int &iterations, int &status)
@@ -930,19 +926,17 @@ void Fit::calculateFit(int &iterations, int &status)
 		f.f = d_fsimplex;
 		f.n = d_p;
 		f.params = &d_data;
-		gsl_multimin_fminimizer *s_min = fitSimplex(f, iterations, status);
+		GslRAII::UniqueMultiminFminimizer s_min(fitSimplex(f, iterations, status));
 
-		if (!status) {
+		if (!status && s_min) {
 		     // allocate memory and calculate covariance matrix based on residuals
-		     gsl_matrix *J = gsl_matrix_alloc(d_n, d_p);
-		     d_df(s_min->x,(void*)f.params, J);
-		     gsl_multifit_covar (J, 0.0, covar);
+		     auto J = GslRAII::make_matrix(d_n, d_p);
+		     if (J) {
+		         d_df(s_min->x, f.params, J.get());
+		         gsl_multifit_covar (J.get(), 0.0, covar);
+		     }
 		     chi_2 = s_min->fval;
-
-		     // free previousely allocated memory
-		     gsl_matrix_free (J);
 		}
-		gsl_multimin_fminimizer_free (s_min);
 	} else {
 		gsl_multifit_function_fdf f;
 		f.f = d_f;
@@ -952,10 +946,9 @@ void Fit::calculateFit(int &iterations, int &status)
 		f.p = d_p;
 		f.params = &d_data;
 
-		gsl_multifit_fdfsolver *s = fitGSL(f, iterations, status);
-
-		chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
-		gsl_multifit_fdfsolver_free(s);
+		GslRAII::UniqueMultifitFdfSolver s(fitGSL(f, iterations, status));
+		if (s)
+			chi_2 = pow(gsl_blas_dnrm2(s->f), 2.0);
 	}
 }
 
@@ -1003,7 +996,7 @@ void Fit::fit()
 
 	generateFitCurve();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app && app->writeFitResultsToLog())
 		app->updateLog(logFitInfo(iterations, status));
 
@@ -1015,22 +1008,12 @@ void Fit::generateFitCurve()
 	if (!d_gen_function)
 		d_points = d_n;
 
-	double *X = nullptr, *Y = nullptr;
+	std::vector<double> X;
+	std::vector<double> Y;
 	if (d_graphics_display && !d_gen_function){
-		X = (double *)malloc(d_points*sizeof(double));
-		if (!X){
-			reportError(tr("QtiPlot - Memory Allocation Error"),
-			tr("Could not allocate enough memory for the fit curves!"));
-			return;
-		}
-		Y = (double *)malloc(d_points*sizeof(double));
-		if (!Y){
-			reportError(tr("QtiPlot  - Memory Allocation Error"),
-			tr("Could not allocate enough memory for the fit curves!"));
-			free(X);
-			return;
-		}
-		calculateFitCurveData(X, Y);
+		X.resize(d_points);
+		Y.resize(d_points);
+		calculateFitCurveData(X.data(), Y.data());
 	}
 
     customizeFitResults();
@@ -1044,9 +1027,7 @@ void Fit::generateFitCurve()
 			if (d_update_output_graph)
 				d_output_graph->replot();
 		} else {
-        	d_output_graph->addFitCurve(addResultCurve(X, Y));
-			free(X);
-			free(Y);
+        	d_output_graph->addFitCurve(addResultCurve(X.data(), Y.data()));
 		}
 	}
 }
@@ -1192,6 +1173,7 @@ void Fit::setParameterRange(int parIndex, double left, double right)
 
 void Fit::initWorkspace(int par)
 {
+	freeWorkspace();
 	d_min_points = par;
 	d_param_init = gsl_vector_alloc(par);
 	gsl_vector_set_all (d_param_init, 1.0);
@@ -1262,9 +1244,5 @@ void Fit::freeMemory()
 Fit::~Fit()
 {
 	freeMemory();
-
-	if (!d_p)
-		return;
-
 	freeWorkspace();
 }

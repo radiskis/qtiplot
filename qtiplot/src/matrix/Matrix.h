@@ -41,7 +41,7 @@
 #include <LinearColorMap.h>
 
 #include <qrect.h>
-
+#include <vector>
 #include <math.h>
 
 // (maximum) initial matrix size
@@ -327,7 +327,7 @@ public slots:
 	void copy(Matrix *m);
 	//! Tries to allocate memory for the workspace. Returns a nullptr pointer if failure.
 	double *initWorkspace(int size);
-	void freeWorkspace(){free(d_workspace); d_workspace = nullptr;};
+	void freeWorkspace();
 
 	bool canCalculate(bool useMuParser = true);
 	void notifyModifiedData(){emit modifiedData(this);};
@@ -387,8 +387,68 @@ private:
 	QShortcut *d_select_all_shortcut;
 	//! Undo/Redo commands stack
 	QUndoStack *d_undo_stack;
-	//! Pointer to a data buffer used for matrix operations.
-	double *d_workspace;
+	//! Data buffer used for matrix operations.
+	std::vector<double> d_workspace;
+};
+
+//! RAII wrapper for 2D double** matrix buffers allocated via Matrix::allocateMatrixData
+class DoubleMatrixBuffer {
+public:
+	DoubleMatrixBuffer() : d_rows(0), d_data(nullptr) {}
+	DoubleMatrixBuffer(int rows, int columns, bool init = false)
+		: d_rows(rows), d_data(Matrix::allocateMatrixData(rows, columns, init)) {}
+	~DoubleMatrixBuffer() {
+		reset();
+	}
+
+	DoubleMatrixBuffer(const DoubleMatrixBuffer &) = delete;
+	DoubleMatrixBuffer &operator=(const DoubleMatrixBuffer &) = delete;
+
+	DoubleMatrixBuffer(DoubleMatrixBuffer &&other) noexcept
+		: d_rows(other.d_rows), d_data(other.d_data) {
+		other.d_rows = 0;
+		other.d_data = nullptr;
+	}
+
+	DoubleMatrixBuffer &operator=(DoubleMatrixBuffer &&other) noexcept {
+		if (this != &other) {
+			reset();
+			d_rows = other.d_rows;
+			d_data = other.d_data;
+			other.d_rows = 0;
+			other.d_data = nullptr;
+		}
+		return *this;
+	}
+
+	void reset(int rows = 0, int columns = 0, bool init = false) {
+		if (d_data) {
+			Matrix::freeMatrixData(d_data, d_rows);
+			d_data = nullptr;
+			d_rows = 0;
+		}
+		if (rows > 0 && columns > 0) {
+			d_rows = rows;
+			d_data = Matrix::allocateMatrixData(rows, columns, init);
+		}
+	}
+
+	double** release() {
+		double **ret = d_data;
+		d_data = nullptr;
+		d_rows = 0;
+		return ret;
+	}
+
+	double** data() const { return d_data; }
+	operator double**() const { return d_data; }
+	double* operator[](int row) const { return d_data[row]; }
+	explicit operator bool() const { return d_data != nullptr; }
+	int rows() const { return d_rows; }
+
+private:
+	int d_rows{0};
+	double **d_data{nullptr};
 };
 
 #endif

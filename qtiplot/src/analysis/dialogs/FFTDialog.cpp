@@ -29,6 +29,7 @@
 #include "FFTDialog.h"
 #include <FFT.h>
 #include <ApplicationWindow.h>
+#include <memory>
 #include <Table.h>
 #include <Graph.h>
 #include <PlotCurve.h>
@@ -86,11 +87,13 @@ FFTDialog::FFTDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 		setFocusProxy(boxName);
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 
 	boxSampling = new DoubleSpinBox();
-	boxSampling->setDecimals(app->d_decimal_digits);
-	boxSampling->setLocale(app->locale());
+	if (app) {
+		boxSampling->setDecimals(app->d_decimal_digits);
+		boxSampling->setLocale(app->locale());
+	}
 
 	if (d_type == onTable || d_type == onMatrix){
 		gl1->addWidget(new QLabel(tr("Real")), 1, 0);
@@ -177,24 +180,26 @@ void FFTDialog::accept()
 		return;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	FFT *fft = nullptr;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	std::unique_ptr<FFT> fft;
 	if (graph)
-		fft = new FFT(app, graph->curve(boxName->currentText()));
+		fft = std::make_unique<FFT>(app, graph->curve(boxName->currentText()));
 	else if (d_table){
 		if (boxReal->currentText().isEmpty()){
 			QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please choose a column for the real part of the data!"));
 			boxReal->setFocus();
 			return;
 		}
-		fft = new FFT(app, d_table, boxReal->currentText(), boxImaginary->currentText());
+		fft = std::make_unique<FFT>(app, d_table, boxReal->currentText(), boxImaginary->currentText());
 	}
+	if (!fft)
+		return;
+
 	fft->setInverseFFT(backwardBtn->isChecked());
 	fft->setSampling(boxSampling->value());
 	fft->normalizeAmplitudes(boxNormalize->isChecked());
 	fft->shiftFrequencies(boxOrder->isChecked());
 	fft->run();
-	delete fft;
 	close();
 }
 
@@ -211,7 +216,7 @@ void FFTDialog::setGraph(Graph *g)
 void FFTDialog::activateDataSet(const QString& s)
 {
 	if (d_type == onMatrix){
-		ApplicationWindow *app = (ApplicationWindow *)parent();
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 		if (app){
 			Matrix *m = app->matrix(s);
 			if (m)
@@ -276,7 +281,9 @@ void FFTDialog::setTable(Table *t)
 
 void FFTDialog::setMatrix(Matrix *m)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	QStringList lst = app->matrixNames();
 	boxReal->addItems(lst);
 	if (m){
@@ -290,7 +297,7 @@ void FFTDialog::setMatrix(Matrix *m)
 
 void FFTDialog::fftMatrix()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -298,15 +305,14 @@ void FFTDialog::fftMatrix()
 	if (!mReal)
 		return;
 
-	FFT *fft = new FFT(app, mReal, app->matrix(boxImaginary->currentText()), backwardBtn->isChecked(),
+	auto fft = std::make_unique<FFT>(app, mReal, app->matrix(boxImaginary->currentText()), backwardBtn->isChecked(),
 					boxOrder->isChecked(), boxNormalize->isChecked(), boxPower2->isChecked());
 	fft->run();
-	delete fft;
 }
 
 void FFTDialog::closeEvent (QCloseEvent * e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app){
 		app->d_fft_norm_amp = boxNormalize->isChecked();
 		app->d_fft_shift_res = boxOrder->isChecked();

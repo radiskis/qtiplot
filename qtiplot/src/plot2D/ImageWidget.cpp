@@ -94,13 +94,13 @@ bool ImageWidget::load(const QString& fn, bool update)
 
     QFileInfo fi(fn);
     if (!fi.exists ()){
-        QMessageBox::critical((QWidget *)plot()->multiLayer()->applicationWindow(),
+        QMessageBox::critical(plot()->multiLayer()->applicationWindow(),
         tr("QtiPlot - File openning error"),
         tr("The file: <b>%1</b> doesn't exist!").arg(fn));
         return false;
     }
     if (!fi.isReadable()){
-        QMessageBox::critical((QWidget *)plot()->multiLayer()->applicationWindow(),
+        QMessageBox::critical(plot()->multiLayer()->applicationWindow(),
         tr("QtiPlot - File openning error"),
         tr("You don't have the permission to open this file: <b>%1</b>").arg(fn));
         return false;

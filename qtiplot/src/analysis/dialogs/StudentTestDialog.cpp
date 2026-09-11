@@ -49,7 +49,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	d_test_type(type),
 	d_two_samples(twoSamples)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 	d_table = nullptr;
 	d_note = nullptr;
 
@@ -268,7 +268,7 @@ void StudentTestDialog::enableDescriptiveStatistics()
 
 void StudentTestDialog::addConfidenceLevel()
 {
-	QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
+	QGridLayout *gl = qobject_cast<QGridLayout *>(boxConfidenceInterval->layout());
 	if (!gl)
 		return;
 
@@ -278,8 +278,10 @@ void StudentTestDialog::addConfidenceLevel()
 	sbox->setRange(0.01, 99.999);
 	sbox->setSingleStep(1.0);
 
-	DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (rows - 1, 1)->widget();
-	sbox->setValue(floor(0.5*(100 + sb->value())));
+	QLayoutItem *item = gl->itemAtPosition(rows - 1, 1);
+	DoubleSpinBox *sb = item ? qobject_cast<DoubleSpinBox *>(item->widget()) : nullptr;
+	if (sb)
+		sbox->setValue(floor(0.5*(100 + sb->value())));
 
 	gl->addWidget(sbox, rows, 1);
 }
@@ -304,7 +306,9 @@ void StudentTestDialog::updateMeanLabel()
 
 void StudentTestDialog::updateMeanLabels(double val)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	QString s = app->locale().toString(val, 'g', app->d_decimal_digits);
 	leftTailLabel->setText(s);
 	rightTailLabel->setText(s);
@@ -321,7 +325,9 @@ void StudentTestDialog::accept()
 
 void StudentTestDialog::acceptStudentTest()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	tTest stats(app, boxMean->value(), boxSignificance->value());
 	if (!stats.setData(boxSample1->currentText()))
@@ -349,24 +355,29 @@ void StudentTestDialog::acceptStudentTest()
 	QString s = stats.logInfo();
 
 	if (boxConfidenceInterval->isChecked()){
-		QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
-		int rows = gl->rowCount();
+		QGridLayout *gl = qobject_cast<QGridLayout *>(boxConfidenceInterval->layout());
+		if (gl){
+			int rows = gl->rowCount();
 
-		s += "\n";
-		if (d_two_samples)
-			s += tr("Confidence Interval for Difference of Means");
-		else
-			s += tr("Confidence Interval for Mean");
-		s += "\n\n";
-		s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
-		s += sep1;
-		for (int i = 0; i < rows; i++){
-			DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (i, 1)->widget();
-			double level = sb->value();
-			s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
-			s += sep + l.toString(stats.ucl(level),'g', p) + "\n";
+			s += "\n";
+			if (d_two_samples)
+				s += tr("Confidence Interval for Difference of Means");
+			else
+				s += tr("Confidence Interval for Mean");
+			s += "\n\n";
+			s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
+			s += sep1;
+			for (int i = 0; i < rows; i++){
+				QLayoutItem *item = gl->itemAtPosition(i, 1);
+				DoubleSpinBox *sb = item ? qobject_cast<DoubleSpinBox *>(item->widget()) : nullptr;
+				if (!sb)
+					continue;
+				double level = sb->value();
+				s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
+				s += sep + l.toString(stats.ucl(level),'g', p) + "\n";
+			}
+			s += sep1;
 		}
-		s += sep1;
 	}
 
 	if (boxPowerAnalysis->isChecked()){
@@ -388,7 +399,9 @@ void StudentTestDialog::acceptStudentTest()
 
 void StudentTestDialog::acceptChiSquareTest()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	ChiSquareTest stats(app, boxMean->value(), boxSignificance->value());
 	if (!stats.setData(boxSample1->currentText()))
@@ -411,21 +424,26 @@ void StudentTestDialog::acceptChiSquareTest()
 	QString s = stats.logInfo();
 
 	if (boxConfidenceInterval->isChecked()){
-		QGridLayout *gl = (QGridLayout *)boxConfidenceInterval->layout();
-		int rows = gl->rowCount();
+		QGridLayout *gl = qobject_cast<QGridLayout *>(boxConfidenceInterval->layout());
+		if (gl){
+			int rows = gl->rowCount();
 
-		s += "\n";
-		s += tr("Confidence Intervals for Variance");
-		s += "\n\n";
-		s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
-		s += sep1;
-		for (int i = 0; i < rows; i++){
-			DoubleSpinBox *sb = (DoubleSpinBox *)gl->itemAtPosition (i, 1)->widget();
-			double level = sb->value();
-			s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
-			s += sep + l.toString(stats.ucl(level),'g', p) + "\n";
+			s += "\n";
+			s += tr("Confidence Intervals for Variance");
+			s += "\n\n";
+			s += tr("Level") + sep + tr("Lower Limit") + sep + tr("Upper Limit") + "\n";
+			s += sep1;
+			for (int i = 0; i < rows; i++){
+				QLayoutItem *item = gl->itemAtPosition(i, 1);
+				DoubleSpinBox *sb = item ? qobject_cast<DoubleSpinBox *>(item->widget()) : nullptr;
+				if (!sb)
+					continue;
+				double level = sb->value();
+				s += l.toString(level) + sep + l.toString(stats.lcl(level), 'g', p);
+				s += sep + l.toString(stats.ucl(level),'g', p) + "\n";
+			}
+			s += sep1;
 		}
-		s += sep1;
 	}
 
 	outputResults(&stats, s);
@@ -436,7 +454,9 @@ void StudentTestDialog::outputResults(StatisticTest* stats, const QString& s)
 	if (!stats)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	if (boxResultsLog->isChecked())
 		app->updateLog(s);
 
@@ -486,7 +506,7 @@ void StudentTestDialog::outputResults(StatisticTest* stats, const QString& s)
 
 void StudentTestDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app){
 		app->d_stats_significance_level = boxSignificance->value();
 		app->d_stats_result_table = boxResultsTable->isChecked();

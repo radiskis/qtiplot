@@ -84,7 +84,7 @@ ImageExportDialog::ImageExportDialog(MdiSubWindow *window, QWidget * parent, boo
 
 void ImageExportDialog::initAdvancedOptions()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	d_advanced_options = new QWidget();
 	QVBoxLayout *vert_layout = new QVBoxLayout(d_advanced_options);
 
@@ -96,23 +96,23 @@ void ImageExportDialog::initAdvancedOptions()
 
 	d_vector_resolution = new QSpinBox();
 	d_vector_resolution->setRange(0, 10000);
-	d_vector_resolution->setValue(app->d_export_vector_resolution);
+	d_vector_resolution->setValue(app ? app->d_export_vector_resolution : 300);
 	vector_layout->addWidget(d_vector_resolution, 1, 1);
 
 	d_color = new QCheckBox();
 	d_color->setText(tr("Export in &color"));
-	d_color->setChecked(app->d_export_color);
+	d_color->setChecked(app ? app->d_export_color : true);
 	vector_layout->addWidget(d_color, 2, 1);
 
 	d_escape_tex_strings = new QCheckBox();
 	d_escape_tex_strings->setText(tr("&Escape special characters in texts"));
-	d_escape_tex_strings->setChecked(app->d_export_escape_tex_strings);
+	d_escape_tex_strings->setChecked(app ? app->d_export_escape_tex_strings : false);
 	vector_layout->addWidget(d_escape_tex_strings, 3, 1);
 	d_escape_tex_strings->hide();
 
 	d_tex_font_sizes = new QCheckBox();
 	d_tex_font_sizes->setText(tr("Export &font sizes"));
-	d_tex_font_sizes->setChecked(app->d_export_tex_font_sizes);
+	d_tex_font_sizes->setChecked(app ? app->d_export_tex_font_sizes : true);
 	vector_layout->addWidget(d_tex_font_sizes, 4, 1);
 	d_tex_font_sizes->hide();
 
@@ -194,8 +194,8 @@ void ImageExportDialog::initAdvancedOptions()
 		if (d_layer)
 			customSize = d_layer->size();
 		else if (d_window){
-			if (qobject_cast<MultiLayer *> (d_window))
-				customSize = ((MultiLayer *)d_window)->canvas()->size();
+			if (MultiLayer *ml = qobject_cast<MultiLayer *> (d_window))
+				customSize = ml->canvas()->size();
 			else
 				customSize = d_window->widget()->size();
 		}
@@ -350,7 +350,7 @@ void ImageExportDialog::updateAdvancedOptions (const QString & filter)
 
 void ImageExportDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app){
 		app->d_extended_export_dialog = this->isExtended();
 		app->d_image_export_filter = this->selectedNameFilter();

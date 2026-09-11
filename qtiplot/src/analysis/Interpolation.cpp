@@ -31,6 +31,8 @@
 #include <gsl/gsl_sort.h>
 #include <gsl/gsl_spline.h>
 #include <gsl/gsl_interp.h>
+#include <GslRAII.h>
+#include <vector>
 
 Interpolation::Interpolation(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
@@ -97,14 +99,7 @@ void Interpolation::init(int m)
 			break;
 	}
     d_sort_data = true;
-	d_min_points = d_method + 3; //Guess a min number of points
-	//Get the exact number of min points from GSL
-	//TODO: add a feature request to GSL developers so that we could use:
-	//d_min_points = gsl_interp_min_size(gsl_interp_type *method);
-	//It makes more sense than creating a dummy gsl_interp object and get the info from it!
-	gsl_interp *interp = gsl_interp_alloc(method, d_min_points);
-	d_min_points = gsl_interp_min_size(interp);
-	gsl_interp_free (interp);
+	d_min_points = method ? method->min_size : (d_method + 3);
 }
 
 
@@ -115,7 +110,6 @@ void Interpolation::setMethod(int m)
     	tr("Unknown interpolation method, valid values are: 0 - Linear, 1 - Cubic, 2 - Akima."));
     	return;
     }
-	int min_points = m + 3;
 	const gsl_interp_type *method = nullptr;
 	switch(m){
 		case 0:
@@ -128,9 +122,7 @@ void Interpolation::setMethod(int m)
 			method = gsl_interp_akima;
 			break;
 	}
-	gsl_interp *interp = gsl_interp_alloc(method, min_points);
-	min_points = gsl_interp_min_size(interp);
-	gsl_interp_free (interp);
+	int min_points = method ? method->min_size : (m + 3);
 
 	if (d_n < min_points){
     	reportError(tr("QtiPlot") + " - " + tr("Error"),
@@ -160,7 +152,7 @@ void Interpolation::setMethod(int m)
 
 void Interpolation::calculateOutputData(double *x, double *y)
 {
-	gsl_interp_accel *acc = gsl_interp_accel_alloc ();
+	GslRAII::UniqueInterpAccel acc(gsl_interp_accel_alloc());
 	const gsl_interp_type *method = nullptr;
 	switch(d_method)
 	{
@@ -175,17 +167,18 @@ void Interpolation::calculateOutputData(double *x, double *y)
 			break;
 	}
 
-	gsl_spline *interp = gsl_spline_alloc (method, d_n);
-	gsl_spline_init (interp, d_x, d_y, d_n);
+	GslRAII::UniqueSpline interp(gsl_spline_alloc(method, d_n));
+	if (!acc || !interp) {
+		memoryErrorMessage();
+		return;
+	}
+	gsl_spline_init(interp.get(), d_x, d_y, d_n);
 
     double step = (d_to - d_from)/(double)(d_points - 1);
     for (int j = 0; j < d_points; j++){
 	   x[j] = d_from + j*step;
-	   y[j] = gsl_spline_eval (interp, x[j], acc);
+	   y[j] = gsl_spline_eval(interp.get(), x[j], acc.get());
 	}
-
-	gsl_spline_free (interp);
-	gsl_interp_accel_free (acc);
 }
 
 int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y)
@@ -194,15 +187,11 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		return 0;
 
 	int n = c->dataSize();
-	double *xtemp = (double *)malloc(n*sizeof(double));
-	if (!xtemp)
-		memoryErrorMessage();
+	if (n <= 0)
+		return 0;
 
-	double *ytemp = (double *)malloc(n*sizeof(double));
-	if (!ytemp){
-		free(xtemp);
-		memoryErrorMessage();
-	}
+	std::vector<double> xtemp(n);
+	std::vector<double> ytemp(n);
 
 	if (c->curveType() == PlotCurve::Yfx){
 		for (int i = 0; i < n; i++){
@@ -216,59 +205,52 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		}
 	}
 
-	size_t *p = (size_t *)malloc(n*sizeof(size_t));
-	if (!p){
-		free(xtemp); free(ytemp);
-		memoryErrorMessage();
-	}
-	gsl_sort_index(p, xtemp, 1, n);
+	std::vector<size_t> p(n);
+	gsl_sort_index(p.data(), xtemp.data(), 1, n);
 
-	double *xtemp2 = (double *)malloc(n*sizeof(double));
-	if (!xtemp2){
-		free(xtemp); free(ytemp); free(p);
-		memoryErrorMessage();
-	}
-
-	double *ytemp2 = (double *)malloc(n*sizeof(double));
-	if (!ytemp2){
-		free(xtemp); free(ytemp); free(p); free(xtemp2);
-		memoryErrorMessage();
-	}
+	std::vector<double> xtemp2(n);
+	std::vector<double> ytemp2(n);
 
 	for (int i = 0; i < n; i++){
 		xtemp2[i] = xtemp[p[i]];
 		ytemp2[i] = ytemp[p[i]];
 	}
-	free(xtemp);
-	free(ytemp);
-	free(p);
 
-	int i_start = 0, i_end = n;
-	for (int i = 0; i < i_end; i++)
+	int i_start = -1, i_end = -1;
+	for (int i = 0; i < n; i++) {
 		if (xtemp2[i] >= start){
 			i_start = i;
 			break;
 		}
-	for (int i = i_end - 1; i >= 0; i--)
+	}
+	for (int i = n - 1; i >= 0; i--) {
 		if (xtemp2[i] <= end){
 			i_end = i;
 			break;
 		}
+	}
+
+	if (i_start < 0 || i_end < 0 || i_start > i_end)
+		return 0;
 
 	n = i_end - i_start + 1;
 	if (n > c->dataSize())
 		n = c->dataSize();
+	if (n <= 0)
+		return 0;
 
-	(*x) = (double *)malloc(n*sizeof(double));
-	if (!x){
-		free(xtemp2); free(ytemp2);
+	(*x) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*x)){
 		memoryErrorMessage();
+		return 0;
 	}
 
-	(*y) = (double *)malloc(n*sizeof(double));
-	if (!y){
-		free(xtemp2); free(ytemp2); free(x);
+	(*y) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*y)){
+		free(*x);
+		*x = nullptr;
 		memoryErrorMessage();
+		return 0;
 	}
 
 	int j = 0;
@@ -277,14 +259,17 @@ int Interpolation::sortedCurveData(PlotCurve *c, double start, double end, doubl
 		(*y)[j] = ytemp2[i];
 		j++;
 	}
-	free(xtemp2);
-	free(ytemp2);
 
 	double pr_x = (*x)[0];
 	for (int i = 1; i < n; i++){
 		double xval = (*x)[i];
-		if (xval <= pr_x)
+		if (xval <= pr_x){
+			free(*x);
+			free(*y);
+			*x = nullptr;
+			*y = nullptr;
 			return -1;//x values must be monotonically increasing in GSL interpolation routines
+		}
 		pr_x = xval;
 	}
 	return n;

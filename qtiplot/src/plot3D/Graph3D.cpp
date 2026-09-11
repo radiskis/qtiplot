@@ -50,7 +50,8 @@ Description          : 3D graph widget
 #include <qwt3d_coordsys.h>
 
 #include <gsl/gsl_vector.h>
-#include <gsl/gsl_vector.h>
+#include <limits>
+#include <cmath>
 #include <fstream>
 
 #ifndef LOG_MIN
@@ -291,7 +292,7 @@ void Graph3D::setShading(const Qwt3D::SHADINGSTYLE& shadingStyle)
 	// 	d_active_curve->setShading(shadingStyle);
 }
 
-void Graph3D::addHiddenConstantCurve(double xl, double xr, double yl, double yr, double zl, double zr)
+void Graph3D::addHiddenConstantCurve(double /*xl*/, double /*xr*/, double /*yl*/, double /*yr*/, double /*zl*/, double /*zr*/)
 {
 	if (d_const_curve){
 		delete d_const_curve;
@@ -450,38 +451,42 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 	if (xmesh == 0)
 		xmesh++;
 
-	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
-	gsl_vector *x = gsl_vector_alloc (xmesh);
-	gsl_vector *y = gsl_vector_alloc (xmesh);
+	DoubleMatrixBuffer data(xmesh, ymesh);
+	if (!data)
+		return;
+
+	double minx = std::numeric_limits<double>::infinity();
+	double maxx = -std::numeric_limits<double>::infinity();
+	double maxy = -std::numeric_limits<double>::infinity();
 
 	for (int j = 0; j < ymesh; j++){
 		int k = 0;
 		for (int i = 0; i < r; i++){
 			if (!table->text(i,xcol).isEmpty() && !table->text(i,ycol).isEmpty()){
-				gsl_vector_set (x, k, table->cell(i, xcol));
-
+				double xv = table->cell(i, xcol);
 				double yv = table->cell(i, ycol);
-				gsl_vector_set (y, k, yv);
+				if (xv < minx) minx = xv;
+				if (xv > maxx) maxx = xv;
+				if (yv > maxy) maxy = yv;
 				data[k][j] = yv;
 				k++;
 			}
 		}
 	}
 
-	double maxy = gsl_vector_max(y);
+	if (!std::isfinite(minx)) minx = 0.0;
+	if (!std::isfinite(maxx)) maxx = 0.0;
+	if (!std::isfinite(maxy)) maxy = 0.0;
+
 	double maxz = 0.6*maxy;
 	sp->makeCurrent();
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 
-	d_active_curve->loadFromData(data, xmesh, ymesh, gsl_vector_min(x), gsl_vector_max(x), 0, maxz);
+	d_active_curve->loadFromData(data, xmesh, ymesh, minx, maxx, 0, maxz);
 
 	if (empty || d_autoscale)
 		findBestLayout();
-
-	gsl_vector_free (x);
-	gsl_vector_free (y);
-	Matrix::freeMatrixData(data, xmesh);
 }
 
 void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yColName,
@@ -522,7 +527,10 @@ void Graph3D::addMatrixData(Matrix* m)
 
 	int cols = m->numCols();
 	int rows = m->numRows();
-	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
+	DoubleMatrixBuffer data_matrix(cols, rows);
+	if (!data_matrix)
+		return;
+
 	for (int i = 0; i < cols; i++ ){
 		for (int j = 0; j < rows; j++)
 			data_matrix[i][j] = m->cell(j, i);
@@ -532,7 +540,6 @@ void Graph3D::addMatrixData(Matrix* m)
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 	d_active_curve->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
-	Matrix::freeMatrixData(data_matrix, cols);
 
 	if (first_time){
 		LinearColorMap map = m->colorMap();
@@ -737,9 +744,14 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 		return;
 	}
 
-	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
-	gsl_vector * x = gsl_vector_alloc (xmesh);
-	gsl_vector * y = gsl_vector_alloc (xmesh);
+	DoubleMatrixBuffer data(xmesh, ymesh);
+	if (!data)
+		return;
+
+	double minx = std::numeric_limits<double>::infinity();
+	double maxx = -std::numeric_limits<double>::infinity();
+	double minz = std::numeric_limits<double>::infinity();
+	double maxz = -std::numeric_limits<double>::infinity();
 
 	for ( j = 0; j < ymesh; j++)
 	{
@@ -750,9 +762,10 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 			{
 				double xv=table->cell(i,xCol);
 				double yv=table->cell(i,yCol);
-
-				gsl_vector_set (x, k, xv);
-				gsl_vector_set (y, k, yv);
+				if (xv < minx) minx = xv;
+				if (xv > maxx) maxx = xv;
+				if (yv < minz) minz = yv;
+				if (yv > maxz) maxz = yv;
 
 				data[k][j] =yv;
 				k++;
@@ -760,11 +773,12 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 		}
 	}
 
-	double minx=gsl_vector_min (x);
-	double maxx=gsl_vector_max(x);
-	double minz=gsl_vector_min (y);
-	double maxz=gsl_vector_max(y);
-	double miny, maxy;
+	if (!std::isfinite(minx)) minx = 0.0;
+	if (!std::isfinite(maxx)) maxx = 0.0;
+	if (!std::isfinite(minz)) minz = 0.0;
+	if (!std::isfinite(maxz)) maxz = 0.0;
+
+	double miny = 0.0, maxy = 0.0;
 
 	sp->makeCurrent();
 	resetNonEmptyStyle();
@@ -775,9 +789,6 @@ void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 	d_active_curve->showColorLegend(legendOn);
 	d_active_curve->legend()->setLimits(minz,maxz);
 	d_active_curve->legend()->setMajors(legendMajorTicks);
-
-	gsl_vector_free (x);gsl_vector_free (y);
-	Matrix::freeMatrixData(data, xmesh);
 }
 
 void Graph3D::updateMatrixData(Matrix* m)
@@ -793,7 +804,10 @@ void Graph3D::updateMatrixData(Matrix* m)
 	int cols = m->numCols();
 	int rows = m->numRows();
 
-	double **data = Matrix::allocateMatrixData(cols, rows);
+	DoubleMatrixBuffer data(cols, rows);
+	if (!data)
+		return;
+
 	for (int i = 0; i < cols; i++ ){
 		for (int j = 0; j < rows; j++)
 			data[i][j] = m->cell(j, i);
@@ -812,7 +826,6 @@ void Graph3D::updateMatrixData(Matrix* m)
 	d_active_curve->legend()->setLimits(start, end);
 	d_active_curve->legend()->setMajors(legendMajorTicks);
 
-	Matrix::freeMatrixData(data, cols);
 	if (d_autoscale)
 		findBestLayout();
 	update();
@@ -1318,19 +1331,19 @@ QStringList Graph3D::scaleTicks()
 	return limits;
 }
 
-int Graph3D::axisNumericFormat(int axis)
+int Graph3D::axisNumericFormat(int /*axis*/)
 {
 	// return (int)sp->coordinates()->axes[axis].numericFormat();
 	return 0;
 }
 
-int Graph3D::axisNumericPrecision(int axis)
+int Graph3D::axisNumericPrecision(int /*axis*/)
 {
 	// return sp->coordinates()->axes[axis].numericPrecision();
 	return 6;
 }
 
-void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
+void Graph3D::setAxisNumericFormat(int axis, int /*format*/, int /*precision*/)
 {
 	int axis1 = X1, axis2 = X2, axis3 = X3, axis4 = X4;
 
@@ -1345,6 +1358,11 @@ void Graph3D::setAxisNumericFormat(int axis, int format, int precision)
 			axis1 = Z1, axis2 = Z2, axis3 = Z3, axis4 = Z4;
 		break;
 	}
+
+	Q_UNUSED(axis1);
+	Q_UNUSED(axis2);
+	Q_UNUSED(axis3);
+	Q_UNUSED(axis4);
 
 	// sp->coordinates()->axes[axis1].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
 	// sp->coordinates()->axes[axis2].setNumericFormat((Qwt3D::Scale::NumericFormat)format, precision);
@@ -1532,9 +1550,11 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 
 	int cols = d_matrix->numCols();
 	int rows = d_matrix->numRows();
-	double **data = 0;
+	DoubleMatrixBuffer data;
 	if (xmin <= xStart && xmax >= xEnd && ymin <= yStart && ymax >= yEnd){
-		data = Matrix::allocateMatrixData(cols, rows);
+		data.reset(cols, rows);
+		if (!data)
+			return;
 		for (int i = 0; i < cols; i++){
 			for (int j = 0; j < rows; j++){
 				double val = d_matrix->cell(j, i);
@@ -1557,7 +1577,9 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 
 		cols = qRound(fabs(x_end - x_begin)/dx);
 		rows = qRound(fabs(y_end - y_begin)/dy);
-		data = Matrix::allocateMatrixData(cols, rows);
+		data.reset(cols, rows);
+		if (!data)
+			return;
 		for (int i = 0; i < cols; i++){
 			double x = x_begin + i*dx;
 			double dli, dlf;
@@ -1583,7 +1605,6 @@ void Graph3D::updateScalesFromMatrix(double xl, double xr, double yl, double yr,
 		}
 		d_active_curve->loadFromData(data, cols, rows, x_begin, x_end, y_begin, y_end);
 	}
-	Matrix::freeMatrixData(data, cols);
 
 	d_active_curve->legend()->setMajors(legendMajorTicks);
 
@@ -1608,7 +1629,9 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 	if (xmesh == 0)
 		xmesh++;
 
-	double **data = Matrix::allocateMatrixData(xmesh, ymesh);
+	DoubleMatrixBuffer data(xmesh, ymesh);
+	if (!data)
+		return;
 
 	for (int j = 0; j < ymesh; j++){
 		int k = 0;
@@ -1628,8 +1651,6 @@ void Graph3D::updateScales(double xl, double xr, double yl, double yr,double zl,
 
 	if (d_active_curve)
 		d_active_curve->loadFromData(data, xmesh, ymesh, xl, xr, yl, yr);
-
-	Matrix::freeMatrixData(data, xmesh);
 
 	sp->coordinates()->setPosition(Triple(xl, yl, zl), Triple(xr, yr, zr));
 	changeScales(xl, xr, yl, yr, zl, zr);
@@ -2281,7 +2302,7 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 	if (fontsFactor == 0.0)
 		fontsFactor = (double)size.height()/(double)this->height();
 
-    VectorWriter * gl2ps = (VectorWriter*)IO::outputHandler(format);
+    VectorWriter * gl2ps = dynamic_cast<VectorWriter*>(IO::outputHandler(format));
     if (gl2ps){
 		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
 		gl2ps->setLandscape(VectorWriter::OFF);
@@ -2323,7 +2344,7 @@ void Graph3D::exportToFile(const QString& fileName)
 
 bool Graph3D::eventFilter(QObject *object, QEvent *e)
 {
-	if (e->type() == QEvent::MouseButtonDblClick && object == (QObject *)this->sp)
+	if (e->type() == QEvent::MouseButtonDblClick && object == this->sp)
 	{
 		emit showOptionsDialog();
 		return true;
@@ -2898,7 +2919,8 @@ void Graph3D::changeTransparency(double t)
 
 	d_alpha = t;
 
-	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
+	if (auto *lc = const_cast<LinearColor*>(dynamic_cast<const LinearColor*>(d_active_curve->dataColor())))
+		lc->setAlpha(t);
 
     sp->showColorLegend(legendOn);
 	sp->update();
@@ -2915,7 +2937,8 @@ void Graph3D::setTransparency(double t)
 
 	d_alpha = t;
 
-	((LinearColor*)d_active_curve->dataColor())->setAlpha(t);
+	if (auto *lc = const_cast<LinearColor*>(dynamic_cast<const LinearColor*>(d_active_curve->dataColor())))
+		lc->setAlpha(t);
 }
 
 Matrix * Graph3D::functionMatrix()
@@ -2985,15 +3008,19 @@ LinearColorMap Graph3D::colorMap()
 	if (!d_active_curve)
 		return LinearColorMap();
 
-	return ((LinearColor*)d_active_curve->dataColor())->colorMap();
+	if (const auto *lc = dynamic_cast<const LinearColor*>(d_active_curve->dataColor()))
+		return lc->colorMap();
+	return LinearColorMap();
 }
 
 LinearColorMap *Graph3D::colorMapPointer()
 {
 	if (!d_active_curve)
-		return 0;
+		return nullptr;
 
-	return ((LinearColor*)d_active_curve->dataColor())->colorMapPointer();
+	if (auto *lc = const_cast<LinearColor*>(dynamic_cast<const LinearColor*>(d_active_curve->dataColor())))
+		return lc->colorMapPointer();
+	return nullptr;
 }
 
 void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
@@ -3002,7 +3029,8 @@ void Graph3D::setDataColorMap(const LinearColorMap& colorMap)
 		return;
 
 	d_color_map_file = QString();
-	((LinearColor *)d_active_curve->dataColor())->setColorMap(colorMap);
+	if (auto *lc = const_cast<LinearColor*>(dynamic_cast<const LinearColor*>(d_active_curve->dataColor())))
+		lc->setColorMap(colorMap);
 	d_active_curve->legend()->setLimits(colorMap.intensityRange().minValue(), colorMap.intensityRange().maxValue());
 	// d_active_curve->showColorLegend(d_active_curve->isColorLegend());
 }
@@ -3025,10 +3053,10 @@ void Graph3D::setDataColorMap(const ColorVector& colors)
 	if (!d_active_curve)
 		return;
 
-	LinearColor *color = (LinearColor *)d_active_curve->dataColor();
-	double alpha = color->alpha();
+	const LinearColor *currColor = dynamic_cast<const LinearColor*>(d_active_curve->dataColor());
+	double alpha = currColor ? currColor->alpha() : 1.0;
 
-	color = new LinearColor(d_active_curve, colors);
+	LinearColor *color = new LinearColor(d_active_curve, colors);
 	color->setAlpha(alpha);
 
 	sp->setDataColor(color);
@@ -3311,7 +3339,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 				return 0;
 			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
 					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
-		} else if (formula.contains("(Z)") > 0){
+		} else if (formula.contains("(Z)")){
 			formula.remove("(X)").remove("(Y)").remove("(Z)");
 			QStringList l = formula.split(",");
 			if (l.size() < 3)
@@ -3479,9 +3507,9 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		if (s.contains("<AxesNumberFormat>")){
 			fList = s.remove("<AxesNumberFormat>").remove("</AxesNumberFormat>").split("\t");
 			for (int i = 0; i < 3; i++){
-				int aux = 2*i + 1;
-				if (aux < fList.size())
-					plot->setAxisNumericFormat(i, fList[2*i].toInt(), fList[aux].toInt());
+				int idx = 2*i + 1;
+				if (idx < fList.size())
+					plot->setAxisNumericFormat(i, fList[2*i].toInt(), fList[idx].toInt());
 			}
 		}
 	}

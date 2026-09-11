@@ -43,7 +43,7 @@ public:
 
 	virtual QRectF boundingRect() const;
 
-	BarStyle orientation(){return bar_style;};
+	BarStyle orientation() const {return bar_style;};
 
 	void setGap (int gap);
 	int gap() const {return bar_gap;};
@@ -53,7 +53,7 @@ public:
 
 	double dataOffset();
 
-	bool isStacked(){return d_is_stacked;};
+	bool isStacked() const {return d_is_stacked;};
 	void setStacked(bool on = true){d_is_stacked = on;};
 
 	virtual QString saveToString();

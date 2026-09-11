@@ -163,10 +163,12 @@ void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtSca
 				if (d_categories)
 					s += QString::number(d_table_rows[0]) + "\n";
 
+                Graph *g = qobject_cast<Graph *>(plot());
+                QLocale loc = g ? g->locale() : QLocale();
                 if (d_values && d_percentages)
-                    s += ((Graph *)plot())->locale().toString(y(0), 'g', 4) + " (100%)";
+                    s += loc.toString(y(0), 'g', 4) + " (100%)";
                 else if (d_values)
-                    s += ((Graph *)plot())->locale().toString(y(0), 'g', 4);
+                    s += loc.toString(y(0), 'g', 4);
                 else if (d_percentages)
                     s += "100%";
                 l->setText(s);
@@ -231,8 +233,8 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 	const int sign = d_counter_clockwise ? 1 : -1;
 
 	const int size = dataSize();
-    double *start_angle = new double[size];
-    double *end_angle = new double[size];
+    QVarLengthArray<double, 64> start_angle(size);
+    QVarLengthArray<double, 64> end_angle(size);
     double aux_angle = d_start_azimuth;
 	for (int i = from; i <= to; i++){
 	    double a = -sign*y(i)/sum*360.0;
@@ -254,7 +256,8 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 
 	painter->save();
 
-	QLocale locale = ((Graph *)plot())->multiLayer()->locale();
+	Graph *g = qobject_cast<Graph *>(plot());
+	QLocale locale = (g && g->multiLayer()) ? g->multiLayer()->locale() : QLocale();
 	for (int i = from; i <= to; i++){
 		const double yi = y(i);
 		const double q = yi/sum;
@@ -374,8 +377,6 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 		}
 	}
 	painter->restore();
-	delete [] start_angle;
-	delete [] end_angle;
 }
 
 QColor PieCurve::color(int i) const
@@ -395,7 +396,9 @@ void PieCurve::setBrushStyle(const Qt::BrushStyle& style)
 
 void PieCurve::loadData()
 {
-	Graph *d_plot = (Graph *)plot();
+	Graph *d_plot = qobject_cast<Graph *>(plot());
+	if (!d_plot || !d_plot->multiLayer())
+		return;
 	QLocale locale = d_plot->multiLayer()->locale();
 	QVarLengthArray<double> X(abs(d_end_row - d_start_row) + 1);
 	d_table_rows.resize(abs(d_end_row - d_start_row) + 1);
@@ -435,7 +438,7 @@ PieLabel* PieCurve::addLabel(PieLabel *l, bool clone)
 	if (!l)
 		return 0;
 
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (clone){
 		PieLabel *newLabel = new PieLabel(g, this);
 		newLabel->clone(l);
@@ -460,7 +463,9 @@ void PieCurve::initLabels()
 	for (int i = 0; i < dataPoints; i++)
 		sum += y(i);
 
-    Graph *d_plot = (Graph *)plot();
+    Graph *d_plot = qobject_cast<Graph *>(plot());
+	if (!d_plot || !d_plot->multiLayer())
+		return;
 	QLocale locale = d_plot->multiLayer()->locale();
 	int ycol = d_table->colIndex(title().text());
 	int aux = 0;
@@ -549,7 +554,7 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
         QString s = *line;
 		if (s.contains("<index>")){
 			int index = s.remove("<index>").remove("</index>").toInt();
-			PieCurve *pie = (PieCurve *)g->curve(0);
+			PieCurve *pie = dynamic_cast<PieCurve *>(g->curve(0));
 			if(pie){
 				QList<PieLabel *> labels = pie->labelsList();
 				if (index >= 0 && index < labels.size())
@@ -576,10 +581,10 @@ void PieLabel::restore(Graph *g, const QStringList& lst)
 			txt.pop_back();
 			text = txt.join("\n");
 		} else if (s.contains("<Font>")){
-			QStringList lst = s.remove("<Font>").remove("</Font>").split("\t");
-			f = QFont(lst[0], lst[1].toInt(), lst[2].toInt(), lst[3].toInt());
-			f.setUnderline(lst[4].toInt());
-			f.setStrikeOut(lst[5].toInt());
+			QStringList fontList = s.remove("<Font>").remove("</Font>").split("\t");
+			f = QFont(fontList[0], fontList[1].toInt(), fontList[2].toInt(), fontList[3].toInt());
+			f.setUnderline(fontList[4].toInt());
+			f.setStrikeOut(fontList[5].toInt());
 		} else if (s.contains("<TextColor>"))
 			textColor = QColor(s.remove("<TextColor>").remove("</TextColor>"));
 		else if (s.contains("<Background>"))

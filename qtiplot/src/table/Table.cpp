@@ -43,6 +43,9 @@ Description          : Table worksheet class
 #include <QApplication>
 #include <QPainter>
 #include <QRegularExpression>
+#include <vector>
+#include <limits>
+#include <cmath>
 #include <QEvent>
 #include <QLayout>
 #include <QPrintDialog>
@@ -69,6 +72,7 @@ Description          : Table worksheet class
 #include <gsl/gsl_heapsort.h>
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
+#include "GslRAII.h"
 
 Table::Table(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 : MdiSubWindow(label,parent,name,f), scripted(env)
@@ -86,7 +90,8 @@ Table::~Table()
 void Table::init(int rows, int cols)
 {
 	selectedCol=-1;
-	d_saved_cells = 0;
+	d_saved_cells = nullptr;
+	d_saved_cols = 0;
 	d_show_comments = false;
 	d_numeric_precision = 13;
 
@@ -1186,6 +1191,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 			return;
 	}
 	QTextStream t( &f );
+	t.setEncoding(QStringConverter::Utf8);
 
 	t << "<table>";
 	if (saveAsTemplate){
@@ -1229,6 +1235,8 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 		t << "</data>\n";
 	}
 	t << "</table>\n";
+	t.flush();
+	f.close();
 }
 
 int Table::firstXCol()
@@ -1393,7 +1401,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
 		if (enumerateRight)
             newLabel += QString::number(n);
 
-		if (col_label.contains(newLabel) > 0){
+		if (col_label.contains(newLabel)){
 			if (warn){
 				QMessageBox::critical(0, tr("QtiPlot - Error"),
 				tr("There is already a column called : <b>%1</b> in table <b>%2</b>!<p>Please choose another name!").arg(newLabel).arg(caption));
@@ -2287,21 +2295,29 @@ void Table::normalize()
 
 void Table::normalizeCol(int col)
 {
-	if (col<0) col = selectedCol;
+	if (col < 0) col = selectedCol;
+	if (col < 0 || col >= d_table->numCols())
+		return;
 	if (d_table->isColumnReadOnly(col) || colTypes[col] == Table::Text)
 	    return;
 
 	int rows = d_table->numRows();
-	gsl_vector *data = gsl_vector_alloc(rows);
+	if (rows <= 0)
+		return;
+
+	std::vector<double> data(rows);
 	QStringList oldData;
-	for (int i=0; i<rows; i++){
+	oldData.reserve(rows);
+	double max = -std::numeric_limits<double>::infinity();
+	for (int i = 0; i < rows; i++){
 		oldData << d_table->text(i, col);
-		gsl_vector_set(data, i, cell(i, col));
+		double val = cell(i, col);
+		data[i] = val;
+		if (val > max)
+			max = val;
 	}
 
-	double max = gsl_vector_max(data);
-	if (max == 1.0){
-		gsl_vector_free(data);
+	if (max == 1.0 || !std::isfinite(max)){
 		return;
 	}
 
@@ -2310,13 +2326,13 @@ void Table::normalizeCol(int col)
     columnNumericFormat(col, &f, &prec);
 
 	QStringList newData;
-	for (int i=0; i<rows; i++){
-		if ( !oldData[i].isEmpty() )
-			newData << locale().toString(gsl_vector_get(data, i)/max, f, prec);
+	newData.reserve(rows);
+	for (int i = 0; i < rows; i++){
+		if (!oldData[i].isEmpty())
+			newData << locale().toString(data[i] / max, f, prec);
 		else
 			newData << "";
 	}
-	gsl_vector_free(data);
 
 	pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, QList<int>() << col,
 					QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Normalize") + " " + colName(col)));
@@ -2354,8 +2370,8 @@ void Table::sortColumns(int type, int order, const QString& leadCol)
 
 int compare_qstrings (const void * a, const void * b)
 {
-	QString *bb = (QString *)b;
-	return ((QString *)a)->compare(*bb);
+	const QString *bb = static_cast<const QString *>(b);
+	return static_cast<const QString *>(a)->compare(*bb);
 }
 
 void Table::sortColumns(const QStringList&s, int type, int order, const QString& leadCol)
@@ -2407,11 +2423,11 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 		strings.resize(non_empty_cells);
 
 		// Find the permutation index for the lead col
-		size_t *p = new size_t[non_empty_cells];
+		std::vector<size_t> p(non_empty_cells);
 		if (columnType(leadcol) == Table::Text)
-			gsl_heapsort_index(p, strings.data(), strings.count(), sizeof(QString), compare_qstrings);
+			gsl_heapsort_index(p.data(), strings.data(), strings.count(), sizeof(QString), compare_qstrings);
 		else
-			gsl_sort_index(p, data_double.data(), 1, non_empty_cells);
+			gsl_sort_index(p.data(), data_double.data(), 1, non_empty_cells);
 
 		QList<int> colIndices;
 		QList<QStringList> oldDataList, newDataList;
@@ -2427,8 +2443,8 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 			oldDataList << oldData;
 			QStringList newData = oldData; // initialize with copy
 
-			int type = columnType(col);
-			if (type == Text){
+			int colType = columnType(col);
+			if (colType == Text){
 				for (int j = 0; j<non_empty_cells; j++)
 					strings[j] = oldData[valid_cell[j]];
 				if(!order)
@@ -2437,18 +2453,18 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 				else
 					for (int j = 0; j < non_empty_cells; j++)
 						newData[valid_cell[j]] = strings[p[non_empty_cells - j - 1]];
-			} else if (type == Date || type == Time){
-				QString format = col_format[col];
+			} else if (colType == Date || colType == Time){
+				QString colFormat = col_format[col];
 				QVarLengthArray<double> col_data_double(non_empty_cells);
 				for (int j = 0; j<non_empty_cells; j++)
-					col_data_double[j] = fromDateTime(QDateTime::fromString(oldData[valid_cell[j]], format));
+					col_data_double[j] = fromDateTime(QDateTime::fromString(oldData[valid_cell[j]], colFormat));
 				if(!order)
 					for (int j=0; j<non_empty_cells; j++)
-						newData[valid_cell[j]] = dateTime(col_data_double[p[j]]).toString(format);
+						newData[valid_cell[j]] = dateTime(col_data_double[p[j]]).toString(colFormat);
 				else
 					for (int j=0; j<non_empty_cells; j++)
-						newData[valid_cell[j]] = dateTime(col_data_double[p[non_empty_cells - j - 1]]).toString(format);
-			} else if (type == Numeric) {
+						newData[valid_cell[j]] = dateTime(col_data_double[p[non_empty_cells - j - 1]]).toString(colFormat);
+			} else if (colType == Numeric) {
 				QVarLengthArray<double> col_data_double(non_empty_cells);
 				for (int j = 0; j<non_empty_cells; j++)
 					col_data_double[j] = cell(valid_cell[j], col);
@@ -2464,8 +2480,7 @@ void Table::sortColumns(const QStringList&s, int type, int order, const QString&
 			}
 			newDataList << newData;
 		}
-		delete[] p;
-		
+
 		if (!colIndices.isEmpty())
 			pushUndoCommand(new TableSetValuesCommand(this, 0, rows - 1, colIndices, oldDataList, newDataList, tr("Sort")));
 	}
@@ -2707,8 +2722,11 @@ void Table::setText(int row, int col, const QString &text, bool pushUndo, const 
 
 void Table::saveToMemory()
 {
+	freeMemory();
+
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
+	d_saved_cols = cols;
 
 	d_saved_cells = new double* [cols];
 	for ( int i = 0; i < cols; ++i)
@@ -2747,11 +2765,12 @@ void Table::freeMemory()
 	if (!d_saved_cells)
 		return;
 
-    for ( int i = 0; i < d_table->numCols(); i++)
+    for ( int i = 0; i < d_saved_cols; i++)
         delete[] d_saved_cells[i];
 
     delete[] d_saved_cells;
-	d_saved_cells = 0;
+	d_saved_cells = nullptr;
+	d_saved_cols = 0;
 }
 
 void Table::setTextFormat(int col, bool pushUndo)
@@ -3085,7 +3104,7 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 
 	gsl_rng_env_setup();
 	const gsl_rng_type * T = gsl_rng_default;
-	gsl_rng * r = gsl_rng_alloc (T);
+	GslRAII::UniqueRng r(gsl_rng_alloc(T));
 	if (!r)
 		return;
 
@@ -3093,18 +3112,16 @@ void Table::setNormalRandomValues(int col, int startRow, int endRow, double sigm
 	char f;
 	columnNumericFormat(col, &f, &prec);
 
-	gsl_rng_set(r, time(nullptr) + col);
+	gsl_rng_set(r.get(), time(nullptr) + col);
 	for (int i = startRow; i <= endRow; i++)
-		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec));
+		d_table->setText(i, col, locale().toString(gsl_ran_gaussian_ziggurat(r.get(), sigma), f, prec));
 
 	QStringList oldData, newData;
-	gsl_rng_set(r, time(NULL) + col);
+	gsl_rng_set(r.get(), time(NULL) + col);
 	for (int i = startRow; i <= endRow; i++){
 		oldData << d_table->text(i, col);
-		newData << locale().toString(gsl_ran_gaussian_ziggurat(r, sigma), f, prec);
+		newData << locale().toString(gsl_ran_gaussian_ziggurat(r.get(), sigma), f, prec);
 	}
-
-	gsl_rng_free (r);
 
 	pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, QList<int>() << col,
 						QList<QStringList>() << oldData, QList<QStringList>() << newData, tr("Fill Column With Normal Random Values")));
@@ -3166,7 +3183,7 @@ void Table::setNormalRandomValues()
 
 	gsl_rng_env_setup();
 	const gsl_rng_type * T = gsl_rng_default;
-	gsl_rng * r = gsl_rng_alloc (T);
+	GslRAII::UniqueRng r(gsl_rng_alloc(T));
 	if (!r)
 		return;
 
@@ -3181,15 +3198,14 @@ void Table::setNormalRandomValues()
 		columnNumericFormat(col, &f, &prec);
 
 		QStringList oldColData, newColData;
-		gsl_rng_set(r, time(NULL) + col);
+		gsl_rng_set(r.get(), time(NULL) + col);
 		for (int row = startRow; row <= endRow; row++){
 			oldColData << d_table->text(row, col);
-			newColData << locale().toString(gsl_ran_gaussian_ziggurat(r, 1.0), f, prec);
+			newColData << locale().toString(gsl_ran_gaussian_ziggurat(r.get(), 1.0), f, prec);
 		}
 		oldData << oldColData;
 		newData << newColData;
 	}
-	gsl_rng_free (r);
 
 	if (!cols.isEmpty())
 		pushUndoCommand(new TableSetValuesCommand(this, startRow, endRow, cols, oldData, newData, tr("Fill Columns With Normal Random Values")));
@@ -3602,7 +3618,7 @@ void Table::importASCII(const QString &fname, const QString &sep, int ignoredLin
 	setHeaderColType();
 
 	int steps = rows/100 + 1;
-	QProgressDialog progress((QWidget *)applicationWindow());
+	QProgressDialog progress(applicationWindow());
 	progress.setWindowTitle(tr("Qtiplot") + " - " + tr("Reading file..."));
 	progress.setLabelText(fname);
 	progress.activateWindow();
@@ -4048,11 +4064,11 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 {
 	QHeaderView *hheader = d_table->horizontalHeader();
 	QHeaderView *vheader = d_table->verticalHeader();
-	bool isHHeader = (object == (QObject*)hheader || (hheader && object == (QObject*)hheader->viewport()));
-	bool isVHeader = (object == (QObject*)vheader || (vheader && object == (QObject*)vheader->viewport()));
+	bool isHHeader = (object == hheader || (hheader && object == hheader->viewport()));
+	bool isVHeader = (object == vheader || (vheader && object == vheader->viewport()));
 
 	if (e->type() == QEvent::MouseButtonDblClick && isHHeader) {
-		const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		selectedCol = hheader->logicalIndexAt (me->pos().x());
 
 		QRect rect(hheader->sectionPosition(selectedCol), 0, hheader->sectionSize(selectedCol), hheader->height());
@@ -4067,7 +4083,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
         if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 		return true;
 	} else if (e->type() == QEvent::MouseButtonPress && isHHeader) {
-		const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		if (me->button() == Qt::LeftButton){
 			int col = hheader->logicalIndexAt (me->pos().x());
 			if (me->modifiers() & Qt::ControlModifier){
@@ -4095,7 +4111,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			}
 
 			if (me->modifiers() & Qt::ShiftModifier){
-				int col = hheader->logicalIndexAt (me->pos().x());
+				col = hheader->logicalIndexAt (me->pos().x());
 				int start = qMin(col, selectedCol);
 				int end = qMax(col, selectedCol);
 				for (int i = start; i <= end; i++)
@@ -4139,7 +4155,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			return false;
 		}
 	} else if (e->type() == QEvent::MouseButtonPress && isVHeader) {
-		const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		if (me->button() == Qt::RightButton) {
 			int row = vheader->logicalIndexAt(me->pos().y());
 			if (row >= 0 && row < d_table->numRows()){
@@ -4152,8 +4168,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 			return false;
 		}
-	} else if (e->type() == QEvent::ContextMenu && (object == (QObject*)d_table || isHHeader || isVHeader)){
-        const QContextMenuEvent *ce = (const QContextMenuEvent *)e;
+	} else if (e->type() == QEvent::ContextMenu && (object == d_table || isHHeader || isVHeader)){
+        const QContextMenuEvent *ce = static_cast<const QContextMenuEvent *>(e);
         setFocus();
         if (isHHeader) {
             int lastCol = d_table->numCols() - 1;
@@ -4175,7 +4191,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
         }
         return true;
     } else if (e->type() == QEvent::MouseMove && isHHeader){
-		const QMouseEvent *me = (const QMouseEvent *)e;
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		int col = hheader->logicalIndexAt (me->pos().x());
 		QRect r(hheader->sectionPosition(col), 0, hheader->sectionSize(col), hheader->height());
 		r = QRect(r.topLeft(), QSize(r.width(), 10));
@@ -4192,7 +4208,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 void Table::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
-		scriptingChangeEvent((ScriptingChangeEvent*)e);
+		scriptingChangeEvent(static_cast<ScriptingChangeEvent*>(e));
 }
 
 void Table::setNumRows(int rows)
@@ -4229,24 +4245,17 @@ void Table::resizeRows(int r)
 		return;
 
 	if (rows > r){
-		QString text= tr("Rows will be deleted from the table!");
-		text+="<p>"+tr("Do you really want to continue?");
-		int i,cols = d_table->numCols();
-		switch( QMessageBox::information(this,tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes ) )
-		{
-			case QMessageBox::Yes:
-				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				d_table->setNumRows(r);
-				for (i=0; i<cols; i++)
-					emit modifiedData(this, colName(i));
+		QString text = tr("Rows will be deleted from the table!") + "<p>" + tr("Do you really want to continue?");
+		if (QMessageBox::information(this, tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes) != QMessageBox::Yes)
+			return;
 
-				QApplication::restoreOverrideCursor();
-				break;
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		d_table->setNumRows(r);
+		int cols = d_table->numCols();
+		for (int i = 0; i < cols; i++)
+			emit modifiedData(this, colName(i));
 
-			case 1:
-				return;
-				break;
-		}
+		QApplication::restoreOverrideCursor();
 	} else {
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		d_table->setNumRows(r);
@@ -4263,36 +4272,28 @@ void Table::resizeCols(int c)
 		return;
 
 	if (cols > c){
-		QString text= tr("Columns will be deleted from the table!");
-		text+="<p>"+tr("Do you really want to continue?");
-		switch( QMessageBox::information(this,tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes ) ){
-			case QMessageBox::Yes: {
-				QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-				for (int i=cols-1; i>=c; i--){
-					QString name = colName(i);
-					emit removedCol(name);
+		QString text = tr("Columns will be deleted from the table!") + "<p>" + tr("Do you really want to continue?");
+		if (QMessageBox::information(this, tr("QtiPlot"), text, QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Yes) != QMessageBox::Yes)
+			return;
 
-					commands.removeLast();
-					comments.removeLast();
-					col_format.removeLast();
-					col_label.removeLast();
-					colTypes.removeLast();
-					col_plot_type.removeLast();
-				}
-
-				d_table->setColumnCount(c);
-				QApplication::restoreOverrideCursor();
-				break;
-			}
-
-			case 1:
-				return;
-				break;
-		}
-	}
-	else{
 		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		addColumns(c-cols);
+		for (int i = cols - 1; i >= c; i--){
+			QString name = colName(i);
+			emit removedCol(name);
+
+			commands.removeLast();
+			comments.removeLast();
+			col_format.removeLast();
+			col_label.removeLast();
+			colTypes.removeLast();
+			col_plot_type.removeLast();
+		}
+
+		d_table->setColumnCount(c);
+		QApplication::restoreOverrideCursor();
+	} else {
+		QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+		addColumns(c - cols);
 		setHeaderColType();
 		QApplication::restoreOverrideCursor();
 	}

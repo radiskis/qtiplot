@@ -119,8 +119,11 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	hbox2->addWidget(gb);
 
 	commands = new ScriptEdit(scriptEnv);
-	commands->setTabStopDistance(((ApplicationWindow *)parent)->d_notes_tab_length);
-    commands->setFont(((ApplicationWindow *)parent)->d_notes_font);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app) {
+		commands->setTabStopDistance(app->d_notes_tab_length);
+		commands->setFont(app->d_notes_font);
+	}
 
 	QVBoxLayout *vbox2 = new QVBoxLayout();
 	btnApply = new QPushButton(tr( "&Apply" ));
@@ -141,7 +144,8 @@ SetColValuesDialog::SetColValuesDialog( ScriptingEnv *env, QWidget* parent, Qt::
 	boxMuParser = nullptr;
 	if (env->name() != QString("muParser")){
 		boxMuParser = new QCheckBox(tr("Use built-in muParser (much faster)"));
-		boxMuParser->setChecked(((ApplicationWindow *)parent)->d_force_muParser);
+		if (app)
+			boxMuParser->setChecked(app->d_force_muParser);
 		connect(boxMuParser, &QCheckBox::toggled, this, &SetColValuesDialog::updateFunctionsList);
 		updateFunctionsList(boxMuParser->isChecked());
 		vbox3->addWidget(boxMuParser);
@@ -228,7 +232,7 @@ QSize SetColValuesDialog::sizeHint() const
 void SetColValuesDialog::customEvent(QEvent *e)
 {
 	if (e->type() == SCRIPTING_CHANGE_EVENT)
-		scriptingChangeEvent((ScriptingChangeEvent*)e);
+		scriptingChangeEvent(static_cast<ScriptingChangeEvent*>(e));
 }
 
 bool SetColValuesDialog::apply()
@@ -324,7 +328,7 @@ void SetColValuesDialog::closeEvent(QCloseEvent* e)
 {
 #ifdef SCRIPTING_PYTHON
 	if (boxMuParser){
-		ApplicationWindow *app = (ApplicationWindow *)this->parent();
+		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 		if (app)
 			app->d_force_muParser = boxMuParser->isChecked();
 	}

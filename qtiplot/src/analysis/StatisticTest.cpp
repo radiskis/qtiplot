@@ -66,7 +66,9 @@ void StatisticTest::outputResultsTo(Table *t)
 
 Table * StatisticTest::resultTable(const QString& name)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
 	Table *t = app->newTable(1, 9, name, objectName() + " " + QObject::tr("Result Table"));
 
 	QStringList header = QStringList() << QObject::tr("Sample") << QObject::tr("N") << QObject::tr("DoF") << QObject::tr("Mean")

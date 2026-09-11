@@ -34,6 +34,8 @@
 #include <QPainter>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_histogram.h>
+#include <gsl/gsl_statistics.h>
+#include "GslRAII.h"
 #include <qwt_painter.h>
 #include <vector>
 
@@ -64,7 +66,7 @@ void QwtHistogram::init()
 
 void QwtHistogram::copy(QwtHistogram *h)
 {
-	QwtBarCurve::copy((QwtBarCurve *)h);
+	QwtBarCurve::copy(h);
 
 	d_autoBin = h->d_autoBin;
 	d_bin_size = h->d_bin_size;
@@ -118,11 +120,13 @@ void QwtHistogram::loadData()
 
     int ycol = d_table->colIndex(title().text());
 	int size = 0;
+	Graph *g = qobject_cast<Graph *>(plot());
+	QLocale loc = g ? g->locale() : QLocale();
 	for (int i = 0; i<r; i++ ){
 		QString yval = d_table->text(i, ycol);
 		if (!yval.isEmpty()){
 		    bool valid_data = true;
-            Y[size] = ((Graph *)plot())->locale().toDouble(yval, &valid_data);
+            Y[size] = loc.toDouble(yval, &valid_data);
             if (valid_data)
                 size++;
 		}
@@ -139,20 +143,15 @@ void QwtHistogram::loadData()
 	}
 
 	int n;
-	gsl_histogram *h;
+	GslRAII::UniqueHistogram h;
 	if (d_autoBin){
 		n = 10;
-		h = gsl_histogram_alloc (n);
+		h.reset(gsl_histogram_alloc (n));
 		if (!h)
 			return;
 
-		gsl_vector *v = gsl_vector_alloc (size);
-		for (int i = 0; i<size; i++ )
-			gsl_vector_set (v, i, Y[i]);
-
 		double min, max;
-		gsl_vector_minmax (v, &min, &max);
-		gsl_vector_free (v);
+		gsl_stats_minmax (&min, &max, Y.data(), 1, size);
 
 		d_begin = floor(min);
 		d_end = ceil(max);
@@ -161,40 +160,39 @@ void QwtHistogram::loadData()
 
 		d_bin_size = (d_end - d_begin)/(double)n;
 
-		gsl_histogram_set_ranges_uniform (h, d_begin, d_end);
+		gsl_histogram_set_ranges_uniform (h.get(), d_begin, d_end);
 	} else {
 		n = int((d_end - d_begin)/d_bin_size + 1);
-		h = gsl_histogram_alloc (n);
+		h.reset(gsl_histogram_alloc (n));
 		if (!h)
 			return;
 
-		double *range = new double[n+2];
+		std::vector<double> range(n+2);
 		for (int i = 0; i<= n+1; i++ )
 			range[i] = d_begin + i*d_bin_size;
 
-		gsl_histogram_set_ranges (h, range, n+1);
-		delete[] range;
+		gsl_histogram_set_ranges (h.get(), range.data(), n+1);
 	}
 
 	for (int i = 0; i<size; i++ )
-		gsl_histogram_increment (h, Y[i]);
+		gsl_histogram_increment (h.get(), Y[i]);
 
     std::vector<double> X(n); //stores ranges (x) and bins (y)
 	Y.resize(n);
 	for (int i = 0; i<n; i++ ){
-		Y[i] = gsl_histogram_get (h, i);
+		Y[i] = gsl_histogram_get (h.get(), i);
 		double lower, upper;
-		gsl_histogram_get_range (h, i, &lower, &upper);
+		gsl_histogram_get_range (h.get(), i, &lower, &upper);
 		X[i] = lower;
 	}
 	setSamples(X.data(), Y.data(), n);
 
-	d_mean = gsl_histogram_mean(h);
-	d_standard_deviation = gsl_histogram_sigma(h);
-	d_min = gsl_histogram_min_val(h);
-	d_max = gsl_histogram_max_val(h);
+	d_mean = gsl_histogram_mean(h.get());
+	d_standard_deviation = gsl_histogram_sigma(h.get());
+	d_min = gsl_histogram_min_val(h.get());
+	d_max = gsl_histogram_max_val(h.get());
 
-	gsl_histogram_free (h);
+	h.reset();
 	if (d_show_labels)
 		loadLabels();
 
@@ -211,7 +209,7 @@ void QwtHistogram::loadDataFromMatrix()
 	const double *data = d_matrix->matrixModel()->dataVector();
 
 	int n;
-	gsl_histogram *h;
+	GslRAII::UniqueHistogram h;
 	if (d_autoBin){
 		double min, max;
 		d_matrix->range(&min, &max);
@@ -223,46 +221,45 @@ void QwtHistogram::loadDataFromMatrix()
 		if (!n)
 			return;
 
-		h = gsl_histogram_alloc(n);
+		h.reset(gsl_histogram_alloc(n));
 		if (!h)
 			return;
-		gsl_histogram_set_ranges_uniform (h, d_begin, d_end);
+		gsl_histogram_set_ranges_uniform (h.get(), d_begin, d_end);
 	} else {
 		n = int((d_end - d_begin)/d_bin_size + 1);
 		if (!n)
 			return;
 
-		h = gsl_histogram_alloc (n);
+		h.reset(gsl_histogram_alloc (n));
 		if (!h)
 			return;
 
-		double *range = new double[n+2];
+		std::vector<double> range(n+2);
 		for (int i = 0; i<= n+1; i++ )
 			range[i] = d_begin + i*d_bin_size;
 
-		gsl_histogram_set_ranges (h, range, n+1);
-		delete[] range;
+		gsl_histogram_set_ranges (h.get(), range.data(), n+1);
 	}
 
 	for (int i = 0; i<size; i++ )
-		gsl_histogram_increment (h, data[i]);
+		gsl_histogram_increment (h.get(), data[i]);
 
 	std::vector<double> X(n), Y(n); //stores ranges (x) and bins (y)
 	for (int i = 0; i<n; i++ ){
-		Y[i] = gsl_histogram_get (h, i);
+		Y[i] = gsl_histogram_get (h.get(), i);
 		double lower, upper;
-		gsl_histogram_get_range (h, i, &lower, &upper);
+		gsl_histogram_get_range (h.get(), i, &lower, &upper);
 		X[i] = lower;
 	}
 
 	setSamples(X.data(), Y.data(), n);
 
-	d_mean = gsl_histogram_mean(h);
-	d_standard_deviation = gsl_histogram_sigma(h);
-	d_min = gsl_histogram_min_val(h);
-	d_max = gsl_histogram_max_val(h);
+	d_mean = gsl_histogram_mean(h.get());
+	d_standard_deviation = gsl_histogram_sigma(h.get());
+	d_min = gsl_histogram_min_val(h.get());
+	d_max = gsl_histogram_max_val(h.get());
 
-	gsl_histogram_free (h);
+	h.reset();
 	if (d_show_labels)
 		loadLabels();
 }

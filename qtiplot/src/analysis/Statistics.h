@@ -30,6 +30,7 @@
 #define STATISTICS_H
 
 #include <QObject>
+#include <vector>
 #include <ApplicationWindow.h>
 #include "Ref.h"
 
@@ -57,7 +58,7 @@ class Statistics : public QObject
 		virtual int dof(){return d_n - 1;};
 
 		//! Returns the y values of the input data set
-		double* data(){return d_data;};
+		double* data(){return d_data.data();};
 
 		double mean(){return d_mean;};
 		double variance(){return d_variance;};
@@ -87,7 +88,7 @@ class Statistics : public QObject
 		//! The size of the data set to be analyzed
 		unsigned int d_n;
 		//! y data set to be analysed
-		double *d_data;
+		std::vector<double> d_data;
 		//! A table source of data
 		Ref<Table> d_table;
 

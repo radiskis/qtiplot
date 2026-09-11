@@ -34,9 +34,9 @@
 #include <QVector>
 #include <QLocale>
 #include <QSize>
+#include <vector>
 
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_permutation.h>
+#include "GslRAII.h"
 
 class Matrix;
 
@@ -47,7 +47,7 @@ class MatrixModel : public QAbstractTableModel
 public:
 	MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
 	MatrixModel(const QImage& image, QObject *parent);
-	~MatrixModel(){free(d_data);};
+	~MatrixModel();
 
 	Matrix *matrix(){return d_matrix;};
 
@@ -106,8 +106,8 @@ public:
 	void clear(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
-	double* dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
-	void pasteData(double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
+	std::vector<double> dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	void pasteData(const double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 
 	bool hasCalculatedValues(){return d_calculated_values;}
 	void setCalculatedValues(bool on = true){d_calculated_values = on;}
@@ -126,10 +126,10 @@ private:
 	//! Flag telling if matrix values are calculated using formula_str
 	bool d_calculated_values;
 
-	//! Pointers to GSL matrices used during inversion operations
-	gsl_matrix *d_direct_matrix, *d_inv_matrix;
-	//! Pointer to a GSL permutation used during inversion operations
-	gsl_permutation *d_inv_perm;
+	//! Smart pointers to GSL matrices used during inversion operations
+	GslRAII::UniqueMatrix d_direct_matrix, d_inv_matrix;
+	//! Smart pointer to a GSL permutation used during inversion operations
+	GslRAII::UniquePermutation d_inv_perm;
 	QSize d_data_block_size;
 };
 

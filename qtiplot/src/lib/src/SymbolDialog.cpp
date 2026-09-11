@@ -522,8 +522,8 @@ void SymbolDialog::initLatexMathSymbols()
 		if (f.contains("Unicode")){
 			font.setFamily(f);
 
-			for(int i = 0; i < numButtons; i++){
-				QWidget *w = gridLayout->itemAt(i)->widget();
+			for (int k = 0; k < numButtons; k++){
+				QWidget *w = gridLayout->itemAt(k)->widget();
 				if (w)
 					w->setFont(font);
 			}
@@ -666,7 +666,7 @@ void SymbolDialog::addCurrentChar()
 {
 	for (int i=1; i < numButtons; i++)
 	{
-		QPushButton *btn = (QPushButton *) buttons->button(i);
+		QPushButton *btn = qobject_cast<QPushButton *>(buttons->button(i));
 		if (btn && btn->hasFocus())
 			emit addLetter(btn->text());
 	}
@@ -674,7 +674,7 @@ void SymbolDialog::addCurrentChar()
 
 void SymbolDialog::getChar(int btnIndex)
 {
-	QPushButton * btn = (QPushButton *)buttons->button( btnIndex );
+	QPushButton * btn = qobject_cast<QPushButton *>(buttons->button( btnIndex ));
 	if(btn)
 		emit addLetter(btn->text().replace("<", "&lt;"));
 }
@@ -690,5 +690,6 @@ void SymbolDialog::focusInEvent( QFocusEvent * event )
 {
 	Q_UNUSED(event)
 	// select the first button as default (in case [return] is pressed)
-	((QPushButton *)buttons->button(1))->setFocus(Qt::TabFocusReason);
+	if (QPushButton *b = qobject_cast<QPushButton *>(buttons->button(1)))
+		b->setFocus(Qt::TabFocusReason);
 }

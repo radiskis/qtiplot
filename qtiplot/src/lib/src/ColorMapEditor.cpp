@@ -98,8 +98,10 @@ void ColorMapEditor::updateColorMap()
 	LinearColorMap map(c_min, c_max);
 	QwtInterval range = QwtInterval(min_val, max_val);
 	for (int i = 1; i < rows - 1; i++){
-		double val = (((DoubleSpinBox*)table->cellWidget(i, 0))->value() - min_val)/range.width();
-		map.addColorStop (val, QColor(table->item(i, 1)->text()));
+		if (DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(i, 0))){
+			double val = (sb->value() - min_val)/range.width();
+			map.addColorStop (val, QColor(table->item(i, 1)->text()));
+		}
 	}
 	map.setIntensityRange(range);
 
@@ -172,8 +174,8 @@ void ColorMapEditor::updateLowerRangeLimit(double val)
 
 	int rows = table->rowCount();
 	for (int i = 0; i < rows; i++){
-		DoubleSpinBox *sb = (DoubleSpinBox*)table->cellWidget(i, 0);
-		if (i == 1)
+		DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(i, 0));
+		if (!sb || i == 1)
 			continue;
 
 		if (i == 0){
@@ -194,8 +196,8 @@ void ColorMapEditor::updateUpperRangeLimit(double val)
 
 	int rows = table->rowCount();
 	for (int i = 0; i < rows; i++){
-		DoubleSpinBox *sb = (DoubleSpinBox*)table->cellWidget(i, 0);
-		if (i == 0 || i == rows - 1)
+		DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(i, 0));
+		if (!sb || i == 0 || i == rows - 1)
 			continue;
 
 		sb->setMaximum(max_val);
@@ -213,15 +215,14 @@ void ColorMapEditor::insertLevel()
 	int row = table->currentRow();
 	if (row == 1)
 		row = 2;
-	DoubleSpinBox *sb = (DoubleSpinBox*)table->cellWidget(row, 0);
+	DoubleSpinBox *sb = qobject_cast<DoubleSpinBox *>(table->cellWidget(row, 0));
 	if (!sb)
 		return;
 
 	double current_value = sb->value();
 	double previous_value = min_val;
-	sb = (DoubleSpinBox*)table->cellWidget(row - 1, 0);
-	if (sb)
-		previous_value = sb->value();
+	if (DoubleSpinBox *prevSb = qobject_cast<DoubleSpinBox *>(table->cellWidget(row - 1, 0)))
+		previous_value = prevSb->value();
 
 	double val = 0.5*(current_value + previous_value);
 	QwtInterval range = QwtInterval(min_val, max_val);
@@ -281,7 +282,7 @@ void ColorMapEditor::showColorDialog(int row, int col)
 bool ColorMapEditor::eventFilter(QObject *object, QEvent *e)
 {
 	if (e->type() == QEvent::MouseMove && object == table->viewport()){
-        const QMouseEvent *me = (const QMouseEvent *)e;
+        const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
         QPoint pos = table->viewport()->mapToParent(me->pos());
         int row = table->rowAt(pos.y() - table->horizontalHeader()->height());
         if (table->columnAt(pos.x()) == 1 && row >= 0 && row < table->rowCount())
@@ -293,7 +294,7 @@ bool ColorMapEditor::eventFilter(QObject *object, QEvent *e)
 		setCursor(QCursor(Qt::ArrowCursor));
 		return true;
 	} else if (e->type() == QEvent::KeyPress && object == table){
-		QKeyEvent *ke = (QKeyEvent *)e;
+		QKeyEvent *ke = static_cast<QKeyEvent *>(e);
 		if (ke->key() == Qt::Key_Return && table->currentColumn() == 1){
 			showColorDialog(table->currentRow(), 1);
 			return true;
@@ -336,8 +337,7 @@ void ColorMapEditor::spinBoxActivated(DoubleSpinBox *sb)
 
 	int rows = table->rowCount();
 	for (int i = 0; i < rows; i++){
-		DoubleSpinBox *box = (DoubleSpinBox*)table->cellWidget(i, 0);
-		if (box && box == sb){
+		if (table->cellWidget(i, 0) == sb){
 			table->setCurrentCell(i, 0);
 			enableButtons(i);
 			return;

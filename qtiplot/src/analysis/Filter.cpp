@@ -47,6 +47,7 @@
 #include <QEventLoop>
 
 #include <gsl/gsl_sort.h>
+#include <vector>
 
 Filter::Filter(ApplicationWindow *parent, PlotCurve *c)
 : QObject(parent)
@@ -90,7 +91,8 @@ void Filter::init()
 	d_max_iterations = 1000;
 	d_curve = 0;
 	d_result_curve = 0;
-	d_prec = ((ApplicationWindow *)parent())->fit_output_precision;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	d_prec = app ? app->fit_output_precision : 4;
 	d_init_err = false;
 	d_canceled.store(false, std::memory_order_relaxed);
     d_sort_data = true;
@@ -289,7 +291,9 @@ bool Filter::run()
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
 	output();//data analysis and output
-	((ApplicationWindow *)parent())->updateLog(logInfo());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (app)
+		app->updateLog(logInfo());
 
 	QApplication::restoreOverrideCursor();
 	return true;
@@ -329,7 +333,7 @@ void Filter::runAsync(const std::function<void()> &func, const QString &progress
 		~AutosaveResumer() { if (m_app) m_app->resumeAutosave(); }
 	} resumer{app};
 
-	QWidget *parentWidget = d_graph ? (QWidget*)d_graph.get() : (QWidget*)parent();
+	QWidget *parentWidget = d_graph ? static_cast<QWidget*>(d_graph.get()) : qobject_cast<QWidget*>(parent());
 	QProgressDialog progress(progressMessage.isEmpty() ? tr("Processing...") : progressMessage,
 	                         tr("Cancel"), 0, 0, parentWidget);
 	progress.setWindowTitle(tr("QtiPlot"));
@@ -348,58 +352,51 @@ void Filter::runAsync(const std::function<void()> &func, const QString &progress
 	watcher.setFuture(future);
 
 	if (!future.isFinished())
-		loop.exec();
+		loop.exec(QEventLoop::ExcludeUserInputEvents);
 
 	future.waitForFinished();
 }
 
 void Filter::output()
 {
-	double *x = (double *)malloc(d_points*sizeof(double));
-	if (!x){
-		memoryErrorMessage();
+	if (d_points <= 0)
 		return;
-	}
-	double *y = (double *)malloc(d_points*sizeof(double));
-	if (!y){
-		free(x);
-		memoryErrorMessage();
-		return;
-	}
 
-	runAsync([this, x, y]() {
-		calculateOutputData(x, y);
+	std::vector<double> x(d_points);
+	std::vector<double> y(d_points);
+
+	runAsync([this, x_data = x.data(), y_data = y.data()]() {
+		calculateOutputData(x_data, y_data);
 	}, tr("Calculating filter output..."));
 
 	if (!d_init_err && !d_canceled)
-		addResultCurve(x, y);
-	free(x);
-	free(y);
+		addResultCurve(x.data(), y.data());
 }
 
 int Filter::sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y)
 {
-	if (!c)
+	if (!c || !x || !y)
 		return 0;
 
 	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
-	(*x) = (double *)malloc(n*sizeof(double));
-	if (!x){
+	(*x) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*x)){
 		memoryErrorMessage();
 		return 0;
 	}
 
-	(*y) = (double *)malloc(n*sizeof(double));
-	if (!y){
-		free(x);
+	(*y) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*y)){
+		free(*x);
+		*x = nullptr;
 		memoryErrorMessage();
 		return 0;
 	}
 
-	double *xtemp = new double[n];
-	double *ytemp = new double[n];
+	std::vector<double> xtemp(n);
+	std::vector<double> ytemp(n);
 
 	int j = 0;
 	if (c->curveType() == PlotCurve::Yfx){
@@ -414,37 +411,35 @@ int Filter::sortedCurveData(PlotCurve *c, double start, double end, double **x, 
 		}
 	}
 
-	size_t *p = new size_t[n];
-	gsl_sort_index(p, xtemp, 1, n);
+	std::vector<size_t> p(n);
+	gsl_sort_index(p.data(), xtemp.data(), 1, n);
 
 	for (int i = 0; i < n; i++){
 		(*x)[i] = xtemp[p[i]];
 		(*y)[i] = ytemp[p[i]];
 	}
 
-	delete[] xtemp;
-	delete[] ytemp;
-	delete[] p;
 	return n;
 }
 
 int Filter::curveData(PlotCurve *c, double start, double end, double **x, double **y)
 {
-    if (!c)
+    if (!c || !x || !y)
         return 0;
 
    	int i_start = 0, i_end = 0;
 	int n = curveRange(c, start, end, &i_start, &i_end);
 
-	(*x) = (double *)malloc(n*sizeof(double));
-	if (!x){
+	(*x) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*x)){
 		memoryErrorMessage();
 		return 0;
 	}
 
-	(*y) = (double *)malloc(n*sizeof(double));
-	if (!y){
-		free(x);
+	(*y) = static_cast<double *>(malloc(n*sizeof(double)));
+	if (!(*y)){
+		free(*x);
+		*x = nullptr;
 		memoryErrorMessage();
 		return 0;
 	}
@@ -508,7 +503,9 @@ int Filter::curveRange(PlotCurve *c, double start, double end, int *iStart, int 
 
 PlotCurve* Filter::addResultCurve(double *x, double *y)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return nullptr;
 	QLocale locale = app->locale();
 	const QString tableName = app->generateUniqueName(QString(objectName()));
 	QString dataSet;
@@ -548,7 +545,7 @@ PlotCurve* Filter::addResultCurve(double *x, double *y)
 
 		d_result_curve = c;
 	}
-	return (PlotCurve*)c;
+	return c;
 }
 
 void Filter::enableGraphicsDisplay(bool on, Graph *g)
@@ -564,7 +561,7 @@ void Filter::enableGraphicsDisplay(bool on, Graph *g)
 
 MultiLayer * Filter::createOutputGraph()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return nullptr;
 
@@ -636,13 +633,13 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
     d_to = X[d_n-1];
 	d_sort_data = sort;
 
-	d_x = (double *)malloc(d_n*sizeof(double));
+	d_x = static_cast<double *>(malloc(d_n*sizeof(double)));
 	if (!d_x){
 		memoryErrorMessage();
 		return false;
 	};
 
-    d_y = (double *)malloc(d_n*sizeof(double));
+    d_y = static_cast<double *>(malloc(d_n*sizeof(double)));
 	if (!d_y){
 		memoryErrorMessage();
 		free(d_x);
@@ -655,14 +652,13 @@ bool Filter::setDataFromTable(Table *t, const QString& xColName, const QString& 
     }
 
 	if (d_sort_data){
-    	size_t *p = new size_t[d_n];
-   		gsl_sort_index(p, X.data(), 1, d_n);
-    	for (int i=0; i<d_n; i++){
-        	d_x[i] = X[p[i]];
-  	    	d_y[i] = Y[p[i]];
+		std::vector<size_t> p(d_n);
+		gsl_sort_index(p.data(), X.data(), 1, d_n);
+		for (int i = 0; i < d_n; i++){
+			d_x[i] = X[p[i]];
+			d_y[i] = Y[p[i]];
 		}
-		delete[] p;
-    }
+	}
 	return true;
 }
 
@@ -713,6 +709,5 @@ void Filter::freeMemory()
 
 Filter::~Filter()
 {
-	if (d_n > 0)//delete the memory allocated for the data
-		freeMemory();
+	freeMemory();
 }

@@ -66,13 +66,14 @@ void PlotController3D::plot3DRibbon()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow(ApplicationWindow::TableWindow);
     if (!w)
 		return;
 
-	Table *table = static_cast<Table*>(w);
+	Table *table = qobject_cast<Table*>(w);
+	if (!table)
+		return;
 	if(table->selectedColumns().count() == 1){
 		if (!validFor3DPlot(table))
 			return;
@@ -85,7 +86,6 @@ void PlotController3D::plot3DWireframe()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	plot3DMatrix(0, Qwt3D::WIREFRAME);
 }
@@ -94,7 +94,6 @@ void PlotController3D::plot3DHiddenLine()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	plot3DMatrix(0, Qwt3D::HIDDENLINE);
 }
@@ -103,7 +102,6 @@ void PlotController3D::plot3DPolygons()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	plot3DMatrix(0, Qwt3D::FILLED);
 }
@@ -112,7 +110,6 @@ void PlotController3D::plot3DWireSurface()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	plot3DMatrix(0, Qwt3D::FILLEDMESH);
 }
@@ -121,14 +118,12 @@ void PlotController3D::plot3DBars()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow();
     if (!w)
 		return;
 
-	if (w->inherits("Table")){
-		Table *table = static_cast<Table *>(w);
+	if (Table *table = qobject_cast<Table *>(w)){
 		if (!validFor3DPlot(table))
 			return;
 
@@ -137,7 +132,7 @@ void PlotController3D::plot3DBars()
 		else
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
-	else if(w->inherits("Matrix"))
+	else if(qobject_cast<Matrix *>(w))
 		plot3DMatrix(0, Qwt3D::USER);
 }
 
@@ -145,15 +140,13 @@ void PlotController3D::plot3DScatter()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
 		return;
 
-	if (w->inherits("Table"))
+	if (Table *table = qobject_cast<Table *>(w))
 	{
-		Table *table = static_cast<Table *>(w);
 		if (!validFor3DPlot(table))
 			return;
 
@@ -162,7 +155,7 @@ void PlotController3D::plot3DScatter()
 		else
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
-	else if(w->inherits("Matrix"))
+	else if(qobject_cast<Matrix *>(w))
 		plot3DMatrix(0, Qwt3D::POINTS);
 }
 
@@ -170,9 +163,8 @@ void PlotController3D::plot3DTrajectory()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
     if (!table)
 		return;
     if (!validFor3DPlot(table))
@@ -188,7 +180,6 @@ void PlotController3D::remove3DMatrixPlots(Matrix *m)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	if (!m)
 		return;
@@ -197,20 +188,25 @@ void PlotController3D::remove3DMatrixPlots(Matrix *m)
 
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
-			((Graph3D*)w)->clearData();
-		else if (w->inherits("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+		if (Graph3D *g3d = qobject_cast<Graph3D *>(w)){
+			if (g3d->matrix() == m)
+				g3d->clearData();
+		} else if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+			QList<Graph *> layers = ml->layersList();
 			for (Graph *g : layers){
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram && ((Spectrogram *)it)->matrix() == m){
-						g->removeCurve(it);
-						update = true;
-					} else if (((PlotCurve *)it)->rtti() == Graph::Histogram && ((QwtHistogram *)it)->matrix() == m){
-						g->removeCurve(it);
-						update = true;
+					if (auto *sp = dynamic_cast<Spectrogram *>(it)){
+						if (sp->matrix() == m){
+							g->removeCurve(it);
+							update = true;
+						}
+					} else if (auto *h = dynamic_cast<QwtHistogram *>(it)){
+						if (h->matrix() == m){
+							g->removeCurve(it);
+							update = true;
+						}
 					}
 				}
 				if (update)
@@ -225,7 +221,6 @@ void PlotController3D::updateMatrixPlots(Matrix *m)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	if (!m)
 		return;
@@ -234,22 +229,21 @@ void PlotController3D::updateMatrixPlots(Matrix *m)
 
 	QList<MdiSubWindow *> windows = d_app->windowsList();
 	for (MdiSubWindow *w : windows){
-		if (w->inherits("Graph3D") && ((Graph3D*)w)->matrix() == m)
-			((Graph3D*)w)->updateMatrixData(m);
-		else if (w->inherits("MultiLayer")){
-			QList<Graph *> layers = ((MultiLayer*)w)->layersList();
+		if (Graph3D *g3d = qobject_cast<Graph3D *>(w)){
+			if (g3d->matrix() == m)
+				g3d->updateMatrixData(m);
+		} else if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
+			QList<Graph *> layers = ml->layersList();
 			for (Graph *g : layers){
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-						Spectrogram *sp = (Spectrogram *)it;
+					if (auto *sp = dynamic_cast<Spectrogram *>(it)){
 						if (sp->matrix() == m){
 							sp->updateData();
 							update = true;
 						}
-					} else if (((PlotCurve *)it)->rtti() == Graph::Histogram){
-						QwtHistogram *h = (QwtHistogram *)it;
+					} else if (auto *h = dynamic_cast<QwtHistogram *>(it)){
 						if (h->matrix() == m){
 							h->loadData();
 							update = true;
@@ -268,7 +262,6 @@ void PlotController3D::updateMatrixPlotLabels(Matrix *m)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	if (!m)
 		return;
@@ -288,8 +281,7 @@ void PlotController3D::updateMatrixPlotLabels(Matrix *m)
 				bool update = false;
 				QList<QwtPlotItem *> curvesList = g->curvesList();
 				for (QwtPlotItem *it : curvesList){
-					if (it->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-						Spectrogram *sp = (Spectrogram *)it;
+					if (Spectrogram *sp = dynamic_cast<Spectrogram *>(it)){
 						if (sp->matrix() == m){
 							g->updateAxesTitles();
 							update = true;
@@ -311,7 +303,6 @@ void PlotController3D::add3DData()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	if (!d_app->hasTable()){
 		QMessageBox::warning(d_app,d_app->tr("QtiPlot - Warning"),
@@ -338,7 +329,6 @@ void PlotController3D::change3DData()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	bool ok;
 	QString column = QInputDialog::getItem(d_app, d_app->tr("QtiPlot - Choose data set"),
@@ -351,11 +341,10 @@ void PlotController3D::change3DMatrix()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	QStringList matrices = d_app->matrixNames();
 	int currentIndex = 0;
-	Graph3D* g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D* g = d_app->activeWindow<Graph3D>();
 	if (g && g->matrix())
 		currentIndex = matrices.indexOf(g->matrix()->objectName());
 
@@ -370,10 +359,9 @@ void PlotController3D::change3DMatrix(const QString& matrix_name)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_3D_autoscale = d_app->d_3D_autoscale;
 
-	Graph3D *g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
@@ -393,7 +381,6 @@ void PlotController3D::add3DMatrixPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	QStringList matrices = d_app->matrixNames();
 	if ((int)matrices.count() <= 0){
@@ -414,9 +401,8 @@ void PlotController3D::insert3DMatrixPlot(const QString& matrix_name)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
@@ -428,9 +414,8 @@ void PlotController3D::insertNew3DData(const QString& colName)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
@@ -442,9 +427,8 @@ void PlotController3D::change3DData(const QString& colName)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
@@ -456,9 +440,8 @@ void PlotController3D::editSurfacePlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D*)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
@@ -478,7 +461,6 @@ void PlotController3D::newSurfacePlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
 	SurfaceDialog* sd = new SurfaceDialog(d_app);
 	sd->setAttribute(Qt::WA_DeleteOnClose);
@@ -490,7 +472,6 @@ Graph3D* PlotController3D::plotSurface(const QString& formula, double xl, double
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
@@ -506,7 +487,6 @@ Graph3D* PlotController3D::plotParametricSurface(const QString& xFormula, const 
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
@@ -520,7 +500,6 @@ Graph3D* PlotController3D::newPlot3D(const QString& title)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -543,7 +522,6 @@ Graph3D* PlotController3D::plotXYZ(Table* table, const QString& zColName, int ty
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
@@ -564,7 +542,6 @@ MdiSubWindow* PlotController3D::newPolarPlot(const QString& title)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	PolarGraph* w = new PolarGraph(d_app->generateUniqueName(title.isEmpty() ? d_app->tr("Polar") : title), d_app);
 	initPolarPlot(w);
@@ -575,9 +552,8 @@ void PlotController3D::plotPolar()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Table *table = (Table *)d_app->activeWindow(ApplicationWindow::TableWindow);
+	Table *table = qobject_cast<Table *>(d_app->activeWindow(ApplicationWindow::TableWindow));
     if (!table)
 		return;
 
@@ -595,11 +571,11 @@ MdiSubWindow* PlotController3D::plotPolar(Table* table, const QStringList& colLi
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
     if (!table || colList.size() < 2) return 0;
     
-    PolarGraph* w = (PolarGraph*)newPolarPlot();
+    PolarGraph* w = qobject_cast<PolarGraph*>(newPolarPlot());
+    if (!w) return nullptr;
 
     // Check column designations: if one is X and one is Y, X is Theta and Y is Radius
     QString thetaCol = colList[0];
@@ -624,7 +600,6 @@ void PlotController3D::initPlot3D(Graph3D *plot)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_mdi_windows_area = d_app->d_mdi_windows_area;
 	auto &d_workspace = d_app->d_workspace;
 	auto &plot3DTools = d_app->plot3DTools;
@@ -654,7 +629,6 @@ void PlotController3D::initPolarPlot(PolarGraph *w)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_mdi_windows_area = d_app->d_mdi_windows_area;
 	auto &d_workspace = d_app->d_workspace;
 
@@ -674,10 +648,9 @@ void PlotController3D::setFramed3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &actionShowAxisDialog = d_app->actionShowAxisDialog;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -689,10 +662,9 @@ void PlotController3D::setBoxed3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &actionShowAxisDialog = d_app->actionShowAxisDialog;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -704,10 +676,9 @@ void PlotController3D::removeAxes3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &actionShowAxisDialog = d_app->actionShowAxisDialog;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -719,9 +690,8 @@ void PlotController3D::removeGrid3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -732,9 +702,8 @@ void PlotController3D::setHiddenLineGrid3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -745,9 +714,8 @@ void PlotController3D::setPoints3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -758,9 +726,8 @@ void PlotController3D::setCones3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -771,9 +738,8 @@ void PlotController3D::setCrosses3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -784,9 +750,8 @@ void PlotController3D::setBars3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -797,9 +762,8 @@ void PlotController3D::setLineGrid3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -810,9 +774,8 @@ void PlotController3D::setFilledMesh3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -823,9 +786,8 @@ void PlotController3D::setFloorData3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -836,9 +798,8 @@ void PlotController3D::setFloorIso3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -849,9 +810,8 @@ void PlotController3D::setEmptyFloor3DPlot()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -862,9 +822,8 @@ void PlotController3D::setFrontGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -875,9 +834,8 @@ void PlotController3D::setBackGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -888,9 +846,8 @@ void PlotController3D::setFloorGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -901,9 +858,8 @@ void PlotController3D::setCeilGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -914,9 +870,8 @@ void PlotController3D::setRightGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -927,9 +882,8 @@ void PlotController3D::setLeftGrid3DPlot(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -940,7 +894,6 @@ void PlotController3D::pickPlotStyle( QAction* action )
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &barstyle = d_app->barstyle;
 	auto &conestyle = d_app->conestyle;
 	auto &crossHairStyle = d_app->crossHairStyle;
@@ -977,7 +930,6 @@ void PlotController3D::pickCoordSystem( QAction* action)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &Box = d_app->Box;
 	auto &Frame = d_app->Frame;
 	auto &None = d_app->None;
@@ -1007,7 +959,6 @@ void PlotController3D::pickFloorStyle( QAction* action )
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &floordata = d_app->floordata;
 	auto &flooriso = d_app->flooriso;
 
@@ -1028,7 +979,6 @@ void PlotController3D::custom3DActions(QMdiSubWindow *w)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &Box = d_app->Box;
 	auto &Frame = d_app->Frame;
 	auto &None = d_app->None;
@@ -1041,15 +991,13 @@ void PlotController3D::custom3DActions(QMdiSubWindow *w)
 	auto &floordata = d_app->floordata;
 	auto &flooriso = d_app->flooriso;
 	auto &floornone = d_app->floornone;
-	auto &grids = d_app->grids;
 	auto &hiddenline = d_app->hiddenline;
 	auto &pointstyle = d_app->pointstyle;
 	auto &polygon = d_app->polygon;
 	auto &wireframe = d_app->wireframe;
 
-	if (w && w->inherits("Graph3D"))
+	if (Graph3D *plot = qobject_cast<Graph3D *>(w))
 	{
-		Graph3D* plot = (Graph3D*)w;
 		actionAnimate->setChecked(plot->isAnimated());
 		actionPerspective->setChecked(!plot->isOrthogonal());
 		switch(plot->plotStyle())
@@ -1187,7 +1135,6 @@ void PlotController3D::custom3DGrids(int grids)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &back = d_app->back;
 	auto &ceil = d_app->ceil;
 	auto &floor = d_app->floor;
@@ -1230,7 +1177,6 @@ void PlotController3D::connectSurfacePlot(Graph3D *plot)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &confirmClosePlot3D = d_app->confirmClosePlot3D;
 
 	connect (plot, &Graph3D::showContextMenu, d_app, &ApplicationWindow::showWindowContextMenu);
@@ -1247,7 +1193,6 @@ void PlotController3D::setPlot3DOptions()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 	auto &d_3D_autoscale = d_app->d_3D_autoscale;
 	auto &d_3D_smooth_mesh = d_app->d_3D_smooth_mesh;
 
@@ -1264,10 +1209,9 @@ Graph3D * PlotController3D::plot3DMatrix(Matrix *m, int style)
 {
 
 	if (!d_app) return nullptr;
-	ApplicationWindow *app = d_app;
 
 	if (!m){
-		m = (Matrix*)d_app->activeWindow(ApplicationWindow::MatrixWindow);
+		m = d_app->activeWindow<Matrix>();
 		if (!m)
 			return 0;
 	}
@@ -1291,9 +1235,8 @@ void PlotController3D::toggle3DAnimation(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -1304,9 +1247,8 @@ void PlotController3D::togglePerspective(bool on)
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -1317,9 +1259,8 @@ void PlotController3D::resetRotation()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -1330,9 +1271,8 @@ void PlotController3D::fitFrameToLayer()
 {
 
 	if (!d_app) return;
-	ApplicationWindow *app = d_app;
 
-	Graph3D *g = (Graph3D *)d_app->activeWindow(ApplicationWindow::Plot3DWindow);
+	Graph3D *g = d_app->activeWindow<Graph3D>();
 	if (!g)
 		return;
 
@@ -1343,7 +1283,6 @@ bool PlotController3D::validFor3DPlot(Table *table)
 {
 
 	if (!d_app) return false;
-	ApplicationWindow *app = d_app;
 
 	if (table->numCols()<2){
 		QMessageBox::critical(0,d_app->tr("QtiPlot - Error"),d_app->tr("You need at least two columns for d_app operation!"));

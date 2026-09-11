@@ -176,7 +176,10 @@ void ErrDialog::setSrcTables(QList<MdiSubWindow *> tables)
 void ErrDialog::selectSrcTable(int tabnr)
 {
 	colNamesBox->clear();
-	colNamesBox->addItems(((Table*)srcTables.at(tabnr))->colNames());
+	if (tabnr >= 0 && tabnr < srcTables.size()){
+		if (Table *t = qobject_cast<Table *>(srcTables.at(tabnr)))
+			colNamesBox->addItems(t->colNames());
+	}
 }
 
 void ErrDialog::add()
@@ -184,7 +187,7 @@ void ErrDialog::add()
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
-	MultiLayer *plot = (MultiLayer *)app->activeWindow(ApplicationWindow::MultiLayerWindow);
+	MultiLayer *plot = app->activeWindow<MultiLayer>();
 	if (!plot)
 		return;
 	Graph* g = plot->activeLayer();

@@ -72,7 +72,8 @@ LineDialog::LineDialog( ArrowMarker *line, QWidget* parent,  Qt::WindowFlags fl 
 
 	gl1->addWidget(new QLabel(tr("Width")), 2, 0);
     widthBox = new DoubleSpinBox('f');
-	widthBox->setLocale(((ApplicationWindow *)parent)->locale());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	widthBox->setLocale(app ? app->locale() : QLocale());
 	widthBox->setSingleStep(0.1);
     widthBox->setRange(0, 100);
 	widthBox->setValue(lm->width());
@@ -185,7 +186,7 @@ void LineDialog::initGeometryTab()
 	bl1->addWidget(new QLabel(tr( "Unit" )), 1, 0);
 	bl1->addWidget(unitBox, 1, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	QLocale locale = QLocale();
 	if (app)
 		locale = app->locale();
@@ -309,13 +310,13 @@ void LineDialog::setCoordinates(int unit)
 
 void LineDialog::apply()
 {
-    if (tw->currentWidget()==(QWidget *)options){
+    if (tw->currentWidget() == options){
         lm->setStyle(styleBox->style());
         lm->setColor(colorBox->color());
         lm->setWidth(widthBox->value());
         lm->drawEndArrow(endBox->isChecked());
         lm->drawStartArrow(startBox->isChecked());
-	} else if (tw->currentWidget()==(QWidget *)head){
+	} else if (tw->currentWidget() == head){
         if (lm->headLength() != boxHeadLength->value())
             lm->setHeadLength( boxHeadLength->value() );
 
@@ -324,14 +325,16 @@ void LineDialog::apply()
 
         if (lm->filledArrowHead() != filledBox->isChecked())
             lm->fillArrowHead( filledBox->isChecked() );
-	} else if (tw->currentWidget()==(QWidget *)geometry){
+	} else if (tw->currentWidget() == geometry){
 		lm->setAttachPolicy((ArrowMarker::AttachPolicy)attachToBox->currentIndex());
         setCoordinates(unitBox->currentIndex());
 	}
 
-	Graph *g = (Graph *)lm->plot();
-	g->replot();
-	g->multiLayer()->notifyChanges();
+	if (Graph *g = qobject_cast<Graph *>(lm->plot())){
+		g->replot();
+		if (g->multiLayer())
+			g->multiLayer()->notifyChanges();
+	}
 
 	enableHeadTab();
 }
@@ -352,7 +355,7 @@ else
 
 void LineDialog::setDefaultValues()
 {
-ApplicationWindow *app = (ApplicationWindow *)this->parent();
+ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 if (!app)
 	return;
 

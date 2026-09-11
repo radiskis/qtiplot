@@ -57,8 +57,8 @@ d_pValue(qQNaN())
 		int n2 = d_n/2;
 		int error = 0;
 		std::vector<double> a(n2);
-		gsl_sort(d_data, 1, d_n);// the data must be sorted first
-		swilk(&init, d_data, &n, &n1, &n2, a.data(), &d_w, &d_pValue, &error);
+		gsl_sort(d_data.data(), 1, d_n);// the data must be sorted first
+		swilk(&init, d_data.data(), &n, &n1, &n2, a.data(), &d_w, &d_pValue, &error);
 	}
 }
 
@@ -76,9 +76,9 @@ QString ShapiroWilkTest::shortLogInfo()
 
 QString ShapiroWilkTest::infoString(bool header)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale l = app->locale();
-	int p = app->d_decimal_digits;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale l = app ? app->locale() : QLocale();
+	int p = app ? app->d_decimal_digits : 6;
 
 	QStringList lst;
 	lst << QObject::tr("Dataset");
@@ -90,7 +90,7 @@ QString ShapiroWilkTest::infoString(bool header)
 	lst << l.toString(d_w, 'g', p);
 	lst << l.toString(d_pValue, 'g', p);
 
-	QFontMetrics fm(app->font());
+	QFontMetrics fm(app ? app->font() : QFont());
 	int width = 0;
 	for (QString aux : lst){
 		int aw = fm.horizontalAdvance(aux);

@@ -38,6 +38,8 @@
 
 #include <gsl/gsl_fft_complex.h>
 #include <gsl/gsl_fft_halfcomplex.h>
+#include "GslRAII.h"
+#include <vector>
 
 FFT::FFT(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName, int from, int to)
 : Filter(parent, t)
@@ -108,58 +110,46 @@ void FFT::init()
 void FFT::fftCurve()
 {
 	int n2 = d_n/2;
-	double *amp = (double *)malloc(d_n*sizeof(double));
-	double *result = (double *)malloc(2*d_n*sizeof(double));
-	if(!amp || !result){
-		memoryErrorMessage();
-		return;
-	}
+	std::vector<double> amp(d_n);
+	std::vector<double> result(2 * d_n);
 
 	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
 	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
-	runAsync([this, &aMax, result, amp, df, n2]() {
+	runAsync([this, &aMax, &result, &amp, df, n2]() {
 		if(!d_inverse){
-			gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
-			gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
+			GslRAII::UniqueFftRealWorkspace work(gsl_fft_real_workspace_alloc(d_n));
+			GslRAII::UniqueFftRealWavetable real(gsl_fft_real_wavetable_alloc(d_n));
 
 			if(!work || !real){
 				memoryErrorMessage();
 				return;
 			}
 
-			gsl_fft_real_transform(d_y, 1, d_n, real, work);
-			gsl_fft_halfcomplex_unpack (d_y, result, 1, d_n);
-
-			gsl_fft_real_wavetable_free(real);
-			gsl_fft_real_workspace_free(work);
+			gsl_fft_real_transform(d_y, 1, d_n, real.get(), work.get());
+			gsl_fft_halfcomplex_unpack (d_y, result.data(), 1, d_n);
 		} else {
-			gsl_fft_real_unpack (d_y, result, 1, d_n);
-			gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
-			gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
+			gsl_fft_real_unpack (d_y, result.data(), 1, d_n);
+			GslRAII::UniqueFftComplexWavetable wavetable(gsl_fft_complex_wavetable_alloc (d_n));
+			GslRAII::UniqueFftComplexWorkspace workspace(gsl_fft_complex_workspace_alloc (d_n));
 
 			if(!workspace || !wavetable){
 				memoryErrorMessage();
 				return;
 			}
 
-			gsl_fft_complex_inverse (result, 1, d_n, wavetable, workspace);
-			gsl_fft_complex_wavetable_free (wavetable);
-			gsl_fft_complex_workspace_free (workspace);
+			gsl_fft_complex_inverse (result.data(), 1, d_n, wavetable.get(), workspace.get());
 		}
 
 		if (d_shift_order){
-			double *temp = (double *)malloc(2*d_n*sizeof(double));
-			if (temp) {
-				for (int i = 0; i < d_n; i++) {
-					d_x[i] = (i - n2)*df;
-					int src = (i + (d_n - n2)) % d_n;
-					temp[2*i] = result[2*src];
-					temp[2*i + 1] = result[2*src + 1];
-				}
-				memcpy(result, temp, 2*d_n*sizeof(double));
-				free(temp);
+			std::vector<double> temp(2 * d_n);
+			for (int i = 0; i < d_n; i++) {
+				d_x[i] = (i - n2)*df;
+				int src = (i + (d_n - n2)) % d_n;
+				temp[2*i] = result[2*src];
+				temp[2*i + 1] = result[2*src + 1];
 			}
+			memcpy(result.data(), temp.data(), 2*d_n*sizeof(double));
 		} else {
 			for(int i = 0; i < d_n; i++)
 				d_x[i] = i*df;
@@ -176,13 +166,14 @@ void FFT::fftCurve()
 		}
 	}, tr("Calculating FFT..."));
 
-	if (d_canceled || d_init_err) {
-		free(amp);
-		free(result);
+	if (d_canceled || d_init_err)
 		return;
-	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app && d_graph)
+		app = qobject_cast<ApplicationWindow *>(d_graph->parent());
+	if (!app)
+		return;
 	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 	for (int i = 0; i < d_n; i++){
@@ -196,18 +187,15 @@ void FFT::fftCurve()
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
 		d_result_table->setText(i, 4, locale.toString(atan2(result[i2 + 1], result[i2]), 'g', prec));
 	}
-
-	free(amp);
-	free(result);
 }
 
 void FFT::fftTable()
 {
-	double *amp = (double *)malloc(d_n*sizeof(double));
-	gsl_fft_complex_wavetable *wavetable = gsl_fft_complex_wavetable_alloc (d_n);
-	gsl_fft_complex_workspace *workspace = gsl_fft_complex_workspace_alloc (d_n);
+	std::vector<double> amp(d_n);
+	GslRAII::UniqueFftComplexWavetable wavetable(gsl_fft_complex_wavetable_alloc (d_n));
+	GslRAII::UniqueFftComplexWorkspace workspace(gsl_fft_complex_workspace_alloc (d_n));
 
-	if(!amp || !wavetable || !workspace){
+	if(!wavetable || !workspace){
 		memoryErrorMessage();
 		return;
 	}
@@ -216,26 +204,20 @@ void FFT::fftTable()
 	double df = 1.0/(double)(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	if(d_inverse)
-		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable, workspace);
+		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable.get(), workspace.get());
 	else
-		gsl_fft_complex_forward (d_y, 1, d_n, wavetable, workspace);
-
-	gsl_fft_complex_wavetable_free (wavetable);
-	gsl_fft_complex_workspace_free (workspace);
+		gsl_fft_complex_forward (d_y, 1, d_n, wavetable.get(), workspace.get());
 
 	if (d_shift_order) {
 		int n2 = d_n/2;
-		double *temp = (double *)malloc(2*d_n*sizeof(double));
-		if (temp) {
-			for (int i = 0; i < d_n; i++) {
-				d_x[i] = (i - n2)*df;
-				int src = (i + (d_n - n2)) % d_n;
-				temp[2*i] = d_y[2*src];
-				temp[2*i + 1] = d_y[2*src + 1];
-			}
-			memcpy(d_y, temp, 2*d_n*sizeof(double));
-			free(temp);
+		std::vector<double> temp(2 * d_n);
+		for (int i = 0; i < d_n; i++) {
+			d_x[i] = (i - n2)*df;
+			int src = (i + (d_n - n2)) % d_n;
+			temp[2*i] = d_y[2*src];
+			temp[2*i + 1] = d_y[2*src + 1];
 		}
+		memcpy(d_y, temp.data(), 2*d_n*sizeof(double));
 	} else {
 		for(int i = 0; i < d_n; i++)
 			d_x[i] = i*df;
@@ -249,7 +231,11 @@ void FFT::fftTable()
 			aMax = a;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app && d_graph)
+		app = qobject_cast<ApplicationWindow *>(d_graph->parent());
+	if (!app)
+		return;
 	QLocale locale = app->locale();
 	int prec = app->d_decimal_digits;
 	for (int i = 0; i < d_n; i++) {
@@ -263,7 +249,6 @@ void FFT::fftTable()
 			d_result_table->setText(i, 3, locale.toString(amp[i], 'g', prec));
 		d_result_table->setText(i, 4, locale.toString(atan2(d_y[i2 + 1], d_y[i2]), 'g', prec));
 	}
-	free(amp);
 }
 
 void FFT::output()
@@ -278,7 +263,9 @@ void FFT::output()
 		return fftMatrix();
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	QString tableName = app->generateUniqueName(QString(objectName()));
 	QStringList header = QStringList();
 	if (d_inverse)
@@ -321,13 +308,13 @@ void FFT::outputGraphs()
 	else
 		d_output_graph->setAxisTitle(QwtPlot::xTop, tr("Time") + + " (" + tr("s") + ")");
 
-	ScaleDraw *sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yLeft);
+	ScaleDraw *sd = d_output_graph->axisScaleDraw(QwtPlot::yLeft);
 	if (sd)
 		sd->setShowTicksPolicy(ScaleDraw::HideBegin);
-	sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::yRight);
+	sd = d_output_graph->axisScaleDraw(QwtPlot::yRight);
 	if (sd)
 		sd->setShowTicksPolicy(ScaleDraw::HideBegin);
-	sd = (ScaleDraw *)d_output_graph->axisScaleDraw(QwtPlot::xBottom);
+	sd = d_output_graph->axisScaleDraw(QwtPlot::xBottom);
 	if (sd){
 		sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
 		sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
@@ -348,7 +335,7 @@ void FFT::outputGraphs()
 	g->setYAxisTitle(tr("Amplitude"));
 	g->removeLegend();
 
-	sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
+	sd = g->axisScaleDraw(QwtPlot::xTop);
 	if (sd)
 		sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
 
@@ -371,7 +358,7 @@ void FFT::outputGraphs()
 	ml->arrangeLayers(false, false);
 }
 
-bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& imagColName, int from, int to, bool unused)
+bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& imagColName, int from, int to, bool /* unused */)
 {
 	d_init_err = true;
 
@@ -397,8 +384,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     if (t && d_table != t)
         d_table = t;
 
-    if (d_n > 0)//delete previousely allocated memory
-		freeMemory();
+    freeMemory();
 
 	d_graph = nullptr;
 	d_curve = 0;
@@ -407,30 +393,25 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     d_n = abs(to - from) + 1;
     int n2 = 2*d_n;
 
-    d_y = (double *)malloc(n2*sizeof(double));
+    d_y = static_cast<double *>(calloc(n2, sizeof(double)));
 	if (!d_y){
 		memoryErrorMessage();
 		return false;
 	};
 
-    d_x = (double *)malloc(d_n*sizeof(double));
+    d_x = static_cast<double *>(malloc(d_n * sizeof(double)));
 	if (!d_x){
 		memoryErrorMessage();
 		free(d_y);
+		d_y = nullptr;
 		return false;
 	};
 
-    if(d_y && d_x) {// zero-pad data array
-		memset( d_y, 0, n2* sizeof( double ) );
-		for(int i=0; i<d_n; i++) {
-			int i2 = 2*i;
-			d_y[i2] = d_table->cell(i, d_real_col);
-			if (d_imag_col >= 0)
-				d_y[i2+1] = d_table->cell(i, d_imag_col);
-		}
-	} else {
-		memoryErrorMessage();
-		return false;
+	for (int i = 0; i < d_n; i++) {
+		int i2 = 2 * i;
+		d_y[i2] = d_table->cell(i, d_real_col);
+		if (d_imag_col >= 0)
+			d_y[i2+1] = d_table->cell(i, d_imag_col);
 	}
 	return true;
 }
@@ -440,7 +421,9 @@ void FFT::fftMatrix()
 	if (!d_matrix)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 
 	int c = d_matrix->numCols();
 	int r = d_matrix->numRows();
@@ -462,14 +445,12 @@ void FFT::fftMatrix()
 		d_init_err = false;
 	}
 
-	double **x_int_re = Matrix::allocateMatrixData(rows, cols, true); // real coeff matrix
+	DoubleMatrixBuffer x_int_re(rows, cols, true); // real coeff matrix
 	if (!x_int_re)
 		return;
-	double **x_int_im = Matrix::allocateMatrixData(rows, cols, true); // imaginary coeff  matrix
-	if (!x_int_im){
-		Matrix::freeMatrixData(x_int_re, rows);
+	DoubleMatrixBuffer x_int_im(rows, cols, true); // imaginary coeff  matrix
+	if (!x_int_im)
 		return;
-	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -483,13 +464,11 @@ void FFT::fftMatrix()
 				x_int_im[i][j] = d_im_matrix->cell(i, j);
 	}
 
-	double **x_fin_re = nullptr, **x_fin_im = nullptr;
+	DoubleMatrixBuffer x_fin_re, x_fin_im;
 	if (d_inverse){
-		x_fin_re = Matrix::allocateMatrixData(rows, cols);
-		x_fin_im = Matrix::allocateMatrixData(rows, cols);
+		x_fin_re.reset(rows, cols);
+		x_fin_im.reset(rows, cols);
 		if (!x_fin_re || !x_fin_im){
-			Matrix::freeMatrixData(x_int_re, rows);
-			Matrix::freeMatrixData(x_int_im, rows);
 			QApplication::restoreOverrideCursor();
 			return;
 		}
@@ -527,8 +506,6 @@ void FFT::fftMatrix()
 				d_amp_matrix->setCell(i, j, sqrt(re*re + im*im));
 			}
 		}
-		Matrix::freeMatrixData(x_fin_re, rows);
-		Matrix::freeMatrixData(x_fin_im, rows);
 	} else {
 		double dfx = 2*d_matrix->dx()*(cols - 1);
 		double dfy = 2*d_matrix->dy()*(rows - 1);
@@ -547,8 +524,6 @@ void FFT::fftMatrix()
 			}
 		}
 	}
-	Matrix::freeMatrixData(x_int_re, rows);
-	Matrix::freeMatrixData(x_int_im, rows);
 
 	if (d_normalize){
 		double amp_min, amp_max;

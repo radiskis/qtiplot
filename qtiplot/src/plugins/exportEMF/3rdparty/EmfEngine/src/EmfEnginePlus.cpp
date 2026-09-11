@@ -29,6 +29,7 @@
 
 #include "EmfEngine.h"
 #include <QDir>
+#include <string>
 
 EmfPaintEngine::EmfPaintEngine(const QString& f) : QPaintEngine(QPaintEngine::AllFeatures)
 {
@@ -186,17 +187,9 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	Font font(fontFamily, f.pointSizeF(), fontStyle, UnitPoint);
 
 	QString text = textItem.text();
-	int size = text.size();
-
-	wchar_t *wtext = (wchar_t *)malloc(size*sizeof(wchar_t));
-	if (!wtext){
-		qWarning("EmfEngine: Not enough memory in drawTextItem().");
-		return;
-	}
+	std::wstring wtext = text.toStdWString();
 
 	setClipping();
-
-	size = text.toWCharArray(wtext);
 
 	QColor c = painter()->pen().color();
 	SolidBrush brush(Color(c.red(), c.green(), c.blue()));
@@ -210,10 +203,9 @@ void EmfPaintEngine::drawTextItem ( const QPointF & p, const QTextItem & textIte
 	if (int(textItem.ascent() + textItem.descent()) > height)
 		y_offset = 0.75*height;
 
-	d_grx->DrawString(wtext, size, &font, PointF(p.x() - 0.5*QFontMetrics(f).averageCharWidth(), p.y() - y_offset), &brush);
+	d_grx->DrawString(wtext.c_str(), (int)wtext.length(), &font, PointF(p.x() - 0.5*QFontMetrics(f).averageCharWidth(), p.y() - y_offset), &brush);
 	d_grx->ResetTransform();
 
-	free(wtext);
 	delete fontFamily;
 	resetClipping();
 }

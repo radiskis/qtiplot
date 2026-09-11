@@ -30,6 +30,7 @@
 #include "fit_gsl.h"
 #include <MyParser.h>
 #include <FunctionCurve.h>
+#include <vector>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -112,7 +113,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 	}
 
 	try {
-		double *param = new double[d_p];
+		std::vector<double> param(d_p);
 		MyParser parser;
 		double xvar;
 		parser.DefineVar("x", &xvar);
@@ -129,7 +130,6 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 
 		parser.SetExpr(s.toStdWString());
 		parser.Eval() ;
-		delete[] param;
 	} catch(mu::ParserError &e){
 		reportError(tr("QtiPlot - Input function error"), QString::fromStdWString(e.GetMsg()));
 		d_init_err = true;
@@ -174,10 +174,10 @@ void NonLinearFit::calculateFitCurveData(double *X, double *Y)
 	for (int i=0; i<d_p; i++)
 		parser.DefineVar(d_param_names[i].toStdWString(), &d_results[i]);
 
-	QMapIterator<QString, double> i(d_constants);
- 	while (i.hasNext()) {
-     	i.next();
-		parser.DefineConst(i.key().toStdWString(), i.value());
+	QMapIterator<QString, double> it(d_constants);
+ 	while (it.hasNext()) {
+     	it.next();
+		parser.DefineConst(it.key().toStdWString(), it.value());
  	}
 
 	double x;
@@ -229,7 +229,9 @@ QString NonLinearFit::logFitInfo(int iterations, int status)
 	if (d_constants.isEmpty())
 		return info;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return info;
 	QLocale locale = app->locale();
 
 	QMapIterator<QString, double> i(d_constants);
@@ -248,8 +250,8 @@ QString NonLinearFit::legendInfo()
 	if (d_constants.isEmpty())
 		return info;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale locale = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale locale = app ? app->locale() : QLocale();
 
 	QMapIterator<QString, double> i(d_constants);
  	while (i.hasNext()) {
@@ -386,43 +388,14 @@ bool NonLinearFit::removeDataSingularities()
 
 void NonLinearFit::removePole(int pole)
 {
-	int n = d_n - 1;
-	double *aux_x = (double *)malloc(n*sizeof(double));
-	if (!aux_x)
+	if (pole < 0 || pole >= d_n || d_n <= 1 || !d_x || !d_y || !d_w)
 		return;
 
-	double *aux_y = (double *)malloc(n*sizeof(double));
-	if (!aux_y){
-		free (aux_x);
-		return;
+	// In-place shift avoids dynamic heap reallocations and failure modes
+	for (int i = pole; i < d_n - 1; ++i) {
+		d_x[i] = d_x[i + 1];
+		d_y[i] = d_y[i + 1];
+		d_w[i] = d_w[i + 1];
 	}
-
-	double *aux_w = (double *)malloc(n*sizeof(double));
-	if (!aux_w){
-		free (aux_x);
-		free (aux_y);
-		return;
-	}
-
-	for (int i = 0; i < pole; i++){
-		aux_x [i] = d_x[i];
-		aux_y [i] = d_y[i];
-		aux_w [i] = d_w[i];
-	}
-
-	for (int i = pole + 1; i < d_n; i++){
-		int j = i - 1;
-		aux_x [j] = d_x[i];
-		aux_y [j] = d_y[i];
-		aux_w [j] = d_w[i];
-	}
-
-	free (d_x);
-	free (d_y);
-	free (d_w);
-
-	d_x = aux_x;
-	d_y = aux_y;
-	d_w = aux_w;
-	d_n = n;
+	d_n--;
 }

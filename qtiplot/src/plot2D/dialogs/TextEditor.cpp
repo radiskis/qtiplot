@@ -55,13 +55,13 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 
 	bool moveCrs = true;
 	QString text;
-	if (g->activeText()){
+	if (LegendWidget *lw = g->activeText()){
 		setParent(g->multiLayer()->canvas());
-		d_target = g->activeText();
-		setGeometry(d_target->geometry());
-		text = ((LegendWidget*)d_target)->text();
-		d_target->hide();
-		setFont(((LegendWidget*)d_target)->font());
+		d_target = lw;
+		setGeometry(lw->geometry());
+		text = lw->text();
+		lw->hide();
+		setFont(lw->font());
 	} else if (g->titleSelected()){
 		d_target = g->titleLabel();
 		QwtText t = g->title();
@@ -69,9 +69,8 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		setAlignment((Qt::Alignment)t.renderFlags());
 		setFont(t.font());
 		setGeometry(d_target->geometry());
-	} else if (g->selectedScale()){
-		d_target = g->selectedScale();
-		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
+	} else if (QwtScaleWidget *scale = g->selectedScale()){
+		d_target = scale;
 		QwtText t = scale->title();
 
 		int axis = -1;
@@ -141,26 +140,25 @@ void TextEditor::closeEvent(QCloseEvent *e)
 		QMessageBox::Yes | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
 		s = d_initial_text;
 
-	if (d_target->inherits("LegendWidget")){
-		((LegendWidget*)d_target)->setText(s);
-        d_target->show();
+	if (LegendWidget *lw = qobject_cast<LegendWidget *>(d_target)){
+		lw->setText(s);
+        lw->show();
 		d_graph->setActiveText(nullptr);
-	} else if (d_target->inherits("PieLabel")){
-		((PieLabel*)d_target)->setCustomText(s);
-        d_target->show();
+	} else if (PieLabel *pl = qobject_cast<PieLabel *>(d_target)){
+		pl->setCustomText(s);
+        pl->show();
 		d_graph->setActiveText(nullptr);
-	} else if (d_target->inherits("QwtTextLabel")){
+	} else if (qobject_cast<QwtTextLabel *>(d_target)){
 		QwtText title = d_graph->title();
 		if(s.isEmpty())
 			s = " ";
 		title.setText(s);
 		d_graph->undoSetTitle(title);
-	} else if (d_target->inherits("QwtScaleWidget")){
+	} else if (QwtScaleWidget *scale = qobject_cast<QwtScaleWidget *>(d_target)){
 		if(s.isEmpty())
 			s = " ";
 
 		int axis = -1;
-		QwtScaleWidget *scale = (QwtScaleWidget*)d_target;
 		switch(scale->alignment()){
 			case QwtScaleDraw::BottomScale:
 				axis = QwtPlot::xBottom;

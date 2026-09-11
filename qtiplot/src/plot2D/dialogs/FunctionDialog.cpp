@@ -383,7 +383,7 @@ void FunctionDialog::raiseWidget(int index)
 
 void FunctionDialog::setCurveToModify(FunctionCurve *c)
 {
-	Graph *g = (Graph *)c->plot();
+	Graph *g = c ? qobject_cast<Graph *>(c->plot()) : nullptr;
 	if (!g)
 		return;
 
@@ -397,7 +397,7 @@ void FunctionDialog::setCurveToModify(Graph *g, int curve)
 
 	graph = g;
 
-	FunctionCurve *c = (FunctionCurve *)graph->curve(curve);
+	FunctionCurve *c = dynamic_cast<FunctionCurve *>(graph->curve(curve));
 	if (!c)
 		return;
 
@@ -500,7 +500,8 @@ bool FunctionDialog::acceptFunction()
 		MyParser parser;
 		parser.DefineVar("x", &x);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
-			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+			double val = sb ? sb->value() : 0.0;
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
@@ -528,7 +529,7 @@ bool FunctionDialog::acceptFunction()
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPoints->value(), "x", type);
 			if (plot){
 				graph = plot->activeLayer();
-				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+				setConstants(dynamic_cast<FunctionCurve *>(graph->curve(graph->curveCount() - 1)), constants);
 			}
 		} else {
 			if (curveID >= 0)
@@ -561,7 +562,8 @@ bool FunctionDialog::acceptParametric()
 		MyParser parser;
 		parser.DefineVar((boxParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
-			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+			double val = sb ? sb->value() : 0.0;
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
@@ -585,7 +587,8 @@ bool FunctionDialog::acceptParametric()
 		parser.DefineVar((boxParameter->text()).toLatin1().constData(), &parameter);
 
 		for (int i = 0; i < boxConstants->rowCount(); i++){
-			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+			double val = sb ? sb->value() : 0.0;
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
 				parser.DefineConst(constName.toLatin1().constData(), val);
@@ -612,7 +615,7 @@ bool FunctionDialog::acceptParametric()
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxParPoints->value(), boxParameter->text(), type);
 			if (plot){
 				graph = plot->activeLayer();
-				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+				setConstants(dynamic_cast<FunctionCurve *>(graph->curve(graph->curveCount() - 1)), constants);
 			}
 		} else {
 			if (curveID >= 0)
@@ -644,7 +647,8 @@ bool FunctionDialog::acceptPolar()
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
-			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+			double val = sb ? sb->value() : 0.0;
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty()){
 				constants.insert(constName, val);
@@ -667,7 +671,8 @@ bool FunctionDialog::acceptPolar()
 		MyParser parser;
 		parser.DefineVar((boxPolarParameter->text()).toLatin1().constData(), &parameter);
 		for (int i = 0; i < boxConstants->rowCount(); i++){
-			double val = ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+			DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+			double val = sb ? sb->value() : 0.0;
 			QString constName = boxConstants->item(i, 0)->text();
 			if (!constName.isEmpty())
 				parser.DefineConst(constName.toLatin1().constData(), val);
@@ -695,7 +700,7 @@ bool FunctionDialog::acceptPolar()
 			MultiLayer *plot = d_app->newFunctionPlot(formulas, start, end, boxPolarPoints->value(), boxPolarParameter->text(), type);
 			if (plot){
 				graph = plot->activeLayer();
-				setConstants((FunctionCurve *)graph->curve(graph->curveCount() - 1), constants);
+				setConstants(dynamic_cast<FunctionCurve *>(graph->curve(graph->curveCount() - 1)), constants);
 			}
 		} else {
 			if (curveID >= 0)
@@ -952,7 +957,8 @@ void FunctionDialog::guessConstants()
 	QList<double> values;
 	for (int i = 0; i < boxConstants->rowCount(); i++){
 		constants << boxConstants->item(i, 0)->text();
-		values << ((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->value();
+		DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1));
+		values << (sb ? sb->value() : 0.0);
 	}
 
 	if (lst == constants){
@@ -1019,8 +1025,10 @@ void FunctionDialog::setUserFunctionParameters()
 	for (int i = 0; i < rows; i++){
 		QString name = boxConstants->item(i, 0)->text();
 		index = parameterNames.indexOf(name);
-		if (index >= 0)
-			((DoubleSpinBox*)boxConstants->cellWidget(i, 1))->setValue(fit->initialGuess(index));
+		if (index >= 0){
+			if (DoubleSpinBox *sb = qobject_cast<DoubleSpinBox*>(boxConstants->cellWidget(i, 1)))
+				sb->setValue(fit->initialGuess(index));
+		}
 	}
 
 	disconnect(this, &FunctionDialog::constantsGuessingEnded, this, &FunctionDialog::setUserFunctionParameters);
@@ -1050,7 +1058,7 @@ void FunctionDialog::initBuiltInFitModels()
 	d_fit_models << new LinearFit(d_app);
 	d_fit_models << new LinearSlopeFit(d_app);
 	d_fit_models << new LogisticFit(d_app);
-	d_fit_models << new MultiPeakFit(d_app, (Graph *)0, MultiPeakFit::Lorentz);
+	d_fit_models << new MultiPeakFit(d_app, static_cast<Graph *>(nullptr), MultiPeakFit::Lorentz);
 	d_fit_models << new PolynomialFit(d_app);
 }
 

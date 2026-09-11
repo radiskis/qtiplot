@@ -56,6 +56,7 @@ class TextFormatButtons;
 class DoubleSpinBox;
 class Grid;
 class PenStyleBox;
+class ApplicationWindow;
 
 //! General plot options dialog
 /**
@@ -72,6 +73,7 @@ public:
 	 * \param fl window flags
 	 */
 	AxesDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	ApplicationWindow *app() const;
 
 	void setGraph(Graph *g);
 

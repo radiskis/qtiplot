@@ -49,13 +49,35 @@
  *
  *****************************************************************************/
 
+struct ScaleDraw::FormulaEngine {
+	MyParser parser;
+	double var{0.0};
+	bool hasVar{false};
+
+	explicit FormulaEngine(const QString& formula) {
+		if (formula.contains("x", Qt::CaseInsensitive)) {
+			parser.DefineVar("x", &var);
+			hasVar = true;
+		} else if (formula.contains("y", Qt::CaseInsensitive)) {
+			parser.DefineVar("y", &var);
+			hasVar = true;
+		}
+		parser.SetExpr(formula.toLower().toStdWString());
+	}
+
+	double eval(double value) {
+		if (hasVar)
+			var = value;
+		return parser.Eval();
+	}
+};
+
 ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_plot(plot),
 	d_type(Numeric),
 	d_numeric_format(Automatic),
 	d_fmt('g'),
 	d_prec(6),
-	d_formula(formula),
 	d_majTicks(Out),
 	d_minTicks(Out),
 	d_selected(false),
@@ -65,7 +87,9 @@ ScaleDraw::ScaleDraw(Graph *plot, const QString& formula):
 	d_show_ticks_policy(ShowAll),
 	d_prefix(""),
 	d_suffix("")
-{}
+{
+	setFormula(formula);
+}
 
 ScaleDraw::ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type):
 	d_plot(plot),
@@ -91,7 +115,7 @@ ScaleDraw::ScaleDraw(Graph *plot, ScaleDraw* sd):
 	d_numeric_format = sd->d_numeric_format;
 	d_fmt = sd->d_fmt;
 	d_prec = sd->d_prec;
-	d_formula = sd->d_formula;
+	setFormula(sd->d_formula);
 	d_majTicks = sd->d_majTicks;
 	d_minTicks = sd->d_minTicks;
 	d_selected = sd->d_selected;
@@ -289,7 +313,7 @@ QString ScaleDraw::labelString(double value) const
 			QList<double> ticks = scDiv.ticks (QwtScaleDiv::MajorTick);
 
 			double break_offset = 0;
-			ScaleEngine *se = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+			ScaleEngine *se = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis()));
 			bool inverted = se->testAttribute(QwtScaleEngine::Inverted);
 			if(se->hasBreak()){
 			    double lb = se->axisBreakLeft();
@@ -352,7 +376,7 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 	if (!d_plot)
 		return;
 
-	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis()));
 	if (sc_engine->hasBreak() && sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() > value)
 		return;
 
@@ -397,26 +421,32 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 	painter->restore();
 }
 
+ScaleDraw::~ScaleDraw() = default;
+
+void ScaleDraw::setFormula(const QString& formula)
+{
+	d_formula = formula;
+	if (!formula.isEmpty()){
+		try {
+			d_formula_engine = std::make_shared<FormulaEngine>(formula);
+		} catch (mu::ParserError &) {
+			d_formula_engine.reset();
+		}
+	} else {
+		d_formula_engine.reset();
+	}
+}
+
 double ScaleDraw::transformValue(double value) const
 {
-	if (!d_formula.isEmpty()){
-		double lbl=0.0;
-		try{
-			MyParser parser;
-			if (d_formula.contains("x", Qt::CaseInsensitive))
-				parser.DefineVar("x", &value);
-			else if (d_formula.contains("y", Qt::CaseInsensitive))
-				parser.DefineVar("y", &value);
-
-			parser.SetExpr(d_formula.toLower().toStdWString());
-			lbl = parser.Eval();
-        }
-        catch(mu::ParserError &){
-			return 0;
-        }
-		return lbl;
-    } else
-        return value;
+	if (d_formula_engine){
+		try {
+			return d_formula_engine->eval(value);
+		} catch(mu::ParserError &){
+			return 0.0;
+		}
+	}
+	return value;
 }
 
 void ScaleDraw::setNumericFormat(NumericFormat format)
@@ -489,7 +519,7 @@ int ScaleDraw::axis() const
 void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 {
 	int axis = this->axis();
-	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis);
+	ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis));
 	if (sc_engine->hasBreak()){
 		double dlb = sc_engine->axisBreakLeft();
 		double drb = sc_engine->axisBreakRight();
@@ -545,7 +575,7 @@ void ScaleDraw::drawTick(QPainter *p, double value, int len) const
 
 void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const
 {
-	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis()));
 	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() >= value))
 		return;
 
@@ -640,7 +670,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 
 void ScaleDraw::drawBreak(QPainter *painter) const
 {
-	ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+	ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis()));
     if (!sc_engine->hasBreak() || !sc_engine->hasBreakDecoration())
         return;
 
@@ -675,7 +705,7 @@ void ScaleDraw::drawBreak(QPainter *painter) const
 
 void ScaleDraw::drawBackbone(QPainter *painter) const
 {
-    ScaleEngine *sc_engine = (ScaleEngine *)d_plot->axisScaleEngine(axis());
+    ScaleEngine *sc_engine = static_cast<ScaleEngine *>(d_plot->axisScaleEngine(axis()));
     if (!sc_engine->hasBreak()){
 		QwtScaleDraw::drawBackbone(painter);
         return;

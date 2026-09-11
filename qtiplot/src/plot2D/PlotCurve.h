@@ -51,16 +51,16 @@ public:
     PlotCurve(const QString& name = QString());
 
 	//! Sort of rtti()
-	int type(){return d_type;};
+	int type() const {return d_type;};
 	void setType(int t){d_type = t;};
 
 	/*!\brief The plot style of the curve.
 	 * \sa Graph::CurveType
 	 */
-	int plotStyle(){return d_plot_style;};
+	int plotStyle() const {return d_plot_style;};
 	void setPlotStyle(int s){d_plot_style = s;};
 
-	double xOffset(){return d_x_offset;};
+	double xOffset() const {return d_x_offset;};
 	void setXOffset(double dx){d_x_offset = dx;};
 
 	double yOffset(){return d_y_offset;};
@@ -134,27 +134,27 @@ public:
 	QString labelsColumnName(){return d_labels_column;};
 	void setLabelsColumnName(const QString& name);
 
-    int labelsAlignment(){return d_labels_align;};
+    int labelsAlignment() const {return d_labels_align;};
     void setLabelsAlignment(int flags);
 
-    int labelsXOffset(){return d_labels_x_offset;};
-    int labelsYOffset(){return d_labels_y_offset;};
+    int labelsXOffset() const {return d_labels_x_offset;};
+    int labelsYOffset() const {return d_labels_y_offset;};
     void setLabelsOffset(int x, int y);
 
-    double labelsRotation(){return d_labels_angle;};
+    double labelsRotation() const {return d_labels_angle;};
     void setLabelsRotation(double angle);
 
-    QFont labelsFont(){return d_labels_font;};
+    QFont labelsFont() const {return d_labels_font;};
     void setLabelsFont(const QFont& font);
 
-    QColor labelsColor(){return d_labels_color;};
+    QColor labelsColor() const {return d_labels_color;};
     void setLabelsColor(const QColor& c);
 
-    bool labelsWhiteOut(){return d_white_out_labels;};
+    bool labelsWhiteOut() const {return d_white_out_labels;};
     void setLabelsWhiteOut(bool whiteOut = true);
 
-	Table* table(){return d_table;};
-	Table* xTable(){return d_x_table;};
+	Table* table() const {return d_table;};
+	Table* xTable() const {return d_x_table;};
 	void setDataSource(Table *yt, int ycol = 1, Table *xt = nullptr, int xcol = 0);
 
 	int startRow(){return d_start_row;};

@@ -80,7 +80,8 @@ SelectionMoveResizer::~SelectionMoveResizer()
 	for (QWidget *w : d_widgets){
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(w);
 		if (canvas){
-			((Graph*)canvas->parent())->raiseEnrichements();
+			if (Graph *g = qobject_cast<Graph*>(canvas->parent()))
+				g->raiseEnrichements();
 			break;
 		}
 	}
@@ -91,7 +92,7 @@ SelectionMoveResizer::~SelectionMoveResizer()
 
 void SelectionMoveResizer::add(ArrowMarker *target)
 {
-	if ((QWidget*)target->plot()->canvas() != parent())
+	if (!target || target->plot()->canvas() != parent())
 		return;
 	d_line_markers << target;
 
@@ -127,7 +128,9 @@ void SelectionMoveResizer::add(QWidget *target)
 
 QRect SelectionMoveResizer::boundingRectOf(QwtPlotMarker *target) const
 {
-	return ((ArrowMarker *)target)->rect();
+	if (const ArrowMarker *am = dynamic_cast<const ArrowMarker *>(target))
+		return am->rect();
+	return QRect();
 }
 
 QRect SelectionMoveResizer::boundingRectOf(QwtPlotCanvas *canvas) const
@@ -142,7 +145,7 @@ int SelectionMoveResizer::removeAll(ArrowMarker *target)
 {
 	int result = d_line_markers.removeAll(target);
 	if (d_line_markers.isEmpty() && d_widgets.isEmpty())
-		delete this;
+		deleteLater();
 	else
 		recalcBoundingRect();
 	return result;
@@ -157,7 +160,7 @@ int SelectionMoveResizer::removeAll(QWidget *target)
 		fw->lower();
 
 	if (d_line_markers.isEmpty() && d_widgets.isEmpty())
-		delete this;
+		deleteLater();
 	else
 		recalcBoundingRect();
 	return result;
@@ -398,7 +401,9 @@ void SelectionMoveResizer::operateOnTargets()
 	for (QWidget *i : d_widgets){
 		QwtPlotCanvas *canvas = qobject_cast<QwtPlotCanvas *>(i);
 		if (canvas){
-			((Graph *)canvas->plot())->setCanvasGeometry(operateOn(d_bounding_rect));
+			Graph *g = qobject_cast<Graph *>(canvas->plot());
+			if (g)
+				g->setCanvasGeometry(operateOn(d_bounding_rect));
 			continue;
 		}
 
@@ -533,7 +538,7 @@ void SelectionMoveResizer::mouseDoubleClickEvent(QMouseEvent *e)
 			if (canvas){
 				QMouseEvent event(QEvent::MouseButtonDblClick, canvas->mapFromGlobal(e->globalPosition().toPoint()), e->globalPosition(), Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
 				QCoreApplication::sendEvent(canvas, &event);
-				delete this;
+				deleteLater();
 				return;
 			}
 		}
@@ -588,7 +593,7 @@ void SelectionMoveResizer::keyPressEvent(QKeyEvent *ke)
 				if (l && !l->isOnTop())
 					l->lower();
 			}
-			delete this;
+			deleteLater();
 			ke->accept();
 			return;
 		case Qt::Key_Left:
@@ -636,12 +641,12 @@ bool SelectionMoveResizer::eventFilter(QObject *o, QEvent *e)
 {
 	switch (e->type()) {
 		case QEvent::Resize:
-			if((QWidget*)o == parentWidget())
+			if (o == parentWidget())
 				setGeometry(0, 0, parentWidget()->width(), parentWidget()->height());
 			recalcBoundingRect();
 			return false;
 		case QEvent::Move:
-			if((QWidget*)o != parentWidget())
+			if (o != parentWidget())
 				recalcBoundingRect();
 			return false;
 		default:

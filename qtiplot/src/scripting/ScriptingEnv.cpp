@@ -65,7 +65,7 @@ void ScriptingEnv::incref()
 void ScriptingEnv::decref()
 {
 	d_refcount--;
-	if (d_refcount==0)
-		delete this;
+	if (d_refcount <= 0)
+		deleteLater();
 }
 

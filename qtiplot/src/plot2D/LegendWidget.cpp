@@ -134,7 +134,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX()){
 		drawFrame(painter, QRect(x, y, qRound(this->width()*xfactor), height));
-		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
+		static_cast<QTeXPaintDevice *>(painter->device())->setTextHorizontalAlignment(Qt::AlignLeft);
 	} else
 #endif
 	drawFrame(painter, QRect(x, y, width, height));
@@ -143,7 +143,7 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
 
 #ifdef TEX_OUTPUT
 	if (plot()->isExportingTeX())
-		((QTeXPaintDevice *)painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
+		static_cast<QTeXPaintDevice *>(painter->device())->setTextHorizontalAlignment(Qt::AlignHCenter);
 #endif
 
 	// restore screen geometry parameters
@@ -207,7 +207,7 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	if (!c)
 		return;
 
-	VectorCurve *v = (VectorCurve*)c;
+	VectorCurve *v = static_cast<VectorCurve*>(c);
 	p->save();
 
 	if (d_plot->antialiasing())
@@ -247,7 +247,7 @@ void LegendWidget::drawSymbol(PlotCurve *c, int point, QPainter *p, int x, int y
 	}
 
 	if (c->type() == Graph::Pie){
-		PieCurve *pie = (PieCurve *)c;
+		PieCurve *pie = static_cast<PieCurve *>(c);
 		const QBrush br = QBrush(pie->color(point), pie->pattern());
 		QPen pen = pie->pen();
 		pen.setCosmetic(false);
@@ -347,7 +347,7 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QVector<long> height
 				w += size.width();
 
 				int pos1 = s.indexOf("(", pos);
-				int pos2 = s.indexOf(")", pos1);
+				pos2 = s.indexOf(")", pos1);
                 if (pos2 == -1){
                      s = s.right(s.length() - pos1 - 1);
 				     continue;
@@ -376,13 +376,13 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QVector<long> height
                     w += size.width();
 
                     int pos1 = s.indexOf("{", pos);
-                    int pos2 = s.indexOf("}", pos1);
+                    pos2 = s.indexOf("}", pos1);
                     if (pos2 == -1){
 				         s = s.right(s.length() - pos1 - 1);
 				         continue;
                     }
                     int point = s.mid(pos1 + 1, pos2 - pos1 - 1).toInt() - 1;
-					drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
+					drawSymbol(d_plot->curve(0), point, p, w, height[i], l);
                 	w += l;
                 	s = s.right(s.length() - pos2 - 1);
                 } else {
@@ -399,13 +399,13 @@ void LegendWidget::drawText(QPainter *p, const QRect& rect, QVector<long> height
 						w += size.width();
 
 						int pos1 = s.indexOf(",", pos);
-						int pos3 = s.indexOf(")", pos1);
+						pos3 = s.indexOf(")", pos1);
 						if (pos3 == -1){
 							 s = s.right(s.length() - pos1 - 1);
 							 continue;
 						}
 						int point = s.mid(pos1 + 1, pos3 - pos1 - 1).toInt() - 1;
-						drawSymbol((PlotCurve*)d_plot->curve(0), point, p, w, height[i], l);
+						drawSymbol(d_plot->curve(0), point, p, w, height[i], l);
 						w += l;
 						s = s.right(s.length() - pos3 - 1);
 					}
@@ -458,7 +458,7 @@ QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int f
 				textL += size.width();
 
 				int pos1 = s.indexOf("(", pos);
-				int pos2 = s.indexOf(")", pos1);
+				pos2 = s.indexOf(")", pos1);
                 if (pos2 == -1){
 				    s = s.right(s.length() - pos1 - 1);
 				    continue;
@@ -481,7 +481,7 @@ QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int f
                     QSize size = textSize(p, aux);
                     textL += size.width();
                     textL += symbolLineLength;
-					int pos2=s.indexOf("}", pos);
+					pos2 = s.indexOf("}", pos);
 					if (pos2==-1) pos2=pos+3;
 					s = s.right(s.length() - pos2 - 1);
                 } else {
@@ -493,7 +493,7 @@ QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int f
 						QSize size = textSize(p, aux);
 						textL += size.width();
 						textL += symbolLineLength;
-						int pos2=s.indexOf(")", pos);
+						pos2 = s.indexOf(")", pos);
 						if (pos2==-1) pos2=pos+3;
 						s = s.right(s.length() - pos2 - 1);
 					}
@@ -656,12 +656,15 @@ QString LegendWidget::parse(const QString& str)
 				Table *t = 0;
 				QString colLabel;
 				int ycol = -1;
+				DataCurve *dc = dynamic_cast<DataCurve *>(c);
 				if (c->type() == Graph::Function || c->type() == Graph::Histogram)
 					s = s.replace(pos, pos2 - pos + 1, c->title().text());
-				else {
-					t = ((DataCurve *)c)->table();
-					ycol = t->colIndex(c->title().text());
-					colLabel = t->colLabel(ycol);
+				else if (dc){
+					t = dc->table();
+					if (t){
+						ycol = t->colIndex(c->title().text());
+						colLabel = t->colLabel(ycol);
+					}
 				}
 
 				if (t){
@@ -708,7 +711,7 @@ QString LegendWidget::parse(const QString& str)
 								case 3:  //3 arguments, display cell contents
 								{
 									int row = lst[2].toInt() - 1;
-									s = s.replace(pos, pos2-pos+1, t->text(((DataCurve *)c)->tableRow(row), ycol));
+									s = s.replace(pos, pos2-pos+1, t->text(dc ? dc->tableRow(row) : row, ycol));
 									break;
 								}
 								case 4:  //4 arguments, display cell contents
@@ -762,11 +765,11 @@ PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 			int cv = l[1].toInt() - 1;
 			Graph *layer = d_plot->multiLayer()->layer(l[0].toInt());
 			if (layer && cv >= 0 && cv < layer->curveCount())
-				return (PlotCurve*)layer->curve(cv);
+				return layer->curve(cv);
 		} else if (l.count() == 1){
 			int cv = l[0].toInt() - 1;
-			if (cv >= 0 || cv < d_plot->curveCount())
-				return (PlotCurve*)d_plot->curve(cv);
+			if (cv >= 0 && cv < d_plot->curveCount())
+				return d_plot->curve(cv);
 		}
 	}
 	return curve;
@@ -861,10 +864,10 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 			txt.pop_back();
 			l->setText(txt.join("\n"));
 		} else if (s.contains("<Font>")){
-			QStringList lst = s.remove("<Font>").remove("</Font>").split("\t");
-			QFont f = QFont(lst[0], lst[1].toInt(), lst[2].toInt(), lst[3].toInt());
-			f.setUnderline(lst[4].toInt());
-			f.setStrikeOut(lst[5].toInt());
+			QStringList fontParams = s.remove("<Font>").remove("</Font>").split("\t");
+			QFont f = QFont(fontParams[0], fontParams[1].toInt(), fontParams[2].toInt(), fontParams[3].toInt());
+			f.setUnderline(fontParams[4].toInt());
+			f.setStrikeOut(fontParams[5].toInt());
 			l->setFont(f);
 		} else if (s.contains("<TextColor>"))
 			l->setTextColor(QColor(s.remove("<TextColor>").remove("</TextColor>")));
@@ -901,7 +904,7 @@ void LegendWidget::setAngle(int angle)
 /*
   // bug in Qwt; workaround in QwtText::textSize() doesn't work, the returned value is still too small.
 */
-QSize LegendWidget::textSize(QPainter *p, const QwtText& text)
+QSize LegendWidget::textSize(QPainter * /* p */, const QwtText& text)
 {
 	return text.textSize(text.font()).toSize();
 }

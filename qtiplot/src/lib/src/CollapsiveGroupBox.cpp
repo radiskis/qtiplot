@@ -38,7 +38,7 @@ void CollapsiveGroupBox::setCollapsed(bool collapsed)
 {
 	for (QObject *o : children()){
 		if (o->isWidgetType())
-			((QWidget *)o)->setVisible(collapsed);
+			static_cast<QWidget *>(o)->setVisible(collapsed);
 	}
 
 	setFlat(collapsed);
@@ -48,7 +48,7 @@ void CollapsiveGroupBox::setExpanded(bool expanded)
 {
 	for (QObject *o : children()){
 		if (o->isWidgetType())
-			((QWidget *)o)->setVisible(expanded);
+			static_cast<QWidget *>(o)->setVisible(expanded);
 	}
 
 	setFlat(!expanded);

@@ -158,7 +158,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		QList <LegendWidget *> textsList();
 		LegendWidget *activeText();
-		void setActiveText(LegendWidget *l){d_active_enrichment = (FrameWidget *)l;};
+		void setActiveText(LegendWidget *l);
 		void select(QWidget *l, bool add = false);
 
 		FrameWidget *activeEnrichment(){return d_active_enrichment;};
@@ -327,6 +327,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		//! Map curve pointer to index.
 		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
+		int curveIndex(const QwtPlotItem *c) const { return d_curves.indexOf(const_cast<QwtPlotItem *>(c)); };
 		//! map curve title to index
 		int curveIndex(const QString &);
 		DataCurve* dataCurve(int index);
@@ -652,6 +653,8 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void recoverObsoleteDateTimeScale(int axis, int type, const QString& origin, const QString& format);
 
 		QString axisFormatInfo(int axis);
+		ScaleDraw *axisScaleDraw(int axisId) { return dynamic_cast<ScaleDraw *>(QwtPlot::axisScaleDraw(axisId)); }
+		const ScaleDraw *axisScaleDraw(int axisId) const { return dynamic_cast<const ScaleDraw *>(QwtPlot::axisScaleDraw(axisId)); }
 
 		void setLabelsTextFormat(int axis, int type, const QString& name, const QStringList& lst);
 		void setLabelsTextFormat(int axis, int type, const QString& labelsColName, Table *table);

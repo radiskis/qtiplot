@@ -31,6 +31,7 @@
 #include <QLocale>
 
 #include <gsl/gsl_fft_halfcomplex.h>
+#include "GslRAII.h"
 
 FFTFilter::FFTFilter(ApplicationWindow *parent, PlotCurve *c, int m)
 : Filter(parent, c)
@@ -131,14 +132,15 @@ void FFTFilter::calculateOutputData(double *x, double *y)
     //double df = 0.5/(double)(d_n*(x[1]-x[0]));//half frequency sampling due to GSL storing
 	double df = 1.0/(double)(d_n*(x[1]-x[0]));
 
-	gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(d_n);
-	gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(d_n);
+	GslRAII::UniqueFftRealWorkspace work(gsl_fft_real_workspace_alloc(d_n));
+	GslRAII::UniqueFftRealWavetable real(gsl_fft_real_wavetable_alloc(d_n));
+	if (!work || !real)
+		return;
 
-	gsl_fft_real_transform (y, 1, d_n, real, work);
-	gsl_fft_real_wavetable_free (real);
+	gsl_fft_real_transform (y, 1, d_n, real.get(), work.get());
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
-    QLocale locale = app->locale();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+    QLocale locale = app ? app->locale() : QLocale();
 
     d_explanation = locale.toString(d_low_freq) + " ";
 	if (d_filter_type > 2)
@@ -195,8 +197,8 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 			break;
 	}
 
-	gsl_fft_halfcomplex_wavetable *hc = gsl_fft_halfcomplex_wavetable_alloc (d_n);
-	gsl_fft_halfcomplex_inverse (y, 1, d_n, hc, work);
-	gsl_fft_halfcomplex_wavetable_free (hc);
-	gsl_fft_real_workspace_free (work);
+	GslRAII::UniqueFftHalfcomplexWavetable hc(gsl_fft_halfcomplex_wavetable_alloc (d_n));
+	if (!hc)
+		return;
+	gsl_fft_halfcomplex_inverse (y, 1, d_n, hc.get(), work.get());
 }

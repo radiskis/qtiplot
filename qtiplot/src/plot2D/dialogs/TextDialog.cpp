@@ -268,7 +268,9 @@ void TextDialog::apply()
 
 		case 3://all windows
 		{
-            ApplicationWindow *app = (ApplicationWindow *)this->parent();
+            ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
+            if (!app)
+                break;
 		    QList<MdiSubWindow *> windows = app->windowsList();
 			for (MdiSubWindow *w : windows){
 				MultiLayer *ml = qobject_cast<MultiLayer *>(w);
@@ -283,7 +285,7 @@ void TextDialog::apply()
 		break;
 	}
 
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(this->parent());
 	if (app)
 		app->setFormatBarFont(selectedFont);
 }
@@ -297,7 +299,7 @@ void TextDialog::formatLayerLabels(Graph *g)
 	int align = alignment();
 
 	for (int i = 0; i < QwtPlot::axisCnt; i++){
-		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(i);
+		QwtScaleWidget *scale = g->axisWidget(i);
 		if (scale){
 			QwtText t = scale->title();
 			t.setColor(tc);

@@ -33,6 +33,7 @@
 #include <qwt_plot.h>
 #include <qwt_symbol.h>
 #include <qwt_series_data.h>
+#include <vector>
 
 //! Box curve
 class BoxCurve: public DataCurve
@@ -77,13 +78,13 @@ public:
 	int whiskersRangeType(){return w_range;};
 	void setWhiskersRange(int type, double coeff = 0.0);
 
-	LabelsDisplayPolicy labelsDisplayPolicy(){return d_labels_display;};
+	LabelsDisplayPolicy labelsDisplayPolicy() const {return d_labels_display;};
 	void setLabelsDisplayPolicy(const LabelsDisplayPolicy& policy);
 
-	bool hasBoxLabels(){return d_box_labels;};
+	bool hasBoxLabels() const {return d_box_labels;};
 	void showBoxLabels(bool on = true);
 
-	bool hasWhiskerLabels(){return d_whiskers_labels;};
+	bool hasWhiskerLabels() const {return d_whiskers_labels;};
 	void showWhiskerLabels(bool on = true);
 
     void loadData();
@@ -101,7 +102,7 @@ private:
 	void drawSymbols(QPainter *painter, const QwtScaleMap &xMap,
 				const QwtScaleMap &yMap, double *dat, int size) const;
 
-	double* statisticValues();
+	std::vector<double> statisticValues();
 	QString labelText(int index, double val);
 	QString labelPercentage(int index);
 	void createLabel(double val);

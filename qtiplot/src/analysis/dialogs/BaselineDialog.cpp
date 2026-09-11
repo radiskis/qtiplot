@@ -35,6 +35,7 @@
 #include <Interpolation.h>
 #include <DataPickerTool.h>
 #include <RangeSelectorTool.h>
+#include <GslRAII.h>
 #include <vector>
 
 #include <QGroupBox>
@@ -109,8 +110,9 @@ BaselineDialog::BaselineDialog( QWidget* parent, Qt::WindowFlags fl )
 	gl1->setColumnStretch(1, 1);
 	gl1->setRowStretch(5, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
-	boxTableName->addItems(app->tableNames());
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app)
+		boxTableName->addItems(app->tableNames());
 	updateTableColumns(0);
 
 	buttonCreate = new QPushButton(tr( "Create &Baseline" ));
@@ -180,8 +182,11 @@ void BaselineDialog::modifyBaseline()
 
 	disableBaselineTool();
 
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
+
 	if (d_baseline->type() == Graph::Function){
-		ApplicationWindow *app = (ApplicationWindow *)parent();
 		int points = d_baseline->dataSize();
 		d_table = app->newTable(points, 2);
 		app->setWindowName(d_table, tr("Baseline"));
@@ -201,14 +206,16 @@ void BaselineDialog::modifyBaseline()
 
 	d_baseline->setSymbol(new QwtSymbol(QwtSymbol::Rect, QBrush(Qt::black), d_baseline->pen(), QSize(7, 7)));
 
-	d_picker_tool = new BaselineTool(d_baseline, graph, (ApplicationWindow *)parent());
+	d_picker_tool = new BaselineTool(d_baseline, graph, app);
 	graph->setActiveTool(d_picker_tool);
 	graph->replot();
 }
 
 void BaselineDialog::createBaseline()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	QPen pen = QPen(Qt::red);
 
 	if (d_baseline){
@@ -232,7 +239,8 @@ void BaselineDialog::createBaseline()
 		i->run();
 		delete i;
 		d_baseline = graph->dataCurve(graph->curveCount() - 1);
-		d_table = ((DataCurve *)d_baseline)->table();
+		if (DataCurve *dc = dynamic_cast<DataCurve *>(d_baseline))
+			d_table = dc->table();
 	} else if (btnEquation->isChecked()){
 		double start = graph->axisScaleDiv(QwtPlot::xBottom).lowerBound();
 		double end = graph->axisScaleDiv(QwtPlot::xBottom).upperBound();
@@ -285,7 +293,7 @@ void BaselineDialog::subtractBaseline(bool add)
 	if (!c)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -334,20 +342,15 @@ void BaselineDialog::subtractBaseline(bool add)
 		return;
 
 	// make linear interpolation on sorted data
-	gsl_interp_accel *acc = gsl_interp_accel_alloc();
-	gsl_spline *interp = gsl_spline_alloc(gsl_interp_linear, xtemp.size());
-	if (acc && interp && gsl_spline_init(interp, xtemp.data(), ytemp.data(), xtemp.size()) == 0){
+	GslRAII::UniqueInterpAccel acc(gsl_interp_accel_alloc());
+	GslRAII::UniqueSpline interp(gsl_spline_alloc(gsl_interp_linear, xtemp.size()));
+	if (acc && interp && gsl_spline_init(interp.get(), xtemp.data(), ytemp.data(), xtemp.size()) == 0){
 		for (int i = startRow; i <= endRow; i++){
 			if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
-				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp, inputTable->cell(i, xCol), acc), add));
+				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp.get(), inputTable->cell(i, xCol), acc.get()), add));
 		}
 		inputTable->notifyChanges(c->title().text());
 	}
-
-	if (interp)
-		gsl_spline_free(interp);
-	if (acc)
-		gsl_interp_accel_free(acc);
 }
 
 double BaselineDialog::combineValues(double v1, double v2, bool add)
@@ -364,7 +367,7 @@ void BaselineDialog::updateTableColumns(int tabnr)
 {
 	boxColumnName->clear();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 

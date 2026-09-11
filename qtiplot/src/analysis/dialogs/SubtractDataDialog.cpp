@@ -28,11 +28,13 @@
  ***************************************************************************/
 #include <SubtractDataDialog.h>
 #include <ApplicationWindow.h>
+#include <Table.h>
 #include <Folder.h>
 #include <Graph.h>
 #include <DoubleSpinBox.h>
 #include <PlotCurve.h>
 #include <RangeSelectorTool.h>
+#include "GslRAII.h"
 #include <vector>
 
 #include <QGroupBox>
@@ -87,7 +89,7 @@ SubtractDataDialog::SubtractDataDialog( QWidget* parent, Qt::WindowFlags fl )
 	boxCurrentFolder = new QCheckBox(tr("Current &folder"));
 	gl1->addWidget(boxCurrentFolder, 3, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 	boxReferenceName->addItems(app->tableNames());
 	updateTableColumns(0);
 
@@ -132,7 +134,7 @@ SubtractDataDialog::SubtractDataDialog( QWidget* parent, Qt::WindowFlags fl )
 
 void SubtractDataDialog::setCurrentFolder(bool on)
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -142,7 +144,7 @@ void SubtractDataDialog::setCurrentFolder(bool on)
 		if (f){
 			QStringList tables;
 			for (MdiSubWindow *w : f->windowsList()){
-				if (w->inherits("Table"))
+				if (qobject_cast<Table *>(w))
 					tables << w->objectName();
 			}
 			boxReferenceName->addItems(tables);
@@ -157,7 +159,7 @@ void SubtractDataDialog::updateTableColumns(int tabnr)
 {
 	boxColumnName->clear();
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -202,7 +204,7 @@ void SubtractDataDialog::interpolate()
 	if (!c)
 		return;
 
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -293,20 +295,15 @@ void SubtractDataDialog::interpolate()
 		return;
 
 	// make linear interpolation on sorted data
-	gsl_interp_accel *acc = gsl_interp_accel_alloc();
-	gsl_spline *interp = gsl_spline_alloc(gsl_interp_linear, xtemp.size());
-	if (acc && interp && gsl_spline_init(interp, xtemp.data(), ytemp.data(), xtemp.size()) == 0){
+	GslRAII::UniqueInterpAccel acc(gsl_interp_accel_alloc());
+	GslRAII::UniqueSpline interp(gsl_spline_alloc(gsl_interp_linear, xtemp.size()));
+	if (acc && interp && gsl_spline_init(interp.get(), xtemp.data(), ytemp.data(), xtemp.size()) == 0){
 		for (int i = startRow; i <= endRow; i++){
 			if (!inputTable->text(i, yCol).isEmpty() && !inputTable->text(i, xCol).isEmpty())
-				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp, inputTable->cell(i, xCol), acc)));
+				inputTable->setCell(i, yCol, combineValues(inputTable->cell(i, yCol), gsl_spline_eval(interp.get(), inputTable->cell(i, xCol), acc.get())));
 		}
 		inputTable->notifyChanges(c->title().text());
 	}
-
-	if (interp)
-		gsl_spline_free(interp);
-	if (acc)
-		gsl_interp_accel_free(acc);
 }
 
 void SubtractDataDialog::setGraph(Graph *g)

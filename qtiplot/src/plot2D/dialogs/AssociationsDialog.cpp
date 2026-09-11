@@ -119,7 +119,7 @@ void AssociationsDialog::updateCurves()
 
 void AssociationsDialog::changePlotAssociation(int curve, const QStringList& ass)
 {
-	DataCurve *c = (DataCurve *)graph->dataCurve(curvesIndicesList[curve]);
+	DataCurve *c = graph->dataCurve(curvesIndicesList[curve]);
 	if (!c)
 		return;
 
@@ -129,18 +129,24 @@ void AssociationsDialog::changePlotAssociation(int curve, const QStringList& ass
 	QStringList lst = ass;
 	if (lst.count() == 1){
 		c->setTitle(lst[0]);
-		if (c->type() == Graph::Box)
-			((BoxCurve*)c)->loadData();
-		else if (c->type() == Graph::Pie)
-			((PieCurve*)c)->loadData();
-		else if (c->type() == Graph::Histogram)
-			((QwtHistogram*)c)->loadData();
+		if (c->type() == Graph::Box){
+			if (BoxCurve *bc = dynamic_cast<BoxCurve *>(c))
+				bc->loadData();
+		} else if (c->type() == Graph::Pie){
+			if (PieCurve *pc = dynamic_cast<PieCurve *>(c))
+				pc->loadData();
+		} else if (c->type() == Graph::Histogram){
+			if (QwtHistogram *h = dynamic_cast<QwtHistogram *>(c))
+				h->loadData();
+		}
 	} else if (lst.count() == 2){
 		c->setXColumnName(lst[0].remove("(X)"));
 		c->setTitle(lst[1].remove("(Y)"));
 		c->loadData();
 	} else if (lst.count() == 3){//curve with error bars
-		ErrorBarsCurve *er = (ErrorBarsCurve *)c;
+		ErrorBarsCurve *er = dynamic_cast<ErrorBarsCurve *>(c);
+		if (!er)
+			return;
 		QString xColName = lst[0].remove("(X)");
 		QString yColName = lst[1].remove("(Y)");
 		QString erColName = lst[2].remove("(xErr)").remove("(yErr)");
@@ -158,7 +164,9 @@ void AssociationsDialog::changePlotAssociation(int curve, const QStringList& ass
 		else
 			er->loadData();
 	} else if (lst.count() == 4){
-		VectorCurve *v = (VectorCurve *)c;
+		VectorCurve *v = dynamic_cast<VectorCurve *>(c);
+		if (!v)
+			return;
 		v->setXColumnName(lst[0].remove("(X)"));
 		v->setTitle(lst[1].remove("(Y)"));
 
@@ -203,9 +211,9 @@ Table * AssociationsDialog::findTable(int index)
 	QStringList lst= text.split(":", Qt::SkipEmptyParts);
 	for (MdiSubWindow *w : tables){
 		if (w->objectName() == lst[0])
-			return (Table *)w;
+			return qobject_cast<Table *>(w);
 	}
-	return 0;
+	return nullptr;
 }
 
 void AssociationsDialog::updateTable(int index)
@@ -268,20 +276,13 @@ void AssociationsDialog::updateColumnTypes()
 		table->hideColumn(4);
 		}
 
-	QCheckBox *it = 0;
 	for (int i=0; i < table->rowCount(); i++ ){
-		it = (QCheckBox *)table->cellWidget(i, 1);
-		if (table->item(i, 0)->text() == xColName)
-			it->setChecked(true);
-		else
-			it->setChecked(false);
+		if (QCheckBox *cb1 = qobject_cast<QCheckBox *>(table->cellWidget(i, 1)))
+			cb1->setChecked(table->item(i, 0)->text() == xColName);
 
-		it = (QCheckBox *)table->cellWidget(i, 2);
-		if (table->item(i,0)->text() == yColName)
-			it->setChecked(true);
-		else
-			it->setChecked(false);
-		}
+		if (QCheckBox *cb2 = qobject_cast<QCheckBox *>(table->cellWidget(i, 2)))
+			cb2->setChecked(table->item(i, 0)->text() == yColName);
+	}
 
 	bool xerr = false, yerr = false, vectors = false;
 	QString errColName, xEndColName, yEndColName;
@@ -316,31 +317,25 @@ void AssociationsDialog::updateColumnTypes()
 	}
 
 	for (int i=0; i < table->rowCount(); i++){
-		it = (QCheckBox *)table->cellWidget(i, 3);
-		if (xerr || vectors){
-			if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == xEndColName)
-				it->setChecked(true);
+		if (QCheckBox *cb3 = qobject_cast<QCheckBox *>(table->cellWidget(i, 3))){
+			if (xerr || vectors)
+				cb3->setChecked(table->item(i,0)->text() == errColName || table->item(i,0)->text() == xEndColName);
 			else
-				it->setChecked(false);
-		} else
-			it->setChecked(false);
+				cb3->setChecked(false);
+		}
 
-		it = (QCheckBox *)table->cellWidget(i, 4);
-		if (yerr || vectors){
-			if (table->item(i,0)->text() == errColName || table->item(i,0)->text() == yEndColName)
-				it->setChecked(true);
+		if (QCheckBox *cb4 = qobject_cast<QCheckBox *>(table->cellWidget(i, 4))){
+			if (yerr || vectors)
+				cb4->setChecked(table->item(i,0)->text() == errColName || table->item(i,0)->text() == yEndColName);
 			else
-				it->setChecked(false);
-		} else
-			it->setChecked(false);
+				cb4->setChecked(false);
+		}
 
-		it = (QCheckBox *)table->cellWidget(i, 1);
-		if (xerr || yerr){
-			it->setEnabled(false);
-			table->cellWidget(i, 2)->setEnabled(false);
-		} else {
-			it->setEnabled(true);
-			table->cellWidget(i, 2)->setEnabled(true);
+		if (QCheckBox *cb1 = qobject_cast<QCheckBox *>(table->cellWidget(i, 1))){
+			cb1->setEnabled(!xerr && !yerr);
+		}
+		if (QWidget *w2 = table->cellWidget(i, 2)){
+			w2->setEnabled(!xerr && !yerr);
 		}
 	}
 }
@@ -348,8 +343,7 @@ void AssociationsDialog::updateColumnTypes()
 void AssociationsDialog::uncheckCol(int col)
 {
 	for (int i = 0; i < table->rowCount(); i++){
-		QCheckBox *it = (QCheckBox *)table->cellWidget(i, col);
-		if (it)
+		if (QCheckBox *it = qobject_cast<QCheckBox *>(table->cellWidget(i, col)))
 			it->setChecked(false);
 	}
 }
@@ -360,27 +354,22 @@ void AssociationsDialog::setGraph(Graph *g)
 
 	int index = 0;
 	for (int i = 0; i < graph->curveCount(); i++){
-		const QwtPlotItem *it = (QwtPlotItem *)graph->plotItem(i);
+		QwtPlotItem *it = graph->plotItem(i);
 		if (!it)
 			continue;
-		if (it->rtti() != QwtPlotItem::Rtti_PlotCurve){
+
+		DataCurve *dc = dynamic_cast<DataCurve *>(it);
+		if (!dc || !dc->table()){
 			index++;
 			continue;
 		}
 
-		if (((PlotCurve *)it)->type() == Graph::Function){
-			index++;
-			continue;
-		}
-
-		QStringList lst = ((DataCurve *)it)->plotAssociation();
-		if (((DataCurve *)it)->table()){
-			QString tableName = ((DataCurve *)it)->table()->objectName();
-			lst.replaceInStrings(tableName + "_", "").replaceInStrings(",", ".");
-			plotAssociationsList << tableName + ": " + lst.join(",");
-			curvesIndicesList << index;
-			index++;
-		}
+		QStringList lst = dc->plotAssociation();
+		QString tableName = dc->table()->objectName();
+		lst.replaceInStrings(tableName + "_", "").replaceInStrings(",", ".");
+		plotAssociationsList << tableName + ": " + lst.join(",");
+		curvesIndicesList << index;
+		index++;
 	}
 	associations->addItems(plotAssociationsList);
 	associations->setMaximumHeight((plotAssociationsList.count() + 1)*associations->visualItemRect(associations->item(0)).height());
@@ -453,32 +442,31 @@ void AssociationsDialog::updatePlotAssociation(int row, int col)
 
 bool AssociationsDialog::eventFilter(QObject *object, QEvent *e)
 {
-	QTableWidgetItem* it = (QTableWidgetItem*)object;
-	if (!it)
+	QCheckBox *targetCb = qobject_cast<QCheckBox *>(object);
+	if (!targetCb)
 		return false;
 
 	if (e->type() == QEvent::MouseButtonPress){
-		if (((QCheckBox*)it)->isChecked() || !((QCheckBox*)it)->isEnabled())
+		if (targetCb->isChecked() || !targetCb->isEnabled())
 			return true;
 
 		int col = 0, row = 0;
-		for (int j=1; j<table->columnCount(); j++){
-			for (int i=0; i < table->rowCount(); i++ ){
-				QCheckBox* cb = (QCheckBox*)table->cellWidget(i, j);
-				if ( cb == (QCheckBox *)object){
+		for (int j = 1; j < table->columnCount(); j++){
+			for (int i = 0; i < table->rowCount(); i++){
+				if (table->cellWidget(i, j) == targetCb){
 					row = i;
 					col = j;
 					break;
-					}
 				}
 			}
+		}
 
 		uncheckCol(col);
-		((QCheckBox*)it)->setChecked(true);
+		targetCb->setChecked(true);
 
 		updatePlotAssociation(row, col);
 		return true;
-		}
+	}
 	else if (e->type() == QEvent::MouseButtonDblClick)
 		return true;
 	else

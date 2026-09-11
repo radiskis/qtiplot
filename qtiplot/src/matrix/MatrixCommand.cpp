@@ -403,12 +403,12 @@ void MatrixSetColorMapCommand::undo()
 /*************************************************************************/
 /*           Class MatrixDeleteRowsCommand                               */
 /*************************************************************************/
-MatrixDeleteRowsCommand::MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, double* data, const QString& text):
+MatrixDeleteRowsCommand::MatrixDeleteRowsCommand(MatrixModel *model, int startRow, int count, std::vector<double> data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_start_row(startRow),
 d_count(count),
-d_data(data)
+d_data(std::move(data))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -475,12 +475,12 @@ void MatrixInsertRowCommand::undo()
 /*************************************************************************/
 /*           Class MatrixDeleteColsCommand                               */
 /*************************************************************************/
-MatrixDeleteColsCommand::MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, double* data, const QString& text):
+MatrixDeleteColsCommand::MatrixDeleteColsCommand(MatrixModel *model, int startCol, int count, std::vector<double> data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_start_col(startCol),
 d_count(count),
-d_data(data)
+d_data(std::move(data))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -549,12 +549,12 @@ void MatrixInsertColCommand::undo()
 /*************************************************************************/
 /*           Class MatrixSetSizeCommand                                */
 /*************************************************************************/
-MatrixSetSizeCommand::MatrixSetSizeCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, double *data, const QString& text):
+MatrixSetSizeCommand::MatrixSetSizeCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, std::vector<double> data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_old_size(oldSize),
 d_new_size(newSize),
-d_backup(data)
+d_backup(std::move(data))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -596,10 +596,10 @@ void MatrixSetSizeCommand::undo()
 /*************************************************************************/
 /*           Class MatrixSmoothCommand                                */
 /*************************************************************************/
-MatrixSmoothCommand::MatrixSmoothCommand(MatrixModel *model, double *data, const QString& text):
+MatrixSmoothCommand::MatrixSmoothCommand(MatrixModel *model, std::vector<double> data, const QString& text):
 QUndoCommand(text),
 d_model(model),
-d_backup(data)
+d_backup(std::move(data))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -650,8 +650,8 @@ void MatrixSmoothCommand::undo()
 /*************************************************************************/
 /*           Class MatrixResampleCommand                                 */
 /*************************************************************************/
-MatrixResampleCommand::MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, double *data, const QString& text):
-MatrixSetSizeCommand(model, oldSize, newSize, data, text),
+MatrixResampleCommand::MatrixResampleCommand(MatrixModel *model, const QSize& oldSize, const QSize& newSize, int method, std::vector<double> data, const QString& text):
+MatrixSetSizeCommand(model, oldSize, newSize, std::move(data), text),
 d_method(method)
 {
 	setText(model->matrix()->objectName() + ": " + text);
@@ -671,7 +671,7 @@ void MatrixResampleCommand::redo()
 /*           Class MatrixUndoCommand                                     */
 /*************************************************************************/
 MatrixUndoCommand::MatrixUndoCommand(MatrixModel *model, Matrix::Operation op, int startRow, int endRow, int startCol, int endCol,
-									double *data, const QString& text):
+									std::vector<double> data, const QString& text):
 QUndoCommand(text),
 d_model(model),
 d_operation(op),
@@ -679,7 +679,7 @@ d_start_row(startRow),
 d_end_row(endRow),
 d_start_col(startCol),
 d_end_col(endCol),
-d_data(data)
+d_data(std::move(data))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -731,8 +731,8 @@ void MatrixUndoCommand::undo()
 /*           Class MatrixFftCommand                                      */
 /*************************************************************************/
 MatrixFftCommand::MatrixFftCommand(bool inverse, MatrixModel *model, int startRow, int endRow,
-									int startCol, int endCol, double *data, const QString& text):
-MatrixUndoCommand(model, Matrix::FFT, startRow, endRow, startCol, endCol, data, text),
+									int startCol, int endCol, std::vector<double> data, const QString& text):
+MatrixUndoCommand(model, Matrix::FFT, startRow, endRow, startCol, endCol, std::move(data), text),
 d_inverse(inverse)
 {
 }
@@ -749,8 +749,8 @@ void MatrixFftCommand::redo()
 /*           Class MatrixSetImageCommand                           */
 /*************************************************************************/
 MatrixSetImageCommand::MatrixSetImageCommand(MatrixModel *model, const QImage& image, Matrix::ViewType oldView,
-						int startRow, int endRow, int startCol, int endCol, double *data, const QString& text):
-MatrixUndoCommand(model, Matrix::SetImage, startRow, endRow, startCol, endCol, data, text),
+						int startRow, int endRow, int startCol, int endCol, std::vector<double> data, const QString& text):
+MatrixUndoCommand(model, Matrix::SetImage, startRow, endRow, startCol, endCol, std::move(data), text),
 d_image(image),
 d_old_view(oldView)
 {
@@ -784,8 +784,8 @@ MatrixImportAsciiCommand::MatrixImportAsciiCommand(const QString &fname, const Q
 						int ignoredLines, bool stripSpaces, bool simplifySpaces,
 						const QString& commentString, Matrix::ImportMode importAs, const QLocale& locale,
 						int endLineChar, int maxRows, MatrixModel *model, int startRow, int endRow,
-						int startCol, int endCol, double *data, const QString& text):
-MatrixUndoCommand(model, Matrix::ImportAscii, startRow, endRow, startCol, endCol, data, text),
+						int startCol, int endCol, std::vector<double> data, const QString& text):
+MatrixUndoCommand(model, Matrix::ImportAscii, startRow, endRow, startCol, endCol, std::move(data), text),
 d_path(fname),
 d_sep(sep),
 d_comment(commentString),
@@ -893,7 +893,7 @@ void MatrixSymmetryOperation::undo()
 /*           Class MatrixPasteCommand                               	 */
 /*************************************************************************/
 MatrixPasteCommand::MatrixPasteCommand(MatrixModel *model, int startRow, int endRow, int startCol, int endCol,
-					double *clipboardData, int rows, int cols, double *backupData, int oldRows, int oldCols,
+					std::vector<double> clipboardData, int rows, int cols, std::vector<double> backupData, int oldRows, int oldCols,
 					const QString& text):
 QUndoCommand(text),
 d_model(model),
@@ -905,8 +905,8 @@ d_rows(rows),
 d_cols(cols),
 d_old_rows(oldRows),
 d_old_cols(oldCols),
-d_clipboard_data(clipboardData),
-d_backup_data(backupData)
+d_clipboard_data(std::move(clipboardData)),
+d_backup_data(std::move(backupData))
 {
 	setText(model->matrix()->objectName() + ": " + text);
 }
@@ -917,7 +917,7 @@ void MatrixPasteCommand::redo()
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	d_model->pasteData(d_clipboard_data, d_start_row, d_start_col, d_rows, d_cols);
+	d_model->pasteData(d_clipboard_data.data(), d_start_row, d_start_col, d_rows, d_cols);
 	d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }

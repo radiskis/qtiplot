@@ -111,14 +111,12 @@ void fft_inv(double* x_int_re, double* x_int_im, int taille)
 
 void fft2d(double **xtre, double **xtim, int width, int height, bool shift)
 {
-	double **xint_re = Matrix::allocateMatrixData(height, width);
+	DoubleMatrixBuffer xint_re(height, width);
 	if (!xint_re)
 		return;
-	double **xint_im = Matrix::allocateMatrixData(height, width);
-	if (!xint_im){
-		Matrix::freeMatrixData(xint_re, height);
+	DoubleMatrixBuffer xint_im(height, width);
+	if (!xint_im)
 		return;
-	}
 
 	std::vector<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
 	for(int k=0; k<height; k++){
@@ -157,20 +155,16 @@ void fft2d(double **xtre, double **xtim, int width, int height, bool shift)
 			}
 		}
 	}
-	Matrix::freeMatrixData(xint_re, height);
-	Matrix::freeMatrixData(xint_im, height);
 }
 
 void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im, int width, int height, bool undoShift)
 {
-	double **xint_re = Matrix::allocateMatrixData(height, width);
+	DoubleMatrixBuffer xint_re(height, width);
 	if (!xint_re)
 		return;
-	double **xint_im = Matrix::allocateMatrixData(height, width);
-	if (!xint_im){
-		Matrix::freeMatrixData(xint_re, height);
+	DoubleMatrixBuffer xint_im(height, width);
+	if (!xint_im)
 		return;
-	}
 
 	std::vector<double> x_int_l(width), x_int2_l(width), x_int_c(height), x_int2_c(height);
 
@@ -209,6 +203,4 @@ void fft2d_inv(double **xtre, double **xtim, double **xrec_re, double **xrec_im,
 			xrec_im[i][k] = x_int2_c[i];
 		}
 	}
-	Matrix::freeMatrixData(xint_re, height);
-	Matrix::freeMatrixData(xint_im, height);
 }

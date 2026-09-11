@@ -247,14 +247,14 @@ QString PythonScripting::errorMsg()
 	}
 
 	if (traceback) {
-		excit = (PyTracebackObject*)traceback;
-		while (excit && (PyObject*)excit != Py_None)
+		excit = reinterpret_cast<PyTracebackObject*>(traceback);
+		while (excit && reinterpret_cast<PyObject*>(excit) != Py_None)
 		{
 			frame = excit->tb_frame;
 			PyCodeObject *code = PyFrame_GetCode(frame);
-			msg.append("at ").append(toString(PyObject_GetAttrString((PyObject*)code, "co_filename"), true));
+			msg.append("at ").append(toString(PyObject_GetAttrString(reinterpret_cast<PyObject*>(code), "co_filename"), true));
 			msg.append(":").append(QString::number(excit->tb_lineno));
-			PyObject *co_name = PyObject_GetAttrString((PyObject*)code, "co_name");
+			PyObject *co_name = PyObject_GetAttrString(reinterpret_cast<PyObject*>(code), "co_name");
 			if (co_name && *(fname = PyString_AsString(co_name)) != '?')
 				msg.append(" in ").append(fname);
 			Py_XDECREF(co_name);

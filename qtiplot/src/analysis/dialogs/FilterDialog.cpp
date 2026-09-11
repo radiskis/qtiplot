@@ -31,6 +31,8 @@
 #include <Graph.h>
 #include <ColorButton.h>
 #include <DoubleSpinBox.h>
+#include <ApplicationWindow.h>
+#include <memory>
 
 #include <QGroupBox>
 #include <QCheckBox>
@@ -44,7 +46,7 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ), filter_type(type)
 {
 	setObjectName( "FilterDialog" );
-	setWindowTitle(tr("QtiPlot - Filter options"));
+	setWindowTitle( tr( "QtiPlot - Filter Options" ) );
 	setSizeGripEnabled( true );
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -60,12 +62,14 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 	else
 		gl1->addWidget(new QLabel(tr("Low Frequency (Hz)")), 1, 0);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	int decimals = app ? app->d_decimal_digits : 6;
+	QLocale locale = app ? app->locale() : QLocale();
 
 	boxStart = new DoubleSpinBox();
 	boxStart->setValue(0.0);
-	boxStart->setDecimals(app->d_decimal_digits);
-	boxStart->setLocale(app->locale());
+	boxStart->setDecimals(decimals);
+	boxStart->setLocale(locale);
 	boxStart->setMinimum(0.0);
 	gl1->addWidget(boxStart, 1, 1);
 
@@ -76,8 +80,8 @@ FilterDialog::FilterDialog(int type, QWidget* parent, Qt::WindowFlags fl )
 
 		boxEnd = new DoubleSpinBox();
 		boxEnd->setValue(0.0);
-		boxEnd->setDecimals(app->d_decimal_digits);
-		boxEnd->setLocale(app->locale());
+		boxEnd->setDecimals(decimals);
+		boxEnd->setLocale(locale);
 		boxEnd->setMinimum(0.0);
         gl1->addWidget(boxEnd, 2, 1);
 
@@ -130,7 +134,11 @@ void FilterDialog::filter()
 		}
 	}
 
-	FFTFilter *f = new FFTFilter((ApplicationWindow *)parent(), (PlotCurve *)graph->curve(boxName->currentText()), filter_type);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app || !graph)
+		return;
+
+	auto f = std::make_unique<FFTFilter>(app, graph->curve(boxName->currentText()), filter_type);
 	if (filter_type == FFTFilter::BandPass){
 		f->setBand(from, to);
 		f->enableOffset(boxOffset->isChecked());
@@ -142,7 +150,6 @@ void FilterDialog::filter()
 
 	f->setColor(boxColor->color());
 	f->run();
-	delete f;
 }
 
 void FilterDialog::setGraph(Graph *g)

@@ -26,6 +26,7 @@ Description          : Multi layer widget
  *                                                                         *
  ***************************************************************************/
 #include <QVector>
+#include <vector>
 #include <QWidgetList>
 #include <QtPrintSupport/QPrinter>
 #include <QPrintDialog>
@@ -212,7 +213,7 @@ Graph *MultiLayer::layer(int num)
     if (index < 0 || index >= graphsList.count())
         return 0;
 
-	return (Graph*) graphsList.at(index);
+	return graphsList.at(index);
 }
 
 LayerButton* MultiLayer::addLayerButton()
@@ -263,12 +264,12 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height, bool setPrefere
 void MultiLayer::activateGraph(LayerButton* button)
 {
 	for (int i = 0; i<buttonsList.count(); i++){
-		LayerButton *btn=(LayerButton*)buttonsList.at(i);
+		LayerButton *btn = buttonsList.at(i);
 		if (btn->isChecked())
 			btn->setChecked(false);
 
 		if (btn == button){
-			active_graph = (Graph*) graphsList.at(i);
+			active_graph = graphsList.at(i);
 			active_graph->setFocus();
 			active_graph->raise();//raise layer on top of the layers stack
 
@@ -341,10 +342,10 @@ void MultiLayer::setActiveLayer(Graph* g)
 	active_graph->raiseEnrichements();
 
 	for (int i = 0; i < graphsList.count(); i++){
-		Graph *gr = (Graph *)graphsList.at(i);
+		Graph *gr = graphsList.at(i);
 		gr->deselect();
 
-		LayerButton *btn = (LayerButton *)buttonsList.at(i);
+		LayerButton *btn = buttonsList.at(i);
 		if (gr == g)
 			btn->setChecked(true);
 		else
@@ -517,9 +518,9 @@ bool MultiLayer::removeLayer(Graph *g)
 	buttonsList.removeAt(index);
 
 	int i = 0;
-	for (LayerButton* btn : buttonsList){
-		btn->setText(QString::number(++i));//update the texts of the buttons
-		btn->setChecked(false);
+	for (LayerButton* b : buttonsList){
+		b->setText(QString::number(++i));//update the texts of the buttons
+		b->setChecked(false);
 	}
 
 	if (g->zoomOn() || g->activeTool())
@@ -539,12 +540,12 @@ bool MultiLayer::removeLayer(Graph *g)
 		return true;
 	}
 
-	active_graph = (Graph*) graphsList.at(index);
+	active_graph = graphsList.at(index);
 
 	for (i=0; i<(int)graphsList.count(); i++){
-		Graph *gr = (Graph *)graphsList.at(i);
+		Graph *gr = graphsList.at(i);
 		if (gr == active_graph){
-			LayerButton *button = (LayerButton *)buttonsList.at(i);
+			LayerButton *button = buttonsList.at(i);
 			button->setChecked(true);
 			break;
 		}
@@ -623,73 +624,73 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	int layers = graphsList.size();
 	const QRect rect = d_canvas->geometry();
 
-	double *xTopR = (double *)calloc(layers, sizeof(double));//ratio between top axis + title and d_canvas height
-	double *xBottomR = (double *)calloc(layers, sizeof(double)); //ratio between bottom axis and d_canvas height
-	double *yLeftR = (double *)calloc(layers, sizeof(double));
-	double *yRightR = (double *)calloc(layers, sizeof(double));
-	double *maxXTopHeight = (double *)calloc(d_rows, sizeof(double));//maximum top axis + title height in a row
-	double *maxXBottomHeight = (double *)calloc(d_rows, sizeof(double));//maximum bottom axis height in a row
-	double *maxYLeftWidth = (double *)calloc(d_cols, sizeof(double));//maximum left axis width in a column
-	double *maxYRightWidth = (double *)calloc(d_cols, sizeof(double));//maximum right axis width in a column
-	double *Y = (double *)calloc(d_rows, sizeof(double));
-	double *X = (double *)calloc(d_cols, sizeof(double));
+	std::vector<double> xTopR(layers, 0.0);//ratio between top axis + title and d_canvas height
+	std::vector<double> xBottomR(layers, 0.0); //ratio between bottom axis and d_canvas height
+	std::vector<double> yLeftR(layers, 0.0);
+	std::vector<double> yRightR(layers, 0.0);
+	std::vector<double> maxXTopHeight(d_rows, 0.0);//maximum top axis + title height in a row
+	std::vector<double> maxXBottomHeight(d_rows, 0.0);//maximum bottom axis height in a row
+	std::vector<double> maxYLeftWidth(d_cols, 0.0);//maximum left axis width in a column
+	std::vector<double> maxYRightWidth(d_cols, 0.0);//maximum right axis width in a column
+	std::vector<double> Y(d_rows, 0.0);
+	std::vector<double> X(d_cols, 0.0);
 
 	for (int i = 0; i < layers; i++){
 	//calculate scales/d_canvas dimensions reports for each layer and stores them in the above vectors
-		Graph *g = (Graph *)graphsList.at(i);
+		Graph *g = graphsList.at(i);
 		QwtPlotLayout *plotLayout = g->plotLayout();
 		QRect cRect = plotLayout->canvasRect().toRect();
 		double ch = (double)cRect.height();
 		double cw = (double)cRect.width();
 
 		QRect tRect = plotLayout->titleRect().toRect();
-		QwtScaleWidget *scale = (QwtScaleWidget *)g->axisWidget(QwtPlot::xTop);
+		QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
 
 		int topHeight = 0;
 		if (!tRect.isNull())
 			topHeight += tRect.height() + plotLayout->spacing();
 		if (scale){
 			QRect sRect = plotLayout->scaleRect(QwtPlot::xTop).toRect();
-			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
-			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			ScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
+			bool labels = sd && sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool title = !scale->title().text().isEmpty();
-			bool minTicks = (sd->minorTicksStyle() != ScaleDraw::None) && (sd->minorTicksStyle() != ScaleDraw::In);
-			bool majTicks = (sd->majorTicksStyle() != ScaleDraw::None) && (sd->majorTicksStyle() != ScaleDraw::In);
+			bool minTicks = sd && (sd->minorTicksStyle() != ScaleDraw::None) && (sd->minorTicksStyle() != ScaleDraw::In);
+			bool majTicks = sd && (sd->majorTicksStyle() != ScaleDraw::None) && (sd->majorTicksStyle() != ScaleDraw::In);
 			if (labels || title || minTicks || majTicks)
 				topHeight += sRect.height();
 		}
 		xTopR[i] = double(topHeight)/ch;
 
-		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::xBottom);
+		scale = g->axisWidget(QwtPlot::xBottom);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect(QwtPlot::xBottom).toRect();
-			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
-			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			ScaleDraw *sd = g->axisScaleDraw(QwtPlot::xBottom);
+			bool labels = sd && sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
-			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
-			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			bool noMinTicks = !sd || (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = !sd || (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
 			xBottomR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.height())/ch;
 		}
 
-		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yLeft);
+		scale = g->axisWidget(QwtPlot::yLeft);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect (QwtPlot::yLeft).toRect();
-			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
-			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			ScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
+			bool labels = sd && sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
-			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
-			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			bool noMinTicks = !sd || (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = !sd || (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
 			yLeftR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.width())/cw;
 		}
 
-		scale = (QwtScaleWidget *) g->axisWidget(QwtPlot::yRight);
+		scale = g->axisWidget(QwtPlot::yRight);
 		if (scale){
 			QRect sRect = plotLayout->scaleRect(QwtPlot::yRight).toRect();
-			ScaleDraw *sd = (ScaleDraw *)scale->scaleDraw();
-			bool labels = sd->hasComponent(QwtAbstractScaleDraw::Labels);
+			ScaleDraw *sd = g->axisScaleDraw(QwtPlot::yRight);
+			bool labels = sd && sd->hasComponent(QwtAbstractScaleDraw::Labels);
 			bool noTitle = scale->title().text().isEmpty();
-			bool noMinTicks = (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
-			bool noMajTicks = (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
+			bool noMinTicks = !sd || (sd->minorTicksStyle() == ScaleDraw::None) || (sd->minorTicksStyle() == ScaleDraw::In);
+			bool noMajTicks = !sd || (sd->majorTicksStyle() == ScaleDraw::None) || (sd->majorTicksStyle() == ScaleDraw::In);
 			yRightR[i] = (!labels && noTitle && noMinTicks && noMajTicks) ? 0.0 : double(sRect.width())/cw;
 		}
 
@@ -774,7 +775,7 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		}
 
 		//resizes and moves layers
-		Graph *g = (Graph *)graphsList.at(i);
+		Graph *g = graphsList.at(i);
 		bool autoscaleFonts = g->autoscaleFonts();//save user font settings
 		g->setAutoscaleFonts(false);
 
@@ -799,13 +800,6 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 
 		g->setAutoscaleFonts(autoscaleFonts);//restore user font settings
 	}
-
-	//free memory
-	free(maxXTopHeight); free(maxXBottomHeight);
-	free(maxYLeftWidth); free(maxYRightWidth);
-	free(xTopR); free(xBottomR);
-	free(yLeftR); free(yRightR);
-	free(X); free(Y);
 
 	if (!graphsList.isEmpty()){
 		Graph *g = graphsList[0];
@@ -858,7 +852,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			}
 		}
 
-		Graph *g = (Graph *)graphsList.at(i);
+		Graph *g = graphsList.at(i);
 		if (!g)
 			continue;
 
@@ -873,7 +867,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 		if (verticalAxis && !col && (row != d_rows - 1)){
 			QwtScaleWidget *scale = g->axisWidget(QwtPlot::yLeft);
 			if (scale){
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::yLeft);
+				ScaleDraw *sd = g->axisScaleDraw(QwtPlot::yLeft);
 				if (sd)
 					sd->setShowTicksPolicy(ScaleDraw::HideBegin);
 			}
@@ -891,7 +885,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 			if (row != d_rows - 1){
 				scale = g->axisWidget(QwtPlot::yRight);
 				if (scale){
-					ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::yRight);
+					ScaleDraw *sd = g->axisScaleDraw(QwtPlot::yRight);
 					if (sd)
 						sd->setShowTicksPolicy(ScaleDraw::HideBegin);
 				}
@@ -904,7 +898,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 				if (row)
 					g->setAxisTitleString(QwtPlot::xTop, QString());
 
-				ScaleDraw *sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xTop);
+				ScaleDraw *sd = g->axisScaleDraw(QwtPlot::xTop);
 				if (sd){
 					if (row)
 						sd->enableComponent(QwtAbstractScaleDraw::Labels, false);
@@ -913,7 +907,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 				}
 
 				if (col && row == d_rows - 1){
-					sd = (ScaleDraw *)g->axisScaleDraw(QwtPlot::xBottom);
+					sd = g->axisScaleDraw(QwtPlot::xBottom);
 					if (sd)
 						sd->setShowTicksPolicy(ScaleDraw::HideBegin);
 				}
@@ -978,9 +972,9 @@ bool MultiLayer::arrangeLayers(bool fit, bool userSize)
 		bool resizeLayers = d_scale_layers;
 		d_scale_layers = false;
 
-		QSize size = d_canvas->childrenRect().size();
+		QSize canvasSize = d_canvas->childrenRect().size();
 		int fh = height() - d_canvas->height();//frame height
-		resize(d_canvas->x() + size.width() + right_margin, d_canvas->y() + size.height() + bottom_margin + fh);
+		resize(d_canvas->x() + canvasSize.width() + right_margin, d_canvas->y() + canvasSize.height() + bottom_margin + fh);
 
 		d_scale_layers = resizeLayers;
 	}
@@ -1354,6 +1348,14 @@ void MultiLayer::exportTeX(const QString& fname, bool color, bool escapeStrings,
 
 	for (Graph* g : graphsList)
 		g->setTeXExportingMode(false);
+#else
+	Q_UNUSED(fname);
+	Q_UNUSED(color);
+	Q_UNUSED(escapeStrings);
+	Q_UNUSED(fontSizes);
+	Q_UNUSED(customSize);
+	Q_UNUSED(unit);
+	Q_UNUSED(fontsFactor);
 #endif
 }
 
@@ -1442,7 +1444,9 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	if (!painter)
 		return;
 
-	QPrinter *printer = (QPrinter *)painter->device();
+	QPrinter *printer = dynamic_cast<QPrinter *>(painter->device());
+	if (!printer)
+		return;
 	QRect paperRect = printer->pageLayout().fullRectPixels(printer->resolution());
 	QRect canvasRect = d_canvas->rect();
 	QRect pageRect = printer->pageLayout().paintRectPixels(printer->resolution());
@@ -1511,7 +1515,7 @@ void MultiLayer::setFonts(const QFont& titleFnt, const QFont& scaleFnt,
 			g->setAxisFont(j, numbersFnt);
 			text = g->axisTitle(j);
   	        text.setFont(scaleFnt);
-  	        ((QwtPlot *)g)->setAxisTitle(j, text);
+  	        g->QwtPlot::setAxisTitle(j, text);
 		}
 
 		QList <LegendWidget *> texts = g->textsList();
@@ -1553,13 +1557,13 @@ void MultiLayer::connectLayer(Graph *g)
 
 bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 {
-	if(e->type() == QEvent::Resize && object == (QObject *)d_canvas){
+	if(e->type() == QEvent::Resize && object == d_canvas){
 		d_canvas->setUpdatesEnabled(false);
-		resizeLayers((QResizeEvent *)e);
+		resizeLayers(static_cast<QResizeEvent *>(e));
 		d_canvas->setUpdatesEnabled(true);
 		d_canvas_size = d_canvas->size();
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject *)d_canvas){
-		const QMouseEvent *me = (const QMouseEvent *)e;
+	} else if (e->type() == QEvent::MouseButtonPress && object == d_canvas){
+		const QMouseEvent *me = static_cast<const QMouseEvent *>(e);
 		if (me->button() == Qt::RightButton && applicationWindow()){
 			applicationWindow()->showWindowContextMenu();
 			return true;
@@ -1597,7 +1601,7 @@ bool MultiLayer::eventFilter(QObject *object, QEvent *e)
 			}
 		}
 		deselect();
-	} else if (e->type() == QEvent::MouseButtonDblClick && object == (QObject *)d_canvas){
+	} else if (e->type() == QEvent::MouseButtonDblClick && object == d_canvas){
 		if (applicationWindow())
 			applicationWindow()->showPlotDialog(-100);
 		return true;
@@ -1663,7 +1667,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		int index = graphsList.indexOf(active_graph) + 1;
 		if (index >= graphsList.size())
 			index = 0;
-		Graph *g = (Graph *)graphsList.at(index);
+		Graph *g = graphsList.at(index);
 		if (g)
 			setActiveLayer(g);
 		return;
@@ -1674,7 +1678,7 @@ void MultiLayer::keyPressEvent(QKeyEvent * e)
 		int index = graphsList.indexOf(active_graph) - 1;
 		if (index < 0)
 			index = graphsList.size() - 1;
-		Graph *g = (Graph *)graphsList.at(index);
+		Graph *g = graphsList.at(index);
 		if (g)
 			setActiveLayer(g);
 		return;
@@ -1728,6 +1732,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 			return;
 	}
 	QTextStream t(&f);
+	t.setEncoding(QStringConverter::Utf8);
 
 	t << "<multiLayer>\n";
 
@@ -1758,6 +1763,8 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "<LinkXAxes>" + QString::number(d_link_x_axes) + "</LinkXAxes>\n";
 	t << "<ScaleLayers>" + QString::number(d_scale_layers) + "</ScaleLayers>\n";
 	t << "</multiLayer>\n";
+	t.flush();
+	f.close();
 }
 
 void MultiLayer::setMargins (int lm, int rm, int tm, int bm)
@@ -1805,13 +1812,13 @@ void MultiLayer::setNumLayers(int n)
 	int dn = graphsList.size() - n;
 	if (dn > 0){
 		for (int i = 0; i < dn; i++){//remove layer buttons
-			LayerButton *btn=(LayerButton*)buttonsList.last();
+			LayerButton *btn = buttonsList.last();
 			if (btn){
 				btn->close();
 				buttonsList.removeLast();
 			}
 
-			Graph *g = (Graph *)graphsList.last();
+			Graph *g = graphsList.last();
 			if (g){//remove layers
 				if (g->zoomOn() || g->activeTool())
 					setPointerCursor();
@@ -1827,11 +1834,11 @@ void MultiLayer::setNumLayers(int n)
 
 		// check whether the active Graph.has been deleted
 		if(graphsList.indexOf(active_graph) == -1)
-			active_graph=(Graph*) graphsList.last();
+			active_graph = graphsList.last();
 		for (int j=0;j<(int)graphsList.count();j++){
-			Graph *gr=(Graph *)graphsList.at(j);
+			Graph *gr = graphsList.at(j);
 			if (gr == active_graph){
-				LayerButton *button=(LayerButton *)buttonsList.at(j);
+				LayerButton *button = buttonsList.at(j);
 				button->setChecked(true);
 				break;
 			}
@@ -1912,11 +1919,14 @@ QString MultiLayer::sizeToString()
 		QList<QwtPlotItem *> items = g->curvesList();
 		for (QwtPlotItem *i : items){
 			if (i->rtti() == QwtPlotItem::Rtti_PlotSpectrogram){
-            	Spectrogram *sp = (Spectrogram *)i;
-				int cells = sp->matrix()->numRows() * sp->matrix()->numCols();
-            	size += cells*sizeof(double);
-        	} else
-				size += ((QwtPlotCurve *)i)->dataSize()*sizeof(double);
+				Spectrogram *sp = static_cast<Spectrogram *>(i);
+				if (sp->matrix()){
+					int cells = sp->matrix()->numRows() * sp->matrix()->numCols();
+					size += cells*sizeof(double);
+				}
+			} else if (i->rtti() == QwtPlotItem::Rtti_PlotCurve){
+				size += static_cast<QwtPlotCurve *>(i)->dataSize()*sizeof(double);
+			}
 		}
 	}
 	return QString::number((double)size/1024.0, 'f', 1) + " " + tr("kB");
@@ -2192,8 +2202,8 @@ void MultiLayer::plotProfiles(Matrix* m)
 
 	QColor color = Qt::white;
 	color.setAlpha(0);
-	for (Graph *g : graphsList)
-		g->setBackgroundColor(color);
+	for (Graph *layer : graphsList)
+		layer->setBackgroundColor(color);
 }
 
 void MultiLayer::linkXLayerAxes(bool link)
@@ -2214,7 +2224,7 @@ void MultiLayer::updateLayerAxes(Graph *g, int axis)
 	if (!g || (axis != Graph::xBottom && axis != Graph::xTop))
 		return;
 
-	ScaleEngine *se = (ScaleEngine *)g->axisScaleEngine (axis);
+	ScaleEngine *se = static_cast<ScaleEngine *>(g->axisScaleEngine(axis));
 	const QwtScaleDiv &sd = g->axisScaleDiv(axis);
 	if (!se)
 		return;

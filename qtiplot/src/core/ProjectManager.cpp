@@ -38,6 +38,7 @@
 #include "CrashHandler.h"
 #include "Logger.h"
 #include "QtiPlotApplication.h"
+#include "ScriptWindow.h"
 #ifdef QTIPLOT_LEDGER
 #include "Tracked.h"
 #endif
@@ -200,7 +201,7 @@ void ProjectManager::saveProjectAs(const QString& fileName, bool compress)
 			updateRecentProjectsList(d_app->projectname);
 
 			QString baseName = QFileInfo(fn).baseName();
-			FolderListItem *item = (FolderListItem *)d_app->folders->topLevelItem(0);
+			FolderListItem *item = static_cast<FolderListItem *>(d_app->folders->topLevelItem(0));
 			item->setText(0, baseName);
 			item->folder()->setObjectName(baseName);
 		}
@@ -218,8 +219,8 @@ void ProjectManager::savedProject()
 	while (f){
 		QList<MdiSubWindow *> folderWindows = f->windowsList();
 		for (MdiSubWindow *w : folderWindows){
-			if (w->inherits("Matrix"))
-				((Matrix *)w)->undoStack()->setClean();
+			if (w && w->undoStack())
+				w->undoStack()->setClean();
 		}
 		f = f->folderBelow();
 	}
@@ -360,8 +361,8 @@ void ProjectManager::open()
 				QFileInfo fi(fn);
 
 				if (d_app->projectname != "untitled"){
-					QFileInfo fi(d_app->projectname);
-					QString pn = fi.absoluteFilePath();
+					QFileInfo currentFi(d_app->projectname);
+					QString pn = currentFi.absoluteFilePath();
 					if (fn == pn){
 						QMessageBox::warning(d_app, tr("QtiPlot - File openning error"),
 								tr("The file: <b>%1</b> is the current file!").arg(fn));

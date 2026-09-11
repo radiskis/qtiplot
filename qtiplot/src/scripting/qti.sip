@@ -147,7 +147,7 @@ private:
 #include <QDateTime>
 #include <datetime.h> // python include
 #define CHECK_TABLE_COL(arg)\
-    int col;\
+    int col = -1;\
     if (PyLong_Check(arg)) {\
       col = (int)PyLong_AsLong(arg) - 1;\
 		if (col < 0 || col >= sipCpp->numCols()) {\
@@ -177,7 +177,7 @@ private:
 		PyErr_Format(PyExc_ValueError, "There's no row %d in table %s!", row+1, sipCpp->name().toUtf8().constData());\
 	}
 
-static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
+inline int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
   PyTypeObject* item_type = item->ob_type;
   if (item == Py_None) {
     table->clearCell(row, col);
@@ -291,7 +291,7 @@ static int setCellDataHelper(Table* table, int row, int col, PyObject* item) {
   return 0; // everything ok
 }
 
-static int cellDataHelper(Table* table, int row, int col, PyObject** item) {
+inline int cellDataHelper(Table* table, int row, int col, PyObject** item) {
   switch (table->columnType(col)) {
   case Table::Numeric:
     if (table->text(row, col).isEmpty())
@@ -1025,7 +1025,7 @@ Roles: Table.X, Table.Y, Table.Z, Table.xErr, Table.yErr, Table.Label, Table.Non
   	sipIsErr = 0;
   	CHECK_TABLE_COL(a0);
 
-  	int col2;
+  	int col2 = -1;
     if (PyLong_Check(a1)) {
       col2 = (int)PyLong_AsLong(a1) - 1;
 		if (col2 < 0 || col2 >= sipCpp->numCols()) {

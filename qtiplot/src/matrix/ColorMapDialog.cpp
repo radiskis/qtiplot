@@ -81,6 +81,9 @@ void ColorMapDialog::setMatrix(Matrix *m)
 
 void ColorMapDialog::apply()
 {
+	if (!d_matrix)
+		return;
+
 	d_matrix->undoStack()->push(new MatrixSetColorMapCommand(d_matrix, d_matrix->colorMapType(),
 						d_matrix->colorMap(), Matrix::Custom, editor->colorMap(), tr("Set Custom Palette")));
 	d_matrix->setColorMap(editor->colorMap());

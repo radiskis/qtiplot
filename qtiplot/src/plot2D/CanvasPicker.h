@@ -60,10 +60,7 @@ private:
 	 */
 	bool selectMarker(const QMouseEvent *e);
 
-	/**
-	 * \brief Return my parent as a Graph.
-	 */
-	Graph *plot(){return (Graph *)parent();};
+	Graph *plot();
 
 	QPoint startLinePoint, endLinePoint;
 

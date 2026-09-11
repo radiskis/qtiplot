@@ -520,6 +520,7 @@ private:
 	int selectedCol;
 	int d_numeric_precision;
 	double **d_saved_cells;
+	int d_saved_cols = 0;
 
 	QUndoStack *d_undo_stack;
 

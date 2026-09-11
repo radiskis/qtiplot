@@ -37,6 +37,7 @@
 #include "Graph.h"
 #include "MultiLayer.h"
 #include "Graph3D.h"
+#include "PolarGraph.h"
 #include "Note.h"
 #include "ScriptEdit.h"
 #include "ScriptWindow.h"
@@ -61,7 +62,6 @@
 void MenuBuilder::initPlot3DToolBar(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &Box = app->Box;
 	auto &Frame = app->Frame;
 	auto &None = app->None;
@@ -273,7 +273,6 @@ void MenuBuilder::initPlot3DToolBar(ApplicationWindow *app)
 void MenuBuilder::initToolBars(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAddColToTable = app->actionAddColToTable;
 	auto &actionAddEllipse = app->actionAddEllipse;
 	auto &actionAddErrorBars = app->actionAddErrorBars;
@@ -961,7 +960,6 @@ void MenuBuilder::initToolBars(ApplicationWindow *app)
 void MenuBuilder::initMainMenu(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAbout = app->actionAbout;
 	auto &actionAddEllipse = app->actionAddEllipse;
 	auto &actionAddErrorBars = app->actionAddErrorBars;
@@ -1253,7 +1251,6 @@ void MenuBuilder::initMainMenu(ApplicationWindow *app)
 void MenuBuilder::tableMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAddColToTable = app->actionAddColToTable;
 	auto &actionAdjustColumnWidth = app->actionAdjustColumnWidth;
 	auto &actionClearTable = app->actionClearTable;
@@ -1375,7 +1372,6 @@ void MenuBuilder::tableMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::plotDataMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionDragCurve = app->actionDragCurve;
 	auto &actionDrawPoints = app->actionDrawPoints;
 	auto &actionMagnify = app->actionMagnify;
@@ -1428,7 +1424,6 @@ void MenuBuilder::plotDataMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::plotMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAddZoomPlot = app->actionAddZoomPlot;
 	auto &actionBoxPlot = app->actionBoxPlot;
 	auto &actionCustomLayout = app->actionCustomLayout;
@@ -1588,7 +1583,7 @@ void MenuBuilder::scriptingMenuAboutToShow(ApplicationWindow *app)
     scriptingMenu->addAction(actionOpenQtDesignerUi);
 #endif
 
-	Note *note = (Note *)app->activeWindow(ApplicationWindow::NoteWindow);
+	Note *note = app->activeWindow<Note>();
     if (note){
 		scriptingMenu->addSeparator();
 
@@ -1636,7 +1631,6 @@ void MenuBuilder::scriptingMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAutoCorrelate = app->actionAutoCorrelate;
 	auto &actionBandBlockFilter = app->actionBandBlockFilter;
 	auto &actionBandPassFilter = app->actionBandPassFilter;
@@ -1710,7 +1704,7 @@ void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
         return;
     }
 
-	if (w->inherits("MultiLayer")){
+	if (qobject_cast<MultiLayer *>(w)){
         QMenu *translateMenu = analysisMenu->addMenu (app->tr("&Translate"));
         translateMenu->addAction(actionTranslateVert);
         translateMenu->addAction(actionTranslateHor);
@@ -1767,14 +1761,14 @@ void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
         multiPeakMenu->addAction(actionMultiPeakLorentz);
         analysisMenu->addSeparator();
         analysisMenu->addAction(actionShowFitDialog);
-	} else if (w->inherits("Matrix")){
+	} else if (qobject_cast<Matrix *>(w)){
 		actionIntegrate->setText(app->tr("&Integrate"));
         analysisMenu->addAction(actionIntegrate);
         analysisMenu->addSeparator();
         analysisMenu->addAction(actionFFT);
         analysisMenu->addAction(actionMatrixFFTDirect);
         analysisMenu->addAction(actionMatrixFFTInverse);
-	} else if (w->inherits("Table")){
+	} else if (qobject_cast<Table *>(w)){
 		QMenu *statsMenu = analysisMenu->addMenu (app->tr("Descriptive S&tatistics"));
 		statsMenu->addAction(actionShowColStatistics);
 		statsMenu->addAction(actionShowRowStatistics);
@@ -1793,11 +1787,14 @@ void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
 #endif
         analysisMenu->addSeparator();
 
-		bool columns = ((Table *)w)->selectedColumns().count() > 1;
+		Table *table = qobject_cast<Table *>(w);
+		bool columns = table ? table->selectedColumns().count() > 1 : false;
 		QString sortMenuText = columns ? "&" + app->tr("Sort Columns") : app->tr("Sort Colu&mn");
 		QMenu *sortMenu = analysisMenu->addMenu(sortMenuText);
-		sortMenu->addAction(QIcon(":/sort_ascending.png"), app->tr("&Ascending"), static_cast<Table *>(w), &Table::sortColAsc);
-		sortMenu->addAction(QIcon(":/sort_descending.png"), app->tr("&Descending"), static_cast<Table *>(w), &Table::sortColDesc);
+		if (table){
+			sortMenu->addAction(QIcon(":/sort_ascending.png"), app->tr("&Ascending"), table, &Table::sortColAsc);
+			sortMenu->addAction(QIcon(":/sort_descending.png"), app->tr("&Descending"), table, &Table::sortColDesc);
+		}
 		if (columns)
 			sortMenu->addAction(actionSortSelection);
 		analysisMenu->addMenu(sortMenu);
@@ -1833,7 +1830,6 @@ void MenuBuilder::analysisMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::matrixMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionConvertMatrixDirect = app->actionConvertMatrixDirect;
 	auto &actionConvertMatrixXYZ = app->actionConvertMatrixXYZ;
 	auto &actionConvertMatrixYXZ = app->actionConvertMatrixYXZ;
@@ -1915,7 +1911,7 @@ void MenuBuilder::matrixMenuAboutToShow(ApplicationWindow *app)
 	convertToTableMenu->addAction(actionConvertMatrixXYZ);
 	convertToTableMenu->addAction(actionConvertMatrixYXZ);
 
-	Matrix* m = (Matrix*)app->activeWindow(ApplicationWindow::MatrixWindow);
+	Matrix* m = app->activeWindow<Matrix>();
 	if (!m)
 		return;
 
@@ -1948,7 +1944,6 @@ void MenuBuilder::matrixMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::fileMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionAppendProject = app->actionAppendProject;
 	auto &actionCloseAllWindows = app->actionCloseAllWindows;
 	auto &actionCloseProject = app->actionCloseProject;
@@ -2043,20 +2038,20 @@ void MenuBuilder::fileMenuAboutToShow(ApplicationWindow *app)
 
 	MdiSubWindow *w = app->activeWindow();
 	if (w){
-		if (w->inherits("MultiLayer") || w->inherits("Graph3D") || w->inherits("PolarGraph")){
+		if (qobject_cast<MultiLayer *>(w) || qobject_cast<Graph3D *>(w) || qobject_cast<PolarGraph *>(w)){
 			fileMenu->addMenu (exportPlotMenu);
 			if (qobject_cast<MultiLayer*>(w))
 				exportPlotMenu->addAction(actionExportLayer);
 			exportPlotMenu->addAction(actionExportGraph);
 			exportPlotMenu->addAction(actionExportAllGraphs);
 			exportPlotMenu->addAction(actionPresentationODF);
-		} else if (w->inherits("Table") || w->inherits("Matrix")){
+		} else if (qobject_cast<Table *>(w) || qobject_cast<Matrix *>(w)){
 			QMenu *exportMenu = fileMenu->addMenu(app->tr("Export"));
 			exportMenu->addAction(actionShowExportASCIIDialog);
 			exportMenu->addAction(actionExportExcel);
 			exportMenu->addAction(actionExportOds);
 			exportMenu->addAction(actionExportPDF);
-			if (w->inherits("Matrix"))
+			if (qobject_cast<Matrix *>(w))
 				exportMenu->addAction(actionExportMatrix);
 		}
 	}
@@ -2076,7 +2071,6 @@ void MenuBuilder::fileMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::editMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 #ifdef HAVE_ALGLIB
 #endif
 #ifdef HAVE_TAMUANOVA
@@ -2095,7 +2089,6 @@ void MenuBuilder::editMenuAboutToShow(ApplicationWindow *app)
 void MenuBuilder::windowsMenuAboutToShow(ApplicationWindow *app)
 {
 	if (!app) return;
-	auto scriptEnv = app->scriptingEnv();
 	auto &actionCloseWindow = app->actionCloseWindow;
 	auto &actionCopyWindow = app->actionCopyWindow;
 	auto &actionFindWindow = app->actionFindWindow;

@@ -31,6 +31,7 @@
 #include <Graph.h>
 #include <MyParser.h>
 #include <ScaleEngine.h>
+#include <vector>
 
 #include <QMessageBox>
 
@@ -79,7 +80,7 @@ QString FunctionCurve::saveToString()
 	s += "<Range>" + QString::number(d_from,'g',15) + "\t" + QString::number(d_to,'g',15) + "</Range>\n";
 	s += "<Points>" + QString::number(dataSize()) + "</Points>\n";
 
-	ScaleEngine *sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
+	ScaleEngine *sc_engine = dynamic_cast<ScaleEngine *>(plot()->axisScaleEngine(xAxis()));
 	if (d_from > 0 && d_to > 0 && sc_engine &&
 		sc_engine->type() == ScaleTransformation::Log10)
 		s += "<Log10>1</Log10>\n";
@@ -182,19 +183,8 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
     if (!points)
         points = dataSize();
 
-	double *X = (double *)malloc(points*sizeof(double));
-	if (!X){
-		QMessageBox::critical(0, QObject::tr("QtiPlot - Memory Allocation Error"),
-		QObject::tr("Not enough memory, operation aborted!"));
-		return false;
-	}
-	double *Y = (double *)malloc(points*sizeof(double));
-	if (!Y){
-		QMessageBox::critical(0, QObject::tr("QtiPlot - Memory Allocation Error"),
-		QObject::tr("Not enough memory, operation aborted!"));
-		free(X);
-		return false;
-	}
+	std::vector<double> X(points);
+	std::vector<double> Y(points);
 
 	double step = (d_to - d_from)/(double)(points - 1.0);
 	if (d_function_type == Normal){
@@ -246,7 +236,6 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 					if (!wellDefinedFunction){
 						QMessageBox::critical(0, QObject::tr("QtiPlot"),
 						QObject::tr("The function %1 is not defined in the specified interval!").arg(d_formulas[0]));
-						free(X); free(Y);
 						return false;
 					}
 				} else {
@@ -255,9 +244,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 				}
 			} catch (MyParser::Pole) {}
 
-			ScaleEngine *sc_engine = 0;
-			if (plot())
-				sc_engine = (ScaleEngine *)plot()->axisScaleEngine(xAxis());
+			ScaleEngine *sc_engine = plot() ? dynamic_cast<ScaleEngine *>(plot()->axisScaleEngine(xAxis())) : nullptr;
 
 			if (xLog10Scale || (d_from > 0 && d_to > 0 && sc_engine &&
 				sc_engine->type() == ScaleTransformation::Log10)){
@@ -318,10 +305,9 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 	}
 
 	if (orientation() == Qt::Vertical)
-		setSamples(X, Y, points);
+		setSamples(X.data(), Y.data(), points);
 	else
-		setSamples(Y, X, points);
-	free(X); free(Y);
+		setSamples(Y.data(), X.data(), points);
 	return true;
 }
 

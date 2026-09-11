@@ -43,9 +43,13 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     : SyntaxHighlighter(parent)
 {
     HighlightingRule rule;
-	ApplicationWindow *app = parent->scriptingEnv()->application();
+	ScriptingEnv *env = parent ? parent->scriptingEnv() : nullptr;
+	ApplicationWindow *app = env ? env->application() : nullptr;
 
-	keywordFormat.setForeground(app->d_keyword_highlight_color);
+	QColor keywordColor = app ? app->d_keyword_highlight_color : Qt::black;
+	QColor classColor = app ? app->d_class_highlight_color : Qt::darkMagenta;
+
+	keywordFormat.setForeground(keywordColor);
     keywordFormat.setFontWeight(QFont::Bold);
 
 	for (QString pattern : d_keywords) {
@@ -55,7 +59,7 @@ PythonSyntaxHighlighter::PythonSyntaxHighlighter(ScriptEdit *parent)
     }
 
     classFormat.setFontWeight(QFont::Bold);
-	classFormat.setForeground(app->d_class_highlight_color);
+	classFormat.setForeground(classColor);
     rule.pattern = QRegularExpression("\\bQ[A-Za-z]+\\b");
     rule.format = classFormat;
 	pythonHighlightingRules.append(rule);
@@ -118,29 +122,35 @@ void PythonSyntaxHighlighter::highlightBlock(const QString &text)
 	}
 }
 
-SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(parent->document())
+SyntaxHighlighter::SyntaxHighlighter(ScriptEdit * parent) : QSyntaxHighlighter(parent ? parent->document() : nullptr)
 {
 	HighlightingRule rule;
-	ApplicationWindow *app = parent->scriptingEnv()->application();
+	ScriptingEnv *env = parent ? parent->scriptingEnv() : nullptr;
+	ApplicationWindow *app = env ? env->application() : nullptr;
+
+	QColor functionColor = app ? app->d_function_highlight_color : Qt::darkBlue;
+	QColor numericColor = app ? app->d_numeric_highlight_color : Qt::darkGreen;
+	QColor quotationColor = app ? app->d_quotation_highlight_color : Qt::darkRed;
+	QColor commentColor = app ? app->d_comment_highlight_color : Qt::gray;
 
 	functionFormat.setFontItalic(true);
-	functionFormat.setForeground(app->d_function_highlight_color);
+	functionFormat.setForeground(functionColor);
 	rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
 	rule.format = functionFormat;
 	highlightingRules.append(rule);
 
-	numericFormat.setForeground(app->d_numeric_highlight_color);
+	numericFormat.setForeground(numericColor);
 	rule.pattern = QRegularExpression("\\b\\d+[eE.,]*\\d*\\b");
 	rule.format = numericFormat;
 	highlightingRules.append(rule);
 
-	quotationFormat.setForeground(app->d_quotation_highlight_color);
+	quotationFormat.setForeground(quotationColor);
 	rule.pattern = QRegularExpression("\".*\"");
 	// rule.pattern.setMinimal(true); // Default in QRegularExpression or used with non-greedy qualifiers
 	rule.format = quotationFormat;
 	highlightingRules.append(rule);
 
-	commentFormat.setForeground(app->d_comment_highlight_color);
+	commentFormat.setForeground(commentColor);
 	rule.pattern = QRegularExpression("#[^\n]*");
 	rule.format = commentFormat;
 	highlightingRules.append(rule);

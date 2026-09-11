@@ -82,15 +82,11 @@ public:
 	   */
 	MdiSubWindow *window(const QString &name, const char *cls="MdiSubWindow", bool recursive=false);
 	//! Return table named name or nullptr
-	Table *table(const QString &name, bool recursive=false) { return (Table*) window(name, "Table", recursive); }
-	//! Return matrix named name or nullptr
-	Matrix *matrix(const QString &name, bool recursive=false) { return (Matrix*) window(name, "Matrix", recursive); }
-	//! Return graph named name or nullptr
-	MultiLayer *graph(const QString &name, bool recursive=false) { return (MultiLayer*) window(name, "MultiLayer", recursive); }
-	//! Return note named name or nullptr
-	Note *note(const QString &name, bool recursive=false) { return (Note*) window(name, "Note", recursive); }
-	//! Return plot 3D named name or nullptr
-	Graph3D *plot3D(const QString &name, bool recursive=false) { return (Graph3D*) window(name, "Graph3D", recursive); }
+	Table *table(const QString &name, bool recursive=false);
+	Matrix *matrix(const QString &name, bool recursive=false);
+	MultiLayer *graph(const QString &name, bool recursive=false);
+	Note *note(const QString &name, bool recursive=false);
+	Graph3D *plot3D(const QString &name, bool recursive=false);
 
 	//! The complete path of the folder in the project tree
 	QString path();

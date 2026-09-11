@@ -41,6 +41,8 @@
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_rng.h>
 
+#include "GslRAII.h"
+
 //! TODO
 class muParserScripting: public ScriptingEnv
 {
@@ -84,23 +86,19 @@ class muParserScripting: public ScriptingEnv
 
   private:
 	static double rnd(double x){
-		gsl_rng_default_seed = (unsigned int)x*time(nullptr);
-		const gsl_rng_type * T = gsl_rng_default;
-		gsl_rng * r = gsl_rng_alloc (T);
-		double u = gsl_rng_uniform (r);
-		gsl_rng_free (r);
-		return u;
+		static thread_local GslRAII::UniqueRng r(gsl_rng_alloc(gsl_rng_default));
+		if (!r)
+			return 0.0;
+		gsl_rng_set(r.get(), (unsigned long)((unsigned int)x * time(nullptr)));
+		return gsl_rng_uniform(r.get());
 	}
 
 	static double normal(double x){
-		const gsl_rng_type * T = gsl_rng_default;
-		gsl_rng * r = gsl_rng_alloc (T);
+		static thread_local GslRAII::UniqueRng r(gsl_rng_alloc(gsl_rng_default));
 		if (!r)
 			return 0.0;
-		gsl_rng_set(r, (unsigned int)x*time(nullptr));
-		double u = gsl_ran_ugaussian(r);
-		gsl_rng_free (r);
-		return u;
+		gsl_rng_set(r.get(), (unsigned long)((unsigned int)x * time(nullptr)));
+		return gsl_ran_ugaussian(r.get());
 	}
 
 	static double mod(double x, double y){ return fmod(x,y);};

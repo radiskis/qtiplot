@@ -74,7 +74,7 @@ QRectF PlotCurve::boundingRect() const
 	double dw = percent*fabs(r.right() - r.left());
 	double left = r.left() - dw;
 	if (left <= 0.0){
-		ScaleEngine *sc_engine = (ScaleEngine *)this->plot()->axisScaleEngine(xAxis());
+		ScaleEngine *sc_engine = static_cast<ScaleEngine *>(this->plot()->axisScaleEngine(xAxis()));
 		if (sc_engine && (sc_engine->type() == ScaleTransformation::Log10 ||
 			sc_engine->type() == ScaleTransformation::Log2 ||
 			sc_engine->type() == ScaleTransformation::Ln))
@@ -89,7 +89,7 @@ QRectF PlotCurve::boundingRect() const
 
 	double top = r.top() - dh;
 	if (top <= 0.0){
-		ScaleEngine *sc_engine = (ScaleEngine *)this->plot()->axisScaleEngine(yAxis());
+		ScaleEngine *sc_engine = static_cast<ScaleEngine *>(this->plot()->axisScaleEngine(yAxis()));
 		if (sc_engine && (sc_engine->type() == ScaleTransformation::Log10 ||
 			sc_engine->type() == ScaleTransformation::Log2 ||
 			sc_engine->type() == ScaleTransformation::Ln))
@@ -106,7 +106,7 @@ QString PlotCurve::saveCurveSymbolImage()
 	if (!sym || sym->style() != QwtSymbol::Pixmap)
 		return QString();
 
-	ImageSymbol *is = (ImageSymbol *)(sym);
+	const ImageSymbol *is = dynamic_cast<const ImageSymbol *>(sym);
 	if (!is)
 		return QString();
 
@@ -537,7 +537,7 @@ void DataCurve::setDataSource(Table *yt, int ycol, Table *xt, int xcol)
 
 void DataCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const
 {
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (!g)
 		return;
 
@@ -557,7 +557,7 @@ void DataCurve::drawSeries(QPainter *p, const QwtScaleMap &xMap, const QwtScaleM
 
 void DataCurve::loadData()
 {
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (!g)
 		return;
 
@@ -639,7 +639,7 @@ void DataCurve::loadData()
 	g->applySpeedMode(this);
 
 	if (!d_labels_list.isEmpty()){
-		((Graph*)plot())->updatePlot();
+		g->updatePlot();
 		loadLabels();
 	}
 }
@@ -665,7 +665,7 @@ void DataCurve::clearErrorBars()
 
 void DataCurve::remove()
 {
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (!g)
 		return;
 
@@ -708,10 +708,20 @@ int DataCurve::tableRow(int point)
 	if (xcol < 0 || ycol < 0)
 		return -1;
 
+	int candidate_row = d_start_row + point;
 	int xColType = d_table->columnType(xcol);
 	if (xColType == Table::Date){
 		QString format = d_table->columnFormat(xcol);
 		QDateTime date0 = QDateTime::fromString (d_table->text(d_start_row, xcol), format);
+		if (candidate_row >= d_start_row && candidate_row <= d_end_row){
+			QDateTime d = QDateTime::fromString(d_table->text(candidate_row, xcol), format);
+			if (d.isValid()){
+				if (d_type == Graph::HorizontalBars && date0.secsTo(d) == y(point) && d_table->cell(candidate_row, ycol) == x(point))
+					return candidate_row;
+				if (date0.secsTo(d) == x(point) && d_table->cell(candidate_row, ycol) == y(point))
+					return candidate_row;
+			}
+		}
 		for (int i = d_start_row; i <= d_end_row; i++ ){
 			QDateTime d = QDateTime::fromString (d_table->text(i, xcol), format);
 			if (d.isValid()){
@@ -724,6 +734,15 @@ int DataCurve::tableRow(int point)
 	} else if (xColType == Table::Time){
 		QString format = d_table->columnFormat(xcol);
 		QTime t0 = QTime::fromString (d_table->text(d_start_row, xcol), format);
+		if (candidate_row >= d_start_row && candidate_row <= d_end_row){
+			QTime t = QTime::fromString(d_table->text(candidate_row, xcol), format);
+			if (t.isValid()){
+				if (d_type == Graph::HorizontalBars && t0.msecsTo(t) == y(point) && d_table->cell(candidate_row, ycol) == x(point))
+					return candidate_row;
+				if (t0.msecsTo(t) == x(point) && d_table->cell(candidate_row, ycol) == y(point))
+					return candidate_row;
+			}
+		}
 		for (int i = d_start_row; i <= d_end_row; i++ ){
 			QTime t = QTime::fromString (d_table->text(i, xcol), format);
 			if (t.isValid()){
@@ -735,6 +754,8 @@ int DataCurve::tableRow(int point)
 		}
 	} else if (xColType == Table::Text){
 		double y_val = y(point);
+		if (candidate_row >= d_start_row && candidate_row <= d_end_row && d_table->cell(candidate_row, ycol) == y_val)
+			return candidate_row;
 		for (int i = d_start_row; i <= d_end_row; i++ ){
 			if (d_table->cell(i, ycol) == y_val)
 				return i;
@@ -743,6 +764,10 @@ int DataCurve::tableRow(int point)
 
 	double x_val = x(point);
 	double y_val = y(point);
+	if (candidate_row >= d_start_row && candidate_row <= d_end_row){
+		if (d_table->cell(candidate_row, xcol) == x_val && d_table->cell(candidate_row, ycol) == y_val)
+			return candidate_row;
+	}
 	for (int i = d_start_row; i <= d_end_row; i++ ){
 		if (d_table->cell(i, xcol) == x_val && d_table->cell(i, ycol) == y_val)
 			return i;
@@ -1013,10 +1038,10 @@ QString DataCurve::saveToString()
     if (d_labels_y_offset != 0.0)
         s += "\t<yoffset>" + QString::number(d_labels_y_offset) + "</yoffset>\n";
 
-	if (type() == Graph::Box){
-		s += "\t<boxLabels>" + QString::number(((BoxCurve *)this)->hasBoxLabels()) + "</boxLabels>\n";
-		s += "\t<whiskerLabels>" + QString::number(((BoxCurve *)this)->hasWhiskerLabels()) + "</whiskerLabels>\n";
-		s += "\t<display>" + QString::number(((BoxCurve *)this)->labelsDisplayPolicy()) + "</display>\n";
+	if (const BoxCurve *bc = dynamic_cast<const BoxCurve *>(this)){
+		s += "\t<boxLabels>" + QString::number(bc->hasBoxLabels()) + "</boxLabels>\n";
+		s += "\t<whiskerLabels>" + QString::number(bc->hasWhiskerLabels()) + "</whiskerLabels>\n";
+		s += "\t<display>" + QString::number(bc->labelsDisplayPolicy()) + "</display>\n";
 	}
 
 	s += "</CurveLabels>\n";
@@ -1061,12 +1086,16 @@ void DataCurve::restoreLabels(const QStringList& lst)
             xoffset = s.remove("<xoffset>").remove("</xoffset>").toInt();
         else if (s.contains("<yoffset>"))
             yoffset = s.remove("<yoffset>").remove("</yoffset>").toInt();
-		else if (s.contains("<boxLabels>"))
-			((BoxCurve *)this)->showBoxLabels(s.remove("<boxLabels>").remove("</boxLabels>").toInt());
-		else if (s.contains("<whiskerLabels>"))
-			((BoxCurve *)this)->showWhiskerLabels(s.remove("<whiskerLabels>").remove("</whiskerLabels>").toInt());
-		else if (s.contains("<display>"))
-			((BoxCurve *)this)->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)s.remove("<display>").remove("</display>").toInt());
+		else if (s.contains("<boxLabels>")){
+			if (BoxCurve *bc = dynamic_cast<BoxCurve *>(this))
+				bc->showBoxLabels(s.remove("<boxLabels>").remove("</boxLabels>").toInt());
+		} else if (s.contains("<whiskerLabels>")){
+			if (BoxCurve *bc = dynamic_cast<BoxCurve *>(this))
+				bc->showWhiskerLabels(s.remove("<whiskerLabels>").remove("</whiskerLabels>").toInt());
+		} else if (s.contains("<display>")){
+			if (BoxCurve *bc = dynamic_cast<BoxCurve *>(this))
+				bc->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)s.remove("<display>").remove("</display>").toInt());
+		}
     }
     setLabelsOffset(xoffset, yoffset);
     setLabelsColumnName(labelsColumn);
@@ -1077,8 +1106,8 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 	if (!validCurveType())
 		return false;
 
-    QwtPlot *d_plot = plot();
-    if (!d_plot || ((Graph *)d_plot)->hasActiveTool())
+    Graph *d_plot = qobject_cast<Graph *>(plot());
+    if (!d_plot || d_plot->hasActiveTool())
         return false;
 
     bool selected = false;
@@ -1133,13 +1162,16 @@ void DataCurve::setLabelsSelected(bool on)
         m->setLabel(t);
     }
     if (on){
-        Graph *g = (Graph *)plot();
-        g->selectTitle(false);
-        g->deselectMarker();
-        g->notifyFontChange(d_labels_font);
-		g->notifyColorChange(d_labels_color);
+        Graph *g = qobject_cast<Graph *>(plot());
+        if (g){
+            g->selectTitle(false);
+            g->deselectMarker();
+            g->notifyFontChange(d_labels_font);
+		    g->notifyColorChange(d_labels_color);
+        }
     }
-    plot()->replot();
+    if (plot())
+        plot()->replot();
 }
 
 bool DataCurve::validCurveType()
@@ -1157,7 +1189,7 @@ void DataCurve::moveLabels(const QPoint& pos)
 	if (!validCurveType() || !d_selected_label || d_labels_list.isEmpty())
 		return;
 
-    QwtPlot *d_plot = plot();
+    Graph *d_plot = qobject_cast<Graph *>(plot());
     if (!d_plot)
         return;
 
@@ -1172,7 +1204,7 @@ void DataCurve::moveLabels(const QPoint& pos)
 	updateLabelsPosition();
 	d_plot->replot();
 
-    ((Graph *)d_plot->parent())->notifyChanges();
+    d_plot->notifyChanges();
 
 	d_click_pos_x = d_plot->invTransform(xAxis(), pos.x());
 	d_click_pos_y = d_plot->invTransform(yAxis(), pos.y());

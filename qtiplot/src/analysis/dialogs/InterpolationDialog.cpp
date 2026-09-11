@@ -70,7 +70,7 @@ InterpolationDialog::InterpolationDialog( QWidget* parent, Qt::WindowFlags fl )
 	boxPoints->setValue(1000);
 	gl1->addWidget(boxPoints, 2, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 
 	gl1->addWidget(new QLabel(tr("From Xmin")), 3, 0);
 	boxStart = new DoubleSpinBox();
@@ -130,7 +130,7 @@ void InterpolationDialog::interpolate()
 		return;
 	}
 
-	Interpolation *i = new Interpolation((ApplicationWindow *)parent(), (PlotCurve *)graph->curve(curveName), from, to, boxMethod->currentIndex());
+	Interpolation *i = new Interpolation(qobject_cast<ApplicationWindow *>(parent()), graph->curve(curveName), from, to, boxMethod->currentIndex());
 	i->setOutputPoints(boxPoints->value());
 	i->setColor(boxColor->color());
 	i->run();
@@ -156,11 +156,11 @@ void InterpolationDialog::setGraph(Graph *g)
 
 void InterpolationDialog::activateCurve(const QString& s)
 {
-	PlotCurve *c = (PlotCurve *)graph->curve(s);
+	PlotCurve *c = graph->curve(s);
 	if (!c)
 		return;
 
-    ApplicationWindow *app = (ApplicationWindow *)parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
     if(!app)
         return;
 
@@ -172,7 +172,7 @@ void InterpolationDialog::activateCurve(const QString& s)
 
 void InterpolationDialog::changeDataRange()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if(!app)
 		return;
 

@@ -148,7 +148,7 @@ void QwtBarCurve::drawSeries(QPainter *painter,
 QList <QwtBarCurve *> QwtBarCurve::stackedCurvesList() const
 {
 	QList <QwtBarCurve *> stack;
-	Graph *g = (Graph *)plot();
+	Graph *g = qobject_cast<Graph *>(plot());
 	if (!g)
 		return stack;
 
@@ -160,9 +160,9 @@ QList <QwtBarCurve *> QwtBarCurve::stackedCurvesList() const
 		if (c->type() != Graph::VerticalBars && c->type() != Graph::HorizontalBars)
 			continue;
 
-		QwtBarCurve *bc = (QwtBarCurve *)c;
-		if (bc->isStacked() && bc->orientation() == bar_style &&
-			g->curveIndex((QwtPlotItem *)bc) < g->curveIndex((QwtPlotItem *)this))
+		QwtBarCurve *bc = dynamic_cast<QwtBarCurve *>(c);
+		if (bc && bc->isStacked() && bc->orientation() == bar_style &&
+			g->curveIndex(bc) < g->curveIndex(this))
 			stack << bc;
 	}
 	return stack;

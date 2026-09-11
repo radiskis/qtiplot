@@ -75,15 +75,16 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	gl1->addWidget(boxMethod, 1, 1);
 	gl1->setRowStretch(2, 1);
 
-	ApplicationWindow *app = (ApplicationWindow *)parent;
-	QLocale locale = app->locale();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	QLocale locale = app ? app->locale() : QLocale();
+	int prec = app ? app->d_decimal_digits : 6;
 
 	gbRadius = new QGroupBox(tr("Parameters"));
 	QGridLayout *glRadius = new QGridLayout(gbRadius);
 
 	glRadius->addWidget(new QLabel(tr("Search Radius")), 0, 0);
 	boxRadius = new DoubleSpinBox();
-	boxRadius->setDecimals(app->d_decimal_digits);
+	boxRadius->setDecimals(prec);
 	boxRadius->setLocale(locale);
 	boxRadius->setValue(2.0);
 	boxRadius->setMinimum(0.1);
@@ -134,25 +135,25 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 
 	gl3->addWidget(new QLabel(tr("X Minimum")), 0, 0);
 	boxXStart = new DoubleSpinBox();
-	boxXStart->setDecimals(app->d_decimal_digits);
+	boxXStart->setDecimals(prec);
 	boxXStart->setLocale(locale);
 	gl3->addWidget(boxXStart, 0, 1);
 
 	gl3->addWidget(new QLabel(tr("X Maximum")), 1, 0);
 	boxXEnd = new DoubleSpinBox();
-	boxXEnd->setDecimals(app->d_decimal_digits);
+	boxXEnd->setDecimals(prec);
 	boxXEnd->setLocale(locale);
 	gl3->addWidget(boxXEnd, 1, 1);
 
 	gl3->addWidget(new QLabel(tr("Y Minimum")), 2, 0);
 	boxYStart = new DoubleSpinBox();
-	boxYStart->setDecimals(app->d_decimal_digits);
+	boxYStart->setDecimals(prec);
 	boxYStart->setLocale(locale);
 	gl3->addWidget(boxYStart, 2, 1);
 
 	gl3->addWidget(new QLabel(tr("Y Maximum")), 3, 0);
 	boxYEnd = new DoubleSpinBox();
-	boxYEnd->setDecimals(app->d_decimal_digits);
+	boxYEnd->setDecimals(prec);
 	boxYEnd->setLocale(locale);
 	gl3->addWidget(boxYEnd, 3, 1);
 	gl3->setRowStretch(4, 1);
@@ -197,13 +198,15 @@ GriddingDialog::GriddingDialog(Table* t, const QString& colName, int nodes, QWid
 	sp->setScale(1, 1, 1);
 	sp->setShift(0.15, 0, 0);
 	sp->setZoom(0.9);
-	sp->setOrtho(app->d_3D_orthogonal);
-	sp->setSmoothMesh(app->d_3D_smooth_mesh);
-	sp->setLocale(app->locale());
+	if (app) {
+		sp->setOrtho(app->d_3D_orthogonal);
+		sp->setSmoothMesh(app->d_3D_smooth_mesh);
+		sp->setLocale(app->locale());
+		sp->coordinates()->setNumberFont(app->d_3D_numbers_font);
+		for (int i = 0; i < 12; i++)
+			sp->coordinates()->axes[i].setLabelFont(app->d_3D_axes_font);
+	}
 	sp->setCoordinateStyle(FRAME);
-	sp->coordinates()->setNumberFont(app->d_3D_numbers_font);
-	for (int i = 0; i < 12; i++)
-		sp->coordinates()->axes[i].setLabelFont(app->d_3D_axes_font);
 
 	resize(QSize(600, 400));
 
@@ -464,7 +467,12 @@ void GriddingDialog::preview()
 	alglib::real_1d_array p;
 	p.setlength(2);
 
-	double **data_matrix = Matrix::allocateMatrixData(cols, rows);
+	DoubleMatrixBuffer data_matrix(cols, rows);
+	if (!data_matrix){
+		QApplication::restoreOverrideCursor();
+		return;
+	}
+
 	for (int i = 0; i < rows; i++){
 		p(1) = ymin + i*ystep;
 		for (int j = 0; j < cols; j++){
@@ -474,9 +482,8 @@ void GriddingDialog::preview()
 	}
 
 	sp->makeCurrent();
-	sp->loadFromData(data_matrix, cols, rows, xmin, xmax, ymin, ymax);
+	sp->loadFromData(data_matrix.data(), cols, rows, xmin, xmax, ymin, ymax);
 	resetAxesLabels();
-	Matrix::freeMatrixData(data_matrix, cols);
 
 	QApplication::restoreOverrideCursor();
 }

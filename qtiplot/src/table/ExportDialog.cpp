@@ -30,6 +30,7 @@
 #include "ApplicationWindow.h"
 #include <ExportManager.h>
 #include <MdiSubWindow.h>
+#include <Table.h>
 #include <Matrix.h>
 
 #include <QLayout>
@@ -50,7 +51,7 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 	setAcceptMode(QFileDialog::AcceptSave);
 
 	initAdvancedOptions();
-	setExtensionWidget((QWidget *)d_advanced_options);
+	setExtensionWidget(d_advanced_options);
 
 	setFileTypeFilters();
 	setFileMode(QFileDialog::AnyFile);
@@ -62,13 +63,17 @@ ExportDialog::ExportDialog(MdiSubWindow *window, QWidget * parent, bool extended
 	connect(this, &QFileDialog::filterSelected,
 			this, &ExportDialog::updateAdvancedOptions);
 
-	selectNameFilter(((ApplicationWindow *)parent)->d_export_ASCII_file_filter);
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
+	if (app)
+		selectNameFilter(app->d_export_ASCII_file_filter);
 	updateAdvancedOptions(selectedNameFilter());
 }
 
 void ExportDialog::initAdvancedOptions()
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	if (!app)
+		return;
 	d_advanced_options = new QGroupBox();
 
 	QGridLayout *gl1 = new QGridLayout();
@@ -114,11 +119,11 @@ void ExportDialog::initAdvancedOptions()
 
 	boxNames = new QCheckBox(tr( "Include Column &Names" ));
     boxNames->setChecked( app->d_export_col_names );
-	boxNames->setVisible(d_window && d_window->inherits("Table"));
+	boxNames->setVisible(qobject_cast<Table *>(d_window) != nullptr);
 
 	boxComments = new QCheckBox(tr( "Include Column Co&mments" ));
     boxComments->setChecked( app->d_export_col_comment );
-	boxComments->setVisible(d_window && d_window->inherits("Table"));
+	boxComments->setVisible(qobject_cast<Table *>(d_window) != nullptr);
 
     boxSelection = new QCheckBox(tr( "Export &Selection" ));
     boxSelection->setChecked( app->d_export_table_selection );
@@ -148,7 +153,7 @@ void ExportDialog::help()
 {
 	QString s = tr("The column separator can be customized. The following special codes can be used:\n\\t for a TAB character \n\\s for a SPACE");
 	s += "\n"+tr("The separator must not contain the following characters: 0-9eE.+-");
-	QMessageBox::about((ApplicationWindow *)parent(), tr("QtiPlot - Help"), s);
+	QMessageBox::about(qobject_cast<ApplicationWindow *>(parent()), tr("QtiPlot - Help"), s);
 }
 
 void ExportDialog::enableTableName(bool ok)
@@ -191,7 +196,7 @@ void ExportDialog::setFileTypeFilters()
 
 void ExportDialog::accept()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
 		return;
 
@@ -237,10 +242,10 @@ void ExportDialog::accept()
 		if (!w)
 			return;
 
-		if (w->inherits("Table"))
-			((Table *)w)->exportASCII(file_name, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
-		else if (qobject_cast<Matrix *>(w))
-			((Matrix *)w)->exportASCII(file_name, sep, boxSelection->isChecked());
+		if (Table *t = qobject_cast<Table *>(w))
+			t->exportASCII(file_name, sep, boxNames->isChecked(), boxComments->isChecked(), boxSelection->isChecked());
+		else if (Matrix *m = qobject_cast<Matrix *>(w))
+			m->exportASCII(file_name, sep, boxSelection->isChecked());
 	}
 
 	close();
@@ -272,7 +277,7 @@ void ExportDialog::setColumnSeparator(const QString& sep)
 
 void ExportDialog::closeEvent(QCloseEvent* e)
 {
-	ApplicationWindow *app = (ApplicationWindow *)this->parent();
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (app){
 		app->d_export_col_names = boxNames->isChecked();
 		app->d_export_table_selection = boxSelection->isChecked();
@@ -291,7 +296,7 @@ void ExportDialog::closeEvent(QCloseEvent* e)
 
 void ExportDialog::updateOptions(const QString & name)
 {
-    ApplicationWindow *app = (ApplicationWindow *)this->parent();
+    ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
         return;
 
@@ -299,6 +304,7 @@ void ExportDialog::updateOptions(const QString & name)
     if (!w)
 		return;
 
-    boxComments->setVisible(w->inherits("Table"));
-    boxNames->setVisible(w->inherits("Table"));
+    bool isTable = qobject_cast<Table *>(w) != nullptr;
+    boxComments->setVisible(isTable);
+    boxNames->setVisible(isTable);
 }

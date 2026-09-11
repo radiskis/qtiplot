@@ -330,7 +330,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		QString s = list[j];
 		if (s.contains ("ggeometry")){
 			QStringList fList = s.split("\t");
-			ag = (Graph*)plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
+			ag = plot->addLayer(fList[1].toInt(), fList[2].toInt(), fList[3].toInt(), fList[4].toInt());
 			ag->blockSignals(true);
 			if (app)
 				ag->setAxisTitlePolicy(app->d_graph_axis_labeling);
@@ -514,7 +514,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			Table *xt = app->table(curve[1]);
 			PlotCurve *c = nullptr;
 			if (xt && w && xt != w){
-				c = (PlotCurve *)ag->insertCurve(xt, curve[1], w, curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
+				c = ag->insertCurve(xt, curve[1], w, curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				ag->updateCurveLayout(c, &cl);
 				if (c && c->rtti() == QwtPlotItem::Rtti_PlotCurve){
 					c->setAxes(curve[size - 5].toInt(), curve[size - 4].toInt());
@@ -536,7 +536,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 						endRow = curve[size - 2].toInt();
 					}
 
-					c = (PlotCurve *)ag->plotVectors(w, colsList, plotType, startRow, endRow);
+					c = ag->plotVectors(w, colsList, plotType, startRow, endRow);
 
 					if (fileVersion <= 77){
 						int temp_index = app->convertOldToNewColorIndex(curve[15].toInt());
@@ -551,23 +551,25 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 									curve[18].toInt(), curve[19].toInt(), curve[22].toInt());
 					}
 				} else if (plotType == Graph::Box)
-					c = (PlotCurve *)ag->openBoxDiagram(w, curve, fileVersion);
+					c = ag->openBoxDiagram(w, curve, fileVersion);
 				else {
 					if (fileVersion < 72)
-						c = (PlotCurve *)ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
+						c = ag->insertCurve(w, curve[1].toInt(), curve[2], plotType);
 					else if (fileVersion < 90)
-						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType);
+						c = ag->insertCurve(w, curve[1], curve[2], plotType);
 					else
-						c = (PlotCurve *)ag->insertCurve(w, curve[1], curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
+						c = ag->insertCurve(w, curve[1], curve[2], plotType, curve[size - 3].toInt(), curve[size - 2].toInt());
 				}
 
 				if (plotType == Graph::Histogram){
-					QwtHistogram *h = (QwtHistogram *)ag->curve(curveID);
-					if (fileVersion <= 76)
-						h->setBinning(curve[16].toInt(),curve[17].toDouble(),curve[18].toDouble(),curve[19].toDouble());
-					else
-						h->setBinning(curve[17].toInt(),curve[18].toDouble(),curve[19].toDouble(),curve[20].toDouble());
-					h->loadData();
+					QwtHistogram *h = dynamic_cast<QwtHistogram *>(ag->curve(curveID));
+					if (h){
+						if (fileVersion <= 76)
+							h->setBinning(curve[16].toInt(),curve[17].toDouble(),curve[18].toDouble(),curve[19].toDouble());
+						else
+							h->setBinning(curve[17].toInt(),curve[18].toDouble(),curve[19].toDouble(),curve[20].toDouble());
+						h->loadData();
+					}
 				}
 
 				if (plotType == Graph::VerticalBars || plotType == Graph::HorizontalBars || plotType == Graph::Histogram){
@@ -602,11 +604,11 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			lst.pop_back();
 			ag->restoreCurveLabels(curveID - 1, lst);
 		} else if (s.contains("<SkipPoints>")){
-			PlotCurve *c = (PlotCurve *)ag->curve(curveID - 1);
+			PlotCurve *c = ag->curve(curveID - 1);
 			if (c)
 				c->setSkipSymbolsCount(s.remove("<SkipPoints>").remove("</SkipPoints>").toInt());
 		} else if (s.contains("<StackWhiteOut>")){
-			QwtBarCurve *b = (QwtBarCurve *)ag->curve(curveID - 1);
+			QwtBarCurve *b = dynamic_cast<QwtBarCurve *>(ag->curve(curveID - 1));
 			if (b)
 				b->setStacked();
 		} else if (s == "<Function>"){//version 0.9.5
@@ -648,20 +650,19 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			else
 				cl.penWidth = cl.lWidth;
 
-			PlotCurve *c = (PlotCurve *)ag->insertFunctionCurve(curve[1], curve[2].toInt(), fileVersion);
+			PlotCurve *c = ag->insertFunctionCurve(curve[1], curve[2].toInt(), fileVersion);
 			c->setPlotStyle(curve[5].toInt());
 			ag->updateCurveLayout(c, &cl);
 			if (fileVersion >= 88){
-				QwtPlotCurve *c = ag->curve(curveID);
-				if (c){
+				QwtPlotCurve *fc = ag->curve(curveID);
+				if (fc){
                     if(current_index + 1 < curve.size())
-                        c->setAxes(curve[current_index].toInt(), curve[current_index+1].toInt());
+                        fc->setAxes(curve[current_index].toInt(), curve[current_index+1].toInt());
 					if (fileVersion >= 90 && current_index+2 < curve.size())
-						c->setVisible(curve.last().toInt());
+						fc->setVisible(curve.last().toInt());
                     else
-                        c->setVisible(true);
+                        fc->setVisible(true);
 				}
-
 			}
 			curveID++;
 		} else if (s.contains ("ErrorBars")){
@@ -852,7 +853,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList lst = s.split("\t");
 			lst.removeFirst();
 			for (int i = 0; i < QwtPlot::axisCnt; i++){
-				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw (i);
+				ScaleDraw *sd = ag->axisScaleDraw (i);
 				if (sd && lst.count() > i)
 					sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)lst[i].toInt());
 			}
@@ -864,7 +865,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 				QString prefix = lst[i];
 				if (prefix.isEmpty())
 					continue;
-				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw(i);
+				ScaleDraw *sd = ag->axisScaleDraw(i);
 				if (sd){
 					sd->setPrefix(prefix);
 					ag->axisWidget(i)->setScaleDraw(new ScaleDraw(ag, sd));
@@ -874,12 +875,12 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 			QStringList lst = s.split("\t");
 			lst.removeFirst();
 			for (int i = 0; i < QwtPlot::axisCnt && i < lst.size(); i++){
-				QString s = lst[i];
-				if (s.isEmpty())
+				QString suffix = lst[i];
+				if (suffix.isEmpty())
 					continue;
-				ScaleDraw *sd = (ScaleDraw *)ag->axisScaleDraw(i);
+				ScaleDraw *sd = ag->axisScaleDraw(i);
 				if (sd){
-					sd->setSuffix(s);
+					sd->setSuffix(suffix);
 					ag->axisWidget(i)->setScaleDraw(new ScaleDraw(ag, sd));
 				}
 			}
@@ -890,10 +891,10 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}
 		else if (s.contains ("CanvasBackground"))
 		{
-			QStringList list = s.split("\t");
-			QColor c = QColor(list[1]);
-			if (list.count() == 3)
-				c.setAlpha(list[2].toInt());
+			QStringList bgList = s.split("\t");
+			QColor c = QColor(bgList[1]);
+			if (bgList.count() == 3)
+				c.setAlpha(bgList[2].toInt());
 			ag->setCanvasBackground(c);
 		}
 		else if (s.startsWith ("Legend"))
@@ -1108,9 +1109,10 @@ MdiSubWindow* ProjectSerializer::openTemplate(const QString& fn, ApplicationWind
 		QStringList lst;
 		while (!t.atEnd())
 			lst << t.readLine();
-		w = Graph3D::restore(app, lst, fileVersion);
-		if (w)
-			((Graph3D *)w)->clearData();
+		Graph3D *g3d = Graph3D::restore(app, lst, fileVersion);
+		if (g3d)
+			g3d->clearData();
+		w = g3d;
 	} else {
 		int rows, cols;
 		t>>rows; t>>cols;
@@ -1245,7 +1247,7 @@ ApplicationWindow* ProjectSerializer::openProject(const QString& fn, Application
 	app->blockSignals (true);
 
 	//rename project folder item
-	FolderListItem *item = (FolderListItem *)app->folders->topLevelItem(0);
+	FolderListItem *item = static_cast<FolderListItem *>(app->folders->topLevelItem(0));
 	item->setText(0, fi.baseName());
 	item->folder()->setObjectName(fi.baseName());
 
@@ -1255,17 +1257,17 @@ ApplicationWindow* ProjectSerializer::openProject(const QString& fn, Application
 		list.clear();
 		if  (s.left(8) == "<folder>"){
 			list = s.split("\t");
-			Folder *f = new Folder(app->current_folder, list[1]);
-			f->setBirthDate(list[2]);
-			f->setModificationDate(list[3]);
+			Folder *folder = new Folder(app->current_folder, list[1]);
+			folder->setBirthDate(list[2]);
+			folder->setModificationDate(list[3]);
 			if(list.count() > 4)
 				if (list[4] == "current")
-					cf = f;
+					cf = folder;
 
-			FolderListItem *fli = new FolderListItem(app->current_folder->folderListItem(), f);
-			f->setFolderListItem(fli);
+			FolderListItem *fli = new FolderListItem(app->current_folder->folderListItem(), folder);
+			folder->setFolderListItem(fli);
 
-			app->current_folder = f;
+			app->current_folder = folder;
 		} else if  (s.contains("<open>")) {
 			app->current_folder->folderListItem()->setOpen(s.remove("<open>").remove("</open>").toInt());
 		} else if  (s == "<table>") {
@@ -1504,7 +1506,7 @@ Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder
 	if (parentFolder)
 		app->changeFolder(parentFolder, true);
 
-	FolderListItem *item = (FolderListItem *)app->current_folder->folderListItem();
+	FolderListItem *item = static_cast<FolderListItem *>(app->current_folder->folderListItem());
 	app->folders->blockSignals (true);
 	app->blockSignals (true);
 
@@ -1558,18 +1560,18 @@ Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder
 			lst.clear();
 			if  (s.left(8) == "<folder>"){
 				lst = s.split("\t");
-				Folder *f = new Folder(app->current_folder, lst[1]);
-				f->setBirthDate(lst[2]);
-				f->setModificationDate(lst[3]);
+				Folder *subFolder = new Folder(app->current_folder, lst[1]);
+				subFolder->setBirthDate(lst[2]);
+				subFolder->setModificationDate(lst[3]);
 				if(lst.count() > 4)
 					if (lst[4] == "current")
-						cf = f;
+						cf = subFolder;
 
-				FolderListItem *fli = new FolderListItem(app->current_folder->folderListItem(), f);
-				fli->setText(0, lst[1]);
-				f->setFolderListItem(fli);
+				FolderListItem *subFli = new FolderListItem(app->current_folder->folderListItem(), subFolder);
+				subFli->setText(0, lst[1]);
+				subFolder->setFolderListItem(subFli);
 
-				app->current_folder = f;
+				app->current_folder = subFolder;
 			}else if  (s == "<table>"){
 				while ( s!="</table>" ){
 					s=t.readLine();
@@ -1625,33 +1627,33 @@ Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder
 				app->restoreWindowGeometry(plot, t.readLine());
 
 				if (fileVersion > 71){
-					QStringList lst = t.readLine().split("\t");
-					if (lst.size() >= 3){
-						plot->setWindowLabel(lst[1]);
-						plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)lst[2].toInt());
+					QStringList labelList = t.readLine().split("\t");
+					if (labelList.size() >= 3){
+						plot->setWindowLabel(labelList[1]);
+						plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)labelList[2].toInt());
 					}
 				}
 
 				if (fileVersion > 83){
-					QStringList lst=t.readLine().split("\t", Qt::SkipEmptyParts);
-					plot->setMargins(lst[1].toInt(),lst[2].toInt(),lst[3].toInt(),lst[4].toInt());
-					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
-					plot->setSpacing(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
-					plot->setLayerCanvasSize(lst[1].toInt(),lst[2].toInt());
-					lst=t.readLine().split("\t", Qt::SkipEmptyParts);
-					plot->setAlignement(lst[1].toInt(),lst[2].toInt());
+					QStringList marginList = t.readLine().split("\t", Qt::SkipEmptyParts);
+					plot->setMargins(marginList[1].toInt(), marginList[2].toInt(), marginList[3].toInt(), marginList[4].toInt());
+					marginList = t.readLine().split("\t", Qt::SkipEmptyParts);
+					plot->setSpacing(marginList[1].toInt(), marginList[2].toInt());
+					marginList = t.readLine().split("\t", Qt::SkipEmptyParts);
+					plot->setLayerCanvasSize(marginList[1].toInt(), marginList[2].toInt());
+					marginList = t.readLine().split("\t", Qt::SkipEmptyParts);
+					plot->setAlignement(marginList[1].toInt(), marginList[2].toInt());
 				}
 
 				while ( s != "</multiLayer>" ){//open layers
 					s = t.readLine();
 					if (s.contains("<waterfall>")){
-						QStringList lst = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
+						QStringList wfList = s.trimmed().remove("<waterfall>").remove("</waterfall>").split(",");
 						Graph *ag = plot->activeLayer();
-						if (ag && lst.size() >= 2){
-							ag->setWaterfallOffset(lst[0].toDouble(), lst[1].toDouble());
-							if (lst.size() >= 3)
-								ag->setWaterfallSideLines(lst[2].toInt());
+						if (ag && wfList.size() >= 2){
+							ag->setWaterfallOffset(wfList[0].toDouble(), wfList[1].toDouble());
+							if (wfList.size() >= 3)
+								ag->setWaterfallSideLines(wfList[2].toInt());
 						}
 						plot->setWaterfallLayout();
 					}

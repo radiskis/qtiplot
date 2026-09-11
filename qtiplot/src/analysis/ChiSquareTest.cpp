@@ -94,9 +94,9 @@ double ChiSquareTest::ucl(double confidenceLevel)
 
 QString ChiSquareTest::logInfo()
 {
-	ApplicationWindow *app = (ApplicationWindow *)parent();
-	QLocale l = app->locale();
-	int p = app->d_decimal_digits;
+	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
+	QLocale l = app ? app->locale() : QLocale();
+	int p = app ? app->d_decimal_digits : 6;
 	QString sep1 = "-----------------------------------------------------------------------------------------------------------------------------\n";
 
 	QString s = "[" + QDateTime::currentDateTime().toString(Qt::TextDate)+ " \"" + d_table->objectName() + "\"]\t";
