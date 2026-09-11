@@ -127,7 +127,10 @@ public:
     }
 
     void ensureCellVisible(int row, int col) { if (d_model) scrollTo(d_model->index(row, col)); }
-    void setCurrentCell(int r, int c) { if (d_model) setCurrentIndex(d_model->index(r, c)); }
+    void setCurrentCell(int r, int c) {
+        if (d_model && selectionModel())
+            selectionModel()->setCurrentIndex(d_model->index(r, c), QItemSelectionModel::NoUpdate);
+    }
     int currentSelection() { return selectedRanges().isEmpty() ? -1 : 0; }
 
     void insertColumn(int col) { if (d_model) d_model->insertColumn(col); }

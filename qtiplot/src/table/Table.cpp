@@ -125,6 +125,8 @@ void Table::init(int rows, int cols)
 	head->setMouseTracking(true);
 	head->setSectionResizeMode(QHeaderView::Interactive);
 	head->installEventFilter(this);
+	if (head->viewport())
+		head->viewport()->installEventFilter(this);
 	connect(head, &QHeaderView::sectionResized, this, &Table::colWidthModified);
 
 	col_plot_type[0] = X;
@@ -136,6 +138,8 @@ void Table::init(int rows, int cols)
 
 	d_table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
 	d_table->verticalHeader()->installEventFilter(this);
+	if (d_table->verticalHeader()->viewport())
+		d_table->verticalHeader()->viewport()->installEventFilter(this);
 
 	setWidget(d_table);
 
@@ -4044,8 +4048,10 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 {
 	QHeaderView *hheader = d_table->horizontalHeader();
 	QHeaderView *vheader = d_table->verticalHeader();
+	bool isHHeader = (object == (QObject*)hheader || (hheader && object == (QObject*)hheader->viewport()));
+	bool isVHeader = (object == (QObject*)vheader || (vheader && object == (QObject*)vheader->viewport()));
 
-	if (e->type() == QEvent::MouseButtonDblClick && object == (QObject*)hheader) {
+	if (e->type() == QEvent::MouseButtonDblClick && isHHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		selectedCol = hheader->logicalIndexAt (me->pos().x());
 
@@ -4060,7 +4066,7 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			emit optionsDialog();
         if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 		return true;
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)hheader) {
+	} else if (e->type() == QEvent::MouseButtonPress && isHHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		if (me->button() == Qt::LeftButton){
 			int col = hheader->logicalIndexAt (me->pos().x());
@@ -4068,7 +4074,8 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 				if (!d_table->isColumnSelected(col, true)){
 					selectedCol = col;
 					d_table->selectColumn (col);
-					d_table->setCurrentCell (0, col);
+					if (d_table->numRows() > 0)
+						d_table->setCurrentCell (0, col);
 				} else {//deselect already selected column: dirty hack to be modified when porting Table to Qt4
 					QVector<int> sel;
 					int cols = 0;
@@ -4111,37 +4118,63 @@ bool Table::eventFilter(QObject *object, QEvent *e)
 			selectedCol = hheader->logicalIndexAt (me->pos().x());
 			d_table->clearSelection();
 			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
+			if (d_table->numRows() > 0)
+				d_table->setCurrentCell (0, selectedCol);
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 			return false;
 		}
 
-		if (me->button() == Qt::RightButton && selectedColsNumber() <= 1){
-			selectedCol = hheader->logicalIndexAt (me->pos().x());
-			d_table->clearSelection();
-			d_table->selectColumn (selectedCol);
-			d_table->setCurrentCell (0, selectedCol);
+		if (me->button() == Qt::RightButton){
+			int col = hheader->logicalIndexAt(me->pos().x());
+			if (col >= 0 && col < d_table->numCols()){
+				if (!d_table->isColumnSelected(col, true)){
+					selectedCol = col;
+					d_table->clearSelection();
+					d_table->selectColumn(selectedCol);
+					if (d_table->numRows() > 0)
+						d_table->setCurrentCell(0, selectedCol);
+				}
+			}
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
 			return false;
 		}
-	} else if (e->type() == QEvent::MouseButtonPress && object == (QObject*)vheader) {
+	} else if (e->type() == QEvent::MouseButtonPress && isVHeader) {
 		const QMouseEvent *me = (const QMouseEvent *)e;
-		if (me->button() == Qt::RightButton && numSelectedRows() <= 1) {
-			d_table->clearSelection();
+		if (me->button() == Qt::RightButton) {
 			int row = vheader->logicalIndexAt(me->pos().y());
-			d_table->selectRow (row);
-			d_table->setCurrentCell (row, 0);
+			if (row >= 0 && row < d_table->numRows()){
+				if (!d_table->isRowSelected(row, true)){
+					d_table->clearSelection();
+					d_table->selectRow(row);
+					d_table->setCurrentCell(row, 0);
+				}
+			}
 			if (applicationWindow()) applicationWindow()->setActiveWindow(this);
+			return false;
 		}
-	} else if (e->type() == QEvent::ContextMenu && object == (QObject*)d_table){
+	} else if (e->type() == QEvent::ContextMenu && (object == (QObject*)d_table || isHHeader || isVHeader)){
         const QContextMenuEvent *ce = (const QContextMenuEvent *)e;
-        QRect r(d_table->horizontalHeader()->sectionPosition(d_table->numCols()-1), 0, d_table->horizontalHeader()->sectionSize(d_table->numCols()-1), d_table->horizontalHeader()->height());
         setFocus();
-        if (ce->pos().x() > r.right() + d_table->verticalHeader()->width())
-            emit showContextMenu(false);
-        else if (d_table->numCols() > 0 && d_table->numRows() > 0)
-            emit showContextMenu(true);
-    } else if (e->type() == QEvent::MouseMove && object == (QObject*)hheader){
+        if (isHHeader) {
+            int lastCol = d_table->numCols() - 1;
+            int rightEdge = (lastCol >= 0) ? (hheader->sectionPosition(lastCol) + hheader->sectionSize(lastCol)) : 0;
+            if (ce->pos().x() > rightEdge)
+                emit showContextMenu(false);
+            else if (d_table->numCols() > 0)
+                emit showContextMenu(true);
+        } else if (isVHeader) {
+            if (d_table->numCols() > 0 && d_table->numRows() > 0)
+                emit showContextMenu(true);
+        } else {
+            int lastCol = d_table->numCols() - 1;
+            int rightEdge = (lastCol >= 0) ? (d_table->horizontalHeader()->sectionPosition(lastCol) + d_table->horizontalHeader()->sectionSize(lastCol) + d_table->verticalHeader()->width()) : 0;
+            if (ce->pos().x() > rightEdge)
+                emit showContextMenu(false);
+            else if (d_table->numCols() > 0 && d_table->numRows() > 0)
+                emit showContextMenu(true);
+        }
+        return true;
+    } else if (e->type() == QEvent::MouseMove && isHHeader){
 		const QMouseEvent *me = (const QMouseEvent *)e;
 		int col = hheader->logicalIndexAt (me->pos().x());
 		QRect r(hheader->sectionPosition(col), 0, hheader->sectionSize(col), hheader->height());
