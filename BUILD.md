@@ -70,7 +70,7 @@ This script will:
 :: 1. Open x64 Native Tools Command Prompt for VS 2022
 
 :: 2. Set Qt directory (if not in PATH)
-set "PATH=C:\Qt\6.10.2\msvc2022_64\bin;%PATH%"
+set "PATH=C:\Qt\6.11.2\msvc2022_64\bin;%PATH%"
 
 :: 3. Generate SIP Python bindings
 mkdir build\sip_temp

@@ -39,7 +39,8 @@ if not defined QT_DIR (
     if defined QTDIR (
         set "QT_DIR=%QTDIR%"
     ) else (
-        if exist "C:\Qt\6.10.2\msvc2022_64" set "QT_DIR=C:\Qt\6.10.2\msvc2022_64"
+        if exist "C:\Qt\6.11.2\msvc2022_64" set "QT_DIR=C:\Qt\6.11.2\msvc2022_64"
+        if not defined QT_DIR if exist "C:\Qt\6.10.2\msvc2022_64" set "QT_DIR=C:\Qt\6.10.2\msvc2022_64"
         if not defined QT_DIR if exist "C:\Qt\6.8.2\msvc2022_64" set "QT_DIR=C:\Qt\6.8.2\msvc2022_64"
         if not defined QT_DIR if exist "C:\Qt\6.5.3\msvc2022_64" set "QT_DIR=C:\Qt\6.5.3\msvc2022_64"
     )
