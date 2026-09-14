@@ -47,12 +47,12 @@ public:
 	 * \param textEdit the QTextEdit that the buttons shall affect
 	 * \param parent parent widget
 	 */
-	TextFormatButtons(QTextEdit * textEdit, Buttons buttons = Plot3D, QWidget * parent=0);
+	TextFormatButtons(QTextEdit * textEdit, Buttons buttons = Plot3D, QWidget * parent = nullptr);
 	void setButtons(Buttons btns);
 
 private:
-	QTextEdit *connectedTextEdit;
-	Buttons d_buttons;
+	QTextEdit *connectedTextEdit = nullptr;
+	Buttons d_buttons = Plot3D;
 	//! Internal function: format selected text with prefix and postfix
 	void formatText(const QString & prefix, const QString & postfix);
 	void init(Buttons btns);

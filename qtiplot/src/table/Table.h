@@ -172,7 +172,7 @@ protected:
 
 private:
     void setupConnections();
-    TableModel *d_model;
+    TableModel *d_model = nullptr;
 };
 
 
@@ -197,7 +197,7 @@ public:
 	};
 
 	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
-	~Table();
+	~Table() override;
 
 	QTableWidgetSelectionRange getSelection();
 
@@ -509,20 +509,20 @@ signals:
 	void showContextMenu(bool selection);
 
 protected:
-	MyTable *d_table;
+	MyTable *d_table = nullptr;
 
 private:
 	void clearCol();
 
-	bool d_show_comments;
+	bool d_show_comments = false;
 	QStringList commands, col_format, comments, col_label;
 	QList<int> colTypes, col_plot_type;
-	int selectedCol;
-	int d_numeric_precision;
-	double **d_saved_cells;
+	int selectedCol = -1;
+	int d_numeric_precision = 13;
+	double **d_saved_cells = nullptr;
 	int d_saved_cols = 0;
 
-	QUndoStack *d_undo_stack;
+	QUndoStack *d_undo_stack = nullptr;
 
 	//! Internal function to change the column header
 	void setColumnHeader(int index, const QString& label);

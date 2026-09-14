@@ -91,6 +91,11 @@ PythonScript::PythonScript(PythonScripting *env, const QString &code, QObject *c
 	setQObject(Context, "self");
 }
 
+PythonScripting *PythonScript::env()
+{
+	return static_cast<PythonScripting*>(Env);
+}
+
 PythonScript::~PythonScript()
 {
 	PyGILState_STATE state = PyGILState_Ensure();

@@ -33,8 +33,8 @@ class OriginPlugin : public QObject, ImportExportPlugin
     Q_INTERFACES(ImportExportPlugin)
 	Q_PLUGIN_METADATA(IID "org.qt-project.Qt.QtiPlot.ImportExportPlugin")
 public:
-	QStringList importFormats();
-	Table * import(const QString & fname, int sheet);
+	QStringList importFormats() override;
+	Table * import(const QString & fname, int sheet = -1) override;
 };
 
 #endif

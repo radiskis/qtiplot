@@ -54,7 +54,7 @@ private:
     int sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y);
 
     //! the interpolation method
-    int d_method;
+    int d_method = Linear;
 };
 
 #endif

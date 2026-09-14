@@ -1107,15 +1107,15 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
-		QTextDocument *document = new QTextDocument();
-		QTextCursor cursor = QTextCursor(document);
+		QTextDocument document;
+		QTextCursor cursor(&document);
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertText(objectName());
 		cursor.insertBlock();
 		cursor.insertImage(image);
 
 		QTextDocumentWriter writer(fileName);
-		writer.write(document);
+		writer.write(&document);
 	} else
 	{
 		QImageWriter writer(fileName);

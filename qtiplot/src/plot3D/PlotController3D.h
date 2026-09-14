@@ -51,7 +51,7 @@ class PlotController3D : public QObject
 
 public:
     explicit PlotController3D(ApplicationWindow *app);
-    virtual ~PlotController3D();
+    ~PlotController3D() override;
 
     Graph3D* newPlot3D(const QString& title = QString());
     Graph3D* plotXYZ(Table* table,const QString& zColName, int type);
@@ -78,7 +78,7 @@ public:
     void plot3DHiddenLine();
     void plot3DPolygons();
     void plot3DWireSurface();
-    Graph3D* plot3DMatrix(Matrix *m = 0, int style = 5);
+    Graph3D* plot3DMatrix(Matrix *m = nullptr, int style = 5);
     void plot3DRibbon();
     void plot3DScatter();
     void plot3DTrajectory();
@@ -118,7 +118,7 @@ public:
     void setPlot3DOptions();
 
 private:
-    ApplicationWindow *d_app;
+    ApplicationWindow *d_app = nullptr;
 };
 
 #endif // PLOT_CONTROLLER_3D_H

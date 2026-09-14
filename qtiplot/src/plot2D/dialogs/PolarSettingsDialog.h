@@ -34,35 +34,35 @@ private:
     QWidget* initGridTab();
     QWidget* initFormatTab();
 
-    PolarGraph *d_graph;
+    PolarGraph *d_graph = nullptr;
 
-    QTabWidget *tabs;
+    QTabWidget *tabs = nullptr;
 
     // Scale Tab Widgets
-    QLineEdit *radialStart, *radialEnd, *radialStep;
-    QCheckBox *radialAutoscale;
-    QLineEdit *azimuthStart, *azimuthEnd, *azimuthStep;
-    QCheckBox *azimuthAutoscale;
+    QLineEdit *radialStart = nullptr, *radialEnd = nullptr, *radialStep = nullptr;
+    QCheckBox *radialAutoscale = nullptr;
+    QLineEdit *azimuthStart = nullptr, *azimuthEnd = nullptr, *azimuthStep = nullptr;
+    QCheckBox *azimuthAutoscale = nullptr;
 
     // Grid Tab Widgets
-    QCheckBox *showRadialMajor, *showRadialMinor;
-    QCheckBox *showAzimuthMajor, *showAzimuthMinor;
-    ColorButton *radialMajorColor, *radialMinorColor;
-    ColorButton *azimuthMajorColor, *azimuthMinorColor;
+    QCheckBox *showRadialMajor = nullptr, *showRadialMinor = nullptr;
+    QCheckBox *showAzimuthMajor = nullptr, *showAzimuthMinor = nullptr;
+    ColorButton *radialMajorColor = nullptr, *radialMinorColor = nullptr;
+    ColorButton *azimuthMajorColor = nullptr, *azimuthMinorColor = nullptr;
 
     // Format Tab Widgets
-    QComboBox *boxCurve;
-    ColorButton *lineColor;
-    QSpinBox *lineWidth;
-    QComboBox *lineStyle;
+    QComboBox *boxCurve = nullptr;
+    ColorButton *lineColor = nullptr;
+    QSpinBox *lineWidth = nullptr;
+    QComboBox *lineStyle = nullptr;
     
-    QComboBox *symbolStyle;
-    QSpinBox *symbolSize;
-    ColorButton *symbolColor;
-    ColorButton *symbolPenColor;
-    QSpinBox *symbolPenWidth;
+    QComboBox *symbolStyle = nullptr;
+    QSpinBox *symbolSize = nullptr;
+    ColorButton *symbolColor = nullptr;
+    ColorButton *symbolPenColor = nullptr;
+    QSpinBox *symbolPenWidth = nullptr;
 
-    QPushButton *btnApply, *btnOk, *btnCancel;
+    QPushButton *btnApply = nullptr, *btnOk = nullptr, *btnCancel = nullptr;
 };
 
 #endif

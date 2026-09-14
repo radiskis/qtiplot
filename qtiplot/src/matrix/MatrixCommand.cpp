@@ -30,6 +30,16 @@
 #include "MatrixCommand.h"
 #include <QApplication>
 
+static inline QString makeCommandTitle(Matrix *m, const QString &text)
+{
+	return m ? (m->objectName() + ": " + text) : text;
+}
+
+static inline QString makeCommandTitle(MatrixModel *model, const QString &text)
+{
+	return (model && model->matrix()) ? (model->matrix()->objectName() + ": " + text) : text;
+}
+
 /*************************************************************************/
 /*           Class MatrixEditCellCommand                                 */
 /*************************************************************************/
@@ -41,7 +51,7 @@ d_index(index),
 d_val_before(valBefore),
 d_val_after(valAfter)
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixEditCellCommand::redo()
@@ -80,7 +90,7 @@ d_matrix(m),
 d_old_formula(oldFormula),
 d_new_formula(newFormula)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetFormulaCommand::redo()
@@ -110,7 +120,7 @@ d_new_string(newString),
 d_axis(axis),
 d_type(type)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetStringCommand::redo()
@@ -219,7 +229,7 @@ d_matrix(m),
 d_old_view(oldView),
 d_new_view(newView)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetViewCommand::redo()
@@ -248,7 +258,7 @@ d_matrix(m),
 d_old_view(oldView),
 d_new_view(newView)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetHeaderViewCommand::redo()
@@ -281,7 +291,7 @@ d_new_format(newFormat),
 d_old_prec(oldPrec),
 d_new_prec(newPrec)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetPrecisionCommand::redo()
@@ -316,7 +326,7 @@ d_new_xe(nxe),
 d_new_ys(nys),
 d_new_ye(nye)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 }
 
 void MatrixSetCoordinatesCommand::redo()
@@ -346,7 +356,7 @@ d_matrix(m),
 d_map_type_before(type_before),
 d_map_type_after(type_after)
 {
-	setText(m->objectName() + ": " + text);
+	setText(makeCommandTitle(m, text));
 
 	d_map_before = LinearColorMap(map_before);
 	d_map_after = LinearColorMap(map_after);
@@ -410,7 +420,7 @@ d_start_row(startRow),
 d_count(count),
 d_data(std::move(data))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixDeleteRowsCommand::redo()
@@ -449,7 +459,7 @@ QUndoCommand(text),
 d_model(model),
 d_start_row(startRow)
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixInsertRowCommand::redo()
@@ -482,7 +492,7 @@ d_start_col(startCol),
 d_count(count),
 d_data(std::move(data))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixDeleteColsCommand::redo()
@@ -523,7 +533,7 @@ QUndoCommand(text),
 d_model(model),
 d_start_col(startCol)
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixInsertColCommand::redo()
@@ -556,7 +566,7 @@ d_old_size(oldSize),
 d_new_size(newSize),
 d_backup(std::move(data))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixSetSizeCommand::redo()
@@ -565,7 +575,8 @@ void MatrixSetSizeCommand::redo()
 		return;
 
 	d_model->setDimensions(d_new_size.width(), d_new_size.height());
-	d_model->matrix()->resetView();
+	if (d_model->matrix())
+		d_model->matrix()->resetView();
 }
 
 void MatrixSetSizeCommand::undo()
@@ -589,7 +600,8 @@ void MatrixSetSizeCommand::undo()
 			cell++;
 		}
 	}
-	d_model->matrix()->resetView();
+	if (d_model->matrix())
+		d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -601,7 +613,7 @@ QUndoCommand(text),
 d_model(model),
 d_backup(std::move(data))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixSmoothCommand::redo()
@@ -643,7 +655,8 @@ void MatrixSmoothCommand::undo()
 			cell++;
 		}
 	}
-	d_model->matrix()->resetView();
+	if (d_model->matrix())
+		d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -654,7 +667,7 @@ MatrixResampleCommand::MatrixResampleCommand(MatrixModel *model, const QSize& ol
 MatrixSetSizeCommand(model, oldSize, newSize, std::move(data), text),
 d_method(method)
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixResampleCommand::redo()
@@ -681,7 +694,7 @@ d_start_col(startCol),
 d_end_col(endCol),
 d_data(std::move(data))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixUndoCommand::redo()
@@ -816,7 +829,7 @@ QUndoCommand(text),
 d_model(model),
 d_operation(op)
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixSymmetryOperation::redo()
@@ -848,9 +861,11 @@ void MatrixSymmetryOperation::redo()
 	}
 
 	Matrix *m = d_model->matrix();
-	m->resetView();
-	m->notifyChanges();
-	m->notifyModifiedData();
+	if (m){
+		m->resetView();
+		m->notifyChanges();
+		m->notifyModifiedData();
+	}
 	d_model->setCalculatedValues(false);
 }
 
@@ -883,9 +898,11 @@ void MatrixSymmetryOperation::undo()
 	}
 
 	Matrix *m = d_model->matrix();
-	m->resetView();
-	m->notifyChanges();
-	m->notifyModifiedData();
+	if (m){
+		m->resetView();
+		m->notifyChanges();
+		m->notifyModifiedData();
+	}
 	d_model->setCalculatedValues(false);
 }
 
@@ -908,7 +925,7 @@ d_old_cols(oldCols),
 d_clipboard_data(std::move(clipboardData)),
 d_backup_data(std::move(backupData))
 {
-	setText(model->matrix()->objectName() + ": " + text);
+	setText(makeCommandTitle(model, text));
 }
 
 void MatrixPasteCommand::redo()
@@ -918,7 +935,8 @@ void MatrixPasteCommand::redo()
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	d_model->pasteData(d_clipboard_data.data(), d_start_row, d_start_col, d_rows, d_cols);
-	d_model->matrix()->resetView();
+	if (d_model->matrix())
+		d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }
 
@@ -945,6 +963,7 @@ void MatrixPasteCommand::undo()
 		for (int j = d_start_col; j <= d_end_col; j++)
 			data[row++] = d_backup_data[aux++];
 	}
-	d_model->matrix()->resetView();
+	if (d_model->matrix())
+		d_model->matrix()->resetView();
 	QApplication::restoreOverrideCursor();
 }

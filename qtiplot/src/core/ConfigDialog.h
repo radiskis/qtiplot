@@ -58,18 +58,18 @@ private slots:
 	void setCurrentPage(int index);
 
 private:
-	ApplicationWindow *d_app;
-	ApplicationSettings *d_settings;
+	ApplicationWindow *d_app = nullptr;
+	ApplicationSettings *d_settings = nullptr;
 	QList<ConfigPage *> d_pages;
 
-	QListWidget *itemsList;
-	QStackedWidget *generalDialog;
-	QLabel *lblPageHeader;
+	QListWidget *itemsList = nullptr;
+	QStackedWidget *generalDialog = nullptr;
+	QLabel *lblPageHeader = nullptr;
 
-	QPushButton *btnDefaultSettings;
-	QPushButton *buttonApply;
-	QPushButton *buttonOk;
-	QPushButton *buttonCancel;
+	QPushButton *btnDefaultSettings = nullptr;
+	QPushButton *buttonApply = nullptr;
+	QPushButton *buttonOk = nullptr;
+	QPushButton *buttonCancel = nullptr;
 };
 
 #endif // CONFIGDIALOG_H

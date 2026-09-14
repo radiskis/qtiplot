@@ -65,14 +65,14 @@ private:
 	bool eventFilter(QObject *object, QEvent *e);
 
 	QList <MdiSubWindow*> tables;
-	Table *active_table;
-	Graph *graph;
+	Table *active_table = nullptr;
+	Graph *graph = nullptr;
 	QStringList plotAssociationsList;
 	QList<int> curvesIndicesList;
 
-	QLabel* tableCaptionLabel;
-	QTableWidget *table;
-	QPushButton *btnOK, *btnCancel, *btnApply;
-	QListWidget* associations;
+	QLabel* tableCaptionLabel = nullptr;
+	QTableWidget *table = nullptr;
+	QPushButton *btnOK = nullptr, *btnCancel = nullptr, *btnApply = nullptr;
+	QListWidget* associations = nullptr;
 };
 #endif // ASSOCIATIONSDIALOG_H

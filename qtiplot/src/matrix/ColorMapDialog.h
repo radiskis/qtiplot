@@ -39,16 +39,16 @@ class ColorMapDialog: public QDialog
     Q_OBJECT
 
 public:
-	ColorMapDialog(QWidget* parent=0, Qt::WindowFlags fl = {});
+	ColorMapDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = {});
 	void setMatrix(Matrix *m);
 	
 protected slots:
 	void apply();
 
 private:
-	QPushButton *applyBtn, *closeBtn;
-	ColorMapEditor *editor;
-	Matrix *d_matrix;
+	QPushButton *applyBtn = nullptr, *closeBtn = nullptr;
+	ColorMapEditor *editor = nullptr;
+	Matrix *d_matrix = nullptr;
 };
    
 #endif

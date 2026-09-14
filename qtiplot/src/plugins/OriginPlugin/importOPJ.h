@@ -62,11 +62,11 @@ private:
 	QString parseOriginTags(const QString &str);
 	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);
 	void setPieTexts(PieCurve *p, Graph* graph, const Origin::GraphLayer& layer, double fFontScaleFactor, double fScale);
-	int parse_error;
-	int xoffset;
-	int frameWidth;
-	int frameHeight;
-	ApplicationWindow *mw;
+	int parse_error = 0;
+	int xoffset = 0;
+	int frameWidth = 0;
+	int frameHeight = 0;
+	ApplicationWindow *mw = nullptr;
 
 	static QMap<Origin::GraphCurve::LineStyle, Qt::PenStyle> lineStyles;
 	//static QMap<Origin::GraphCurve::LineStyle, Qwt3D::LINESTYLE> line3DStyles;

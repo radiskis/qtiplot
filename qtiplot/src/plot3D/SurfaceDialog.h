@@ -47,7 +47,7 @@ class SurfaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    SurfaceDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    SurfaceDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void setFunction(Graph3D *);
@@ -56,47 +56,54 @@ public slots:
 
 private slots:
 	void clearFunction();
-	void accept();
+	void accept() override;
 	void showFunctionLog();
 	void showXLog();
 	void showYLog();
 	void showZLog();
 
 private:
-	Graph3D *d_graph;
+	Graph3D *d_graph = nullptr;
 
 	void initFunctionPage();
 	void initParametricSurfacePage();
 	void acceptParametricSurface();
 	void acceptFunction();
 
-	QWidget* functionPage;
-	QWidget* parametricPage;
-	QStackedWidget* optionStack;
-    QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-	QPushButton* buttonClear;
-	QComboBox* boxType;
-	ScriptEdit* boxFunction;
-	DoubleSpinBox* boxXFrom;
-	DoubleSpinBox* boxXTo;
-	DoubleSpinBox* boxYFrom;
-	DoubleSpinBox* boxYTo;
-	DoubleSpinBox* boxZFrom;
-	DoubleSpinBox* boxZTo;
+	QWidget* functionPage = nullptr;
+	QWidget* parametricPage = nullptr;
+	QStackedWidget* optionStack = nullptr;
+    QPushButton* buttonOk = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonClear = nullptr;
+	QComboBox* boxType = nullptr;
+	ScriptEdit* boxFunction = nullptr;
+	DoubleSpinBox* boxXFrom = nullptr;
+	DoubleSpinBox* boxXTo = nullptr;
+	DoubleSpinBox* boxYFrom = nullptr;
+	DoubleSpinBox* boxYTo = nullptr;
+	DoubleSpinBox* boxZFrom = nullptr;
+	DoubleSpinBox* boxZTo = nullptr;
 
-	ScriptEdit* boxX;
-	ScriptEdit* boxY;
-	ScriptEdit* boxZ;
+	ScriptEdit* boxX = nullptr;
+	ScriptEdit* boxY = nullptr;
+	ScriptEdit* boxZ = nullptr;
 
-	DoubleSpinBox* boxUFrom;
-	DoubleSpinBox* boxUTo;
-	DoubleSpinBox* boxVFrom;
-	DoubleSpinBox* boxVTo;
+	DoubleSpinBox* boxUFrom = nullptr;
+	DoubleSpinBox* boxUTo = nullptr;
+	DoubleSpinBox* boxVFrom = nullptr;
+	DoubleSpinBox* boxVTo = nullptr;
 
-	QCheckBox *boxUPeriodic, *boxVPeriodic;
-	QSpinBox *boxColumns, *boxRows, *boxFuncColumns, *boxFuncRows;
-	QPushButton *buttonRecentFunc, *buttonXLog, *buttonYLog, *buttonZLog;
+	QCheckBox *boxUPeriodic = nullptr;
+	QCheckBox *boxVPeriodic = nullptr;
+	QSpinBox *boxColumns = nullptr;
+	QSpinBox *boxRows = nullptr;
+	QSpinBox *boxFuncColumns = nullptr;
+	QSpinBox *boxFuncRows = nullptr;
+	QPushButton *buttonRecentFunc = nullptr;
+	QPushButton *buttonXLog = nullptr;
+	QPushButton *buttonYLog = nullptr;
+	QPushButton *buttonZLog = nullptr;
 };
 
 #endif

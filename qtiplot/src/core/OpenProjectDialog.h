@@ -38,14 +38,14 @@ class OpenProjectDialog : public ExtensibleFileDialog
 	Q_OBJECT
 	public:
 		enum OpenMode { NewProject, NewFolder };
-		OpenProjectDialog(QWidget *parent=0, bool extended = true, Qt::WindowFlags flags= {});
+		OpenProjectDialog(QWidget *parent = nullptr, bool extended = true, Qt::WindowFlags flags = {});
 		OpenMode openMode() const { return (OpenMode) d_open_mode->currentIndex(); }
 
 	private:
-		QComboBox *d_open_mode;
+		QComboBox *d_open_mode = nullptr;
 
     protected slots:
-		void closeEvent(QCloseEvent* );
+		void closeEvent(QCloseEvent*) override;
         //! Update which options are visible and enabled based on the output format.
         void updateAdvancedOptions (const QString &filter);
 };

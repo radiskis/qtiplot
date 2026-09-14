@@ -41,7 +41,7 @@ public:
 
 	void copy(QwtBarCurve *b);
 
-	virtual QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	BarStyle orientation() const {return bar_style;};
 
@@ -56,20 +56,20 @@ public:
 	bool isStacked() const {return d_is_stacked;};
 	void setStacked(bool on = true){d_is_stacked = on;};
 
-	virtual QString saveToString();
+	QString saveToString() override;
 
 	QList <QwtBarCurve *> stackedCurvesList() const;
 	double stackOffset(int i, QList <QwtBarCurve *> stack) const;
 
 private:
-	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+	void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 protected:
-	int bar_offset;
-	int bar_gap;
-	bool d_is_stacked;
-	BarStyle bar_style;
+	int bar_offset = 0;
+	int bar_gap = 0;
+	bool d_is_stacked = false;
+	BarStyle bar_style = Vertical;
 };
 
 #endif

@@ -47,7 +47,7 @@ public:
 
 	void copy(BoxCurve *b);
 
-	virtual QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	QwtSymbol::Style minStyle(){return min_style;};
 	void setMinStyle(QwtSymbol::Style s){min_style = s;};
@@ -87,7 +87,7 @@ public:
 	bool hasWhiskerLabels() const {return d_whiskers_labels;};
 	void showWhiskerLabels(bool on = true);
 
-    void loadData();
+    void loadData() override;
 
 	QString statistics();
 
@@ -106,24 +106,24 @@ private:
 	QString labelText(int index, double val);
 	QString labelPercentage(int index);
 	void createLabel(double val);
-	virtual void loadLabels();
+	void loadLabels() override;
 	void updateLabels(bool updateText = true);
 	void updateLabelsPosition(){updateLabels(false);};
 
-	QwtSymbol::Style min_style;
-	QwtSymbol::Style max_style;
-	QwtSymbol::Style mean_style;
-	QwtSymbol::Style p99_style;
-	QwtSymbol::Style p1_style;
-	double b_coeff;
-	double w_coeff;
-	int b_range;
-	int w_range;
-	int b_style;
-	int b_width;
-	bool d_box_labels;
-	bool d_whiskers_labels;
-	LabelsDisplayPolicy d_labels_display;
+	QwtSymbol::Style min_style = QwtSymbol::NoSymbol;
+	QwtSymbol::Style max_style = QwtSymbol::NoSymbol;
+	QwtSymbol::Style mean_style = QwtSymbol::NoSymbol;
+	QwtSymbol::Style p99_style = QwtSymbol::NoSymbol;
+	QwtSymbol::Style p1_style = QwtSymbol::NoSymbol;
+	double b_coeff = 0.0;
+	double w_coeff = 0.0;
+	int b_range = None;
+	int w_range = None;
+	int b_style = Rect;
+	int b_width = 0;
+	bool d_box_labels = false;
+	bool d_whiskers_labels = false;
+	LabelsDisplayPolicy d_labels_display = Percentage;
 };
 
 
@@ -137,13 +137,13 @@ public:
 		d_x = x;
 	};
 
-    virtual size_t size() const {return d_y.size();};
-    virtual QPointF sample(size_t i) const {return QPointF(d_x, d_y[int(i)]);};
-    virtual QRectF boundingRect() const {return qwtBoundingRect(*this);};
+    size_t size() const override {return d_y.size();};
+    QPointF sample(size_t i) const override {return QPointF(d_x, d_y[int(i)]);};
+    QRectF boundingRect() const override {return qwtBoundingRect(*this);};
 
 private:
     QVector<double> d_y;
-	double d_x;
+	double d_x = 0.0;
 };
 
 #endif

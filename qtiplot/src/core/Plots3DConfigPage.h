@@ -63,46 +63,46 @@ private slots:
     void enableMinorGrids(bool on);
 
 private:
-    QGroupBox *groupBox3DCol;
-    ColorButton *btnBackground3D;
-    ColorButton *btnMesh;
-    ColorButton *btnAxes;
-    ColorButton *btnLabels;
-    ColorButton *btnNumbers;
-    ColorButton *btnGrid;
-    ColorButton *btnGridMinor;
+    QGroupBox *groupBox3DCol = nullptr;
+    ColorButton *btnBackground3D = nullptr;
+    ColorButton *btnMesh = nullptr;
+    ColorButton *btnAxes = nullptr;
+    ColorButton *btnLabels = nullptr;
+    ColorButton *btnNumbers = nullptr;
+    ColorButton *btnGrid = nullptr;
+    ColorButton *btnGridMinor = nullptr;
 
-    QGroupBox *colorMapBox;
-    ColorMapEditor *colorMapEditor;
+    QGroupBox *colorMapBox = nullptr;
+    ColorMapEditor *colorMapEditor = nullptr;
 
-    QGroupBox *groupBox3DFonts;
-    QPushButton *btnTitleFnt;
-    QPushButton *btnLabelsFnt;
-    QPushButton *btnNumFnt;
+    QGroupBox *groupBox3DFonts = nullptr;
+    QPushButton *btnTitleFnt = nullptr;
+    QPushButton *btnLabelsFnt = nullptr;
+    QPushButton *btnNumFnt = nullptr;
 
-    QGroupBox *gridsGroup;
-    QCheckBox *boxMajorGrids;
-    QCheckBox *boxMinorGrids;
-    QLabel *lblMajorGridWidth;
-    QLabel *lblMinorGridWidth;
-    QLabel *lblMajorGridStyle;
-    QLabel *lblMinorGridStyle;
-    DoubleSpinBox *boxMajorGridWidth;
-    DoubleSpinBox *boxMinorGridWidth;
-    QComboBox *boxMajorGridStyle;
-    QComboBox *boxMinorGridStyle;
+    QGroupBox *gridsGroup = nullptr;
+    QCheckBox *boxMajorGrids = nullptr;
+    QCheckBox *boxMinorGrids = nullptr;
+    QLabel *lblMajorGridWidth = nullptr;
+    QLabel *lblMinorGridWidth = nullptr;
+    QLabel *lblMajorGridStyle = nullptr;
+    QLabel *lblMinorGridStyle = nullptr;
+    DoubleSpinBox *boxMajorGridWidth = nullptr;
+    DoubleSpinBox *boxMinorGridWidth = nullptr;
+    QComboBox *boxMajorGridStyle = nullptr;
+    QComboBox *boxMinorGridStyle = nullptr;
 
-    QLabel *lblResolution;
-    QSpinBox *boxResolution;
-    QCheckBox *boxShowLegend;
-    QCheckBox *boxSmoothMesh;
-    QCheckBox *boxOrthogonal;
-    QCheckBox *boxAutoscale3DPlots;
-    QCheckBox *boxScaleFonts3DPlots;
-    QLabel *lblProjection;
-    QComboBox *boxProjection;
-    QLabel *lblShadingStyle;
-    QComboBox *boxShading;
+    QLabel *lblResolution = nullptr;
+    QSpinBox *boxResolution = nullptr;
+    QCheckBox *boxShowLegend = nullptr;
+    QCheckBox *boxSmoothMesh = nullptr;
+    QCheckBox *boxOrthogonal = nullptr;
+    QCheckBox *boxAutoscale3DPlots = nullptr;
+    QCheckBox *boxScaleFonts3DPlots = nullptr;
+    QLabel *lblProjection = nullptr;
+    QComboBox *boxProjection = nullptr;
+    QLabel *lblShadingStyle = nullptr;
+    QComboBox *boxShading = nullptr;
 
     QFont d_3D_title_font;
     QFont d_3D_numbers_font;

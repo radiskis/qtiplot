@@ -8,6 +8,16 @@
 #include "TableCommand.h"
 #include <ApplicationWindow.h>
 
+namespace {
+QString makeCommandTitle(Table *t, const QString &text)
+{
+	if (!t)
+		return text;
+	QString name = t->objectName();
+	return name.isEmpty() ? text : (name + ": " + text);
+}
+}
+
 TableEditCellCommand::TableEditCellCommand(Table *t, int row, int col, const QString& oldText,
 						const QString& newText, const QString & text,
 						bool hasOldVal, double oldVal, bool hasNewVal, double newVal):
@@ -22,7 +32,7 @@ d_has_new_val(hasNewVal),
 d_old_val(oldVal),
 d_new_val(newVal)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableEditCellCommand::redo()
@@ -58,7 +68,7 @@ d_start_col(startCol),
 d_old_names(oldNames),
 d_new_names(newNames)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetColNamesCommand::redo()
@@ -86,7 +96,7 @@ d_col(col),
 d_old_name(oldName),
 d_new_name(newName)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetColNameCommand::redo()
@@ -114,7 +124,7 @@ d_col(col),
 d_old_type(oldType),
 d_new_type(newType)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetColTypeCommand::redo()
@@ -144,7 +154,7 @@ d_new_type(newType),
 d_old_format(oldFormat),
 d_new_format(newFormat)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetColFormatCommand::redo()
@@ -172,7 +182,7 @@ d_col(col),
 d_old_comment(oldComment),
 d_new_comment(newComment)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetColCommentCommand::redo()
@@ -200,7 +210,7 @@ d_col(col),
 d_old_pd(oldPD),
 d_new_pd(newPD)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetPlotDesignationCommand::redo()
@@ -232,7 +242,7 @@ d_start_row(startRow),
 d_end_row(endRow),
 d_data(data)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableDeleteRowsCommand::redo()
@@ -269,7 +279,8 @@ d_table(t),
 d_row(row),
 d_count(count)
 {
-	setText(t->objectName() + ": " + (text.isEmpty() ? QObject::tr("Insert Rows") : text));
+	QString title = text.isEmpty() ? QObject::tr("Insert Rows") : text;
+	setText(makeCommandTitle(t, title));
 }
 
 void TableInsertRowCommand::redo()
@@ -296,7 +307,7 @@ d_start_col(startCol),
 d_count(count),
 d_names(names)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableAddColsCommand::redo()
@@ -336,7 +347,7 @@ d_plot_types(plotTypes),
 d_widths(widths),
 d_commands(commands)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableDeleteColsCommand::redo()
@@ -379,7 +390,7 @@ TableCommand(text),
 d_table(t),
 d_col(col)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableInsertColCommand::redo()
@@ -409,7 +420,7 @@ d_cols(cols),
 d_old_data(oldData),
 d_new_data(newData)
 {
-	setText(t->objectName() + ": " + text);
+	setText(makeCommandTitle(t, text));
 }
 
 void TableSetValuesCommand::redo()
@@ -457,8 +468,8 @@ d_table(t),
 d_col1(col1),
 d_col2(col2)
 {
-	if (t)
-		setText(t->objectName() + ": " + this->text());
+	QString title = text.isEmpty() ? QObject::tr("Swap Columns") : text;
+	setText(makeCommandTitle(t, title));
 }
 
 void TableSwapColumnsCommand::redo()
@@ -484,8 +495,8 @@ d_table(t),
 d_from(from),
 d_to(to)
 {
-	if (t)
-		setText(t->objectName() + ": " + this->text());
+	QString title = text.isEmpty() ? QObject::tr("Move Column") : text;
+	setText(makeCommandTitle(t, title));
 }
 
 void TableMoveColumnCommand::redo()
@@ -515,8 +526,8 @@ d_new_width(newWidth),
 d_all_cols(allCols),
 d_old_widths(oldWidths)
 {
-	if (t)
-		setText(t->objectName() + ": " + this->text());
+	QString title = text.isEmpty() ? QObject::tr("Set Column Width") : text;
+	setText(makeCommandTitle(t, title));
 }
 
 void TableSetColumnWidthCommand::redo()
@@ -551,8 +562,8 @@ d_col(col),
 d_old_state(oldState),
 d_new_state(newState)
 {
-	if (t)
-		setText(t->objectName() + ": " + this->text());
+	QString title = text.isEmpty() ? QObject::tr("Set Read Only") : text;
+	setText(makeCommandTitle(t, title));
 }
 
 void TableSetReadOnlyCommand::redo()

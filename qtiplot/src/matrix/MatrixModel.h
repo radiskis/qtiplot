@@ -114,23 +114,24 @@ public:
 
 private:
 	void init();
-	int d_rows, d_cols;
-	double *d_data;
-	Matrix *d_matrix;
+	int d_rows = 1;
+	int d_cols = 1;
+	double *d_data = nullptr;
+	Matrix *d_matrix = nullptr;
 	//! Format code for displaying numbers
-	char d_txt_format;
+	char d_txt_format = 'g';
 	//! Number of significant digits
-	int d_num_precision;
+	int d_num_precision = 6;
 	//! Locale used to display data
 	QLocale d_locale;
 	//! Flag telling if matrix values are calculated using formula_str
-	bool d_calculated_values;
+	bool d_calculated_values = false;
 
 	//! Smart pointers to GSL matrices used during inversion operations
 	GslRAII::UniqueMatrix d_direct_matrix, d_inv_matrix;
 	//! Smart pointer to a GSL permutation used during inversion operations
 	GslRAII::UniquePermutation d_inv_perm;
-	QSize d_data_block_size;
+	QSize d_data_block_size = QSize(1, 1);
 };
 
 #endif

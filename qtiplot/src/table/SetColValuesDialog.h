@@ -53,7 +53,7 @@ class SetColValuesDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    SetColValuesDialog( ScriptingEnv *env, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 	void setTable(Table* w);
 	void setCompleter(QCompleter *);
 
@@ -73,29 +73,30 @@ private slots:
 #endif
 
 private:
-	Table* table;
+	Table* table = nullptr;
 
-	QSize sizeHint() const ;
-	void customEvent( QEvent *e );
-	void closeEvent(QCloseEvent*);
+	QSize sizeHint() const override;
+	void customEvent( QEvent *e ) override;
+	void closeEvent(QCloseEvent *e) override;
 
-    QComboBox* functions;
-    QComboBox* boxColumn;
-    QPushButton* btnAddFunction;
-    QPushButton* btnAddCol;
-    QPushButton* btnCancel;
-    QPushButton *buttonPrev;
-    QPushButton *buttonNext;
-	QPushButton *buttonProperties;
-    QPushButton *addCellButton;
-    QPushButton *btnApply;
-	QPushButton* buttonClearFormulas;
-    ScriptEdit* commands;
-    QTextEdit* explain;
-	QSpinBox* start, *end;
-	QLabel *colNameLabel;
+    QComboBox* functions = nullptr;
+    QComboBox* boxColumn = nullptr;
+    QPushButton* btnAddFunction = nullptr;
+    QPushButton* btnAddCol = nullptr;
+    QPushButton* btnCancel = nullptr;
+    QPushButton *buttonPrev = nullptr;
+    QPushButton *buttonNext = nullptr;
+	QPushButton *buttonProperties = nullptr;
+    QPushButton *addCellButton = nullptr;
+    QPushButton *btnApply = nullptr;
+	QPushButton* buttonClearFormulas = nullptr;
+    ScriptEdit* commands = nullptr;
+    QTextEdit* explain = nullptr;
+	QSpinBox* start = nullptr;
+	QSpinBox* end = nullptr;
+	QLabel *colNameLabel = nullptr;
 #ifdef SCRIPTING_PYTHON
-	QCheckBox *boxMuParser;
+	QCheckBox *boxMuParser = nullptr;
 #endif
 };
 

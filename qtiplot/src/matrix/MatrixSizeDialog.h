@@ -49,30 +49,30 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-    MatrixSizeDialog(Matrix *m, QWidget* parent = 0, Qt::WindowFlags fl = {});
+    MatrixSizeDialog(Matrix *m, QWidget* parent = nullptr, Qt::WindowFlags fl = {});
 
 private slots:
 	//! Accept changes and quit
-	void accept();
+	void accept() override;
 	//! Apply changes
 	void apply();
 	void openValuesDialog();
 	void openPropertiesDialog();
 
 private:
-    QPushButton* buttonOk, *buttonApply;
-	QPushButton* buttonCancel;
-	QPushButton* buttonValues;
-	QPushButton* buttonProperties;
-	QGroupBox* coordinatesBox;
-	QGroupBox* xLabelsBox, *yLabelsBox, *zLabelsBox;
-	QSpinBox *boxCols, *boxRows;
-	QLineEdit *xLabelLineEdit, *yLabelLineEdit, *zLabelLineEdit;
-	QLineEdit *xUnitLineEdit, *yUnitLineEdit, *zUnitLineEdit;
-	QTextEdit *xCommentsTextEdit, *yCommentsTextEdit, *zCommentsTextEdit;
-	QTabWidget *tabsWidget;
-	DoubleSpinBox *boxXStart, *boxYStart, *boxXEnd, *boxYEnd;
-	Matrix *d_matrix;
+    QPushButton* buttonOk = nullptr, *buttonApply = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonValues = nullptr;
+	QPushButton* buttonProperties = nullptr;
+	QGroupBox* coordinatesBox = nullptr;
+	QGroupBox* xLabelsBox = nullptr, *yLabelsBox = nullptr, *zLabelsBox = nullptr;
+	QSpinBox *boxCols = nullptr, *boxRows = nullptr;
+	QLineEdit *xLabelLineEdit = nullptr, *yLabelLineEdit = nullptr, *zLabelLineEdit = nullptr;
+	QLineEdit *xUnitLineEdit = nullptr, *yUnitLineEdit = nullptr, *zUnitLineEdit = nullptr;
+	QTextEdit *xCommentsTextEdit = nullptr, *yCommentsTextEdit = nullptr, *zCommentsTextEdit = nullptr;
+	QTabWidget *tabsWidget = nullptr;
+	DoubleSpinBox *boxXStart = nullptr, *boxYStart = nullptr, *boxXEnd = nullptr, *boxYEnd = nullptr;
+	Matrix *d_matrix = nullptr;
 };
 
 #endif // MATRIXSIZEDIALOG_H

@@ -43,21 +43,21 @@ class CreateBinMatrixDialog : public QDialog
     Q_OBJECT
 
 public:
-    CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent = 0, Qt::WindowFlags fl = {});
+    CreateBinMatrixDialog(Table *t, int startRow, int endRow, QWidget* parent = nullptr, Qt::WindowFlags fl = {});
 
 public slots:
-	void accept();
+	void accept() override;
 
 signals:
 	void options(const QString&);
 
 private:
-    QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-	DoubleSpinBox *xMinBox, *xMaxBox, *yMinBox, *yMaxBox;
-	QSpinBox *rowsBox, *colsBox;
+    QPushButton* buttonOk = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	DoubleSpinBox *xMinBox = nullptr, *xMaxBox = nullptr, *yMinBox = nullptr, *yMaxBox = nullptr;
+	QSpinBox *rowsBox = nullptr, *colsBox = nullptr;
 	Ref<Table> d_table;
-	int d_start_row, d_end_row, d_x_col, d_y_col;
+	int d_start_row = 0, d_end_row = 0, d_x_col = -1, d_y_col = -1;
 };
 
 #endif

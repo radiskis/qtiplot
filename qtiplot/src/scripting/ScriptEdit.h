@@ -54,10 +54,10 @@ class ScriptEdit: public QTextEdit, public scripted
   Q_OBJECT
 
   public:
-    ScriptEdit(ScriptingEnv *env, QWidget *parent=0, const QString& name = QString());
-  	~ScriptEdit();
+    ScriptEdit(ScriptingEnv *env, QWidget *parent = nullptr, const QString& name = QString());
+  	~ScriptEdit() override;
 	//! Handle changing of scripting environment.
-    void customEvent(QEvent*);
+    void customEvent(QEvent*) override;
   	//! Map cursor positions to line numbers.
     int lineNumber(int pos) const;
 	bool hasError(){return d_error;};
@@ -101,19 +101,19 @@ class ScriptEdit: public QTextEdit, public scripted
 	void activated(ScriptEdit *);
 
   protected:
-    virtual void contextMenuEvent(QContextMenuEvent *e);
-    virtual void keyPressEvent(QKeyEvent *e);
-    void focusInEvent(QFocusEvent *e);
+    void contextMenuEvent(QContextMenuEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
+    void focusInEvent(QFocusEvent *e) override;
 
   private:
 	void clearErrorHighlighting();
 	void highlightErrorLine(int offset);
 
-    Script *myScript;
-    QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionImport, *actionSave, *actionExport;
-    QAction *actionFind, *actionReplace, *actionFindNext, *actionFindPrevious;
+    Script *myScript = nullptr;
+    QAction *actionExecute = nullptr, *actionExecuteAll = nullptr, *actionEval = nullptr, *actionPrint = nullptr, *actionImport = nullptr, *actionSave = nullptr, *actionExport = nullptr;
+    QAction *actionFind = nullptr, *actionReplace = nullptr, *actionFindNext = nullptr, *actionFindPrevious = nullptr;
   	//! Submenu of context menu with mathematical functions.
-  	QMenu *functionsMenu;
+  	QMenu *functionsMenu = nullptr;
   	//! Cursor used for output of evaluation results and error messages.
   	QTextCursor printCursor;
   	QString scriptsDirPath;
@@ -121,15 +121,15 @@ class ScriptEdit: public QTextEdit, public scripted
     //! Format used for resetting success/failure markers.
 	QTextBlockFormat d_fmt_default;
 	//! True if we are inside evaluate(), execute() or executeAll() there were errors.
-	bool d_error;
+	bool d_error = false;
 	QString d_err_message;
 
-	QCompleter *d_completer;
-	QSyntaxHighlighter *d_highlighter;
+	QCompleter *d_completer = nullptr;
+	QSyntaxHighlighter *d_highlighter = nullptr;
 	QString d_file_name;
 	QString d_search_string;
 	QTextDocument::FindFlags d_search_flags;
-	QTextEdit *d_output_widget;
+	QTextEdit *d_output_widget = nullptr;
 
   private slots:
 	  //! Insert an error message from the scripting system at printCursor.
@@ -160,6 +160,7 @@ class TextBlockData : public QTextBlockUserData
 {
 public:
     TextBlockData(){};
+    ~TextBlockData() override { qDeleteAll(m_parentheses); }
 
     QVector<ParenthesisInfo *> parentheses(){return m_parentheses;};
     void insert(ParenthesisInfo *info)

@@ -412,27 +412,33 @@ void PlotController3D::insert3DMatrixPlot(const QString& matrix_name)
 
 void PlotController3D::insertNew3DData(const QString& colName)
 {
-
 	if (!d_app) return;
 
 	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
-	g->insertNewData(d_app->table(colName),colName);
+	Table *t = d_app->table(colName);
+	if (!t)
+		return;
+
+	g->insertNewData(t, colName);
 	emit d_app->modified();
 }
 
 void PlotController3D::change3DData(const QString& colName)
 {
-
 	if (!d_app) return;
 
 	Graph3D *g = d_app->activeWindow<Graph3D>();
     if (!g)
 		return;
 
-	g->changeDataColumn(d_app->table(colName), colName, g->tablePlotType());
+	Table *t = d_app->table(colName);
+	if (!t)
+		return;
+
+	g->changeDataColumn(t, colName, g->tablePlotType());
 	emit d_app->modified();
 }
 

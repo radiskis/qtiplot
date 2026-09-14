@@ -55,23 +55,23 @@ private slots:
     void showPointsBox(bool);
 
 private:
-    QGroupBox *groupBoxFittingCurve;
-    QRadioButton *samePointsBtn;
-    QRadioButton *generatePointsBtn;
-    QLabel *lblPoints;
-    QSpinBox *generatePointsBox;
-    QCheckBox *linearFit2PointsBox;
-    QGroupBox *groupBoxFitParameters;
-    QCheckBox *scaleErrorsBox;
-    QCheckBox *logBox;
-    QCheckBox *plotLabelBox;
-    QLabel *lblPrecision;
-    QSpinBox *boxPrecision;
-    QGroupBox *groupBoxMultiPeak;
-    QCheckBox *generatePeaksBox;
-    QLabel *lblPeaksColor;
-    ColorButton *boxPeaksColor;
-    QCheckBox *boxMultiPeakMsgs;
+    QGroupBox *groupBoxFittingCurve = nullptr;
+    QRadioButton *samePointsBtn = nullptr;
+    QRadioButton *generatePointsBtn = nullptr;
+    QLabel *lblPoints = nullptr;
+    QSpinBox *generatePointsBox = nullptr;
+    QCheckBox *linearFit2PointsBox = nullptr;
+    QGroupBox *groupBoxFitParameters = nullptr;
+    QCheckBox *scaleErrorsBox = nullptr;
+    QCheckBox *logBox = nullptr;
+    QCheckBox *plotLabelBox = nullptr;
+    QLabel *lblPrecision = nullptr;
+    QSpinBox *boxPrecision = nullptr;
+    QGroupBox *groupBoxMultiPeak = nullptr;
+    QCheckBox *generatePeaksBox = nullptr;
+    QLabel *lblPeaksColor = nullptr;
+    ColorButton *boxPeaksColor = nullptr;
+    QCheckBox *boxMultiPeakMsgs = nullptr;
 };
 
 #endif // FITTING_CONFIG_PAGE_H

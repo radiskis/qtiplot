@@ -46,7 +46,7 @@ public:
 	* \param format format used to display numbers: has the same meaning as in QLocale::toString ( double i, char f = 'g', int prec = 6 )
 	* \param parent parent widget (only affects placement of the dialog)
 	*/
-    DoubleSpinBox(const char format = 'g', QWidget * parent = 0);
+    DoubleSpinBox(const char format = 'g', QWidget * parent = nullptr);
 
 	void setSingleStep(double val);
 	void setMaximum(double max);
@@ -65,7 +65,7 @@ public:
 	void setFormat(const char format, int prec = 1){d_format = format; setDecimals(prec);};
 
 	QString textFromValue ( double value ) const;
-	virtual QValidator::State validate ( QString & input, int & pos ) const;
+	virtual QValidator::State validate ( QString & input, int & pos ) const override;
 
 signals:
 	void valueChanged ( double d );
@@ -76,17 +76,17 @@ private slots:
 	void interpretText();
 
 protected:
-	void stepBy ( int steps );
-	StepEnabled stepEnabled () const;
-	void focusInEvent(QFocusEvent *);
+	void stepBy ( int steps ) override;
+	StepEnabled stepEnabled () const override;
+	void focusInEvent(QFocusEvent *) override;
 
 private:
-    char d_format;
-	double d_min_val;
-	double d_max_val;
-	double d_value;
-	double d_step;
-	int d_prec;
+    char d_format = 'g';
+	double d_min_val = 0.0;
+	double d_max_val = 0.0;
+	double d_value = 0.0;
+	double d_step = 1.0;
+	int d_prec = 6;
 	QString d_prefix;
 };
 
@@ -96,14 +96,14 @@ class RangeLimitBox : public QWidget
 public:
 	enum LimitType{LeftLimit, RightLimit};
 
-    RangeLimitBox(LimitType type, QWidget * parent = 0);	
+    RangeLimitBox(LimitType type, QWidget * parent = nullptr);	
 	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
 	double value();
 	bool isChecked(){return d_checkbox->isChecked();};
 
 private:
-    DoubleSpinBox *d_spin_box;
-    QCheckBox *d_checkbox;
-	LimitType d_type;
+    DoubleSpinBox *d_spin_box = nullptr;
+    QCheckBox *d_checkbox = nullptr;
+	LimitType d_type = LeftLimit;
 };
 #endif // FITDIALOG_H

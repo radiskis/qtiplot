@@ -38,7 +38,7 @@
 
 Note::Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name, Qt::WindowFlags f)
 		 : MdiSubWindow(label, parent, name, f), d_env(env),
-		 d_line_number_enabled(parent->d_note_line_numbers)
+		 d_line_number_enabled(parent ? parent->d_note_line_numbers : true)
 {
 	init(env);
 }

@@ -46,8 +46,8 @@ public:
 	QString formula(){return d_formula;};
 	void setFormula(const QString& s){d_formula = s;};
 	
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-	virtual QString saveToString();
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
+	QString saveToString() override;
 	
 	void clone(TexWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
@@ -57,10 +57,10 @@ public:
 	void setBestSize();
 
 private:
-	void paintEvent(QPaintEvent *e);
+	void paintEvent(QPaintEvent *e) override;
 	QPixmap d_pix;
 	QString d_formula;
-	int d_margin;
+	int d_margin = 5;
 };
 
 #endif

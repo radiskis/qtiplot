@@ -53,14 +53,14 @@ public slots:
 
 private:
 	QList<DataCurve *> d_curves;
-	Graph *d_graph;
+	Graph *d_graph = nullptr;
 
-    QPushButton* buttonOK;
-	QPushButton* buttonCancel;
-	QLabel* boxName;
-	QSpinBox* boxStart;
-	QSpinBox* boxEnd;
-	QCheckBox* boxApplyToAll;
+    QPushButton* buttonOK = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QLabel* boxName = nullptr;
+	QSpinBox* boxStart = nullptr;
+	QSpinBox* boxEnd = nullptr;
+	QCheckBox* boxApplyToAll = nullptr;
 };
 
 #endif

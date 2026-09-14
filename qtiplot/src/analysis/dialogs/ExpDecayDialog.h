@@ -58,21 +58,21 @@ private slots:
 private:
     void closeEvent (QCloseEvent *);
 
-    Fit *fitter;
-	Graph *graph;
-	int slopes;
+    Fit *fitter = nullptr;
+	Graph *graph = nullptr;
+	int slopes = 1;
 
-	QPushButton* buttonFit;
-	QPushButton* buttonCancel;
-	QComboBox* boxName;
-	DoubleSpinBox* boxAmplitude;
-	DoubleSpinBox* boxFirst;
-	DoubleSpinBox* boxSecond;
-	DoubleSpinBox* boxThird;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxYOffset;
-	QLabel* thirdLabel, *dampingLabel;
-	ColorButton* boxColor;
+	QPushButton* buttonFit = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QComboBox* boxName = nullptr;
+	DoubleSpinBox* boxAmplitude = nullptr;
+	DoubleSpinBox* boxFirst = nullptr;
+	DoubleSpinBox* boxSecond = nullptr;
+	DoubleSpinBox* boxThird = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxYOffset = nullptr;
+	QLabel* thirdLabel = nullptr, *dampingLabel = nullptr;
+	ColorButton* boxColor = nullptr;
 };
 
 #endif

@@ -37,10 +37,10 @@
 class ImportExportPlugin
 {
 public:
-	virtual ~ImportExportPlugin(){}
+	virtual ~ImportExportPlugin() = default;
 
 	virtual QStringList importFormats(){return QStringList();};
-	virtual Table* import(const QString & /*fileName*/, int /*sheet*/ = -1){return 0;}
+	virtual Table* import(const QString & /*fileName*/, int /*sheet*/ = -1){return nullptr;}
 
 	virtual QStringList exportFormats() const {return QStringList();};
 	virtual bool exportTable(Table *, const QString& /*fname*/, bool /*withLabels*/, bool /*exportComments*/, bool /*exportSelection*/){return false;}
@@ -52,7 +52,7 @@ public:
 	ApplicationWindow *applicationWindow(){return d_app;};
 
 private:
-	ApplicationWindow *d_app;
+	ApplicationWindow *d_app = nullptr;
 };
 
 Q_DECLARE_INTERFACE(ImportExportPlugin, "com.ProIndependent.QtiPlot.ImportExportPlugin/1.0")

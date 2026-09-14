@@ -180,28 +180,29 @@ void MatrixModel::setDimensions(int rows, int cols)
 
 double MatrixModel::cell(int row, int col)
 {
-	int i = d_cols*row + col;
-	if (i < 0 || i >= d_rows*d_cols)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return NAN;
 
-	return d_data[i];
+	return d_data[d_cols*row + col];
 }
 
 void MatrixModel::setCell(int row, int col, double val)
 {
-	int i = d_cols*row + col;
-	if (i < 0 || i >= d_rows*d_cols)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return;
 
-	d_data[i] = val;
+	d_data[d_cols*row + col] = val;
 }
 
 QString MatrixModel::text(int row, int col)
 {
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+		return QString();
+
 	int i = d_cols*row + col;
 	double val = d_data[i];
-	if (i < 0 || i >= d_rows*d_cols || isnan(val))
-		return "";
+	if (isnan(val))
+		return QString();
 
 	if (d_matrix){
 		QLocale locale = d_matrix->locale();
@@ -212,10 +213,10 @@ QString MatrixModel::text(int row, int col)
 
 void MatrixModel::setText(int row, int col, const QString& text)
 {
-	int i = d_cols*row + col;
-	if (i < 0 || i>= d_rows*d_cols)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return;
 
+	int i = d_cols*row + col;
 	if (text.isEmpty())
 		d_data[i] = NAN;
 	else {
@@ -228,11 +229,10 @@ void MatrixModel::setText(int row, int col, const QString& text)
 
 double MatrixModel::data(int row, int col) const
 {
-	int i = d_cols*row + col;
-	if (i < 0 || i>= d_rows*d_cols)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return 0.0;
 
-	return d_data[i];
+	return d_data[d_cols*row + col];
 }
 
 double MatrixModel::x(int col) const
@@ -299,7 +299,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
+	if (!index.isValid() || index.row() < 0 || index.row() >= d_rows || index.column() < 0 || index.column() >= d_cols || !d_data)
 		return QVariant();
 
 	int i = d_cols*index.row() + index.column();
@@ -318,7 +318,17 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 
 bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-	if (!index.isValid())
+	if (!index.isValid() || index.row() < 0 || index.column() < 0 || !d_data)
+		return false;
+
+	if (index.row() >= d_rows) {
+		if (!insertRows(d_rows, index.row() - d_rows + 1))
+			return false;
+		if (d_matrix)
+			d_matrix->resetView();
+	}
+
+	if (index.column() >= d_cols)
 		return false;
 
 	int i = d_cols*index.row() + index.column();
@@ -338,12 +348,6 @@ bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int
 			else
 				return false;
 		}
-	}
-
-	if(index.row() + 1 >= d_rows){
-		insertRows(d_rows, 1);
-		if (d_matrix)
-			d_matrix->resetView();
 	}
 
 	if (d_matrix) {
@@ -385,6 +389,9 @@ bool MatrixModel::canResize(int rows, int cols)
 
 bool MatrixModel::removeColumns(int column, int count, const QModelIndex & parent)
 {
+	if (column < 0 || count <= 0 || column + count > d_cols || !d_data)
+		return false;
+
 	beginRemoveColumns(parent, column, column + count - 1);
 
 	d_cols -= count;
@@ -409,6 +416,9 @@ bool MatrixModel::removeColumns(int column, int count, const QModelIndex & paren
 
 bool MatrixModel::insertColumns(int column, int count, const QModelIndex & parent)
 {
+	if (column < 0 || column > d_cols || count <= 0)
+		return false;
+
 	if (!canResize(d_rows, d_cols + count))
 		return false;
 
@@ -436,6 +446,9 @@ bool MatrixModel::insertColumns(int column, int count, const QModelIndex & paren
 
 bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
 {
+	if (row < 0 || row > d_rows || count <= 0)
+		return false;
+
 	if (!canResize(d_rows + count, d_cols))
 		return false;
 
@@ -458,6 +471,9 @@ bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
 
 bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 {
+	if (row < 0 || count <= 0 || row + count > d_rows || !d_data)
+		return false;
+
 	beginRemoveRows(parent, row, row + count - 1);
 
 	d_rows -= count;
@@ -790,6 +806,13 @@ bool MatrixModel::initWorkspace()
 
 void MatrixModel::invert()
 {
+	if (d_rows != d_cols || d_rows <= 0 || !d_data) {
+		if (d_matrix)
+			QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Error"),
+				tr("Inversion failed, the matrix is not square!"));
+		return;
+	}
+
 	initWorkspace();
 	if(!d_direct_matrix || !d_inv_matrix || !d_inv_perm)
 		return;
@@ -819,10 +842,17 @@ void MatrixModel::invert()
 
 void MatrixModel::clear(int startRow, int endRow, int startCol, int endCol)
 {
-	if (endRow < 0)
+	if (startRow < 0)
+		startRow = 0;
+	if (startCol < 0)
+		startCol = 0;
+	if (endRow < 0 || endRow >= d_rows)
 		endRow = d_rows - 1;
-	if (endCol < 0)
+	if (endCol < 0 || endCol >= d_cols)
 		endCol = d_cols - 1;
+
+	if (startRow > endRow || startCol > endCol || !d_data)
+		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	for (int i = startRow; i <= endRow; i++){
@@ -837,14 +867,18 @@ void MatrixModel::clear(int startRow, int endRow, int startCol, int endCol)
 
 std::vector<double> MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCol)
 {
-	if (endRow < 0)
+	if (startRow < 0)
+		startRow = 0;
+	if (startCol < 0)
+		startCol = 0;
+	if (endRow < 0 || endRow >= d_rows)
 		endRow = d_rows - 1;
-	if (endCol < 0)
+	if (endCol < 0 || endCol >= d_cols)
 		endCol = d_cols - 1;
 
 	int num_rows = endRow - startRow + 1;
 	int num_cols = endCol - startCol + 1;
-	if (num_rows <= 0 || num_cols <= 0)
+	if (num_rows <= 0 || num_cols <= 0 || !d_data)
 		return {};
 
 	std::vector<double> buffer;
@@ -870,6 +904,9 @@ std::vector<double> MatrixModel::dataCopy(int startRow, int endRow, int startCol
 
 bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int endCol)
 {
+	if (!d_matrix)
+		return false;
+
 	if (d_matrix->formula().count("\n") > 0){
 		QString mess = tr("Multiline expressions take much more time to evaluate! Do you want to continue anyways?");
 		if (QMessageBox::Yes != QMessageBox::warning(matrix(), tr("QtiPlot") + " - " + tr("Warning"), mess,
@@ -918,13 +955,14 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 			r = row + 1.0;
 			*ri = r; *rr = r;
 			*y = y_start + row*dy;
-			int aux = row*d_cols + startCol;
 			for(int col = startCol; col <= endCol; col++){
 				c = col + 1.0;
 				*cj = c; *cc = c;
 				*x = x_start + col*dx;
-				d_data[aux++] = mup->evalSingleLine();
+				setCell(row, col, mup->evalSingleLine());
 			}
+			if ((row - startRow) % 10 == 0)
+				qApp->processEvents();
 		}
 	} else {
 		QVariant res;
@@ -932,16 +970,15 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 			r = row + 1.0;
 			*ri = r; *rr = r;
 			*y = y_start + row*dy;
-			int aux = row*d_cols + startCol;
 			for(int col = startCol; col <= endCol; col++){
 				c = col + 1.0;
 				*cj = c; *cc = c;
 				*x = x_start + col*dx;
 				res = mup->eval();
 				if (res.canConvert<double>())
-					 d_data[aux++] = res.toDouble();
+					setCell(row, col, res.toDouble());
 				else
-					d_data[aux++] = NAN;
+					setCell(row, col, NAN);
 			}
 			if ((row - startRow) % 10 == 0)
 				qApp->processEvents();
@@ -956,6 +993,9 @@ bool MatrixModel::muParserCalculate(int startRow, int endRow, int startCol, int 
 
 bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 {
+	if (!d_matrix)
+		return false;
+
 	QString formula = d_matrix->formula();
 	if (formula.isEmpty())
 		return false;
@@ -963,7 +1003,7 @@ bool MatrixModel::calculate(int startRow, int endRow, int startCol, int endCol)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	ScriptingEnv *scriptEnv = d_matrix->scriptingEnv();
-	std::unique_ptr<Script> script(scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(objectName())));
+	std::unique_ptr<Script> script(scriptEnv->newScript(formula, d_matrix, QString("<%1>").arg(d_matrix->objectName())));
 	connect(script.get(), &Script::error, scriptEnv, &ScriptingEnv::error);
 	connect(script.get(), &Script::print, scriptEnv, &ScriptingEnv::print);
 
@@ -1090,13 +1130,19 @@ void MatrixModel::fft(bool inverse)
 
 void MatrixModel::pasteData(const double *clipboardBuffer, int topRow, int leftCol, int rows, int cols)
 {
+	if (!clipboardBuffer || rows <= 0 || cols <= 0 || topRow < 0 || leftCol < 0)
+		return;
+
 	int newCols = leftCol + cols;
-	if (newCols > d_cols)
-		insertColumns(d_cols, newCols - d_cols);
+	if (newCols > d_cols && !insertColumns(d_cols, newCols - d_cols))
+		return;
 
 	int newRows = topRow + rows;
-	if (newRows > d_rows)
-		insertRows(d_rows, newRows - d_rows);
+	if (newRows > d_rows && !insertRows(d_rows, newRows - d_rows))
+		return;
+
+	if (!d_data)
+		return;
 
 	int cell = 0;
 	int bottomRow = newRows - 1;

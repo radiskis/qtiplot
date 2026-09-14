@@ -64,16 +64,16 @@ private:
 
 	Ref<Graph> d_graph;
 	Ref<Table> d_table;
-	QPushButton* buttonFit;
-	QPushButton* buttonCancel;
-	QComboBox* boxName;
-	QCheckBox *boxSortData;
-	QCheckBox *boxShowPlot;
-	QCheckBox *boxShowTable;
-	QSpinBox *boxStartRow;
-	QSpinBox *boxEndRow;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxEnd;
+	QPushButton* buttonFit = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QComboBox* boxName = nullptr;
+	QCheckBox *boxSortData = nullptr;
+	QCheckBox *boxShowPlot = nullptr;
+	QCheckBox *boxShowTable = nullptr;
+	QSpinBox *boxStartRow = nullptr;
+	QSpinBox *boxEndRow = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxEnd = nullptr;
 };
 
 #endif

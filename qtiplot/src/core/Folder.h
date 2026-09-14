@@ -123,10 +123,10 @@ protected:
     QString birthdate, modifDate;
 	QString d_log_info;
     QList<MdiSubWindow *> lstWindows;
-	FolderListItem *myFolderListItem;
+	FolderListItem *myFolderListItem = nullptr;
 
 	//! Pointer to the active window in the folder
-	MdiSubWindow *d_active_window;
+	MdiSubWindow *d_active_window = nullptr;
 };
 
 /*****************************************************************************
@@ -146,7 +146,7 @@ public:
     MdiSubWindow *window() { return myWindow; };
 
 protected:
-    MdiSubWindow *myWindow;
+    MdiSubWindow *myWindow = nullptr;
 };
 
 /*****************************************************************************
@@ -201,7 +201,7 @@ public:
     }
 
 protected:
-    Folder *myFolder;
+    Folder *myFolder = nullptr;
 };
 
 /*****************************************************************************
@@ -215,7 +215,7 @@ class FolderListView : public QTreeWidget
     Q_OBJECT
 
 public:
-    FolderListView( QWidget *parent = 0, const char *name = 0 );
+    FolderListView( QWidget *parent = nullptr, const char *name = nullptr );
 
 public slots:
 	void adjustColumns();
@@ -235,16 +235,20 @@ protected slots:
     void onItemChanged(QTreeWidgetItem *item, int col);
 
 protected:
-	void startDrag(Qt::DropActions supportedActions);
+	void startDrag(Qt::DropActions supportedActions) override;
 
-    void dropEvent( QDropEvent *e );
-    void mouseMoveEvent( QMouseEvent *e );
-    void mousePressEvent( QMouseEvent *e );
-	void mouseDoubleClickEvent( QMouseEvent* e );
-    void contextMenuEvent( QContextMenuEvent *e );
-	void keyPressEvent ( QKeyEvent * e );
-    void mouseReleaseEvent( QMouseEvent *){mousePressed = false;};
-	void enterEvent(QEvent *){mousePressed = false;};
+    void dropEvent( QDropEvent *e ) override;
+    void mouseMoveEvent( QMouseEvent *e ) override;
+    void mousePressEvent( QMouseEvent *e ) override;
+	void mouseDoubleClickEvent( QMouseEvent* e ) override;
+    void contextMenuEvent( QContextMenuEvent *e ) override;
+	void keyPressEvent ( QKeyEvent * e ) override;
+    void mouseReleaseEvent( QMouseEvent *) override { mousePressed = false; }
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	void enterEvent(QEnterEvent *) override { mousePressed = false; }
+#else
+	void enterEvent(QEvent *) override { mousePressed = false; }
+#endif
 
 signals:
 	void dragItems(QList<QTreeWidgetItem *> items);
@@ -256,7 +260,7 @@ signals:
 	void deleteSelection();
 
 private:
-	bool mousePressed;
+	bool mousePressed = false;
 	QPoint presspos;
 };
 

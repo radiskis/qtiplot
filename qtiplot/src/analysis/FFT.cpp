@@ -296,8 +296,12 @@ void FFT::outputGraphs()
 		return;
 
 	createOutputGraph();
+	if (!d_output_graph)
+		return;
 
 	MultiLayer *ml = d_output_graph->multiLayer();
+	if (!ml)
+		return;
 
 	d_output_graph->setTitle(QString());
 	d_output_graph->setYAxisTitle(tr("Phase (rad)"));
@@ -320,34 +324,43 @@ void FFT::outputGraphs()
 		sd->enableComponent(QwtAbstractScaleDraw::Backbone, false);
 	}
 
-	QString tableName = d_result_table->objectName();
-	PlotCurve *pc = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Angle"), 0);
-	pc->setPen(QPen(d_curveColor, 1));
+	if (d_result_table) {
+		QString tableName = d_result_table->objectName();
+		PlotCurve *pc = d_output_graph->insertCurve(d_result_table, 0, tableName + "_" + tr("Angle"), 0);
+		if (pc)
+			pc->setPen(QPen(d_curveColor, 1));
+	}
 	d_output_graph->removeLegend();
 	d_output_graph->updatePlot();
 
 	Graph *g = ml->addLayer(0, 0, 0, 0, true);
-	g->setTitle(QString());
-	if (!d_inverse)
-		g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
-	else
-		g->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
-	g->setYAxisTitle(tr("Amplitude"));
-	g->removeLegend();
+	if (g) {
+		g->setTitle(QString());
+		if (!d_inverse)
+			g->setXAxisTitle(tr("Frequency") + " (" + tr("Hz") + ")");
+		else
+			g->setXAxisTitle(tr("Time") + + " (" + tr("s") + ")");
+		g->setYAxisTitle(tr("Amplitude"));
+		g->removeLegend();
 
-	sd = g->axisScaleDraw(QwtPlot::xTop);
-	if (sd)
-		sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
+		sd = g->axisScaleDraw(QwtPlot::xTop);
+		if (sd)
+			sd->setShowTicksPolicy(ScaleDraw::HideBeginEnd);
 
-	PlotCurve *c = g->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
-	c->setPen(QPen(d_curveColor, 1));
-	g->updatePlot();
+		if (d_result_table) {
+			QString tableName = d_result_table->objectName();
+			PlotCurve *c = g->insertCurve(d_result_table, 0, tableName + "_" + tr("Amplitude"), 0);
+			if (c)
+				c->setPen(QPen(d_curveColor, 1));
+		}
+		g->updatePlot();
 
-	double rb = g->axisScaleDiv(QwtPlot::xBottom).upperBound();
-	d_output_graph->setAxisScale(QwtPlot::xBottom, 0, rb);
-	d_output_graph->setAxisScale(QwtPlot::xTop, 0, rb);
-	g->setAxisScale(QwtPlot::xBottom, 0, rb);
-	g->setAxisScale(QwtPlot::xTop, 0, rb);
+		double rb = g->axisScaleDiv(QwtPlot::xBottom).upperBound();
+		d_output_graph->setAxisScale(QwtPlot::xBottom, 0, rb);
+		d_output_graph->setAxisScale(QwtPlot::xTop, 0, rb);
+		g->setAxisScale(QwtPlot::xBottom, 0, rb);
+		g->setAxisScale(QwtPlot::xTop, 0, rb);
+	}
 
 	ml->setAlignPolicy(MultiLayer::AlignCanvases);
 	ml->setRows(2);
@@ -365,12 +378,13 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 	if (!t)
 		return false;
 
-	d_real_col = d_table->colIndex(realColName);
+	d_table = t;
+	d_real_col = t->colIndex(realColName);
 	if (d_real_col < 0 || t->columnType(d_real_col) != Table::Numeric)
 		return false;
 
     if (!imagColName.isEmpty()){
-        d_imag_col = d_table->colIndex(imagColName);
+        d_imag_col = t->colIndex(imagColName);
 		if (d_imag_col < 0 || t->columnType(d_imag_col) != Table::Numeric)
 			return false;
 	}
@@ -380,9 +394,6 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 		from = 0;
 	if (to < 0 || to >= t->numRows())
 		to = t->numRows() - 1;
-
-    if (t && d_table != t)
-        d_table = t;
 
     freeMemory();
 
@@ -399,7 +410,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 		return false;
 	};
 
-    d_x = static_cast<double *>(malloc(d_n * sizeof(double)));
+    d_x = static_cast<double *>(calloc(d_n, sizeof(double)));
 	if (!d_x){
 		memoryErrorMessage();
 		free(d_y);
@@ -409,9 +420,9 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
 
 	for (int i = 0; i < d_n; i++) {
 		int i2 = 2 * i;
-		d_y[i2] = d_table->cell(i, d_real_col);
+		d_y[i2] = d_table->cell(i + from, d_real_col);
 		if (d_imag_col >= 0)
-			d_y[i2+1] = d_table->cell(i, d_imag_col);
+			d_y[i2+1] = d_table->cell(i + from, d_imag_col);
 	}
 	return true;
 }

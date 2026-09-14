@@ -52,7 +52,7 @@ class MatrixValuesDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    MatrixValuesDialog( ScriptingEnv *env, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 	void setMatrix(Matrix *m);
     void setCompleter(QCompleter *);
 
@@ -67,23 +67,23 @@ private slots:
 #endif
 
 private:
-	Matrix *matrix;
+	Matrix *matrix = nullptr;
 
-	QSize sizeHint() const ;
-	void customEvent( QEvent *e);
-	void closeEvent(QCloseEvent*);
+	QSize sizeHint() const override;
+	void customEvent( QEvent *e) override;
+	void closeEvent(QCloseEvent *e) override;
 
-	ScriptEdit* commands;
-    QComboBox* functions;
-    QPushButton* btnAddFunction;
-	QPushButton* btnAddCell;
-    QPushButton* btnCancel;
-    QTextEdit* explain;
-	QSpinBox *startRow, *endRow, *startCol, *endCol;
-	QPushButton *btnApply;
-	QPushButton *buttonProperties;
+	ScriptEdit* commands = nullptr;
+    QComboBox* functions = nullptr;
+    QPushButton* btnAddFunction = nullptr;
+	QPushButton* btnAddCell = nullptr;
+    QPushButton* btnCancel = nullptr;
+    QTextEdit* explain = nullptr;
+	QSpinBox *startRow = nullptr, *endRow = nullptr, *startCol = nullptr, *endCol = nullptr;
+	QPushButton *btnApply = nullptr;
+	QPushButton *buttonProperties = nullptr;
 #ifdef SCRIPTING_PYTHON
-	QCheckBox *boxMuParser;
+	QCheckBox *boxMuParser = nullptr;
 #endif
 };
 

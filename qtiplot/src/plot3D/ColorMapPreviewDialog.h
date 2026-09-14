@@ -37,13 +37,13 @@ class ColorMapPreviewDialog : public ExtensibleFileDialog
 {
 	Q_OBJECT
 	public:
-		ColorMapPreviewDialog(QWidget *parent = 0, Qt::WindowFlags flags= {});
+		ColorMapPreviewDialog(QWidget *parent = nullptr, Qt::WindowFlags flags = {});
 
     public slots:
 		void updatePreview(const QString&);
 	
 	private:
-		QLabel *d_preview_label;
+		QLabel *d_preview_label = nullptr;
 };
 
 #endif

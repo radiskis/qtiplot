@@ -85,6 +85,8 @@ Filter::Filter( ApplicationWindow *parent, Matrix *m, const QString& name)
 void Filter::init()
 {
 	d_n = 0;
+	d_x = nullptr;
+	d_y = nullptr;
 	d_curveColor = Qt::red;
 	d_tolerance = 1e-4;
 	d_points = 100;
@@ -539,9 +541,11 @@ PlotCurve* Filter::addResultCurve(double *x, double *y)
 		if (!d_output_graph)
 			createOutputGraph();
 
-		d_output_graph->insertPlotItem(c, Graph::Line);
-		if (d_update_output_graph)
-			d_output_graph->updatePlot();
+		if (d_output_graph) {
+			d_output_graph->insertPlotItem(c, Graph::Line);
+			if (d_update_output_graph)
+				d_output_graph->updatePlot();
+		}
 
 		d_result_curve = c;
 	}

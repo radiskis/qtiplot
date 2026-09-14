@@ -54,19 +54,19 @@ public:
 	ErrDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
 
 private:
-	QLabel* textLabel1;
-	QComboBox* nameLabel, *tableNamesBox, *colNamesBox;
-	QGroupBox *groupBox2;
-	QGroupBox *groupBox1, *groupBox3;
-	QButtonGroup *buttonGroup1, *buttonGroup2;
-	QRadioButton* standardBox, *columnBox;
-	QRadioButton* percentBox;
-	QRadioButton* standardErrorBox;
-	DoubleSpinBox* valueBox;
-	QRadioButton* xErrBox;
-	QRadioButton* yErrBox;
-	QPushButton* buttonAdd;
-	QPushButton* buttonCancel;
+	QLabel* textLabel1 = nullptr;
+	QComboBox* nameLabel = nullptr, *tableNamesBox = nullptr, *colNamesBox = nullptr;
+	QGroupBox *groupBox2 = nullptr;
+	QGroupBox *groupBox1 = nullptr, *groupBox3 = nullptr;
+	QButtonGroup *buttonGroup1 = nullptr, *buttonGroup2 = nullptr;
+	QRadioButton* standardBox = nullptr, *columnBox = nullptr;
+	QRadioButton* percentBox = nullptr;
+	QRadioButton* standardErrorBox = nullptr;
+	DoubleSpinBox* valueBox = nullptr;
+	QRadioButton* xErrBox = nullptr;
+	QRadioButton* yErrBox = nullptr;
+	QPushButton* buttonAdd = nullptr;
+	QPushButton* buttonCancel = nullptr;
 	QList<MdiSubWindow*> srcTables;
 
 protected slots:

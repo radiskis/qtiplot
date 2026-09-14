@@ -62,21 +62,21 @@ private:
 	void fftTable();
 	void fftMatrix();
 
-    double d_sampling;
+    double d_sampling = 1.0;
     //! Flag telling if an inverse FFT must be performed.
-    bool d_inverse;
+    bool d_inverse = false;
     //! Flag telling if the amplitudes in the output spectrum must be normalized.
-    bool d_normalize;
+    bool d_normalize = true;
     //! Flag telling if the output frequencies must be shifted in order to have a zero-centered spectrum.
-    bool d_shift_order;
+    bool d_shift_order = true;
 
-    int d_real_col, d_imag_col;
+    int d_real_col = -1, d_imag_col = -1;
 
 	Ref<Matrix> d_im_matrix;
 	Ref<Matrix> d_re_out_matrix;
 	Ref<Matrix> d_im_out_matrix;
 	Ref<Matrix> d_amp_matrix;
-	bool d_power2;
+	bool d_power2 = true;
 };
 
 #endif

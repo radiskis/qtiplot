@@ -52,7 +52,7 @@ class ExtensibleFileDialog : public QFileDialog
 		 * \param extended flag: show/hide the advanced options on start-up
 		 * \param flags window flags
 		 */
-		ExtensibleFileDialog(QWidget *parent=0, bool extended = true, Qt::WindowFlags flags= {});
+		ExtensibleFileDialog(QWidget *parent = nullptr, bool extended = true, Qt::WindowFlags flags = {});
 		//! Set the extension widget to be displayed when the user presses the toggle button.
 		void setExtensionWidget(QWidget *extension);
 	
@@ -71,13 +71,13 @@ class ExtensibleFileDialog : public QFileDialog
 
 	protected:
 		//! Button for toggling display of extension on/off.
-		QPushButton *d_extension_toggle;
+		QPushButton *d_extension_toggle = nullptr;
 
 	private:
 		//! The extension widget
-		QWidget *d_extension;
+		QWidget *d_extension = nullptr;
 		//! The layout row (of the assumed QGridLayout) used for extensions
-		int d_extension_row;
+		int d_extension_row = 0;
 };
 
 #endif // ifndef EXTENSIBLE_FILE_DIALOG_H

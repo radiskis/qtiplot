@@ -40,23 +40,23 @@ class SortDialog : public QDialog
     Q_OBJECT
 
 public:
-    SortDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    SortDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
     void insertColumnsList(const QStringList& cols);
 
 private slots:
-	void accept();
+	void accept() override;
 	void changeType(int index);
 
 signals:
 	void sort(int, int, const QString&);
 
 private:
-    QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-	QPushButton* buttonHelp;
-	QComboBox* boxType;
-	QComboBox* boxOrder;
-	QComboBox *columnsList;
+    QPushButton* buttonOk = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonHelp = nullptr;
+	QComboBox* boxType = nullptr;
+	QComboBox* boxOrder = nullptr;
+	QComboBox *columnsList = nullptr;
 };
 
 #endif

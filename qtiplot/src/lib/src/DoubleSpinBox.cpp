@@ -99,7 +99,7 @@ void DoubleSpinBox::interpretText()
 		try {
 			parser.SetExpr(s.toLatin1().constData());
 			value = parser.Eval();
-		} catch (mu::ParserError &e){
+		} catch (mu::ParserError &){
 			lineEdit()->setText(textFromValue(d_value));
 			return;
 		}

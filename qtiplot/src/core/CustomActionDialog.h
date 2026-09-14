@@ -51,7 +51,7 @@ public:
 	 * \param parent parent widget (must be the application window!=
 	 * \param fl window flags
 	 */
-    CustomActionDialog( QWidget* parent, Qt::WindowFlags fl = {} );
+    CustomActionDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private slots:
 	void chooseIcon();
@@ -80,13 +80,13 @@ private:
 	QList<QMenu *> d_menus;
 	QList<QToolBar *> d_app_toolbars;
 
-    QListWidget *itemsList;
-    QPushButton *buttonCancel, *buttonAdd, *buttonRemove, *buttonSave;
-    QPushButton *folderBtn, *fileBtn, *iconBtn;
-    QLineEdit *folderBox, *fileBox, *iconBox, *textBox, *toolTipBox, *shortcutBox;
-    QRadioButton *menuBtn, *toolBarBtn;
-    QComboBox *menuBox, *toolBarBox;
-    QPushButton *newMenuBtn, *removeMenuBtn;
+    QListWidget *itemsList = nullptr;
+    QPushButton *buttonCancel = nullptr, *buttonAdd = nullptr, *buttonRemove = nullptr, *buttonSave = nullptr;
+    QPushButton *folderBtn = nullptr, *fileBtn = nullptr, *iconBtn = nullptr;
+    QLineEdit *folderBox = nullptr, *fileBox = nullptr, *iconBox = nullptr, *textBox = nullptr, *toolTipBox = nullptr, *shortcutBox = nullptr;
+    QRadioButton *menuBtn = nullptr, *toolBarBtn = nullptr;
+    QComboBox *menuBox = nullptr, *toolBarBox = nullptr;
+    QPushButton *newMenuBtn = nullptr, *removeMenuBtn = nullptr;
 };
 
 

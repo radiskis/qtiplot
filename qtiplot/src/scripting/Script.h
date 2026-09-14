@@ -53,10 +53,10 @@ class Script : public QObject, public Tracked<Script>
   Q_OBJECT
 
   public:
-    Script(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>")
-      : Env(env), Code(code), Name(name), compiled(notCompiled)
-      { Env->incref(); Context = context; EmitErrors=true; }
-    ~Script() { Env->decref(); }
+    Script(ScriptingEnv *env, const QString &code, QObject *context = nullptr, const QString &name = "<input>")
+      : Env(env), Code(code), Name(name), Context(context), compiled(notCompiled), EmitErrors(true)
+      { if (Env) Env->incref(); }
+    ~Script() override { if (Env) Env->decref(); }
 
     //! Return the code that will be executed when calling exec() or eval()
     const QString code() const { return Code; }
@@ -87,6 +87,7 @@ class Script : public QObject, public Tracked<Script>
     virtual bool exec();
 
     // local variables
+    virtual bool setQObject(QObject*, const char*) { return false; }
     virtual bool setQObject(const QObject*, const char*) { return false; }
     virtual bool setInt(int, const char*) { return false; }
     virtual bool setDouble(double, const char*) { return false; }
@@ -100,11 +101,11 @@ class Script : public QObject, public Tracked<Script>
     void print(const QString & output);
 
   protected:
-    ScriptingEnv *Env;
+    ScriptingEnv *Env = nullptr;
     QString Code, Name;
-    QObject *Context;
-    enum compileStatus { notCompiled, isCompiled, compileErr } compiled;
-    bool EmitErrors;
+    QObject *Context = nullptr;
+    enum compileStatus { notCompiled, isCompiled, compileErr } compiled = notCompiled;
+    bool EmitErrors = true;
 
     void emit_error(const QString & message, int lineNumber)
       { if(EmitErrors) emit error(message, Name, lineNumber); }

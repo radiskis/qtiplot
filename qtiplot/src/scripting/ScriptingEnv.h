@@ -61,7 +61,7 @@ class ScriptingEnv : public QObject
     virtual bool isRunning() const { return false; }
 
     //! Instantiate the Script subclass matching the ScriptEnv subclass.
-    virtual Script *newScript(const QString&, QObject*, const QString&) { return 0; }
+    virtual Script *newScript(const QString&, QObject*, const QString&) { return nullptr; }
 
     QString name() const { return objectName(); }
 
@@ -108,14 +108,14 @@ class ScriptingEnv : public QObject
 
   protected:
     //! whether the interpreter has been successfully initialized
-    bool d_initialized;
+    bool d_initialized = false;
     //! the context in which we are running
-    ApplicationWindow *d_parent;
+    ApplicationWindow *d_parent = nullptr;
     int d_last_exit_status = 0;
 
   private:
     //! the reference counter
-    int d_refcount;
+    int d_refcount = 0;
 };
 
 #endif

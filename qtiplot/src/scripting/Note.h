@@ -47,7 +47,7 @@ class Note: public MdiSubWindow
 public:
 
 	Note(ScriptingEnv *env, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
-	~Note(){};
+	~Note() override = default;
 
 	void init(ScriptingEnv *env);
 	void setObjectName(const QString& name);
@@ -58,8 +58,8 @@ public:
 	int tabs(){return d_tab_widget->count();};
     void renameTab(int, const QString&);
 
-	void save(const QString& fn, const QString &info, bool = false);
-	void restore(const QStringList&, int fileVersion, bool fromTemplate = false);
+	void save(const QString& fn, const QString &info, bool = false) override;
+	void restore(const QStringList&, int fileVersion, bool fromTemplate = false) override;
 
 public slots:
 	bool autoexec() const { return autoExec; }
@@ -69,9 +69,9 @@ public slots:
 	// ScriptEdit methods
         QString text() { if(currentEditor()) return currentEditor()->toPlainText(); return QString();};
         void setText(const QString &s) { if(currentEditor()) currentEditor()->setText(s); };
-        void print() { if(currentEditor()) currentEditor()->print(); };
-        void print(QPrinter *printer) { if(currentEditor()) currentEditor()->print(printer); };
-        void exportPDF(const QString& fileName){if(currentEditor()) currentEditor()->exportPDF(fileName);};
+        void print() override { if(currentEditor()) currentEditor()->print(); };
+        void print(QPrinter *printer) override { if(currentEditor()) currentEditor()->print(printer); };
+        void exportPDF(const QString& fileName) override {if(currentEditor()) currentEditor()->exportPDF(fileName);};
         QString exportASCII(const QString &file=QString()) { if(currentEditor()) return currentEditor()->exportASCII(file); return QString();};
         QString importASCII(const QString &file=QString()){ if(currentEditor()) return currentEditor()->importASCII(file); return QString();};
         void execute() { if(currentEditor()) currentEditor()->execute(); };
@@ -95,11 +95,11 @@ public slots:
 private:
 	void saveTab(int index, const QString &fn);
 
-	ScriptingEnv *d_env;
-	QWidget *d_frame;
-	QTabWidget *d_tab_widget;
-	bool d_line_number_enabled;
-	bool autoExec;
+	ScriptingEnv *d_env = nullptr;
+	QWidget *d_frame = nullptr;
+	QTabWidget *d_tab_widget = nullptr;
+	bool d_line_number_enabled = true;
+	bool autoExec = false;
 };
 
 #endif

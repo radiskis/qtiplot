@@ -884,6 +884,8 @@ void ScriptEdit::matchParentheses()
 bool ScriptEdit::matchLeftParenthesis(QTextBlock currentBlock, int i, int numLeftParentheses)
 {
     TextBlockData *data = static_cast<TextBlockData *>(currentBlock.userData());
+    if (!data)
+        return false;
     QVector<ParenthesisInfo *> infos = data->parentheses();
 
     int docPos = currentBlock.position();
@@ -912,6 +914,8 @@ bool ScriptEdit::matchLeftParenthesis(QTextBlock currentBlock, int i, int numLef
 bool ScriptEdit::matchRightParenthesis(QTextBlock currentBlock, int i, int numRightParentheses)
 {
     TextBlockData *data = static_cast<TextBlockData *>(currentBlock.userData());
+    if (!data)
+        return false;
     QVector<ParenthesisInfo *> parentheses = data->parentheses();
 
     int docPos = currentBlock.position();

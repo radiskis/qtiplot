@@ -80,22 +80,22 @@ private:
 	void updatePenColumn();
 
 	//! Table displaying the values ranges in the first column and their corresponding pens in the second column
-	QTableWidget *table;
-	QPushButton *insertBtn, *deleteBtn;
-	Spectrogram *d_spectrogram;
+	QTableWidget *table = nullptr;
+	QPushButton *insertBtn = nullptr, *deleteBtn = nullptr;
+	Spectrogram *d_spectrogram = nullptr;
 
 	//! Locale settings used to display level values
 	QLocale d_locale;
 	//! Precision used to display level values
-	int d_precision;
+	int d_precision = 6;
 
-	QDialog *penDialog;
-	ColorButton *penColorBox;
-	PenStyleBox *penStyleBox;
-	DoubleSpinBox *penWidthBox;
-	QCheckBox *applyAllColorBox, *applyAllWidthBox, *applyAllStyleBox;
+	QDialog *penDialog = nullptr;
+	ColorButton *penColorBox = nullptr;
+	PenStyleBox *penStyleBox = nullptr;
+	DoubleSpinBox *penWidthBox = nullptr;
+	QCheckBox *applyAllColorBox = nullptr, *applyAllWidthBox = nullptr, *applyAllStyleBox = nullptr;
 
-	int d_pen_index;
+	int d_pen_index = -1;
 	QList<QPen> d_pen_list;
 };
 

@@ -48,7 +48,7 @@ class ProjectManager : public QObject
 
 public:
 	explicit ProjectManager(ApplicationWindow *app);
-	virtual ~ProjectManager();
+	~ProjectManager() override;
 
 	//! Project lifecycle workflows
 	void newProject();
@@ -85,8 +85,8 @@ public:
 	bool isFileReadable(const QString& fn) const;
 
 private:
-	ApplicationWindow *d_app;
-	bool d_autosave_suspended{false};
+	ApplicationWindow *d_app = nullptr;
+	bool d_autosave_suspended = false;
 };
 
 #endif // PROJECT_MANAGER_H

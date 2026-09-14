@@ -83,25 +83,25 @@ private:
     QSize sizeHint() const;
     void contextMenuEvent(QContextMenuEvent *);
 
-	Graph *d_graph;
+	Graph *d_graph = nullptr;
 
-    QPushButton* btnAdd;
-    QPushButton* btnRemove;
-    QPushButton* btnOK;
-    QPushButton* btnCancel;
-	QPushButton* btnAssociations;
-	QPushButton* btnEditFunction;
-	QPushButton* btnRange;
-    QTreeWidget* available;
-    QListWidget* contents;
-	QComboBox* boxStyle;
-	QComboBox* boxMatrixStyle;
-	QCheckBox* boxShowRange;
-	QCheckBox* boxShowCurrentFolder;
-	QPushButton* btnUp;
-	QPushButton* btnDown;
-	QComboBox* boxXAxis;
-	QComboBox* boxYAxis;
+    QPushButton* btnAdd = nullptr;
+    QPushButton* btnRemove = nullptr;
+    QPushButton* btnOK = nullptr;
+    QPushButton* btnCancel = nullptr;
+	QPushButton* btnAssociations = nullptr;
+	QPushButton* btnEditFunction = nullptr;
+	QPushButton* btnRange = nullptr;
+    QTreeWidget* available = nullptr;
+    QListWidget* contents = nullptr;
+	QComboBox* boxStyle = nullptr;
+	QComboBox* boxMatrixStyle = nullptr;
+	QCheckBox* boxShowRange = nullptr;
+	QCheckBox* boxShowCurrentFolder = nullptr;
+	QPushButton* btnUp = nullptr;
+	QPushButton* btnDown = nullptr;
+	QComboBox* boxXAxis = nullptr;
+	QComboBox* boxYAxis = nullptr;
 };
 
 /*****************************************************************************
@@ -119,7 +119,7 @@ public:
 	Folder *folder() { return myFolder; };
 
 protected:
-	Folder *myFolder;
+	Folder *myFolder = nullptr;
 };
 
 #endif // CurvesDialog_H

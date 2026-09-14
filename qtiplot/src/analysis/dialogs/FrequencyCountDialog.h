@@ -55,14 +55,14 @@ private:
     Ref<Table> d_result_table;
     QString d_col_name;
     GslRAII::UniqueVector d_col_values;
-	int d_bins;
+	int d_bins = 0;
 
-    QPushButton* buttonApply;
-	QPushButton* buttonCancel;
-	QPushButton* buttonOk;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxEnd;
-	DoubleSpinBox* boxStep;
+    QPushButton* buttonApply = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonOk = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxEnd = nullptr;
+	DoubleSpinBox* boxStep = nullptr;
 };
 
 #endif

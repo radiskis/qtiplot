@@ -45,7 +45,7 @@ public:
 
 	void copy(const ErrorBarsCurve *e);
 
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	double errorValue(int i);
 	QVector<double> errors(){return err;};
@@ -82,14 +82,14 @@ public:
 	//! Causes the master curve to delete this curve from its managed error bars list.
 	void detachFromMasterCurve(){d_master_curve->removeErrorBars(this);};
 
-	QStringList plotAssociation();
+	QStringList plotAssociation() override;
 
-	bool updateData(Table *t, const QString& colName);
-	void loadData();
+	bool updateData(Table *t, const QString& colName) override;
+	void loadData() override;
 
 private:
-	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+	void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 	void drawErrorBars(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
@@ -100,15 +100,15 @@ private:
     QVector<double> err;
 
 	//! Orientation of the bars: Horizontal or Vertical
-	int type;
+	int type = Vertical;
 
 	//! Length of the bar cap decoration
-	double d_cap_length;
+	double d_cap_length = 0.0;
 
-	bool plus, minus, through;
+	bool plus = true, minus = true, through = false;
 
 	//! Reference to the master curve to which this error bars curve is attached.
-	DataCurve *d_master_curve;
+	DataCurve *d_master_curve = nullptr;
 };
 
 #endif

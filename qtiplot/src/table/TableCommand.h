@@ -47,7 +47,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_start_col;
+	int d_start_col = 0;
 	QStringList d_old_names, d_new_names;
 };
 
@@ -64,10 +64,10 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_row, d_col;
+	int d_row = 0, d_col = 0;
 	QString d_old_text, d_new_text;
-	bool d_has_old_val, d_has_new_val;
-	double d_old_val, d_new_val;
+	bool d_has_old_val = false, d_has_new_val = false;
+	double d_old_val = 0.0, d_new_val = 0.0;
 };
 
 class TableSetColNameCommand: public TableCommand
@@ -79,7 +79,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
+	int d_col = 0;
 	QString d_old_name, d_new_name;
 };
 
@@ -92,8 +92,8 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
-	Table::ColType d_old_type, d_new_type;
+	int d_col = 0;
+	Table::ColType d_old_type = Table::Numeric, d_new_type = Table::Numeric;
 };
 
 class TableSetColFormatCommand: public TableCommand
@@ -106,8 +106,8 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
-	Table::ColType d_old_type, d_new_type;
+	int d_col = 0;
+	Table::ColType d_old_type = Table::Numeric, d_new_type = Table::Numeric;
 	QString d_old_format, d_new_format;
 };
 
@@ -120,7 +120,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
+	int d_col = 0;
 	QString d_old_comment, d_new_comment;
 };
 
@@ -133,8 +133,8 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
-	Table::PlotDesignation d_old_pd, d_new_pd;
+	int d_col = 0;
+	Table::PlotDesignation d_old_pd = Table::None, d_new_pd = Table::None;
 };
 
 
@@ -154,7 +154,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_start_row, d_end_row;
+	int d_start_row = 0, d_end_row = 0;
 	QList<QStringList> d_data;
 };
 
@@ -167,8 +167,8 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_row;
-	int d_count;
+	int d_row = 0;
+	int d_count = 1;
 };
 
 class TableAddColsCommand: public TableCommand
@@ -180,7 +180,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_start_col, d_count;
+	int d_start_col = 0, d_count = 0;
 	QStringList d_names;
 };
 
@@ -203,7 +203,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_start_col, d_end_col;
+	int d_start_col = 0, d_end_col = 0;
 	QList<QStringList> d_cell_data;
 	QStringList d_names, d_comments, d_formats, d_widths, d_commands;
 	QList<int> d_types, d_plot_types;
@@ -218,7 +218,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
+	int d_col = 0;
 };
 
 class TableSetValuesCommand: public TableCommand
@@ -239,7 +239,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_start_row, d_end_row;
+	int d_start_row = 0, d_end_row = 0;
 	QList<int> d_cols;
 	QList<QStringList> d_old_data, d_new_data;
 };
@@ -253,7 +253,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col1, d_col2;
+	int d_col1 = 0, d_col2 = 0;
 };
 
 class TableMoveColumnCommand: public TableCommand
@@ -265,7 +265,7 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_from, d_to;
+	int d_from = 0, d_to = 0;
 };
 
 class TableSetColumnWidthCommand: public TableCommand
@@ -278,9 +278,9 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
-	int d_old_width, d_new_width;
-	bool d_all_cols;
+	int d_col = 0;
+	int d_old_width = 0, d_new_width = 0;
+	bool d_all_cols = false;
 	QList<int> d_old_widths;
 };
 
@@ -293,8 +293,8 @@ public:
 
 private:
 	QPointer<Table> d_table;
-	int d_col;
-	bool d_old_state, d_new_state;
+	int d_col = 0;
+	bool d_old_state = false, d_new_state = false;
 };
 
 #endif

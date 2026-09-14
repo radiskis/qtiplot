@@ -48,7 +48,7 @@ class ActionManager : public QObject
 
 public:
     explicit ActionManager(ApplicationWindow *app);
-    virtual ~ActionManager();
+    ~ActionManager() override;
 
     void createActions();
     void initToolBars();
@@ -94,7 +94,7 @@ public:
     void windowsMenuAboutToShow();
 
 private:
-    ApplicationWindow *d_app;
+    ApplicationWindow *d_app = nullptr;
     QMap<QString, QAction*> d_actions;
 };
 

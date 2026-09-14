@@ -69,32 +69,32 @@ private:
 	void acceptAnova();
 #endif
 	void outputResults(StatisticTest* stats, const QString& s);
-	StatisticTest::TestType d_test_type;
-	bool d_two_way;
+	StatisticTest::TestType d_test_type = StatisticTest::AnovaTest;
+	bool d_two_way = false;
 
-	QListWidget* availableSamples;
-	QTreeWidget *selectedSamples;
+	QListWidget* availableSamples = nullptr;
+	QTreeWidget *selectedSamples = nullptr;
 
-	QCheckBox *currentFolderBox;
-	QCheckBox *showInteractionsBox;
-	QCheckBox *showStatisticsBox;
+	QCheckBox *currentFolderBox = nullptr;
+	QCheckBox *showInteractionsBox = nullptr;
+	QCheckBox *showStatisticsBox = nullptr;
 
-	QPushButton* btnAdd;
-	QPushButton* btnRemove;
-	QPushButton* buttonOk;
+	QPushButton* btnAdd = nullptr;
+	QPushButton* btnRemove = nullptr;
+	QPushButton* buttonOk = nullptr;
 
-	QComboBox* boxModel;
+	QComboBox* boxModel = nullptr;
 
-	QSpinBox *aLevelsBox;
-	QSpinBox *bLevelsBox;
-	DoubleSpinBox* boxSignificance;
+	QSpinBox *aLevelsBox = nullptr;
+	QSpinBox *bLevelsBox = nullptr;
+	DoubleSpinBox* boxSignificance = nullptr;
 
-	CollapsiveGroupBox *outputSettingsBox;
-	QCheckBox *boxResultsTable;
-	QLineEdit *tableNameLineEdit;
-	QCheckBox *boxResultsLog;
-	QCheckBox *boxNoteWindow;
-	QLineEdit *noteNameLineEdit;
+	CollapsiveGroupBox *outputSettingsBox = nullptr;
+	QCheckBox *boxResultsTable = nullptr;
+	QLineEdit *tableNameLineEdit = nullptr;
+	QCheckBox *boxResultsLog = nullptr;
+	QCheckBox *boxNoteWindow = nullptr;
+	QLineEdit *noteNameLineEdit = nullptr;
 
 	Ref<Table> d_table;
 	Ref<Note> d_note;

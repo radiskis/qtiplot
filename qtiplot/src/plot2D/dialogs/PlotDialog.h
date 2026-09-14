@@ -234,155 +234,155 @@ private:
     void updateContourLevelsDisplay(Spectrogram *sp);
     QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);
 
-	double aspect_ratio, plot_aspect_ratio;
+	double aspect_ratio = 0.0, plot_aspect_ratio = 0.0;
 
     QFont titleFont, legendFont, axesFont, numbersFont;
 
-    MultiLayer *d_ml;
+    MultiLayer *d_ml = nullptr;
 	QStringList columnNames;
 
-	DoubleSpinBox* boxX, *boxY, *boxLayerWidth, *boxLayerHeight;
-	QCheckBox *keepRatioBox;
+	DoubleSpinBox* boxX = nullptr, *boxY = nullptr, *boxLayerWidth = nullptr, *boxLayerHeight = nullptr;
+	QCheckBox *keepRatioBox = nullptr;
 
-    QPushButton *btnTitle, *btnAxesLabels, *btnAxesNumbers, *btnLegend;
-	ColorMapEditor *colorMapEditor;
-	QWidget *curvePlotTypeBox, *layerPage, *layerGeometryPage, *piePage, *fontsPage, *printPage;
-	QWidget *layerDisplayPage, *speedPage, *functionPage, *canvasPage;
-    QTreeWidget* listBox;
-	QCheckBox *boxAntialiasing, *boxScaleLayers, *boxPrintCrops, *boxAutoscaling, *boxSynchronizeScales, *boxGridPosition, *boxMissingData;
-    ColorButton *boxBorderColor, *boxBackgroundColor, *boxCanvasColor;
-	QSpinBox *boxBackgroundTransparency, *boxCanvasTransparency, *boxBorderWidth, *boxMargin;
-	QSpinBox *boxRadius;
-	DoubleSpinBox *boxPieLineWidth;
-    ColorBox *boxFirstColor;
-    ColorButton *boxPieLineColor;
-    PatternBox *boxPiePattern;
-    PenStyleBox* boxPieLineStyle;
-	QLineEdit *imagePathBox;
-	QComboBox *imageApplyToBox;
-	QRadioButton *colorBtn, *imageBtn;
-	QGroupBox *canvasColorBox, *canvasImageBox;
+    QPushButton *btnTitle = nullptr, *btnAxesLabels = nullptr, *btnAxesNumbers = nullptr, *btnLegend = nullptr;
+	ColorMapEditor *colorMapEditor = nullptr;
+	QWidget *curvePlotTypeBox = nullptr, *layerPage = nullptr, *layerGeometryPage = nullptr, *piePage = nullptr, *fontsPage = nullptr, *printPage = nullptr;
+	QWidget *layerDisplayPage = nullptr, *speedPage = nullptr, *functionPage = nullptr, *canvasPage = nullptr;
+    QTreeWidget* listBox = nullptr;
+	QCheckBox *boxAntialiasing = nullptr, *boxScaleLayers = nullptr, *boxPrintCrops = nullptr, *boxAutoscaling = nullptr, *boxSynchronizeScales = nullptr, *boxGridPosition = nullptr, *boxMissingData = nullptr;
+    ColorButton *boxBorderColor = nullptr, *boxBackgroundColor = nullptr, *boxCanvasColor = nullptr;
+	QSpinBox *boxBackgroundTransparency = nullptr, *boxCanvasTransparency = nullptr, *boxBorderWidth = nullptr, *boxMargin = nullptr;
+	QSpinBox *boxRadius = nullptr;
+	DoubleSpinBox *boxPieLineWidth = nullptr;
+    ColorBox *boxFirstColor = nullptr;
+    ColorButton *boxPieLineColor = nullptr;
+    PatternBox *boxPiePattern = nullptr;
+    PenStyleBox* boxPieLineStyle = nullptr;
+	QLineEdit *imagePathBox = nullptr;
+	QComboBox *imageApplyToBox = nullptr;
+	QRadioButton *colorBtn = nullptr, *imageBtn = nullptr;
+	QGroupBox *canvasColorBox = nullptr, *canvasImageBox = nullptr;
 
-    QPushButton* buttonApply, *btnWorksheet;
-    QPushButton* buttonOk, *btnMore;
-    QPushButton* buttonCancel;
-    QComboBox* boxPlotType;
-    QWidget* linePage;
-    QComboBox* boxConnect;
-    PenStyleBox* boxLineStyle;
-    DoubleSpinBox *boxLineWidth, *boxPenWidth;
-    ColorButton* boxLineColor, *boxAreaColor;
-    QWidget* symbolPage;
-    QSpinBox* boxSymbolSize;
-    ColorButton *boxSymbolColor, *boxFillColor;
-    SymbolBox* boxSymbolStyle;
-    PatternBox *boxPattern;
-	QTabWidget* privateTabWidget;
-	QWidget *errorsPage, *spectrogramPage, *contourLinesPage;
-	QGroupBox* fillGroupBox;
-    QCheckBox* plusBox;
-    QCheckBox* minusBox;
-    QCheckBox* xBox;
-    ColorButton *colorBox, *levelsColorBox, *vectColorBox;
-    DoubleSpinBox* widthBox;
-    QComboBox* capBox;
-    QCheckBox* throughBox;
-	QLabel *labelPosition, *labelXEnd, *labelYEnd;
-	QGroupBox* GroupBoxH;
-	QWidget *histogramPage, *spacingPage;
-	DoubleSpinBox *binSizeBox, *histogramBeginBox, *histogramEndBox;
-	QCheckBox *automaticBox;
-	QPushButton* buttonStatistics, *btnEditCurve, *buttonBoxStatistics, *btnEditCurveRange;
-	QSpinBox* gapBox, *offsetBox, *boxWidth;
-	QWidget *vectPage, *boxPage, *percentilePage, *axesPage;
-	QComboBox *xEndBox, *yEndBox, *boxType, *boxWhiskersType, *boxWhiskersRange, *boxRange;
-	QSpinBox* headAngleBox, *headLengthBox, *boxPercSize;
-	DoubleSpinBox *vectWidthBox, *boxEdgeWidth;
-	QCheckBox *filledHeadBox;
-	QSpinBox *boxCoef, *boxWhiskersCoef;
-	QCheckBox *boxFillSymbols, *boxFillSymbol;
-	ColorButton *boxPercFillColor, *boxEdgeColor;
-	QLabel 	*whiskerCoeffLabel, *whiskerRangeLabel, *boxCoeffLabel;
-	QLabel *boxRangeLabel, *whiskerCntLabel, *boxCntLabel;
-	QGroupBox *GroupBoxVectEnd;
-	QComboBox *vectPosBox, *boxXAxis, *boxYAxis, *colorScaleBox;
-	PenStyleBox	*boxContourStyle;
-  	QSpinBox *levelsBox, *colorScaleWidthBox;
-	DoubleSpinBox *contourWidthBox;
-  	QGroupBox *levelsGroupBox, *axisScaleBox, *imageGroupBox;
-  	QGroupBox *defaultPenBox;
-  	QRadioButton *defaultScaleBox, *grayScaleBox, *customScaleBox, *defaultContourBox, *autoContourBox;
+    QPushButton* buttonApply = nullptr, *btnWorksheet = nullptr;
+    QPushButton* buttonOk = nullptr, *btnMore = nullptr;
+    QPushButton* buttonCancel = nullptr;
+    QComboBox* boxPlotType = nullptr;
+    QWidget* linePage = nullptr;
+    QComboBox* boxConnect = nullptr;
+    PenStyleBox* boxLineStyle = nullptr;
+    DoubleSpinBox *boxLineWidth = nullptr, *boxPenWidth = nullptr;
+    ColorButton* boxLineColor = nullptr, *boxAreaColor = nullptr;
+    QWidget* symbolPage = nullptr;
+    QSpinBox* boxSymbolSize = nullptr;
+    ColorButton *boxSymbolColor = nullptr, *boxFillColor = nullptr;
+    SymbolBox* boxSymbolStyle = nullptr;
+    PatternBox *boxPattern = nullptr;
+	QTabWidget* privateTabWidget = nullptr;
+	QWidget *errorsPage = nullptr, *spectrogramPage = nullptr, *contourLinesPage = nullptr;
+	QGroupBox* fillGroupBox = nullptr;
+    QCheckBox* plusBox = nullptr;
+    QCheckBox* minusBox = nullptr;
+    QCheckBox* xBox = nullptr;
+    ColorButton *colorBox = nullptr, *levelsColorBox = nullptr, *vectColorBox = nullptr;
+    DoubleSpinBox* widthBox = nullptr;
+    QComboBox* capBox = nullptr;
+    QCheckBox* throughBox = nullptr;
+	QLabel *labelPosition = nullptr, *labelXEnd = nullptr, *labelYEnd = nullptr;
+	QGroupBox* GroupBoxH = nullptr;
+	QWidget *histogramPage = nullptr, *spacingPage = nullptr;
+	DoubleSpinBox *binSizeBox = nullptr, *histogramBeginBox = nullptr, *histogramEndBox = nullptr;
+	QCheckBox *automaticBox = nullptr;
+	QPushButton* buttonStatistics = nullptr, *btnEditCurve = nullptr, *buttonBoxStatistics = nullptr, *btnEditCurveRange = nullptr;
+	QSpinBox* gapBox = nullptr, *offsetBox = nullptr, *boxWidth = nullptr;
+	QWidget *vectPage = nullptr, *boxPage = nullptr, *percentilePage = nullptr, *axesPage = nullptr;
+	QComboBox *xEndBox = nullptr, *yEndBox = nullptr, *boxType = nullptr, *boxWhiskersType = nullptr, *boxWhiskersRange = nullptr, *boxRange = nullptr;
+	QSpinBox* headAngleBox = nullptr, *headLengthBox = nullptr, *boxPercSize = nullptr;
+	DoubleSpinBox *vectWidthBox = nullptr, *boxEdgeWidth = nullptr;
+	QCheckBox *filledHeadBox = nullptr;
+	QSpinBox *boxCoef = nullptr, *boxWhiskersCoef = nullptr;
+	QCheckBox *boxFillSymbols = nullptr, *boxFillSymbol = nullptr;
+	ColorButton *boxPercFillColor = nullptr, *boxEdgeColor = nullptr;
+	QLabel 	*whiskerCoeffLabel = nullptr, *whiskerRangeLabel = nullptr, *boxCoeffLabel = nullptr;
+	QLabel *boxRangeLabel = nullptr, *whiskerCntLabel = nullptr, *boxCntLabel = nullptr;
+	QGroupBox *GroupBoxVectEnd = nullptr;
+	QComboBox *vectPosBox = nullptr, *boxXAxis = nullptr, *boxYAxis = nullptr, *colorScaleBox = nullptr;
+	PenStyleBox	*boxContourStyle = nullptr;
+  	QSpinBox *levelsBox = nullptr, *colorScaleWidthBox = nullptr;
+	DoubleSpinBox *contourWidthBox = nullptr;
+  	QGroupBox *levelsGroupBox = nullptr, *axisScaleBox = nullptr, *imageGroupBox = nullptr;
+  	QGroupBox *defaultPenBox = nullptr;
+  	QRadioButton *defaultScaleBox = nullptr, *grayScaleBox = nullptr, *customScaleBox = nullptr, *defaultContourBox = nullptr, *autoContourBox = nullptr;
 
-	QCheckBox *boxWhiskerLabels, *boxBoxLabels;
-	QComboBox *boxWhiskersFormatApplyToBox, *boxLabelsFormatApplyToBox, *percentileFormatApplyToBox;
-    SymbolBox *boxMaxStyle, *boxMinStyle, *boxMeanStyle, *box99Style, *box1Style;
-    QDoubleSpinBox *whiskerCnt, *boxCnt;
+	QCheckBox *boxWhiskerLabels = nullptr, *boxBoxLabels = nullptr;
+	QComboBox *boxWhiskersFormatApplyToBox = nullptr, *boxLabelsFormatApplyToBox = nullptr, *percentileFormatApplyToBox = nullptr;
+    SymbolBox *boxMaxStyle = nullptr, *boxMinStyle = nullptr, *boxMeanStyle = nullptr, *box99Style = nullptr, *box1Style = nullptr;
+    QDoubleSpinBox *whiskerCnt = nullptr, *boxCnt = nullptr;
     //!Labels page
-    QGroupBox *labelsGroupBox;
-    DoubleSpinBox *boxLabelsAngle;
-    QSpinBox *boxLabelsXOffset, *boxLabelsYOffset;
-    QCheckBox *boxLabelsWhiteOut;
-    QPushButton *btnLabelsFont;
-    QComboBox *boxLabelsAlign, *boxLabelsColumn;
-    ColorButton* boxLabelsColor;
-    QWidget *labelsPage;
+    QGroupBox *labelsGroupBox = nullptr;
+    DoubleSpinBox *boxLabelsAngle = nullptr;
+    QSpinBox *boxLabelsXOffset = nullptr, *boxLabelsYOffset = nullptr;
+    QCheckBox *boxLabelsWhiteOut = nullptr;
+    QPushButton *btnLabelsFont = nullptr;
+    QComboBox *boxLabelsAlign = nullptr, *boxLabelsColumn = nullptr;
+    ColorButton* boxLabelsColor = nullptr;
+    QWidget *labelsPage = nullptr;
 
-    QGroupBox *pieAutoLabelsBox, *boxPieWedge;
-	DoubleSpinBox *boxPieStartAzimuth, *boxPieEdgeDist, *boxPieViewAngle, *boxPieThickness;
-	QCheckBox *boxPieConterClockwise, *boxPieValues, *boxPiePercentages, *boxPieCategories;
-	QWidget *pieLabelsPage;
-    QSpinBox *boxPieOffset;
-	QWidget *pieGeometryPage;
+    QGroupBox *pieAutoLabelsBox = nullptr, *boxPieWedge = nullptr;
+	DoubleSpinBox *boxPieStartAzimuth = nullptr, *boxPieEdgeDist = nullptr, *boxPieViewAngle = nullptr, *boxPieThickness = nullptr;
+	QCheckBox *boxPieConterClockwise = nullptr, *boxPieValues = nullptr, *boxPiePercentages = nullptr, *boxPieCategories = nullptr;
+	QWidget *pieLabelsPage = nullptr;
+    QSpinBox *boxPieOffset = nullptr;
+	QWidget *pieGeometryPage = nullptr;
 
-	QComboBox *unitBox;
-	QComboBox *backgroundApplyToBox;
-	QPushButton *layerDefaultBtn;
+	QComboBox *unitBox = nullptr;
+	QComboBox *backgroundApplyToBox = nullptr;
+	QPushButton *layerDefaultBtn = nullptr;
 
-	DoubleSpinBox *firstContourLineBox, *contourLinesDistanceBox;
-	QLabel *justifyLabelsLbl, *labelsColumnLbl;
+	DoubleSpinBox *firstContourLineBox = nullptr, *contourLinesDistanceBox = nullptr;
+	QLabel *justifyLabelsLbl = nullptr, *labelsColumnLbl = nullptr;
 
-	QWidget *spectroValuesPage;
-	QComboBox *boxSpectroMatrix;
-	QCheckBox *boxUseMatrixFormula;
-	ContourLinesEditor *contourLinesEditor;
-	QPushButton *btnSetEquidistantLevels;
-	QRadioButton *customPenBtn;
+	QWidget *spectroValuesPage = nullptr;
+	QComboBox *boxSpectroMatrix = nullptr;
+	QCheckBox *boxUseMatrixFormula = nullptr;
+	ContourLinesEditor *contourLinesEditor = nullptr;
+	QPushButton *btnSetEquidistantLevels = nullptr;
+	QRadioButton *customPenBtn = nullptr;
 
-	QSpinBox *boxSkipSymbols, *boxSkipErrorBars;
-	QComboBox *symbolsFormatApplyToBox, *lineFormatApplyToBox, *errorBarsFormatApplyToBox, *sizeApplyToBox;
-	QSpinBox *boxMaxPoints;
-	DoubleSpinBox *boxDouglasPeukerTolerance;
-	QGroupBox *speedModeBox;
-	QCheckBox *boxApplyColorTo;
+	QSpinBox *boxSkipSymbols = nullptr, *boxSkipErrorBars = nullptr;
+	QComboBox *symbolsFormatApplyToBox = nullptr, *lineFormatApplyToBox = nullptr, *errorBarsFormatApplyToBox = nullptr, *sizeApplyToBox = nullptr;
+	QSpinBox *boxMaxPoints = nullptr;
+	DoubleSpinBox *boxDouglasPeukerTolerance = nullptr;
+	QGroupBox *speedModeBox = nullptr;
+	QCheckBox *boxApplyColorTo = nullptr;
 
-	QWidget *miscPage, *plotGeometryPage;
-	QCheckBox *boxLinkXAxes;
-	QComboBox *boxLinkAllXAxes;
+	QWidget *miscPage = nullptr, *plotGeometryPage = nullptr;
+	QCheckBox *boxLinkXAxes = nullptr;
+	QComboBox *boxLinkAllXAxes = nullptr;
 
-	FunctionDialog *functionEdit;
-	QSpinBox *boxCurveOpacity, *boxSymbolTransparency, *boxLineTransparency, *boxPercentileTransparency;
-	QSlider *curveOpacitySlider, *symbTransparencySlider, *lineTransparencySlider, *percentileTransparencySlider;
+	FunctionDialog *functionEdit = nullptr;
+	QSpinBox *boxCurveOpacity = nullptr, *boxSymbolTransparency = nullptr, *boxLineTransparency = nullptr, *boxPercentileTransparency = nullptr;
+	QSlider *curveOpacitySlider = nullptr, *symbTransparencySlider = nullptr, *lineTransparencySlider = nullptr, *percentileTransparencySlider = nullptr;
 
-	DoubleSpinBox *boxPlotX, *boxPlotY, *boxPlotWidth, *boxPlotHeight;
-	QComboBox *plotUnitBox, *gapApplyToBox;
-	QCheckBox *boxResizeLayers, *keepPlotRatioBox, *layerScaleFonts;
-	EnrichmentDialog *enrichmentDialog;
-	QPushButton *btnUp, *btnDown;
-	QLabel *barsOffsetLabel;
+	DoubleSpinBox *boxPlotX = nullptr, *boxPlotY = nullptr, *boxPlotWidth = nullptr, *boxPlotHeight = nullptr;
+	QComboBox *plotUnitBox = nullptr, *gapApplyToBox = nullptr;
+	QCheckBox *boxResizeLayers = nullptr, *keepPlotRatioBox = nullptr, *layerScaleFonts = nullptr;
+	EnrichmentDialog *enrichmentDialog = nullptr;
+	QPushButton *btnUp = nullptr, *btnDown = nullptr;
+	QLabel *barsOffsetLabel = nullptr;
 
-	QRadioButton *standardSymbolBtn, *imageSymbolBtn;
-	QGroupBox *standardSymbolFormatBox, *imageSymBolFormatBox;
-	QLineEdit *imageSymbolPathBox;
-	QLabel *symbolImageLabel;
+	QRadioButton *standardSymbolBtn = nullptr, *imageSymbolBtn = nullptr;
+	QGroupBox *standardSymbolFormatBox = nullptr, *imageSymBolFormatBox = nullptr;
+	QLineEdit *imageSymbolPathBox = nullptr;
+	QLabel *symbolImageLabel = nullptr;
 
-	QGroupBox *boxFramed;
-	ColorButton *boxFrameColor;
-	QSpinBox *boxFrameWidth;
-	QPushButton *canvasDefaultBtn;
-	QSlider *canvasOpacitySlider, *bkgOpacitySlider;
+	QGroupBox *boxFramed = nullptr;
+	ColorButton *boxFrameColor = nullptr;
+	QSpinBox *boxFrameWidth = nullptr;
+	QPushButton *canvasDefaultBtn = nullptr;
+	QSlider *canvasOpacitySlider = nullptr, *bkgOpacitySlider = nullptr;
 
-	QCheckBox *boxLeftAxis, *boxRightAxis, *boxBottomAxis, *boxTopAxis, *boxClipData;
-	QCompleter *completer;
+	QCheckBox *boxLeftAxis = nullptr, *boxRightAxis = nullptr, *boxBottomAxis = nullptr, *boxTopAxis = nullptr, *boxClipData = nullptr;
+	QCompleter *completer = nullptr;
 };
 
 /*****************************************************************************
@@ -403,7 +403,7 @@ public:
 protected:
     void insertCurvesList();
 	void insertEnrichmentsList();
-    Graph *d_graph;
+    Graph *d_graph = nullptr;
 };
 
 /*****************************************************************************
@@ -431,7 +431,7 @@ public:
     int plotItemIndex();
 
 protected:
-    QwtPlotItem *d_curve;
+    QwtPlotItem *d_curve = nullptr;
 };
 
 /*****************************************************************************
@@ -457,6 +457,6 @@ public:
 protected:
 	QPixmap frameWidgetPixmap();
 
-	FrameWidget *d_widget;
+	FrameWidget *d_widget = nullptr;
 };
 #endif

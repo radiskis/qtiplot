@@ -51,16 +51,16 @@ public slots:
 	void filter();
 
 private:
-	Graph *graph;
-	int filter_type;
+	Graph *graph = nullptr;
+	int filter_type = 0;
 
-    QPushButton* buttonFilter;
-	QPushButton* buttonCancel;
-	QComboBox* boxName;
-	QCheckBox* boxOffset;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxEnd;
-	ColorButton* boxColor;
+    QPushButton* buttonFilter = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QComboBox* boxName = nullptr;
+	QCheckBox* boxOffset = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxEnd = nullptr;
+	ColorButton* boxColor = nullptr;
 };
 
 #endif

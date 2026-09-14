@@ -184,24 +184,24 @@ class Fit : public Filter
 		//! Output string added to the result log
 		virtual QString logFitInfo(int iterations, int status);
 
-		fit_function d_f;
-		fit_function_df d_df;
-		fit_function_fdf d_fdf;
-		fit_function_simplex d_fsimplex;
+		fit_function d_f = nullptr;
+		fit_function_df d_df = nullptr;
+		fit_function_fdf d_fdf = nullptr;
+		fit_function_simplex d_fsimplex = nullptr;
 
 		//! Number of fit parameters
-		int d_p;
+		int d_p = 0;
 
 		//! Initial guesses for the fit parameters
-		gsl_vector *d_param_init;
+		gsl_vector *d_param_init = nullptr;
 
 		/*! \brief Tells whether the fitter uses non-linear/simplex fitting
 		 * with an initial parameters set, that must be freed in the destructor.
 		 */
-		bool is_non_linear;
+		bool is_non_linear = true;
 
 		//! weighting data set used for the fit
-		double *d_w;
+		double *d_w = nullptr;
 
 		//! Names of the fit parameters
 		QStringList d_param_names;
@@ -210,10 +210,10 @@ class Fit : public Filter
 		QStringList d_param_explain;
 
 		//! Specifies weather the result curve is a FunctionCurve or a normal curve with the same x values as the fit data
-		bool d_gen_function;
+		bool d_gen_function = true;
 
 		//! Algorithm type
-		Algorithm d_solver;
+		Algorithm d_solver = ScaledLevenbergMarquardt;
 
 		//! The fit formula given on input
 		QString d_formula;
@@ -222,34 +222,34 @@ class Fit : public Filter
 		QString d_result_formula;
 
 		//! Covariance matrix
-		gsl_matrix *covar;
+		gsl_matrix *covar = nullptr;
 
 		//! The kind of weighting to be performed on the data
-		WeightingMethod d_weighting;
+		WeightingMethod d_weighting = NoWeighting;
 
 		//! The name of the weighting dataset
 		QString weighting_dataset;
 
 		//! Stores the result parameters
-		double *d_results;
+		double *d_results = nullptr;
 
 		//! Stores standard deviations of the result parameters
-		double *d_errors;
+		double *d_errors = nullptr;
 
 		//! Stores fit residuals
-		double *d_residuals;
+		double *d_residuals = nullptr;
 
 		//! The sum of squares of the residuals from the best-fit line
-		double chi_2;
+		double chi_2 = -1.0;
 
 		//! Residual sum of squares
-		double d_rss;
+		double d_rss = 0.0;
 
 		//! Adjusted R^2
-		double d_adjusted_r_square;
+		double d_adjusted_r_square = NAN;
 
 		//! Specifies wheather the errors must be scaled with sqrt(chi_2/dof)
-		bool d_scale_errors;
+		bool d_scale_errors = false;
 
 		//! Table window used for the output of fit parameters
 		QPointer <Table> d_param_table;
@@ -257,16 +257,16 @@ class Fit : public Filter
 		//! Matrix window used for the output of covariance matrix
 		Ref<Matrix> d_cov_matrix;
 
-		FitType d_fit_type;
+		FitType d_fit_type = BuiltIn;
 
 		//! Path of the XML file where the user stores the fit model
         QString d_file_name;
 
 		//! Stores the left limits of the research interval for the result parameters
-		double *d_param_range_left;
+		double *d_param_range_left = nullptr;
 
 		//! Stores the right limits of the research interval for the result parameters
-		double *d_param_range_right;
+		double *d_param_range_right = nullptr;
 };
 
 #endif

@@ -54,7 +54,7 @@ class PreviewTable : public QTableWidget
 	Q_OBJECT
 
 public:
-    PreviewTable(int numRows, int numCols, QWidget * parent = 0, const char * name = 0);
+    PreviewTable(int numRows, int numCols, QWidget *parent = nullptr, const char *name = nullptr);
 
     int numRows() const { return rowCount(); }
     int numCols() const { return columnCount(); }
@@ -96,27 +96,30 @@ private slots:
 	void prevColumn();
 	void nextColumn();
 	void updateColumn(int sc);
-	bool eventFilter(QObject *object, QEvent *e);
+	bool eventFilter(QObject *object, QEvent *e) override;
     void onHeaderClicked(int col);
 
 private:
 	void addColumns(int c);
 	QStringList comments, col_label;
-	int d_numeric_precision, d_start_col;
+	int d_numeric_precision = 8;
+	int d_start_col = 0;
 	QList<int> colTypes;
 	QStringList d_col_format;
-	int d_selected_column;
+	int d_selected_column = 0;
 
-	QComboBox *formatBox, *typesBox;
-	QLabel *formatLabel;
-	QPushButton *buttonNext, *buttonPrev;
-	QGroupBox *gb1;
+	QComboBox *formatBox = nullptr;
+	QComboBox *typesBox = nullptr;
+	QLabel *formatLabel = nullptr;
+	QPushButton *buttonNext = nullptr;
+	QPushButton *buttonPrev = nullptr;
+	QGroupBox *gb1 = nullptr;
 };
 
 class PreviewMatrix : public QTableView
 {
 public:
-    PreviewMatrix(QWidget *parent, Matrix * m = 0);
+    explicit PreviewMatrix(QWidget *parent = nullptr, Matrix *m = nullptr);
 
 	void importASCII(const QString &fname, const QString &sep, int ignoredLines,
 		bool stripSpaces, bool simplifySpaces, const QString& commentString,
@@ -125,7 +128,7 @@ public:
 	void clear();
 
 private:
-	 MatrixModel *d_matrix_model;
+	MatrixModel *d_matrix_model = nullptr;
 };
 
 //! Import ASCII file(s) dialog
@@ -153,7 +156,7 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param flags window flags
 	 */
-	ImportASCIIDialog(bool new_windows_only, QWidget * parent = 0, bool extended = true, Qt::WindowFlags flags = {} );
+	ImportASCIIDialog(bool new_windows_only, QWidget *parent = nullptr, bool extended = true, Qt::WindowFlags flags = {} );
 
 	//! Return the selected import mode
 	/**
@@ -215,26 +218,35 @@ private:
 	void previewTable();
 	void previewMatrix();
 
-	void closeEvent(QCloseEvent*);
+	void closeEvent(QCloseEvent *e) override;
 	//! Initialise #d_advanced_options and everything it contains.
 	void initAdvancedOptions();
 	void setNewWindowsOnly(bool on);
 
 	//! Container widget for all advanced options.
-	QGroupBox *d_advanced_options;
-	QCheckBox *d_read_only, *d_omit_thousands_sep;
-	QPushButton *d_help_button, *d_col_types_button;
+	QGroupBox *d_advanced_options = nullptr;
+	QCheckBox *d_read_only = nullptr;
+	QCheckBox *d_omit_thousands_sep = nullptr;
+	QPushButton *d_help_button = nullptr;
+	QPushButton *d_col_types_button = nullptr;
 	// the actual options
-	QComboBox *d_import_mode, *d_column_separator, *boxDecimalSeparator, *boxEndLine;
-	QSpinBox *d_ignored_lines, *d_preview_lines_box;
-	QCheckBox *d_rename_columns, *d_simplify_spaces, *d_strip_spaces, *d_import_comments;
-	QLineEdit *d_comment_string;
-	PreviewTable *d_preview_table;
-	PreviewMatrix *d_preview_matrix;
-	QCheckBox *d_preview_button;
-	QStackedWidget *d_preview_stack;
+	QComboBox *d_import_mode = nullptr;
+	QComboBox *d_column_separator = nullptr;
+	QComboBox *boxDecimalSeparator = nullptr;
+	QComboBox *boxEndLine = nullptr;
+	QSpinBox *d_ignored_lines = nullptr;
+	QSpinBox *d_preview_lines_box = nullptr;
+	QCheckBox *d_rename_columns = nullptr;
+	QCheckBox *d_simplify_spaces = nullptr;
+	QCheckBox *d_strip_spaces = nullptr;
+	QCheckBox *d_import_comments = nullptr;
+	QLineEdit *d_comment_string = nullptr;
+	PreviewTable *d_preview_table = nullptr;
+	PreviewMatrix *d_preview_matrix = nullptr;
+	QCheckBox *d_preview_button = nullptr;
+	QStackedWidget *d_preview_stack = nullptr;
 	QString d_current_path;
-	QComboBox *d_first_line_role;
+	QComboBox *d_first_line_role = nullptr;
 };
 
 #endif

@@ -32,9 +32,9 @@ QStringList OriginPlugin::importFormats()
 	return list;
 }
 
-Table * OriginPlugin::import(const QString & fname, int sheet)
+Table * OriginPlugin::import(const QString & fname, int /*sheet*/)
 {
 	//std::cout << "In import.\n";
 	ImportOPJ(applicationWindow(), fname);
-	return  0;
+	return nullptr;
 }

@@ -34,15 +34,15 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_axis;
-	double d_old_start, d_old_end, d_old_step;
-	int d_old_maj_ticks, d_old_min_ticks, d_old_type;
-	bool d_old_inverted;
+	QPointer<Graph> d_graph = nullptr;
+	int d_axis = 0;
+	double d_old_start = 0.0, d_old_end = 0.0, d_old_step = 0.0;
+	int d_old_maj_ticks = 0, d_old_min_ticks = 0, d_old_type = 0;
+	bool d_old_inverted = false;
 
-	double d_new_start, d_new_end, d_new_step;
-	int d_new_maj_ticks, d_new_min_ticks, d_new_type;
-	bool d_new_inverted;
+	double d_new_start = 0.0, d_new_end = 0.0, d_new_step = 0.0;
+	int d_new_maj_ticks = 0, d_new_min_ticks = 0, d_new_type = 0;
+	bool d_new_inverted = false;
 };
 
 //! Undo command for modifying axis titles
@@ -55,8 +55,8 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_axis;
+	QPointer<Graph> d_graph = nullptr;
+	int d_axis = 0;
 	QString d_old_title, d_new_title;
 };
 
@@ -70,8 +70,8 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_axis;
+	QPointer<Graph> d_graph = nullptr;
+	int d_axis = 0;
 	QFont d_old_font, d_new_font;
 };
 
@@ -85,8 +85,8 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_axis;
+	QPointer<Graph> d_graph = nullptr;
+	int d_axis = 0;
 	QColor d_old_color, d_new_color;
 };
 
@@ -100,7 +100,7 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
+	QPointer<Graph> d_graph = nullptr;
 	QColor d_old_color, d_new_color;
 };
 
@@ -114,10 +114,10 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_axis;
-	bool d_old_major, d_old_minor;
-	bool d_new_major, d_new_minor;
+	QPointer<Graph> d_graph = nullptr;
+	int d_axis = 0;
+	bool d_old_major = false, d_old_minor = false;
+	bool d_new_major = false, d_new_minor = false;
 };
 
 //! Undo command for modifying curve pen (color, width, style)
@@ -130,8 +130,8 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_curve_index;
+	QPointer<Graph> d_graph = nullptr;
+	int d_curve_index = -1;
 	QPen d_old_pen, d_new_pen;
 };
 
@@ -145,8 +145,8 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_curve_index;
+	QPointer<Graph> d_graph = nullptr;
+	int d_curve_index = -1;
 	QBrush d_old_brush, d_new_brush;
 };
 
@@ -163,9 +163,9 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
-	int d_curve_index;
-	QwtSymbol::Style d_old_style, d_new_style;
+	QPointer<Graph> d_graph = nullptr;
+	int d_curve_index = -1;
+	QwtSymbol::Style d_old_style = QwtSymbol::NoSymbol, d_new_style = QwtSymbol::NoSymbol;
 	QBrush d_old_brush, d_new_brush;
 	QPen d_old_pen, d_new_pen;
 	QSize d_old_size, d_new_size;
@@ -181,7 +181,7 @@ public:
 	void undo() override;
 
 private:
-	QPointer<Graph> d_graph;
+	QPointer<Graph> d_graph = nullptr;
 	QwtText d_old_title, d_new_title;
 };
 

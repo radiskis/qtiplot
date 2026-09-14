@@ -44,13 +44,13 @@ public:
 
 	VectorCurve(VectorStyle style, Table *t, const QString& xColName, const char *name,
 				const QString& endCol1, const QString& endCol2, int startRow, int endRow);
-	~VectorCurve();
+	~VectorCurve() override;
 
 	enum Position{Tail, Middle, Head};
 
 	void copy(const VectorCurve *vc);
 
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	QString vectorEndXAColName(){return d_end_x_a;};
 	QString vectorEndYMColName(){return d_end_y_m;};
@@ -77,11 +77,11 @@ public:
 	int vectorStyle(){return d_style;};
 	void setVectorStyle(int style){d_style = style;};
 
-	bool updateData(Table *t, const QString& colName);
-	void loadData();
+	bool updateData(Table *t, const QString& colName) override;
+	void loadData() override;
 
-	QStringList plotAssociation();
-	void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
+	QStringList plotAssociation() override;
+	void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName) override;
 
 	QPen vectorPen(){return d_pen;};
 	void setVectorPen(const QPen& pen){d_pen = pen;};
@@ -89,8 +89,8 @@ public:
 private:
 	void setVectorEnd(const QVector<double>&x, const QVector<double>&y);
 
-	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
-		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+	void drawSeries(QPainter *painter, const QwtScaleMap &xMap,
+		const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 	void drawVector(QPainter *painter, const QwtScaleMap &xMap,
 		const QwtScaleMap &yMap, int from, int to) const;
@@ -100,11 +100,11 @@ private:
 
 protected:
 	QPen d_pen;
-	bool filledArrow;
-	int d_style, d_headLength, d_headAngle, d_position;
+	bool filledArrow = true;
+	int d_style = XYXY, d_headLength = 4, d_headAngle = 45, d_position = Tail;
 	QString d_end_x_a;
 	QString d_end_y_m;
-	QwtPointSeriesData *vectorEnd;
+	QwtPointSeriesData *vectorEnd = nullptr;
 };
 
 #endif

@@ -39,7 +39,7 @@ public:
 
 	void copy(QwtHistogram *h);
 
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	void setBinning(bool autoBin, double size, double begin, double end);
 	//! Convenience function. It disables autobinning
@@ -53,7 +53,7 @@ public:
 	double end(){return d_end;};
 	double binSize(){return d_bin_size;};
 
-	void loadData();
+	void loadData() override;
 
 	double mean(){return d_mean;};
 	double standardDeviation(){return d_standard_deviation;};
@@ -66,13 +66,13 @@ private:
 	void init();
 
 	void loadDataFromMatrix();
-	virtual void loadLabels();
+	void loadLabels() override;
 
-	Matrix *d_matrix;
+	Matrix *d_matrix = nullptr;
 
-	bool d_autoBin;
-	double d_bin_size, d_begin, d_end;
+	bool d_autoBin = true;
+	double d_bin_size = 1.0, d_begin = 0.0, d_end = 0.0;
 
 	//! Variables storing statistical information
-	double d_mean, d_standard_deviation, d_min, d_max;
+	double d_mean = 0.0, d_standard_deviation = 0.0, d_min = 0.0, d_max = 0.0;
 };

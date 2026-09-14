@@ -55,17 +55,17 @@ private slots:
 private:
 	double combineValues(double v1, double v2);
 
-	Graph *graph;
-	QPushButton* buttonApply;
-	QPushButton* buttonCancel;
-	QComboBox* boxInputName;
-	QComboBox* boxReferenceName;
-	QComboBox* boxColumnName;
-	QComboBox* boxOperation;
-	QRadioButton *btnDataset;
-	QRadioButton *btnValue;
-	QCheckBox *boxCurrentFolder;
-	DoubleSpinBox* boxOffset;
+	Graph *graph = nullptr;
+	QPushButton* buttonApply = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QComboBox* boxInputName = nullptr;
+	QComboBox* boxReferenceName = nullptr;
+	QComboBox* boxColumnName = nullptr;
+	QComboBox* boxOperation = nullptr;
+	QRadioButton *btnDataset = nullptr;
+	QRadioButton *btnValue = nullptr;
+	QCheckBox *boxCurrentFolder = nullptr;
+	DoubleSpinBox* boxOffset = nullptr;
 };
 
 #endif

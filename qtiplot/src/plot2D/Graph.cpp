@@ -1715,8 +1715,8 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 	image.setDotsPerMeterY(dpm);
 
 	if (fileName.endsWith(".odf")){
-		QTextDocument *document = new QTextDocument();
-		QTextCursor cursor = QTextCursor(document);
+		QTextDocument document;
+		QTextCursor cursor(&document);
 		cursor.movePosition(QTextCursor::End);
 		MultiLayer *ml = multiLayer();
 		if (ml)
@@ -1725,7 +1725,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 		cursor.insertImage(image);
 
 		QTextDocumentWriter writer(fileName);
-		writer.write(document);
+		writer.write(&document);
 	} else
 	{
 		QImageWriter writer(fileName);

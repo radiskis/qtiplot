@@ -58,29 +58,29 @@ private slots:
     void rehighlight();
 
 private:
-    ApplicationWindow *d_app;
-    QLabel *labelTabLength;
-    QSpinBox *boxTabLength;
-    QLabel *labelNotesFont;
-    QFontComboBox *boxFontFamily;
-    QSpinBox *boxFontSize;
-    QPushButton *buttonBoldFont;
-    QPushButton *buttonItalicFont;
-    QCheckBox *lineNumbersBox;
+    ApplicationWindow *d_app = nullptr;
+    QLabel *labelTabLength = nullptr;
+    QSpinBox *boxTabLength = nullptr;
+    QLabel *labelNotesFont = nullptr;
+    QFontComboBox *boxFontFamily = nullptr;
+    QSpinBox *boxFontSize = nullptr;
+    QPushButton *buttonBoldFont = nullptr;
+    QPushButton *buttonItalicFont = nullptr;
+    QCheckBox *lineNumbersBox = nullptr;
 
-    QGroupBox *groupSyntaxHighlighter;
-    QLabel *buttonCommentLabel;
-    ColorButton *buttonCommentColor;
-    QLabel *buttonKeywordLabel;
-    ColorButton *buttonKeywordColor;
-    QLabel *buttonQuotationLabel;
-    ColorButton *buttonQuotationColor;
-    QLabel *buttonNumericLabel;
-    ColorButton *buttonNumericColor;
-    QLabel *buttonFunctionLabel;
-    ColorButton *buttonFunctionColor;
-    QLabel *buttonClassLabel;
-    ColorButton *buttonClassColor;
+    QGroupBox *groupSyntaxHighlighter = nullptr;
+    QLabel *buttonCommentLabel = nullptr;
+    ColorButton *buttonCommentColor = nullptr;
+    QLabel *buttonKeywordLabel = nullptr;
+    ColorButton *buttonKeywordColor = nullptr;
+    QLabel *buttonQuotationLabel = nullptr;
+    ColorButton *buttonQuotationColor = nullptr;
+    QLabel *buttonNumericLabel = nullptr;
+    ColorButton *buttonNumericColor = nullptr;
+    QLabel *buttonFunctionLabel = nullptr;
+    ColorButton *buttonFunctionColor = nullptr;
+    QLabel *buttonClassLabel = nullptr;
+    ColorButton *buttonClassColor = nullptr;
 };
 
 #endif // NOTES_CONFIG_PAGE_H

@@ -67,14 +67,14 @@ private:
 
 	Ref<Graph> graph;
 	Ref<Table> d_table;
-	int d_type;
+	int d_type = 0;
 
-	QPushButton* buttonOK;
-	QPushButton* buttonCancel;
-	QRadioButton *forwardBtn, *backwardBtn;
-	QComboBox* boxName, *boxReal, *boxImaginary;
-	DoubleSpinBox* boxSampling;
-	QCheckBox* boxNormalize, *boxOrder, *boxPower2;
+	QPushButton* buttonOK = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QRadioButton *forwardBtn = nullptr, *backwardBtn = nullptr;
+	QComboBox* boxName = nullptr, *boxReal = nullptr, *boxImaginary = nullptr;
+	DoubleSpinBox* boxSampling = nullptr;
+	QCheckBox* boxNormalize = nullptr, *boxOrder = nullptr, *boxPower2 = nullptr;
 };
 
 #endif

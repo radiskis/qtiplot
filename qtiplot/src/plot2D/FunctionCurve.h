@@ -86,10 +86,10 @@ public:
 	void removeConstants(){d_constants.clear();};
 
 private:
-	FunctionType d_function_type;
+	FunctionType d_function_type = Normal;
 	QString d_variable;
 	QStringList d_formulas;
-	double d_from, d_to;
+	double d_from = 0.0, d_to = 0.0;
 	QMap<QString, double> d_constants;
 };
 

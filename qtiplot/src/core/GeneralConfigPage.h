@@ -91,110 +91,110 @@ private:
     bool validFolderPath(const QString& path);
     QNetworkProxy setApplicationCustomProxy();
 
-    ApplicationWindow *d_app;
+    ApplicationWindow *d_app = nullptr;
 
-    QTabWidget *appTabWidget;
-    QWidget *application;
-    QWidget *confirm;
-    QWidget *appColors;
-    QWidget *numericFormatPage;
-    QWidget *fileLocationsPage;
-    QWidget *proxyPage;
+    QTabWidget *appTabWidget = nullptr;
+    QWidget *application = nullptr;
+    QWidget *confirm = nullptr;
+    QWidget *appColors = nullptr;
+    QWidget *numericFormatPage = nullptr;
+    QWidget *fileLocationsPage = nullptr;
+    QWidget *proxyPage = nullptr;
 
     // App tab
-    QLabel *lblLanguage;
-    QComboBox *boxLanguage;
-    QLabel *lblStyle;
-    QComboBox *boxStyle;
-    QLabel *lblFonts;
-    QPushButton *fontsBtn;
-    QLabel *lblScriptingLanguage;
-    QComboBox *boxScriptingLanguage;
-    QLabel *lblUndoStackSize;
-    QSpinBox *undoStackSizeBox;
-    QLabel *lblEndOfLine;
-    QComboBox *boxEndLine;
-    QLabel *lblInitWindow;
-    QComboBox *boxInitWindow;
-    QCheckBox *boxSave;
-    QSpinBox *boxMinutes;
-    QCheckBox *boxBackupProject;
-    QCheckBox *boxSearchUpdates;
-    QCheckBox *completionBox;
-    QCheckBox *openLastProjectBox;
-    QLabel *excelImportMethodLabel;
-    QComboBox *excelImportMethod;
+    QLabel *lblLanguage = nullptr;
+    QComboBox *boxLanguage = nullptr;
+    QLabel *lblStyle = nullptr;
+    QComboBox *boxStyle = nullptr;
+    QLabel *lblFonts = nullptr;
+    QPushButton *fontsBtn = nullptr;
+    QLabel *lblScriptingLanguage = nullptr;
+    QComboBox *boxScriptingLanguage = nullptr;
+    QLabel *lblUndoStackSize = nullptr;
+    QSpinBox *undoStackSizeBox = nullptr;
+    QLabel *lblEndOfLine = nullptr;
+    QComboBox *boxEndLine = nullptr;
+    QLabel *lblInitWindow = nullptr;
+    QComboBox *boxInitWindow = nullptr;
+    QCheckBox *boxSave = nullptr;
+    QSpinBox *boxMinutes = nullptr;
+    QCheckBox *boxBackupProject = nullptr;
+    QCheckBox *boxSearchUpdates = nullptr;
+    QCheckBox *completionBox = nullptr;
+    QCheckBox *openLastProjectBox = nullptr;
+    QLabel *excelImportMethodLabel = nullptr;
+    QComboBox *excelImportMethod = nullptr;
 
     // Confirmations tab
-    QGroupBox *groupBoxConfirm;
-    QCheckBox *boxFolders;
-    QCheckBox *boxTables;
-    QCheckBox *boxMatrices;
-    QCheckBox *boxPlots2D;
-    QCheckBox *boxPlots3D;
-    QCheckBox *boxNotes;
-    QCheckBox *boxPromptRenameTables;
-    QCheckBox *boxTablePasteDialog;
-    QCheckBox *boxConfirmOverwrite;
-    QCheckBox *boxConfirmModifyDataPoints;
+    QGroupBox *groupBoxConfirm = nullptr;
+    QCheckBox *boxFolders = nullptr;
+    QCheckBox *boxTables = nullptr;
+    QCheckBox *boxMatrices = nullptr;
+    QCheckBox *boxPlots2D = nullptr;
+    QCheckBox *boxPlots3D = nullptr;
+    QCheckBox *boxNotes = nullptr;
+    QCheckBox *boxPromptRenameTables = nullptr;
+    QCheckBox *boxTablePasteDialog = nullptr;
+    QCheckBox *boxConfirmOverwrite = nullptr;
+    QCheckBox *boxConfirmModifyDataPoints = nullptr;
 
     // Colors tab
-    QLabel *lblWorkspace;
-    ColorButton *btnWorkspace;
-    QLabel *lblPanels;
-    ColorButton *btnPanels;
-    QLabel *lblPanelsText;
-    ColorButton *btnPanelsText;
+    QLabel *lblWorkspace = nullptr;
+    ColorButton *btnWorkspace = nullptr;
+    QLabel *lblPanels = nullptr;
+    ColorButton *btnPanels = nullptr;
+    QLabel *lblPanelsText = nullptr;
+    ColorButton *btnPanelsText = nullptr;
 
     // Numeric format tab
-    QLabel *lblAppPrecision;
-    QSpinBox *boxAppPrecision;
-    QLabel *lblDecimalSeparator;
-    QComboBox *boxDecimalSeparator;
-    QCheckBox *boxThousandsSeparator;
-    QLabel *lblClipboardSeparator;
-    QComboBox *boxClipboardLocale;
-    QCheckBox *boxMuParserCLocale;
+    QLabel *lblAppPrecision = nullptr;
+    QSpinBox *boxAppPrecision = nullptr;
+    QLabel *lblDecimalSeparator = nullptr;
+    QComboBox *boxDecimalSeparator = nullptr;
+    QCheckBox *boxThousandsSeparator = nullptr;
+    QLabel *lblClipboardSeparator = nullptr;
+    QComboBox *boxClipboardLocale = nullptr;
+    QCheckBox *boxMuParserCLocale = nullptr;
 
     // File locations tab
-    QLabel *lblTranslationsPath;
-    QLineEdit *translationsPathLine;
-    QPushButton *browseTranslationsBtn;
-    QLabel *lblHelpPath;
-    QLineEdit *helpPathLine;
-    QPushButton *browseHelpBtn;
-    QLabel *texCompilerLabel;
-    QLineEdit *texCompilerPathBox;
-    QPushButton *browseTexCompilerBtn;
-    QLabel *officeLabel;
-    QLineEdit *sofficePathBox;
-    QPushButton *browseOfficeBtn;
-    QLabel *javaLabel;
-    QLineEdit *javaPathBox;
-    QPushButton *browseJavaBtn;
-    QLabel *jodconverterLabel;
-    QLineEdit *jodconverterPathBox;
-    QPushButton *browseJODConverterBtn;
+    QLabel *lblTranslationsPath = nullptr;
+    QLineEdit *translationsPathLine = nullptr;
+    QPushButton *browseTranslationsBtn = nullptr;
+    QLabel *lblHelpPath = nullptr;
+    QLineEdit *helpPathLine = nullptr;
+    QPushButton *browseHelpBtn = nullptr;
+    QLabel *texCompilerLabel = nullptr;
+    QLineEdit *texCompilerPathBox = nullptr;
+    QPushButton *browseTexCompilerBtn = nullptr;
+    QLabel *officeLabel = nullptr;
+    QLineEdit *sofficePathBox = nullptr;
+    QPushButton *browseOfficeBtn = nullptr;
+    QLabel *javaLabel = nullptr;
+    QLineEdit *javaPathBox = nullptr;
+    QPushButton *browseJavaBtn = nullptr;
+    QLabel *jodconverterLabel = nullptr;
+    QLineEdit *jodconverterPathBox = nullptr;
+    QPushButton *browseJODConverterBtn = nullptr;
 
 #ifdef SCRIPTING_PYTHON
-    QLabel *lblPythonConfigDir;
-    QLineEdit *pythonConfigDirLine;
-    QPushButton *browsePythonConfigBtn;
-    QLabel *lblPythonScriptsDir;
-    QLineEdit *pythonScriptsDirLine;
-    QPushButton *browsePythonScriptsBtn;
+    QLabel *lblPythonConfigDir = nullptr;
+    QLineEdit *pythonConfigDirLine = nullptr;
+    QPushButton *browsePythonConfigBtn = nullptr;
+    QLabel *lblPythonScriptsDir = nullptr;
+    QLineEdit *pythonScriptsDirLine = nullptr;
+    QPushButton *browsePythonScriptsBtn = nullptr;
 #endif
 
     // Proxy tab
-    QGroupBox *proxyGroupBox;
-    QLabel *proxyHostLabel;
-    QLineEdit *proxyHostLine;
-    QLabel *proxyPortLabel;
-    QSpinBox *proxyPortBox;
-    QLabel *proxyUserLabel;
-    QLineEdit *proxyUserNameLine;
-    QLabel *proxyPasswordLabel;
-    QLineEdit *proxyPasswordLine;
+    QGroupBox *proxyGroupBox = nullptr;
+    QLabel *proxyHostLabel = nullptr;
+    QLineEdit *proxyHostLine = nullptr;
+    QLabel *proxyPortLabel = nullptr;
+    QSpinBox *proxyPortBox = nullptr;
+    QLabel *proxyUserLabel = nullptr;
+    QLineEdit *proxyUserNameLine = nullptr;
+    QLabel *proxyPasswordLabel = nullptr;
+    QLineEdit *proxyPasswordLine = nullptr;
 
     QFont appFont;
 };

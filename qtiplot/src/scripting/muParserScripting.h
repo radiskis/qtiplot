@@ -56,19 +56,19 @@ class muParserScripting: public ScriptingEnv
 	}
     static ScriptingEnv *constructor(ApplicationWindow *parent) { return new muParserScripting(parent); }
 
-    bool isRunning() const { return true; }
-    Script *newScript(const QString &code, QObject *context, const QString &name="<input>")
+    bool isRunning() const override { return true; }
+    Script *newScript(const QString &code, QObject *context, const QString &name="<input>") override
     {
       return new muParserScript(this, code, context, name);
     }
 
     // we do not support global variables
-    bool setQObject(QObject*, const char*) { return false; }
-    bool setInt(int, const char*) { return false; }
-    bool setDouble(double, const char*) { return false; }
+    bool setQObject(QObject*, const char*) override { return false; }
+    bool setInt(int, const char*) override { return false; }
+    bool setDouble(double, const char*) override { return false; }
 
-	const QStringList mathFunctions() const;
-	const QString mathFunctionDoc (const QString &name) const;
+	const QStringList mathFunctions() const override;
+	const QString mathFunctionDoc (const QString &name) const override;
 
 	const static QStringList functionsList(bool tableContext = false);
 	const static QString explainFunction(const QString &name);

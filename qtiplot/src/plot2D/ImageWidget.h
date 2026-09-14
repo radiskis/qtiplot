@@ -56,8 +56,8 @@ public:
 	bool saveInternally(){return d_save_xpm;};
 	void setSaveInternally(bool save = true){d_save_xpm = save;};
 
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
-	virtual QString saveToString();
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
+	QString saveToString() override;
 
 	void clone(ImageWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
@@ -67,16 +67,16 @@ public:
 	void setWindowName(const QString& name){d_window_name = name;};
 
 	static QPixmap windowPixmap(ApplicationWindow *mw, const QString& name, const QSize& size);
-	void paintEvent(QPaintEvent *e);
+	void paintEvent(QPaintEvent *e) override;
 
 private:
 	void draw(QPainter *painter, const QRect& r);
-	virtual void drawFrame(QPainter *p, const QRect& rect);
+	void drawFrame(QPainter *p, const QRect& rect) override;
 	QPixmap d_pix;
 	//! The file from which the image was loaded.
 	QString d_file_name;
 	//! Flag telling if the pixmap must be saved in the .qti project as XPM
-	bool d_save_xpm;
+	bool d_save_xpm = false;
 	//! The window whos image is drawn.
 	QString d_window_name;
 };

@@ -43,24 +43,24 @@ class FindDialog : public QDialog
     Q_OBJECT
 
 public:
-    FindDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
-    ~FindDialog();
+    FindDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
+    ~FindDialog() override;
 
 private:
-	QPushButton* buttonFind;
-	QPushButton* buttonCancel;
-	QPushButton* buttonReset;
+	QPushButton* buttonFind = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonReset = nullptr;
 
-	QLabel *labelStart;
-	QComboBox* boxFind;
+	QLabel *labelStart = nullptr;
+	QComboBox* boxFind = nullptr;
 
-    QCheckBox* boxWindowNames;
-    QCheckBox* boxWindowLabels;
-	QCheckBox* boxFolderNames;
+    QCheckBox* boxWindowNames = nullptr;
+    QCheckBox* boxWindowLabels = nullptr;
+	QCheckBox* boxFolderNames = nullptr;
 
-	QCheckBox* boxCaseSensitive;
-    QCheckBox* boxPartialMatch;
-	QCheckBox* boxSubfolders;
+	QCheckBox* boxCaseSensitive = nullptr;
+    QCheckBox* boxPartialMatch = nullptr;
+	QCheckBox* boxSubfolders = nullptr;
 
 public slots:
 
@@ -69,7 +69,7 @@ public slots:
 
 protected slots:
 
-	void accept();
+	void accept() override;
 };
 
 #endif // exportDialog_H

@@ -53,7 +53,7 @@ public:
 	/**
 	* \param parent parent widget (only affects placement of the widget)
 	*/
-	ColorMapEditor(const QLocale& locale = QLocale::system(), int precision = 6, QWidget* parent = 0);
+	ColorMapEditor(const QLocale& locale = QLocale::system(), int precision = 6, QWidget* parent = nullptr);
 	//! Returns the customized color map.
 	LinearColorMap colorMap(){return color_map;};
 	//! Use this function to initialize the color map to be edited.
@@ -77,22 +77,24 @@ protected slots:
 	void setScaledColors(bool scale = true);
 	void spinBoxActivated(DoubleSpinBox *);
 
-	bool eventFilter(QObject *object, QEvent *e);
+	bool eventFilter(QObject *object, QEvent *e) override;
 
 private:
 	//! Table displaying the values ranges in the first column and their corresponding colors in the second column
-	QTableWidget *table;
-	QPushButton *insertBtn, *deleteBtn;
-	QCheckBox *scaleColorsBox;
+	QTableWidget *table = nullptr;
+	QPushButton *insertBtn = nullptr;
+	QPushButton *deleteBtn = nullptr;
+	QCheckBox *scaleColorsBox = nullptr;
 
 	//! Color map object
 	LinearColorMap color_map;
 	//! Levels range
-	double min_val, max_val;
+	double min_val = 0.0;
+	double max_val = 0.0;
 	//! Locale settings used to display level values
 	QLocale d_locale;
 	//! Precision used to display level values
-	int d_precision;
+	int d_precision = 6;
 };
 
 #endif

@@ -48,8 +48,8 @@ public slots:
 private:
 	void closeEvent(QCloseEvent *e);
 	QString d_initial_text;
-	QWidget *d_target;
-	Graph *d_graph;
+	QWidget *d_target = nullptr;
+	Graph *d_graph = nullptr;
 };
 
 #endif

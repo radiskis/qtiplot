@@ -38,13 +38,13 @@ class EllipseWidget: public FrameWidget
 public:
 	EllipseWidget(Graph *);
 
-	virtual QString saveToString();
+	QString saveToString() override;
 
 	void clone(EllipseWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 
 private:
-	void drawFrame(QPainter *p, const QRect& rect);
+	void drawFrame(QPainter *p, const QRect& rect) override;
 };
 
 #endif

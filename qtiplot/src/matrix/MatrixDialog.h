@@ -47,12 +47,12 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-    MatrixDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    MatrixDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
     void setMatrix(Matrix *m);
 
 private slots:
 	//! Accept changes and quit
-	void accept();
+	void accept() override;
 	//! Apply changes
 	void apply();
 	//! Activate the numeric precision choice box
@@ -60,13 +60,13 @@ private slots:
 	void openValuesDialog();
 
 private:
-    Matrix *d_matrix;
+    Matrix *d_matrix = nullptr;
 
-    QPushButton* buttonOk;
-	QPushButton* buttonProperties;
-	QPushButton* buttonCancel, *buttonApply;
-	QSpinBox* boxColWidth, *boxPrecision;
-	QComboBox *boxFormat, *boxNumericDisplay;
+    QPushButton* buttonOk = nullptr;
+	QPushButton* buttonProperties = nullptr;
+	QPushButton* buttonCancel = nullptr, *buttonApply = nullptr;
+	QSpinBox* boxColWidth = nullptr, *boxPrecision = nullptr;
+	QComboBox *boxFormat = nullptr, *boxNumericDisplay = nullptr;
 };
 
 #endif // MATRIXDIALOG_H

@@ -361,32 +361,27 @@ private:
 	QString d_x_unit, d_y_unit, d_z_unit;
 	QString d_x_comment, d_y_comment, d_z_comment;
 	//! Format code for displaying numbers
-	QChar txt_format;
+	QChar txt_format = 'f';
 	//! Number of significant digits
-	int num_precision;
-	double x_start, //!< X value corresponding to column 1
-	x_end,  //!< X value corresponding to the last column
-	y_start,  //!< Y value corresponding to row 1
-	y_end;  //!< Y value corresponding to the last row
-
-	//! Minimum value corresponding to the first color in the color map
-	double d_color_min;
-	//! Maximum value corresponding to the last color in the color map
-	double d_color_max;
+	int num_precision = 6;
+	double x_start = 1.0, //!< X value corresponding to column 1
+	x_end = 10.0,  //!< X value corresponding to the last column
+	y_start = 1.0,  //!< Y value corresponding to row 1
+	y_end = 10.0;  //!< Y value corresponding to the last row
 
 	//! Keeps track of the view type;
-	ViewType d_view_type;
+	ViewType d_view_type = TableView;
 	//! Keeps track of the header view type;
-	HeaderViewType d_header_view_type;
+	HeaderViewType d_header_view_type = ColumnRow;
 	//! The color map used to display images.
 	LinearColorMap d_color_map;
 	//! The color map type.
-	ColorMapType d_color_map_type;
+	ColorMapType d_color_map_type = Default;
 	//! Column width in pixels;
-	int d_column_width;
-	QShortcut *d_select_all_shortcut;
+	int d_column_width = 100;
+	QShortcut *d_select_all_shortcut = nullptr;
 	//! Undo/Redo commands stack
-	QUndoStack *d_undo_stack;
+	QUndoStack *d_undo_stack = nullptr;
 	//! Data buffer used for matrix operations.
 	std::vector<double> d_workspace;
 };

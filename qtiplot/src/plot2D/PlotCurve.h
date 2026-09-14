@@ -87,26 +87,26 @@ public:
 
 	virtual void loadData(){};
 
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 protected:
-	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+	void drawSeries(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 	void drawSideLines(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, int from, int to) const;
 
-    virtual void drawSymbols(QPainter *p, const QwtSymbol &,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+    void drawSymbols(QPainter *p, const QwtSymbol &,
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 	void drawSticks(QPainter *p,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
 
 	// Rtti
-	int d_type;
+	int d_type = 0;
 	// The plot style of the curve
-	int d_plot_style;
-	int d_curve_type;
-	double d_x_offset, d_y_offset;
-	bool d_side_lines;
-	int d_skip_symbols;
+	int d_plot_style = 0;
+	int d_curve_type = 0;
+	double d_x_offset = 0.0, d_y_offset = 0.0;
+	bool d_side_lines = false;
+	int d_skip_symbols = 0;
 };
 
 class DataCurve: public PlotCurve, public Tracked<DataCurve>
@@ -227,8 +227,8 @@ protected:
 	 */
 	QString d_x_column;
 
-	int d_start_row;
-	int d_end_row;
+	int d_start_row = 0;
+	int d_end_row = -1;
 
 	//!\brief The name of the column used for text labels.
 	QString d_labels_column;
@@ -236,16 +236,16 @@ protected:
 	//! List of the text labels associated to this curve.
 	QList <PlotMarker *> d_labels_list;
 	//! Keep track of the coordinates of the point where the user clicked when selecting the labels.
-	double d_click_pos_x, d_click_pos_y;
+	double d_click_pos_x = 0.0, d_click_pos_y = 0.0;
 
 	QColor d_labels_color;
 	QFont d_labels_font;
-	double d_labels_angle;
-	bool d_white_out_labels;
-	bool d_show_labels;
-	int d_labels_align, d_labels_x_offset, d_labels_y_offset;
+	double d_labels_angle = 0.0;
+	bool d_white_out_labels = false;
+	bool d_show_labels = false;
+	int d_labels_align = 0, d_labels_x_offset = 0, d_labels_y_offset = 0;
 	//! Keeps track of the plot marker on which the user clicked when selecting the labels.
-	PlotMarker *d_selected_label;
+	PlotMarker *d_selected_label = nullptr;
 	std::vector<DataRange> d_data_ranges;
 };
 
@@ -266,13 +266,13 @@ public:
 
 protected:
 	//! Does the actual drawing; see QwtPlotItem::draw.
-	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect) const;
+	void draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect) const override;
 
-	int d_index;
-	double d_angle;
+	int d_index = 0;
+	double d_angle = 0.0;
 	//! x coordinate offset
-	double d_label_x_offset;
+	double d_label_x_offset = 0.0;
 	//! y coordinate offset
-	double d_label_y_offset;
+	double d_label_y_offset = 0.0;
 };
 #endif

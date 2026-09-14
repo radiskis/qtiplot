@@ -59,7 +59,7 @@ private slots:
 	void showPrecisionBox(int item);
 	void updatePrecision(int prec);
 	void setPlotDesignation(int i);
-	void accept();
+	void accept() override;
 	void apply();
 	void updateDisplay(int item);
 	void setNumericFormat(int type, int prec, bool allRightColumns);
@@ -74,27 +74,31 @@ signals:
 private:
     void setDateTimeFormat(int type, const QString& format, bool allRightColumns);
 	void setTextFormat(bool allRightColumns);
-    void closeEvent( QCloseEvent *);
+    void closeEvent(QCloseEvent *e) override;
 
     Ref<Table> d_table;
 
-    QPushButton* buttonOk;
-    QPushButton* buttonCancel;
-	QPushButton* buttonApply;
-	QPushButton* buttonPrev;
-	QPushButton* buttonNext;
-	QPushButton* buttonProperties;
-    QLineEdit* colName;
-    QCheckBox* enumerateAllBox;
-    QCheckBox* applyToRightCols;
-    QCheckBox* applyToAllBox;
-    QComboBox* formatBox;
-	QComboBox* displayBox;
-    QComboBox* columnsBox;
-    QSpinBox* colWidth, *precisionBox;
-	QLabel *labelNumeric, *labelFormat;
-	QTextEdit *comments;
-	QCheckBox *boxShowTableComments, *boxReadOnly, *boxHideColumn;
+    QPushButton* buttonOk = nullptr;
+    QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonApply = nullptr;
+	QPushButton* buttonPrev = nullptr;
+	QPushButton* buttonNext = nullptr;
+	QPushButton* buttonProperties = nullptr;
+    QLineEdit* colName = nullptr;
+    QCheckBox* enumerateAllBox = nullptr;
+    QCheckBox* applyToRightCols = nullptr;
+    QCheckBox* applyToAllBox = nullptr;
+    QComboBox* formatBox = nullptr;
+	QComboBox* displayBox = nullptr;
+    QComboBox* columnsBox = nullptr;
+    QSpinBox* colWidth = nullptr;
+    QSpinBox* precisionBox = nullptr;
+	QLabel *labelNumeric = nullptr;
+	QLabel *labelFormat = nullptr;
+	QTextEdit *comments = nullptr;
+	QCheckBox *boxShowTableComments = nullptr;
+	QCheckBox *boxReadOnly = nullptr;
+	QCheckBox *boxHideColumn = nullptr;
 };
 
 #endif // TABLEDIALOG_H

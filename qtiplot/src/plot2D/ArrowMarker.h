@@ -121,7 +121,7 @@ public:
 	QRect rect() const {return QRect(startPoint(), endPoint()).normalized();};
 
 	//! Returns the bounding rectangle in plot coordinates.
-	QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 	void setBoundingRect(double xs, double ys, double xe, double ye);
 
 	//! Recalculates the bounding rectangle in values coordinates using the pixel coordinats when the scales change
@@ -133,12 +133,12 @@ public:
 	void setEditable(bool yes);
 
 	//! Filters events for the canvas while #d_editable is true.
-	bool eventFilter(QObject *o, QEvent *e);
+	bool eventFilter(QObject *o, QEvent *e) override;
 
 	void setAttachPolicy(AttachPolicy attachTo);
 	AttachPolicy attachPolicy(){return d_attach_policy;};
 
-	virtual int rtti() const {return Rtti_PlotLineArrow;}
+	int rtti() const override {return Rtti_PlotLineArrow;}
 
 private:
 	void displayInfo(bool clear = false);
@@ -148,19 +148,19 @@ private:
 	double theta(int xs, int ys, int xe, int ye) const;
 
 	//! Flag specifying if the start arrow is visible
-	bool d_start_arrow;
+	bool d_start_arrow = false;
 
 	//! Flag specifying if the end arrow is visible
-	bool d_end_arrow;
+	bool d_end_arrow = true;
 
 	//! Flag specifying if the arrow head is filled with a brush
-	bool d_fill_head;
+	bool d_fill_head = true;
 
 	//! Angle of the arrow head
-	int d_head_angle;
+	int d_head_angle = 45;
 
 	//! Length of the arrow head
-	int d_head_length;
+	int d_head_length = 4;
 
 	//! Pixel coordinates of the start point
 	QPoint d_start;
@@ -171,10 +171,10 @@ private:
 	//! Bounding rectangle of the arrow in axes values coordinates
 	QRectF d_rect;
 	//! Whether start and end point can be moved by the user.
-	bool d_editable;
+	bool d_editable = false;
 
 	//! What editing operation is in progress.
-	Operation d_op;
+	Operation d_op = None;
 
 	/*!\brief Difference between mouse position where a MoveBoth operation started and startPoint().
 	 * When only one point is being moved, we can simply setStartPoint() or setEndPoint() to the
@@ -183,6 +183,6 @@ private:
 	 */
 	QPoint d_op_startat;
 
-	AttachPolicy d_attach_policy;
+	AttachPolicy d_attach_policy = Scales;
 };
 #endif

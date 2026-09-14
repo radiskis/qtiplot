@@ -8,17 +8,24 @@
 #include "LegendCommand.h"
 #include <MultiLayer.h>
 
+static QString makeCommandTitle(LegendWidget *l, const QString &text)
+{
+	if (!l)
+		return text;
+	QString name = l->objectName();
+	return name.isEmpty() ? text : (name + ": " + text);
+}
+
 /*************************************************************************/
 /*           Class LegendSetTextCommand                                  */
 /*************************************************************************/
 LegendSetTextCommand::LegendSetTextCommand(LegendWidget *l, const QString& oldText,
 						const QString& newText, const QString & text):
-QUndoCommand(text),
+QUndoCommand(makeCommandTitle(l, text)),
 d_legend(l),
 d_old_text(oldText),
 d_new_text(newText)
 {
-	setText(l->objectName() + ": " + text);
 }
 
 void LegendSetTextCommand::redo()
@@ -53,12 +60,11 @@ bool LegendSetTextCommand::mergeWith(const QUndoCommand *other)
 /*************************************************************************/
 LegendSetColorCommand::LegendSetColorCommand(LegendWidget *l, const QColor& oldColor,
 						const QColor& newColor, const QString & text):
-QUndoCommand(text),
+QUndoCommand(makeCommandTitle(l, text)),
 d_legend(l),
 d_old_color(oldColor),
 d_new_color(newColor)
 {
-	setText(l->objectName() + ": " + text);
 }
 
 void LegendSetColorCommand::redo()
@@ -93,12 +99,11 @@ bool LegendSetColorCommand::mergeWith(const QUndoCommand *other)
 /*************************************************************************/
 LegendSetFontCommand::LegendSetFontCommand(LegendWidget *l, const QFont& oldFont,
 						const QFont& newFont, const QString & text):
-QUndoCommand(text),
+QUndoCommand(makeCommandTitle(l, text)),
 d_legend(l),
 d_old_font(oldFont),
 d_new_font(newFont)
 {
-	setText(l->objectName() + ": " + text);
 }
 
 void LegendSetFontCommand::redo()

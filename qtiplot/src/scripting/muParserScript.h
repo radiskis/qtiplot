@@ -45,18 +45,18 @@ class muParserScript: public Script
   Q_OBJECT
 
   public:
-    muParserScript(ScriptingEnv *env, const QString &code, QObject *context=0, const QString &name="<input>");
-    ~muParserScript();
+    muParserScript(ScriptingEnv *env, const QString &code, QObject *context = nullptr, const QString &name = "<input>");
+    ~muParserScript() override;
 
   public slots:
-    bool compile(bool asFunction=true);
-    QVariant eval();
+    bool compile(bool asFunction = true) override;
+    QVariant eval() override;
     double evalSingleLine();
     QString evalSingleLineToString(const QLocale& locale, char f, int prec);
-    bool exec();
-    bool setQObject(QObject *val, const char *name);
-    bool setInt(int val, const char* name);
-    bool setDouble(double val, const char* name);
+    bool exec() override;
+    bool setQObject(QObject *val, const char *name) override;
+    bool setInt(int val, const char* name) override;
+    bool setDouble(double val, const char* name) override;
     double* defineVariable(const char *name, double val = 0.0);
     int codeLines(){return muCode.size();};
 

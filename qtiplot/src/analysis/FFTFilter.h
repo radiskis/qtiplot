@@ -60,16 +60,16 @@ private:
     void calculateOutputData(double *x, double *y);
 
     //! The filter type.
-    FilterType d_filter_type;
+    FilterType d_filter_type = LowPass;
 
     //! Cutoff frequency for Low Pass and High Pass filters. Lower edge of the band for Band Pass and Band block filters.
-    double d_low_freq;
+    double d_low_freq = 0.0;
 
     //! Upper edge of the band for Band Pass and Band block filters.
-    double d_high_freq;
+    double d_high_freq = 0.0;
 
     //! Flag telling if the DC offset must be added/substracted when applying a Band Pass/Band block filter respectively.
-    bool d_offset;
+    bool d_offset = false;
 };
 
 #endif

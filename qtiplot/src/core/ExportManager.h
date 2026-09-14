@@ -49,7 +49,7 @@ class ExportManager : public QObject
 
 public:
     explicit ExportManager(ApplicationWindow *app);
-    virtual ~ExportManager();
+    ~ExportManager() override;
 
     void exportMatrix(const QString& exportFilter = QString());
     void exportExcel();
@@ -67,7 +67,7 @@ public:
     void printAllPlots();
 
 private:
-    ApplicationWindow *d_app;
+    ApplicationWindow *d_app = nullptr;
 };
 
 #endif // EXPORT_MANAGER_H

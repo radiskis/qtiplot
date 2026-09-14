@@ -55,10 +55,10 @@ private:
 
 	QString d_file_name;
 	QString d_output_file;
-	QProcess *soffice, *java;
-	bool d_keep_input_file;
+	QProcess *soffice = nullptr, *java = nullptr;
+	bool d_keep_input_file = false;
 #ifdef Q_WS_X11
-	bool d_soffice_already_running;
+	bool d_soffice_already_running = false;
 #endif
 };
 

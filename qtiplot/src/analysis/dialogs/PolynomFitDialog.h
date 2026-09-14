@@ -54,17 +54,17 @@ public slots:
 	void changeDataRange();
 
 private:
-	Graph *graph;
+	Graph *graph = nullptr;
 
-    QPushButton* buttonFit;
-	QPushButton* buttonCancel;
-    QCheckBox* boxShowFormula;
-	QComboBox* boxName;
-	QSpinBox* boxOrder;
-	QSpinBox* boxPoints;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxEnd;
-	ColorButton* boxColor;
+    QPushButton* buttonFit = nullptr;
+	QPushButton* buttonCancel = nullptr;
+    QCheckBox* boxShowFormula = nullptr;
+	QComboBox* boxName = nullptr;
+	QSpinBox* boxOrder = nullptr;
+	QSpinBox* boxPoints = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxEnd = nullptr;
+	ColorButton* boxColor = nullptr;
 };
 
 #endif

@@ -66,29 +66,29 @@ private:
 	double combineValues(double v1, double v2, bool add = false);
 	void closeEvent(QCloseEvent* e);
 
-	Graph *graph;
-	QPushButton* buttonSubtract;
-	QPushButton* buttonUndo;
-	QPushButton* buttonModify;
-	QPushButton* buttonCreate;
-	QPushButton* buttonCancel;
+	Graph *graph = nullptr;
+	QPushButton* buttonSubtract = nullptr;
+	QPushButton* buttonUndo = nullptr;
+	QPushButton* buttonModify = nullptr;
+	QPushButton* buttonCreate = nullptr;
+	QPushButton* buttonCancel = nullptr;
 
-	QComboBox* boxTableName;
-	QComboBox* boxColumnName;
-	QComboBox* boxInputName;
-	QComboBox* boxInterpolationMethod;
+	QComboBox* boxTableName = nullptr;
+	QComboBox* boxColumnName = nullptr;
+	QComboBox* boxInputName = nullptr;
+	QComboBox* boxInterpolationMethod = nullptr;
 
-	QLineEdit* boxEquation;
+	QLineEdit* boxEquation = nullptr;
 
-	QRadioButton *btnAutomatic;
-	QRadioButton *btnEquation;
-	QRadioButton *btnDataset;
+	QRadioButton *btnAutomatic = nullptr;
+	QRadioButton *btnEquation = nullptr;
+	QRadioButton *btnDataset = nullptr;
 
-	QSpinBox* boxPoints;
+	QSpinBox* boxPoints = nullptr;
 
-	PlotCurve *d_baseline;
+	PlotCurve *d_baseline = nullptr;
 	Ref<Table> d_table;
-	BaselineTool *d_picker_tool;
+	BaselineTool *d_picker_tool = nullptr;
 };
 
 #endif

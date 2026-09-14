@@ -63,22 +63,22 @@ private:
 	static int savitzkyGolayCoefficients(int points, int polynom_order, gsl_matrix *h);
 
     //! The smooth method.
-    SmoothMethod d_method;
+    SmoothMethod d_method = Average;
 
     //! The number of adjacents points used to smooth the data set.
-    int d_smooth_points;
+    int d_smooth_points = 2;
 
     //! The number of left adjacents points used by the Savitky-Golay algorithm.
-    int d_sav_gol_points;
+    int d_sav_gol_points = 2;
 
     //! Polynomial order in the Savitky-Golay algorithm (see Numerical Receipes in C for details).
-    int d_polynom_order;
+    int d_polynom_order = 2;
 
     //! Parameter f for the Lowess algorithm
-    double d_f;
+    double d_f = 0.2;
 
     //! Number of iterations for the Lowess algorithm
-    int d_iterations;
+    int d_iterations = 2;
 };
 
 #endif

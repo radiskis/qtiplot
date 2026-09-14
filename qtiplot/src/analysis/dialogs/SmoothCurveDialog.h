@@ -52,14 +52,14 @@ public slots:
 	void activateCurve(const QString&);
 
 private:
-	Graph *graph;
-	int smooth_method;
-    QPushButton* btnSmooth;
-	QPushButton* buttonCancel;
-	QComboBox* boxName;
-	QSpinBox *boxPointsLeft, *boxPointsRight, *boxOrder;
-	QDoubleSpinBox *boxF;
-	ColorButton* boxColor;
+	Graph *graph = nullptr;
+	int smooth_method = 0;
+    QPushButton* btnSmooth = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QComboBox* boxName = nullptr;
+	QSpinBox *boxPointsLeft = nullptr, *boxPointsRight = nullptr, *boxOrder = nullptr;
+	QDoubleSpinBox *boxF = nullptr;
+	ColorButton* boxColor = nullptr;
 };
 
 #endif

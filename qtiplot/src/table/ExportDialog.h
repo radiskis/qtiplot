@@ -51,27 +51,27 @@ public:
 	 * \param extended flag: show/hide the advanced options on start-up
 	 * \param fl window flags
 	 */
-    ExportDialog(MdiSubWindow *window = nullptr, QWidget* parent = 0, bool extended = true, Qt::WindowFlags fl = {} );
+    ExportDialog(MdiSubWindow *window = nullptr, QWidget* parent = nullptr, bool extended = true, Qt::WindowFlags fl = {} );
 
 private:
 	//! Pointer to the window to be exported.
-	MdiSubWindow *d_window;
+	MdiSubWindow *d_window = nullptr;
 
-	void closeEvent(QCloseEvent*);
+	void closeEvent(QCloseEvent *e) override;
 	//! Create #d_advanced_options and everything it contains.
 	void initAdvancedOptions();
 	void setFileTypeFilters();
 	//! Container widget for all advanced options.
-	QGroupBox *d_advanced_options;
+	QGroupBox *d_advanced_options = nullptr;
 
-	QPushButton* buttonHelp;
-    QCheckBox* boxNames;
-    QCheckBox* boxComments;
-    QCheckBox* boxSelection;
-	QCheckBox* boxAllTables;
-    QComboBox* boxSeparator;
-	QComboBox* boxTable;
-	QLabel *separatorLbl;
+	QPushButton* buttonHelp = nullptr;
+    QCheckBox* boxNames = nullptr;
+    QCheckBox* boxComments = nullptr;
+    QCheckBox* boxSelection = nullptr;
+	QCheckBox* boxAllTables = nullptr;
+    QComboBox* boxSeparator = nullptr;
+	QComboBox* boxTable = nullptr;
+	QLabel *separatorLbl = nullptr;
 
 public slots:
 	//! Set the column delimiter
@@ -91,7 +91,7 @@ private slots:
 
 protected slots:
 	//! Accept changes
-	void accept();
+	void accept() override;
 	//! Display help
 	void help();
 };

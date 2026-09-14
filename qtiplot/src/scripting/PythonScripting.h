@@ -46,9 +46,9 @@ class PythonScripting: public ScriptingEnv
 	public:
 		static const char *langName;
 		PythonScripting(ApplicationWindow *parent);
-		~PythonScripting();
+		~PythonScripting() override;
 		static ScriptingEnv *constructor(ApplicationWindow *parent) { return new PythonScripting(parent); }
-		bool initialize();
+		bool initialize() override;
 
 		void write(const QString &text) {
 			if (QCoreApplication::instance() && QCoreApplication::instance()->arguments().contains("-X")) {
@@ -83,20 +83,20 @@ class PythonScripting: public ScriptingEnv
 		bool exec(const QString &code, PyObject *argDict=nullptr, const char *name="<qtiplot>");
 		QString errorMsg();
 
-		bool isRunning() const;
-		Script *newScript(const QString &code, QObject *context, const QString &name="<input>")
+		bool isRunning() const override;
+		Script *newScript(const QString &code, QObject *context, const QString &name="<input>") override
 		{
 			return new PythonScript(this, code, context, name);
 		}
 
 		bool setQObject(QObject*, const char*, PyObject *dict);
-		bool setQObject(QObject *val, const char *name) { return setQObject(val,name,nullptr); }
+		bool setQObject(QObject *val, const char *name) override { return setQObject(val,name,nullptr); }
 		bool setInt(int, const char*, PyObject *dict=nullptr);
 		bool setDouble(double, const char*, PyObject *dict=nullptr);
 
-		const QStringList mathFunctions() const;
-		const QString mathFunctionDoc (const QString &name) const;
-		const QStringList fileExtensions() const;
+		const QStringList mathFunctions() const override;
+		const QString mathFunctionDoc (const QString &name) const override;
+		const QStringList fileExtensions() const override;
 
 		PyObject *globalDict() { return globals; }
 		PyObject *sysDict() { return sys; }
@@ -113,9 +113,9 @@ class PythonScripting: public ScriptingEnv
 	private:
 		bool loadInitFile(const QString &path);
 
-		PyObject *globals;		// PyDict of global environment
-		PyObject *math;		// PyDict of math functions
-		PyObject *sys;		// PyDict of sys module
+		PyObject *globals = nullptr;		// PyDict of global environment
+		PyObject *math = nullptr;		// PyDict of math functions
+		PyObject *sys = nullptr;		// PyDict of sys module
 		std::atomic<bool> d_abortRequested{false};
 		std::atomic<bool> d_isExecuting{false};
 		PyObject *d_traceCapsule{nullptr};	// PyCapsule wrapping `this` for the trace hook

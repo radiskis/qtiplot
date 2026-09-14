@@ -54,7 +54,7 @@ public:
 
 protected:
 	LinearColorMap d_color_map;
-	double d_alpha;
+	double d_alpha = 1.0;
 };
 
 #endif // LINEARCOLOR_H

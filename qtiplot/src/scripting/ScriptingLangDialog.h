@@ -44,15 +44,15 @@ class ScriptingLangDialog: public QDialog, public scripted
 	Q_OBJECT
 
 	public:
-		ScriptingLangDialog(ScriptingEnv *env, ApplicationWindow *parent, Qt::WindowFlags fl = {});
+		ScriptingLangDialog(ScriptingEnv *env, ApplicationWindow *parent = nullptr, Qt::WindowFlags fl = {});
 
 	public slots:
 		void updateLangList();
-		void accept();
+		void accept() override;
 
 	private:
-		QListWidget *langList;
-		QPushButton *btnOK, *btnCancel;
+		QListWidget *langList = nullptr;
+		QPushButton *btnOK = nullptr, *btnCancel = nullptr;
 };
 
 #endif

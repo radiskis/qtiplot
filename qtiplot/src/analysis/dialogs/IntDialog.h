@@ -57,20 +57,20 @@ private slots:
 private:
 	bool validInput(const QString& function);
 
-	Graph *d_graph;
+	Graph *d_graph = nullptr;
 
-    QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-    QCheckBox* boxPlot;
-	ScriptEdit* boxFunction;
-	QLineEdit* boxVariable;
-	QSpinBox* boxSteps;
-	DoubleSpinBox* boxStart;
-	DoubleSpinBox* boxEnd;
-	DoubleSpinBox* boxTol;
+    QPushButton* buttonOk = nullptr;
+	QPushButton* buttonCancel = nullptr;
+    QCheckBox* boxPlot = nullptr;
+	ScriptEdit* boxFunction = nullptr;
+	QLineEdit* boxVariable = nullptr;
+	QSpinBox* boxSteps = nullptr;
+	DoubleSpinBox* boxStart = nullptr;
+	DoubleSpinBox* boxEnd = nullptr;
+	DoubleSpinBox* boxTol = nullptr;
 
-	QPushButton *buttonFunctionLog, *addFunctionBtn, *buttonClear;
-	QComboBox* boxMathFunctions;
+	QPushButton *buttonFunctionLog = nullptr, *addFunctionBtn = nullptr, *buttonClear = nullptr;
+	QComboBox* boxMathFunctions = nullptr;
 };
 
 #endif

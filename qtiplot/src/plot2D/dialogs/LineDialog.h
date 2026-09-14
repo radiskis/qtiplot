@@ -65,23 +65,23 @@ public slots:
 	void apply();
 
 private:
-	ArrowMarker *lm;
+	ArrowMarker *lm = nullptr;
 
-    ColorButton* colorBox;
-    PenStyleBox* styleBox;
-    DoubleSpinBox* widthBox;
-	QComboBox* unitBox;
-    QPushButton* btnOk;
-    QPushButton* btnApply;
-	QPushButton* buttonDefault;
-    QCheckBox* endBox;
-    QCheckBox* startBox,  *filledBox;
-	QTabWidget* tw;
-	QWidget *options, *geometry, *head;
-	DoubleSpinBox *xStartBox, *yStartBox, *xEndBox, *yEndBox;
-	QSpinBox *xStartPixelBox, *yStartPixelBox, *xEndPixelBox, *yEndPixelBox;
-	QSpinBox *boxHeadAngle, *boxHeadLength;
-	QComboBox* attachToBox;
+    ColorButton* colorBox = nullptr;
+    PenStyleBox* styleBox = nullptr;
+    DoubleSpinBox* widthBox = nullptr;
+	QComboBox* unitBox = nullptr;
+    QPushButton* btnOk = nullptr;
+    QPushButton* btnApply = nullptr;
+	QPushButton* buttonDefault = nullptr;
+    QCheckBox* endBox = nullptr;
+    QCheckBox* startBox = nullptr,  *filledBox = nullptr;
+	QTabWidget* tw = nullptr;
+	QWidget *options = nullptr, *geometry = nullptr, *head = nullptr;
+	DoubleSpinBox *xStartBox = nullptr, *yStartBox = nullptr, *xEndBox = nullptr, *yEndBox = nullptr;
+	QSpinBox *xStartPixelBox = nullptr, *yStartPixelBox = nullptr, *xEndPixelBox = nullptr, *yEndPixelBox = nullptr;
+	QSpinBox *boxHeadAngle = nullptr, *boxHeadLength = nullptr;
+	QComboBox* attachToBox = nullptr;
 };
 
 #endif // LINEDIALOG_H

@@ -45,7 +45,7 @@ public:
 		/**
 		 * \param parent parent widget (only affects placement of the widget)
 		 */
-		SymbolBox(bool showNoSymbol = true, QWidget *parent = 0);
+		SymbolBox(bool showNoSymbol = true, QWidget *parent = nullptr);
 
   		void setStyle(const QwtSymbol::Style& c);
  		QwtSymbol::Style selectedSymbol() const;
@@ -60,7 +60,7 @@ signals:
 
 protected:
 		void init(bool showNoSymbol);
-		void focusInEvent(QFocusEvent *);
+		void focusInEvent(QFocusEvent *) override;
 
 private:
 		static const QwtSymbol::Style symbols[];

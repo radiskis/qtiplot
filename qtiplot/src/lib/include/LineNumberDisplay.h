@@ -45,7 +45,7 @@ public:
 	* \param te the "source" QTextEdit for which we want to display the line numbers
 	* \param parent parent widget (only affects placement of the dialog)
 	*/
-	LineNumberDisplay(QTextEdit *te, QWidget *parent = 0);
+	LineNumberDisplay(QTextEdit *te, QWidget *parent = nullptr);
 
 public slots:
 	void updateLineNumbers(bool force = false);
@@ -55,7 +55,7 @@ private slots:
 	void changeCharFormat (const QTextCharFormat &);
 
 private:
-	void showEvent(QShowEvent *);
-	QTextEdit *d_text_edit;
+	void showEvent(QShowEvent *) override;
+	QTextEdit *d_text_edit = nullptr;
 };
 #endif

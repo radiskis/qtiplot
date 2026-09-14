@@ -46,7 +46,7 @@ class ScriptWindow: public QMainWindow
 
 public:
 		ScriptWindow(ScriptingEnv *env, ApplicationWindow *app);
-        ~ScriptWindow(){exit(0);};
+        ~ScriptWindow() override = default;
 
 public slots:
 		void newScript();
@@ -54,7 +54,7 @@ public slots:
 		void save();
 		void saveAs();
 		void languageChange();
-		virtual void setVisible(bool visible);
+		void setVisible(bool visible) override;
 
 		ScriptEdit* editor(){return te;};
 		void executeAll(){te->executeAll();};
@@ -80,30 +80,30 @@ signals:
 		void visibilityChanged(bool visible);
 
 private:
-		void moveEvent( QMoveEvent* );
-		void resizeEvent( QResizeEvent* );
+		void moveEvent( QMoveEvent* ) override;
+		void resizeEvent( QResizeEvent* ) override;
 
 		void initMenu();
 		void initActions();
-		ScriptEdit *te;
-		ApplicationWindow *d_app;
-		LineNumberDisplay *d_line_number;
-		QWidget *d_frame;
+		ScriptEdit *te = nullptr;
+		ApplicationWindow *d_app = nullptr;
+		LineNumberDisplay *d_line_number = nullptr;
+		QWidget *d_frame = nullptr;
 
 		QString fileName;
 
-		QMenu *file, *edit, *run, *windowMenu;
-		QAction *actionNew, *actionUndo, *actionRedo, *actionCut, *actionCopy, *actionPaste;
-		QAction *actionExecute, *actionExecuteAll, *actionEval, *actionPrint, *actionOpen;
-		QAction *actionSave, *actionSaveAs;
-		QAction *actionAlwaysOnTop, *actionHide, *actionShowLineNumbers;
-		QAction *actionShowConsole, *actionRedirectOutput, *actionPrintPreview;
-		QAction *actionShowWorkspace;
-		QAction *actionFind, *actionFindNext, *actionFindPrev, *actionReplace;
-		QAction *actionIncreaseIndent, *actionDecreaseIndent;
-		QDockWidget *consoleWindow;
-		QTextEdit *console;
-		QAction *actionStop;
+		QMenu *file = nullptr, *edit = nullptr, *run = nullptr, *windowMenu = nullptr;
+		QAction *actionNew = nullptr, *actionUndo = nullptr, *actionRedo = nullptr, *actionCut = nullptr, *actionCopy = nullptr, *actionPaste = nullptr;
+		QAction *actionExecute = nullptr, *actionExecuteAll = nullptr, *actionEval = nullptr, *actionPrint = nullptr, *actionOpen = nullptr;
+		QAction *actionSave = nullptr, *actionSaveAs = nullptr;
+		QAction *actionAlwaysOnTop = nullptr, *actionHide = nullptr, *actionShowLineNumbers = nullptr;
+		QAction *actionShowConsole = nullptr, *actionRedirectOutput = nullptr, *actionPrintPreview = nullptr;
+		QAction *actionShowWorkspace = nullptr;
+		QAction *actionFind = nullptr, *actionFindNext = nullptr, *actionFindPrev = nullptr, *actionReplace = nullptr;
+		QAction *actionIncreaseIndent = nullptr, *actionDecreaseIndent = nullptr;
+		QDockWidget *consoleWindow = nullptr;
+		QTextEdit *console = nullptr;
+		QAction *actionStop = nullptr;
 };
 
 #endif

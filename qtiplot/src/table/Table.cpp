@@ -84,6 +84,7 @@ Table::~Table()
 {
 	freeMemory();
 	delete d_undo_stack;
+	d_undo_stack = nullptr;
 }
 
 
@@ -3731,7 +3732,7 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 	int cols = d_table->numCols();
 	int selectedCols = 0;
 	int topRow = 0, bottomRow = 0;
-	int *sCols = 0;
+	std::vector<int> sCols;
 	int r = rows;
 	if (exportSelection){
 		for (int i=0; i<cols; i++){
@@ -3739,7 +3740,7 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 				selectedCols++;
 		}
 
-		sCols = new int[selectedCols];
+		sCols.resize(selectedCols);
 		int aux = 0;
 		for (int i=0; i<cols; i++){
 			if (d_table->isColumnSelected(i)){
@@ -3769,8 +3770,8 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 	if (!selectedCols)
 			aux = cols;
 
-	QTextDocument *document = new QTextDocument();
-	QTextCursor cursor = QTextCursor(document);
+	QTextDocument document;
+	QTextCursor cursor(&document);
 
 	QTextTableFormat tableFormat;
 	tableFormat.setAlignment(Qt::AlignCenter);
@@ -3844,7 +3845,6 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 				cursor.movePosition(QTextCursor::NextCell);
 			}
 		}
-		delete [] sCols;
 	} else {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < aux; j++){
@@ -3857,7 +3857,7 @@ bool Table::exportODF(const QString& fname, bool withLabels, bool exportComments
 	QTextDocumentWriter writer(fname);
 	if (fname.endsWith(".html"))
 		writer.setFormat("HTML");
-	writer.write(document);
+	writer.write(&document);
 
 	QApplication::restoreOverrideCursor();
 	return true;

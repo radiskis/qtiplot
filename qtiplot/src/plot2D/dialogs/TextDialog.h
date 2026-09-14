@@ -91,23 +91,23 @@ private:
 
 	//! current font
 	QFont selectedFont;
-	TextType d_text_type;
+	TextType d_text_type = AxisTitle;
 
-	ColorButton *colorBtn, *backgroundBtn;
-	QPushButton *buttonFont;
-	QComboBox *backgroundBox;
-	QPushButton *buttonCancel;
-	QPushButton *buttonApply;
-	QTextEdit *textEditBox;
-	QGroupBox *groupBox1, *groupBox2;
-	QComboBox *alignmentBox;
-	TextFormatButtons *formatButtons;
-	QComboBox *formatApplyToBox;
-	QSpinBox *distanceBox;
-	QCheckBox *invertTitleBox;
+	ColorButton *colorBtn = nullptr, *backgroundBtn = nullptr;
+	QPushButton *buttonFont = nullptr;
+	QComboBox *backgroundBox = nullptr;
+	QPushButton *buttonCancel = nullptr;
+	QPushButton *buttonApply = nullptr;
+	QTextEdit *textEditBox = nullptr;
+	QGroupBox *groupBox1 = nullptr, *groupBox2 = nullptr;
+	QComboBox *alignmentBox = nullptr;
+	TextFormatButtons *formatButtons = nullptr;
+	QComboBox *formatApplyToBox = nullptr;
+	QSpinBox *distanceBox = nullptr;
+	QCheckBox *invertTitleBox = nullptr;
 
-	Graph *d_graph;
-	QwtScaleWidget *d_scale;
+	Graph *d_graph = nullptr;
+	QwtScaleWidget *d_scale = nullptr;
 };
 
 #endif // TEXTDLG_H

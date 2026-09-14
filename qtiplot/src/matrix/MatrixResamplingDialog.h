@@ -49,7 +49,7 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	MatrixResamplingDialog(Matrix *m, bool shrink = false, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private slots:
 	//! Apply changes
@@ -59,12 +59,12 @@ private slots:
 
 private:
 	void calculateDimensions(int *newRows, int *newColumns);
-	Matrix *d_matrix;
+	Matrix *d_matrix = nullptr;
 
-	QDialogButtonBox *buttonBox;
-	QSpinBox* boxColumns, *boxRows;
-	QComboBox *boxMethod, *boxAction;
-	QLineEdit *dimensionsLabel;
+	QDialogButtonBox *buttonBox = nullptr;
+	QSpinBox* boxColumns = nullptr, *boxRows = nullptr;
+	QComboBox *boxMethod = nullptr, *boxAction = nullptr;
+	QLineEdit *dimensionsLabel = nullptr;
 };
 
 #endif // MATRIXRESAMPLINGDIALOG_H

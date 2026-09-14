@@ -44,24 +44,24 @@ class FindReplaceDialog : public QDialog
     Q_OBJECT
 
 public:
-    FindReplaceDialog(ScriptEdit *editor, bool replace = false, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    FindReplaceDialog(ScriptEdit *editor, bool replace = false, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private:
 	QTextDocument::FindFlags searchFlags();
 
-	ScriptEdit *d_editor;
+	ScriptEdit *d_editor = nullptr;
 
-	QPushButton* buttonNext;
-	QPushButton* buttonPrevious;
-	QPushButton* buttonReplace;
-	QPushButton* buttonReplaceAll;
-	QPushButton* buttonCancel;
+	QPushButton* buttonNext = nullptr;
+	QPushButton* buttonPrevious = nullptr;
+	QPushButton* buttonReplace = nullptr;
+	QPushButton* buttonReplaceAll = nullptr;
+	QPushButton* buttonCancel = nullptr;
 
-	QComboBox* boxFind;
-	QComboBox* boxReplace;
+	QComboBox* boxFind = nullptr;
+	QComboBox* boxReplace = nullptr;
 
-	QCheckBox* boxCaseSensitive;
-	QCheckBox* boxWholeWords;
+	QCheckBox* boxCaseSensitive = nullptr;
+	QCheckBox* boxWholeWords = nullptr;
 
 protected slots:
 	bool find(bool previous = false);

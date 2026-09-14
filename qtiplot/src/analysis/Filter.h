@@ -167,42 +167,42 @@ class Filter : public QObject
         Ref<Table> d_result_table;
 
 		//! Size of the data arrays
-		int d_n;
+		int d_n = 0;
 
 		//! x data set to be analysed
-		double *d_x;
+		double *d_x = nullptr;
 
 		//! y data set to be analysed
-		double *d_y;
+		double *d_y = nullptr;
 
 		//! GSL Tolerance, if ever needed...
-		double d_tolerance;
+		double d_tolerance = 1e-4;
 
 		//! Number of result points to de calculated and displayed in the output curve
-		int d_points;
+		int d_points = 100;
 
 		//! Color index of the result curve
-		QColor d_curveColor;
+		QColor d_curveColor = Qt::red;
 
 		//! Maximum number of iterations per fit
-		int d_max_iterations;
+		int d_max_iterations = 1000;
 
 		//! The curve to be analysed
-		PlotCurve *d_curve;
+		PlotCurve *d_curve = nullptr;
 
 		//! The resulting curve
-		PlotCurve *d_result_curve;
+		PlotCurve *d_result_curve = nullptr;
 
 		//! Precision (number of significant digits) used for the results output
-		int d_prec;
+		int d_prec = 4;
 
 		//! Error flag telling if something went wrong during the initialization phase.
-		bool d_init_err;
+		bool d_init_err = false;
 		QString d_error_message;
 		std::atomic<bool> d_canceled{false};
 
         //! Data interval
-        double d_from, d_to;
+        double d_from = 0.0, d_to = 0.0;
 
         //! Specifies if the filter needs sorted data as input
         bool d_sort_data;

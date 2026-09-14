@@ -53,7 +53,7 @@ class TableStatistics : public Table
 		Table *base() const { return d_base.get(); }
 		void setBase(Table *t);
 		// saving
-		virtual void save(const QString&, const QString &geometry, bool = false);
+		void save(const QString&, const QString &geometry, bool = false) override;
 		void setColumnStatsTypes(const QList<int>& colStatTypes);
 		void setRange(int start, int end);
 
@@ -80,10 +80,10 @@ class TableStatistics : public Table
 	
 	private:
 		Ref<Table> d_base;
-		Type d_type;
+		Type d_type = column;
 		QList<int> d_targets;
 		QList<int> d_stats_col_type;
-		int d_start, d_end;
+		int d_start = 0, d_end = -1;
 		QString d_base_name;
 };
 

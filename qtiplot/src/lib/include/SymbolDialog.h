@@ -62,7 +62,7 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-    SymbolDialog(CharSet charSet, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    SymbolDialog(CharSet charSet, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private:
 	//! Show lowercase Greek characters
@@ -80,15 +80,15 @@ private:
 	//! Show default LaTeX math symbols
 	void initLatexMathSymbols();
 
-    QButtonGroup * buttons;
-	QPushButton * closeButton;
-	int numButtons;
-	QVBoxLayout * mainLayout;
-	QGridLayout * gridLayout;
+    QButtonGroup *buttons = nullptr;
+	QPushButton *closeButton = nullptr;
+	int numButtons = 0;
+	QVBoxLayout *mainLayout = nullptr;
+	QGridLayout *gridLayout = nullptr;
 
 protected:
 	//! Event handler: When the dialog gets the focus the first button is set to react on [return]
-	void focusInEvent( QFocusEvent * event );
+	void focusInEvent( QFocusEvent * event ) override;
 
 public slots:
 	//! Change language (reset title)

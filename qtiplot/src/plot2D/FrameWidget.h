@@ -123,7 +123,7 @@ public:
 	bool isOnTop(){return d_on_top;};
 	void setOnTop(bool on = true);
 
-	void mousePressEvent(QMouseEvent *);
+	void mousePressEvent(QMouseEvent *) override;
 
 signals:
 	void showDialog();
@@ -141,35 +141,35 @@ protected:
     double calculateBottomValue();
 
 	virtual void drawFrame(QPainter *p, const QRect& rect);
-	virtual void paintEvent(QPaintEvent *e);
-	void contextMenuEvent(QContextMenuEvent * ){emit showMenu();};
+	void paintEvent(QPaintEvent *e) override;
+	void contextMenuEvent(QContextMenuEvent * ) override {emit showMenu();};
 
 	//! Parent plot
-	Graph *d_plot;
+	Graph *d_plot = nullptr;
 
 	//! Frame type
-	int d_frame;
+	int d_frame = None;
 	//! Pen used to draw the frame
 	QPen d_frame_pen;
 	//! Background brush
 	QBrush d_brush;
 
 	//! Rotation angle: not implemented yet
-	int d_angle;
+	int d_angle = 0;
 
     //! X axis coordinate of the top left corner
-	double d_x;
+	double d_x = 0.0;
 	//! Y axis coordinate of the top left corner
-	double d_y;
+	double d_y = 0.0;
 	//! The right side position in scale coordinates.
-	double d_x_right;
+	double d_x_right = 0.0;
     //! The bottom side position in scale coordinates.
-    double d_y_bottom;
+    double d_y_bottom = 0.0;
 	//! Frame width in pixels
-	int d_shadow_width;
+	int d_shadow_width = 4;
 	//! The attach to policy
-	AttachPolicy d_attach_policy;
-	bool d_on_top;
+	AttachPolicy d_attach_policy = Scales;
+	bool d_on_top = true;
 };
 
 #endif

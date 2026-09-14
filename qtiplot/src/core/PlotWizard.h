@@ -48,39 +48,39 @@ public:
 	 * \param parent parent widget
 	 * \param fl Qt window flags
 	 */
-    PlotWizard( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    PlotWizard( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private:
 				//! Button "Plot"
-    QPushButton* buttonOk,
+    QPushButton* buttonOk = nullptr;
 				//! Button "<->xErr"
-				*buttonXErr,
+	QPushButton* buttonXErr = nullptr;
 				//! Button "<->yErr"
-				*buttonYErr,
+	QPushButton* buttonYErr = nullptr;
 				//! Button "Delete curve"
-				*buttonDelete;
+	QPushButton* buttonDelete = nullptr;
 				//! Button "cancel"
-	QPushButton* buttonCancel,
+	QPushButton* buttonCancel = nullptr;
 				//! Button "<->X"
-				*buttonX,
+	QPushButton* buttonX = nullptr;
 				//! Button "<->Y"
-				*buttonY,
+	QPushButton* buttonY = nullptr;
 				//! Button "New curve"
-				*buttonNew,
+	QPushButton* buttonNew = nullptr;
 				//! Button "<->Z"
-				*buttonZ;
+	QPushButton* buttonZ = nullptr;
 				//! Button group defining the layout
-    QGroupBox*  groupBox1,
+    QGroupBox* groupBox1 = nullptr;
 				//! Button group defining the layout
-				*groupBox2,
+	QGroupBox* groupBox2 = nullptr;
 				//! Button group defining the layout
-				*groupBox3;
+	QGroupBox* groupBox3 = nullptr;
 				//! Combo box to select the table
-    QComboBox* boxTables;
+    QComboBox* boxTables = nullptr;
 				//! List of the columns in the selected table
-	QListWidget *columnsList,
+	QListWidget *columnsList = nullptr;
 				//! List of the plots to generate
-			 *plotAssociations;
+	QListWidget *plotAssociations = nullptr;
 
 	//! Internal list of columns (contains all columns in all tables)
 	QStringList columns;
@@ -107,7 +107,7 @@ public slots:
 	//! Add column as Y error
 	void addYErrCol();
 	//! Accept settings, close the dialog
-	void accept();
+	void accept() override;
 	//! Add column as Z
 	void addZCol();
 
@@ -117,7 +117,7 @@ private:
 	void plot3DRibbon(const QStringList&);
 	//! Display a warning that a new curve must be added first before the selection of the columns
 	bool noCurves();
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 };
 
 #endif //  PLOTWIZARD_H

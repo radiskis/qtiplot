@@ -53,38 +53,38 @@ private:
 	void initAdvancedOptions();
 
 	//! Pointer to the window to be exported.
-	MdiSubWindow *d_window;
+	MdiSubWindow *d_window = nullptr;
 	//! Container widget for all advanced options.
-	QWidget *d_advanced_options;
+	QWidget *d_advanced_options = nullptr;
 	// vector format options
 	//! Container widget for all options available for vector formats.
-	QGroupBox *d_vector_options;
-	QSpinBox *d_vector_resolution;
-	QCheckBox *d_color;
+	QGroupBox *d_vector_options = nullptr;
+	QSpinBox *d_vector_resolution = nullptr;
+	QCheckBox *d_color = nullptr;
 	// raster format options
 	//! Container widget for all options available for raster formats.
-	QGroupBox *d_raster_options;
-	QSpinBox *d_quality;
-	QCheckBox *d_transparency;
-	QSpinBox *d_bitmap_resolution;
-	QComboBox *d_compression;
+	QGroupBox *d_raster_options = nullptr;
+	QSpinBox *d_quality = nullptr;
+	QCheckBox *d_transparency = nullptr;
+	QSpinBox *d_bitmap_resolution = nullptr;
+	QComboBox *d_compression = nullptr;
 
-	QComboBox *d_3D_text_export_mode;
-    QComboBox *d_3D_export_sort;
+	QComboBox *d_3D_text_export_mode = nullptr;
+    QComboBox *d_3D_export_sort = nullptr;
 
     //! Container widget for user defined export size.
-	QGroupBox *d_custom_size_box;
-	DoubleSpinBox *widthBox, *heightBox, *scaleFontsBox;
-	QComboBox *unitBox;
-	QLabel *resolutionLabel, *compressionLabel;
-	QCheckBox *keepRatioBox;
-	QCheckBox *d_escape_tex_strings;
-	QCheckBox *d_tex_font_sizes;
+	QGroupBox *d_custom_size_box = nullptr;
+	DoubleSpinBox *widthBox = nullptr, *heightBox = nullptr, *scaleFontsBox = nullptr;
+	QComboBox *unitBox = nullptr;
+	QLabel *resolutionLabel = nullptr, *compressionLabel = nullptr;
+	QCheckBox *keepRatioBox = nullptr;
+	QCheckBox *d_escape_tex_strings = nullptr;
+	QCheckBox *d_tex_font_sizes = nullptr;
 
-	QPushButton *d_preview_button;
+	QPushButton *d_preview_button = nullptr;
 
-	double aspect_ratio;
-	Graph *d_layer;
+	double aspect_ratio = 0.0;
+	Graph *d_layer = nullptr;
 
 public:
 	//! Constructor

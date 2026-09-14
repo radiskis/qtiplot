@@ -1,4 +1,4 @@
-﻿/*
+/*
 #
 #   Copyright c 2011 Stephan Zevenhuizen,
 #   Condensed Matter and Interfaces, Debye Institute, Utrecht University.
@@ -33,10 +33,10 @@ class exportEMF : public QObject, ImportExportPlugin
     Q_INTERFACES(ImportExportPlugin)
 	Q_PLUGIN_METADATA(IID "com.ProIndependent.QtiPlot.ImportExportPlugin/1.0")
 public:
-	QStringList exportFormats() const;
-	bool exportMatrix(Matrix *, const QString & fname, bool exportSelection);
-	bool exportGraph(Graph *, const QString & fname, const QSizeF & customSize, int unit, double fontsFactor);
-	bool exportMultiLayerPlot(MultiLayer *, const QString & fname, const QSizeF & customSize, int unit, double fontsFactor);
+	QStringList exportFormats() const override;
+	bool exportMatrix(Matrix *, const QString & fname, bool exportSelection) override;
+	bool exportGraph(Graph *, const QString & fname, const QSizeF & customSize, int unit, double fontsFactor) override;
+	bool exportMultiLayerPlot(MultiLayer *, const QString & fname, const QSizeF & customSize, int unit, double fontsFactor) override;
 };
 
 #endif

@@ -59,21 +59,21 @@ private slots:
     void pickHeaderFont();
 
 private:
-    QLabel *lblSeparator;
-    QComboBox *boxSeparator;
-    QGroupBox *groupBoxTableCol;
-    QLabel *lblTableBackground;
-    QLabel *lblTextColor;
-    QLabel *lblHeaderColor;
-    ColorButton *buttonBackground;
-    ColorButton *buttonText;
-    ColorButton *buttonHeader;
-    QGroupBox *groupBoxTableFonts;
-    QPushButton *buttonTextFont;
-    QPushButton *buttonHeaderFont;
-    QCheckBox *boxTableComments;
-    QCheckBox *boxUpdateTableValues;
-    QCheckBox *boxTablePasteDialog;
+    QLabel *lblSeparator = nullptr;
+    QComboBox *boxSeparator = nullptr;
+    QGroupBox *groupBoxTableCol = nullptr;
+    QLabel *lblTableBackground = nullptr;
+    QLabel *lblTextColor = nullptr;
+    QLabel *lblHeaderColor = nullptr;
+    ColorButton *buttonBackground = nullptr;
+    ColorButton *buttonText = nullptr;
+    ColorButton *buttonHeader = nullptr;
+    QGroupBox *groupBoxTableFonts = nullptr;
+    QPushButton *buttonTextFont = nullptr;
+    QPushButton *buttonHeaderFont = nullptr;
+    QCheckBox *boxTableComments = nullptr;
+    QCheckBox *boxUpdateTableValues = nullptr;
+    QCheckBox *boxTablePasteDialog = nullptr;
 
     QFont textFont;
     QFont headerFont;

@@ -70,28 +70,28 @@ private:
 	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
 	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
 
-	MultiLayer *multi_layer;
+	MultiLayer *multi_layer = nullptr;
 
-	QPushButton* buttonOk;
-	QPushButton* buttonCancel;
-	QPushButton* buttonApply;
-	QPushButton* buttonSwapLayers;
-    QGroupBox *GroupCanvasSize, *GroupGrid;
-    QSpinBox *boxX, *boxY, *boxColsGap, *boxRowsGap;
-	QSpinBox *boxRightSpace, *boxLeftSpace, *boxTopSpace, *boxBottomSpace;
-	DoubleSpinBox *boxCanvasWidth, *boxCanvasHeight;
-	QSpinBox *layersBox;
-	QSpinBox *boxLayerDest, *boxLayerSrc;
-	QCheckBox *fitBox;
-	QComboBox *alignHorBox, *alignVertBox;
-	QComboBox *unitBox;
-	QCheckBox *keepRatioBox;
-	QComboBox *alignPolicyBox;
-	QCheckBox *commonAxesBox;
-	QCheckBox *fixedSizeBox;
-	QCheckBox *linkXAxesBox;
+	QPushButton* buttonOk = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QPushButton* buttonApply = nullptr;
+	QPushButton* buttonSwapLayers = nullptr;
+    QGroupBox *GroupCanvasSize = nullptr, *GroupGrid = nullptr;
+    QSpinBox *boxX = nullptr, *boxY = nullptr, *boxColsGap = nullptr, *boxRowsGap = nullptr;
+	QSpinBox *boxRightSpace = nullptr, *boxLeftSpace = nullptr, *boxTopSpace = nullptr, *boxBottomSpace = nullptr;
+	DoubleSpinBox *boxCanvasWidth = nullptr, *boxCanvasHeight = nullptr;
+	QSpinBox *layersBox = nullptr;
+	QSpinBox *boxLayerDest = nullptr, *boxLayerSrc = nullptr;
+	QCheckBox *fitBox = nullptr;
+	QComboBox *alignHorBox = nullptr, *alignVertBox = nullptr;
+	QComboBox *unitBox = nullptr;
+	QCheckBox *keepRatioBox = nullptr;
+	QComboBox *alignPolicyBox = nullptr;
+	QCheckBox *commonAxesBox = nullptr;
+	QCheckBox *fixedSizeBox = nullptr;
+	QCheckBox *linkXAxesBox = nullptr;
 
-	double aspect_ratio;
+	double aspect_ratio = 0.0;
 };
 
 #endif

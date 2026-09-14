@@ -68,30 +68,30 @@ private:
 	void findBestLayout();
 
 	Ref<Table> d_table;
-	Qwt3D::SurfacePlot* sp;
+	Qwt3D::SurfacePlot* sp = nullptr;
 
 	QString d_col_name;
-	int d_nodes;
+	int d_nodes = 0;
 	alglib::real_2d_array xy;
 
-	QPushButton* buttonFit;
-	QPushButton* buttonCancel;
-	QLabel* boxName;
-	QComboBox* boxMethod;
-	QSpinBox* boxCols, *boxRows;
-	DoubleSpinBox* boxXStart;
-	DoubleSpinBox* boxXEnd;
-	DoubleSpinBox* boxYStart;
-	DoubleSpinBox* boxYEnd;
-	DoubleSpinBox* boxRadius;
-	QComboBox* boxPlotStyle;
-	QCheckBox *showPlotBox;
-	QGroupBox *previewBox;
-	QGroupBox *gbRadius;
-	QGroupBox *gbModel;
-	QComboBox* boxModel;
-	QSpinBox* boxNQ;
-	QSpinBox* boxNW;
+	QPushButton* buttonFit = nullptr;
+	QPushButton* buttonCancel = nullptr;
+	QLabel* boxName = nullptr;
+	QComboBox* boxMethod = nullptr;
+	QSpinBox* boxCols = nullptr, *boxRows = nullptr;
+	DoubleSpinBox* boxXStart = nullptr;
+	DoubleSpinBox* boxXEnd = nullptr;
+	DoubleSpinBox* boxYStart = nullptr;
+	DoubleSpinBox* boxYEnd = nullptr;
+	DoubleSpinBox* boxRadius = nullptr;
+	QComboBox* boxPlotStyle = nullptr;
+	QCheckBox *showPlotBox = nullptr;
+	QGroupBox *previewBox = nullptr;
+	QGroupBox *gbRadius = nullptr;
+	QGroupBox *gbModel = nullptr;
+	QComboBox* boxModel = nullptr;
+	QSpinBox* boxNQ = nullptr;
+	QSpinBox* boxNW = nullptr;
 };
 
 #endif

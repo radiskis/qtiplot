@@ -47,7 +47,7 @@ class QTI_EXPORT LegendWidget: public FrameWidget
 
 public:
     LegendWidget(Graph *);
-	~LegendWidget();
+	~LegendWidget() override;
 
 	void clone(LegendWidget* t);
 
@@ -61,9 +61,9 @@ public:
 	void setFont(const QFont& font, bool pushUndo = true);
 
 	void showTextEditor();
-	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]);
+	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
 
-	QString saveToString();
+	QString saveToString() override;
 	static void restore(Graph *g, const QStringList& lst);
 
 	bool isAutoUpdateEnabled(){return d_auto_update;};
@@ -88,23 +88,23 @@ private:
 	QString parse(const QString& str);
 
 	protected:
-	virtual void paintEvent(QPaintEvent *e);
+	void paintEvent(QPaintEvent *e) override;
 	private:
 
 	//! Pointer to the QwtText object
-	QwtText* d_text;
+	QwtText* d_text = nullptr;
     //! Rotation angle
-    int d_angle;
+    int d_angle = 0;
 	//! Distance between symbols and legend text
-	int h_space;
+	int h_space = 5;
 	//! Distance between frame and content
-	int left_margin, top_margin;
+	int left_margin = 5, top_margin = 5;
 	//! Length of the symbol line
-	int line_length;
+	int line_length = 20;
 	//! Flag telling if the legend should be updated each time a curve is added/removed from the parent plot
-	bool d_auto_update;
+	bool d_auto_update = false;
 	//! Flag telling if the legend contains TeX commands that mustn't be escaped when exporting to .tex
-	bool d_tex_output;
+	bool d_tex_output = false;
 
 signals:
 	void enableEditor();

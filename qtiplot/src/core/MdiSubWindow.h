@@ -62,8 +62,8 @@ public:
 	 * \param f window flags
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = 0, const QString& name = QString(), Qt::WindowFlags f = {});
-	virtual ~MdiSubWindow();
+	MdiSubWindow(const QString& label = QString(), ApplicationWindow *app = nullptr, const QString& name = QString(), Qt::WindowFlags f = {});
+	~MdiSubWindow() override;
 
 	//! Possible window captions.
 	enum CaptionPolicy{
@@ -122,16 +122,16 @@ public:
 	//event handlers
 	//! Close event handler
 	/**
-	 * Ask the user "delete, hide, or cancel?" if the
-	 * "ask on close" flag is set.
-	 */
-	void closeEvent( QCloseEvent *);
-	void resizeEvent( QResizeEvent* );
+ 	 * Ask the user "delete, hide, or cancel?" if the
+ 	 * "ask on close" flag is set.
+ 	 */
+	void closeEvent( QCloseEvent *) override;
+	void resizeEvent( QResizeEvent* ) override;
 
 	//! Toggle the "ask on close" flag
 	void askOnCloseEvent(bool ask){d_confirm_close = ask;};
 	//! Filters other object's events (customizes title bar's context menu)
-	bool eventFilter(QObject *object, QEvent *e);
+	bool eventFilter(QObject *object, QEvent *e) override;
 	//! Returns the pointer to the parent folder of the window
 	Folder* folder(){return d_folder;};
 
@@ -148,7 +148,7 @@ public:
 	//! Returns the size the window had before a change state event to minimized/maximized.
 	QSize restoreSize(){return d_restore_size;};
 
-	virtual QUndoStack* undoStack() const { return 0; }
+	virtual QUndoStack* undoStack() const { return nullptr; }
 
 	//! Static function used as a workaround for ASCII files having end line char != '\n'.
 	/*
@@ -179,7 +179,7 @@ signals:
 
 protected:
 	//! Catches status changes
-	virtual void changeEvent(QEvent *event);
+	void changeEvent(QEvent *event) override;
 
 private:
 	//! Used to parse ASCII files with carriage return ('\r') endline.
@@ -188,25 +188,25 @@ private:
     //! Set caption according to current CaptionPolicy, name and label
 	void updateCaption();
 	//!Pointer to the application window
-    ApplicationWindow *d_app;
+    ApplicationWindow *d_app = nullptr;
 	//!Pointer to the parent folder of the window
-	Folder *d_folder;
+	Folder *d_folder = nullptr;
 	//! The window label
 	/**
 	 * \sa setWindowLabel(), windowLabel(), setCaptionPolicy()
 	 */
 	QString d_label;
 	//! The window status
-	Status d_status;
+	Status d_status = Normal;
 	//! The window previous status
-	Status d_prev_status;
+	Status d_prev_status = Normal;
 	//! The caption policy
 	/**
 	 * \sa setCaptionPolicy(), captionPolicy()
 	 */
-	CaptionPolicy d_caption_policy;
+	CaptionPolicy d_caption_policy = Both;
 	//! Toggle on/off: Ask the user "delete, hide, or cancel?" on a close event
-	bool d_confirm_close;
+	bool d_confirm_close = true;
 	//! The creation date
 	QString d_birthdate;
 	//! Stores the size the window had before a change state event to minimized/maximized.

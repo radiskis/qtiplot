@@ -62,14 +62,14 @@ private:
 	double gslIntegration();
 
     //! the value of the integral
-    double d_area;
+    double d_area = 0.0;
 	//! the value of the estimated error in GSL integration
-	double d_error;
+	double d_error = 0.0;
 	//! the value of the workspace size in GSL integration
-	int d_workspace_size;
+	int d_workspace_size = 1000;
 
 	//! the type of the integrand
-	Integrand d_integrand;
+	Integrand d_integrand = DataSet;
 	//! Analytical function to be integrated
 	QString d_formula;
 	//! Variable name for the function to be integrated

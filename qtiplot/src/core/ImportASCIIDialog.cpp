@@ -1033,9 +1033,9 @@ void PreviewTable::updateColumn(int sc)
  *
  *****************************************************************************/
 
-PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix * m):QTableView(parent)
+PreviewMatrix::PreviewMatrix(QWidget *parent, Matrix *m) : QTableView(parent)
 {
-	d_matrix_model = new MatrixModel(32, 32, m);
+	d_matrix_model = new MatrixModel(32, 32, m ? static_cast<QObject *>(m) : this);
 	if (!m){
 		ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent);
 		if (app){

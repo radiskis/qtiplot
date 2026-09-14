@@ -84,7 +84,7 @@ public:
 	void setFirstColor(int index){d_first_color = index;};
 	int firstColor(){return d_first_color;};
 
-	void loadData();
+	void loadData() override;
 	void initLabels();
 	void clearLabels();
 
@@ -99,19 +99,19 @@ private:
 		const QwtScaleMap &yMap, int from, int to) const;
 	void drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap) const;
 
-	int d_pie_ray;
-	int d_first_color;
-	double d_start_azimuth;
-	double d_view_angle;
-	double d_thickness;
-	double d_horizontal_offset;
-	double d_edge_dist;
-	bool d_counter_clockwise;
-	bool d_auto_labeling;
-	bool d_values;
-	bool d_percentages;
-	bool d_categories;
-	bool d_fixed_labels_pos;
+	int d_pie_ray = 0;
+	int d_first_color = 0;
+	double d_start_azimuth = 0.0;
+	double d_view_angle = 0.0;
+	double d_thickness = 0.0;
+	double d_horizontal_offset = 0.0;
+	double d_edge_dist = 0.0;
+	bool d_counter_clockwise = false;
+	bool d_auto_labeling = false;
+	bool d_values = false;
+	bool d_percentages = false;
+	bool d_categories = false;
+	bool d_fixed_labels_pos = false;
 	QList <PieLabel *> d_texts_list;
 	//! Stores table row indices to be displayed in PieLabels if d_categories is true.
 	QVarLengthArray<int> d_table_rows;
@@ -122,7 +122,7 @@ class QTI_EXPORT PieLabel: public LegendWidget
 	Q_OBJECT
 
 public:
-    PieLabel(Graph *, PieCurve *pie = 0);
+    PieLabel(Graph *, PieCurve *pie = nullptr);
 
 	QString customText();
 	void setCustomText(const QString& s){d_custom_text = s;};
@@ -133,8 +133,8 @@ public:
 	static void restore(Graph *g, const QStringList& lst);
 
 private:
-	void closeEvent(QCloseEvent* e);
+	void closeEvent(QCloseEvent* e) override;
 
-	PieCurve *d_pie_curve;
+	PieCurve *d_pie_curve = nullptr;
 	QString d_custom_text;
 };

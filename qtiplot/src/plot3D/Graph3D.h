@@ -86,8 +86,8 @@ class Graph3D: public MdiSubWindow
 	Q_OBJECT
 
 public:
-	Graph3D (const QString& label, ApplicationWindow* parent, const char* name=0, Qt::WindowFlags f= {});
-	~Graph3D();
+	Graph3D (const QString& label, ApplicationWindow* parent, const char* name = nullptr, Qt::WindowFlags f = {});
+	~Graph3D() override;
 
 	enum PlotType{NoTable = -1, Scatter = 0, Trajectory = 1, Bars = 2, Ribbon =  3};
 	enum PointStyle{None = 0, Dots = 1, VerticalBars = 2, HairCross = 3, Cones = 4};
@@ -426,47 +426,55 @@ private:
 
 	void resetAxesType();
 	//! Wait this many msecs before redraw 3D plot (used for animations)
-  	int animation_redraw_wait;
+  	int animation_redraw_wait = 50;
 	//! File name of the color map used for the data (if any)
   	QString d_color_map_file;
 
-	QTimer *d_timer;
+	QTimer *d_timer = nullptr;
 	QString title, plotAssociation;
 	QStringList labels;
 	QFont titleFnt;
-	bool legendOn, d_autoscale;
-	bool d_scale_on_print, d_print_cropmarks;
+	bool legendOn = false;
+	bool d_autoscale = false;
+	bool d_scale_on_print = false;
+	bool d_print_cropmarks = false;
 	QVector<int> scaleType;
 	QColor axesCol, labelsCol, titleCol, meshCol, bgCol, numCol, gridCol;
-	int labelsDist, legendMajorTicks;
+	int labelsDist = 0;
+	int legendMajorTicks = 5;
 
 	//! Transparency
-	double d_alpha;
+	double d_alpha = 1.0;
 
 	//! \name Bar options
 	//@{
-	double d_bars_rad;
-	bool d_filled_bars, d_bar_lines;
+	double d_bars_rad = 0.007;
+	bool d_filled_bars = true;
+	bool d_bar_lines = true;
 	//@}
 
-	double d_point_size, crossHairRad, crossHairLineWidth, conesRad;
+	double d_point_size = 5.0;
+	double crossHairRad = 0.03;
+	double crossHairLineWidth = 2.0;
+	double conesRad = 0.5;
 	//! Draw 3D points with smoothed angles.
-	bool d_smooth_points;
-	bool crossHairSmooth, crossHairBoxed;
-	int conesQuality;
-	PointStyle pointStyle;
+	bool d_smooth_points = false;
+	bool crossHairSmooth = true;
+	bool crossHairBoxed = false;
+	int conesQuality = 32;
+	PointStyle pointStyle = None;
 	Ref<Table> d_table;
 	Ref<Matrix> d_matrix;
-	Qwt3D::SurfacePlot* sp;
-	UserFunction *d_func;
-	UserParametricSurface *d_surface;
-	Qwt3D::PLOTSTYLE style_;
-	Qwt3D::SHADINGSTYLE d_shading;
-	PlotType d_table_plot_type;
-	Qwt3D::SurfacePlot * d_active_curve;
-	ConstFunction *d_const_func;
+	Qwt3D::SurfacePlot* sp = nullptr;
+	UserFunction *d_func = nullptr;
+	UserParametricSurface *d_surface = nullptr;
+	Qwt3D::PLOTSTYLE style_ = Qwt3D::FILLEDMESH;
+	Qwt3D::SHADINGSTYLE d_shading = Qwt3D::GOURAUD;
+	PlotType d_table_plot_type = NoTable;
+	Qwt3D::SurfacePlot * d_active_curve = nullptr;
+	ConstFunction *d_const_func = nullptr;
 	// Curve * d_const_curve;
-    Qwt3D::SurfacePlot * d_const_curve; // Not used/Supported?
+    Qwt3D::SurfacePlot * d_const_curve = nullptr; // Not used/Supported?
 };
 
 //! Class for constant z surfaces
@@ -496,8 +504,9 @@ public:
 	double yMax(){return maxv_p;};
 
 private:
-	  QString formula;
-	  unsigned int d_rows, d_columns;
+	QString formula;
+	unsigned int d_rows = 0;
+	unsigned int d_columns = 0;
 };
 
 //! Class for user defined parametric surfaces
@@ -527,9 +536,16 @@ public:
 	QString zFormula(){return d_z_formula;};
 
 private:
-	QString d_x_formula, d_y_formula, d_z_formula;
-	unsigned int d_rows, d_columns;
-	bool d_u_periodic, d_v_periodic;
-	double d_ul, d_ur, d_vl, d_vr;
+	QString d_x_formula;
+	QString d_y_formula;
+	QString d_z_formula;
+	unsigned int d_rows = 0;
+	unsigned int d_columns = 0;
+	bool d_u_periodic = false;
+	bool d_v_periodic = false;
+	double d_ul = 0.0;
+	double d_ur = 0.0;
+	double d_vl = 0.0;
+	double d_vr = 0.0;
 };
 #endif // Plot3D_H

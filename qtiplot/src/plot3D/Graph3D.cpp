@@ -348,29 +348,32 @@ void Graph3D::removeCurve()
 {
 	if (d_surface){
 		delete d_surface;
-		d_surface = 0;
-	} else if (d_func){
+		d_surface = nullptr;
+	}
+	if (d_func){
 		delete d_func;
-		d_func = 0;
+		d_func = nullptr;
 	}
 
 	if (d_const_curve){
 		delete d_const_curve;
-		d_const_curve = 0;
+		d_const_curve = nullptr;
 	}
 
 	if (d_const_func){
 		delete d_const_func;
-		d_const_func = 0;
+		d_const_func = nullptr;
 	}
 
 	if (d_active_curve){
 		// delete d_active_curve;
         // Do not delete sp, just clear it and reset pointer
-        Qwt3D::TripleField data;
-        Qwt3D::CellField cells;
-        sp->loadFromData(data, cells); // Clear data
-		d_active_curve = 0;
+        if (sp) {
+            Qwt3D::TripleField data;
+            Qwt3D::CellField cells;
+            sp->loadFromData(data, cells); // Clear data
+        }
+		d_active_curve = nullptr;
 	}
 }
 
@@ -381,6 +384,15 @@ void Graph3D::addFunction(const QString& s, double xl, double xr, double yl,
 
 	if (!d_active_curve)
 		d_active_curve = addCurve();
+
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
 
 	d_func = new UserFunction(s, d_active_curve);
 
@@ -409,6 +421,15 @@ void Graph3D::addParametricSurface(const QString& xFormula, const QString& yForm
 
 	if (!d_active_curve)
 		d_active_curve = addCurve();
+
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
 
 	d_surface = new UserParametricSurface(xFormula, yFormula, zFormula, d_active_curve);
 	d_surface->setMesh(columns, rows);
@@ -483,6 +504,15 @@ void Graph3D::addRibbon(Table* table,const QString& xColName, const QString& yCo
 	if (!d_active_curve)
 		d_active_curve = addCurve();
 
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
+
 	d_active_curve->loadFromData(data, xmesh, ymesh, minx, maxx, 0, maxz);
 
 	if (empty || d_autoscale)
@@ -506,6 +536,15 @@ void Graph3D::addRibbon(Table* table,const QString& xColName,const QString& yCol
 
 	if (!d_active_curve)
 		d_active_curve = addCurve();
+
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
 
 	updateScales(xl, xr, yl, yr, zl, zr, xcol, ycol);
 	d_active_curve->legend()->setLimits(zl, zr);
@@ -539,6 +578,16 @@ void Graph3D::addMatrixData(Matrix* m)
 	sp->makeCurrent();
 	if (!d_active_curve)
 		d_active_curve = addCurve();
+
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
+
 	d_active_curve->loadFromData(data_matrix, cols, rows, m->xStart(), m->xEnd(), m->yStart(), m->yEnd());
 
 	if (first_time){
@@ -565,9 +614,15 @@ void Graph3D::addMatrixData(Matrix* m, double xl, double xr, double yl, double y
 
 void Graph3D::insertNewData(Table* table, const QString& colName)
 {
-	int zCol=table->colIndex(colName);
-	int yCol=table->colY(zCol);
-	int xCol=table->colX(zCol);
+	if (!table)
+		return;
+
+	int zCol = table->colIndex(colName);
+	if (zCol < 0)
+		return;
+
+	int yCol = table->colY(zCol);
+	int xCol = table->colX(zCol);
 
 	addData(table, xCol, yCol, zCol, Trajectory);
 	update();
@@ -582,7 +637,11 @@ void Graph3D::changeDataColumn(Table* table, const QString& colName, int type)
 
 	if (type == Ribbon) {
 		int ycol = table->colIndex(colName);
+		if (ycol < 0)
+			return;
 		int xcol = table->colX(ycol);
+		if (xcol < 0)
+			return;
 
         if (d_autoscale)
             addRibbon(table, table->colName(xcol), colName);
@@ -590,9 +649,11 @@ void Graph3D::changeDataColumn(Table* table, const QString& colName, int type)
             addRibbon(table, table->colName(xcol), colName, xStart(), xStop(), yStart(), yStop(), zStart(), zStop());
 		setFilledMeshStyle();
 	} else {
-		int zCol=table->colIndex(colName);
-		int yCol=table->colY(zCol);
-		int xCol=table->colX(zCol);
+		int zCol = table->colIndex(colName);
+		if (zCol < 0)
+			return;
+		int yCol = table->colY(zCol);
+		int xCol = table->colX(zCol);
 
 		addData(table, xCol, yCol, zCol, type);
 	}
@@ -628,11 +689,21 @@ void Graph3D::addData(Table* table, int xCol, int yCol, int zCol, int type)
 void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 		double xl, double xr, double yl, double yr, double zl, double zr, int axis)
 {
-	if (!table || xCol < 0 || yCol < 0 || zCol < 0)
+	if (!table || xCol < 0 || yCol < 0 || zCol < 0 ||
+		xCol >= table->numCols() || yCol >= table->numCols() || zCol >= table->numCols())
 		return;
 
 	d_table = table;
 	d_matrix = nullptr;
+
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
 
 	plotAssociation = table->colName(xCol) + "(X),";
 	plotAssociation += table->colName(yCol) + "(Y),";
@@ -697,7 +768,7 @@ void Graph3D::loadData(Table* table, int xCol, int yCol, int zCol,
 
 void Graph3D::updateData(Table* table)
 {
-	if (d_func)// function plot
+	if (!table || d_func)// function plot
 		return;
 
 	QString name = plotAssociation;
@@ -728,6 +799,19 @@ void Graph3D::updateData(Table* table)
 
 void Graph3D::updateDataXY(Table* table, int xCol, int yCol)
 {
+	if (!table || xCol < 0 || yCol < 0 ||
+		xCol >= table->numCols() || yCol >= table->numCols())
+		return;
+
+	if (d_func) {
+		delete d_func;
+		d_func = nullptr;
+	}
+	if (d_surface) {
+		delete d_surface;
+		d_surface = nullptr;
+	}
+
 	int r=table->numRows();
 	int i, j, xmesh=0, ymesh=2;
 
@@ -1967,10 +2051,8 @@ void Graph3D::setCrossStyle()
 
 void Graph3D::clearData()
 {
-	if (d_matrix)
-		d_matrix = nullptr;
-	else if (d_table)
-		d_table = nullptr;
+	d_matrix = nullptr;
+	d_table = nullptr;
 
 	removeCurve();
 
@@ -2204,15 +2286,15 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
-		QTextDocument *document = new QTextDocument();
-		QTextCursor cursor = QTextCursor(document);
+		QTextDocument document;
+		QTextCursor cursor(&document);
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertText(objectName());
 		cursor.insertBlock();
 		cursor.insertImage(image);
 
 		QTextDocumentWriter writer(fileName);
-		writer.write(document);
+		writer.write(&document);
 	} else
 	{
 		QImageWriter writer(fileName);
@@ -3549,4 +3631,5 @@ Graph3D::~Graph3D()
 {
 	removeCurve();
 	delete sp;
+	sp = nullptr;
 }

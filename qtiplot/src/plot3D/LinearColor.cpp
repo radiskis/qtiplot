@@ -36,7 +36,8 @@ d_alpha(1.0)
 
 LinearColor::LinearColor(Qwt3D::Plot3D* plot, const Qwt3D::ColorVector& colors):
 StandardColor(plot, 0),
-d_color_map(LinearColorMap())
+d_color_map(LinearColorMap()),
+d_alpha(1.0)
 {
 	setColorVector(colors);
 }

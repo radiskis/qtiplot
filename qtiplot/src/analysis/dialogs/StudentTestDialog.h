@@ -67,38 +67,38 @@ private:
 	void acceptChiSquareTest();
 	void outputResults(StatisticTest* stats, const QString& s);
 
-	StatisticTest::TestType d_test_type;
-	bool d_two_samples;
+	StatisticTest::TestType d_test_type = StatisticTest::StudentTest;
+	bool d_two_samples = false;
 
-	QComboBox *boxSample1;
-	QComboBox *boxSample2;
-	QRadioButton *bothTailButton;
-	QRadioButton *leftTailButton;
-	QRadioButton *rightTailButton;
-	QLabel *meanLabel;
-	QLabel *bothTailLabel;
-	QLabel *leftTailLabel;
-	QLabel *rightTailLabel;
-	CollapsiveGroupBox *boxConfidenceInterval;
-	QPushButton* buttonAddLevel;
-	QPushButton* buttonOk;
-	CollapsiveGroupBox *boxPowerAnalysis;
-	QSpinBox *boxSampleSize;
-	QCheckBox *boxOtherSampleSize;
-	DoubleSpinBox* boxMean;
-	DoubleSpinBox* boxSignificance;
-	DoubleSpinBox* boxPowerLevel;
+	QComboBox *boxSample1 = nullptr;
+	QComboBox *boxSample2 = nullptr;
+	QRadioButton *bothTailButton = nullptr;
+	QRadioButton *leftTailButton = nullptr;
+	QRadioButton *rightTailButton = nullptr;
+	QLabel *meanLabel = nullptr;
+	QLabel *bothTailLabel = nullptr;
+	QLabel *leftTailLabel = nullptr;
+	QLabel *rightTailLabel = nullptr;
+	CollapsiveGroupBox *boxConfidenceInterval = nullptr;
+	QPushButton* buttonAddLevel = nullptr;
+	QPushButton* buttonOk = nullptr;
+	CollapsiveGroupBox *boxPowerAnalysis = nullptr;
+	QSpinBox *boxSampleSize = nullptr;
+	QCheckBox *boxOtherSampleSize = nullptr;
+	DoubleSpinBox* boxMean = nullptr;
+	DoubleSpinBox* boxSignificance = nullptr;
+	DoubleSpinBox* boxPowerLevel = nullptr;
 
-	QRadioButton *independentTestBtn;
-	QRadioButton *pairedTestBtn;
+	QRadioButton *independentTestBtn = nullptr;
+	QRadioButton *pairedTestBtn = nullptr;
 
-	CollapsiveGroupBox *outputSettingsBox;
-	QCheckBox *boxResultsTable;
-	QLineEdit *tableNameLineEdit;
-	QCheckBox *boxResultsLog;
-	QCheckBox *boxNoteWindow;
-	QLineEdit *noteNameLineEdit;
-	QCheckBox *showStatisticsBox;
+	CollapsiveGroupBox *outputSettingsBox = nullptr;
+	QCheckBox *boxResultsTable = nullptr;
+	QLineEdit *tableNameLineEdit = nullptr;
+	QCheckBox *boxResultsLog = nullptr;
+	QCheckBox *boxNoteWindow = nullptr;
+	QLineEdit *noteNameLineEdit = nullptr;
+	QCheckBox *showStatisticsBox = nullptr;
 
 	Ref<Table> d_table;
 	Ref<Note> d_note;

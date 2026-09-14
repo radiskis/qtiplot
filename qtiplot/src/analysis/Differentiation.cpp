@@ -133,11 +133,14 @@ void Differentiation::output()
 	if (d_graphics_display){
 		if (!d_output_graph){
 			createOutputGraph();
-			d_output_graph->removeLegend();
+			if (d_output_graph)
+				d_output_graph->removeLegend();
 		}
 
-		d_output_graph->insertCurve(d_result_table, d_result_table->colLabel(col), 0);
-		if (d_update_output_graph)
-			d_output_graph->updatePlot();
+		if (d_output_graph) {
+			d_output_graph->insertCurve(d_result_table, d_result_table->colLabel(col), 0);
+			if (d_update_output_graph)
+				d_output_graph->updatePlot();
+		}
 	}
 }

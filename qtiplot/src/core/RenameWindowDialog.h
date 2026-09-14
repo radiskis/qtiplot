@@ -48,28 +48,28 @@ class RenameWindowDialog : public QDialog
     Q_OBJECT
 
 public:
-    RenameWindowDialog(QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    RenameWindowDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 private:
-    QPushButton * buttonOk;
-	QPushButton * buttonCancel;
-    QGroupBox * groupBox1;
-	QButtonGroup * buttons;
-	QRadioButton * boxName;
-	QRadioButton * boxLabel;
-	QRadioButton * boxBoth;
-	QLineEdit * boxNameLine;
-	QTextEdit * boxLabelEdit;
+    QPushButton * buttonOk = nullptr;
+	QPushButton * buttonCancel = nullptr;
+    QGroupBox * groupBox1 = nullptr;
+	QButtonGroup * buttons = nullptr;
+	QRadioButton * boxName = nullptr;
+	QRadioButton * boxLabel = nullptr;
+	QRadioButton * boxBoth = nullptr;
+	QLineEdit * boxNameLine = nullptr;
+	QTextEdit * boxLabelEdit = nullptr;
 
 public slots:
 	void setWidget(MdiSubWindow *w);
 	MdiSubWindow::CaptionPolicy getCaptionPolicy();
-	void accept();
+	void accept() override;
 
 signals:
 
 private:
-	MdiSubWindow *window;
+	MdiSubWindow *window = nullptr;
 };
 
 #endif // EXPORTDIALOG_H

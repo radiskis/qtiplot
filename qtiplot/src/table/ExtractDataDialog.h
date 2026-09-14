@@ -51,7 +51,7 @@ class ExtractDataDialog : public QDialog, public scripted
     Q_OBJECT
 
 public:
-	ExtractDataDialog( ScriptingEnv *env, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	ExtractDataDialog( ScriptingEnv *env, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 	void setTable(Table* w);
 	void setCompleter(QCompleter *);
 
@@ -64,25 +64,26 @@ private slots:
 	void clearFormulas();
 
 private:
-	Table* table;
+	Table* table = nullptr;
 
-	QSize sizeHint() const ;
+	QSize sizeHint() const override;
 
-    QComboBox* functions;
-    QComboBox* boxColumn;
-	QComboBox *boxOperators;
+    QComboBox* functions = nullptr;
+    QComboBox* boxColumn = nullptr;
+	QComboBox *boxOperators = nullptr;
 
-    QPushButton* btnAddFunction;
-    QPushButton* btnAddCol;
-    QPushButton* btnCancel;
-    QPushButton *btnApply;
-	QPushButton* buttonClearFormulas;
-	QPushButton* btnAddOp;
+    QPushButton* btnAddFunction = nullptr;
+    QPushButton* btnAddCol = nullptr;
+    QPushButton* btnCancel = nullptr;
+    QPushButton *btnApply = nullptr;
+	QPushButton* buttonClearFormulas = nullptr;
+	QPushButton* btnAddOp = nullptr;
 
-    ScriptEdit* commands;
-    QTextEdit* explain;
-	QSpinBox* start, *end;
-	QLineEdit *destNameBox;
+    ScriptEdit* commands = nullptr;
+    QTextEdit* explain = nullptr;
+	QSpinBox* start = nullptr;
+	QSpinBox* end = nullptr;
+	QLineEdit *destNameBox = nullptr;
 };
 
 #endif //

@@ -44,8 +44,8 @@ class PythonScript : public Script
 	Q_OBJECT
 
 	public:
-		PythonScript(PythonScripting *env, const QString &code, QObject *context=0, const QString &name="<input>");
-		~PythonScript();
+		PythonScript(PythonScripting *env, const QString &code, QObject *context = nullptr, const QString &name = "<input>");
+		~PythonScript() override;
 
 		void write(const QString &text) {
 			if (QCoreApplication::instance() && QCoreApplication::instance()->arguments().contains("-X")) {
@@ -57,16 +57,16 @@ class PythonScript : public Script
 		void flush() {}
 
 		public slots:
-		bool compile(bool for_eval=true);
-		QVariant eval();
-		bool exec();
-		bool setQObject(QObject *val, const char *name);
-		bool setInt(int val, const char* name);
-		bool setDouble(double val, const char* name);
-		void setContext(QObject *context);
+		bool compile(bool for_eval = true) override;
+		QVariant eval() override;
+		bool exec() override;
+		bool setQObject(QObject *val, const char *name) override;
+		bool setInt(int val, const char* name) override;
+		bool setDouble(double val, const char* name) override;
+		void setContext(QObject *context) override;
 
 	private:
-		PythonScripting *env() { return (PythonScripting*)Env; }
+		PythonScripting *env();
 		void beginStdoutRedirect();
 		void endStdoutRedirect();
 

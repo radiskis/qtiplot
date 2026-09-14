@@ -93,6 +93,7 @@ void Matrix::initGlobals()
 
 	d_table_view = nullptr;
 	imageLabel = nullptr;
+	d_select_all_shortcut = nullptr;
 
 	d_header_view_type = ColumnRow;
 	d_color_map_type = Default;
@@ -1047,15 +1048,15 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi, in
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
-		QTextDocument *document = new QTextDocument();
-		QTextCursor cursor = QTextCursor(document);
+		QTextDocument document;
+		QTextCursor cursor(&document);
 		cursor.movePosition(QTextCursor::End);
 		cursor.insertText(objectName());
 		cursor.insertBlock();
 		cursor.insertImage(image);
 
 		QTextDocumentWriter writer(fileName);
-		writer.write(document);
+		writer.write(&document);
 	} else
 	{
 		QImageWriter writer(fileName);
@@ -1450,10 +1451,14 @@ void Matrix::copy(Matrix *m)
     d_color_map = m->colorMap();
 
     if (d_view_type == ImageView){
-	    if (d_table_view)
+	    if (d_table_view){
             delete d_table_view;
-        if (d_select_all_shortcut)
+            d_table_view = nullptr;
+        }
+        if (d_select_all_shortcut){
             delete d_select_all_shortcut;
+            d_select_all_shortcut = nullptr;
+        }
 	    initImageView();
 		d_stack->setCurrentWidget(imageLabel);
 	}
@@ -1485,13 +1490,16 @@ void Matrix::setViewType(ViewType type, bool renderImage, bool pushUndo)
 
 	if (d_view_type == ImageView){
 		delete d_table_view;
+		d_table_view = nullptr;
 		delete d_select_all_shortcut;
+		d_select_all_shortcut = nullptr;
 		initImageView();
 		if (renderImage)
 			displayImage(d_matrix_model->renderImage());
 		d_stack->setCurrentWidget(imageLabel);
 	} else if (d_view_type == TableView){
 		delete imageLabel;
+		imageLabel = nullptr;
 		initTableView();
 		d_stack->setCurrentWidget(d_table_view);
 	}
@@ -1745,8 +1753,8 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
             }
 	}
 
-	QTextDocument *document = new QTextDocument();
-	QTextCursor cursor = QTextCursor(document);
+	QTextDocument document;
+	QTextCursor cursor(&document);
 
 	QTextTableFormat tableFormat;
 	tableFormat.setAlignment(Qt::AlignCenter);
@@ -1768,7 +1776,7 @@ bool Matrix::exportODF(const QString& fname, bool exportSelection)
 	QTextDocumentWriter writer(fname);
 	if (fname.endsWith(".html"))
 		writer.setFormat("HTML");
-	writer.write(document);
+	writer.write(&document);
 
 	QApplication::restoreOverrideCursor();
 	return true;

@@ -38,12 +38,12 @@ class RectangleWidget: public FrameWidget
 public:
 	RectangleWidget(Graph *);
 
-	virtual QString saveToString();
+	QString saveToString() override;
 
 	void clone(RectangleWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 
-	void updateCoordinates();
+	void updateCoordinates() override;
 	void setLinkedLayer(int layerIndex);
 
 public slots:
@@ -51,7 +51,7 @@ public slots:
 
 private:
     //! Index of the linked layer using the rectangle coordinates as a zoom region
-    int d_linked_layer;
+    int d_linked_layer = -1;
 };
 
 #endif
