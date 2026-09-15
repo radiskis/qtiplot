@@ -38,7 +38,7 @@ class MultiPeakFit : public Fit
 	public:
 		enum PeakProfile{Gauss, Lorentz};
 		MultiPeakFit(ApplicationWindow *parent, PlotCurve *c, PeakProfile profile = Gauss, int peaks = 1);
-		MultiPeakFit(ApplicationWindow *parent, Graph *g = 0, PeakProfile profile = Gauss, int peaks = 1);
+		MultiPeakFit(ApplicationWindow *parent, Graph *g = nullptr, PeakProfile profile = Gauss, int peaks = 1);
 		MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol,
 		  			 int startRow = 0, int endRow = -1, PeakProfile profile = Gauss, int peaks = 1);
 
@@ -54,9 +54,9 @@ class MultiPeakFit : public Fit
 		static QStringList generateExplanationList(int order);
 
 		//! Used by the GaussFit and LorentzFit derived classes to calculate initial values for the parameters
-		void guessInitialValues();
+		void guessInitialValues() override;
 
-		virtual double eval(double *par, double x);
+		double eval(double *par, double x) override;
 		double evalPeak(double *par, double x, int peak);
 
 		PeakProfile profile(){return d_profile;};
@@ -64,12 +64,12 @@ class MultiPeakFit : public Fit
 	private:
 		void init(int);
 
-		QString logFitInfo(int iterations, int status);
-		void generateFitCurve();
+		QString logFitInfo(int iterations, int status) override;
+		void generateFitCurve() override;
 		static QString peakFormula(int peakIndex, PeakProfile profile);
 		//! Inserts a peak function curve into the plot
 		void insertPeakFunctionCurve(int peak);
-		void customizeFitResults();
+		void customizeFitResults() override;
 
 		//! Number of peaks
 		int d_peaks;
@@ -123,16 +123,16 @@ class GaussAmpFit : public Fit
 	public:
 		GaussAmpFit(ApplicationWindow *parent, PlotCurve *);
 		GaussAmpFit(ApplicationWindow *parent, PlotCurve *, double, double);
-		GaussAmpFit(ApplicationWindow *parent, Graph *g = 0);
+		GaussAmpFit(ApplicationWindow *parent, Graph *g = nullptr);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		GaussAmpFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		GaussAmpFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 0, int endRow = -1);
 
-		void guessInitialValues();
-        double eval(double *par, double x);
+		void guessInitialValues() override;
+        double eval(double *par, double x) override;
 
 	private:
 		void init();
-		void calculateFitCurveData(double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y) override;
 };
 #endif

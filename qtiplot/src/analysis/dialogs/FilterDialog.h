@@ -44,7 +44,7 @@ class FilterDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilterDialog(int type, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    FilterDialog(int type, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void setGraph(Graph *g);

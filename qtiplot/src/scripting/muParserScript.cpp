@@ -265,7 +265,7 @@ double* muParserScript::defineVariable(const char *name, double val)
     if (!valptr)
     {
       emit_error(tr("Out of memory"), 0);
-      return 0;
+      return nullptr;
     }
     try {
       parser.DefineVar(name, valptr);

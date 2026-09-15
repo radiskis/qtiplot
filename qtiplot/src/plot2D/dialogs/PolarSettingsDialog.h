@@ -19,10 +19,10 @@ class PolarSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    PolarSettingsDialog(PolarGraph *g, QWidget *parent = 0);
+    PolarSettingsDialog(PolarGraph *g, QWidget *parent = nullptr);
 
 private slots:
-    void accept();
+    void accept() override;
     void apply();
     void updateScale();
     void updateGrid();

@@ -88,8 +88,8 @@ FitDialog::FitDialog(Graph *g, QWidget* parent)
 	setWindowFlags(windowFlags() | Qt::WindowMinimizeButtonHint);
 #endif
 
-	d_param_table = 0;
-	d_current_fit = 0;
+	d_param_table = nullptr;
+	d_current_fit = nullptr;
 	d_preview_curve = nullptr;
 
 	tw = new QStackedWidget();
@@ -926,7 +926,7 @@ void FitDialog::saveUserFunction()
 		QString filter = tr("QtiPlot fit model")+" (*.fit);;";
 		filter += tr("All files")+" (*.*)";
 		QString fn = ApplicationWindow::getFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
-								app->fitModelsPath + "/" + name, filter, 0, true, app->d_confirm_overwrite);
+								app->fitModelsPath + "/" + name, filter, nullptr, true, app->d_confirm_overwrite);
 		if (!fn.isEmpty()){
             QFileInfo fi(fn);
             app->fitModelsPath = fi.dir().absolutePath();
@@ -1769,7 +1769,7 @@ void FitDialog::saveInitialGuesses()
 		QString filter = tr("QtiPlot fit model") + " (*.fit);;";
 		filter += tr("All files") + " (*.*)";
 		QString fn = ApplicationWindow::getFileName(app, tr("QtiPlot") + " - " + tr("Save Fit Model As"),
-								app->fitModelsPath + "/" + d_current_fit->objectName(), filter, 0, true, app->d_confirm_overwrite);
+								app->fitModelsPath + "/" + d_current_fit->objectName(), filter, nullptr, true, app->d_confirm_overwrite);
 		if (!fn.isEmpty()){
             QFileInfo saveFi(fn);
             QString baseName = saveFi.fileName();

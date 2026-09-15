@@ -43,15 +43,15 @@ class Anova : public StatisticTest
 		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
 		void setAnovaTwoWayModel(int type){d_anova_type = (gsl_anova_twoway_types)type;};
 		bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
-		bool run();
+		bool run() override;
 
-		virtual QString logInfo();
+		QString logInfo() override;
 
 		//! \name One-Way ANOVA results
 		//@{
 		double fStat(){return d_at.F;};
-		double statistic(){return d_at.F;};
-		double pValue(){return d_at.p;};
+		double statistic() override{return d_at.F;};
+		double pValue() override{return d_at.p;};
 		double ssm(){return d_at.SSTr;};
 		//@}
 
@@ -79,13 +79,13 @@ class Anova : public StatisticTest
 		double mse(){if (d_two_way) return d_att.MSE; return d_at.MSE;};
 
 		//! Returns a pointer to the table created to display the results
-		virtual Table *resultTable(const QString& name = QString());
-		virtual void outputResultsTo(Table *);
+		Table *resultTable(const QString& name = QString()) override;
+		void outputResultsTo(Table *) override;
 
 	protected:
 		bool twoWayANOVA();
 		bool oneWayANOVA();
-		void freeMemory();
+		void freeMemory() override;
 		QString levelName(int level, bool b = false);
 
 		bool d_two_way;

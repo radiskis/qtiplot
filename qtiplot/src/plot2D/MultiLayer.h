@@ -69,8 +69,8 @@ class MultiLayer: public MdiSubWindow
 	friend class ResizeLayersCommand;
 
 public:
-    MultiLayer (ApplicationWindow* parent = 0, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=0, Qt::WindowFlags f= {});
-	~MultiLayer();
+    MultiLayer (ApplicationWindow* parent = nullptr, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=nullptr, Qt::WindowFlags f= {});
+	~MultiLayer() override;
 
 	QList<Graph *> layersList(){return graphsList;};
 	QList<Graph*> stackOrderedLayersList();
@@ -99,7 +99,7 @@ public:
 	QWidget *canvas(){return d_canvas;};
 	QRect canvasRect(){return d_canvas->rect();};
 	QRect canvasChildrenRect();
-	virtual QString sizeToString();
+	QString sizeToString() override;
 	QUndoStack *undoStack() const override {return d_undo_stack;};
 
 	void setWaterfallLayout(bool on = true);
@@ -185,7 +185,7 @@ public slots:
 	void exportImage(const QString& fileName, int quality = -1, bool transparent = false, int dpi = 0,
 		const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0, int compression = 0);
 	void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
-    void exportPDF(const QString& fname);
+    void exportPDF(const QString& fname) override;
 	void exportVector(const QString& fileName, int res = 0, bool color = true,
 		const QSizeF& customSize = QSizeF (), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 	void exportVector(QPrinter *printer, int res = 0, bool color = true,
@@ -198,8 +198,8 @@ public slots:
 					const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 
 	void copyAllLayers();
-	void print();
-	void print(QPrinter *);
+	void print() override;
+	void print(QPrinter *) override;
 	void printAllLayers(QPainter *painter);
 	void printActiveLayer();
 	//@}
@@ -209,7 +209,7 @@ public slots:
 
 	void connectLayer(Graph *g);
 
-	void save(const QString& fn, const QString& geometry, bool = false);
+	void save(const QString& fn, const QString& geometry, bool = false) override;
 
     //! \name Waterfall Plots
 	//@{
@@ -242,14 +242,14 @@ private:
 	//! \name Event Handlers
 	//@{
 	protected:
-	void mouseReleaseEvent(QMouseEvent *);
-	void resizeEvent(QResizeEvent *);
-	void showEvent(QShowEvent *);
-	void dropEvent(QDropEvent*);
-	void dragEnterEvent(QDragEnterEvent*);
-	void wheelEvent(QWheelEvent *);
-	void keyPressEvent(QKeyEvent *);
-	bool eventFilter(QObject *object, QEvent *);
+	void mouseReleaseEvent(QMouseEvent *) override;
+	void resizeEvent(QResizeEvent *) override;
+	void showEvent(QShowEvent *) override;
+	void dropEvent(QDropEvent*) override;
+	void dragEnterEvent(QDragEnterEvent*) override;
+	void wheelEvent(QWheelEvent *) override;
+	void keyPressEvent(QKeyEvent *) override;
+	bool eventFilter(QObject *object, QEvent *) override;
 	private:
 	void releaseLayer();
 	void resizeLayers(QResizeEvent *);
@@ -300,8 +300,8 @@ public:
 	ResizeLayersCommand(MultiLayer *m, const QSize& oldSize, const QSize& newSize,
 		const QList<QRect>& oldCanvas, const QList<QRectF>& oldPage,
 		const QList<QRect>& newCanvas, const QList<QRectF>& newPage, const QString& text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	int id() const override {return 100;};
 	bool mergeWith(const QUndoCommand *other) override;
 
@@ -318,12 +318,12 @@ class LayerButton: public QPushButton
 	Q_OBJECT
 
 public:
-    LayerButton (const QString& text = QString(), QWidget* parent = 0);
+    LayerButton (const QString& text = QString(), QWidget* parent = nullptr);
 	static int btnSize(){return 20;};
 
 protected:
-	void mousePressEvent( QMouseEvent * );
-	void mouseDoubleClickEvent ( QMouseEvent * );
+	void mousePressEvent( QMouseEvent * ) override;
+	void mouseDoubleClickEvent ( QMouseEvent * ) override;
 
 signals:
 	void showCurvesDialog();

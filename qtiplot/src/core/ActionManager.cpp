@@ -2100,7 +2100,7 @@ void ActionManager::performCustomAction(QAction *action)
 	QString lang = scriptEnv->objectName();
 	d_app->setScriptingLanguage("Python");
 
-    ScriptEdit *script = new ScriptEdit(scriptEnv, 0);
+    ScriptEdit *script = new ScriptEdit(scriptEnv, nullptr);
     script->importASCII(action->data().toString());
     script->executeAll();
     delete script;

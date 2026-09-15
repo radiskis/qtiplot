@@ -58,7 +58,7 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 	public:
 		enum MoveRestriction { NoRestriction, Vertical, Horizontal };
 		ScreenPickerTool(Graph *graph);
-		virtual ~ScreenPickerTool();
+		~ScreenPickerTool() override;
 		virtual void append(const QPointF &pos);
 		void setMoveRestriction(ScreenPickerTool::MoveRestriction r){d_move_restriction = r;};
 
@@ -72,8 +72,8 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 		 */
 		void statusText(const QString&);
 	protected:
-        virtual bool eventFilter(QObject *obj, QEvent *event);
-		virtual void append(const QPoint &point);
+        bool eventFilter(QObject *obj, QEvent *event) override;
+		void append(const QPoint &point) override;
 		QwtPlotMarker d_selection_marker;
 		MoveRestriction d_move_restriction;
 };
@@ -86,11 +86,11 @@ class DrawPointTool : public ScreenPickerTool
 	Q_OBJECT
 	public:
 		DrawPointTool(ApplicationWindow *app, Graph *graph);
-		virtual int rtti() const { return Rtti_DrawDataPoints;};
+		int rtti() const override { return Rtti_DrawDataPoints;};
 		void setDataCurve(DataCurve *);
 
 	protected:
-        virtual bool eventFilter(QObject *obj, QEvent *event);
+        bool eventFilter(QObject *obj, QEvent *event) override;
 		void appendPoint(const QPointF &point);
 		DataCurve *d_curve;
 		Ref<Table> d_table;
@@ -109,9 +109,9 @@ class ImageProfilesTool : public ScreenPickerTool
 
 		ImageProfilesTool* clone(Graph *g);
 
-		virtual ~ImageProfilesTool();
-		virtual void append(const QPointF &pos);
-		virtual int rtti() const { return Rtti_ImageProfilesTool;};
+		~ImageProfilesTool() override;
+		void append(const QPointF &pos) override;
+		int rtti() const override { return Rtti_ImageProfilesTool;};
 
 		int averagePixels(){return averageBox->value();}
 		void setAveragePixels(int pixels);

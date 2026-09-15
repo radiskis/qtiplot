@@ -46,8 +46,8 @@ class IntegrationDialog : public QDialog
     Q_OBJECT
 
 public:
-	IntegrationDialog(Graph *g, QWidget* parent = 0, Qt::WindowFlags fl = {} );
-	IntegrationDialog(Table *t, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	IntegrationDialog(Graph *g, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
+	IntegrationDialog(Table *t, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void activateCurve(const QString&);
@@ -55,7 +55,7 @@ public slots:
 	void changeDataRange();
 
 private:
-	void closeEvent (QCloseEvent * e );
+	void closeEvent (QCloseEvent * e ) override;
 
 	void setGraph(Graph *g);
 	void setTable(Table *t);

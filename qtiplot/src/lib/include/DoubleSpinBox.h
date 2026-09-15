@@ -65,7 +65,7 @@ public:
 	void setFormat(const char format, int prec = 1){d_format = format; setDecimals(prec);};
 
 	QString textFromValue ( double value ) const;
-	virtual QValidator::State validate ( QString & input, int & pos ) const override;
+	QValidator::State validate ( QString & input, int & pos ) const override;
 
 signals:
 	void valueChanged ( double d );

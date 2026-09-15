@@ -53,9 +53,9 @@ class AddWidgetTool : public QObject, public PlotToolInterface
     	};
 
 		AddWidgetTool(WidgetType type, Graph *graph, QAction *action);
-		virtual ~AddWidgetTool();
+		~AddWidgetTool() override;
 
-		virtual int rtti() const {return PlotToolInterface::Rtti_AddWidgetTool;};
+		int rtti() const override {return PlotToolInterface::Rtti_AddWidgetTool;};
 		//! Returns the type of widget to be added
 		WidgetType widgetType(){return d_widget_type;};
 
@@ -73,7 +73,7 @@ class AddWidgetTool : public QObject, public PlotToolInterface
 		void addText(const QPoint& point);
 		void addWidget(const QPoint& point);
 
-        virtual bool eventFilter(QObject *obj, QEvent *event);
+        bool eventFilter(QObject *obj, QEvent *event) override;
 		QAction *d_action;
 		WidgetType d_widget_type;
 		FrameWidget *d_fw;

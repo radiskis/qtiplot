@@ -64,7 +64,7 @@
 #include <QDir>
 
 FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::WindowFlags fl )
-: QDialog( parent, fl ), d_app(parent), d_active_editor(0), d_stand_alone(standAlone)
+: QDialog( parent, fl ), d_app(parent), d_active_editor(nullptr), d_stand_alone(standAlone)
 {
 	QLocale locale = QLocale();
 	int prec = 6;
@@ -357,7 +357,7 @@ FunctionDialog::FunctionDialog(ApplicationWindow* parent, bool standAlone, Qt::W
 	connect(boxType, QOverload<int>::of(&QComboBox::activated), this, &FunctionDialog::raiseWidget);
 
 	curveID = -1;
-	graph = 0;
+	graph = nullptr;
 }
 
 void FunctionDialog::buttonClicked(QAbstractButton *btn)
@@ -823,7 +823,7 @@ void FunctionDialog::insertFunction()
 	int category = boxFunctionCategory->currentIndex();
 	bool builtInFunc = (category == 0);
 	int index = boxMathFunctions->currentIndex();
-	Fit *fit = 0;
+	Fit *fit = nullptr;
 	if (category == 1 && index < d_fit_models.size())
 		fit = d_fit_models[index];
 	else if (category == 2 && index < d_user_functions.size())

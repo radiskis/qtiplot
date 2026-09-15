@@ -59,12 +59,12 @@ class FitDialog : public QDialog
     Q_OBJECT
 
 public:
-	FitDialog(Graph *g, QWidget* parent = 0);
+	FitDialog(Graph *g, QWidget* parent = nullptr);
 
     void setSrcTables(QList<MdiSubWindow*> tables);
 
 protected:
-	void closeEvent (QCloseEvent * e );
+	void closeEvent (QCloseEvent * e ) override;
     void initFitPage();
 	void initEditPage();
 	void initAdvancedPage();
@@ -72,7 +72,7 @@ protected:
 	void choosePluginsFolder();
 
 private slots:
-	void accept();
+	void accept() override;
     //! Clears the function editor, the parameter names and the function name
     void resetFunction();
 	void showFitPage();

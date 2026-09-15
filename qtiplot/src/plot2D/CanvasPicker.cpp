@@ -45,7 +45,7 @@ CanvasPicker::CanvasPicker(Graph *graph):
 	QObject(graph)
 {
 	pointSelected = false;
-	d_editing_marker = 0;
+	d_editing_marker = nullptr;
 
 	QWidget *canvas = graph->canvas();
 	canvas->installEventFilter(this);

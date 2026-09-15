@@ -191,11 +191,11 @@ int Note::indexOf(ScriptEdit* editor)
 ScriptEdit* Note::editor(int index)
 {
 	if (index < 0 || index >= d_tab_widget->count())
-		return 0;
+		return nullptr;
 
 	QWidget *w = d_tab_widget->widget(index);
 	if (!w)
-		return 0;
+		return nullptr;
 
 	QObjectList lst = w->children();
 	for (QObject *obj : lst){
@@ -203,14 +203,14 @@ ScriptEdit* Note::editor(int index)
 		if (edit)
 			return edit;
 	}
-	return 0;
+	return nullptr;
 }
 
 ScriptEdit* Note::currentEditor()
 {
 	QWidget *w = d_tab_widget->currentWidget();
 	if (!w)
-		return 0;
+		return nullptr;
 
 	QObjectList lst = w->children();
 	for (QObject *obj : lst){
@@ -218,7 +218,7 @@ ScriptEdit* Note::currentEditor()
 		if (editor)
 			return editor;
 	}
-	return 0;
+	return nullptr;
 }
 
 void Note::setTabStopDistance(double length)
@@ -395,8 +395,8 @@ void Note::setFont(const QFont& f)
 		if (!w)
 			continue;
 
-		LineNumberDisplay *display = 0;
-		ScriptEdit *editor = 0;
+		LineNumberDisplay *display = nullptr;
+		ScriptEdit *editor = nullptr;
 
 		QObjectList lst = w->children();
 		for (QObject *obj : lst){

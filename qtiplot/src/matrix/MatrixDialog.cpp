@@ -40,7 +40,7 @@
 
 MatrixDialog::MatrixDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl ),
-    d_matrix(0)
+    d_matrix(nullptr)
 {
     setWindowTitle( tr( "QtiPlot - Matrix Properties" ) );
     setAttribute(Qt::WA_DeleteOnClose);

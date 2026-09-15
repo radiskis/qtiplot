@@ -132,8 +132,8 @@ class Graph: public QwtPlot, public Registered<Graph>
 	Q_OBJECT
 
 	public:
-		Graph (int x = 0, int y = 0, int width = 500, int height = 400, QWidget* parent=0, Qt::WindowFlags f= {});
-		~Graph();
+		Graph (int x = 0, int y = 0, int width = 500, int height = 400, QWidget* parent=nullptr, Qt::WindowFlags f= {});
+		~Graph() override;
 
 		enum Axis{Left, Right, Bottom, Top};
 		enum Scale{Linear, Log10, Ln, Log2, Reciprocal, Probability, Logit};
@@ -206,7 +206,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		const QColor & paletteBackgroundColor() const;
 
 		void print(QPainter *painter, const QRect &rect, double fontFactor = 1.0);
-		void updateLayout();
+		void updateLayout() override;
 		void setCanvasGeometry(const QRect &canvasRect);
 		//!Convenience function for scripts
 		void setCanvasGeometry(int x, int y, int w, int h){setCanvasGeometry(QRect(x, y, w, h));};
@@ -423,9 +423,9 @@ class Graph: public QwtPlot, public Registered<Graph>
 		//! \name Event Handlers
 		//@{
 		bool mousePressed(QEvent *);
-		void contextMenuEvent(QContextMenuEvent *);
-		void closeEvent(QCloseEvent *e);
-		bool focusNextPrevChild ( bool next );
+		void contextMenuEvent(QContextMenuEvent *) override;
+		void closeEvent(QCloseEvent *e) override;
+		bool focusNextPrevChild ( bool next ) override;
 		//@}
 
 		//! Set axis scale
@@ -766,7 +766,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		//! \name Resizing
 		//@{
-		void resizeEvent(QResizeEvent *e);
+		void resizeEvent(QResizeEvent *e) override;
 		void scaleFonts(double factor, bool pushUndo = true);
 		//@}
 
@@ -906,9 +906,9 @@ signals:
 		void deselectCurves();
 
 	protected:
-		void dropEvent(QDropEvent*);
-		void dragEnterEvent(QDragEnterEvent*);
-		void showEvent (QShowEvent * event);
+		void dropEvent(QDropEvent*) override;
+		void dragEnterEvent(QDragEnterEvent*) override;
+		void showEvent (QShowEvent * event) override;
 	protected:
 		void drawItems(QPainter *painter, const QRectF &rect,
 			const QwtScaleMap map[axisCnt]) const override;

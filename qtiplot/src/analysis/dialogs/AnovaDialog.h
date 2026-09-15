@@ -55,7 +55,7 @@ public:
 	AnovaDialog(QWidget* parent, Table *t, const StatisticTest::TestType& type = StatisticTest::AnovaTest, bool twoWay = false);
 
 private slots:
-	void accept();
+	void accept() override;
 	void addData();
 	void removeData();
 	void showCurrentFolder(bool);
@@ -63,7 +63,7 @@ private slots:
 	void enableDescriptiveStatistics();
 
 private:
-	void closeEvent(QCloseEvent*);
+	void closeEvent(QCloseEvent*) override;
 	void acceptNormalityTest();
 #ifdef HAVE_TAMUANOVA
 	void acceptAnova();

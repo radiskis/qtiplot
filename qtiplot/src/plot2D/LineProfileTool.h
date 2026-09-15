@@ -67,7 +67,7 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 		LineProfileTool(Graph *graph, ApplicationWindow *app, int average_pixels);
 		void calculateLineProfile(const QPoint &start, const QPoint &end);
 
-        virtual int rtti() const {return PlotToolInterface::Rtti_LineProfileTool;};
+        int rtti() const override {return PlotToolInterface::Rtti_LineProfileTool;};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -80,18 +80,18 @@ class LineProfileTool : public QWidget, public PlotToolInterface
 		double averageImagePixel(const QImage &image, int px, int py, bool moreHorizontal);
 		/*!\brief Draw line during operation.
 		 */
-		virtual void paintEvent(QPaintEvent *e);
+		void paintEvent(QPaintEvent *e) override;
 		/*!\brief Pressing the left mouse button starts line selection.
 		 *
 		 * Clicks with anything else than the left button are propagated to the parent as usual.
 		 */
-		virtual void mousePressEvent(QMouseEvent *e);
+		void mousePressEvent(QMouseEvent *e) override;
 		/*!\brief Mouse movements need to be monitored for updating the line during operation.
 		 */
-		virtual void mouseMoveEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e) override;
 		/*!\brief Mouse releases end line selection and cause the profile to be displayed.
 		 */
-		virtual void mouseReleaseEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e) override;
 
 	private:
         ApplicationWindow *d_app;

@@ -57,7 +57,7 @@ QwtHistogram::QwtHistogram(Matrix *m):
 void QwtHistogram::init()
 {
 	d_autoBin = true;
-	d_matrix = 0;
+	d_matrix = nullptr;
 	bar_gap = 0;
 	setType(Graph::Histogram);
 	setPlotStyle(Graph::Histogram);

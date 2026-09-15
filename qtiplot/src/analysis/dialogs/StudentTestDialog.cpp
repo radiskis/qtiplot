@@ -54,7 +54,7 @@ StudentTestDialog::StudentTestDialog(const StatisticTest::TestType& type, Table 
 	d_note = nullptr;
 
 	setObjectName( "StudentTestDialog" );
-	QHBoxLayout *hl = 0;
+	QHBoxLayout *hl = nullptr;
 
 	if (type == StatisticTest::ChiSquareTest)
 		setWindowTitle(tr("Chi-square Test for Variance"));

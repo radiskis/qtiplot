@@ -38,17 +38,17 @@ class NonLinearFit : public Fit
 	Q_OBJECT
 
 	public:
-		NonLinearFit(ApplicationWindow *parent, Graph *g = 0);
+		NonLinearFit(ApplicationWindow *parent, Graph *g = nullptr);
 		NonLinearFit(ApplicationWindow *parent, PlotCurve *c);
 		NonLinearFit(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		NonLinearFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		NonLinearFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
-        double eval(double *par, double x);
+        double eval(double *par, double x) override;
 
-		virtual bool setParametersList(const QStringList& lst);
-		virtual bool setFormula(const QString& s, bool = true);
+		bool setParametersList(const QStringList& lst) override;
+		bool setFormula(const QString& s, bool = true) override;
 
 		QMap<QString, double> constants(){return d_constants;};
 		void setConstant(const QString& parName, double val);
@@ -58,17 +58,17 @@ class NonLinearFit : public Fit
 		QList<QString> constantsList(){return d_constants.keys();};
 		double constValue(const QString& name){return d_constants.value(name);};
 
-		virtual QString legendInfo();
-		static QStringList guessParameters(const QString& s, bool *error = 0, std::string *errMsg = 0, const QString& var = "x");
+		QString legendInfo() override;
+		static QStringList guessParameters(const QString& s, bool *error = nullptr, std::string *errMsg = nullptr, const QString& var = "x");
 
 	protected:
-		QString logFitInfo(int iterations, int status);
-		FunctionCurve* insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true);
+		QString logFitInfo(int iterations, int status) override;
+		FunctionCurve* insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true) override;
 
 	private:
-		void calculateFitCurveData(double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y) override;
 		void init();
-		virtual bool removeDataSingularities();
+		bool removeDataSingularities() override;
 		void removePole(int index);
 
 		QMap<QString, double> d_constants;

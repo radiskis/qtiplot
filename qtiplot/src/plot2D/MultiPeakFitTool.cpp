@@ -41,7 +41,7 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	: PlotToolInterface(graph)
 {
 	d_selected_peaks = 0;
-	d_curve = 0;
+	d_curve = nullptr;
 
 	d_fit = new MultiPeakFit(app, graph, profile, num_peaks);
 	d_fit->enablePeakCurves(app->generatePeakCurves);

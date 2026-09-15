@@ -834,7 +834,7 @@ void EnrichmentDialog::chooseImageFile(const QString& fn)
 	QString path = fn;
 	if (path.isEmpty())
 		path = ApplicationWindow::getFileName(this, tr("QtiPlot - Import image from file"), i->fileName(),
-					ApplicationWindow::imageFilter(), 0, false);
+					ApplicationWindow::imageFilter(), nullptr, false);
 
 	if (!path.isEmpty()){
 		if (i->load(path)){

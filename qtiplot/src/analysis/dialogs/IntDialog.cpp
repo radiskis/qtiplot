@@ -215,7 +215,7 @@ bool IntDialog::validInput(const QString& function)
 				}
 			}
 			if (!wellDefinedFunction){
-				QMessageBox::critical(0, QObject::tr("QtiPlot"),
+				QMessageBox::critical(nullptr, QObject::tr("QtiPlot"),
 				QObject::tr("The function %1 is not defined in the specified interval!").arg(function));
 				return false;
 			}

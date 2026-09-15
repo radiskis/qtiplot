@@ -87,7 +87,7 @@ void PlotController3D::plot3DWireframe()
 
 	if (!d_app) return;
 
-	plot3DMatrix(0, Qwt3D::WIREFRAME);
+	plot3DMatrix(nullptr, Qwt3D::WIREFRAME);
 }
 
 void PlotController3D::plot3DHiddenLine()
@@ -95,7 +95,7 @@ void PlotController3D::plot3DHiddenLine()
 
 	if (!d_app) return;
 
-	plot3DMatrix(0, Qwt3D::HIDDENLINE);
+	plot3DMatrix(nullptr, Qwt3D::HIDDENLINE);
 }
 
 void PlotController3D::plot3DPolygons()
@@ -103,7 +103,7 @@ void PlotController3D::plot3DPolygons()
 
 	if (!d_app) return;
 
-	plot3DMatrix(0, Qwt3D::FILLED);
+	plot3DMatrix(nullptr, Qwt3D::FILLED);
 }
 
 void PlotController3D::plot3DWireSurface()
@@ -111,7 +111,7 @@ void PlotController3D::plot3DWireSurface()
 
 	if (!d_app) return;
 
-	plot3DMatrix(0, Qwt3D::FILLEDMESH);
+	plot3DMatrix(nullptr, Qwt3D::FILLEDMESH);
 }
 
 void PlotController3D::plot3DBars()
@@ -133,7 +133,7 @@ void PlotController3D::plot3DBars()
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
 	else if(qobject_cast<Matrix *>(w))
-		plot3DMatrix(0, Qwt3D::USER);
+		plot3DMatrix(nullptr, Qwt3D::USER);
 }
 
 void PlotController3D::plot3DScatter()
@@ -156,7 +156,7 @@ void PlotController3D::plot3DScatter()
 			QMessageBox::warning(d_app, d_app->tr("QtiPlot - Plot error"),d_app->tr("You must select exactly one column for plotting!"));
 	}
 	else if(qobject_cast<Matrix *>(w))
-		plot3DMatrix(0, Qwt3D::POINTS);
+		plot3DMatrix(nullptr, Qwt3D::POINTS);
 }
 
 void PlotController3D::plot3DTrajectory()
@@ -481,7 +481,7 @@ Graph3D* PlotController3D::plotSurface(const QString& formula, double xl, double
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
-		return 0;
+		return nullptr;
 	plot->addFunction(formula, xl, xr, yl, yr, zl, zr, columns, rows);
 	emit d_app->modified();
 	return plot;
@@ -496,7 +496,7 @@ Graph3D* PlotController3D::plotParametricSurface(const QString& xFormula, const 
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
-		return 0;
+		return nullptr;
 	plot->addParametricSurface(xFormula, yFormula, zFormula, ul, ur, vl, vr, columns, rows, uPeriodic, vPeriodic);
 	emit d_app->modified();
 	return plot;
@@ -513,7 +513,7 @@ Graph3D* PlotController3D::newPlot3D(const QString& title)
 	if (label.isEmpty() || d_app->alreadyUsedName(label))
 		label = d_app->generateUniqueName(d_app->tr("Graph"));
 
-	Graph3D *plot = new Graph3D("", d_app, 0);
+	Graph3D *plot = new Graph3D("", d_app, nullptr);
 	plot->setWindowTitle(label);
 	plot->setObjectName(label);
 
@@ -531,7 +531,7 @@ Graph3D* PlotController3D::plotXYZ(Table* table, const QString& zColName, int ty
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
-		return 0;
+		return nullptr;
 
 	int zCol = table->colIndex(zColName);
 	if (type == Graph3D::Ribbon){
@@ -578,7 +578,7 @@ MdiSubWindow* PlotController3D::plotPolar(Table* table, const QStringList& colLi
 
 	if (!d_app) return nullptr;
 
-    if (!table || colList.size() < 2) return 0;
+    if (!table || colList.size() < 2) return nullptr;
     
     PolarGraph* w = qobject_cast<PolarGraph*>(newPolarPlot());
     if (!w) return nullptr;
@@ -613,7 +613,7 @@ void PlotController3D::initPlot3D(Graph3D *plot)
 	if (d_mdi_windows_area)
 		d_workspace->addSubWindow(plot);
 	else
-		plot->setParent(0);
+		plot->setParent(nullptr);
 
 	connectSurfacePlot(plot);
 
@@ -641,7 +641,7 @@ void PlotController3D::initPolarPlot(PolarGraph *w)
 	if (d_mdi_windows_area)
 		d_workspace->addSubWindow(w);
 	else
-		w->setParent(0);
+		w->setParent(nullptr);
 
 	w->setWindowIcon(QIcon(":/lpPlot.png"));
 	w->show();
@@ -1219,12 +1219,12 @@ Graph3D * PlotController3D::plot3DMatrix(Matrix *m, int style)
 	if (!m){
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
 	Graph3D *plot = newPlot3D();
 	if (!plot)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
@@ -1291,19 +1291,19 @@ bool PlotController3D::validFor3DPlot(Table *table)
 	if (!d_app) return false;
 
 	if (table->numCols()<2){
-		QMessageBox::critical(0,d_app->tr("QtiPlot - Error"),d_app->tr("You need at least two columns for d_app operation!"));
+		QMessageBox::critical(nullptr,d_app->tr("QtiPlot - Error"),d_app->tr("You need at least two columns for d_app operation!"));
 		return false;
 	}
 	if (table->selectedColumn() < 0 || table->colPlotDesignation(table->selectedColumn()) != Table::Z){
-		QMessageBox::critical(0,d_app->tr("QtiPlot - Error"),d_app->tr("Please select a Z column for d_app operation!"));
+		QMessageBox::critical(nullptr,d_app->tr("QtiPlot - Error"),d_app->tr("Please select a Z column for d_app operation!"));
 		return false;
 	}
 	if (table->noXColumn()){
-		QMessageBox::critical(0,d_app->tr("QtiPlot - Error"),d_app->tr("You need to define a X column first!"));
+		QMessageBox::critical(nullptr,d_app->tr("QtiPlot - Error"),d_app->tr("You need to define a X column first!"));
 		return false;
 	}
 	if (table->noYColumn()){
-		QMessageBox::critical(0,d_app->tr("QtiPlot - Error"),d_app->tr("You need to define a Y column first!"));
+		QMessageBox::critical(nullptr,d_app->tr("QtiPlot - Error"),d_app->tr("You need to define a Y column first!"));
 		return false;
 	}
 	return true;

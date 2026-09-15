@@ -80,7 +80,7 @@ public:
 
 	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
 
-	virtual QRectF boundingRect() const;
+	QRectF boundingRect() const override;
 
 	bool hasLabels(){return d_show_labels;};
 	QList <PlotMarker *> labelsList(){return d_labels_list;};
@@ -110,8 +110,8 @@ public:
 	void moveLabel(const QPoint& pos);
 	void clearLabels();
 
-    virtual void setVisible(bool on);
-    virtual QPen contourPen (double level) const;
+    void setVisible(bool on) override;
+    QPen contourPen (double level) const override;
     void setColorMapPen(bool on = true);
     bool useColorMapPen(){return d_color_map_pen;};
 
@@ -127,8 +127,8 @@ public:
 	QwtInterval range() const;
 
 protected:
-	virtual QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area, const QSize &imageSize) const;
-	virtual void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
+	QImage renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &area, const QSize &imageSize) const override;
+	void drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const override;
 	void updateLabels(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &lines) const;
 	void createLabels();
 	//! Pointer to the parent plot
@@ -255,7 +255,7 @@ public:
 			m->range(&min_z, &max_z);
     }
 
-	~MatrixData()
+	~MatrixData() override
 	{
 		if (d_mup)
 			delete d_mup;
@@ -274,7 +274,7 @@ public:
         return QwtInterval(min_z, max_z);
     }
 
-	virtual QwtInterval interval(Qt::Axis axis) const
+	QwtInterval interval(Qt::Axis axis) const override
     {
         if (axis == Qt::XAxis)
             return QwtInterval(x_start, x_start + (n_cols-1)*dx);
@@ -290,7 +290,7 @@ public:
 		return QSize(n_cols, n_rows);
 	}
 
-    virtual double value(double x, double y) const;
+    double value(double x, double y) const override;
 
 private:
 	//! Pointer to the source data matrix

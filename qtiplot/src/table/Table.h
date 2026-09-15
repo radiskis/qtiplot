@@ -206,7 +206,7 @@ public:
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void setAutoUpdateValues(bool on = true);
-	virtual QString sizeToString();
+	QString sizeToString() override;
 
 	double avg(int col, int startRow = 0, int endRow = -1);
 	double sum(int col, int startRow = 0, int endRow = -1);
@@ -266,15 +266,15 @@ public slots:
 	bool isEmptyColumn(int col);
 	int nonEmptyRows();
 
-	void print();
-	void print(QPrinter *);
+	void print() override;
+	void print(QPrinter *) override;
 	void print(const QString& fileName);
-	void exportPDF(const QString& fileName);
+	void exportPDF(const QString& fileName) override;
 
 	//! \name Event Handlers
 	//@{
-	bool eventFilter(QObject *object, QEvent *e);
-	void customEvent( QEvent* e);
+	bool eventFilter(QObject *object, QEvent *e) override;
+	void customEvent( QEvent* e) override;
 	//@}
 
 	//! \name Column Operations
@@ -463,8 +463,8 @@ public slots:
 
 	//! \name Saving and Restoring
 	//@{
-	virtual void save(const QString &fn, const QString& geometry, bool = false);
-	void restore(const QStringList& lst, int fileVersion, bool fromTemplate = false);
+	void save(const QString &fn, const QString& geometry, bool = false) override;
+	void restore(const QStringList& lst, int fileVersion, bool fromTemplate = false) override;
 
 	QString saveHeader();
 	QString saveComments();

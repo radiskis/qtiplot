@@ -36,8 +36,8 @@
 ExcelFileConverter::ExcelFileConverter(const QString& fileName, ApplicationWindow *app, bool keepInputFile)
 : QObject(app),
 d_file_name(fileName),
-soffice(0),
-java(0),
+soffice(nullptr),
+java(nullptr),
 d_keep_input_file(keepInputFile)
 {
 #ifdef Q_WS_X11
@@ -130,7 +130,7 @@ void ExcelFileConverter::finish(int, QProcess::ExitStatus exitStatus)
 		} else {
 			if (java){
 				java->kill();
-				java = 0;
+				java = nullptr;
 			}
 			startConvertion();
 			return;
@@ -158,7 +158,7 @@ void ExcelFileConverter::displayJavaError(QProcess::ProcessError error)
 		displayError("<a href=\"http://www.java.com/\">" + tr("Java") + "</a>", error);
 
 		java->kill();
-		java = 0;
+		java = nullptr;
 	}
 }
 
@@ -169,7 +169,7 @@ void ExcelFileConverter::displayOfficeError(QProcess::ProcessError error)
 					 "<a href=\"http://www.documentfoundation.org/\">" + tr("LibreOffice") + "</a>", error);
 
 	soffice->kill();
-	soffice = 0;
+	soffice = nullptr;
 }
 
 void ExcelFileConverter::displayError(const QString& process, QProcess::ProcessError error)

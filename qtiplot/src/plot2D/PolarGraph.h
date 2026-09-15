@@ -22,8 +22,8 @@ class PolarGraph: public MdiSubWindow
     Q_OBJECT
 
 public:
-    PolarGraph(const QString& label, ApplicationWindow* parent = 0, const QString& name = QString(), Qt::WindowFlags f = {});
-    ~PolarGraph();
+    PolarGraph(const QString& label, ApplicationWindow* parent = nullptr, const QString& name = QString(), Qt::WindowFlags f = {});
+    ~PolarGraph() override;
 
     QwtPolarPlot* plot() { return d_plot; }
     
@@ -46,12 +46,12 @@ public:
     void exportVector(const QString& fileName, int res = 0, bool color = true,
             const QSizeF& customSize = QSizeF(), int unit = 0, double fontsFactor = 1.0);
     void exportSVG(const QString& fname, const QSizeF& customSize = QSizeF(), int unit = 0, double fontsFactor = 1.0);
-    void exportPDF(const QString& fname);
+    void exportPDF(const QString& fname) override;
 
     // Serialization
     // Serialization
     QString saveToString();
-    void save(const QString &fn, const QString &geometry, bool = false);
+    void save(const QString &fn, const QString &geometry, bool = false) override;
     static PolarGraph* restore(ApplicationWindow* app, const QStringList& lst);
 
 public slots:
@@ -59,8 +59,8 @@ public slots:
 
 protected:
     void initPlot();
-    bool eventFilter(QObject *object, QEvent *e);
-    void contextMenuEvent(QContextMenuEvent *e);
+    bool eventFilter(QObject *object, QEvent *e) override;
+    void contextMenuEvent(QContextMenuEvent *e) override;
 
 private:
 

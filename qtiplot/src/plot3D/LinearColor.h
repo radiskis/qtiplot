@@ -39,7 +39,7 @@ class LinearColor : public StandardColor
 public:
 	LinearColor(Qwt3D::Plot3D*, const LinearColorMap&);
 	LinearColor(Qwt3D::Plot3D*, const Qwt3D::ColorVector&);
-	Qwt3D::RGBA operator()(double x, double y, double z) const;
+	Qwt3D::RGBA operator()(double x, double y, double z) const override;
 
 	double alpha() const {return d_alpha;}
 	void setAlpha(double a);

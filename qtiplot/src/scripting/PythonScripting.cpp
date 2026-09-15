@@ -209,8 +209,8 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 QString PythonScripting::errorMsg()
 {
 	PyGILState_STATE state = PyGILState_Ensure();
-	PyObject *exception=0, *value=0, *traceback=0;
-	PyTracebackObject *excit=0;
+	PyObject *exception=nullptr, *value=nullptr, *traceback=nullptr;
+	PyTracebackObject *excit=nullptr;
 	PyFrameObject *frame;
 	const char *fname;
 	QString msg;

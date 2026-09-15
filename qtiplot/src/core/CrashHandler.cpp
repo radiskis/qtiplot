@@ -35,14 +35,14 @@ namespace {
             return;
 
 #if defined(_WIN32) || defined(WIN32)
-        HANDLE hFile = CreateFileA(s_reportPathBuf, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+        HANDLE hFile = CreateFileA(s_reportPathBuf, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
         if (hFile != INVALID_HANDLE_VALUE) {
             char buf[1024];
             int len = snprintf(buf, sizeof(buf), "QtiPlot Crash Report\nPID: %lu\nReason: %s\nActive Autosave: %s\n",
                                (unsigned long)GetCurrentProcessId(), reason, s_recoveryPathBuf);
             if (len > 0) {
                 DWORD written = 0;
-                WriteFile(hFile, buf, (DWORD)len, &written, NULL);
+                WriteFile(hFile, buf, (DWORD)len, &written, nullptr);
             }
             CloseHandle(hFile);
         }
@@ -148,7 +148,7 @@ QStringList findRecoveryFiles()
 
 #if defined(_WIN32) || defined(WIN32)
                 HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)pid);
-                if (hProcess != NULL) {
+                if (hProcess != nullptr) {
                     DWORD exitCode = 0;
                     if (GetExitCodeProcess(hProcess, &exitCode) && exitCode == STILL_ACTIVE) {
                         CloseHandle(hProcess);

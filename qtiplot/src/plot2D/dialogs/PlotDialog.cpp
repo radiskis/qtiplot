@@ -84,7 +84,7 @@ Description          : Custom curves dialog
 
 PlotDialog::PlotDialog(bool showExtended, QWidget* parent, Qt::WindowFlags fl )
 : QDialog(parent, fl),
-  d_ml(0)
+  d_ml(nullptr)
 {
     setObjectName( "PlotDialog" );
 	setWindowTitle( tr( "QtiPlot - Plot details" ) );
@@ -2453,7 +2453,7 @@ void PlotDialog::chooseBackgroundImageFile(const QString& fn)
 	QString path = fn;
 	if (path.isEmpty())
 		path = ApplicationWindow::getFileName(this, tr("QtiPlot - Import image from file"), g->canvasBackgroundFileName(),
-					ApplicationWindow::imageFilter(), 0, false);
+					ApplicationWindow::imageFilter(), nullptr, false);
 
 	if (!path.isEmpty()){
 		imagePathBox->setText(path);
@@ -2480,7 +2480,7 @@ void PlotDialog::chooseSymbolImageFile()
 		return;
 
 	QString path = ApplicationWindow::getFileName(this, tr("QtiPlot - Import image from file"), imageSymbolPathBox->text(),
-					ApplicationWindow::imageFilter(), 0, false);
+					ApplicationWindow::imageFilter(), nullptr, false);
 	if (!path.isEmpty()){
 		imageSymbolPathBox->setText(path);
 		acceptParams();

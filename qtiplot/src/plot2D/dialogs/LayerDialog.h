@@ -56,7 +56,7 @@ public:
 	void setSharedAxes(bool = true);
 
 protected slots:
-	void accept();
+	void accept() override;
 	void update();
 	void enableLayoutOptions(bool ok);
 	void swapLayers();
@@ -66,7 +66,7 @@ protected slots:
 	void showCommonAxesBox();
 
 private:
-	void closeEvent(QCloseEvent*);
+	void closeEvent(QCloseEvent*) override;
 	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
 	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
 

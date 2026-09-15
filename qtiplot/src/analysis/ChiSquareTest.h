@@ -39,15 +39,15 @@ class ChiSquareTest : public StatisticTest
 	public:
 		ChiSquareTest(ApplicationWindow *parent, double testValue, double level, const QString& sample = QString());
 
-		virtual QString logInfo();
+		QString logInfo() override;
 		double chiSquare();
-		double pValue();
-		double statistic(){return chiSquare();};
+		double pValue() override;
+		double statistic() override{return chiSquare();};
 
 		//! Lower Confidence Limit
-		double lcl(double confidenceLevel);
+		double lcl(double confidenceLevel) override;
 		//! Upper Confidence Limit
-		double ucl(double confidenceLevel);
+		double ucl(double confidenceLevel) override;
 };
 
 #endif

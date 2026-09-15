@@ -436,7 +436,7 @@ void PieCurve::loadData()
 PieLabel* PieCurve::addLabel(PieLabel *l, bool clone)
 {
 	if (!l)
-		return 0;
+		return nullptr;
 
 	Graph *g = qobject_cast<Graph *>(plot());
 	if (clone){

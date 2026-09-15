@@ -50,7 +50,7 @@ public:
     SyntaxHighlighter(ScriptEdit * parent);
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString &text) override;
 
 	struct HighlightingRule
 	{
@@ -76,7 +76,7 @@ public:
     static QStringList keywordsList(){return d_keywords;};
 
 protected:
-    void highlightBlock(const QString &text);
+    void highlightBlock(const QString &text) override;
 
 private:
 	QVector<HighlightingRule> pythonHighlightingRules;

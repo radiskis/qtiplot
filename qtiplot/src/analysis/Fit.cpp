@@ -70,24 +70,24 @@ void Fit::init()
 {
 	d_p = 0;
 	d_n = 0;
-	d_x = 0;
-	d_y = 0;
-	d_w = 0;
+	d_x = nullptr;
+	d_y = nullptr;
+	d_w = nullptr;
 	d_curveColor = Qt::red;
 	d_solver = ScaledLevenbergMarquardt;
 	d_tolerance = 1e-4;
 	d_gen_function = true;
 	d_points = 100;
 	d_max_iterations = 1000;
-	d_curve = 0;
+	d_curve = nullptr;
 	d_formula = QString();
 	d_result_formula = QString();
 	d_explanation = QString();
 	d_weighting = NoWeighting;
 	weighting_dataset = QString();
 	is_non_linear = true;
-	d_results = 0;
-	d_errors = 0;
+	d_results = nullptr;
+	d_errors = nullptr;
 	d_residuals = nullptr;
 	d_init_err = false;
 	chi_2 = -1;
@@ -97,13 +97,13 @@ void Fit::init()
 	d_sort_data = false;
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	d_prec = app ? app->fit_output_precision : 4;
-	d_param_table = 0;
+	d_param_table = nullptr;
 	d_cov_matrix = nullptr;
-	covar = 0;
-	d_param_init = 0;
+	covar = nullptr;
+	d_param_init = nullptr;
 	d_fit_type = BuiltIn;
-	d_param_range_left = 0;
-	d_param_range_right = 0;
+	d_param_range_left = nullptr;
+	d_param_range_right = nullptr;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)

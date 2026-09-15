@@ -47,7 +47,7 @@ VectorCurve::VectorCurve(VectorStyle style, Table *t, const QString& xColName, c
 	d_position (Tail),
 	d_end_x_a (endCol1),
 	d_end_y_m (endCol2),
-	vectorEnd(0)
+	vectorEnd(nullptr)
 {
 	d_pen.setCosmetic(true);
 	if (style == XYXY){

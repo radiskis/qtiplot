@@ -207,7 +207,7 @@ void ExportDialog::accept()
 	sep.replace("\\t", "\t");
 
 	if (sep.contains(QRegularExpression("[0-9.eE+-]"))){
-		QMessageBox::warning(0, tr("QtiPlot - Import options error"),
+		QMessageBox::warning(nullptr, tr("QtiPlot - Import options error"),
 				tr("The separator must not contain the following characters: 0-9eE.+-"));
 		return;
 	}

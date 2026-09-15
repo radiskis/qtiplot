@@ -52,11 +52,11 @@ public:
 	Matrix *realOutputMatrix(){return d_re_out_matrix;}
 	Matrix *imaginaryOutputMatrix(){return d_im_out_matrix;}
 
-    bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1, bool unused = false);
+    bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1, bool unused = false) override;
 
 private:
     void init();
-    void output();
+    void output() override;
 	void outputGraphs();
 	void fftCurve();
 	void fftTable();

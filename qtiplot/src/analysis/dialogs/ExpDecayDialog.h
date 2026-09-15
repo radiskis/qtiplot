@@ -45,7 +45,7 @@ class ExpDecayDialog : public QDialog
     Q_OBJECT
 
 public:
-    ExpDecayDialog( int type, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    ExpDecayDialog( int type, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void fit();
@@ -56,7 +56,7 @@ private slots:
 	void changeDataRange();
 
 private:
-    void closeEvent (QCloseEvent *);
+    void closeEvent (QCloseEvent *) override;
 
     Fit *fitter = nullptr;
 	Graph *graph = nullptr;

@@ -53,7 +53,7 @@ class TranslateCurveTool : public QObject, public PlotToolInterface
 		 */
 		TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir);
 
-        virtual int rtti() const {return PlotToolInterface::Rtti_TranslateCurveTool;};
+        int rtti() const override {return PlotToolInterface::Rtti_TranslateCurveTool;};
 	signals:
 		/*!\brief Emitted whenever a new message should be presented to the user.
 		 *

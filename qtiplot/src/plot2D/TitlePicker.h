@@ -47,7 +47,7 @@ signals:
 	void showTitleMenu();
 
 private:
-	bool eventFilter(QObject *, QEvent *);
+	bool eventFilter(QObject *, QEvent *) override;
 	QwtTextLabel *title;
 	bool d_selected;
 };

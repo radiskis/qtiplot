@@ -48,11 +48,11 @@ class Filter : public QObject
 	Q_OBJECT
 
 	public:
-        Filter(ApplicationWindow *parent, Table *t = 0, const QString& name = QString());
-		Filter(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
+        Filter(ApplicationWindow *parent, Table *t = nullptr, const QString& name = QString());
+		Filter(ApplicationWindow *parent, Graph *g = nullptr, const QString& name = QString());
 		Filter(ApplicationWindow *parent, Matrix *m, const QString& name = QString());
 		Filter(ApplicationWindow *parent, PlotCurve *c);
-		~Filter();
+		~Filter() override;
 
 		//! Actually does the job. Should be reimplemented in derived classes.
 		virtual bool run();
@@ -60,8 +60,8 @@ class Filter : public QObject
         virtual void setDataCurve(PlotCurve *curve, double start, double end);
         bool setDataFromCurve(PlotCurve *c);
         bool setDataFromCurve(PlotCurve *c, double from, double to);
-		bool setDataFromCurve(const QString& curveTitle, Graph *g = 0);
-		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = 0);
+		bool setDataFromCurve(const QString& curveTitle, Graph *g = nullptr);
+		bool setDataFromCurve(const QString& curveTitle, double from, double to, Graph *g = nullptr);
 
 		virtual bool setDataFromTable(Table *, const QString&, const QString&, int = 1, int = -1, bool = false);
 
@@ -119,7 +119,7 @@ class Filter : public QObject
 
 		void runAsync(const std::function<void()> &func, const QString &progressMessage = QString());
 
-		virtual void enableGraphicsDisplay(bool on = true, Graph *g = 0);
+		virtual void enableGraphicsDisplay(bool on = true, Graph *g = nullptr);
 
 		void setUpdateOutputGraph(bool update = true) {d_update_output_graph = update;};
 

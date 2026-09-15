@@ -65,7 +65,7 @@ Plot3DDialog::Plot3DDialog( QWidget* parent,  Qt::WindowFlags fl )
 	setWindowTitle( tr( "QtiPlot - Surface Plot Options" ) );
 	setSizeGripEnabled(true);
 
-	bars=0; points=0;
+	bars=nullptr; points=nullptr;
 
     QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addStretch();

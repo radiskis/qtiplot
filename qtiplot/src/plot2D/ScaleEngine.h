@@ -43,12 +43,12 @@ public:
 
 	ScaleTransformation(const ScaleEngine *engine);
 	ScaleTransformation(const ScaleTransformation &other);
-	virtual ~ScaleTransformation();
+	~ScaleTransformation() override;
 	ScaleTransformation& operator=(const ScaleTransformation &other);
 
-	virtual double transform(double x) const;
-	virtual double invTransform(double x) const;
-	QwtTransform* copy() const;
+	double transform(double x) const override;
+	double invTransform(double x) const override;
+	QwtTransform* copy() const override;
 
 protected:
 	QwtTransform* newScaleTransformation() const;
@@ -63,9 +63,9 @@ public:
 	ScaleEngine(ScaleTransformation::Type type = ScaleTransformation::Linear,
 				double left_break = -DBL_MAX, double right_break = DBL_MAX);
 	QwtTransform* transformation() const;
-	virtual QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
-		int maxMinSteps, double stepSize = 0.0) const;
-	virtual void autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const;
+	QwtScaleDiv divideScale(double x1, double x2, int maxMajSteps,
+		int maxMinSteps, double stepSize = 0.0) const override;
+	void autoScale (int maxNumSteps, double &x1, double &x2, double &stepSize) const override;
 
     double axisBreakLeft() const;
     double axisBreakRight() const;

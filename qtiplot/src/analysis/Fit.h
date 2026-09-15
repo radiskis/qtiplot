@@ -57,19 +57,19 @@ class Fit : public Filter
         enum FitType{BuiltIn = 0, Plugin = 1, User = 2};
 
 		Fit(ApplicationWindow *parent, PlotCurve *c);
-		Fit(ApplicationWindow *parent, Graph *g = 0, const QString& name = QString());
+		Fit(ApplicationWindow *parent, Graph *g = nullptr, const QString& name = QString());
 		Fit(ApplicationWindow *parent, Table *t, const QString& name = QString());
-		~Fit();
+		~Fit() override;
 
 		//! Actually does the fit. Should be reimplemented in derived classes.
 		virtual void fit();
-        virtual bool run(){fit(); return !d_init_err;};
+        bool run() override{fit(); return !d_init_err;};
 
 		//! Sets the data set to be used for weighting
 		bool setWeightingData(WeightingMethod w, const QString& colName = QString());
 
-		void setDataCurve(PlotCurve *curve, double start, double end);
-		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool sort = false);
+		void setDataCurve(PlotCurve *curve, double start, double end) override;
+		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool sort = false) override;
 
 		QString resultFormula(){return d_result_formula;};
 		QString formula(){return d_formula;};
@@ -93,7 +93,7 @@ class Fit : public Filter
 		void generateFunction(bool yes, int points = 100);
 
 		//! Output string added to the plot as a new legend
-		virtual QString legendInfo();
+		QString legendInfo() override;
 
 		//! Returns a vector with the fit results
 		double* results(){return d_results;};
@@ -171,7 +171,7 @@ class Fit : public Filter
 		//! Frees the memory allocated for the fit workspace
 		void freeWorkspace();
         //! Frees all the arrays with size d_n. Used when changing the source data sets.
-        virtual void freeMemory();
+        void freeMemory() override;
 		//! Adds the result curve as a FunctionCurve to the plot, if d_gen_function = true
 		virtual FunctionCurve * insertFitFunctionCurve(const QString& name, int penWidth = 1, bool updateData = true);
 

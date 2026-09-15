@@ -42,7 +42,7 @@ class CanvasPicker: public QObject
     Q_OBJECT
 public:
 	 CanvasPicker(Graph *plot);
-	 virtual bool eventFilter(QObject *, QEvent *);
+	 bool eventFilter(QObject *, QEvent *) override;
 	 void selectPoints(int n);
 	 void selectPeak(const QPoint& p);
 

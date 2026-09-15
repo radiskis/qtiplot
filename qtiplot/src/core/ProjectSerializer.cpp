@@ -258,7 +258,7 @@ TableStatistics* ProjectSerializer::openTableStatistics(ApplicationWindow* app, 
 	for (int i = 1; i <= (*line).count('\t'); i++)
 		targets << (*line).section('\t',i,i).toInt();
 
-	TableStatistics* w = app->newTableStatistics(0, list[2] == "row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
+	TableStatistics* w = app->newTableStatistics(nullptr, list[2] == "row" ? TableStatistics::row : TableStatistics::column, targets, 0, -1, caption);
 	if (!w)
 		return nullptr;
 	w->setBaseName(list[1]);
@@ -322,7 +322,7 @@ TableStatistics* ProjectSerializer::openTableStatistics(ApplicationWindow* app, 
 
 Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, const QStringList &list, int fileVersion)
 {
-	Graph* ag = 0;
+	Graph* ag = nullptr;
 	int curveID = 0;
 	QList<int> mcIndexes;
 	QList<ErrorBarsCurve *> errBars;
@@ -1037,7 +1037,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		} else if (s.startsWith ("<ImageProfileTool>") && s.endsWith ("</ImageProfileTool>")){
 			QStringList lst = s.remove("<ImageProfileTool>").remove("</ImageProfileTool>").split("\t");
 			if (!lst.isEmpty()){
-				Table *hort = 0, *vert = 0;
+				Table *hort = nullptr, *vert = nullptr;
 				if (lst.size() >= 2)
 					hort = app->table(lst[1]);
 				if (lst.size() >= 3)
@@ -1078,7 +1078,7 @@ MdiSubWindow* ProjectSerializer::openTemplate(const QString& fn, ApplicationWind
 	if (fn.isEmpty() || !QFile::exists(fn)){
 		QMessageBox::critical(app, app->tr("QtiPlot - File opening error"),
 					app->tr("The file: <b>%1</b> doesn't exist!").arg(fn));
-		return 0;
+		return nullptr;
 	}
 
 	QFile f(fn);
@@ -1091,7 +1091,7 @@ MdiSubWindow* ProjectSerializer::openTemplate(const QString& fn, ApplicationWind
 	if (fileType != "QtiPlot"){
 		QMessageBox::critical(app, app->tr("QtiPlot - File opening error"),
 						app->tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
-		return 0;
+		return nullptr;
 	}
 
 	QStringList vl = l[1].split(".", Qt::SkipEmptyParts);
@@ -1100,7 +1100,7 @@ MdiSubWindow* ProjectSerializer::openTemplate(const QString& fn, ApplicationWind
 		app->d_file_version = fileVersion;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-	MdiSubWindow *w = 0;
+	MdiSubWindow *w = nullptr;
 	QString templateType;
 	t>>templateType;
 
@@ -1324,14 +1324,14 @@ ApplicationWindow* ProjectSerializer::openProject(const QString& fn, Application
 	if (progress.wasCanceled()){
 		app->saved = true;
 		app->close();
-		return 0;
+		return nullptr;
 	}
 
 	//process the rest
 	if (!f.open(QIODevice::ReadOnly))
 		return nullptr;
 
-	MultiLayer *plot=0;
+	MultiLayer *plot=nullptr;
 	while (!t.atEnd() && !progress.wasCanceled()){
 		s = t.readLine();
 		if  (s.left(8) == "<folder>"){
@@ -1438,7 +1438,7 @@ ApplicationWindow* ProjectSerializer::openProject(const QString& fn, Application
 	if (progress.wasCanceled()){
 		app->saved = true;
 		app->close();
-		return 0;
+		return nullptr;
 	}
 
 	QList<MdiSubWindow*> tables = app->tableList();
@@ -1471,7 +1471,7 @@ ApplicationWindow* ProjectSerializer::openProject(const QString& fn, Application
 Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder, ApplicationWindow *app, int &fileVersion)
 {
 	if (fn.isEmpty())
-		return 0;
+		return nullptr;
 
 	QFileInfo fi(fn);
 	app->workingDir = fi.absolutePath();
@@ -1482,11 +1482,11 @@ Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder
 		QFileInfo f(fn);
 		if (!f.exists ()){
 			QMessageBox::critical(app, QObject::tr("QtiPlot - File opening error"), QObject::tr("The file: <b>%1</b> doesn't exist!").arg(fn));
-			return 0;
+			return nullptr;
 		}
 	} else {
 		QMessageBox::critical(app,QObject::tr("QtiPlot - File opening error"), QObject::tr("The file: <b>%1</b> is not a QtiPlot or Origin project file!").arg(fn));
-		return 0;
+		return nullptr;
 	}
 
 	app->d_is_appending_file = true;
@@ -1608,7 +1608,7 @@ Folder* ProjectSerializer::appendProject(const QString& fn, Folder* parentFolder
 		if (!f.open(QIODevice::ReadOnly))
 			return nullptr;
 
-		MultiLayer *plot=0;
+		MultiLayer *plot=nullptr;
 		while ( !t.atEnd()){
 			s=t.readLine();
 			if  (s.left(8) == "<folder>"){

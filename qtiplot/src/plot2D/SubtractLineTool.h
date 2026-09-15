@@ -46,9 +46,9 @@ class SubtractLineTool : public QObject, public PlotToolInterface
 	Q_OBJECT
 	public:
 		SubtractLineTool(Graph *graph, ApplicationWindow *app);
-		virtual ~SubtractLineTool();
+		~SubtractLineTool() override;
 
-		virtual int rtti() const {return PlotToolInterface::Rtti_SubtractLineTool;};
+		int rtti() const override {return PlotToolInterface::Rtti_SubtractLineTool;};
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
 		 *

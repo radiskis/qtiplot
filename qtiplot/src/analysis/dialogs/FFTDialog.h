@@ -49,7 +49,7 @@ class FFTDialog : public QDialog
 public:
 	enum DataType{onGraph = 0, onTable = 1, onMatrix = 2};
 
-    FFTDialog(int type, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    FFTDialog(int type, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void setGraph(Graph *g);
@@ -58,12 +58,12 @@ public slots:
 
 private slots:
 	void activateDataSet(const QString& curveName);
-	void accept();
+	void accept() override;
 	void updateShiftLabel();
 
 private:
     void fftMatrix();
-	void closeEvent (QCloseEvent *);
+	void closeEvent (QCloseEvent *) override;
 
 	Ref<Graph> graph;
 	Ref<Table> d_table;

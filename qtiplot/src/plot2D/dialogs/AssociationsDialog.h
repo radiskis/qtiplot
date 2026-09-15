@@ -45,7 +45,7 @@ class AssociationsDialog : public QDialog
 	Q_OBJECT
 
 public:
-	AssociationsDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	AssociationsDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 	void initTablesList(QList<MdiSubWindow *> lst, int curve);
 	void setGraph(Graph *g);
@@ -53,7 +53,7 @@ public:
 private slots:
 	void updateTable(int index);
 	void updateCurves();
-	void accept();
+	void accept() override;
 
 private:
 	void changePlotAssociation(int curve, const QStringList& lst);
@@ -62,7 +62,7 @@ private:
 	void updatePlotAssociation(int row, int col);
 	QStringList plotAssociation(const QString& text);
 	Table *findTable(int index);
-	bool eventFilter(QObject *object, QEvent *e);
+	bool eventFilter(QObject *object, QEvent *e) override;
 
 	QList <MdiSubWindow*> tables;
 	Table *active_table = nullptr;

@@ -72,7 +72,7 @@ public:
 	 * \param parent parent widget
 	 * \param fl window flags
 	 */
-	AxesDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	AxesDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 	ApplicationWindow *app() const;
 
 	void setGraph(Graph *g);
@@ -89,7 +89,7 @@ public slots:
 	 * Show the dialog as a modal dialog and do
 	 * some initialization.
 	 */
-	int exec();
+	int exec() override;
 
 private slots:
 	void showAxisSettings(int);
@@ -105,7 +105,7 @@ private slots:
 	void majorGridEnabled(bool);
 	void minorGridEnabled(bool);
 	void showGridSettings(int);
-	void accept();
+	void accept() override;
 	void customAxisFont();
 	void showAxis();
 

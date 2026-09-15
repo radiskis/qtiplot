@@ -83,7 +83,7 @@ SurfaceDialog::SurfaceDialog( QWidget* parent, Qt::WindowFlags fl )
 	vl->addWidget(optionStack);
 	vl->addLayout(bl2);
 
-	d_graph = 0;
+	d_graph = nullptr;
     setFocusProxy(boxFunction);
 
 	connect(boxType, QOverload<int>::of(&QComboBox::activated), optionStack, &QStackedWidget::setCurrentIndex);

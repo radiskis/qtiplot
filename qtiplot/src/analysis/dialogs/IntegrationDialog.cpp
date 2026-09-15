@@ -289,7 +289,7 @@ void IntegrationDialog::integrateTable()
 	int to = boxEndRow->value();
 	bool sortData = boxSortData->isChecked();
 
-	Table *result = 0;
+	Table *result = nullptr;
 	if (boxShowTable->isVisible() && boxShowTable->isChecked()){
 		result = app->newTable(cols, 2, "", tr("Integration of %1").arg(d_table->objectName()));
 		result->setColName(0, tr("Column"));

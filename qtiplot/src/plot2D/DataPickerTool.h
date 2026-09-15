@@ -46,8 +46,8 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		enum Mode { Display, Move, Remove, MoveCurve};
 		enum MoveMode {Free, Vertical, Horizontal};
 		DataPickerTool(Graph *graph, ApplicationWindow *app, Mode mode);
-		virtual ~DataPickerTool();
-		virtual bool eventFilter(QObject *obj, QEvent *event);
+		~DataPickerTool() override;
+		bool eventFilter(QObject *obj, QEvent *event) override;
 		bool keyEventFilter(QKeyEvent *ke);
 		QwtPlotCurve *selectedCurve() const { return d_selected_curve; }
 		void setSelectedCurve(QwtPlotCurve *c){if (c) setSelection(c, 0);};
@@ -65,7 +65,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
         //! Searches the index of the closest point to the given x coordinate
         int findClosestPoint(QwtPlotCurve *c, double x, bool up);
 
-        virtual int rtti() const {return PlotToolInterface::Rtti_DataPicker;};
+        int rtti() const override {return PlotToolInterface::Rtti_DataPicker;};
 
         void selectTableRow();
 
@@ -84,9 +84,9 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		void selected(QwtPlotCurve*, int);
 	protected:
 		void movePoint(const QPoint &cursor);
-		virtual void append(const QPoint &point);
-		virtual void move(const QPoint &point);
-		virtual bool end(bool ok);
+		void append(const QPoint &point) override;
+		void move(const QPoint &point) override;
+		bool end(bool ok) override;
 		virtual void setSelection(QwtPlotCurve *curve, int point_index);
 		void moveBy(int dx, int dy);
 
@@ -108,7 +108,7 @@ class BaselineTool : public DataPickerTool
 		BaselineTool(QwtPlotCurve *curve, Graph *graph, ApplicationWindow *app);
 
 	protected:
-		void setSelection(QwtPlotCurve *curve, int point_index);
+		void setSelection(QwtPlotCurve *curve, int point_index) override;
 };
 
 #endif // ifndef DATA_PICKER_TOOL_H

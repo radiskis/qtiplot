@@ -53,11 +53,11 @@ class GriddingDialog : public QDialog
     Q_OBJECT
 
 public:
-	GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent = 0, Qt::WindowFlags fl = {} );
-	~GriddingDialog();
+	GriddingDialog(Table* t, const QString& colName, int nodes, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
+	~GriddingDialog() override;
 
 private slots:
-	void accept();
+	void accept() override;
 	void preview();
 	void setPlotStyle(int);
 	void showMethodParameters(int);

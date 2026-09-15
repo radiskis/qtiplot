@@ -468,7 +468,7 @@ void RangeSelectorTool::showSelectionDialog(RangeEditOperation op)
 	if (d_selection_dialog)
 		delete d_selection_dialog;
 
-	d_selection_dialog = new QDialog(0, Qt::Tool);
+	d_selection_dialog = new QDialog(nullptr, Qt::Tool);
 	d_selection_dialog->setAttribute(Qt::WA_DeleteOnClose);
 	if (op > Copy)
 		d_selection_dialog->setWindowTitle(tr("Remove data from curves?"));

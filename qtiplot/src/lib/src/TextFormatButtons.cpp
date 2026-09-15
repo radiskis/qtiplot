@@ -52,7 +52,7 @@ void TextFormatButtons::init(Buttons buttons)
 	if (!layout)
 		return;
 	QLayoutItem *child;
-	while ((child = layout->takeAt(0)) != 0){
+	while ((child = layout->takeAt(0)) != nullptr){
 		if (child->widget())
 			delete child->widget();
 	}

@@ -148,7 +148,7 @@ MultiLayer* PlotController2D::plotHistogram(Matrix *m)
 	if (!m){
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -324,14 +324,14 @@ MultiLayer* PlotController2D::multilayerPlot(Table* w, const QStringList& colLis
 	auto &defaultSymbolSize = d_app->defaultSymbolSize;
 
 	if (!w)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	MultiLayer* g = multilayerPlot(d_app->generateUniqueName(tr("Graph")));
 	Graph *ag = g->activeLayer();
 	if (!ag)
-		return 0;
+		return nullptr;
 
 	setPreferences(ag);
 	ag->addCurves(w, colList, style, defaultCurveLineWidth, defaultSymbolSize, startRow, endRow);
@@ -352,15 +352,15 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
 
 	Table *t = d_app->activeWindow<Table>();
     if (!t)
-		return 0;
+		return nullptr;
 
 	if (!validFor2DPlot(t, (Graph::CurveType)style))
-		return 0;
+		return nullptr;
 
 	QStringList list = t->drawableColumnSelection();
 	if((int)list.count() < 1) {
 		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
-		return 0;
+		return nullptr;
 	}
 
 	int curves = list.count();
@@ -410,7 +410,7 @@ MultiLayer* PlotController2D::waterfallPlot()
 
 	Table *t = d_app->activeWindow<Table>();
     if (!t)
-		return 0;
+		return nullptr;
 
 	return waterfallPlot(t, t->selectedYColumns());
 }
@@ -421,12 +421,12 @@ MultiLayer* PlotController2D::waterfallPlot(Table *t, const QStringList& list)
 	if (!d_app) return nullptr;
 
 	if (!t)
-		return 0;
+		return nullptr;
 
 	if(list.count() < 1){
 		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"),
 		tr("Please select a Y column to plot!"));
-		return 0;
+		return nullptr;
 	}
 
 	MultiLayer* ml = new MultiLayer(d_app);
@@ -473,7 +473,7 @@ void PlotController2D::initMultilayerPlot(MultiLayer* g, const QString& name)
 	if (d_mdi_windows_area)
 		d_workspace->addSubWindow(g);
 	else
-		g->setParent(0);
+		g->setParent(nullptr);
 
 	connectMultilayerPlot(g);
 	if (!qApp->arguments().contains("-X"))
@@ -1193,7 +1193,7 @@ MultiLayer* PlotController2D::plotGrayScale(Matrix *m)
 	if (!m) {
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
 	return plotSpectrogram(m, Graph::GrayScale);
@@ -1207,7 +1207,7 @@ MultiLayer* PlotController2D::plotContour(Matrix *m)
 	if (!m) {
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
 	return plotSpectrogram(m, Graph::Contour);
@@ -1221,7 +1221,7 @@ MultiLayer* PlotController2D::plotColorMap(Matrix *m)
 	if (!m) {
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
 	return plotSpectrogram(m, Graph::ColorMap);
@@ -1235,7 +1235,7 @@ MultiLayer* PlotController2D::plotImage(Matrix *m)
     if (!m) {
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1245,7 +1245,7 @@ MultiLayer* PlotController2D::plotImage(Matrix *m)
 	setPreferences(plot);
 	Spectrogram *s = plot->plotSpectrogram(m, Graph::GrayScale);
 	if (!s)
-		return 0;
+		return nullptr;
 
 	s->setAxes(QwtPlot::xTop, QwtPlot::yLeft);
 	plot->enableAxis(QwtPlot::xTop, true);
@@ -1277,7 +1277,7 @@ MultiLayer* PlotController2D::plotSpectrogram(Matrix *m, Graph::CurveType type)
 		return plotHistogram(m);
 
 	if (!m)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1302,7 +1302,7 @@ MultiLayer* PlotController2D::plotImageProfiles(Matrix *m)
     if (!m) {
 		m = d_app->activeWindow<Matrix>();
 		if (!m)
-			return 0;
+			return nullptr;
 	}
 
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1351,7 +1351,7 @@ MultiLayer* PlotController2D::generate2DGraph(Graph::CurveType type)
 
 	MdiSubWindow *w = d_app->activeWindow();
 	if (!w)
-		return 0;
+		return nullptr;
 
     if (Table *table = qobject_cast<Table *>(w)){
 		QTableWidgetSelectionRange sel = table->getSelection();
@@ -1359,7 +1359,7 @@ MultiLayer* PlotController2D::generate2DGraph(Graph::CurveType type)
     } else if (Matrix *m = qobject_cast<Matrix *>(w)){
         return plotHistogram(m);
     }
-	return 0;
+	return nullptr;
 }
 
 Note * PlotController2D::newStemPlot()

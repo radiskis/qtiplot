@@ -46,10 +46,10 @@ class IntDialog : public QDialog
     Q_OBJECT
 
 public:
-    IntDialog(QWidget* parent = 0, Graph *g = 0, Qt::WindowFlags fl = {} );
+    IntDialog(QWidget* parent = nullptr, Graph *g = nullptr, Qt::WindowFlags fl = {} );
 
 private slots:
-	void accept();
+	void accept() override;
 	void showFunctionLog();
 	void insertFunction();
 	void clearFunction();

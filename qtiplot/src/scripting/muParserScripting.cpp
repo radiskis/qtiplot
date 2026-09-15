@@ -102,7 +102,7 @@ const muParserScripting::mathFunction muParserScripting::math_functions[] = {
   { "ttable", 2, nullptr,ttable,nullptr, QObject::tr("ttable(x, n):\n Student's t-distribution with n degrees of freedom.") },
   { "w0", 1, lambert_W0, nullptr, nullptr, QObject::tr("w0(x):\n Compute the principal branch of Lambert's W function, W_0(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W>-1 for x<0 (also see wm1(x)).") },
   { "wm1", 1, lambert_Wm1, nullptr, nullptr, QObject::tr("wm1(x):\n Compute the secondary branch of Lambert's W function, W_{-1}(x).\n W is defined as a solution to the equation W(x)*exp(W(x))=x.\n For x<0, there are two real-valued branches; this function computes the one where W<-1 for x<0. (also see w0(x)).") },
-  {0,0,nullptr,nullptr,nullptr,0}
+  {nullptr,0,nullptr,nullptr,nullptr,nullptr}
 };
 
 const QStringList muParserScripting::mathFunctions() const

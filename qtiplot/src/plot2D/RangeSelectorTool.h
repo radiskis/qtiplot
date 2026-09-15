@@ -59,7 +59,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 	Q_OBJECT
 	public:
 		RangeSelectorTool(Graph *graph);
-		virtual ~RangeSelectorTool();
+		~RangeSelectorTool() override;
 		double minXValue() const { return qMin(d_active_marker.xValue(), d_inactive_marker.xValue()); }
 		double maxXValue() const { return qMax(d_active_marker.xValue(), d_inactive_marker.xValue()); }
 		double minYValue() const { return qMin(d_active_marker.yValue(), d_inactive_marker.yValue()); }
@@ -67,7 +67,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		int dataSize() const { return qAbs(d_active_point - d_inactive_point); }
 		int activePoint(){return d_active_point;}
 		int inactivePoint(){return d_inactive_point;}
-		virtual bool eventFilter(QObject *obj, QEvent *event);
+		bool eventFilter(QObject *obj, QEvent *event) override;
 		bool keyEventFilter(QKeyEvent *ke);
 
 		QwtPlotCurve *selectedCurve() const { return d_selected_curve; }
@@ -78,7 +78,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
         void cutSelection();
         void clearSelection();
         void pasteSelection();
-        virtual int rtti() const {return PlotToolInterface::Rtti_RangeSelector;};
+        int rtti() const override {return PlotToolInterface::Rtti_RangeSelector;};
 
 		void setVisible(bool on);
 		bool isVisible(){return d_visible;};
@@ -103,7 +103,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		void changed();
 
 	protected:
-		virtual void append(const QPoint& point) { pointSelected(point); }
+		void append(const QPoint& point) override { pointSelected(point); }
 		void emitStatusText();
 		void switchActiveMarker();
 		//! Caller is responsible for replot.

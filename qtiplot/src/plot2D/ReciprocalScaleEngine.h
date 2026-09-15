@@ -38,9 +38,9 @@ class ReciprocalScaleTransformation: public ScaleTransformation
 {
 public:
 	ReciprocalScaleTransformation(const ScaleEngine *engine):ScaleTransformation(engine){};
-	virtual double transform(double x) const;
-	virtual double invTransform(double x) const;
-	QwtTransform* copy() const;
+	double transform(double x) const override;
+	double invTransform(double x) const override;
+	QwtTransform* copy() const override;
 };
 
 /*!
@@ -50,12 +50,12 @@ public:
 class ReciprocalScaleEngine: public QwtScaleEngine
 {
 public:
-    virtual void autoScale(int maxSteps,
-        double &x1, double &x2, double &stepSize) const;
+    void autoScale(int maxSteps,
+        double &x1, double &x2, double &stepSize) const override;
 
-    virtual QwtScaleDiv divideScale(double x1, double x2,
+    QwtScaleDiv divideScale(double x1, double x2,
         int numMajorSteps, int numMinorSteps,
-        double stepSize = 0.0) const;
+        double stepSize = 0.0) const override;
 
     virtual QwtTransform *transformation() const;
 

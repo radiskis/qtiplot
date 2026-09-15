@@ -50,7 +50,7 @@ class PlotController2D : public QObject
 
 public:
     explicit PlotController2D(ApplicationWindow *app);
-    virtual ~PlotController2D();
+    ~PlotController2D() override;
 
     MultiLayer* newGraph(const QString& caption = tr("Graph") + "1");
     MultiLayer* multilayerPlot(int c, int r, int style, const MultiLayer::AlignPolicy& align = MultiLayer::AlignLayers);
@@ -66,11 +66,11 @@ public:
     void extractGraphs();
     void extractLayers();
     MultiLayer* plotSpectrogram(Matrix *m, Graph::CurveType type);
-    MultiLayer* plotGrayScale(Matrix *m = 0);
-    MultiLayer* plotContour(Matrix *m = 0);
-    MultiLayer* plotColorMap(Matrix *m = 0);
-    MultiLayer* plotImage(Matrix *m = 0);
-    MultiLayer* plotImageProfiles(Matrix *m = 0);
+    MultiLayer* plotGrayScale(Matrix *m = nullptr);
+    MultiLayer* plotContour(Matrix *m = nullptr);
+    MultiLayer* plotColorMap(Matrix *m = nullptr);
+    MultiLayer* plotImage(Matrix *m = nullptr);
+    MultiLayer* plotImageProfiles(Matrix *m = nullptr);
     void autoArrangeLayers();
     void initMultilayerPlot(MultiLayer* g, const QString& name = QString());
     void plot2VerticalLayers();
@@ -108,7 +108,7 @@ public:
     void plotBox();
     void plotDoubleYAxis();
     void zoomRectanglePlot();
-    QString stemPlot(Table *t = 0, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
+    QString stemPlot(Table *t = nullptr, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
     Note *newStemPlot();
     bool validFor2DPlot(Table *table, Graph::CurveType type);
     MultiLayer* generate2DGraph(Graph::CurveType type);

@@ -43,22 +43,22 @@ class tTest : public StatisticTest
 		bool setSample1(const QString& colName){return setData(colName);};
 		bool setSample2(const QString& colName, bool paired = false);
 
-		virtual QString logInfo();
+		QString logInfo() override;
 
 		double t();
-		double statistic(){return t();};
-		double pValue();
-		int dof();
+		double statistic() override{return t();};
+		double pValue() override;
+		int dof() override;
 
 		double power(double alpha, int size = 0);
 		//! Lower Confidence Limit
-		double lcl(double confidenceLevel);
+		double lcl(double confidenceLevel) override;
 		//! Upper Confidence Limit
-		double ucl(double confidenceLevel);
+		double ucl(double confidenceLevel) override;
 
 	protected:
 		double t(int size);
-		void freeMemory();
+		void freeMemory() override;
 
 		Statistics *d_sample2;
 		bool d_independent_test;

@@ -55,7 +55,7 @@ class FunctionDialog : public QDialog
 
 public:
 	FunctionDialog(ApplicationWindow* parent, bool standAlone = true, Qt::WindowFlags fl = {});
-	~FunctionDialog();
+	~FunctionDialog() override;
 
     void setCurveToModify(Graph *g, int curve);
     void setCurveToModify(FunctionCurve *c);
@@ -69,7 +69,7 @@ private slots:
 	void insertFunction();
 	void updateFunctionsList(int);
 	void updateFunctionExplain(int);
-	void accept();
+	void accept() override;
 	bool acceptFunction();
 	bool acceptParametric();
 	bool acceptPolar();

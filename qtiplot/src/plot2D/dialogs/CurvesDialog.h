@@ -51,7 +51,7 @@ class CurvesDialog : public QDialog
 
 public:
 	enum TreeItemType{FolderItem, ColumnItem, TableItem, MatrixItem};
-    CurvesDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    CurvesDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 	void setGraph(Graph *graph);
 
@@ -72,16 +72,16 @@ private slots:
 	void shiftCurveBy(int offset = 1);
 
 private:
-	void closeEvent(QCloseEvent*);
-	void addFolderItems(Folder *f, QTreeWidgetItem* parent = 0);
+	void closeEvent(QCloseEvent*) override;
+	void addFolderItems(Folder *f, QTreeWidgetItem* parent = nullptr);
 
     void init();
 
 	bool addCurveFromMatrix(Matrix *m);
 	bool addCurveFromTable(ApplicationWindow *app, Table *t, const QString& name);
 
-    QSize sizeHint() const;
-    void contextMenuEvent(QContextMenuEvent *);
+    QSize sizeHint() const override;
+    void contextMenuEvent(QContextMenuEvent *) override;
 
 	Graph *d_graph = nullptr;
 

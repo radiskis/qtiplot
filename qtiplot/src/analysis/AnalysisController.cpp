@@ -296,7 +296,7 @@ void AnalysisController::showFFTDialog()
 	if (!w)
 		return;
 
-	FFTDialog *sd = 0;
+	FFTDialog *sd = nullptr;
 	if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
 		Graph* g = ml->activeLayer();
 		if ( g && g->validCurvesDataSize() ){
@@ -460,7 +460,7 @@ void AnalysisController::analyzeCurve(Graph *g,  QwtPlotCurve *c, int operation)
 	if (!pc)
 		return;
 
-	Fit *fitter = 0;
+	Fit *fitter = nullptr;
 	switch(operation){
 	    case ApplicationWindow::NoAnalysis:
 	    break;

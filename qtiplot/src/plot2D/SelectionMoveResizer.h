@@ -96,10 +96,10 @@ class SelectionMoveResizer : public QWidget
 		//! Construct a new MoveResizer with the given widget as the only target.
 		SelectionMoveResizer(QWidget *target);
 		//! Clean up after myself.
-		~SelectionMoveResizer();
+		~SelectionMoveResizer() override;
 		/*!\brief React on geometry changes of parent and targets.
 		 */
-		virtual bool eventFilter(QObject *o, QEvent *e);
+		bool eventFilter(QObject *o, QEvent *e) override;
 		//! Returns true if w is one of targets, false else.
 		bool contains(QWidget *w) const { return d_widgets.contains(w); };
 		QList <QWidget *> widgetsList() const { return d_widgets; };
@@ -136,31 +136,31 @@ class SelectionMoveResizer : public QWidget
 		 * Besides managing resize operations, this also provides a visual feedback
 		 * on the selection state.
 		 */
-		virtual void paintEvent(QPaintEvent *e);
+		void paintEvent(QPaintEvent *e) override;
 		/*!\brief Mouse button presses start move/resize operations.
 		 *
 		 * Clicks outside of #d_bounding_rect or with anything else than the left button
 		 * are propagated to the parent as usual.
 		 */
-		virtual void mousePressEvent(QMouseEvent *e);
+		void mousePressEvent(QMouseEvent *e) override;
 		/*!\brief Mouse movements need to be monitored for updating the frame during operation.
 		 *
 		 * When no operation is in progress, the mouse cursor is updated based on its position
 		 * before the event is passed on to the parent.
 		 */
-		virtual void mouseMoveEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e) override;
 		/*!\brief Mouse releases end the current operation and apply it to the targets.
 		 *
 		 * When there is no operation in progress, the event is passed on to the parent.
 		 */
-		virtual void mouseReleaseEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e) override;
 		/*!\brief Allow keyboard-based moving of the selection.
 		 *
 		 * Unused keys are passed on to the parent.
 		 */
-		virtual void keyPressEvent(QKeyEvent *e);
+		void keyPressEvent(QKeyEvent *e) override;
 		//! Ignore double-clicks so that they can be used by my parent.
-		virtual void mouseDoubleClickEvent(QMouseEvent *e);
+		void mouseDoubleClickEvent(QMouseEvent *e) override;
 
 	private:
 		//! Size of resize handle in pixels.

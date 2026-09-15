@@ -18,7 +18,7 @@ class TableCommand : public QUndoCommand
 public:
 	TableCommand(const QString &text = QString(), QUndoCommand *parent = nullptr)
 		: QUndoCommand(text, parent) {}
-	virtual ~TableCommand() = default;
+	~TableCommand() override = default;
 
 	virtual size_t byteSize() const {
 		size_t sz = sizeof(*this) + text().length() * sizeof(QChar);
@@ -36,8 +36,8 @@ class TableSetColNamesCommand: public TableCommand
 {
 public:
 	TableSetColNamesCommand(Table *t, int startCol, const QStringList& oldNames, const QStringList& newNames, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	size_t byteSize() const override {
 		size_t sz = sizeof(*this);
 		for (const QString &s : d_old_names) sz += s.length() * sizeof(QChar);
@@ -56,8 +56,8 @@ class TableEditCellCommand: public TableCommand
 public:
 	TableEditCellCommand(Table *t, int row, int col, const QString& oldText, const QString& newText, const QString & text,
 	                     bool hasOldVal = false, double oldVal = 0.0, bool hasNewVal = false, double newVal = 0.0);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	size_t byteSize() const override {
 		return sizeof(*this) + (d_old_text.length() + d_new_text.length()) * sizeof(QChar);
 	}
@@ -74,8 +74,8 @@ class TableSetColNameCommand: public TableCommand
 {
 public:
 	TableSetColNameCommand(Table *t, int col, const QString& oldName, const QString& newName, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -87,8 +87,8 @@ class TableSetColTypeCommand: public TableCommand
 {
 public:
 	TableSetColTypeCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -101,8 +101,8 @@ class TableSetColFormatCommand: public TableCommand
 public:
 	TableSetColFormatCommand(Table *t, int col, Table::ColType oldType, Table::ColType newType,
 							 const QString& oldFormat, const QString& newFormat, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -115,8 +115,8 @@ class TableSetColCommentCommand: public TableCommand
 {
 public:
 	TableSetColCommentCommand(Table *t, int col, const QString& oldComment, const QString& newComment, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -128,8 +128,8 @@ class TableSetPlotDesignationCommand: public TableCommand
 {
 public:
 	TableSetPlotDesignationCommand(Table *t, int col, Table::PlotDesignation oldPD, Table::PlotDesignation newPD, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -143,8 +143,8 @@ class TableDeleteRowsCommand: public TableCommand
 {
 public:
 	TableDeleteRowsCommand(Table *t, int startRow, int endRow, const QList<QStringList>& data, const QString& text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	size_t byteSize() const override {
 		size_t sz = sizeof(*this);
 		for (const QStringList &lst : d_data)
@@ -162,8 +162,8 @@ class TableInsertRowCommand: public TableCommand
 {
 public:
 	TableInsertRowCommand(Table *t, int row, int count = 1, const QString& text = QString());
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -175,8 +175,8 @@ class TableAddColsCommand: public TableCommand
 {
 public:
 	TableAddColsCommand(Table *t, int startCol, int count, const QStringList& names, const QString& text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -192,8 +192,8 @@ public:
 							const QStringList& formats, const QList<int>& types,
 							const QList<int>& plotTypes, const QStringList& widths,
 							const QStringList& commands, const QString& text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	size_t byteSize() const override {
 		size_t sz = sizeof(*this);
 		for (const QStringList &lst : d_cell_data)
@@ -213,8 +213,8 @@ class TableInsertColCommand: public TableCommand
 {
 public:
 	TableInsertColCommand(Table *t, int col, const QString& text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -226,8 +226,8 @@ class TableSetValuesCommand: public TableCommand
 public:
 	TableSetValuesCommand(Table *t, int startRow, int endRow, const QList<int>& cols,
 						const QList<QStringList>& oldData, const QList<QStringList>& newData, const QString & text);
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 	size_t byteSize() const override {
 		size_t sz = sizeof(*this);
 		for (const QStringList &lst : d_old_data)
@@ -248,8 +248,8 @@ class TableSwapColumnsCommand: public TableCommand
 {
 public:
 	TableSwapColumnsCommand(Table *t, int col1, int col2, const QString &text = QString());
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -260,8 +260,8 @@ class TableMoveColumnCommand: public TableCommand
 {
 public:
 	TableMoveColumnCommand(Table *t, int from, int to, const QString &text = QString());
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -273,8 +273,8 @@ class TableSetColumnWidthCommand: public TableCommand
 public:
 	TableSetColumnWidthCommand(Table *t, int col, int oldWidth, int newWidth, bool allCols = false,
 							   const QList<int>& oldWidths = QList<int>(), const QString &text = QString());
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;
@@ -288,8 +288,8 @@ class TableSetReadOnlyCommand: public TableCommand
 {
 public:
 	TableSetReadOnlyCommand(Table *t, int col, bool oldState, bool newState, const QString &text = QString());
-	virtual void redo();
-	virtual void undo();
+	void redo() override;
+	void undo() override;
 
 private:
 	QPointer<Table> d_table;

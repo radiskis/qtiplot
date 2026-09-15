@@ -44,7 +44,7 @@
 #include <QMouseEvent>
 
 Folder::Folder( Folder *parent, const QString &name )
-    : QObject(parent), d_log_info(QString()), d_active_window(0)
+    : QObject(parent), d_log_info(QString()), d_active_window(nullptr)
 {
 	birthdate = QDateTime::currentDateTime ().toString(Qt::TextDate);
 	setObjectName(name);
@@ -139,7 +139,7 @@ Folder* Folder::findSubfolder(const QString& s, bool caseSensitive, bool partial
                 return folder;
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels,
@@ -172,7 +172,7 @@ MdiSubWindow* Folder::findWindow(const QString& s, bool windowNames, bool labels
 			}
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 MdiSubWindow *Folder::window(const QString &name, const char *cls, bool recursive)

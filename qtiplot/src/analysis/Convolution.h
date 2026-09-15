@@ -51,7 +51,7 @@ protected:
 	void convlv(double *sig, int n, double *dres, int m, int sign);
 
 private:
-    virtual void output();
+    void output() override;
 	//! Size of the signal data set
 	int d_n_signal = 0;
 	//! Size of the response data set
@@ -66,7 +66,7 @@ public:
     Deconvolution(ApplicationWindow *parent, Table *t, const QString& realColName, const QString& imagColName = QString());
 
 private:
-    void output();
+    void output() override;
 };
 
 #endif

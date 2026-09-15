@@ -45,29 +45,29 @@ class MatrixModel : public QAbstractTableModel
 	Q_OBJECT
 
 public:
-	MatrixModel(int rows = 32, int cols = 32, QObject *parent = 0);
+	MatrixModel(int rows = 32, int cols = 32, QObject *parent = nullptr);
 	MatrixModel(const QImage& image, QObject *parent);
-	~MatrixModel();
+	~MatrixModel() override;
 
 	Matrix *matrix(){return d_matrix;};
 
-	Qt::ItemFlags flags( const QModelIndex & index ) const;
+	Qt::ItemFlags flags( const QModelIndex & index ) const override;
 
 	bool canResize(int rows, int cols);
 	void setDimensions(int rows, int cols);
 	void resample(int rows, int cols, int method = 0);
 
-	int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	void setRowCount(int rows);
 
-	int columnCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 	void setColumnCount(int cols);
 
-	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
-	bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex());
+	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex()) override;
+	bool insertRows(int row, int count, const QModelIndex & parent = QModelIndex()) override;
 
-	bool removeColumns(int column, int count, const QModelIndex & parent = QModelIndex());
-	bool insertColumns(int column, int count, const QModelIndex & parent = QModelIndex());
+	bool removeColumns(int column, int count, const QModelIndex & parent = QModelIndex()) override;
+	bool insertColumns(int column, int count, const QModelIndex & parent = QModelIndex()) override;
 
 	double x(int col) const;
 	double y(int row) const;
@@ -81,11 +81,11 @@ public:
 	QImage renderImage();
 
 	double data(int row, int col) const;
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	bool setData(const QModelIndex & index, const QVariant & value, int role);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	bool setData(const QModelIndex & index, const QVariant & value, int role) override;
 
 	double* dataVector(){return d_data;};
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 	void setImage(const QImage& image);
 

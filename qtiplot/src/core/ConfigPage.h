@@ -41,7 +41,7 @@ class ConfigPage : public QWidget
     Q_OBJECT
 public:
     explicit ConfigPage(QWidget *parent = nullptr) : QWidget(parent) {}
-    virtual ~ConfigPage() override = default;
+    ~ConfigPage() override = default;
 
     virtual QString pageTitle() const = 0;
     virtual QIcon pageIcon() const = 0;

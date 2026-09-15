@@ -234,7 +234,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 						}
 					}
 					if (!wellDefinedFunction){
-						QMessageBox::critical(0, QObject::tr("QtiPlot"),
+						QMessageBox::critical(nullptr, QObject::tr("QtiPlot"),
 						QObject::tr("The function %1 is not defined in the specified interval!").arg(d_formulas[0]));
 						return false;
 					}

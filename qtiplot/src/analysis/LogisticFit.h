@@ -38,17 +38,17 @@ class LogisticFit : public Fit
 	public:
 		LogisticFit(ApplicationWindow *parent, PlotCurve *);
 		LogisticFit(ApplicationWindow *parent, PlotCurve *, double, double);
-		LogisticFit(ApplicationWindow *parent, Graph *g = 0);
+		LogisticFit(ApplicationWindow *parent, Graph *g = nullptr);
 		LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
 		LogisticFit(ApplicationWindow *parent, Graph *g, const QString& curveTitle, double start, double end);
 		LogisticFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol, int startRow = 1, int endRow = -1);
 
-		void guessInitialValues();
-        double eval(double *par, double x){return (par[0]-par[1])/(1+pow(x/par[2], par[3]))+par[1];};
+		void guessInitialValues() override;
+        double eval(double *par, double x) override{return (par[0]-par[1])/(1+pow(x/par[2], par[3]))+par[1];};
 
 	private:
 		void init();
-		void calculateFitCurveData(double *X, double *Y);
+		void calculateFitCurveData(double *X, double *Y) override;
 };
 
 #endif

@@ -373,7 +373,7 @@ void ScriptWindow::save()
 	if (!fileName.isEmpty()){
 		QFile f(fileName);
 		if ( !f.open( QIODevice::WriteOnly ) ){
-			QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
+			QMessageBox::critical(nullptr, tr("QtiPlot - File Save Error"),
 					tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fileName));
 			return;
 		}
@@ -427,7 +427,7 @@ void ScriptWindow::showLineNumbers(bool show)
 void ScriptWindow::redirectOutput(bool inside)
 {
 	if (inside)
-		te->redirectOutputTo(0);
+		te->redirectOutputTo(nullptr);
 	else
 		te->redirectOutputTo(console);
 }

@@ -44,12 +44,12 @@ class CurveRangeDialog : public QDialog
     Q_OBJECT
 
 public:
-    CurveRangeDialog(QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    CurveRangeDialog(QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 
 public slots:
 	void setCurveToModify(Graph *g, int curve);
 	void setCurvesToModify(Graph *g, const QList<int>& indexes);
-	void accept();
+	void accept() override;
 
 private:
 	QList<DataCurve *> d_curves;

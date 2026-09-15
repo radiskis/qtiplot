@@ -38,7 +38,7 @@ Q_OBJECT
 public:
 	enum Integrand{DataSet, AnalyticalFunction};
 
-	Integration(ApplicationWindow *parent, Graph *g = 0);
+	Integration(ApplicationWindow *parent, Graph *g = nullptr);
 	Integration(ApplicationWindow *parent, PlotCurve *c);
 	Integration(ApplicationWindow *parent, PlotCurve *c, double start, double end);
 	Integration(ApplicationWindow *parent, Graph *g, const QString& curveTitle);
@@ -54,9 +54,9 @@ public:
 
 private:
     void init();
-    QString logInfo();
+    QString logInfo() override;
 
-    void output();
+    void output() override;
 
 	double trapez();
 	double gslIntegration();

@@ -53,7 +53,7 @@
 #include <QDockWidget>
 
 ScriptEdit::ScriptEdit(ScriptingEnv *env, QWidget *parent, const QString& name)
-  : QTextEdit(parent), scripted(env), d_error(false), d_completer(0), d_highlighter(0),
+  : QTextEdit(parent), scripted(env), d_error(false), d_completer(nullptr), d_highlighter(nullptr),
   d_file_name(QString()), d_search_string(QString()), d_output_widget(nullptr)
 {
 	setObjectName(name);
@@ -534,7 +534,7 @@ QString ScriptEdit::importASCII(const QString &filename)
 
 	QString f;
 	if (filename.isEmpty())
-		f = ApplicationWindow::getFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter, 0, false);
+		f = ApplicationWindow::getFileName(this, tr("QtiPlot - Import Text From File"), scriptsDirPath, filter, nullptr, false);
 	else
 		f = filename;
 	if (f.isEmpty()) return QString();
@@ -598,7 +598,7 @@ QString ScriptEdit::exportASCII(const QString &filename)
 
 		QFile f(fn);
 		if (!f.open(QIODevice::WriteOnly)){
-			QMessageBox::critical(0, tr("QtiPlot - File Save Error"),
+			QMessageBox::critical(nullptr, tr("QtiPlot - File Save Error"),
 						tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fn));
 			return QString();
 		}
@@ -649,7 +649,7 @@ void ScriptEdit::setDirPath(const QString& path)
  void ScriptEdit::setCompleter(QCompleter *completer)
  {
 	 if (d_completer)
-		QObject::disconnect(d_completer, 0, this, 0);
+		QObject::disconnect(d_completer, nullptr, this, nullptr);
 
 	 d_completer = completer;
 
@@ -742,7 +742,7 @@ void ScriptEdit::rehighlight()
 	if (d_highlighter)
 		delete d_highlighter;
 
-	d_highlighter = 0;
+	d_highlighter = nullptr;
 #ifdef SCRIPTING_PYTHON
 	if (scriptEnv->name() == QString("Python"))
 		d_highlighter = new PythonSyntaxHighlighter(this);
@@ -967,7 +967,7 @@ ScriptEdit::~ScriptEdit()
 		delete d_highlighter;
 	if (d_completer){
 		d_completer->popup()->close();
-		QObject::disconnect(d_completer, 0, this, 0);
+		QObject::disconnect(d_completer, nullptr, this, nullptr);
 	}
 }
 

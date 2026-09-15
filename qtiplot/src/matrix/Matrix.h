@@ -78,7 +78,7 @@ public:
 	 */
 	Matrix(ScriptingEnv *env, int r, int c, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
 	Matrix(ScriptingEnv *env, const QImage& image, const QString& label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
-	~Matrix();
+	~Matrix() override;
 
 	enum Operation{Transpose, Invert, FlipHorizontally, FlipVertically, RotateClockwise,
 				  RotateCounterClockwise, FFT, Clear, Calculate, MuParserCalculate, SetImage, ImportAscii};
@@ -130,7 +130,7 @@ public:
 	/**
 	 * Currently handles SCRIPTING_CHANGE_EVENT only.
 	 */
-	void customEvent(QEvent *e);
+	void customEvent(QEvent *e) override;
 
 	void resetView();
 	void moveCell(const QModelIndex& index);
@@ -173,7 +173,7 @@ public:
 					bool simplifySpaces, const QString& commentString, ImportMode importAs = Overwrite,
 					const QLocale& l = QLocale(), int endLineChar = 0, int maxRows = -1);
 
-	virtual QString sizeToString();
+	QString sizeToString() override;
 
 	QString xLabel(){return d_x_label;};
 	void setXLabel(const QString&);
@@ -195,10 +195,10 @@ public:
 	void setZComment(const QString&);
 
 public slots:
-	void exportPDF(const QString& fileName);
+	void exportPDF(const QString& fileName) override;
 	//! Print the Matrix
-	void print();
-	void print(QPrinter *);
+	void print() override;
+	void print(QPrinter *) override;
 	//! Print the Matrix to fileName
 	void print(const QString& fileName);
 
@@ -256,10 +256,10 @@ public slots:
 	void setFormula(const QString &s){formula_str = s;};
 
 	//! Load the matrix from a string list (i.e. lines from a project file)
-	void restore(const QStringList &l, int fileVersion, bool fromTemplate = false);
+	void restore(const QStringList &l, int fileVersion, bool fromTemplate = false) override;
 	//! Format the matrix format in a string to save it in a template file
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
-	void save(const QString &, const QString &, bool saveAsTemplate = false);
+	void save(const QString &, const QString &, bool saveAsTemplate = false) override;
 
 	// selection operations
 	//! Standard cut operation
@@ -338,7 +338,7 @@ signals:
 
 private:
 protected:
-	bool eventFilter(QObject *, QEvent *);
+	bool eventFilter(QObject *, QEvent *) override;
 private:
 
 	//! Initialize the matrix

@@ -129,7 +129,7 @@ public:
 
 	void setPieCurve(PieCurve *pie){d_pie_curve = pie;};
 
-	QString saveToString();
+	QString saveToString() override;
 	static void restore(Graph *g, const QStringList& lst);
 
 private:

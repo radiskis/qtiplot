@@ -97,7 +97,7 @@ protected:
         const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 	void drawSticks(QPainter *p,
-        const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+        const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 
 	// Rtti
 	int d_type = 0;
@@ -165,7 +165,7 @@ public:
 	void setFullRange();
 
 	virtual bool updateData(Table *t, const QString& colName);
-	virtual void loadData();
+	void loadData() override;
 
 	//! Returns the row index in the data source table corresponding to the data point index.
 	int tableRow(int point);
@@ -199,7 +199,7 @@ public:
 	//! Clears the list of attached text labels.
 	void clearLabels();
 
-	void setVisible(bool on);
+	void setVisible(bool on) override;
 
 	void setVisibleLabels(bool on = true){d_show_labels = on;};
 	bool hasVisibleLabels(){return d_show_labels;};
@@ -211,7 +211,7 @@ public:
 	virtual void updateLabelsPosition();
 
 protected:
-	virtual void drawSeries(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const;
+	void drawSeries(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
 	bool validCurveType();
 	virtual void loadLabels();
 

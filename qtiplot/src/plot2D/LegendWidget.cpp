@@ -653,7 +653,7 @@ QString LegendWidget::parse(const QString& str)
 			int point = 0;
 			PlotCurve *c = getCurve(lst[0], point);
 			if (c){
-				Table *t = 0;
+				Table *t = nullptr;
 				QString colLabel;
 				int ycol = -1;
 				DataCurve *dc = dynamic_cast<DataCurve *>(c);
@@ -753,7 +753,7 @@ QString LegendWidget::parse(const QString& str)
 PlotCurve* LegendWidget::getCurve(const QString& s, int &point)
 {
 	point = -1;
-	PlotCurve *curve = 0;
+	PlotCurve *curve = nullptr;
 
 	QStringList l = s.split(",");
 	if (l.count() == 2)

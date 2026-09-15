@@ -666,7 +666,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 	Origin::Rect maximazedFrame, standardFrame;
 	if (opj.graphCount()){
 		MultiLayer* fake = mw->multilayerPlot("fake", 0);
-		fake->setParent(0);
+		fake->setParent(nullptr);
 		frameWidth = fake->frameGeometry().width() - fake->geometry().width();
 		frameHeight = fake->frameGeometry().height() - fake->geometry().height();
 		standardFrame = Origin::Rect(fake->geometry().width(), fake->geometry().height());
@@ -751,7 +751,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			int style = 0;
 			bool matrixImage = false;
 			Origin::GraphCurve XYZContourCurve;
-			Table *XYZContourTable = 0;
+			Table *XYZContourTable = nullptr;
 
 			for(unsigned int c = 0; c < layer.curves.size(); ++c){
 				Origin::GraphCurve& _curve = layer.curves[c];
@@ -815,7 +815,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				QStringList formulas;
 				double start, end;
 				int s;
-				PlotCurve* curve = NULL;
+				PlotCurve* curve = nullptr;
 				Origin::Function function;
 
 				switch(data[0].toLatin1()){
@@ -1616,8 +1616,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 			if (graph){
 				Spectrogram *sp = dynamic_cast<Spectrogram *>(graph->plotItem(0));
 				if (sp){
-					Table *vt = NULL;
-					Table *ht = NULL;
+					Table *vt = nullptr;
+					Table *ht = nullptr;
 					Graph *g = ml->layer(2);
 					if (g){
 						DataCurve *c = g->dataCurve(0);

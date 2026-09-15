@@ -43,12 +43,12 @@ class FrequencyCountDialog : public QDialog
     Q_OBJECT
 
 public:
-    FrequencyCountDialog(Table *t, QWidget* parent = 0, Qt::WindowFlags fl = {} );
-    ~FrequencyCountDialog();
+    FrequencyCountDialog(Table *t, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
+    ~FrequencyCountDialog() override;
 
 private slots:
     bool apply();
-    void accept();
+    void accept() override;
 
 private:
     Ref<Table> d_source_table;

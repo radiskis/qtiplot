@@ -67,11 +67,11 @@ class EnrichmentDialog : public QDialog
 public:
 	enum WidgetType{Frame, Text, Image, Tex, MDIWindow, Ellipse};
 
-	EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *app, QWidget *parent = 0);
-	~EnrichmentDialog();
+	EnrichmentDialog(WidgetType wt, Graph *g, ApplicationWindow *app, QWidget *parent = nullptr);
+	~EnrichmentDialog() override;
 
 	void setWidget(QWidget *w);
-	void accept (){return apply();};
+	void accept () override{return apply();};
 
 private slots:
     void clearForm();

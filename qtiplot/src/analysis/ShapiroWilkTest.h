@@ -40,9 +40,9 @@ class ShapiroWilkTest : public StatisticTest
 		ShapiroWilkTest(ApplicationWindow *parent, const QString& sample = QString());
 
 		double w(){return d_w;};
-		double statistic(){return d_w;};
-		double pValue(){return d_pValue;};
-		virtual QString logInfo();
+		double statistic() override{return d_w;};
+		double pValue() override{return d_pValue;};
+		QString logInfo() override;
 		QString shortLogInfo();
 
 	protected:

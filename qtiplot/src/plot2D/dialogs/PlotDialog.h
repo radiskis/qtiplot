@@ -76,7 +76,7 @@ class PlotDialog : public QDialog
     Q_OBJECT
 
 public:
-    PlotDialog(bool showExtended, QWidget* parent = 0, Qt::WindowFlags fl = {} );
+    PlotDialog(bool showExtended, QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
     ApplicationWindow *app() const;
     void initFonts(const QFont& titlefont, const QFont& axesfont, const QFont& numbersfont, const QFont& legendfont);
 	void insertColumnsList(const QStringList& names){columnNames = names;};
@@ -135,7 +135,7 @@ private slots:
 	//layer geometry
 	void adjustLayerHeight(double width);
 	void adjustLayerWidth(double height);
-	void displayCoordinates(int unit, Graph *g = 0);
+	void displayCoordinates(int unit, Graph *g = nullptr);
 	//plot window geometry
 	void displayPlotCoordinates(int unit);
 	void adjustPlotWidth(double height);
@@ -200,7 +200,7 @@ private:
 	void setLabelsFontToLayer(const QFont& font, Graph *);
 
     int labelsAlignment();
-	void closeEvent(QCloseEvent* e);
+	void closeEvent(QCloseEvent* e) override;
 
     void clearTabWidget();
 	void initAxesPage();
@@ -229,7 +229,7 @@ private:
 	void initPrintPage();
 	void initLabelsPage();
 	void initFunctionPage();
-    void contextMenuEvent(QContextMenuEvent *e);
+    void contextMenuEvent(QContextMenuEvent *e) override;
 	void showAllLabelControls(bool show = true, int curveType = 0);
     void updateContourLevelsDisplay(Spectrogram *sp);
     QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);

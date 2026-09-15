@@ -420,7 +420,7 @@ void ImageProfilesTool::modifiedMatrix(Matrix *m)
 ImageProfilesTool* ImageProfilesTool::clone(Graph *g)
 {
 	if (!d_matrix || !d_app)
-		return 0;
+		return nullptr;
 
 	Table *hTable = d_app->newHiddenTable(QString(), QString(), d_matrix->numCols(), 2);
 	Table *vTable = d_app->newHiddenTable(QString(), QString(), d_matrix->numRows(), 2);
@@ -563,6 +563,6 @@ ImageProfilesTool::~ImageProfilesTool()
 
 	if (d_box){
 		delete d_box;
-		d_box = 0;
+		d_box = nullptr;
 	}
 }

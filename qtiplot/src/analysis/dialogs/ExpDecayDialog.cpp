@@ -160,7 +160,7 @@ void ExpDecayDialog::setGraph(Graph *g)
 	if (!g)
 		return;
 
-	fitter = 0;
+	fitter = nullptr;
 	graph = g;
 
 	boxName->addItems(graph->analysableCurvesList());

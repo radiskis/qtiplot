@@ -53,7 +53,7 @@ public:
 	ScaleDraw(Graph *plot, const QString& formula = QString());
 	ScaleDraw(Graph *plot, const QStringList& labels, const QString& format, ScaleType type = Text);
 
-    virtual ~ScaleDraw();
+    ~ScaleDraw() override;
 
 	Graph *plot(){return d_plot;};
 
@@ -63,7 +63,7 @@ public:
 	void setFormula(const QString& formula);
 
 	double transformValue(double value) const;
-	virtual QwtText label(double value) const;
+	QwtText label(double value) const override;
 	QString labelString(double value) const;
 
 	int labelNumericPrecision()const {return d_prec;};
@@ -106,11 +106,11 @@ public:
 	void setSuffix(const QString& s){d_suffix = s;};
 
 protected:
-	virtual void draw (QPainter *, const QPalette &) const;
-    virtual void drawLabel(QPainter *painter, double value) const;
+	void draw (QPainter *, const QPalette &) const override;
+    void drawLabel(QPainter *painter, double value) const override;
 	virtual void drawTick(QPainter *p, double value, int len) const;
 	void drawInwardTick(QPainter *painter, double value, int len) const;
-	virtual void drawBackbone(QPainter *painter) const;
+	void drawBackbone(QPainter *painter) const override;
 	void drawBreak(QPainter *) const;
 
 private:

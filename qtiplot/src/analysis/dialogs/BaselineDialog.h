@@ -49,7 +49,7 @@ class BaselineDialog : public QDialog
 	Q_OBJECT
 
 public:
-	BaselineDialog( QWidget* parent = 0, Qt::WindowFlags fl = {} );
+	BaselineDialog( QWidget* parent = nullptr, Qt::WindowFlags fl = {} );
 	void setGraph(Graph *g);
 
 private slots:
@@ -64,7 +64,7 @@ private slots:
 private:
 	void disableBaselineTool();
 	double combineValues(double v1, double v2, bool add = false);
-	void closeEvent(QCloseEvent* e);
+	void closeEvent(QCloseEvent* e) override;
 
 	Graph *graph = nullptr;
 	QPushButton* buttonSubtract = nullptr;

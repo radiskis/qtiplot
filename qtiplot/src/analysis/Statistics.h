@@ -43,7 +43,7 @@ class Statistics : public QObject
 
 	public:
 		Statistics(ApplicationWindow *parent, const QString& name = QString());
-		~Statistics();
+		~Statistics() override;
 
 		//! Actually does the job. Should be reimplemented in derived classes.
 		virtual bool run();

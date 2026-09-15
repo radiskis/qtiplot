@@ -52,17 +52,17 @@ class StudentTestDialog : public QDialog
     Q_OBJECT
 
 public:
-	StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples = false, QWidget* parent = 0);
+	StudentTestDialog(const StatisticTest::TestType& type, Table *t, bool twoSamples = false, QWidget* parent = nullptr);
 
 private slots:
-    void accept();
+    void accept() override;
 	void updateMeanLabels(double);
 	void updateMeanLabel();
 	void addConfidenceLevel();
 	void enableDescriptiveStatistics();
 
 private:
-	void closeEvent(QCloseEvent*);
+	void closeEvent(QCloseEvent*) override;
 	void acceptStudentTest();
 	void acceptChiSquareTest();
 	void outputResults(StatisticTest* stats, const QString& s);

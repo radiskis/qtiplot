@@ -38,9 +38,9 @@ class ProbabilityScaleTransformation: public ScaleTransformation
 {
 public:
 	ProbabilityScaleTransformation(const ScaleEngine *engine):ScaleTransformation(engine){};
-	virtual double transform(double x) const;
-	virtual double invTransform(double x) const;
-	QwtTransform* copy() const;
+	double transform(double x) const override;
+	double invTransform(double x) const override;
+	QwtTransform* copy() const override;
 
 private:
 	double func(double x) const;
@@ -50,12 +50,12 @@ private:
 class ProbabilityScaleEngine: public QwtScaleEngine
 {
 public:
-    virtual void autoScale(int,
-        double &x1, double &x2, double &stepSize) const;
+    void autoScale(int,
+        double &x1, double &x2, double &stepSize) const override;
 
-    virtual QwtScaleDiv divideScale(double x1, double x2,
+    QwtScaleDiv divideScale(double x1, double x2,
         int numMajorSteps, int numMinorSteps,
-        double stepSize = 0.0) const;
+        double stepSize = 0.0) const override;
 
     virtual QwtTransform *transformation() const;
 

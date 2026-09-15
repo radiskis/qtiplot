@@ -50,8 +50,8 @@ public:
 
 private:
     void init(int m);
-    void calculateOutputData(double *x, double *y);
-    int sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y);
+    void calculateOutputData(double *x, double *y) override;
+    int sortedCurveData(PlotCurve *c, double start, double end, double **x, double **y) override;
 
     //! the interpolation method
     int d_method = Linear;

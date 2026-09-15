@@ -494,7 +494,7 @@ ApplicationWindow* ProjectManager::open(const QString& fn, bool factorySettings,
 				return open(fname + "~");
 			else
 				QMessageBox::critical(d_app, tr("QtiPlot - File opening error"),  tr("The file: <b> %1 </b> was not created using QtiPlot!").arg(fn));
-			return 0;
+			return nullptr;
 		}
 
 		return d_app->plotFile(fn);

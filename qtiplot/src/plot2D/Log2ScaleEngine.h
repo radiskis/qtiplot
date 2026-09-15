@@ -36,12 +36,12 @@
 class Log2ScaleEngine: public QwtScaleEngine
 {
 public:
-    virtual void autoScale(int maxSteps,
-        double &x1, double &x2, double &stepSize) const;
+    void autoScale(int maxSteps,
+        double &x1, double &x2, double &stepSize) const override;
 
-    virtual QwtScaleDiv divideScale(double x1, double x2,
+    QwtScaleDiv divideScale(double x1, double x2,
         int numMajorSteps, int numMinorSteps,
-        double stepSize = 0.0) const;
+        double stepSize = 0.0) const override;
 
     virtual QwtTransform *transformation() const;
 

@@ -152,10 +152,10 @@ public slots:
 
 	//! \name Event Handlers
 	//@{
-	void dropEvent(QDropEvent*);
-	void dragEnterEvent(QDragEnterEvent*);
-	bool eventFilter(QObject *object, QEvent *e);
-	void resizeEvent (QResizeEvent *);
+	void dropEvent(QDropEvent*) override;
+	void dragEnterEvent(QDragEnterEvent*) override;
+	bool eventFilter(QObject *object, QEvent *e) override;
+	void resizeEvent (QResizeEvent *) override;
 	void scaleFonts(double factor);
 	//@}
 
@@ -281,20 +281,20 @@ public slots:
 	Qwt3D::FLOORSTYLE floorStyle();
 	Qwt3D::COORDSTYLE coordStyle();
 
-	void print();
-	void print(QPrinter *printer);
+	void print() override;
+	void print(QPrinter *printer) override;
 	void copyImage();
 	void exportImage(QTextDocument *document, int quality, bool transparent,
 						int dpi, const QSizeF& customSize, int unit, double fontsFactor);
 	QPixmap pixmap(int dpi = 0, const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 	void exportImage(const QString& fileName, int quality = -1, bool transparent = false, int dpi = 0,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0, int compression = 0);
-    void exportPDF(const QString& fileName);
+    void exportPDF(const QString& fileName) override;
     void exportVector(const QString& fileName, int textExportMode = 0, int sortMode = 1,
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
     void exportToFile(const QString& fileName);
 
-	void save(const QString& fn, const QString& geometry, bool = false);
+	void save(const QString& fn, const QString& geometry, bool = false) override;
 
 	void zoomChanged(double);
 	void rotationChanged(double, double, double);
@@ -482,7 +482,7 @@ class ConstFunction : public Function
 {
 public:
 	ConstFunction(Qwt3D::SurfacePlot *pw);
-	double operator()(double x, double y);
+	double operator()(double x, double y) override;
 };
 
 //! Class for user defined surfaces
@@ -491,7 +491,7 @@ class UserFunction : public Function
 public:
 	UserFunction(const QString& s, Qwt3D::SurfacePlot *pw);
 
-    double operator()(double x, double y);
+    double operator()(double x, double y) override;
 	QString function(){return formula;};
 
 	unsigned int rows(){return d_rows;};
@@ -515,7 +515,7 @@ class UserParametricSurface : public ParametricSurface
 public:
     UserParametricSurface(const QString& xFormula, const QString& yFormula,
 						  const QString& zFormula, Qwt3D::SurfacePlot *pw);
-    Triple operator()(double u, double v);
+    Triple operator()(double u, double v) override;
 
 	unsigned int rows(){return d_rows;};
 	unsigned int columns(){return d_columns;};

@@ -398,7 +398,7 @@ bool FFT::setDataFromTable(Table *t, const QString& realColName, const QString& 
     freeMemory();
 
 	d_graph = nullptr;
-	d_curve = 0;
+	d_curve = nullptr;
 	d_init_err = false;
 
     d_n = abs(to - from) + 1;

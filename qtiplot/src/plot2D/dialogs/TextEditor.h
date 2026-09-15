@@ -46,7 +46,7 @@ public slots:
     void addSymbol(const QString & letter);
 
 private:
-	void closeEvent(QCloseEvent *e);
+	void closeEvent(QCloseEvent *e) override;
 	QString d_initial_text;
 	QWidget *d_target = nullptr;
 	Graph *d_graph = nullptr;

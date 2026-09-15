@@ -46,7 +46,7 @@ Description          : Plot associations dialog
 #include <QApplication>
 
 AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WindowFlags fl )
-	: QDialog( parent, fl ), graph(0)
+	: QDialog( parent, fl ), graph(nullptr)
 {
 	setObjectName("AssociationsDialog");
 	setWindowTitle(tr("QtiPlot - Plot Associations"));
@@ -89,7 +89,7 @@ AssociationsDialog::AssociationsDialog( QWidget* parent, Qt::WindowFlags fl )
     vl->addLayout(hbox2);
 	setLayout(vl);
 
-	active_table = 0;
+	active_table = nullptr;
 
 	connect(associations, &QListWidget::currentRowChanged, this, &AssociationsDialog::updateTable);
 	connect(btnOK, &QPushButton::clicked, this, &AssociationsDialog::accept);
@@ -197,7 +197,7 @@ QStringList AssociationsDialog::plotAssociation(const QString& text)
 void AssociationsDialog::initTablesList(QList<MdiSubWindow *> lst, int curve)
 {
 	tables = lst;
-	active_table = 0;
+	active_table = nullptr;
 
 	if (curve < 0 || curve >= (int)associations->count())
 		curve = 0;

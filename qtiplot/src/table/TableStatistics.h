@@ -73,10 +73,10 @@ class TableStatistics : public Table
 	private slots:
 		void closedBase();
 		void removeStatsCol(int);
-		void moveColumn(int, int, int);
+		void moveColumn(int, int, int) override;
 		void changeColIndex(int, int);
 		void insertCols(int start, int count);
-		void addCol(PlotDesignation pd = Y);
+		void addCol(PlotDesignation pd = Y) override;
 	
 	private:
 		Ref<Table> d_base;

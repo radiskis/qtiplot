@@ -108,7 +108,7 @@ private:
 	void createLabel(double val);
 	void loadLabels() override;
 	void updateLabels(bool updateText = true);
-	void updateLabelsPosition(){updateLabels(false);};
+	void updateLabelsPosition() override{updateLabels(false);};
 
 	QwtSymbol::Style min_style = QwtSymbol::NoSymbol;
 	QwtSymbol::Style max_style = QwtSymbol::NoSymbol;

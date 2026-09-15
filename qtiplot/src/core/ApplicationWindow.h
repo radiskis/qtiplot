@@ -175,7 +175,7 @@ friend class ProjectManager;
 public:
     ApplicationWindow(bool factorySettings = false);
 	ApplicationWindow(const QStringList& l);
-	~ApplicationWindow();
+	~ApplicationWindow() override;
 
 	enum ShowWindowsPolicy{HideAll, ActiveFolder, SubFolders};
 	enum WindowType{NoWindow, TableWindow, MatrixWindow, MultiLayerWindow, NoteWindow, Plot3DWindow, PolarGraphWindow};
@@ -252,9 +252,9 @@ public:
 #endif
 
 	static QString imageFilter();
-	static QString getFileName(QWidget *parent = 0, const QString & caption = QString(),
+	static QString getFileName(QWidget *parent = nullptr, const QString & caption = QString(),
 		const QString & dir = QString(), const QString & filter = QString(),
-		QString * selectedFilter = 0, bool save = true, bool confirmOverwrite = true);
+		QString * selectedFilter = nullptr, bool save = true, bool confirmOverwrite = true);
 
 	static void memoryAllocationError();
 	QColor readColorFromProject(const QString& name);
@@ -390,7 +390,7 @@ public slots:
 
 	//! Creates a new spectrogram graph
   	MultiLayer* plotSpectrogram(Matrix *m, Graph::CurveType type);
-  	MultiLayer* plotImageProfiles(Matrix *m = 0);
+  	MultiLayer* plotImageProfiles(Matrix *m = nullptr);
 
 	//! Rearrange the layersin order to fit to the size of the plot window
 
@@ -414,7 +414,7 @@ public slots:
 
 
 
-	Graph3D* plot3DMatrix(Matrix *m = 0, int style = 5);
+	Graph3D* plot3DMatrix(Matrix *m = nullptr, int style = 5);
 
 	//@}
 
@@ -439,7 +439,7 @@ public slots:
 	Matrix* matrix(const QString& name);
 	Matrix* convertTableToMatrix();
 	Matrix* tableToMatrix(Table* t);
-	Matrix* tableToMatrixRegularXYZ(Table* t = 0, const QString& colName = QString());
+	Matrix* tableToMatrixRegularXYZ(Table* t = nullptr, const QString& colName = QString());
 #ifdef HAVE_ALGLIB
 	void convertTableToMatrixRandomXYZ();
 	void expandMatrix();
@@ -530,7 +530,7 @@ public slots:
 	//@{
 	void setPreferences(Graph* g);
 
-	QString stemPlot(Table *t = 0, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
+	QString stemPlot(Table *t = nullptr, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
 
     //! Check whether a table is valid for a 3D plot and display an appropriate error if not
     //! Check whether a table is valid for a 2D plot and display an appropriate error if not
@@ -557,7 +557,7 @@ public slots:
 
 	//! \name MDI Windows
 	//@{
-	MdiSubWindow* clone(MdiSubWindow* w = 0);
+	MdiSubWindow* clone(MdiSubWindow* w = nullptr);
 	void rename();
 	void renameWindow();
 
@@ -567,9 +567,9 @@ public slots:
 	//!  Checks weather the new window name is valid and modifies the name.
 	bool setWindowName(MdiSubWindow *w, const QString &text);
 
-	void maximizeWindow(QTreeWidgetItem * lbi = 0);
+	void maximizeWindow(QTreeWidgetItem * lbi = nullptr);
 	void maximizeWindow(MdiSubWindow *w);
-	void minimizeWindow(MdiSubWindow *w = 0);
+	void minimizeWindow(MdiSubWindow *w = nullptr);
 
 	void updateWindowStatus(MdiSubWindow* );
 
@@ -596,7 +596,7 @@ public slots:
 	QStringList depending3DPlots(Matrix *m);
 	QStringList multilayerDependencies(QWidget *w);
 
-	void saveAsTemplate(MdiSubWindow* w = 0, const QString& = QString());
+	void saveAsTemplate(MdiSubWindow* w = nullptr, const QString& = QString());
 	void openTemplate();
 	MdiSubWindow* openTemplate(const QString& fn);
 
@@ -709,11 +709,11 @@ public slots:
 
 	//! \name Event Handlers
 	//@{
-	void closeEvent( QCloseEvent*);
-	void timerEvent ( QTimerEvent *e);
-	void dragEnterEvent( QDragEnterEvent* e );
-	void dropEvent( QDropEvent* e );
-	void customEvent( QEvent* e);
+	void closeEvent( QCloseEvent*) override;
+	void timerEvent ( QTimerEvent *e) override;
+	void dragEnterEvent( QDragEnterEvent* e ) override;
+	void dropEvent( QDropEvent* e ) override;
+	void customEvent( QEvent* e) override;
 #ifdef Q_WS_MAC
 	void hideEvent (QHideEvent *);
 #endif
@@ -961,7 +961,7 @@ public slots:
 	//! Pops up a file dialog and invokes appendProject(const QString&) on the result.
 	void appendProject();
 	//! Open the specified project file and add it as a subfolder to the parentFolder or to the current folder if no parent folder is specified.
-	Folder* appendProject(const QString& file_name, Folder* parentFolder = 0);
+	Folder* appendProject(const QString& file_name, Folder* parentFolder = nullptr);
 	void saveAsProject();
 	bool saveFolderAsProject(Folder *f);
 	bool saveFolder(Folder *folder, const QString& fn, bool compress = false);
@@ -1042,12 +1042,12 @@ private:
 	void translateActionsStrings();
 	//@}
 public:
-	virtual QMenu * createPopupMenu(){return nullptr;};
+	QMenu * createPopupMenu() override{return nullptr;};
 private:
 
 	void updateCompleter(const QString& windowName, bool remove = false, const QString& newName = QString());
 	QMessageBox::StandardButton showSaveProjectMessage();
-	QString getSaveProjectName(const QString& fileName, bool *compress = 0, int scope = 0);
+	QString getSaveProjectName(const QString& fileName, bool *compress = nullptr, int scope = 0);
 	void goToParentFolder();
 	bool isProjectFile(const QString& fn);
 	void initSearchForUpdates();

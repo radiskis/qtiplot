@@ -49,7 +49,7 @@ class AnalysisController : public QObject
 
 public:
     explicit AnalysisController(ApplicationWindow *app);
-    virtual ~AnalysisController();
+    ~AnalysisController() override;
 
     void showChiSquareTestDialog();
     void showStudentTestDialog(bool twoSamples = false);

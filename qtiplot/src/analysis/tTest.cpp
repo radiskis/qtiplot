@@ -36,7 +36,7 @@
 
 tTest::tTest(ApplicationWindow *parent, double testMean, double level, const QString& sample1, const QString& sample2, bool paired)
 : StatisticTest(parent, testMean, level, sample1),
-d_sample2(0),
+d_sample2(nullptr),
 d_independent_test(true)
 {
 	setObjectName(QObject::tr("Student's t-Test"));
@@ -247,7 +247,7 @@ bool tTest::setSample2(const QString& colName, bool paired)
 		reportError(QObject::tr("Attention!"),
 					QObject::tr("Paired t-Test requires equal sample sizes."));
 		delete d_sample2;
-		d_sample2 = 0;
+		d_sample2 = nullptr;
 		return false;
 	}
 
@@ -263,7 +263,7 @@ bool tTest::setSample2(const QString& colName, bool paired)
 			reportError(QObject::tr("Attention!"),
 			QObject::tr("The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0."));
 			delete d_sample2;
-			d_sample2 = 0;
+			d_sample2 = nullptr;
 			return false;
 		}
 	} else {
