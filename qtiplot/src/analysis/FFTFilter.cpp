@@ -130,7 +130,7 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 	}
 
     //double df = 0.5/(double)(d_n*(x[1]-x[0]));//half frequency sampling due to GSL storing
-	double df = 1.0/(double)(d_n*(x[1]-x[0]));
+	double df = 1.0/static_cast<double>(d_n*(x[1]-x[0]));
 
 	GslRAII::UniqueFftRealWorkspace work(gsl_fft_real_workspace_alloc(d_n));
 	GslRAII::UniqueFftRealWavetable real(gsl_fft_real_wavetable_alloc(d_n));
@@ -147,7 +147,7 @@ void FFTFilter::calculateOutputData(double *x, double *y)
 	   d_explanation += tr("to") + " " + locale.toString(d_high_freq) + " ";
 	d_explanation += tr("Hz") + " ";
 
-	switch ((int)d_filter_type)
+	switch (static_cast<int>(d_filter_type))
 	{
 		case 1://low pass
 			d_explanation += tr("Low Pass FFT Filter");

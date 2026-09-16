@@ -104,7 +104,7 @@ void SmoothFilter::calculateOutputData(double *x, double *y)
 		y[i] = d_y[i];//filtering frequencies
 	}
 
-	switch((int)d_method)
+	switch(static_cast<int>(d_method))
 	{
 		case 1:
 			d_explanation = QString::number(d_smooth_points) + " " + tr("points") + " " + tr("Savitzky-Golay smoothing");
@@ -141,9 +141,9 @@ void SmoothFilter::smoothFFT(double *x, double *y)
 
 	gsl_fft_real_transform(y, 1, d_n, real.get(), work.get()); // FFT forward
 
-	double df = 1.0/(double)dx;
-	double lf = df/(double)d_smooth_points; // frequency cutoff
-	df = 0.5*df/(double)d_n;
+	double df = 1.0/static_cast<double>(dx);
+	double lf = df/static_cast<double>(d_smooth_points); // frequency cutoff
+	df = 0.5*df/static_cast<double>(d_n);
 
 	for (int i = 0; i < d_n; i++) {
 		x[i] = d_x[i];
@@ -178,7 +178,7 @@ void SmoothFilter::smoothAverage(double *, double *y)
 		for (int j=-i; j<=i; j++)
 			aux += y[i+j];
 
-		s[i] = aux/(double)(2*i+1);
+		s[i] = aux/static_cast<double>(2*i+1);
 	}
 	for (int i=p2; i<d_n-p2; i++){
 		aux = 0.0;
@@ -192,7 +192,7 @@ void SmoothFilter::smoothAverage(double *, double *y)
 		for (int j=d_n-i-1; j>=i-d_n+1; j--)
 			aux += y[i+j];
 
-		s[i] = aux/(double)(2*(d_n-i-1)+1);
+		s[i] = aux/static_cast<double>(2*(d_n-i-1)+1);
 	}
 	s[d_n-1] = y[d_n-1];
 

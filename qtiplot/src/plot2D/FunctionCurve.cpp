@@ -186,7 +186,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 	std::vector<double> X(points);
 	std::vector<double> Y(points);
 
-	double step = (d_to - d_from)/(double)(points - 1.0);
+	double step = (d_to - d_from)/static_cast<double>(points - 1.0);
 	if (d_function_type == Normal){
 		MyParser parser;
 		double x = d_from;
@@ -229,7 +229,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 							d_from = x0;
 							X[0] = x0;
 							Y[0] = y0;
-							step = (d_to - d_from)/(double)(lastButOne);
+							step = (d_to - d_from)/static_cast<double>(lastButOne);
 							break;
 						}
 					}
@@ -248,7 +248,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 
 			if (xLog10Scale || (d_from > 0 && d_to > 0 && sc_engine &&
 				sc_engine->type() == ScaleTransformation::Log10)){
-				step = log10(d_to/d_from)/(double)(points - 1);
+				step = log10(d_to/d_from)/static_cast<double>(points - 1);
 				for (int i = 1; i < lastButOne; i++ ){
 					x = d_from*pow(10, i*step);
 					X[i] = x;

@@ -224,8 +224,8 @@ void FrameWidget::drawFrame(QPainter *p, const QRect& rect)
 		int lw = d_frame_pen.width()/2;
 
 		// calculate resolution factor
-		double factorX = (double)p->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
-		double factorY = (double)p->paintEngine()->paintDevice()->logicalDpiY()/(double)plot()->logicalDpiY();
+		double factorX = static_cast<double>(p->paintEngine()->paintDevice()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+		double factorY = static_cast<double>(p->paintEngine()->paintDevice()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 		int d = d_shadow_width + lw;
 		if (!(lw % 2))
@@ -281,11 +281,11 @@ QString FrameWidget::saveToString()
 
 double FrameWidget::xIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->logicalDpiX();
+	double dpi = static_cast<double>(w->logicalDpiX());
 	double val = 0.0;
 	switch(unit){
 		case Pixel:
-			val = (double)w->x();
+			val = static_cast<double>(w->x());
 		break;
 		case Inch:
 			val = w->x()/dpi;
@@ -310,11 +310,11 @@ double FrameWidget::xIn(QWidget *w, Unit unit)
 
 double FrameWidget::yIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->logicalDpiY();
+	double dpi = static_cast<double>(w->logicalDpiY());
 	double val = 0.0;
 	switch(unit){
 		case Pixel:
-			val = (double)w->y();
+			val = static_cast<double>(w->y());
 		break;
 		case Inch:
 			val = w->y()/dpi;
@@ -339,14 +339,14 @@ double FrameWidget::yIn(QWidget *w, Unit unit)
 
 double FrameWidget::widthIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->logicalDpiX();
+	double dpi = static_cast<double>(w->logicalDpiX());
 	double val = 0.0;
 	switch(unit){
 		case Pixel:
-			val = (double)w->width();
+			val = static_cast<double>(w->width());
 		break;
 		case Inch:
-			val = (double)w->width()/dpi;
+			val = static_cast<double>(w->width())/dpi;
 		break;
 		case Millimeter:
 			val = 25.4*w->width()/dpi;
@@ -368,14 +368,14 @@ double FrameWidget::widthIn(QWidget *w, Unit unit)
 
 double FrameWidget::heightIn(QWidget *w, Unit unit)
 {
-	double dpi = (double)w->logicalDpiY();
+	double dpi = static_cast<double>(w->logicalDpiY());
 	double val = 0.0;
 	switch(unit){
 		case Pixel:
-			val = (double)w->height();
+			val = static_cast<double>(w->height());
 		break;
 		case Inch:
-			val = (double)w->height()/dpi;
+			val = static_cast<double>(w->height())/dpi;
 		break;
 		case Millimeter:
 			val = 25.4*w->height()/dpi;

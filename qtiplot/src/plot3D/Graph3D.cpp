@@ -1912,7 +1912,7 @@ void Graph3D::resizeEvent(QResizeEvent *e)
 		else if (!oldSize.isValid() && previousStatus() == MdiSubWindow::Maximized && applicationWindow())
 			oldSize = applicationWindow()->workspace()->size();
 
-		double ratio = (double)e->size().height()/(double)oldSize.height();
+		double ratio = static_cast<double>(e->size().height())/static_cast<double>(oldSize.height());
 		scaleFonts(ratio);
 	}
 	emit resizedWindow(this);
@@ -2259,7 +2259,7 @@ QPixmap Graph3D::pixmap(int dpi, const QSizeF& customSize, int unit, double font
 		size = Graph::customPrintSize(customSize, unit, dpi);
 
 	if (fontsFactor == 0.0)
-		fontsFactor = (double)size.height()/(double)this->height();
+		fontsFactor = static_cast<double>(size.height())/static_cast<double>(this->height());
 
 	scaleFonts(fontsFactor);
 
@@ -2282,7 +2282,7 @@ void Graph3D::exportImage(const QString& fileName, int quality, bool transparent
 		image = pic.toImage();
 	}
 
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
@@ -2321,7 +2321,7 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 		size = Graph::customPrintSize(customSize, unit, dpi);
 
 	if (fontsFactor == 0.0)
-		fontsFactor = (double)size.height()/(double)this->height();
+		fontsFactor = static_cast<double>(size.height())/static_cast<double>(this->height());
 
 	scaleFonts(fontsFactor);
 
@@ -2338,7 +2338,7 @@ void Graph3D::exportImage(QTextDocument *document, int, bool transparent,
 		image = pic.toImage();
 	}
 
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 
@@ -2382,7 +2382,7 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 		size = cs;
 
 	if (fontsFactor == 0.0)
-		fontsFactor = (double)size.height()/(double)this->height();
+		fontsFactor = static_cast<double>(size.height())/static_cast<double>(this->height());
 
     VectorWriter * gl2ps = dynamic_cast<VectorWriter*>(IO::outputHandler(format));
     if (gl2ps){
@@ -2928,7 +2928,7 @@ void Graph3D::showColorLegend(bool show)
 
 void Graph3D::setResolution(int r)
 {
-	if (!d_active_curve || (int)d_active_curve->resolution() == r)
+	if (!d_active_curve || static_cast<int>(d_active_curve->resolution())== r)
 		return;
 
 	sp->makeCurrent();
@@ -3476,9 +3476,9 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	plot->setBackgroundColor(QColor(colors[5]));
 	plot->setGridColor(QColor(colors[6]));
 
-	if ((int)colors.count() > 7){
+	if (static_cast<int>(colors.count()) > 7){
 		plot->setTransparency(colors[9].toDouble());
-		if ((int)colors.count() == 11)
+		if (static_cast<int>(colors.count()) == 11)
 			plot->setDataColorMap(colors[10]);
 		else
 			plot->setDataColors(QColor(colors[7]), QColor(colors[8]));

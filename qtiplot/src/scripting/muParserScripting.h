@@ -89,7 +89,7 @@ class muParserScripting: public ScriptingEnv
 		static thread_local GslRAII::UniqueRng r(gsl_rng_alloc(gsl_rng_default));
 		if (!r)
 			return 0.0;
-		gsl_rng_set(r.get(), (unsigned long)((unsigned int)x * time(nullptr)));
+		gsl_rng_set(r.get(), static_cast<unsigned long>(static_cast<unsigned int>(x) * time(nullptr)));
 		return gsl_rng_uniform(r.get());
 	}
 
@@ -97,18 +97,18 @@ class muParserScripting: public ScriptingEnv
 		static thread_local GslRAII::UniqueRng r(gsl_rng_alloc(gsl_rng_default));
 		if (!r)
 			return 0.0;
-		gsl_rng_set(r.get(), (unsigned long)((unsigned int)x * time(nullptr)));
+		gsl_rng_set(r.get(), static_cast<unsigned long>(static_cast<unsigned int>(x) * time(nullptr)));
 		return gsl_ran_ugaussian(r.get());
 	}
 
 	static double mod(double x, double y){ return fmod(x,y);};
 	static double bessel_I0(double x){ return gsl_sf_bessel_I0 (x);};
 	static double bessel_I1(double x){ return gsl_sf_bessel_I1 (x);};
-	static double bessel_In(double x, double n){ return gsl_sf_bessel_In ((int)n, x);};
+	static double bessel_In(double x, double n){ return gsl_sf_bessel_In (static_cast<int>(n), x);};
 	static double bessel_J0(double x){ return gsl_sf_bessel_J0 (x);};
 	static double bessel_J1(double x){ return gsl_sf_bessel_J1 (x);};
-	static double bessel_Jn(double x, double n){ return gsl_sf_bessel_Jn ((int)n, x);};
-	static double bessel_Yn(double x, double n){ return gsl_sf_bessel_Yn ((int)n, x);};
+	static double bessel_Jn(double x, double n){ return gsl_sf_bessel_Jn (static_cast<int>(n), x);};
+	static double bessel_Yn(double x, double n){ return gsl_sf_bessel_Yn (static_cast<int>(n), x);};
 	static double bessel_Jn_zero(double n, double s){ return gsl_sf_bessel_zero_Jnu(n, (unsigned int) s);};
 	static double bessel_Y0(double x){ return gsl_sf_bessel_Y0 (x);};
 	static double bessel_Y1(double x){ return gsl_sf_bessel_Y1 (x);};

@@ -150,7 +150,7 @@ QStringList ColorBox::colorNames()
 
 QColor ColorBox::defaultColor(int colorIndex)
 {
-	if (colorIndex >= 0 && colorIndex < (int)sizeof(colors))
+	if (colorIndex >= 0 && colorIndex < static_cast<int>(sizeof(colors)))
 		return colors[colorIndex];
 
 	return Qt::black; // default color is black.

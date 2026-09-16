@@ -186,7 +186,7 @@ void ReciprocalScaleEngine::buildTicks(
         // ticks very close to 0.0 are
         // explicitely set to 0.0
 
-        for ( int j = 0; j < (int)ticks[i].count(); j++ )
+        for ( int j = 0; j < static_cast<int>(ticks[i].count()); j++ )
         {
             if ( compareEps(ticks[i][j], 0.0, stepSize) == 0 )
                 ticks[i][j] = 0.0;
@@ -238,7 +238,7 @@ void ReciprocalScaleEngine::buildMinorTicks(
 
     // calculate minor ticks
 
-    for (int i = 0; i < (int)majorTicks.count(); i++)
+    for (int i = 0; i < static_cast<int>(majorTicks.count()); i++)
     {
         double val = majorTicks[i];
         for (int k = 0; k < numTicks; k++)

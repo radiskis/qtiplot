@@ -320,7 +320,7 @@ QString ScaleDraw::labelString(double value) const
 			    double rb = se->axisBreakRight();
                 if(inverted){
                     if (value <= lb){
-						int n_ticks = (int)ticks.count() - 1;
+						int n_ticks = static_cast<int>(ticks.count()) - 1;
                         double val0 = ticks[0];
 						double val1 = ticks[n_ticks];
                         for (int i = 1; i < n_ticks; i++){
@@ -337,7 +337,7 @@ QString ScaleDraw::labelString(double value) const
 				} else {
                     if (value >= rb){
                         double val0 = ticks[0];
-                        for (int i = 1; i < (int)ticks.count(); i++){
+                        for (int i = 1; i < static_cast<int>(ticks.count()); i++){
                             double val = ticks[i];
                             if(val0 <= lb && val >= rb){
                                 break_offset = fabs(val - val0);
@@ -354,14 +354,14 @@ QString ScaleDraw::labelString(double value) const
 
         	double step = ticks[1] - ticks[0];
         	int index = int(ticks[0] + step*ticks.indexOf(value) - 1);
-            int offset = abs((int)floor(break_offset/step));
+            int offset = abs(static_cast<int>(floor(break_offset/step)));
             if (offset)
                 offset--;
             if (step > 0)
                 index += offset;
             else
                 index -= offset;
-			if (index >= 0 && index < (int)d_text_labels.count())
+			if (index >= 0 && index < static_cast<int>(d_text_labels.count()))
 				return d_text_labels[index];
 			else
 				return QString();
@@ -406,7 +406,7 @@ void ScaleDraw::drawLabel(QPainter *painter, double value) const
 		return;
 
 	QSizeF labelSize = lbl.textSize(painter->font());
-	if ( (int)labelSize.height() % 2 )
+	if ( static_cast<int>(labelSize.height()) % 2 )
 		labelSize.setHeight(labelSize.height() + 1);
 
 	painter->save();
@@ -579,7 +579,7 @@ void ScaleDraw::drawInwardTick(QPainter *painter, double value, int len) const
 	if (sc_engine->hasBreak() && (sc_engine->axisBreakLeft() <= value && sc_engine->axisBreakRight() >= value))
 		return;
 
-	int pw2 = qMin((int)painter->pen().width(), len) / 2;
+	int pw2 = qMin(static_cast<int>(painter->pen().width()), len) / 2;
 
 	const QwtScaleMap &scaleMap = this->scaleMap();
 	QPointF pos = this->pos();
@@ -647,7 +647,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 	int majLen = d_plot->majorTickLength();
 	if (d_majTicks >= Both && majLen > 0){
 		const QList<double> &ticks = this->scaleDiv().ticks(QwtScaleDiv::MajorTick);
-		for (int i = 0; i < (int)ticks.count(); i++){
+		for (int i = 0; i < static_cast<int>(ticks.count()); i++){
 			const double v = ticks[i];
 			if (this->scaleDiv().contains(v))
 				drawInwardTick(painter, v, majLen);
@@ -658,7 +658,7 @@ void ScaleDraw::draw(QPainter *painter, const QPalette& palette) const
 	if (d_minTicks >= Both && minLen > 0){
 		for (int tickType = QwtScaleDiv::MinorTick; tickType < QwtScaleDiv::MajorTick; tickType++){
 			const QList<double> &ticks = this->scaleDiv().ticks(tickType);
-			for (int i = 0; i < (int)ticks.count(); i++){
+			for (int i = 0; i < static_cast<int>(ticks.count()); i++){
 				const double v = ticks[i];
 				if ( this->scaleDiv().contains(v) )
 					drawInwardTick(painter, v, minLen);

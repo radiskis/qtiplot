@@ -107,7 +107,7 @@ bool ImageWidget::load(const QString& fn, bool update)
     }
 
 	QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
-	for (int i=0; i<(int)lst.count(); i++){
+	for (int i=0; i<static_cast<int>(lst.count()); i++){
 		if (fn.contains("." + lst[i])){
 			d_pix.load(fn, lst[i], Qt::AutoColor);
 			d_file_name = fn;
@@ -218,8 +218,8 @@ void ImageWidget::drawFrame(QPainter *p, const QRect& rect)
 		int lw = d_frame_pen.width()/2;
 
 		// calculate resolution factor
-		double factorX = (double)p->paintEngine()->paintDevice()->logicalDpiX()/(double)plot()->logicalDpiX();
-		double factorY = (double)p->paintEngine()->paintDevice()->logicalDpiY()/(double)plot()->logicalDpiY();
+		double factorX = static_cast<double>(p->paintEngine()->paintDevice()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+		double factorY = static_cast<double>(p->paintEngine()->paintDevice()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 		int d = d_shadow_width + lw;
 		if (!(lw % 2))

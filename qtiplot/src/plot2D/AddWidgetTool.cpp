@@ -222,7 +222,7 @@ bool AddWidgetTool::eventFilter(QObject *obj, QEvent *event)
 						d_fw->setFramePen(app->d_frame_widget_pen);
 					else {
 						QPen pen = app->d_frame_widget_pen;
-						pen.setWidthF(ceil((double)pen.width()));
+						pen.setWidthF(ceil(static_cast<double>(pen.width())));
 						d_fw->setFramePen(pen);
 					}
 

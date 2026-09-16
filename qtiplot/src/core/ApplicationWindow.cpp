@@ -727,8 +727,8 @@ void ApplicationWindow::setDefaultOptions()
 	legendBackground = Qt::white;
 	legendBackground.setAlpha(0); // transparent by default;
 	d_legend_default_angle = 0;
-	d_frame_geometry_unit = (int)FrameWidget::Scale;
-	d_layer_geometry_unit = (int)FrameWidget::Pixel;
+	d_frame_geometry_unit = static_cast<int>(FrameWidget::Scale);
+	d_layer_geometry_unit = static_cast<int>(FrameWidget::Pixel);
 	d_layer_canvas_width = 400;
 	d_layer_canvas_height = 300;
 
@@ -1134,7 +1134,7 @@ void ApplicationWindow::updateSurfaceFuncList(const QString& s)
 {
 	surfaceFunc.removeAll(s);
 	surfaceFunc.push_front(s);
-	while ((int)surfaceFunc.size() > 10)
+	while (static_cast<int>(surfaceFunc.size()) > 10)
 		surfaceFunc.pop_back();
 }
 
@@ -1195,7 +1195,7 @@ QString ApplicationWindow::imageFilter()
 {
 	QList<QByteArray> list = QImageReader::supportedImageFormats();
 	QString filter = tr("Images") + " (";
-	for (int i = 0; i < (int)list.count(); i++){
+	for (int i = 0; i < static_cast<int>(list.count()); i++){
 		if (i > 0)
 			filter += " ";
 		filter += "*." + QString::fromLatin1(list[i].toLower());
@@ -2594,7 +2594,7 @@ Table * ApplicationWindow::importWaveFile()
 
 	file.seekg(44, ios::beg);
 
-	double dt = 1.0/(double)sampleRate;
+	double dt = 1.0/static_cast<double>(sampleRate);
 	int aux = 1;
 	if (bitsPerSample == 8){
 		if (channels == 2)
@@ -4408,7 +4408,7 @@ void ApplicationWindow::correlate()
 		return;
 
 	QStringList s = t->selectedColumns();
-	if ((int)s.count() != 2){
+	if (static_cast<int>(s.count()) != 2){
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select two columns for this operation!"));
 		return;
 	}
@@ -4425,7 +4425,7 @@ void ApplicationWindow::autoCorrelate()
 		return;
 
 	QStringList s = t->selectedColumns();
-	if ((int)s.count() != 1)
+	if (static_cast<int>(s.count()) != 1)
 	{
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select exactly one columns for this operation!"));
 		return;
@@ -4443,7 +4443,7 @@ void ApplicationWindow::convolute()
 		return;
 
 	QStringList s = t->selectedColumns();
-	if ((int)s.count() != 2)
+	if (static_cast<int>(s.count()) != 2)
 	{
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select two columns for this operation:\n the first represents the signal and the second the response function!"));
 		return;
@@ -4461,7 +4461,7 @@ void ApplicationWindow::deconvolute()
 		return;
 
 	QStringList s = t->selectedColumns();
-	if ((int)s.count() != 2)
+	if (static_cast<int>(s.count()) != 2)
 	{
 		QMessageBox::warning(this, tr("QtiPlot - Error"), tr("Please select two columns for this operation:\n the first represents the signal and the second the response function!"));
 		return;
@@ -6621,7 +6621,7 @@ void ApplicationWindow::dropEvent( QDropEvent* e )
 		QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
 		QStringList asciiFiles;
 
-		for(int i = 0; i<(int)fileNames.count(); i++){
+		for(int i = 0; i<static_cast<int>(fileNames.count()); i++){
 			QString fn = fileNames[i];
 			QFileInfo fi (fn);
 			QString ext = fi.suffix();
@@ -7298,7 +7298,7 @@ void ApplicationWindow::showTableContextMenu(bool selection)
 	QMenu cm(this);
 	QMenu moveRow(this);
 	if (selection){
-		if ((int)t->selectedColumns().count() > 0){
+		if (static_cast<int>(t->selectedColumns().count()) > 0){
 			showColMenu(t->firstSelectedColumn());
 			return;
 		} else if (t->numSelectedRows() == 1) {
@@ -7527,9 +7527,9 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 		thetaFunctions.removeAll(formulas[1]);
 		thetaFunctions.push_front(formulas[1]);
 
-		while ((int)rFunctions.size() > maxListSize)
+		while (static_cast<int>(rFunctions.size()) > maxListSize)
 			rFunctions.pop_back();
-		while ((int)thetaFunctions.size() > maxListSize)
+		while (static_cast<int>(thetaFunctions.size()) > maxListSize)
 			thetaFunctions.pop_back();
 	} else if (type == 1 && formulas.size() >= 2){
 		xFunctions.removeAll(formulas[0]);
@@ -7538,15 +7538,15 @@ void ApplicationWindow::updateFunctionLists(int type, QStringList &formulas)
 		yFunctions.removeAll(formulas[1]);
 		yFunctions.push_front(formulas[1]);
 
-		while ((int)xFunctions.size() > maxListSize)
+		while (static_cast<int>(xFunctions.size()) > maxListSize)
 			xFunctions.pop_back();
-		while ((int)yFunctions.size() > maxListSize)
+		while (static_cast<int>(yFunctions.size()) > maxListSize)
 			yFunctions.pop_back();
 	} else if (type == 0 && formulas.size() >= 1){
 		d_recent_functions.removeAll(formulas[0]);
 		d_recent_functions.push_front(formulas[0]);
 
-		while ((int)d_recent_functions.size() > maxListSize)
+		while (static_cast<int>(d_recent_functions.size()) > maxListSize)
 			d_recent_functions.pop_back();
 	}
 }
@@ -8247,7 +8247,7 @@ void ApplicationWindow::createLanguagesList()
 	QString qmPath = d_translations_folder;
 	QDir dir(qmPath);
 	QStringList fileNames = dir.entryList(QStringList() << "qtiplot_*.qm");
-	for (int i=0; i < (int)fileNames.size(); i++)
+	for (int i=0; i < static_cast<int>(fileNames.size()); i++)
 	{
 		QString locale = fileNames[i];
 		locale = locale.mid(locale.indexOf('_')+1);
@@ -8266,7 +8266,7 @@ void ApplicationWindow::createLanguagesList()
 
 void ApplicationWindow::switchToLanguage(int param)
 {
-	if (param < (int)locales.size())
+	if (param < static_cast<int>(locales.size()))
 		switchToLanguage(locales[param]);
 }
 

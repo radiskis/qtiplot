@@ -188,7 +188,7 @@ QStringList AssociationsDialog::plotAssociation(const QString& text)
 
 	QString tableName = lst[0];
 	QStringList ass = QStringList() << tableName + "_" + cols[0].replace(".", ",");
-	for (int i = 1; i < (int)cols.count(); i++ )
+	for (int i = 1; i < static_cast<int>(cols.count()); i++ )
 		ass << tableName + "_" + cols[i].replace(".", ",");
 
 	return ass;
@@ -199,7 +199,7 @@ void AssociationsDialog::initTablesList(QList<MdiSubWindow *> lst, int curve)
 	tables = lst;
 	active_table = nullptr;
 
-	if (curve < 0 || curve >= (int)associations->count())
+	if (curve < 0 || curve >= static_cast<int>(associations->count()))
 		curve = 0;
 
 	associations->setCurrentRow (curve);
@@ -260,7 +260,7 @@ void AssociationsDialog::updateColumnTypes()
 
 	QString xColName, yColName;
 
-	int n = (int)cols.count();
+	int n = static_cast<int>(cols.count());
 	if (n >= 2){
 		xColName = cols[0].remove("(X)");
 		yColName = cols[1].remove("(Y)");
@@ -426,7 +426,7 @@ void AssociationsDialog::updatePlotAssociation(int row, int col)
 
 	//change associations for error bars depending on the curve "index"
 	QString old_as = plotAssociationsList[index];
-	for (int i = 0; i<(int)plotAssociationsList.count(); i++){
+	for (int i = 0; i<static_cast<int>(plotAssociationsList.count()); i++){
 		QString as = plotAssociationsList[i];
 		if (as.contains(old_as) && (as.contains("(xErr)") || as.contains("(yErr)"))){
 			QStringList ls = as.split(",", Qt::SkipEmptyParts);

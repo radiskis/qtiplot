@@ -170,7 +170,7 @@ QList <QwtBarCurve *> QwtBarCurve::stackedCurvesList() const
 
 double QwtBarCurve::stackOffset(int i, QList <QwtBarCurve *> stack) const
 {
-	double n = (double)dataSize();
+	double n = static_cast<double>(dataSize());
 	if (i < 0 || i >= n)
 		return 0.0;
 
@@ -189,7 +189,7 @@ QRectF QwtBarCurve::boundingRect() const
 {
 	QRectF rect = QwtPlotCurve::boundingRect();
 
-	double n = (double)dataSize();
+	double n = static_cast<double>(dataSize());
 
 	if (bar_style == Vertical){
 		double dx = (rect.right() - rect.left())/n;

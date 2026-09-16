@@ -76,8 +76,8 @@ void TexWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisCnt]
 	int width = abs(xr - x);
 	int height = abs(yr - y);
 
-	double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	double xfactor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+	double yfactor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 
 	drawFrame(painter, QRect(x, y, width, height));

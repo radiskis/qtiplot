@@ -1939,7 +1939,7 @@ QString FitDialog::parseFormula(const QString& s)
 	}
 
 	QStringList builtInFunctions = builtInFunctionNames();
-	for (int i=0; i<(int)builtInFunctions.count(); i++){
+	for (int i=0; i<static_cast<int>(builtInFunctions.count()); i++){
 		if (formula.contains(builtInFunctions[i])){
 			Fit *fit = d_built_in_functions[i];
 			formula.replace(builtInFunctions[i], "(" + fit->formula() + ")");

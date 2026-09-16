@@ -114,7 +114,7 @@ void FFT::fftCurve()
 	std::vector<double> result(2 * d_n);
 
 	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
-	double df = 1.0/(double)(d_n*sampling);//frequency sampling
+	double df = 1.0/static_cast<double>(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	runAsync([this, &aMax, &result, &amp, df, n2]() {
 		if(!d_inverse){
@@ -201,7 +201,7 @@ void FFT::fftTable()
 	}
 
 	double sampling = fabs(d_sampling) > 0.0 ? fabs(d_sampling) : 1.0;
-	double df = 1.0/(double)(d_n*sampling);//frequency sampling
+	double df = 1.0/static_cast<double>(d_n*sampling);//frequency sampling
 	double aMax = 0.0;//max amplitude
 	if(d_inverse)
 		gsl_fft_complex_inverse (d_y, 1, d_n, wavetable.get(), workspace.get());

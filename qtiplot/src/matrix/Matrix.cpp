@@ -218,8 +218,8 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
         t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "Coordinates\t" + QString::number(x_start,'g',17) + "\t" +QString::number(x_end,'g',17) + "\t";
 	t << QString::number(y_start,'g',17) + "\t" + QString::number(y_end,'g',17) + "\n";
-	t << "ViewType\t" + QString::number((int)d_view_type) + "\n";
-    t << "HeaderViewType\t" + QString::number((int)d_header_view_type) + "\n";
+	t << "ViewType\t" + QString::number(static_cast<int>(d_view_type)) + "\n";
+    t << "HeaderViewType\t" + QString::number(static_cast<int>(d_header_view_type)) + "\n";
 	if (!d_x_label.isEmpty())
 		t << "<xLabel>" + d_x_label + "</xLabel>\n";
 	if (!d_y_label.isEmpty())
@@ -598,11 +598,11 @@ void Matrix::resample(int rows, int cols, const ResamplingMethod& method)
 
 	std::vector<double> buffer = d_matrix_model->dataCopy();
 	if (!buffer.empty()){
-		d_undo_stack->push(new MatrixResampleCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), (int)method, std::move(buffer), explain));
+		d_undo_stack->push(new MatrixResampleCommand(d_matrix_model, QSize(r, c), QSize(rows, cols), static_cast<int>(method), std::move(buffer), explain));
 		emit modifiedWindow(this);
 		modifiedData(this);
 	} else if (ignoreUndo()){
-		d_matrix_model->resample(rows, cols, (int)method);
+		d_matrix_model->resample(rows, cols, static_cast<int>(method));
 		emit modifiedWindow(this);
 		modifiedData(this);
 	}
@@ -1044,7 +1044,7 @@ void Matrix::exportRasterImage(const QString& fileName, int quality, int dpi, in
 		dpi = logicalDpiX();
 
 	QImage image = d_matrix_model->renderImage();
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
@@ -1698,8 +1698,8 @@ QRectF Matrix::boundingRect()
 {
     int rows = numRows();
     int cols = numCols();
-    double dx = fabs(x_end - x_start)/(double)(cols - 1);
-    double dy = fabs(y_end - y_start)/(double)(rows - 1);
+    double dx = fabs(x_end - x_start)/static_cast<double>(cols - 1);
+    double dy = fabs(y_end - y_start)/static_cast<double>(rows - 1);
 
     return QRectF(qMin(x_start, x_end) - 0.5*dx, qMin(y_start, y_end) - 0.5*dy,
 						 fabs(x_end - x_start) + dx, fabs(y_end - y_start) + dy).normalized();

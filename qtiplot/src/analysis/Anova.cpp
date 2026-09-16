@@ -143,7 +143,7 @@ bool Anova::twoWayANOVA()
 
 	std::vector<double> data(n);
 
-	long J[2] = {(long)aLevels.size(), (long)bLevels.size()};
+	long J[2] = {static_cast<long>(aLevels.size()), static_cast<long>(bLevels.size())};
 
     std::vector<long> f_storage(n * 2);
     long (*f)[2] = (long (*)[2])f_storage.data();

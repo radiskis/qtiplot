@@ -506,7 +506,7 @@ void ImageProfilesTool::append(const QPointF &pos)
 					}
 					val += d_matrix->cell(j, i);
 				}
-				d_hor_table->setCell(i, 1, val/(double)n);
+				d_hor_table->setCell(i, 1, val/static_cast<double>(n));
 			}
 		} else {
 			for (int i = 0; i < cols; i++)
@@ -530,7 +530,7 @@ void ImageProfilesTool::append(const QPointF &pos)
 					}
 					val += d_matrix->cell(i, j);
 				}
-				d_ver_table->setCell(i, 1, val/(double)n);
+				d_ver_table->setCell(i, 1, val/static_cast<double>(n));
 			}
 		} else {
 			for (int i = 0; i < rows; i++)

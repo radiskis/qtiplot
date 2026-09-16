@@ -836,7 +836,7 @@ void AnalysisController::fitMultiPeakGauss()
 
 	if (!d_app) return;
 
-	fitMultiPeak((int)MultiPeakFit::Gauss);
+	fitMultiPeak(static_cast<int>(MultiPeakFit::Gauss));
 }
 
 void AnalysisController::fitMultiPeakLorentz()
@@ -844,7 +844,7 @@ void AnalysisController::fitMultiPeakLorentz()
 
 	if (!d_app) return;
 
-	fitMultiPeak((int)MultiPeakFit::Lorentz);
+	fitMultiPeak(static_cast<int>(MultiPeakFit::Lorentz));
 }
 
 void AnalysisController::fitMultiPeak(int profile)

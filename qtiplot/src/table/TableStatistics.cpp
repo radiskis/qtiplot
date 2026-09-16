@@ -238,7 +238,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 							setCell(r, k, sd);
 						break;
 						case StandardError:
-							setCell(r, k, sd/sqrt((double)m));
+							setCell(r, k, sd/sqrt(static_cast<double>(m)));
 						break;
 						case Variance:
 							setCell(r, k, gsl_stats_variance(dat.data(), 1, m));
@@ -331,7 +331,7 @@ void TableStatistics::update(Table *t, const QString& colName)
 							setCell(c, k, sd);
 						break;
 						case StandardError:
-							setCell(c, k, sd/sqrt((double)m));
+							setCell(c, k, sd/sqrt(static_cast<double>(m)));
 						break;
 						case Variance:
 							setCell(c, k, gsl_stats_variance(dat.data(), 1, m));

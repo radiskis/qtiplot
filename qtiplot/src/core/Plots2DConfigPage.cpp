@@ -1297,9 +1297,9 @@ int Plots2DConfigPage::convertToPixels(double w, FrameWidget::Unit unit, int dim
 	if (!d_app)
 		return qRound(w);
 
-	double dpi = (double)d_app->logicalDpiX();
+	double dpi = static_cast<double>(d_app->logicalDpiX());
 	if (dimension)
-		dpi = (double)d_app->logicalDpiY();
+		dpi = static_cast<double>(d_app->logicalDpiY());
 
 	switch(unit){
 		case FrameWidget::Pixel:
@@ -1321,16 +1321,16 @@ double Plots2DConfigPage::convertFromPixels(int w, FrameWidget::Unit unit, int d
 	if (!d_app)
 		return w;
 
-	double dpi = (double)d_app->logicalDpiX();
+	double dpi = static_cast<double>(d_app->logicalDpiX());
 	if (dimension)
-		dpi = (double)d_app->logicalDpiY();
+		dpi = static_cast<double>(d_app->logicalDpiY());
 
 	switch(unit){
 		case FrameWidget::Pixel:
 		default:
 			return w;
 		case FrameWidget::Inch:
-			return (double)w/dpi;
+			return static_cast<double>(w)/dpi;
 		case FrameWidget::Millimeter:
 			return 25.4*w/dpi;
 		case FrameWidget::Centimeter:
@@ -1356,7 +1356,7 @@ void Plots2DConfigPage::updateCanvasSize(int unit)
 void Plots2DConfigPage::adjustCanvasHeight(double width)
 {
 	if (keepRatioBox->isChecked() && d_app && d_app->d_layer_canvas_width > 0){
-		double ratio = (double)d_app->d_layer_canvas_height / (double)d_app->d_layer_canvas_width;
+		double ratio = static_cast<double>(d_app->d_layer_canvas_height)/ static_cast<double>(d_app->d_layer_canvas_width);
 		boxCanvasHeight->blockSignals(true);
 		boxCanvasHeight->setValue(width * ratio);
 		boxCanvasHeight->blockSignals(false);
@@ -1366,7 +1366,7 @@ void Plots2DConfigPage::adjustCanvasHeight(double width)
 void Plots2DConfigPage::adjustCanvasWidth(double height)
 {
 	if (keepRatioBox->isChecked() && d_app && d_app->d_layer_canvas_height > 0){
-		double ratio = (double)d_app->d_layer_canvas_width / (double)d_app->d_layer_canvas_height;
+		double ratio = static_cast<double>(d_app->d_layer_canvas_width)/ static_cast<double>(d_app->d_layer_canvas_height);
 		boxCanvasWidth->blockSignals(true);
 		boxCanvasWidth->setValue(height * ratio);
 		boxCanvasWidth->blockSignals(false);

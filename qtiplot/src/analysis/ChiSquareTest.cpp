@@ -107,7 +107,7 @@ QString ChiSquareTest::logInfo()
 		s += Statistics::logInfo();
 
 	QString h0, ha, compare;
-	switch((int)d_tail){
+	switch(static_cast<int>(d_tail)){
 		case Both:
 			h0 = " = ";
 			ha = " <> ";

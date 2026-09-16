@@ -117,8 +117,8 @@ void PieCurve::drawDisk(QPainter *painter, const QwtScaleMap &xMap, const QwtSca
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
 
 	// calculate resolution factors
-	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	double x_factor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+	double y_factor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 	const double width = canvas->width()*x_factor;
 	const double height = canvas->height()*y_factor;
@@ -204,8 +204,8 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 	QPoint center = QPoint(canvas->x() + canvas->width()/2, canvas->y() + canvas->height()/2);
 
 	// calculate resolution factors
-	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	double x_factor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+	double y_factor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 	const double width = canvas->width()*x_factor;
 	const double height = canvas->height()*y_factor;
@@ -250,9 +250,9 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 		aux_angle = end;
 	}
 
-	int angle = (int)(5760 * d_start_azimuth/360.0);
+	int angle = static_cast<int>(5760 * d_start_azimuth/360.0);
 	if (d_counter_clockwise)
-		angle = (int)(5760 * (1 - d_start_azimuth/360.0));
+		angle = static_cast<int>(5760 * (1 - d_start_azimuth/360.0));
 
 	painter->save();
 
@@ -261,7 +261,7 @@ void PieCurve::drawSlices(QPainter *painter, const QwtScaleMap &xMap, const QwtS
 	for (int i = from; i <= to; i++){
 		const double yi = y(i);
 		const double q = yi/sum;
-		const int value = (int)(q*5760);
+		const int value = static_cast<int>(q*5760);
 
 		painter->setPen(pen());
 		painter->setBrush(QBrush(color(i), QwtPlotCurve::brush().style()));

@@ -122,7 +122,7 @@ void ColorMapEditor::setColorMap(const LinearColorMap& map)
 		colors = color_map.colorStops();
 	}
 
-	int rows = (int)colors.size();
+	int rows = static_cast<int>(colors.size());
 	table->setRowCount(rows);
 	table->blockSignals(true);
 

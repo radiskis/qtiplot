@@ -117,7 +117,7 @@ bool NonLinearFit::setFormula(const QString& s, bool guess)
 		MyParser parser;
 		double xvar;
 		parser.DefineVar("x", &xvar);
-		for (int k = 0; k < (int)d_p; k++){
+		for (int k = 0; k < static_cast<int>(d_p); k++){
 			param[k] = gsl_vector_get(d_param_init, k);
 			parser.DefineVar(d_param_names[k].toStdWString(), &param[k]);
 		}
@@ -158,7 +158,7 @@ bool NonLinearFit::setParametersList(const QStringList& lst)
 
 	if (d_p > 0)
 		freeWorkspace();
-	d_p = (int)lst.count();
+	d_p = static_cast<int>(lst.count());
 	initWorkspace(d_p);
 
 	d_param_explain.clear();
@@ -292,7 +292,7 @@ QStringList NonLinearFit::guessParameters(const QString& s, bool *error, std::st
 		reader.SetFormula (formula);
 		reader.IgnoreUndefVar(true);
 		int pos = 0;
-		int length = (int)formula.length();
+		int length = static_cast<int>(formula.length());
 		while(pos < length){
 			ParserToken<value_type, string_type> token = reader.ReadNextToken();
 			QString str = QString::fromStdWString(token.GetAsString());

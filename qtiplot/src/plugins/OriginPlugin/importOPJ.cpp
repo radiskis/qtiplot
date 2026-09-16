@@ -688,11 +688,11 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
 		Origin::Rect graphWindowRect = _graph.frameRect.isValid() ? _graph.frameRect : (_graph.state == Origin::Window::Maximized ? maximazedFrame : standardFrame);
-		double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
+		double ratio = static_cast<double>(graphWindowRect.width() - frameWidth)/static_cast<double>(graphWindowRect.height() - frameHeight);
 
 		int width = _graph.width;
 		int height = _graph.height;
-		if((double)(_graph.width)/(double)(_graph.height) < ratio)
+		if(static_cast<double>(_graph.width)/static_cast<double>(_graph.height) < ratio)
 			width = height * ratio;
 		else
 			height = width / ratio;
@@ -702,8 +702,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 		ml->resize(graphWindowRect.width(), graphWindowRect.height() + 3*yOffset);
 
-		double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
-		double fWindowFactor =  qMin((double)graphWindowRect.width()/500.0, (double)graphWindowRect.height()/350.0);
+		double fScale = static_cast<double>(graphWindowRect.width() - frameWidth)/static_cast<double>(width);
+		double fWindowFactor =  qMin(static_cast<double>(graphWindowRect.width())/500.0, static_cast<double>(graphWindowRect.height())/350.0);
 		double fFontScaleFactor = 0.4;
 		double fVectorArrowScaleFactor = 0.08*fWindowFactor;
 
@@ -1340,7 +1340,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 
 				QwtScaleWidget *scale = graph->axisWidget(i);
 				if (scale)
-					scale->scaleDraw()->setPenWidthF((int)formats[i].thickness);
+					scale->scaleDraw()->setPenWidthF(static_cast<int>(formats[i].thickness));
 
 				QFont fnt = graph->axisTitleFont(i);
 				int fontSize = formats[i].label.fontSize;
@@ -1790,17 +1790,17 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		Origin::Rect graphRect(_graph.width, _graph.height);
 		Origin::Rect graphWindowRect = _graph.frameRect;{
-			double ratio = (double)(graphWindowRect.width() - frameWidth)/(double)(graphWindowRect.height() - frameHeight);
+			double ratio = static_cast<double>(graphWindowRect.width() - frameWidth)/static_cast<double>(graphWindowRect.height() - frameHeight);
 			int width = _graph.width;
 			int height = _graph.height;
-			if((double)(_graph.width)/(double)(_graph.height) < ratio)
+			if(static_cast<double>(_graph.width)/static_cast<double>(_graph.height) < ratio)
 				width = height * ratio;
 			else
 				height = width / ratio;
 
 			//plot->resize(graphWindowRect.width(), graphWindowRect.height());
 
-			double fScale = (double)(graphWindowRect.width() - frameWidth)/(double)width;
+			double fScale = static_cast<double>(graphWindowRect.width() - frameWidth)/static_cast<double>(width);
 			fFontScaleFactor *= 170.0*fScale/72.0*1.3; //Ion: empirically decreased if from 300*...
 		}
 

@@ -591,12 +591,12 @@ void ProjectManager::updateRecentProjectsList(const QString& fn)
 	if (d_app->recentProjects.isEmpty())
 		return;
 
-	while ((int)d_app->recentProjects.size() > ApplicationWindow::MaxRecentProjects)
+	while (static_cast<int>(d_app->recentProjects.size())> ApplicationWindow::MaxRecentProjects)
 		d_app->recentProjects.pop_back();
 
 	if (d_app->recent) {
 		d_app->recent->clear();
-		for (int i = 0; i<(int)d_app->recentProjects.size(); i++ )
+		for (int i = 0; i<static_cast<int>(d_app->recentProjects.size()); i++ )
 			d_app->recent->addAction("&" + QString::number(i+1) + " " + QDir::toNativeSeparators(d_app->recentProjects[i]));
 	}
 }

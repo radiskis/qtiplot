@@ -359,13 +359,13 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		else if (s.contains ("EnabledAxes")){
 			QStringList fList=s.split("\t");
 			fList.pop_front();
-			for (int i=0; i<(int)fList.count(); i++)
+			for (int i=0; i<static_cast<int>(fList.count()); i++)
 				ag->enableAxis(i, fList[i].toInt());
 		}
 		else if (s.contains ("AxesBaseline")){
 			QStringList fList = s.split("\t", Qt::SkipEmptyParts);
 			fList.pop_front();
-			for (int i=0; i<(int)fList.count(); i++)
+			for (int i=0; i<static_cast<int>(fList.count()); i++)
 				ag->setAxisMargin(i, fList[i].toInt());
 		}
 		else if (s.contains ("EnabledTicks"))
@@ -761,7 +761,7 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		}else if (s.contains ("AxesTitleAlignment")){
 			QStringList align=s.split("\t", Qt::SkipEmptyParts);
 			align.pop_front();
-			for (int i=0; i<(int)align.count(); i++)
+			for (int i=0; i<static_cast<int>(align.count()); i++)
 				ag->setAxisTitleAlignment(i, align[i].toInt());
 		} else if (s.contains ("AxesTitleDistance")){
 			QStringList align = s.split("\t", Qt::SkipEmptyParts);
@@ -801,14 +801,14 @@ Graph* ProjectSerializer::openGraph(ApplicationWindow* app, MultiLayer *plot, co
 		{
 			QStringList fList=s.split("\t");
 			fList.removeFirst();
-			for (int i=0; i<(int)fList.count(); i++)
+			for (int i=0; i<static_cast<int>(fList.count()); i++)
 				ag->setAxisFormula(i, fList[i]);
 		}
 		else if (s.startsWith("<AxisFormula "))
 		{
 			int axis = s.mid(18,s.length()-20).toInt();
 			QString formula;
-			for (j++; j<(int)list.count() && list[j] != "</AxisFormula>"; j++)
+			for (j++; j<static_cast<int>(list.count()) && list[j] != "</AxisFormula>"; j++)
 				formula += list[j] + "\n";
 			formula.truncate(formula.length()-1);
 			ag->setAxisFormula(axis, formula);
@@ -1836,8 +1836,10 @@ bool ProjectSerializer::saveFolder(Folder *folder, const QString& fn, bool compr
 		return false;
 	}
 
-	if (compress)
-		file_compress(tempFn.toUtf8().data(), (char*)"wb9");
+	if (compress) {
+		static const char compressMode[] = "wb9";
+		file_compress(tempFn.toUtf8().data(), const_cast<char*>(compressMode));
+	}
 
 	// Backup existing target file if requested
 	if (app->d_backup_files && QFile::exists(fn)) {

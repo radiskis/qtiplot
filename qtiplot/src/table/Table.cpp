@@ -173,7 +173,7 @@ void Table::pushUndoCommand(QUndoCommand *cmd)
 		return;
 
 	if (applicationWindow()) {
-		size_t budget = (size_t)applicationWindow()->undoMemoryBudgetMB() * 1024 * 1024;
+		size_t budget = static_cast<size_t>(applicationWindow()->undoMemoryBudgetMB())* 1024 * 1024;
 		if (budget > 0 && d_undo_stack->count() > 0 && undoMemoryUsage() > budget) {
 			d_undo_stack->clear();
 		}
@@ -505,7 +505,7 @@ int Table::colX(int col)
 		if (col_plot_type[i] == X)
 			return i;
 	}
-	for(i = col + 1; i < (int)d_table->numCols(); i++){
+	for(i = col + 1; i < static_cast<int>(d_table->numCols()); i++){
 		if (col_plot_type[i] == X)
 			return i;
 	}
@@ -652,18 +652,18 @@ QStringList Table::columnWidths()
 
 void Table::setColWidths(const QStringList& widths)
 {
-	for (int i=0; i<(int)widths.count(); i++)
+	for (int i=0; i<static_cast<int>(widths.count()); i++)
 		d_table->setColumnWidth(i, widths[i].toInt());
 }
 
 void Table::setColumnTypes(const QStringList& ctl)
 {
-	int n = qMin((int)ctl.count(), numCols());
+	int n = qMin(static_cast<int>(ctl.count()), numCols());
 	for (int i=0; i<n; i++){
 		QStringList l = ctl[i].split(";");
 		colTypes[i] = l[0].toInt();
 
-		if ((int)l.count() == 2 && !l[1].isEmpty())
+		if (static_cast<int>(l.count()) == 2 && !l[1].isEmpty())
 			col_format[i] = l[1];
 		else
 			col_format[i] = "0/6";
@@ -672,14 +672,14 @@ void Table::setColumnTypes(const QStringList& ctl)
 
 void Table::setColumnTypes(const QList<int>& ctl)
 {
-	int n = qMin((int)ctl.count(), numCols());
+	int n = qMin(static_cast<int>(ctl.count()), numCols());
 	for (int i=0; i<n; i++)
 		colTypes[i] = ctl[i];
 }
 
 void Table::clearCommands()
 {
-	int count = (int)commands.size();
+	int count = static_cast<int>(commands.size());
 	for (int i = 0; i < count; i++)
 		commands[i] = QString();
 }
@@ -687,13 +687,13 @@ void Table::clearCommands()
 void Table::setCommands(const QStringList& com)
 {
 	commands.clear();
-	for(int i=0; i<(int)com.size() && i<numCols(); i++)
+	for(int i=0; i<static_cast<int>(com.size()) && i<numCols(); i++)
 		commands << com[i].trimmed();
 }
 
 void Table::setCommand(int col, const QString& com)
 {
-	if(col<(int)commands.size())
+	if(col<static_cast<int>(commands.size()))
 		commands[col] = com.trimmed();
 }
 
@@ -747,7 +747,7 @@ bool Table::muParserCalculate(int col, int startRow, int endRow, bool notifyChan
 
 	std::unique_ptr<muParserScript> mup(new muParserScript(scriptEnv, cmd, this,  QString("<%1>").arg(colName(col))));
     double *r = mup->defineVariable("i",startRow + 1.0);
-    mup->defineVariable("j", (double)col);
+    mup->defineVariable("j", static_cast<double>(col));
     mup->defineVariable("sr", startRow + 1.0);
     mup->defineVariable("er", endRow + 1.0);
 
@@ -1394,7 +1394,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
     QString caption = objectName();
 	int cols = col + 1;
 	if (enumerateRight)
-        cols = (int)d_table->numCols();
+        cols = static_cast<int>(d_table->numCols());
 
     int n = 1;
 	for (int i = col; i<cols; i++){
@@ -2207,8 +2207,8 @@ void Table::deleteColumns(const QStringList& list, bool pushUndo)
 			names << col_label[id];
 			comments << this->comments[id];
 			formats << col_format[id];
-			types << (int)colTypes[id];
-			plotTypes << (int)col_plot_type[id];
+			types << static_cast<int>(colTypes[id]);
+			plotTypes << static_cast<int>(col_plot_type[id]);
 			widths << QString::number(d_table->columnWidth(id));
 			columnCommands << commands[id];
 
@@ -2850,7 +2850,7 @@ void Table::setColumnsFormat(const QStringList& lst)
 
 QDateTime Table::dateTime(double val)
 {
-	QDateTime d = QDate::fromJulianDay((int)val + 1).startOfDay();
+	QDateTime d = QDate::fromJulianDay(static_cast<int>(val) + 1).startOfDay();
 	double msecs = (val - floor(val))*864e5;
 	d.setTime(d.time().addMSecs(qRound(msecs)));
 
@@ -2859,12 +2859,12 @@ QDateTime Table::dateTime(double val)
 
 double Table::fromDateTime(const QDateTime& dt)
 {
-	return dt.date().toJulianDay() - 1 + (double)QTime(0, 0).msecsTo(dt.time())/864.0e5;
+	return dt.date().toJulianDay() - 1 + static_cast<double>(QTime(0, 0).msecsTo(dt.time()))/864.0e5;
 }
 
 double Table::fromTime(const QTime& t)
 {
-	return (double)QTime(0, 0).msecsTo(t)/864.0e5;
+	return static_cast<double>(QTime(0, 0).msecsTo(t))/864.0e5;
 }
 
 bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool pushUndo)
@@ -4757,7 +4757,7 @@ double Table::avg(int col, int startRow, int endRow)
 	}
 
 	if (count)
-		return sum/(double)count;
+		return sum/static_cast<double>(count);
 
 	return 0.0;
 }

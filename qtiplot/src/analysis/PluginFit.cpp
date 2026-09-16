@@ -113,7 +113,7 @@ bool PluginFit::load(const QString& pluginName)
 	fitFunc fitFunction = (fitFunc) d_library.resolve("parameters");
 	if (fitFunction){
 		d_param_names = QString(fitFunction()).split(",", Qt::SkipEmptyParts);
-		d_p = (int)d_param_names.count();
+		d_p = static_cast<int>(d_param_names.count());
         initWorkspace(d_p);
 	} else
 		return false;

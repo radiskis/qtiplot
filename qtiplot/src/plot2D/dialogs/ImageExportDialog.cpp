@@ -202,13 +202,13 @@ void ImageExportDialog::initAdvancedOptions()
 	}
 
 	if (d_layer)
-		aspect_ratio = (double)d_layer->width()/(double)d_layer->height();
+		aspect_ratio = static_cast<double>(d_layer->width())/static_cast<double>(d_layer->height());
 	else if (d_window){
 		MultiLayer *ml = qobject_cast<MultiLayer *> (d_window);
 		if (ml)
-			aspect_ratio = (double)ml->canvas()->width()/(double)ml->canvas()->height();
+			aspect_ratio = static_cast<double>(ml->canvas()->width())/static_cast<double>(ml->canvas()->height());
 		else
-			aspect_ratio = (double)d_window->widget()->width()/(double)d_window->widget()->height();
+			aspect_ratio = static_cast<double>(d_window->widget()->width())/static_cast<double>(d_window->widget()->height());
 	}
 
 	size_layout->addWidget(new QLabel( tr("Width")), 1, 0);

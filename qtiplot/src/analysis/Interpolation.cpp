@@ -174,7 +174,7 @@ void Interpolation::calculateOutputData(double *x, double *y)
 	}
 	gsl_spline_init(interp.get(), d_x, d_y, d_n);
 
-    double step = (d_to - d_from)/(double)(d_points - 1);
+    double step = (d_to - d_from)/static_cast<double>(d_points - 1);
     for (int j = 0; j < d_points; j++){
 	   x[j] = d_from + j*step;
 	   y[j] = gsl_spline_eval(interp.get(), x[j], acc.get());

@@ -266,7 +266,7 @@ void FFTDialog::setTable(Table *t)
 	}
 
 	l = t->selectedColumns();
-	int selected = (int)l.size();
+	int selected = static_cast<int>(l.size());
 	if (!selected){
 		boxReal->setCurrentText(QString());
 		boxImaginary->setCurrentText(QString());

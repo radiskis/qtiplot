@@ -66,7 +66,7 @@ QColor LinearColorMap::color(int index) const
 	QVector<double> stops = colorStops();
 	if (index <= 0)
 		return color1();
-	if (index >= (int)stops.size() - 1)
+	if (index >= static_cast<int>(stops.size()) - 1)
 		return color2();
 
 	return QwtColorMap::color(QwtInterval(0, 1), stops[index]);
@@ -81,7 +81,7 @@ QString LinearColorMap::toXmlString()
 	if (d_range.isValid())
 		s += "\t<Range>" + QString::number(d_range.minValue(), 'g', 15) + "\t" + QString::number(d_range.maxValue(), 'g', 15) + "</Range>\n";
 	QVector <double> colors = colorStops();
-	int stops = (int)colors.size();
+	int stops = static_cast<int>(colors.size());
 	s += "\t<ColorStops>" + QString::number(stops - 2) + "</ColorStops>\n";
 	for (int i = 1; i < stops - 1; i++){
 		s += "\t<Stop>" + QString::number(colors[i], 'g', 15) + "\t";

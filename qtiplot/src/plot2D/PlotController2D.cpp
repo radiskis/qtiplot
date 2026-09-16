@@ -358,7 +358,7 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
 		return nullptr;
 
 	QStringList list = t->drawableColumnSelection();
-	if((int)list.count() < 1) {
+	if(static_cast<int>(list.count()) < 1) {
 		QMessageBox::warning(d_app, tr("QtiPlot - Plot error"), tr("Please select a Y column to plot!"));
 		return nullptr;
 	}

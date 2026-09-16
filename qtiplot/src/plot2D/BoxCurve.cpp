@@ -124,7 +124,7 @@ void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
 	if(w_range == SD || w_range == SE || b_range == SD || b_range == SE)
 	{
 		sd = gsl_stats_sd(dat, 1, size);
-		se = sd/sqrt((double)size);
+		se = sd/sqrt(static_cast<double>(size));
 		mean = gsl_stats_mean(dat, 1, size);
 	}
 
@@ -181,8 +181,8 @@ void BoxCurve::drawBox(QPainter *painter, const QwtScaleMap &xMap,
 	}
 	else if (b_style == Notch)
 	{
-		int j = (int)ceil(0.5*(size - 1.96*sqrt((double)size)));
-		int k = (int)ceil(0.5*(size + 1.96*sqrt((double)size)));
+		int j = static_cast<int>(ceil(0.5*(size - 1.96*sqrt(static_cast<double>(size)))));
+		int k = static_cast<int>(ceil(0.5*(size + 1.96*sqrt(static_cast<double>(size)))));
 		const int lowerCI = yMap.transform(dat[j]);
 		const int upperCI = yMap.transform(dat[k]);
 
@@ -561,7 +561,7 @@ std::vector<double> BoxCurve::statisticValues()
 	if(w_range == SD || w_range == SE || b_range == SD || b_range == SE)
 	{
 		sd = gsl_stats_sd(dat.data(), 1, size);
-		se = sd/sqrt((double)size);
+		se = sd/sqrt(static_cast<double>(size));
 		mean = gsl_stats_mean(dat.data(), 1, size);
 	}
 
@@ -604,7 +604,7 @@ void BoxCurve::loadLabels()
 	if (v.empty())
 		return;
 
-	for (int i = 0; i < 5 && i < (int)v.size(); i++)
+	for (int i = 0; i < 5 && i < static_cast<int>(v.size()); i++)
 		createLabel(v[i]);
 
 	d_show_labels = true;
@@ -703,7 +703,7 @@ void BoxCurve::updateLabels(bool updateText)
 
 	for (PlotMarker *m : d_labels_list){
 		int index = m->index();
-		if (index < 0 || index >= (int)v.size())
+		if (index < 0 || index >= static_cast<int>(v.size()))
 			continue;
 		double val = v[index];
 		if (updateText){

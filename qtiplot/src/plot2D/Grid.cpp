@@ -66,8 +66,8 @@ void Grid::draw(QPainter *painter,
 		const QRect &r) const
 {
 
-	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	double x_factor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+	double y_factor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 
 	//  draw minor X gridlines
 	QPen pen = minorPen();

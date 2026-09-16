@@ -605,7 +605,7 @@ void EnrichmentDialog::setWidget(QWidget *w)
 		boxFrameWidth->blockSignals(false);
 
 		unitBox->setCurrentIndex(d_app->d_frame_geometry_unit);
-		attachToBox->setCurrentIndex((int)fw->attachPolicy());
+		attachToBox->setCurrentIndex(static_cast<int>(fw->attachPolicy()));
 		displayCoordinates(d_app->d_frame_geometry_unit);
     } else {
 		unitBox->setCurrentIndex(FrameWidget::Pixel);

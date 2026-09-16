@@ -96,7 +96,7 @@ QwtScaleDiv LogitScaleEngine::divideScale(double x1, double x2,
     QwtScaleDiv scaleDiv;
     if ( stepSize != 0.0 ){
         QList<double> ticks[QwtScaleDiv::NTickTypes];
-		buildTicks(interval, (int)stepSize, ticks);
+		buildTicks(interval, static_cast<int>(stepSize), ticks);
         scaleDiv = QwtScaleDiv(interval, ticks);
     }
 

@@ -93,7 +93,7 @@ bool TableSeriesData::load(Table *t, int ycol, Table *xt, int xcol,
             QPointF p;
             if (xColType == Table::Text) {
                 if (xLabels) *xLabels << xval;
-                p.setX((double)(size + 1));
+                p.setX(static_cast<double>(size + 1));
             } else if (xColType == Table::Time) {
                 p.setX(Table::fromTime(QTime::fromString(xval.trimmed(), date_time_fmt)));
             } else if (xColType == Table::Date) {
@@ -104,7 +104,7 @@ bool TableSeriesData::load(Table *t, int ycol, Table *xt, int xcol,
 
             if (yColType == Table::Text) {
                 if (yLabels) *yLabels << yval;
-                p.setY((double)(size + 1));
+                p.setY(static_cast<double>(size + 1));
             } else {
                 p.setY(locale.toDouble(yval, &valid_data));
             }

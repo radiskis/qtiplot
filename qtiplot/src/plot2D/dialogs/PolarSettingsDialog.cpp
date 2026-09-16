@@ -88,11 +88,11 @@ QWidget* PolarSettingsDialog::initFormatTab()
     lineLayout->addWidget(lineWidth, 1, 1);
     
     lineStyle = new QComboBox();
-    lineStyle->addItem("Solid", (int)Qt::SolidLine);
-    lineStyle->addItem("Dash", (int)Qt::DashLine);
-    lineStyle->addItem("Dot", (int)Qt::DotLine);
-    lineStyle->addItem("DashDot", (int)Qt::DashDotLine);
-    lineStyle->addItem("DashDotDot", (int)Qt::DashDotDotLine);
+    lineStyle->addItem("Solid", static_cast<int>(Qt::SolidLine));
+    lineStyle->addItem("Dash", static_cast<int>(Qt::DashLine));
+    lineStyle->addItem("Dot", static_cast<int>(Qt::DotLine));
+    lineStyle->addItem("DashDot", static_cast<int>(Qt::DashDotLine));
+    lineStyle->addItem("DashDotDot", static_cast<int>(Qt::DashDotDotLine));
     lineLayout->addWidget(new QLabel(tr("Style:")), 2, 0);
     lineLayout->addWidget(lineStyle, 2, 1);
     
@@ -250,12 +250,12 @@ void PolarSettingsDialog::setActiveCurve(int index)
     lineColor->setColor(c->pen().color());
     lineWidth->setValue(c->pen().width());
     
-    int styleIdx = lineStyle->findData((int)c->pen().style());
+    int styleIdx = lineStyle->findData(static_cast<int>(c->pen().style()));
     if (styleIdx != -1) lineStyle->setCurrentIndex(styleIdx);
     
     const QwtSymbol *s = c->symbol();
     if (s) {
-        int symIdx = symbolStyle->findData((int)s->style());
+        int symIdx = symbolStyle->findData(static_cast<int>(s->style()));
         if (symIdx != -1) symbolStyle->setCurrentIndex(symIdx);
         else symbolStyle->setCurrentIndex(symbolStyle->findData(QwtSymbol::NoSymbol));
 

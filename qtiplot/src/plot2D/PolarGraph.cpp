@@ -143,7 +143,7 @@ void PolarGraph::exportImage(const QString& fileName, int quality, bool transpar
     renderer.render(d_plot, &painter, QRectF(QPointF(0, 0), size));
     painter.end();
 
-    int dpm = (int)ceil(100.0/2.54*dpi);
+    int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
     image.setDotsPerMeterX(dpm);
     image.setDotsPerMeterY(dpm);
 
@@ -285,11 +285,11 @@ void PolarGraph::save(const QString &fn, const QString &geometry, bool)
         t << "\t<ThetaCol>" + info.thetaColName + "</ThetaCol>\n";
         t << "\t<LineColor>" + c->pen().color().name() + "</LineColor>\n";
         t << "\t<LineWidth>" + QString::number(c->pen().width()) + "</LineWidth>\n";
-        t << "\t<LineStyle>" + QString::number((int)c->pen().style()) + "</LineStyle>\n";
+        t << "\t<LineStyle>" + QString::number(static_cast<int>(c->pen().style())) + "</LineStyle>\n";
         
         const QwtSymbol *s = c->symbol();
         if (s){
-             t << "\t<SymbolStyle>" + QString::number((int)s->style()) + "</SymbolStyle>\n";
+             t << "\t<SymbolStyle>" + QString::number(static_cast<int>(s->style())) + "</SymbolStyle>\n";
              t << "\t<SymbolSize>" + QString::number(s->size().width()) + "</SymbolSize>\n";
              t << "\t<SymbolColor>" + s->brush().color().name() + "</SymbolColor>\n";
              t << "\t<SymbolPenColor>" + s->pen().color().name() + "</SymbolPenColor>\n";

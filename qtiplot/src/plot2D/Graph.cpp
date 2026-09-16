@@ -541,13 +541,13 @@ QString Graph::saveAxesLabelsType()
 	QString s = "AxisType\t";
 	for (int i = 0; i < 4; i++){
 		if (!axisEnabled(i)){
-			s += QString::number((int)ScaleDraw::Numeric) + "\t";
+			s += QString::number(static_cast<int>(ScaleDraw::Numeric)) + "\t";
 			continue;
 		}
 
 		ScaleDraw *sd = axisScaleDraw(i);
 		if (!sd){
-			s += QString::number((int)ScaleDraw::Numeric) + "\t";
+			s += QString::number(static_cast<int>(ScaleDraw::Numeric)) + "\t";
 			continue;
 		}
 
@@ -679,7 +679,7 @@ void Graph::setMajorTicksType(const QList<int>& lst)
 	if (getMajorTicksType() == lst)
 		return;
 
-	for (int i=0;i<(int)lst.count();i++)
+	for (int i=0;i<static_cast<int>(lst.count());i++)
 	{
 		ScaleDraw *sd = axisScaleDraw(i);
 		if (!sd)
@@ -699,7 +699,7 @@ void Graph::setMajorTicksType(const QList<int>& lst)
 
 void Graph::setMajorTicksType(const QStringList& lst)
 {
-	for (int i=0; i<(int)lst.count(); i++)
+	for (int i=0; i<static_cast<int>(lst.count()); i++)
 		setMajorTicksType(i, lst[i].toInt());
 }
 
@@ -708,13 +708,13 @@ void Graph::setMinorTicksType(const QList<int>& lst)
 	if (getMinorTicksType() == lst)
 		return;
 
-	for (int i=0;i<(int)lst.count();i++)
+	for (int i=0;i<static_cast<int>(lst.count());i++)
 		setMinorTicksType(i, lst[i]);
 }
 
 void Graph::setMinorTicksType(const QStringList& lst)
 {
-	for (int i=0;i<(int)lst.count();i++)
+	for (int i=0;i<static_cast<int>(lst.count());i++)
 		setMinorTicksType(i,lst[i].toInt());
 }
 
@@ -992,7 +992,7 @@ void Graph::setAxisLabelRotation(int axis, int rotation)
 int Graph::labelsRotation(int axis)
 {
 	ScaleDraw *sclDraw = axisScaleDraw(axis);
-	return sclDraw ? (int)sclDraw->labelRotation() : 0;
+	return sclDraw ? static_cast<int>(sclDraw->labelRotation()): 0;
 }
 
 void Graph::setAxisTitleFont(int axis,const QFont &fnt)
@@ -1640,13 +1640,13 @@ QPixmap Graph::graphPixmap(const QSize& size, double scaleFontsFactor, bool tran
 	}
 
 	if (br.width() != width() || br.height() != height()){
-		double wfactor = (double)br.width()/(double)width();
-		double hfactor = (double)br.height()/(double)height();
+		double wfactor = static_cast<double>(br.width())/static_cast<double>(width());
+		double hfactor = static_cast<double>(br.height())/static_cast<double>(height());
 		r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
 	} else
 		r.setSize(size);
 
-	double scaleFactor = (double)size.height()/(double)height();
+	double scaleFactor = static_cast<double>(size.height())/static_cast<double>(height());
 	if (scaleFontsFactor == 0)
 		scaleFontsFactor = scaleFactor;
 
@@ -1710,7 +1710,7 @@ void Graph::exportImage(const QString& fileName, int quality, bool transparent, 
 
 	QPixmap pic = graphPixmap(size, fontsFactor, transparent);
 	QImage image = pic.toImage();
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 
@@ -1757,21 +1757,21 @@ void Graph::exportVector(QPrinter *printer, int res, bool color,
 		QSize size = customPrintSize(customSize, unit, res);
 
 		if (fontsFactor == 0.0)
-			fontsFactor = customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+			fontsFactor = customPrintSize(customSize, unit, logicalDpiX()).height()/static_cast<double>(height());
 
 		if (res && res != printer->resolution())
 			printer->setResolution(res);
 		printer->setPageSize(QPageSize(QSizeF(size) / printer->resolution(), QPageSize::Inch));
 
 		if (br.width() != width() || br.height() != height()){
-			double wfactor = (double)br.width()/(double)width();
-			double hfactor = (double)br.height()/(double)height();
+			double wfactor = static_cast<double>(br.width())/static_cast<double>(width());
+			double hfactor = static_cast<double>(br.height())/static_cast<double>(height());
 			r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
 		} else
 			r.setSize(size);
 	} else if (res && res != printer->resolution()){
-		double wfactor = (double)res/(double)logicalDpiX();
-		double hfactor = (double)res/(double)logicalDpiY();
+		double wfactor = static_cast<double>(res)/static_cast<double>(logicalDpiX());
+		double hfactor = static_cast<double>(res)/static_cast<double>(logicalDpiY());
 		printer->setResolution(res);
 
 		// LegendWidget size doesn't increase linearly with resolution.
@@ -1839,7 +1839,7 @@ void Graph::print()
 		QRect paperRect = printer.pageLayout().fullRectPixels(printer.resolution());
 		double fontFactor = 1.0;
 		if (multiLayer()->scaleLayersOnPrint()){
-			int margin = (int)((1/2.54)*printer.logicalDpiY()); // 1 cm margins
+			int margin = static_cast<int>((1/2.54)*printer.logicalDpiY()); // 1 cm margins
 
 			int width = qRound(aspect*printer.height()) - 2*margin;
 			int x = qRound(abs(printer.width()- width)*0.5);
@@ -1850,11 +1850,11 @@ void Graph::print()
 				plotRect.setWidth(printer.width() - 2*margin);
 			}
 
-			fontFactor = (double)plotRect.height()/(double)this->height();
+			fontFactor = static_cast<double>(plotRect.height())/static_cast<double>(this->height());
 		} else {
 			int x_margin = (paperRect.width() - plotRect.width())/2;
 			if (x_margin <= 0)
-				x_margin = (int)((0.5/2.54)*printer.logicalDpiY()); // 0.5 cm margins
+				x_margin = static_cast<int>((0.5/2.54)*printer.logicalDpiY()); // 0.5 cm margins
 			int y_margin = (paperRect.height() - plotRect.height())/2;
 			if (y_margin <= 0)
 				y_margin = x_margin;
@@ -1902,14 +1902,14 @@ void Graph::draw(QPaintDevice *device, const QSize& size, double fontsFactor)
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
 	if (fontsFactor == 0.0)
-		fontsFactor = size.height()/(double)height();
+		fontsFactor = size.height()/static_cast<double>(height());
 
 	QRect r = rect();
 	QRect br = boundingRect();
 	if (size != br.size()){
 		if (br.width() != width() || br.height() != height()){
-			double wfactor = (double)br.width()/(double)width();
-			double hfactor = (double)br.height()/(double)height();
+			double wfactor = static_cast<double>(br.width())/static_cast<double>(width());
+			double hfactor = static_cast<double>(br.height())/static_cast<double>(height());
 			r.setSize(QSize(qRound(size.width()/wfactor), qRound(size.height()/hfactor)));
 		} else
 			r.setSize(size);
@@ -2469,7 +2469,7 @@ QString Graph::saveScale()
 
 		const ScaleEngine *sc_eng = dynamic_cast<const ScaleEngine *>(axisScaleEngine(i));
 		if (sc_eng){
-			s += QString::number((int)sc_eng->type()) + "\t";
+			s += QString::number(static_cast<int>(sc_eng->type())) + "\t";
 			s += QString::number(sc_eng->testAttribute(QwtScaleEngine::Inverted));
 
 			if (sc_eng->hasBreak()){
@@ -2903,7 +2903,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 			l->setBackgroundColor(QColor(Qt::black));
 		}
 
-		int n =(int)fList.count();
+		int n =static_cast<int>(fList.count());
 		text += fList[12];
 		for (int i=1; i<n-12; i++)
 			text += "\n" + fList[12+i];
@@ -2912,7 +2912,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		l->setFrameStyle(fList[10].toInt());
 		l->setBackgroundColor(QColor(fList[12]));
 
-		int n=(int)fList.count();
+		int n=static_cast<int>(fList.count());
 		text += fList[13];
 		for (int i=1; i<n-13; i++)
 			text += "\n" + fList[13+i];
@@ -2923,7 +2923,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
 		c.setAlpha(fList[13].toInt());
 		l->setBackgroundColor(c);
 
-		int n = (int)fList.count();
+		int n = static_cast<int>(fList.count());
 		if (n > 14)
 			text += fList[14];
 
@@ -3286,7 +3286,7 @@ CurveLayout Graph::initCurveLayout(int style, int curves, bool guessLayout)
 		cl.sType = 0;
 		QwtBarCurve *b = dynamic_cast<QwtBarCurve*>(curve(i));
 		if (b && (b->type() == VerticalBars || b->type() == HorizontalBars)){
-			b->setGap(qRound(100*(1-1.0/(double)curves)));
+			b->setGap(qRound(100*(1-1.0/static_cast<double>(curves))));
 			b->setOffset(-50*(curves-1) + i*100);
 		}
 	} else if (style == StackBar || style == StackColumn){
@@ -3552,7 +3552,7 @@ bool Graph::addCurves(Table* w, const QStringList& names, int style, double lWid
 
 				ErrorBarsCurve *er = nullptr;
 				if (w->colPlotDesignation(j) == Table::xErr)
-					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i], (int)ErrorBarsCurve::Horizontal);
+					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i], static_cast<int>(ErrorBarsCurve::Horizontal));
 				else
 					er = addErrorBars(w->colName(xcol), w->colName(ycol), w, lst[i]);
 
@@ -4506,10 +4506,10 @@ QString Graph::saveToString(bool saveAsTemplate)
 	MultiLayer *ml = multiLayer();
 	if (ml){
 		s += "<PageGeometry>";
-		s += QString::number((double)pos().x()/(double)ml->canvas()->width()) + "\t";
-		s += QString::number((double)pos().y()/(double)ml->canvas()->height()) + "\t";
-		s += QString::number((double)geometry().width()/(double)ml->canvas()->width()) + "\t";
-		s += QString::number((double)geometry().height()/(double)ml->canvas()->height());
+		s += QString::number(static_cast<double>(pos().x())/static_cast<double>(ml->canvas()->width())) + "\t";
+		s += QString::number(static_cast<double>(pos().y())/static_cast<double>(ml->canvas()->height())) + "\t";
+		s += QString::number(static_cast<double>(geometry().width())/static_cast<double>(ml->canvas()->width())) + "\t";
+		s += QString::number(static_cast<double>(geometry().height())/static_cast<double>(ml->canvas()->height()));
 		s += "</PageGeometry>\n";
 	}
 
@@ -4800,7 +4800,7 @@ void Graph::showPlotErrorMessage(QWidget *parent, const QStringList& emptyColumn
 {
 	QApplication::restoreOverrideCursor();
 
-	int n = (int)emptyColumns.count();
+	int n = static_cast<int>(emptyColumns.count());
 	if (n > 1)
 	{
 		QString columns;
@@ -5786,7 +5786,7 @@ bool Graph::isCurveAntialiasingEnabled(QwtPlotItem *it)
 		return true;
 
 	if (auto *pc = dynamic_cast<PlotCurve *>(it)){
-		if (d_disable_curve_antialiasing && pc->dataSize() > (size_t)d_max_antialising_size)
+		if (d_disable_curve_antialiasing && pc->dataSize() > static_cast<size_t>(d_max_antialising_size))
 			return false;
 	}
 
@@ -6238,7 +6238,7 @@ void Graph::setCanvasBackgroundImage(const QString & fn, bool update)
 		return;
 
 	QList<QByteArray> lst = QImageReader::supportedImageFormats() << "JPG";
-	for (int i = 0; i<(int)lst.count(); i++){
+	for (int i = 0; i<static_cast<int>(lst.count()); i++){
 		if (fn.contains("." + lst[i])){
 			d_canvas_bkg_pix.load(fn, lst[i], Qt::AutoColor);
 			d_canvas_bkg_path = fn;
@@ -6282,12 +6282,12 @@ void Graph::drawItems(QPainter *painter, const QRectF &rect,
 
 		if (d_is_printing && painter->paintEngine()->type() != QPaintEngine::Raster){
 			if (i == QwtPlot::yLeft || i == QwtPlot::yRight){
-				double yfactor = (double)painter->device()->logicalDpiY()/(double)this->logicalDpiY();
+				double yfactor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(this->logicalDpiY());
 				int dy = qRound(abs(lb - rb)*yfactor*0.5);
 				rb -= dy;
 				lb += dy;
 			} else {
-				double xfactor = (double)painter->device()->logicalDpiX()/(double)this->logicalDpiX();
+				double xfactor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(this->logicalDpiX());
 				int dx = qRound(abs(lb - rb)*xfactor*0.5);
 				lb -= dx;
 				rb += dx;
@@ -6354,10 +6354,10 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 
 	const QwtScaleDiv *scDiv = &axisScaleDiv(axis);
 	const QList<double> minTickList = scDiv->ticks(QwtScaleDiv::MinorTick);
-	int minTicks = (int)minTickList.count();
+	int minTicks = static_cast<int>(minTickList.count());
 
 	const QList<double> medTickList = scDiv->ticks(QwtScaleDiv::MediumTick);
-	int medTicks = (int)medTickList.count();
+	int medTicks = static_cast<int>(medTickList.count());
 
 	QList<double> majTickList = scDiv->ticks(QwtScaleDiv::MajorTick);
 
@@ -6366,7 +6366,7 @@ void Graph::drawInwardTicks(QPainter *painter, const QRect &rect,
 		majTickList.removeAll(sc_engine->axisBreakLeft());
 		majTickList.removeAll(sc_engine->axisBreakRight());
 	}
-	int majTicks = (int)majTickList.count();
+	int majTicks = static_cast<int>(majTickList.count());
 
 	int j, x, y, low,high;
 	int clw = qobject_cast<const QFrame*>(canvas())->lineWidth();
@@ -7221,7 +7221,7 @@ void Graph::applySpeedMode(QwtPlotCurve *c, bool forExport) const
 	if (!c)
 		return;
 
-	const bool engaged = speedModeEnabled() && c->dataSize() >= (size_t)d_speed_mode_points;
+	const bool engaged = speedModeEnabled() && c->dataSize() >= static_cast<size_t>(d_speed_mode_points);
 
 	// Qwt's own pixel filtering: a no-op when it does not engage, and disabled
 	// by Qwt itself whenever the paint device is not pixel aligned.
@@ -7506,7 +7506,7 @@ void Graph::undoSetScale(int axis, double start, double end, double step,
 	double oldStep = axisStep(axis);
 	ScaleEngine *sc_engine = static_cast<ScaleEngine *>(axisScaleEngine(axis));
 	bool oldInverted = sc_engine ? sc_engine->testAttribute(QwtScaleEngine::Inverted) : false;
-	int oldType = sc_engine ? (int)sc_engine->type() : 0;
+	int oldType = sc_engine ? static_cast<int>(sc_engine->type()): 0;
 
 	multiLayer()->undoStack()->push(new PlotSetScaleCommand(this, axis,
 		oldStart, oldEnd, oldStep, majorTicks, minorTicks, oldType, oldInverted,

@@ -605,11 +605,11 @@ void DataCurve::loadData()
 		DataCurve *c = g->dataCurve(0);
 		if (index > 0 && c){
 			double xmin = c->minXValue();
-			double dx = index*g->waterfallXOffset()*0.01*g->canvas()->width()/(double)(curves - 1);
+			double dx = index*g->waterfallXOffset()*0.01*g->canvas()->width()/static_cast<double>(curves - 1);
 			d_x_offset = g->invTransform(xAxis, g->transform(xAxis, xmin) + dx) - xmin;
 
 			double ymin = c->minYValue();
-			double dy = index*g->waterfallYOffset()*0.01*g->canvas()->height()/(double)(curves - 1);
+			double dy = index*g->waterfallYOffset()*0.01*g->canvas()->height()/static_cast<double>(curves - 1);
 			d_y_offset = ymin - g->invTransform(yAxis(), g->transform(yAxis(), ymin) + dy);
 
 			setZ(-index);
@@ -1198,8 +1198,8 @@ void DataCurve::moveLabels(const QPoint& pos)
 	int d_y = pos.y() - d_plot->transform(yAxis(), d_click_pos_y);
 
 	int height = d_selected_label->label().textSize().toSize().height();
-	d_labels_x_offset += int(d_x*100.0/(double)height);
-    d_labels_y_offset -= int(d_y*100.0/(double)height);
+	d_labels_x_offset += int(d_x*100.0/static_cast<double>(height));
+    d_labels_y_offset -= int(d_y*100.0/static_cast<double>(height));
 
 	updateLabelsPosition();
 	d_plot->replot();

@@ -128,7 +128,7 @@ void ContourLinesEditor::updateContents()
 
 	QList<double> levels = d_spectrogram->contourLevels ();
 
-	int rows = (int)levels.size();
+	int rows = static_cast<int>(levels.size());
 	table->setRowCount(rows);
 	table->blockSignals(true);
 

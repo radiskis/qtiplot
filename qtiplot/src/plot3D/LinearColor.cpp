@@ -47,9 +47,9 @@ Qwt3D::RGBA LinearColor::operator()(double, double, double z) const
 	double zmin, zmax;
 	data_->coordinates()->axes[Z1].limits(zmin, zmax);
 
-	int size = (int)colors_.size() - 1;
+	int size = static_cast<int>(colors_.size()) - 1;
 	if (size >= 0){
-		int index = (int)(size*(z - zmin)/(zmax - zmin));
+		int index = static_cast<int>(size*(z - zmin)/(zmax - zmin));
 		if (index < 0)
 			index = 0;
 		if (index > size)

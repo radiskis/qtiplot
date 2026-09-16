@@ -167,7 +167,7 @@ bool IntDialog::validInput(const QString& function)
 	int points = 100;
 	double start = boxStart->value();
 	double end = boxEnd->value();
-	double step = (end - start)/(double)(points - 1.0);
+	double step = (end - start)/static_cast<double>(points - 1.0);
 	double x = end;
 
 	MyParser parser;
@@ -210,7 +210,7 @@ bool IntDialog::validInput(const QString& function)
 						iter++;
 					}
 					start = x0;
-					step = (start - end)/(double)(lastButOne);
+					step = (start - end)/static_cast<double>(lastButOne);
 					break;
 				}
 			}

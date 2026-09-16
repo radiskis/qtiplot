@@ -237,8 +237,8 @@ Graph* MultiLayer::addLayer(int x, int y, int width, int height, bool setPrefere
 {
 	addLayerButton();
 	if (!width && !height){
-		width =	(int)((d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace)/(double)d_cols);
-		height = (int)((d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace)/(double)d_rows);
+		width =	static_cast<int>((d_canvas->width() - left_margin - right_margin - (d_cols - 1)*colsSpace)/static_cast<double>(d_cols));
+		height = static_cast<int>((d_canvas->height() - top_margin - left_margin - (d_rows - 1)*rowsSpace)/static_cast<double>(d_rows));
 
 		int layers = graphsList.size();
 		x = left_margin + (layers % d_cols)*(width + colsSpace);
@@ -403,10 +403,10 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 			return;
 	}
 
-	double w = (double)size.width();
-	double h = (double)size.height();
-	double w_ratio = w/(double)oldSize.width();
-	double h_ratio = h/(double)(oldSize.height());
+	double w = static_cast<double>(size.width());
+	double h = static_cast<double>(size.height());
+	double w_ratio = w/static_cast<double>(oldSize.width());
+	double h_ratio = h/static_cast<double>(oldSize.height());
 
 	if (d_common_axes_layout && !invalidOldSize){
 		arrangeLayers(false, false);
@@ -469,7 +469,7 @@ void MultiLayer::resizeLayers(QResizeEvent *re)
 	}
 
 	for (Graph *g : graphsList)
-		g->setPageGeometry(QRectF((double)g->x()/w, (double)g->y()/h, (double)g->width()/w, (double)g->height()/h));
+		g->setPageGeometry(QRectF(static_cast<double>(g->x())/w, static_cast<double>(g->y())/h, static_cast<double>(g->width())/w, static_cast<double>(g->height())/h));
 
 	if (d_is_waterfall_plot)
 		updateWaterfalls();
@@ -542,7 +542,7 @@ bool MultiLayer::removeLayer(Graph *g)
 
 	active_graph = graphsList.at(index);
 
-	for (i=0; i<(int)graphsList.count(); i++){
+	for (i=0; i<static_cast<int>(graphsList.count()); i++){
 		Graph *gr = graphsList.at(i);
 		if (gr == active_graph){
 			LayerButton *button = buttonsList.at(i);
@@ -592,8 +592,8 @@ void MultiLayer::setEqualSizedLayers()
 	int layers = graphsList.size();
 	const QRect rect = d_canvas->geometry();
 
-	int width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/(double)d_cols);
-	int height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/(double)d_rows);
+	int width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/static_cast<double>(d_cols));
+	int height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/static_cast<double>(d_rows));
 
 	for(int i = 0; i < layers; i++){
 		Graph *g = graphsList[i];
@@ -640,8 +640,8 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 		Graph *g = graphsList.at(i);
 		QwtPlotLayout *plotLayout = g->plotLayout();
 		QRect cRect = plotLayout->canvasRect().toRect();
-		double ch = (double)cRect.height();
-		double cw = (double)cRect.width();
+		double ch = static_cast<double>(cRect.height());
+		double cw = static_cast<double>(cRect.width());
 
 		QRect tRect = plotLayout->titleRect().toRect();
 		QwtScaleWidget *scale = g->axisWidget(QwtPlot::xTop);
@@ -732,8 +732,8 @@ QSize MultiLayer::arrangeLayers(bool userSize)
 	}
 
 	if (!userSize){
-		l_canvas_width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/(double)c_widths);
-		l_canvas_height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/(double)c_heights);
+		l_canvas_width = qRound((rect.width() - (d_cols - 1)*colsSpace - right_margin - left_margin)/static_cast<double>(c_widths));
+		l_canvas_height = qRound((rect.height() - (d_rows - 1)*rowsSpace - top_margin - bottom_margin)/static_cast<double>(c_heights));
 	}
 
 	if (l_canvas_width < 50 || l_canvas_height < 50)
@@ -920,7 +920,7 @@ void MultiLayer::setCommonLayerAxes(bool verticalAxis, bool horizontalAxis)
 void MultiLayer::findBestLayout(int &d_rows, int &d_cols)
 {
 	int layers = graphsList.size();
-	int sqr = (int)ceil(sqrt(layers));
+	int sqr = static_cast<int>(ceil(sqrt(layers)));
 	d_rows = sqr;
 	d_cols = sqr;
 
@@ -1030,8 +1030,8 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 		return pic;
 	}
 
-	double xScale = (double)size.width()/(double)d_canvas->width();
-	double yScale = (double)(size.height())/(double)(d_canvas->height());
+	double xScale = static_cast<double>(size.width())/static_cast<double>(d_canvas->width());
+	double yScale = static_cast<double>(size.height())/static_cast<double>(d_canvas->height());
 	if (scaleFontsFactor == 0.0)
 		scaleFontsFactor = yScale;
 
@@ -1103,7 +1103,7 @@ void MultiLayer::exportImage(const QString& fileName, int quality, bool transpar
 
 	QPixmap pic = canvasPixmap(size, fontsFactor, transparent);
 	QImage image = pic.toImage();
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 	if (fileName.endsWith(".odf")){
@@ -1163,7 +1163,7 @@ void MultiLayer::exportImage(QTextDocument *document, int, bool transparent,
 		image = pic.toImage();
 	}
 
-	int dpm = (int)ceil(100.0/2.54*dpi);
+	int dpm = static_cast<int>(ceil(100.0/2.54*dpi));
 	image.setDotsPerMeterX(dpm);
 	image.setDotsPerMeterY(dpm);
 
@@ -1211,20 +1211,20 @@ void MultiLayer::exportVector(QPrinter *printer, int res, bool color,
 		QList<Graph*> lst = stackOrderedLayersList();
 		for (Graph *g : lst){
 			QRect r = g->geometry();
-			double wfactor = (double)size.width()/(double)d_canvas->width();
-			double hfactor = (double)size.height()/(double)d_canvas->height();
+			double wfactor = static_cast<double>(size.width())/static_cast<double>(d_canvas->width());
+			double hfactor = static_cast<double>(size.height())/static_cast<double>(d_canvas->height());
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
 
 			if (fontsFactor == 0.0)
-				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/static_cast<double>(height());
 
 			g->print(&paint, r, fontsFactor);
 		}
 		paint.end();
 	} else if (res && res != printer->resolution()){
-		double wfactor = (double)res/(double)logicalDpiX();
-		double hfactor = (double)res/(double)logicalDpiY();
+		double wfactor = static_cast<double>(res)/static_cast<double>(logicalDpiX());
+		double hfactor = static_cast<double>(res)/static_cast<double>(logicalDpiY());
 		printer->setResolution(res);
 		printer->setPageSize(QPageSize(QSizeF(d_canvas->width()*wfactor*1.05, d_canvas->height()*hfactor) / printer->resolution(), QPageSize::Inch));
 		QPainter paint(printer);
@@ -1273,13 +1273,13 @@ void MultiLayer::draw(QPaintDevice *device, const QSizeF& customSize, int unit, 
 		QList<Graph*> lst = stackOrderedLayersList();
 		for (Graph *g : lst){
 			QRect r = g->geometry();
-			double wfactor = (double)size.width()/(double)d_canvas->width();
-			double hfactor = (double)size.height()/(double)d_canvas->height();
+			double wfactor = static_cast<double>(size.width())/static_cast<double>(d_canvas->width());
+			double hfactor = static_cast<double>(size.height())/static_cast<double>(d_canvas->height());
 			r.setSize(QSize(int(r.width()*wfactor), int(r.height()*hfactor)));
 			r.moveTo(int(r.x()*wfactor), int(r.y()*hfactor));
 
 			if (fontsFactor == 0.0)
-				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/(double)height();
+				fontsFactor = Graph::customPrintSize(customSize, unit, logicalDpiX()).height()/static_cast<double>(height());
 
 			g->print(&paint, r, fontsFactor);
 		}
@@ -1453,9 +1453,9 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	QRect cr = canvasRect; // cropmarks rectangle
 
 	if (d_scale_on_print){
-		int margin = (int)((1/2.54)*printer->logicalDpiY()); // 1 cm margins
-		double scaleFactorX = (double)(paperRect.width() - 2*margin)/(double)canvasRect.width();
-		double scaleFactorY = (double)(paperRect.height() - 2*margin)/(double)canvasRect.height();
+		int margin = static_cast<int>((1/2.54)*printer->logicalDpiY()); // 1 cm margins
+		double scaleFactorX = static_cast<double>(paperRect.width() - 2*margin)/static_cast<double>(canvasRect.width());
+		double scaleFactorY = static_cast<double>(paperRect.height() - 2*margin)/static_cast<double>(canvasRect.height());
 
 		if (d_print_cropmarks){
 			cr.moveTo(QPoint(margin + int(cr.x()*scaleFactorX),
@@ -1476,7 +1476,7 @@ void MultiLayer::printAllLayers(QPainter *painter)
 	} else {
 		int x_margin = (pageRect.width() - canvasRect.width())/2;
 		if (x_margin <= 0)
-			x_margin = (int)((0.5/2.54)*printer->logicalDpiY()); // 0.5 cm margins
+			x_margin = static_cast<int>((0.5/2.54)*printer->logicalDpiY()); // 0.5 cm margins
 		int y_margin = (pageRect.height() - canvasRect.height())/2;
 		if (y_margin <= 0)
 			y_margin = x_margin;
@@ -1835,7 +1835,7 @@ void MultiLayer::setNumLayers(int n)
 		// check whether the active Graph.has been deleted
 		if(graphsList.indexOf(active_graph) == -1)
 			active_graph = graphsList.last();
-		for (int j=0;j<(int)graphsList.count();j++){
+		for (int j=0;j<static_cast<int>(graphsList.count());j++){
 			Graph *gr = graphsList.at(j);
 			if (gr == active_graph){
 				LayerButton *button = buttonsList.at(j);
@@ -1929,7 +1929,7 @@ QString MultiLayer::sizeToString()
 			}
 		}
 	}
-	return QString::number((double)size/1024.0, 'f', 1) + " " + tr("kB");
+	return QString::number(static_cast<double>(size)/1024.0, 'f', 1) + " " + tr("kB");
 }
 
 Graph* MultiLayer::layerAt(const QPoint& pos)

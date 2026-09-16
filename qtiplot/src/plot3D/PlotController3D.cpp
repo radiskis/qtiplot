@@ -312,7 +312,7 @@ void PlotController3D::add3DData()
 	}
 
 	QStringList zColumns = d_app->columnsList(Table::Z);
-	if ((int)zColumns.count() <= 0){
+	if (static_cast<int>(zColumns.count()) <= 0){
 		QMessageBox::critical(d_app,d_app->tr("QtiPlot - Warning"),
 				d_app->tr("There are no available columns with plot designation set to Z!"));
 		return;
@@ -383,7 +383,7 @@ void PlotController3D::add3DMatrixPlot()
 	if (!d_app) return;
 
 	QStringList matrices = d_app->matrixNames();
-	if ((int)matrices.count() <= 0){
+	if (static_cast<int>(matrices.count()) <= 0){
 		QMessageBox::warning(d_app, d_app->tr("QtiPlot - Warning"),
 				d_app->tr("<h4>There are no matrices available in d_app project.</h4>"
 					"<p><h4>Please create a matrix and try again!</h4>"));

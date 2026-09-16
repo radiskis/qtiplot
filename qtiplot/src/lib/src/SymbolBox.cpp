@@ -192,7 +192,7 @@ int SymbolBox::symbolIndex(const QwtSymbol::Style& style)
 
 QwtSymbol::Style SymbolBox::style(int index)
 {
-	if (index >= 0 && index < (int)sizeof(symbols))
+	if (index >= 0 && index < static_cast<int>(sizeof(symbols)))
 		return symbols[index];
 
 	return QwtSymbol::NoSymbol;

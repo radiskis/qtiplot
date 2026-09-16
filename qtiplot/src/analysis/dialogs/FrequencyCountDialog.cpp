@@ -96,7 +96,7 @@ FrequencyCountDialog::FrequencyCountDialog(Table *t, QWidget* parent, Qt::Window
 
             min = floor(gsl_vector_get(d_col_values.get(), 0));
             max = ceil(gsl_vector_get(d_col_values.get(), size - 1));
-            step = (max - min)/(double)d_bins;
+            step = (max - min)/static_cast<double>(d_bins);
 
             int p = app ? app->d_decimal_digits : 6;
             double *data = d_col_values->data;

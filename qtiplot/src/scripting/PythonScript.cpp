@@ -365,7 +365,7 @@ bool PythonScript::exec()
 			int exitCode = 0;
 			if (val) {
 				if (PyLong_Check(val)) {
-					exitCode = (int)PyLong_AsLong(val);
+					exitCode = static_cast<int>(PyLong_AsLong(val));
 				} else if (val != Py_None) {
 					PyObject *str = PyObject_Str(val);
 					if (str) {

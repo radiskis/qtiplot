@@ -141,7 +141,7 @@ public:
     WindowListItem( QTreeWidget *parent, MdiSubWindow *w );
     
     enum {RTTI = 1002};
-    virtual int rtti() const {return (int)RTTI;};
+    virtual int rtti() const {return static_cast<int>(RTTI);};
 
     MdiSubWindow *window() { return myWindow; };
 
@@ -165,7 +165,7 @@ public:
 
 	void setActive( bool o );
 
-	virtual int rtti() const {return (int)RTTI;};
+	virtual int rtti() const {return static_cast<int>(RTTI);};
 
     Folder *folder() { return myFolder; };
 

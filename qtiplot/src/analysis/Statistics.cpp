@@ -160,10 +160,10 @@ QString Statistics::logInfo(bool header)
 	QString lineSep;
 	for (int i = 0; i < 6; i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
+		int spaces = ceil(static_cast<double>(width - fm.horizontalAdvance(aux))/static_cast<double>(fm.horizontalAdvance(QLatin1Char(' ')))) + 1;
 		s += aux + QString(spaces, QLatin1Char(' '));
 		if (i == 5){
-			int scores = ceil((double)fm.horizontalAdvance(s)/(double)fm.horizontalAdvance(QLatin1Char('-')));
+			int scores = ceil(static_cast<double>(fm.horizontalAdvance(s))/static_cast<double>(fm.horizontalAdvance(QLatin1Char('-'))));
 			lineSep = "\n" + QString(scores, QLatin1Char('-')) + "\n";
 			s += lineSep;
 		}
@@ -174,7 +174,7 @@ QString Statistics::logInfo(bool header)
 
 	for (int i = 6; i < lst.size(); i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
+		int spaces = ceil(static_cast<double>(width - fm.horizontalAdvance(aux))/static_cast<double>(fm.horizontalAdvance(QLatin1Char(' ')))) + 1;
 		s += aux + QString(spaces, QLatin1Char(' '));
 	}
 

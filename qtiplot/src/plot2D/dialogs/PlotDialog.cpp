@@ -2859,7 +2859,7 @@ void PlotDialog::setActiveLayer(LayerItem *item)
 	boxLayerWidth->blockSignals(false);
 	boxLayerHeight->blockSignals(false);
 
-	aspect_ratio = (double)g->canvas()->width()/(double)g->canvas()->height();
+	aspect_ratio = static_cast<double>(g->canvas()->width())/static_cast<double>(g->canvas()->height());
 
     boxBackgroundTransparency->blockSignals(false);
 	bkgOpacitySlider->blockSignals(false);
@@ -3002,7 +3002,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             boxContourStyle->setCurrentIndex(0);
 
         axisScaleBox->setChecked(sp->hasColorScale());
-        colorScaleBox->setCurrentIndex((int)sp->colorScaleAxis());
+        colorScaleBox->setCurrentIndex(static_cast<int>(sp->colorScaleAxis()));
         colorScaleWidthBox->setValue(sp->colorBarWidth());
 
         //labels page
@@ -3065,7 +3065,7 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
         boxRadius->setValue(pie->radius());
         boxRadius->blockSignals(false);
         boxPieOffset->blockSignals(true);
-        boxPieOffset->setValue((int)pie->horizontalOffset());
+        boxPieOffset->setValue(static_cast<int>(pie->horizontalOffset()));
         boxPieOffset->blockSignals(false);
 
 		pieAutoLabelsBox->setChecked(pie->labelsAutoFormat());
@@ -3325,14 +3325,14 @@ void PlotDialog::setActiveCurve(CurveTreeItem *item)
             if (b->boxRangeType() == BoxCurve::SD || b->boxRangeType() == BoxCurve::SE)
                 boxCnt->setValue(b->boxRange());
 			else
-				boxCoef->setValue((int)b->boxRange());
+				boxCoef->setValue(static_cast<int>(b->boxRange()));
 
             boxWhiskersRange->setCurrentIndex (b->whiskersRangeType());
             setWhiskersRange(boxWhiskersRange->currentIndex());
             if (b->whiskersRangeType() == BoxCurve::SD || b->whiskersRangeType() == BoxCurve::SE)
                 whiskerCnt->setValue(b->whiskersRange());
             else
-                boxWhiskersCoef->setValue((int)b->whiskersRange());
+                boxWhiskersCoef->setValue(static_cast<int>(b->whiskersRange()));
 
 			bool visibleLabels = b->hasVisibleLabels();
 			boxBoxLabels->blockSignals(true);
@@ -4420,7 +4420,7 @@ void PlotDialog::displayPlotCoordinates(int unit)
 		boxPlotHeight->setSingleStep(0.1);
 	}
 
-	plot_aspect_ratio = (double)d_ml->width()/(double)d_ml->height();
+	plot_aspect_ratio = static_cast<double>(d_ml->width())/static_cast<double>(d_ml->height());
 
 	boxPlotX->setValue(FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit));
 	boxPlotY->setValue(FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit));
@@ -4462,7 +4462,7 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 	}
 
 	QWidget *canvas = g->canvas();
-	aspect_ratio = (double)canvas->width()/(double)canvas->height();
+	aspect_ratio = static_cast<double>(canvas->width())/static_cast<double>(canvas->height());
 
 	boxX->setValue(FrameWidget::xIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::xIn(g, (FrameWidget::Unit)unit));
 	boxY->setValue(FrameWidget::yIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::yIn(g, (FrameWidget::Unit)unit));
@@ -4821,12 +4821,12 @@ void PlotDialog::applyBoxWhiskersFormatToCurve(BoxCurve *b)
 	if (boxCnt->isVisible())
 		b->setBoxRange(boxRange->currentIndex() + 1, boxCnt->value());
 	else
-		b->setBoxRange(boxRange->currentIndex() + 1, (double)boxCoef->value());
+		b->setBoxRange(boxRange->currentIndex() + 1, static_cast<double>(boxCoef->value()));
 
 	if (whiskerCnt->isVisible())
 		b->setWhiskersRange(boxWhiskersRange->currentIndex(), whiskerCnt->value());
 	else
-		b->setWhiskersRange(boxWhiskersRange->currentIndex(), (double)boxWhiskersCoef->value());
+		b->setWhiskersRange(boxWhiskersRange->currentIndex(), static_cast<double>(boxWhiskersCoef->value()));
 
 	b->showBoxLabels(boxBoxLabels->isChecked());
 	b->showWhiskerLabels(boxWhiskerLabels->isChecked());
@@ -4977,7 +4977,7 @@ void PlotDialog::applyLabelsFormatToItem(QwtPlotItem *it)
 		sp->setLabelsRotation(boxLabelsAngle->value());
 		sp->showContourLineLabels(labelsGroupBox->isChecked());
 		sp->setLabelsWhiteOut(boxLabelsWhiteOut->isChecked());
-		sp->setLabelsOffset((double)boxLabelsXOffset->value(), (double)boxLabelsYOffset->value());
+		sp->setLabelsOffset(static_cast<double>(boxLabelsXOffset->value()), static_cast<double>(boxLabelsYOffset->value()));
 		sp->setLabelsColor(boxLabelsColor->color());
 	} else if (DataCurve *c = dynamic_cast<DataCurve *>(it)){
 		c->setLabelsRotation(boxLabelsAngle->value());

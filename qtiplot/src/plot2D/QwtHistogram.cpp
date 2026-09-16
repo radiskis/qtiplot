@@ -158,7 +158,7 @@ void QwtHistogram::loadData()
 		if (d_end == max)
 			d_end += 1.0;
 
-		d_bin_size = (d_end - d_begin)/(double)n;
+		d_bin_size = (d_end - d_begin)/static_cast<double>(n);
 
 		gsl_histogram_set_ranges_uniform (h.get(), d_begin, d_end);
 	} else {

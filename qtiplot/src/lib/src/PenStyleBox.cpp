@@ -59,7 +59,7 @@ void PenStyleBox::setStyle(const Qt::PenStyle& style)
 
 Qt::PenStyle PenStyleBox::penStyle(int index)
 {
-  if (index < (int)sizeof(patterns))
+  if (index < static_cast<int>(sizeof(patterns)))
     return patterns[index];
   else
     return Qt::SolidLine; // default style is solid. 

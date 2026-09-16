@@ -121,11 +121,11 @@ void ApplicationSettings::init()
     d_scale_plots_on_print = false;
     d_print_cropmarks = false;
     d_graph_legend_display = Graph::Auto;
-    d_graph_attach_policy = (int)FrameWidget::Scales;
+    d_graph_attach_policy = static_cast<int>(FrameWidget::Scales);
     d_graph_axis_labeling = Graph::Default;
     d_synchronize_graph_scales = true;
-    d_print_paper_size = (int)QPageSize::A4;
-    d_printer_orientation = (int)QPageLayout::Landscape;
+    d_print_paper_size = static_cast<int>(QPageSize::A4);
+    d_printer_orientation = static_cast<int>(QPageLayout::Landscape);
     defaultCurveStyle = int(Graph::LineSymbols);
     defaultCurveLineWidth = 1;
     d_curve_line_style = 0;
@@ -153,8 +153,8 @@ void ApplicationSettings::init()
     legendBackground = Qt::white;
     legendBackground.setAlpha(0);
     d_legend_default_angle = 0;
-    d_frame_geometry_unit = (int)FrameWidget::Scale;
-    d_layer_geometry_unit = (int)FrameWidget::Pixel;
+    d_frame_geometry_unit = static_cast<int>(FrameWidget::Scale);
+    d_layer_geometry_unit = static_cast<int>(FrameWidget::Pixel);
     d_layer_canvas_width = 400;
     d_layer_canvas_height = 300;
 
@@ -172,19 +172,19 @@ void ApplicationSettings::init()
     d_grid_antialiased = false;
     d_grid_major_x_enabled = false;
     d_grid_major_x_color = Qt::black;
-    d_grid_major_x_style = (int)Qt::SolidLine;
+    d_grid_major_x_style = static_cast<int>(Qt::SolidLine);
     d_grid_major_x_thickness = 1.0;
     d_grid_minor_x_enabled = false;
     d_grid_minor_x_color = Qt::black;
-    d_grid_minor_x_style = (int)Qt::DotLine;
+    d_grid_minor_x_style = static_cast<int>(Qt::DotLine);
     d_grid_minor_x_thickness = 1.0;
     d_grid_major_y_enabled = false;
     d_grid_major_y_color = Qt::black;
-    d_grid_major_y_style = (int)Qt::SolidLine;
+    d_grid_major_y_style = static_cast<int>(Qt::SolidLine);
     d_grid_major_y_thickness = 1.0;
     d_grid_minor_y_enabled = false;
     d_grid_minor_y_color = Qt::black;
-    d_grid_minor_y_style = (int)Qt::DotLine;
+    d_grid_minor_y_style = static_cast<int>(Qt::DotLine);
     d_grid_minor_y_thickness = 1.0;
 
     d_3D_legend = true;
@@ -811,8 +811,8 @@ void ApplicationSettings::load(QSettings &settings)
 
     /* ---------------- group PrintPreview --------------- */
     settings.beginGroup("/PrintPreview");
-    d_print_paper_size = settings.value("/PaperSize", (int)d_print_paper_size).toInt();
-    d_printer_orientation = settings.value("/Orientation", (int)d_printer_orientation).toInt();
+    d_print_paper_size = settings.value("/PaperSize", static_cast<int>(d_print_paper_size)).toInt();
+    d_printer_orientation = settings.value("/Orientation", static_cast<int>(d_printer_orientation)).toInt();
     settings.endGroup();
 
     /* ---------------- group Proxy --------------- */
@@ -846,14 +846,14 @@ void ApplicationSettings::save(QSettings &settings)
 
     settings.setValue("/AutoSearchUpdates", autoSearchUpdates);
     settings.setValue("/Language", appLanguage);
-    settings.setValue("/ShowWindowsPolicy", (int)show_windows_policy);
+    settings.setValue("/ShowWindowsPolicy", static_cast<int>(show_windows_policy));
     settings.setValue("/RecentProjects", recentProjects);
-    settings.setValue("/ExcelImportMethod", (int)d_excel_import_method);
+    settings.setValue("/ExcelImportMethod", static_cast<int>(d_excel_import_method));
     settings.setValue("/Style", appStyle);
     settings.setValue("/AutoSave", autoSave);
     settings.setValue("/AutoSaveTime", autoSaveTime);
     settings.setValue("/BackupProjects", d_backup_files);
-    settings.setValue("/InitWindow", (int)d_init_window_type);
+    settings.setValue("/InitWindow", static_cast<int>(d_init_window_type));
     settings.setValue("/Completion", d_completion);
     settings.setValue("/OpenLastProject", d_open_last_project);
     settings.setValue("/ScriptingLang", defaultScriptingLang);
@@ -869,7 +869,7 @@ void ApplicationSettings::save(QSettings &settings)
     settings.setValue("/MatrixUndoStackSize", d_matrix_undo_stack_size);
     settings.setValue("/TableUndoStackSize", d_table_undo_stack_size);
     settings.setValue("/UndoMemoryBudgetMB", d_undo_memory_budget_mb);
-    settings.setValue("/EndOfLine", (int)d_eol);
+    settings.setValue("/EndOfLine", static_cast<int>(d_eol));
 
     QStringList applicationFont;
     applicationFont << appFont.family()
@@ -1055,8 +1055,8 @@ void ApplicationSettings::save(QSettings &settings)
     }
     settings.endArray();
 
-    settings.setValue("/LegendDisplayMode", (int)d_graph_legend_display);
-    settings.setValue("/AxisTitlePolicy", (int)d_graph_axis_labeling);
+    settings.setValue("/LegendDisplayMode", static_cast<int>(d_graph_legend_display));
+    settings.setValue("/AxisTitlePolicy", static_cast<int>(d_graph_axis_labeling));
     settings.setValue("/KeepAspectRatio", d_keep_aspect_ration);
     settings.setValue("/SynchronizeScales", d_synchronize_graph_scales);
     settings.setValue("/ShowEmptyCellGap", d_show_empty_cell_gap);
@@ -1177,7 +1177,7 @@ void ApplicationSettings::save(QSettings &settings)
     QList<QVariant> stop_values;
     QStringList stop_colors;
     QVector<double> colors = d_3D_color_map.colorStops();
-    int stops = (int)colors.size() - 1;
+    int stops = static_cast<int>(colors.size()) - 1;
     for (int i = 1; i < stops; i++){
         stop_values << QVariant(colors[i]);
         stop_colors << d_3D_color_map.color(i).name();
@@ -1232,7 +1232,7 @@ void ApplicationSettings::save(QSettings &settings)
     settings.setValue("/ImportReadOnly", d_ASCII_import_read_only);
     settings.setValue("/Preview", d_ASCII_import_preview);
     settings.setValue("/PreviewLines", d_preview_lines);
-    settings.setValue("/EndLineCharacter", (int)d_ASCII_end_line);
+    settings.setValue("/EndLineCharacter", static_cast<int>(d_ASCII_end_line));
     settings.setValue("/FirstLineRole", d_ASCII_import_first_row_role);
     settings.setValue("/DialogSize", d_import_ASCII_dialog_size);
     settings.endGroup(); // ImportASCII

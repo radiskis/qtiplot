@@ -384,7 +384,7 @@ void SurfaceDialog::acceptParametricSurface()
 
     app->d_param_surface_func.removeAll(x_formula);
 	app->d_param_surface_func.push_front(x_formula);
-	while ((int)app->d_param_surface_func.size() > list_size)
+	while (static_cast<int>(app->d_param_surface_func.size())> list_size)
 		app->d_param_surface_func.pop_back();
 
 	QString y_formula = boxY->toPlainText().simplified();
@@ -399,7 +399,7 @@ void SurfaceDialog::acceptParametricSurface()
 
     app->d_param_surface_func.removeAll(y_formula);
 	app->d_param_surface_func.push_front(y_formula);
-	while ((int)app->d_param_surface_func.size() > list_size)
+	while (static_cast<int>(app->d_param_surface_func.size())> list_size)
 		app->d_param_surface_func.pop_back();
 
 	QString z_formula = boxZ->toPlainText().simplified();
@@ -414,7 +414,7 @@ void SurfaceDialog::acceptParametricSurface()
 
     app->d_param_surface_func.removeAll(z_formula);
 	app->d_param_surface_func.push_front(z_formula);
-	while ((int)app->d_param_surface_func.size() > list_size)
+	while (static_cast<int>(app->d_param_surface_func.size())> list_size)
 		app->d_param_surface_func.pop_back();
 
 	double ul = boxUFrom->value();

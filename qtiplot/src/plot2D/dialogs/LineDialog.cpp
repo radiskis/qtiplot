@@ -174,7 +174,7 @@ void LineDialog::initGeometryTab()
 	attachToBox = new QComboBox();
 	attachToBox->addItem(tr("Page"));
 	attachToBox->addItem(tr("Layer Scales"));
-	attachToBox->setCurrentIndex((int)lm->attachPolicy());
+	attachToBox->setCurrentIndex(static_cast<int>(lm->attachPolicy()));
 
 	bl1->addWidget(new QLabel(tr( "Attach to" )), 0, 0);
 	bl1->addWidget(attachToBox, 0, 1);

@@ -81,8 +81,8 @@ void LineProfileTool::calculateLineProfile(const QPoint& start, const QPoint& en
 	QSize realSize = image.size();
 	QSize actualSize = d_target->size();
 	if (realSize != actualSize){
-		double ratioX = (double)realSize.width()/(double)actualSize.width();
-		double ratioY = (double)realSize.height()/(double)actualSize.height();
+		double ratioX = static_cast<double>(realSize.width())/static_cast<double>(actualSize.width());
+		double ratioY = static_cast<double>(realSize.height())/static_cast<double>(actualSize.height());
 		x1 = int(x1*ratioX);
 		x2 = int(x2*ratioX);
 		y1 = int(y1*ratioY);
@@ -163,7 +163,7 @@ double LineProfileTool::averageImagePixel(const QImage& image, int px, int py, b
 			sum += qGray(pixel);
 		}
 	}
-	return (double)sum/(double)d_average_pixels;
+	return static_cast<double>(sum)/static_cast<double>(d_average_pixels);
 }
 
 void LineProfileTool::paintEvent(QPaintEvent *)

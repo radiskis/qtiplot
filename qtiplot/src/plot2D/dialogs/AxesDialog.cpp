@@ -457,7 +457,7 @@ void AxesDialog::initAxesPage()
 	axesTitlesList->addItem( new QListWidgetItem(top_axis_pic, tr("Top")));
 	axesTitlesList->addItem( new QListWidgetItem(right_axis_pic, tr("Right")));
 	axesTitlesList->setIconSize(bottom_axis_pic.size());
-	axesTitlesList->setMaximumWidth((int)(bottom_axis_pic.width()*1.5));
+	axesTitlesList->setMaximumWidth(static_cast<int>(bottom_axis_pic.width()*1.5));
 	axesTitlesList->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding));
 	axesTitlesList->setCurrentRow(-1);
 
@@ -1982,7 +1982,7 @@ void AxesDialog::showAxisSettings(int a)
 	} else
 		invertTitleBox->hide();
 
-	int style = (int)d_graph->axisType(axis);
+	int style = static_cast<int>(d_graph->axisType(axis));
 	boxAxisType->blockSignals(true);
 	boxAxisType->setCurrentIndex(style);
 	boxAxisType->blockSignals(false);

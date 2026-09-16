@@ -210,7 +210,7 @@ QList<double> LnScaleEngine::buildMinorTicks(const QList<double> &majorTicks,
 	if ( maxMinSteps < 1 )
 		return QList<double>();
 
-	int majTicks = (int)majorTicks.count();
+	int majTicks = static_cast<int>(majorTicks.count());
     if (majTicks > 1){
         QList<double> minorTicks;
 		for (int i = 0; i < majTicks - 1; i++){

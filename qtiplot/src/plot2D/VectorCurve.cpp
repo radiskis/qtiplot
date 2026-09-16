@@ -148,8 +148,8 @@ void VectorCurve::drawArrowHead(QPainter *p, int xs, int ys, int xe, int ye) con
 	p->rotate(-t);
 
 	double pi = 4*atan(-1.0);
-	int headLength = qRound(d_headLength*(double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
-	int d = qRound(headLength*tan(pi*(double)d_headAngle/180.0));
+	int headLength = qRound(d_headLength*static_cast<double>(p->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX()));
+	int d = qRound(headLength*tan(pi*static_cast<double>(d_headAngle)/180.0));
 
 	QPolygon endArray(3);
 	endArray[0] = QPoint(0, 0);
@@ -250,37 +250,37 @@ QRectF VectorCurve::boundingRect() const
 	QRectF vrect = vectorEnd->boundingRect();
 
 	if (d_style == XYXY){
-		rect.setTop(qMin((double)rect.top(), (double)vrect.top()));
-		rect.setBottom(qMax((double)rect.bottom(), (double)vrect.bottom()));
-		rect.setLeft(qMin((double)rect.left(), (double)vrect.left()));
-		rect.setRight(qMax((double)rect.right(), (double)vrect.right()));
+		rect.setTop(qMin(static_cast<double>(rect.top()), static_cast<double>(vrect.top())));
+		rect.setBottom(qMax(static_cast<double>(rect.bottom()), static_cast<double>(vrect.bottom())));
+		rect.setLeft(qMin(static_cast<double>(rect.left()), static_cast<double>(vrect.left())));
+		rect.setRight(qMax(static_cast<double>(rect.right()), static_cast<double>(vrect.right())));
 	} else {
 		const double angle = vectorEnd->sample(0).x();
 		double mag = vectorEnd->sample(0).y();
 		switch(d_position)
 			{
 			case Tail:
-				rect.setTop(qMin((double)rect.top(), (double)(rect.top()+mag*sin(angle))));
-				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom()+mag*sin(angle))));
-				rect.setLeft(qMin((double)rect.left(), (double)(rect.left()+mag*cos(angle))));
-				rect.setRight(qMax((double)rect.right(), (double)(rect.right()+mag*cos(angle))));
+				rect.setTop(qMin(static_cast<double>(rect.top()), static_cast<double>(rect.top()+mag*sin(angle))));
+				rect.setBottom(qMax(static_cast<double>(rect.bottom()), static_cast<double>(rect.bottom()+mag*sin(angle))));
+				rect.setLeft(qMin(static_cast<double>(rect.left()), static_cast<double>(rect.left()+mag*cos(angle))));
+				rect.setRight(qMax(static_cast<double>(rect.right()), static_cast<double>(rect.right()+mag*cos(angle))));
 			break;
 
 			case Middle:
 				{
 				mag *= 0.5;
-				rect.setTop(qMin((double)rect.top(), (double)(rect.top() - fabs(mag*sin(angle)))));
-				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom() + fabs(mag*sin(angle)))));
-				rect.setLeft(qMin((double)rect.left(), (double)(rect.left() - fabs(mag*cos(angle)))));
-				rect.setRight(qMax((double)rect.right(), (double)(rect.right() + fabs(mag*cos(angle)))));
+				rect.setTop(qMin(static_cast<double>(rect.top()), static_cast<double>(rect.top() - fabs(mag*sin(angle)))));
+				rect.setBottom(qMax(static_cast<double>(rect.bottom()), static_cast<double>(rect.bottom() + fabs(mag*sin(angle)))));
+				rect.setLeft(qMin(static_cast<double>(rect.left()), static_cast<double>(rect.left() - fabs(mag*cos(angle)))));
+				rect.setRight(qMax(static_cast<double>(rect.right()), static_cast<double>(rect.right() + fabs(mag*cos(angle)))));
 				}
 			break;
 
 			case Head:
-				rect.setTop(qMin((double)rect.top(), (double)(rect.top() - mag*sin(angle))));
-				rect.setBottom(qMax((double)rect.bottom(), (double)(rect.bottom() - mag*sin(angle))));
-				rect.setLeft(qMin((double)rect.left(), (double)(rect.left() - mag*cos(angle))));
-				rect.setRight(qMax((double)rect.right(), (double)(rect.right() - mag*cos(angle))));
+				rect.setTop(qMin(static_cast<double>(rect.top()), static_cast<double>(rect.top() - mag*sin(angle))));
+				rect.setBottom(qMax(static_cast<double>(rect.bottom()), static_cast<double>(rect.bottom() - mag*sin(angle))));
+				rect.setLeft(qMin(static_cast<double>(rect.left()), static_cast<double>(rect.left() - mag*cos(angle))));
+				rect.setRight(qMax(static_cast<double>(rect.right()), static_cast<double>(rect.right() - mag*cos(angle))));
 			break;
 			}
 		}

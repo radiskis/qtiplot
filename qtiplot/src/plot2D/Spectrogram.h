@@ -56,7 +56,7 @@ public:
 	Matrix * matrix(){return d_matrix;};
 	bool setMatrix(Matrix *m, bool useFormula = false);
 
-	int levels(){return (int)contourLevels().size();};
+	int levels(){return static_cast<int>(contourLevels().size());};
 	void setLevelsNumber(int levels);
 	void setContourLevels (const QList<double> & levels);
 

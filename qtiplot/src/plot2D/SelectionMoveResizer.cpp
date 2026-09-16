@@ -376,8 +376,8 @@ QRect SelectionMoveResizer::operateOn(const QRect in)
 	if (in == d_bounding_rect)
 		return boundary_out;
 
-	double scale_x = ((double)boundary_out.width())/d_bounding_rect.width();
-	double scale_y = ((double)boundary_out.height())/d_bounding_rect.height();
+	double scale_x = (static_cast<double>(boundary_out.width()))/d_bounding_rect.width();
+	double scale_y = (static_cast<double>(boundary_out.height()))/d_bounding_rect.height();
 	int offset_x = qRound(boundary_out.left()-d_bounding_rect.left()*scale_x);
 	int offset_y = qRound(boundary_out.top()-d_bounding_rect.top()*scale_y);
 	return QRect(QPoint(qRound(in.left()*scale_x)+offset_x, qRound(in.top()*scale_y)+offset_y),

@@ -429,9 +429,9 @@ int LayerDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension
 	if (!multi_layer)
 		return qRound(w);
 
-	double dpi = (double)multi_layer->logicalDpiX();
+	double dpi = static_cast<double>(multi_layer->logicalDpiX());
 	if (dimension)
-		dpi = (double)multi_layer->logicalDpiY();
+		dpi = static_cast<double>(multi_layer->logicalDpiY());
 
 	switch(unit){
 		case FrameWidget::Pixel:
@@ -459,9 +459,9 @@ double LayerDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimensi
 	if (!multi_layer)
 		return w;
 
-	double dpi = (double)multi_layer->logicalDpiX();
+	double dpi = static_cast<double>(multi_layer->logicalDpiX());
 	if (dimension)
-		dpi = (double)multi_layer->logicalDpiY();
+		dpi = static_cast<double>(multi_layer->logicalDpiY());
 
 	double val = 0.0;
 	switch(unit){
@@ -470,7 +470,7 @@ double LayerDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimensi
 			val = w;
 		break;
 		case FrameWidget::Inch:
-			val = (double)w/dpi;
+			val = static_cast<double>(w)/dpi;
 		break;
 		case FrameWidget::Millimeter:
 			val = 25.4*w/dpi;
@@ -504,7 +504,7 @@ void LayerDialog::updateSizes(int unit)
 	if (!multi_layer)
 		return;
 
-	aspect_ratio = (double)multi_layer->layerCanvasSize().width()/(double)multi_layer->layerCanvasSize().height();
+	aspect_ratio = static_cast<double>(multi_layer->layerCanvasSize().width())/static_cast<double>(multi_layer->layerCanvasSize().height());
 
 	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
 	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));

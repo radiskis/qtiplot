@@ -163,7 +163,7 @@ gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iteration
 			d_results[i] = gsl_vector_get(s->x, i);
 
 		status = gsl_multifit_test_delta (s->dx, s->x, d_tolerance, d_tolerance);
-	} while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	} while (!d_canceled && inRange && status == GSL_CONTINUE && static_cast<int>(iter) < d_max_iterations);
 #if GSL_MAJOR_VERSION == 2
 	// allocate memory and calculate covariance matrix based on residuals
 	GslRAII::UniqueMatrix J(gsl_matrix_alloc(d_n, d_p));
@@ -236,7 +236,7 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 		size = gsl_multimin_fminimizer_size (s_min);
 		status = gsl_multimin_test_size (size, d_tolerance);
 	}
-	while (!d_canceled && inRange && status == GSL_CONTINUE && (int)iter < d_max_iterations);
+	while (!d_canceled && inRange && status == GSL_CONTINUE && static_cast<int>(iter) < d_max_iterations);
 
 	iterations = iter;
 	return s_min;
@@ -778,7 +778,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 	for (int i = 0; i < points; i++){
 		double x = X[i];
 		double dx = x - x_mean;
-		double aux = t*sqrt(mse*(1.0/(double)d_n + dx*dx/sxx));
+		double aux = t*sqrt(mse*(1.0/static_cast<double>(d_n) + dx*dx/sxx));
 
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);
@@ -883,7 +883,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 	for (int i = 0; i < points; i++){
 		double x = X[i];
 		double dx = x - x_mean;
-		double aux = t*sqrt(mse*(1 + 1.0/(double)d_n + dx*dx/sxx));
+		double aux = t*sqrt(mse*(1 + 1.0/static_cast<double>(d_n) + dx*dx/sxx));
 
 		outputTable->setCell(i, 0, x);
 		double y = eval(d_results, x);

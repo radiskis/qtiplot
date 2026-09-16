@@ -147,7 +147,7 @@ void MultiPeakFitTool::finalize()
             offset = y[imax];
         d_fit->setInitialGuess(3*d_selected_peaks, offset);
 
-		double w = 2*gsl_stats_sd(d_fit->x(), 1, n)/(double)d_selected_peaks;
+		double w = 2*gsl_stats_sd(d_fit->x(), 1, n)/static_cast<double>(d_selected_peaks);
 		for (int i = 0; i < d_selected_peaks; i++){
 		    int aux = 3*i;
 			d_fit->setInitialGuess(aux + 2, w);

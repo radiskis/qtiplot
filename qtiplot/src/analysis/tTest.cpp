@@ -180,7 +180,7 @@ QString tTest::logInfo()
 	}
 
 	QString h0, ha, compare;
-	switch((int)d_tail){
+	switch(static_cast<int>(d_tail)){
 		case Both:
 			h0 = " = ";
 			ha = " <> ";
@@ -268,8 +268,8 @@ bool tTest::setSample2(const QString& colName, bool paired)
 		}
 	} else {
 		double d_sd2 = d_sample2->standardDeviation();
-		double s = sqrt(((d_n - 1)*d_sd*d_sd + (d_n2 - 1)*d_sd2*d_sd2)/(double)(d_n  + d_n2 - 2));
-		d_s12 = s*sqrt(1/(double)d_n + 1/(double)d_n2);
+		double s = sqrt(((d_n - 1)*d_sd*d_sd + (d_n2 - 1)*d_sd2*d_sd2)/static_cast<double>(d_n  + d_n2 - 2));
+		d_s12 = s*sqrt(1/static_cast<double>(d_n) + 1/static_cast<double>(d_n2));
 	}
 
 	d_diff = d_mean - d_sample2->mean();

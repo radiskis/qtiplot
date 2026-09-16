@@ -162,7 +162,7 @@ void PatternBox::setPattern(const Qt::BrushStyle& style)
 
 Qt::BrushStyle PatternBox::brushStyle(int index)
 {
-  if (index < (int)sizeof(patterns))
+  if (index < static_cast<int>(sizeof(patterns)))
     return patterns[index];
   else
     return Qt::NoBrush; // default patterns is none. 

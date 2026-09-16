@@ -434,9 +434,9 @@ void GeneralConfigPage::init(ApplicationWindow *app, ApplicationSettings *settin
 	boxScriptingLanguage->setCurrentIndex(llist.indexOf(app->defaultScriptingLang));
 
 	undoStackSizeBox->setValue(app->matrixUndoStackSize());
-	boxEndLine->setCurrentIndex((int)app->d_eol);
-	boxInitWindow->setCurrentIndex((int)app->d_init_window_type);
-	excelImportMethod->setCurrentIndex((int)app->excelImportMethod());
+	boxEndLine->setCurrentIndex(static_cast<int>(app->d_eol));
+	boxInitWindow->setCurrentIndex(static_cast<int>(app->d_init_window_type));
+	excelImportMethod->setCurrentIndex(static_cast<int>(app->excelImportMethod()));
 
 	boxSave->setChecked(app->autoSave);
 	boxMinutes->setValue(app->autoSaveTime);
@@ -627,7 +627,7 @@ void GeneralConfigPage::retranslateUi()
 	boxEndLine->addItem(tr("LF (Unix)"));
 	boxEndLine->addItem(tr("CRLF (Windows)"));
 	boxEndLine->addItem(tr("CR (Mac)"));
-	boxEndLine->setCurrentIndex(d_app ? (int)d_app->d_eol : 0);
+	boxEndLine->setCurrentIndex(d_app ? static_cast<int>(d_app->d_eol): 0);
 
 	lblInitWindow->setText(tr("&Initial Window Type"));
 	boxInitWindow->clear();
@@ -636,7 +636,7 @@ void GeneralConfigPage::retranslateUi()
 	boxInitWindow->addItem(tr("Matrix"));
 	boxInitWindow->addItem(tr("Empty"));
 	boxInitWindow->addItem(tr("Note"));
-	boxInitWindow->setCurrentIndex(d_app ? (int)d_app->d_init_window_type : 0);
+	boxInitWindow->setCurrentIndex(d_app ? static_cast<int>(d_app->d_init_window_type): 0);
 
 	boxSave->setText(tr("&Save every"));
 	boxMinutes->setSuffix(" " + tr("minutes"));

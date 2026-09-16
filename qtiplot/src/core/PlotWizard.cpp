@@ -410,7 +410,7 @@ void PlotWizard::plot2D(const QStringList& colList)
 	Graph *ag = g->activeLayer();
 	app->setPreferences(ag);
 
-	int curves = (int)colList.count();
+	int curves = static_cast<int>(colList.count());
 	int errorBars = 0;
 	for (int i = 0; i < curves; i++) {
 		if (colList[i].contains("(yErr)") || colList[i].contains("(xErr)"))

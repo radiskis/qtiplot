@@ -102,7 +102,7 @@ QString ShapiroWilkTest::infoString(bool header)
 	QString head;
 	for (int i = 0; i < 4; i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
+		int spaces = ceil(static_cast<double>(width - fm.horizontalAdvance(aux))/static_cast<double>(fm.horizontalAdvance(QLatin1Char(' ')))) + 1;
 		head += aux + QString(spaces, QLatin1Char(' '));
 	}
 
@@ -115,7 +115,7 @@ QString ShapiroWilkTest::infoString(bool header)
 	QString val;
 	for (int i = 4; i < lst.size(); i++){
 		QString aux = lst[i];
-		int spaces = ceil((double)(width - fm.horizontalAdvance(aux))/(double)fm.horizontalAdvance(QLatin1Char(' '))) + 1;
+		int spaces = ceil(static_cast<double>(width - fm.horizontalAdvance(aux))/static_cast<double>(fm.horizontalAdvance(QLatin1Char(' ')))) + 1;
 		val += aux + QString(spaces, QLatin1Char(' '));
 	}
 
@@ -127,7 +127,7 @@ QString ShapiroWilkTest::infoString(bool header)
 		val += QObject::tr("Not normal at %1 level").arg(l.toString(d_significance_level));
 
 	if (header){
-		int scores = ceil((double)fm.horizontalAdvance(val)/(double)fm.horizontalAdvance(QLatin1Char('-')));
+		int scores = ceil(static_cast<double>(fm.horizontalAdvance(val))/static_cast<double>(fm.horizontalAdvance(QLatin1Char('-'))));
 		s +="\n" + QString(scores, QLatin1Char('-')) + "\n";
 	}
 
@@ -357,7 +357,7 @@ L70:
 	z90f = z90 + bf * pow(poly(c7, 2, r__1), (double) ld);
 	r__1 = pow(xx95, (double) xx);
 	z95f = z95 + bf * pow(poly(c8, 2, r__1), (double) ld);
-	z99f = z99 + bf * pow(poly(c9, 2, xx), (double)ld);
+	z99f = z99 + bf * pow(poly(c9, 2, xx), static_cast<double>(ld));
 
 /*	Regress Z90F,...,Z99F on normal deviates Z90,...,Z99 to get
 	pseudo-mean and pseudo-sd of z as the slope and intercept */

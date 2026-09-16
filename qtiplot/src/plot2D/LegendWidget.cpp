@@ -116,8 +116,8 @@ void LegendWidget::print(QPainter *painter, const QwtScaleMap map[QwtPlot::axisC
     // Fallback: no scaling or use simple scaling if needed. 
     // QwtPlotRenderer scales the context. We just draw.
     // However, if we need resolution independence for frame widths:
-    double xfactor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-    double yfactor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+    double xfactor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+    double yfactor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
     
     // We update temp margins for drawing calculation
     h_space = int(h_space*xfactor);
@@ -221,8 +221,8 @@ void LegendWidget::drawVector(PlotCurve *c, QPainter *p, int x, int y, int l)
 	p->translate(x + l, y);
 
 	double pi = 4*atan(-1.0);
-	int headLength = qRound(v->headLength()*(double)p->device()->logicalDpiX()/(double)d_plot->logicalDpiX());
-	int d = qRound(headLength*tan(pi*(double)v->headAngle()/180.0));
+	int headLength = qRound(v->headLength()*static_cast<double>(p->device()->logicalDpiX())/static_cast<double>(d_plot->logicalDpiX()));
+	int d = qRound(headLength*tan(pi*static_cast<double>(v->headAngle())/180.0));
 
 	QPolygon endArray(3);
 	endArray[0] = QPoint(0, 0);
@@ -434,7 +434,7 @@ QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int f
 {
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", Qt::KeepEmptyParts);
-	int n = (int)titles.count();
+	int n = static_cast<int>(titles.count());
 	QVector<long> heights(n);
 
 	width = 0;
@@ -547,8 +547,8 @@ QVector<long> LegendWidget::itemsHeight(QPainter *p, int symbolLineLength, int f
 	}
 
 	if (d_frame == Shadow){
-		width += qRound(d_shadow_width*p->device()->logicalDpiX()/(double)plot()->logicalDpiX());
-		height += qRound(d_shadow_width*p->device()->logicalDpiY()/(double)plot()->logicalDpiY());
+		width += qRound(d_shadow_width*p->device()->logicalDpiX()/static_cast<double>(plot()->logicalDpiX()));
+		height += qRound(d_shadow_width*p->device()->logicalDpiY()/static_cast<double>(plot()->logicalDpiY()));
 	}
 
 	return heights;
@@ -563,7 +563,7 @@ int LegendWidget::symbolsMaxWidth()
 	int maxL = 0;
 	QString text = d_text->text();
 	QStringList titles = text.split("\n", Qt::KeepEmptyParts);
-	for (int i=0; i<(int)titles.count(); i++){
+	for (int i=0; i<static_cast<int>(titles.count()); i++){
 		QString s = titles[i];
 		while (s.contains("\\l(",Qt::CaseInsensitive)){
 			int pos = s.indexOf("\\l(", 0,Qt::CaseInsensitive);

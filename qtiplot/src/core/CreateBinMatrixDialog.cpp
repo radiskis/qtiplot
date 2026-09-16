@@ -120,8 +120,8 @@ void CreateBinMatrixDialog::accept()
 	double ymin = yMinBox->value();
 	double ymax = yMaxBox->value();
 
-	size_t nx = (size_t)colsBox->value();
-	size_t ny = (size_t)rowsBox->value();
+	size_t nx = static_cast<size_t>(colsBox->value());
+	size_t ny = static_cast<size_t>(rowsBox->value());
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)
@@ -140,8 +140,8 @@ void CreateBinMatrixDialog::accept()
 		return;
 	}
 
-	Matrix* m = app->newMatrix((int)ny, (int)nx);
-	if (!m || m->numRows() != (int)ny || m->numCols() != (int)nx){
+	Matrix* m = app->newMatrix(static_cast<int>(ny), static_cast<int>(nx));
+	if (!m || m->numRows() != static_cast<int>(ny) || m->numCols() != static_cast<int>(nx)){
 		//There was not enough memory to create the Matrix window with specified dimensions
 		if (m) {
 			m->hide();
@@ -161,8 +161,8 @@ void CreateBinMatrixDialog::accept()
 			gsl_histogram2d_increment(h.get(), l.toDouble(xs), l.toDouble(ys));
 	}
 
-	double dx = 0.5*fabs(xmax - xmin)/(double)nx;
-	double dy = 0.5*fabs(ymax - ymin)/(double)ny;
+	double dx = 0.5*fabs(xmax - xmin)/static_cast<double>(nx);
+	double dy = 0.5*fabs(ymax - ymin)/static_cast<double>(ny);
 	m->setCoordinates(xmin + dx, xmax - dx, ymin + dy, ymax - dy);
 
 	for (size_t i = 0; i < nx; i++)

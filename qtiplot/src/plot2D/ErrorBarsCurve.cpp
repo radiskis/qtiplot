@@ -99,8 +99,8 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 		return;
 
 	int sh2 = 0, sw2 = 0;
-	double x_factor = (double)painter->device()->logicalDpiX()/(double)plot()->logicalDpiX();
-	double y_factor = (double)painter->device()->logicalDpiY()/(double)plot()->logicalDpiY();
+	double x_factor = static_cast<double>(painter->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
+	double y_factor = static_cast<double>(painter->device()->logicalDpiY())/static_cast<double>(plot()->logicalDpiY());
 	double d_xOffset = 0.0;
 	double d_yOffset = 0.0;
 
@@ -290,7 +290,7 @@ void ErrorBarsCurve::loadData()
 		return;
 
 	int r = abs(d_end_row - d_start_row) + 1;
-	r = qMin(r, (int)d_master_curve->dataSize());
+	r = qMin(r, static_cast<int>(d_master_curve->dataSize()));
 	QVector<double> X(r), Y(r), err(r);
 	int data_size = 0;
 	QLocale locale = d_table->locale();

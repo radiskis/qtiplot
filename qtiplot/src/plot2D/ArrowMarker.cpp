@@ -64,7 +64,7 @@ void ArrowMarker::draw(QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &
 	const int x1 = xMap.transform(d_rect.right());
 	const int y1 = yMap.transform(d_rect.bottom());
 
-	double resFactor = (double)p->device()->logicalDpiX()/(double)plot()->logicalDpiX();
+	double resFactor = static_cast<double>(p->device()->logicalDpiX())/static_cast<double>(plot()->logicalDpiX());
 	p->save();
 	QPen pen = linePen();
 	if (resFactor != 1.0)
@@ -204,7 +204,7 @@ double ArrowMarker::dist(int x, int y)
 		d=abs(x-x0);
 	else
 	{
-		double a=(double)(y1-y0)/(double)(x1-x0);
+		double a=static_cast<double>(y1-y0)/static_cast<double>(x1-x0);
 		double b=y0-a*x0;
 		d=(a*x-y+b)/sqrt(a*a+1);
 	}

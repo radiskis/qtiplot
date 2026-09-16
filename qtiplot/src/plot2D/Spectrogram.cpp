@@ -133,7 +133,7 @@ void Spectrogram::setLevelsNumber(int levels)
 	if (levels <= 0)
 		return;
 
-	double step = fabs(range().maxValue() - range().minValue())/(double)levels;
+	double step = fabs(range().maxValue() - range().minValue())/static_cast<double>(levels);
 
 	QList<double> contourLevels;
 	for ( double level = range().minValue() + 0.5*step;
@@ -428,7 +428,7 @@ void Spectrogram::showContourLineLabels(bool show)
 void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QwtRasterData::ContourLines &contourLines) const
 {
 	QList<double> levels = contourLevels();
-    const int numLevels = (int)levels.size();
+    const int numLevels = static_cast<int>(levels.size());
     for (int l = 0; l < numLevels; l++){
         const double level = levels[l];
 
@@ -442,7 +442,7 @@ void Spectrogram::drawContourLines (QPainter *p, const QwtScaleMap &xMap, const 
         p->setPen(pen);
 
         const QPolygonF &lines = contourLines[level];
-        for ( int i = 0; i < (int)lines.size(); i += 2 ){
+        for ( int i = 0; i < static_cast<int>(lines.size()); i += 2 ){
             const QPointF p1( xMap.transform(lines[i].x()),
                 yMap.transform(lines[i].y()) );
             const QPointF p2( xMap.transform(lines[i + 1].x()),
@@ -477,7 +477,7 @@ void Spectrogram::updateLabels(QPainter *p, const QwtScaleMap &, const QwtScaleM
 		int dx = int((d_labels_x_offset + mrk->xLabelOffset())*0.01*size.height());
 		int dy = -int(((d_labels_y_offset + mrk->yLabelOffset())*0.01 + 0.5)*size.height());
 
-		int i = (int)lines.size()/2;
+		int i = static_cast<int>(lines.size())/2;
 		double x = lines[i].x();
 		double y = lines[i].y();
 
@@ -648,8 +648,8 @@ void Spectrogram::moveLabel(const QPoint& pos)
 	int d_y = pos.y() - d_graph->transform(y_axis, d_click_pos_y);
 
 	int height = d_selected_label->label().textSize().height();
-	double x_offset = d_selected_label->xLabelOffset() + d_x*100.0/(double)height;
-    double y_offset = d_selected_label->yLabelOffset() - d_y*100.0/(double)height;
+	double x_offset = d_selected_label->xLabelOffset() + d_x*100.0/static_cast<double>(height);
+    double y_offset = d_selected_label->yLabelOffset() - d_y*100.0/static_cast<double>(height);
 
 	d_selected_label->setLabelOffset(x_offset, y_offset);
 
