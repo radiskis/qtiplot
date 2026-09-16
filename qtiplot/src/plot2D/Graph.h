@@ -252,16 +252,16 @@ class Graph: public QwtPlot, public Registered<Graph>
 		//! Re-apply speed mode to every curve of this layer
 		void applySpeedModeToCurves(bool forExport = false);
 
-		int speedModeMaxPoints(){return d_speed_mode_points;};
-		double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;};
+		int speedModeMaxPoints() const {return d_speed_mode_points;};
+		double getDouglasPeukerTolerance() const {return d_Douglas_Peuker_tolerance;};
 
-		AxisTitlePolicy axisTitlePolicy(){return d_axis_title_policy;};
+		AxisTitlePolicy axisTitlePolicy() const {return d_axis_title_policy;};
 		void setAxisTitlePolicy(const AxisTitlePolicy& policy){d_axis_title_policy = policy;};
 
-		bool hasSynchronizedScaleDivisions(){return d_synchronize_scales;};
+		bool hasSynchronizedScaleDivisions() const {return d_synchronize_scales;};
 		void setSynchronizedScaleDivisions(bool on){d_synchronize_scales = on;};
 
-		bool clipDataToFrame(){return d_clip_data;}
+		bool clipDataToFrame() const {return d_clip_data;}
 		void setClipDataToFrame(bool on){d_clip_data = on;}
 
 		QRectF pageGeometry(){return d_page_rect;}
@@ -320,13 +320,13 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void updateCurvesData(Table* w, const QString& yColName);
 		void reloadCurvesData();
 
-		int curveCount(){return d_curves.size();};
+		int curveCount() const {return d_curves.size();};
 		bool validCurvesDataSize();
 		double selectedXStartValue();
 		double selectedXEndValue();
 
 		//! Map curve pointer to index.
-		int curveIndex(QwtPlotItem *c){return d_curves.indexOf(c);};
+		int curveIndex(QwtPlotItem *c) const {return d_curves.indexOf(c);};
 		int curveIndex(const QwtPlotItem *c) const { return d_curves.indexOf(const_cast<QwtPlotItem *>(c)); };
 		//! map curve title to index
 		int curveIndex(const QString &);

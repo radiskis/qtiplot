@@ -218,26 +218,26 @@ public:
 	static double fromTime(const QTime& t);
 
 public slots:
-	MyTable* table(){return d_table;};
+	MyTable* table() const {return d_table;};
 	QUndoStack *undoStack() const override {return d_undo_stack;};
 	void pushUndoCommand(QUndoCommand *cmd);
 	size_t undoMemoryUsage() const;
 	void copy(Table *m, bool values = true);
-	int numRows();
-	int numCols();
+	int numRows() const;
+	int numCols() const;
 	void setNumRows(int rows);
 	void setNumCols(int cols);
 	void resizeRows(int);
 	void resizeCols(int);
 
 	//! Return the value of the cell as a double
-	double cell(int row, int col);
+	double cell(int row, int col) const;
 	void setCell(int row, int col, double val, bool pushUndo = true);
 
-	QString text(int row, int col);
-	QStringList columnsList();
-	QStringList colNames(){return col_label;}
-	QString colName(int col);
+	QString text(int row, int col) const;
+	QStringList columnsList() const;
+	QStringList colNames() const {return col_label;}
+	QString colName(int col) const;
 	void setColName(int col, const QString& text, bool enumerateRight = false, bool warn = true);
 	void setColNames(int startCol, const QStringList& names);
 	QString colLabel(int col);

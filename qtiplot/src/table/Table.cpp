@@ -1375,7 +1375,7 @@ void Table::setColumnWidth(int col, int width, bool pushUndo)
 	emit modifiedWindow(this);
 }
 
-QString Table::colName(int col)
+QString Table::colName(int col) const
 {//returns the table name + horizontal header text
 	if (col<0 || col >= col_label.count())
 		return QString();
@@ -1515,7 +1515,7 @@ QStringList Table::selectedYLabels()
 	return names;
 }
 
-QStringList Table::columnsList()
+QStringList Table::columnsList() const
 {
 	QStringList names;
 	for (int i=0;i<d_table->numCols();i++)
@@ -2595,12 +2595,12 @@ void Table::sortColDesc()
 	sortColumns(selectedColumns(), 0, 1);
 }
 
-int Table::numRows()
+int Table::numRows() const
 {
 	return d_table->numRows();
 }
 
-int Table::numCols()
+int Table::numCols() const
 {
 	return d_table->numCols();
 }
@@ -2640,7 +2640,7 @@ int Table::nonEmptyRows()
 	return r;
 }
 
-double Table::cell(int row, int col)
+double Table::cell(int row, int col) const
 {
 	if (col < 0 || col >= d_table->numCols() || row < 0 || row >= d_table->numRows())
 		return 0.0;
@@ -2669,7 +2669,7 @@ void Table::setCell(int row, int col, double val, bool pushUndo)
 	setText(row, col, locale().toString(val, format, prec), pushUndo, &val);
 }
 
-QString Table::text(int row, int col)
+QString Table::text(int row, int col) const
 {
 	return d_table->text(row, col);
 }

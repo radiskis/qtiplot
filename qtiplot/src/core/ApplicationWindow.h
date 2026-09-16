@@ -224,10 +224,10 @@ public:
 		return qobject_cast<T *>(const_cast<ApplicationWindow *>(this)->activeWindow(NoWindow));
 	}
 	void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
-	QMdiArea* workspace(){return d_workspace;};
+	QMdiArea* workspace() const {return d_workspace;};
     void setVisible(bool visible) override;
 
-	int matrixUndoStackSize(){return d_matrix_undo_stack_size;};
+	int matrixUndoStackSize() const {return d_matrix_undo_stack_size;};
 	void setMatrixUndoStackSize(int size);
 	int tableUndoStackSize() const { return d_table_undo_stack_size; }
 	void setTableUndoStackSize(int size);
