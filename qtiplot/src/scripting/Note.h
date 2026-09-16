@@ -58,7 +58,7 @@ public:
 	int tabs(){return d_tab_widget->count();};
     void renameTab(int, const QString&);
 
-	void save(const QString& fn, const QString &info, bool = false) override;
+	bool save(const QString& fn, const QString &info, bool = false) override;
 	void restore(const QStringList&, int fileVersion, bool fromTemplate = false) override;
 
 public slots:
@@ -93,7 +93,7 @@ public slots:
 	void currentEditorChanged();
 
 private:
-	void saveTab(int index, const QString &fn);
+	bool saveTab(int index, const QString &fn);
 
 	ScriptingEnv *d_env = nullptr;
 	QWidget *d_frame = nullptr;

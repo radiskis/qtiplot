@@ -51,7 +51,7 @@ public:
     // Serialization
     // Serialization
     QString saveToString();
-    void save(const QString &fn, const QString &geometry, bool = false) override;
+    bool save(const QString &fn, const QString &geometry, bool = false) override;
     static PolarGraph* restore(ApplicationWindow* app, const QStringList& lst);
 
 public slots:

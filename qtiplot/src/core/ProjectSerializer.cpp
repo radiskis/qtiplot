@@ -1750,8 +1750,14 @@ bool ProjectSerializer::saveFolder(Folder *folder, const QString& fn, bool compr
 	}
 	f.close();
 
-	for (MdiSubWindow *w : lst)
-		w->save(tempFn, app->windowGeometryInfo(w));
+	for (MdiSubWindow *w : lst){
+		if (!w->save(tempFn, app->windowGeometryInfo(w))){
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(app, QObject::tr("QtiPlot - File save error"), QObject::tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(w->objectName(), fn));
+			return false;
+		}
+	}
 
 	initial_depth = folder->depth();
 	dir = folder->folderBelow();
@@ -1780,8 +1786,14 @@ bool ProjectSerializer::saveFolder(Folder *folder, const QString& fn, bool compr
 		f.close();
 
 		lst = dir->windowsList();
-		for (MdiSubWindow *w : lst)
-			w->save(tempFn, app->windowGeometryInfo(w));
+		for (MdiSubWindow *w : lst){
+			if (!w->save(tempFn, app->windowGeometryInfo(w))){
+				QFile::remove(tempFn);
+				QApplication::restoreOverrideCursor();
+				QMessageBox::critical(app, QObject::tr("QtiPlot - File save error"), QObject::tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(w->objectName(), fn));
+				return false;
+			}
+		}
 
 		if (!f.open(QIODevice::Append)) {
 			QFile::remove(tempFn);

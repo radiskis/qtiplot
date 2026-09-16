@@ -2684,12 +2684,12 @@ bool Graph3D::hasAssociation(const QString& name) const
 	return false;
 }
 
-void Graph3D::save(const QString &fn, const QString &geometry, bool)
+bool Graph3D::save(const QString &fn, const QString &geometry, bool)
 {
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 	QTextStream t( &f );
 
@@ -2912,6 +2912,9 @@ void Graph3D::save(const QString &fn, const QString &geometry, bool)
 	}
 	t << "</AxesNumberFormat>\n";
 	t << "</SurfacePlot>\n";
+	t.flush();
+	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
 void Graph3D::showColorLegend(bool show)

@@ -463,7 +463,7 @@ public slots:
 
 	//! \name Saving and Restoring
 	//@{
-	void save(const QString &fn, const QString& geometry, bool = false) override;
+	bool save(const QString &fn, const QString& geometry, bool = false) override;
 	void restore(const QStringList& lst, int fileVersion, bool fromTemplate = false) override;
 
 	QString saveHeader();

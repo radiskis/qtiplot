@@ -3864,20 +3864,37 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 
 	for (QString s : tbls){
 		Table *depTable = table(s);
-		if (depTable)
-			depTable->save(tempFn, windowGeometryInfo(depTable));
+		if (depTable && !depTable->save(tempFn, windowGeometryInfo(depTable))){
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(depTable->objectName(), fn));
+			return false;
+		}
 	}
 
 	if (g){
 		Matrix *m = g->matrix();
-		if (m)
-			m->save(tempFn, windowGeometryInfo(m));
+		if (m && !m->save(tempFn, windowGeometryInfo(m))){
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(m->objectName(), fn));
+			return false;
+		}
 		Table *gTable = g->table();
-		if (gTable)
-			gTable->save(tempFn, windowGeometryInfo(gTable));
+		if (gTable && !gTable->save(tempFn, windowGeometryInfo(gTable))){
+			QFile::remove(tempFn);
+			QApplication::restoreOverrideCursor();
+			QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(gTable->objectName(), fn));
+			return false;
+		}
 	}
 
-	w->save(tempFn, windowGeometryInfo(w));
+	if (!w->save(tempFn, windowGeometryInfo(w))){
+		QFile::remove(tempFn);
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error writing window <b>%1</b> to <b>%2</b>.").arg(w->objectName(), fn));
+		return false;
+	}
 
 	if (compress)
 		file_compress(tempFn.toUtf8().data(), (char*)"wb9");
@@ -4050,7 +4067,11 @@ void ApplicationWindow::saveAsTemplate(MdiSubWindow* w, const QString& fileName)
 	t << "QtiPlot " + QString::number(maj_version)+"."+ QString::number(min_version)+"."+
 				QString::number(patch_version) + " template file\n";
 	f.close();
-	w->save(fn, windowGeometryInfo(w), true);
+	if (!w->save(fn, windowGeometryInfo(w), true)){
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(this, tr("QtiPlot - File save error"), tr("Error saving template <b>%1</b>.").arg(fn));
+		return;
+	}
 	QApplication::restoreOverrideCursor();
 }
 

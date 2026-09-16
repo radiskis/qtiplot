@@ -250,12 +250,12 @@ void Note::modifiedNote()
 	emit modifiedWindow(this);
 }
 
-void Note::save(const QString &fn, const QString &info, bool)
+bool Note::save(const QString &fn, const QString &info, bool)
 {
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 	QTextStream t( &f );
 	t.setEncoding(QStringConverter::Utf8);
@@ -269,23 +269,29 @@ void Note::save(const QString &fn, const QString &info, bool)
 
 	t.flush();
 	f.close();
-	for (int i = 0; i < tabs(); i++)
-		saveTab(i, fn);
+	if (t.status() != QTextStream::Ok)
+		return false;
+
+	for (int i = 0; i < tabs(); i++){
+		if (!saveTab(i, fn))
+			return false;
+	}
 
 	if (!f.open(QIODevice::Append))
-		return;
+		return false;
 
 	t.setDevice(&f);
 	t << "</note>\n";
 	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
-void Note::saveTab(int index, const QString &fn)
+bool Note::saveTab(int index, const QString &fn)
 {
 	QFile f(fn);
 	if (!f.open(QIODevice::Append))
-		return;
+		return false;
 
 	QTextStream t( &f );
 	t.setEncoding(QStringConverter::Utf8);
@@ -300,6 +306,7 @@ void Note::saveTab(int index, const QString &fn)
 
 	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
 void Note::restore(const QStringList& data, int, bool)

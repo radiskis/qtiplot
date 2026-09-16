@@ -109,7 +109,7 @@ public:
 	// TODO:
 	//! Not implemented yet
 	virtual void restore(const QStringList&, int /*fileVersion*/, bool /*fromTemplate*/ = false){};
-	virtual void save(const QString&, const QString &, bool = false){};
+	virtual bool save(const QString&, const QString &, bool = false){ return true; };
 	virtual void exportPDF(const QString&){};
 
 	// TODO: make this return something useful

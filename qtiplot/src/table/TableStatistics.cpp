@@ -418,17 +418,15 @@ void TableStatistics::setRange(int start, int end)
 	d_end = end;
 }
 
-void TableStatistics::save(const QString& fn, const QString &geometry, bool)
+bool TableStatistics::save(const QString& fn, const QString &geometry, bool)
 {
-	if (!d_base){
-		Table::save(fn, geometry, false);
-		return;
-	}
+	if (!d_base)
+		return Table::save(fn, geometry, false);
 
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 
 	QTextStream t( &f );
@@ -460,5 +458,7 @@ void TableStatistics::save(const QString& fn, const QString &geometry, bool)
 	t << saveComments();
 	t << "WindowLabel\t" + windowLabel() + "\t" + QString::number(captionPolicy()) + "\n";
 	t << "</TableStatistics>\n";
+	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }

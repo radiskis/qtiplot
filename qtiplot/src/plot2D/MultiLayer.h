@@ -209,7 +209,7 @@ public slots:
 
 	void connectLayer(Graph *g);
 
-	void save(const QString& fn, const QString& geometry, bool = false) override;
+	bool save(const QString& fn, const QString& geometry, bool = false) override;
 
     //! \name Waterfall Plots
 	//@{

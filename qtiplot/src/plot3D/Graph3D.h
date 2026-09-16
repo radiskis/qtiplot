@@ -294,7 +294,7 @@ public slots:
 		const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
     void exportToFile(const QString& fileName);
 
-	void save(const QString& fn, const QString& geometry, bool = false) override;
+	bool save(const QString& fn, const QString& geometry, bool = false) override;
 
 	void zoomChanged(double);
 	void rotationChanged(double, double, double);

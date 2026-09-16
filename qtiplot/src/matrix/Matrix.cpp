@@ -191,12 +191,12 @@ void Matrix::setCoordinates(double xs, double xe, double ys, double ye, bool pus
 	modifiedData(this);
 }
 
-void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
+bool Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
 {
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 	bool notTemplate = !saveAsTemplate;
 
@@ -281,6 +281,7 @@ void Matrix::save(const QString &fn, const QString &info, bool saveAsTemplate)
     t << "</matrix>\n";
 	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
 void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplate)

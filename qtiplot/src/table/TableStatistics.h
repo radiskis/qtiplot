@@ -53,7 +53,7 @@ class TableStatistics : public Table
 		Table *base() const { return d_base.get(); }
 		void setBase(Table *t);
 		// saving
-		void save(const QString&, const QString &geometry, bool = false) override;
+		bool save(const QString&, const QString &geometry, bool = false) override;
 		void setColumnStatsTypes(const QList<int>& colStatTypes);
 		void setRange(int start, int end);
 

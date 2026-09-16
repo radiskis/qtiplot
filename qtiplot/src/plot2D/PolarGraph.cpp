@@ -237,12 +237,12 @@ void PolarGraph::addCurve(Table* t, const QString& rColName, const QString& thet
 }
 
 
-void PolarGraph::save(const QString &fn, const QString &geometry, bool)
+bool PolarGraph::save(const QString &fn, const QString &geometry, bool)
 {
     QFile f(fn);
     if (!f.isOpen()){
         if (!f.open(QIODevice::Append))
-            return;
+            return false;
     }
     QTextStream t( &f );
 
@@ -300,6 +300,9 @@ void PolarGraph::save(const QString &fn, const QString &geometry, bool)
     }
     
     t << "</PolarGraph>\n";
+    t.flush();
+    f.close();
+    return t.status() == QTextStream::Ok;
 }
 
 PolarGraph* PolarGraph::restore(ApplicationWindow* app, const QStringList& lst)

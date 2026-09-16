@@ -1184,12 +1184,12 @@ QString Table::saveHiddenColumnsInfo()
         return s += "\n";
 }
 
-void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate)
+bool Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate)
 {
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 	QTextStream t( &f );
 	t.setEncoding(QStringConverter::Utf8);
@@ -1238,6 +1238,7 @@ void Table::save(const QString& fn, const QString& geometry, bool saveAsTemplate
 	t << "</table>\n";
 	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
 int Table::firstXCol()

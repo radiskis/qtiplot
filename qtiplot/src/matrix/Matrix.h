@@ -259,7 +259,7 @@ public slots:
 	void restore(const QStringList &l, int fileVersion, bool fromTemplate = false) override;
 	//! Format the matrix format in a string to save it in a template file
 	//! Return a string to save the matrix in a project file (\<matrix\> section)
-	void save(const QString &, const QString &, bool saveAsTemplate = false) override;
+	bool save(const QString &, const QString &, bool saveAsTemplate = false) override;
 
 	// selection operations
 	//! Standard cut operation

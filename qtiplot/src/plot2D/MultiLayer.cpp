@@ -1724,12 +1724,12 @@ bool MultiLayer::isEmpty ()
 		return false;
 }
 
-void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTemplate)
+bool MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTemplate)
 {
 	QFile f(fn);
 	if (!f.isOpen()){
 		if (!f.open(QIODevice::Append))
-			return;
+			return false;
 	}
 	QTextStream t(&f);
 	t.setEncoding(QStringConverter::Utf8);
@@ -1765,6 +1765,7 @@ void MultiLayer::save(const QString &fn, const QString &geometry, bool saveAsTem
 	t << "</multiLayer>\n";
 	t.flush();
 	f.close();
+	return t.status() == QTextStream::Ok;
 }
 
 void MultiLayer::setMargins (int lm, int rm, int tm, int bm)
