@@ -1625,7 +1625,7 @@ void MultiLayer::resizeEvent(QResizeEvent *e)
 
 	QList<QRect> oldCanvasGeometries;
 	QList<QRectF> oldPageGeometries;
-	foreach(Graph *g, layersList()){
+	for (Graph *g : layersList()){
 		oldCanvasGeometries << g->canvas()->geometry();
 		oldPageGeometries << g->pageGeometry();
 	}
@@ -1634,7 +1634,7 @@ void MultiLayer::resizeEvent(QResizeEvent *e)
 
 	QList<QRect> newCanvasGeometries;
 	QList<QRectF> newPageGeometries;
-	foreach(Graph *g, layersList()){
+	for (Graph *g : layersList()){
 		newCanvasGeometries << g->canvas()->geometry();
 		newPageGeometries << g->pageGeometry();
 	}

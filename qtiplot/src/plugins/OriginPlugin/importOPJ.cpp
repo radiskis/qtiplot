@@ -1240,7 +1240,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				int prec = ticks[i].decimalPlaces;
 				int precisionNeeded = 0;
 				if(prec == -1){
-					foreach(double value, graph->axisScaleDiv(i).ticks(QwtScaleDiv::MajorTick)){
+					for (double value : graph->axisScaleDiv(i).ticks(QwtScaleDiv::MajorTick)){
 						QStringList decimals = QString::number(value).split(".");
 						if(decimals.size() > 1){
 							int p = decimals[1].length();
@@ -1666,7 +1666,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				mw->hideWindow(ml);
 			}
 
-			foreach (Graph *g, ml->layersList())
+			for (Graph *g : ml->layersList())
 				g->setAutoscaleFonts(mw->autoScaleFonts && _graph.state != Origin::Window::Maximized);
 		} else {
 			ml->askOnCloseEvent(false);
@@ -1860,7 +1860,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		font = plot->numbersFont();
 		font.setBold(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.xAxis.tickAxis[(layer.xAxis.position == Origin::GraphAxis::Bottom ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
-		foreach(Qwt3D::AXIS axis, xAxes){
+		for (Qwt3D::AXIS axis : xAxes){
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(xLabelColor);
@@ -1878,7 +1878,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		width = layer.yAxis.formatAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].thickness;
 		font.setBold(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.yAxis.tickAxis[(layer.yAxis.position == Origin::GraphAxis::Left ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
-		foreach(Qwt3D::AXIS axis, yAxes){
+		for (Qwt3D::AXIS axis : yAxes){
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(yLabelColor);
@@ -1896,7 +1896,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		width = layer.zAxis.formatAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].thickness;
 		font.setBold(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontBold);
 		font.setPointSize(floor(layer.zAxis.tickAxis[(layer.zAxis.position == Origin::GraphAxis::Front ? 0 : 1)].fontSize*fFontScaleFactor + 0.5));
-		foreach(Qwt3D::AXIS axis, zAxes){
+		for (Qwt3D::AXIS axis : zAxes){
 			plot->coordinateSystem()->axes[axis].setColor(axisColor);
 			plot->coordinateSystem()->axes[axis].setNumberColor(numberColor);
 			plot->coordinateSystem()->axes[axis].setLabelColor(zLabelColor);
@@ -2430,7 +2430,7 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 	l1->copyScaleDraw(l2, QwtPlot::yRight);
 	l1->setAxisLabelRotation(QwtPlot::xTop, l2->labelsRotation(QwtPlot::xTop));
 
-	foreach (FrameWidget *e, l2->enrichmentsList()){
+	for (FrameWidget *e : l2->enrichmentsList()){
 		PieLabel *l = qobject_cast<PieLabel *>(e);
 		if (l)
 			continue;
@@ -2438,10 +2438,10 @@ void ImportOPJ::convertDoubleAxesPlot(MultiLayer *ml)
 		l1->add(e);
 	}
 
-	foreach (ArrowMarker *a, l2->arrowsList())
+	for (ArrowMarker *a : l2->arrowsList())
 		l1->addArrow(a);
 
-	foreach (FrameWidget *e, l1->enrichmentsList()){
+	for (FrameWidget *e : l1->enrichmentsList()){
 		LegendWidget *l = qobject_cast<LegendWidget *>(e);
 		if (!l || !l->text().contains("(2."))
 			continue;

@@ -1236,7 +1236,7 @@ void FitDialog::chooseFitModelsFolder()
 void FitDialog::loadPlugins()
 {
     d_plugins.clear();
-	typedef char* (*fitFunc)();
+	using fitFunc = char*(*)();
 
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)

@@ -109,7 +109,7 @@ bool PluginFit::load(const QString& pluginName)
 	if (!f_eval)
 		return false;
 
-	typedef char* (*fitFunc)();
+	using fitFunc = char*(*)();
 	fitFunc fitFunction = (fitFunc) d_library.resolve("parameters");
 	if (fitFunction){
 		d_param_names = QString(fitFunction()).split(",", Qt::SkipEmptyParts);
