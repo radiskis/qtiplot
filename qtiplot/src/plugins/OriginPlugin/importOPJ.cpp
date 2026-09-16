@@ -289,9 +289,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 
             table->setHeaderColType();//update header
 
-            double **d_cells = new double* [columnCount];
-            for(int i = 0; i < columnCount; ++i)
-                d_cells[i] = new double [table->numRows()];
+            std::vector<std::vector<double>> d_cells(columnCount, std::vector<double>(table->numRows(), 0.0));
 
 			bool set_text_column = true;
 			bool has_texts = false;

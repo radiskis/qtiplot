@@ -91,8 +91,6 @@ Table::~Table()
 void Table::init(int rows, int cols)
 {
 	selectedCol=-1;
-	d_saved_cells = nullptr;
-	d_saved_cols = 0;
 	d_show_comments = false;
 	d_numeric_precision = 13;
 
@@ -2728,15 +2726,8 @@ void Table::saveToMemory()
 
 	int rows = d_table->numRows();
 	int cols = d_table->numCols();
-	d_saved_cols = cols;
 
-	d_saved_cells = new double* [cols];
-	for ( int i = 0; i < cols; ++i)
-		d_saved_cells[i] = new double [rows];
-
-	for (int col = 0; col < cols; col++){// initialize the matrix to zero
-		for (int row = 0; row < rows; row++)
-			d_saved_cells[col][row] = 0.0;}
+	d_saved_cells.assign(cols, std::vector<double>(rows, 0.0));
 
 	for (int col = 0; col < cols; col++){
 		int colType = colTypes[col];
@@ -2764,15 +2755,8 @@ void Table::saveToMemory()
 
 void Table::freeMemory()
 {
-	if (!d_saved_cells)
-		return;
-
-    for ( int i = 0; i < d_saved_cols; i++)
-        delete[] d_saved_cells[i];
-
-    delete[] d_saved_cells;
-	d_saved_cells = nullptr;
-	d_saved_cols = 0;
+	d_saved_cells.clear();
+	d_saved_cells.shrink_to_fit();
 }
 
 void Table::setTextFormat(int col, bool pushUndo)
@@ -2830,7 +2814,7 @@ void Table::setColNumericFormat(int f, int prec, int col, bool updateCells, bool
 
 			if (d_table->hasRawValue(i, col))
 				setText(i, col, locale().toString(d_table->rawValue(i, col), format, prec));
-			else if (d_saved_cells)
+			else if (!d_saved_cells.empty())
 				setText(i, col, locale().toString(d_saved_cells[col][i], format, prec));
 			else {
 				double val = locale().toDouble(t);
@@ -2895,7 +2879,7 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool
 					break;
 				}
 
-				if (d_saved_cells){
+				if (!d_saved_cells.empty()){
 					d = dateTime(d_saved_cells[col][i]);
 					if (d.isValid())
 						d_table->setText(i, col, d.toString(format));
@@ -2905,7 +2889,7 @@ bool Table::setDateFormat(const QString& format, int col, bool updateCells, bool
 	}
 	colTypes[col] = Date;
 	col_format[col] = format;
-	if (first_time){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
+	if (first_time && !d_saved_cells.empty()){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
 		for (int i = 0; i < d_table->numRows(); i++)
 			d_saved_cells[col][i] = fromDateTime(QDateTime::fromString(d_table->text(i, col), format));
 	}
@@ -2944,7 +2928,7 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool
 				break;
 			}
 
-			if (d_saved_cells){
+			if (!d_saved_cells.empty()){
 				t = ref.addMSecs(qRound(d_saved_cells[col][i]*864e5));
 				if (t.isValid())
 					d_table->setText(i, col, t.toString(format));
@@ -2953,7 +2937,7 @@ bool Table::setTimeFormat(const QString& format, int col, bool updateCells, bool
 	}
 	colTypes[col] = Time;
 	col_format[col] = format;
-	if (first_time){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
+	if (first_time && !d_saved_cells.empty()){//update d_saved_cells in case the user changes the time format before pressing OK in the column dialog
 		for (int i = 0; i < d_table->numRows(); i++)
 			d_saved_cells[col][i] = fromTime(QTime::fromString(d_table->text(i, col), format));
 	}
@@ -2986,7 +2970,7 @@ void Table::setMonthFormat(const QString& format, int col, bool updateCells, boo
         QString t = d_table->text(i,col);
         if (!t.isEmpty()){
             int day;
-            if (d_saved_cells)
+            if (!d_saved_cells.empty())
                 day = int(d_saved_cells[col][i]) % 12;
             else
                 day = t.toInt() % 12;
@@ -3029,7 +3013,7 @@ void Table::setDayFormat(const QString& format, int col, bool updateCells, bool 
         QString t = d_table->text(i,col);
         if (!t.isEmpty()){
             int day;
-            if (d_saved_cells)
+            if (!d_saved_cells.empty())
                 day = int(d_saved_cells[col][i]) % 7;
             else
                 day = t.toInt() % 7;

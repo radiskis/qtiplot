@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <vector>
 
 #include <QHeaderView>
 #include <QItemSelection>
@@ -429,7 +430,8 @@ public slots:
 	void setColumnTypes(const QList<int>& ctl);
 	void setColumnType(int col, ColType val, bool pushUndo = true);
 
-    void saveToMemory(double **cells){d_saved_cells = cells;};
+    void saveToMemory(const std::vector<std::vector<double>>& cells){ d_saved_cells = cells; }
+    void saveToMemory(std::vector<std::vector<double>>&& cells){ d_saved_cells = std::move(cells); }
 	void saveToMemory();
 	void freeMemory();
 
@@ -519,8 +521,7 @@ private:
 	QList<int> colTypes, col_plot_type;
 	int selectedCol = -1;
 	int d_numeric_precision = 13;
-	double **d_saved_cells = nullptr;
-	int d_saved_cols = 0;
+	std::vector<std::vector<double>> d_saved_cells;
 
 	QUndoStack *d_undo_stack = nullptr;
 
