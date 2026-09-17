@@ -60,7 +60,7 @@ QList<Folder*> Folder::folders()
 	return lst;
 }
 
-QStringList Folder::subfolders()
+QStringList Folder::subfolders() const
 {
 	QStringList list = QStringList();
 	QObjectList folderList = children();
@@ -71,7 +71,7 @@ QStringList Folder::subfolders()
 	return list;
 }
 
-QString Folder::path()
+QString Folder::path() const
 {
     QString s = "/" + QString(objectName()) + "/";
     Folder *parentFolder = qobject_cast<Folder*>(parent());
@@ -82,7 +82,7 @@ QString Folder::path()
     return s;
 }
 
-int Folder::depth()
+int Folder::depth() const
 {
 	int d = 0;
     Folder *parentFolder = qobject_cast<Folder*>(parent());
@@ -244,7 +244,7 @@ void Folder::removeWindow( MdiSubWindow *w )
 	}
 }
 
-QString Folder::sizeToString()
+QString Folder::sizeToString() const
 {
 	int size = 0;
 

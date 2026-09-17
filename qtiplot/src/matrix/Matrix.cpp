@@ -153,7 +153,7 @@ void Matrix::initImage(const QImage& image)
 	displayImage(image);
 }
 
-double Matrix::cell(int row, int col)
+double Matrix::cell(int row, int col) const
 {
 	return d_matrix_model->cell(row, col);
 }
@@ -163,7 +163,7 @@ void Matrix::setCell(int row, int col, double value)
 	d_matrix_model->setCell(row, col, value);
 }
 
-QString Matrix::text(int row, int col)
+QString Matrix::text(int row, int col) const
 {
     return d_matrix_model->text(row, col);
 }
@@ -978,7 +978,7 @@ int Matrix::numSelectedRows()
 	return count;
 }
 
-int Matrix::numSelectedColumns()
+int Matrix::numSelectedColumns() const
 {
 	QItemSelectionModel *selModel = d_table_view->selectionModel();
 	if (!selModel || !selModel->hasSelection())
@@ -1282,9 +1282,9 @@ void Matrix::exportEMF(const QString& fileName)
 	ep->exportMatrix(this, fileName, false);
 }
 
-bool Matrix::isEmpty()
+bool Matrix::isEmpty() const
 {
-	double *data = d_matrix_model->dataVector();
+	const double *data = d_matrix_model->dataVector();
 	int size = numRows()*numCols();
 	for (int i = 0; i < size; i++){
 		if (std::isfinite(data[i]))
@@ -1293,7 +1293,7 @@ bool Matrix::isEmpty()
 	return true;
 }
 
-void Matrix::range(double *min, double *max)
+void Matrix::range(double *min, double *max) const
 {
 	double d_min = cell(0, 0);
 	double d_max = d_min;
@@ -1315,7 +1315,7 @@ void Matrix::range(double *min, double *max)
 	*max = d_max;
 }
 
-QwtInterval Matrix::colorRange()
+QwtInterval Matrix::colorRange() const
 {
 	if (d_color_map.intensityRange().isValid())
 		return d_color_map.intensityRange();
@@ -1695,7 +1695,7 @@ void Matrix::setHeaderViewType(HeaderViewType type, bool pushUndo)
 	emit modifiedWindow(this);
 }
 
-QRectF Matrix::boundingRect()
+QRectF Matrix::boundingRect() const
 {
     int rows = numRows();
     int cols = numCols();

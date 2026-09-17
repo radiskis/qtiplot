@@ -93,9 +93,9 @@ public:
 	enum ResamplingMethod{Bilinear, Bicubic};
 
 	void setViewType(ViewType, bool renderImage = true, bool pushUndo = true);
-	ViewType viewType(){return d_view_type;};
+	ViewType viewType() const {return d_view_type;};
 
-	HeaderViewType headerViewType(){return d_header_view_type;};
+	HeaderViewType headerViewType() const {return d_header_view_type;};
 	void setHeaderViewType(HeaderViewType type, bool pushUndo = true);
 
 	QImage image();
@@ -109,17 +109,17 @@ public:
 	void exportVector(QPrinter *printer, int res = 0, bool color = true);
 	void exportEMF(const QString& fileName);
 
-	MatrixModel * matrixModel(){return d_matrix_model;};
+	MatrixModel * matrixModel() const {return d_matrix_model;};
 	QUndoStack *undoStack() const override {return d_undo_stack;};
 
-	QItemSelectionModel * selectionModel(){return d_table_view->selectionModel();};
+	QItemSelectionModel * selectionModel() const {return d_table_view->selectionModel();};
 
 	//! Return the number of rows
-	int numRows(){return d_matrix_model->rowCount();};
+	int numRows() const {return d_matrix_model->rowCount();};
 	void setNumRows(int rows){d_matrix_model->setRowCount(rows);};
 
 	//! Return the number of columns
-	int numCols(){return d_matrix_model->columnCount();};
+	int numCols() const {return d_matrix_model->columnCount();};
 	void setNumCols(int cols){d_matrix_model->setColumnCount(cols);};
 
 	void resample(int rows, int cols, const ResamplingMethod& method = Bilinear);
@@ -140,10 +140,10 @@ public:
 	void rotate90(bool clockwise = true);
 	void fft(bool inverse = false);
 
-	ColorMapType colorMapType(){return d_color_map_type;};
+	ColorMapType colorMapType() const {return d_color_map_type;};
 	void setColorMapType(ColorMapType mapType, bool pushUndo = true);
 
-	LinearColorMap colorMap(){return d_color_map;};
+	LinearColorMap colorMap() const {return d_color_map;};
 	LinearColorMap *colorMapPointer(){return &d_color_map;};
 	void setColorMap(const LinearColorMap& map, bool pushUndo = true);
 	//! Resets the color map to the one defined by the user in the Preferences dialog (3D plots tab)
@@ -175,23 +175,23 @@ public:
 
 	QString sizeToString() override;
 
-	QString xLabel(){return d_x_label;};
+	QString xLabel() const {return d_x_label;};
 	void setXLabel(const QString&);
-	QString yLabel(){return d_y_label;};
+	QString yLabel() const {return d_y_label;};
 	void setYLabel(const QString&);
-	QString zLabel(){return d_z_label;};
+	QString zLabel() const {return d_z_label;};
 	void setZLabel(const QString&);
-	QString xUnit(){return d_x_unit;};
+	QString xUnit() const {return d_x_unit;};
 	void setXUnit(const QString&);
-	QString yUnit(){return d_y_unit;};
+	QString yUnit() const {return d_y_unit;};
 	void setYUnit(const QString&);
-	QString zUnit(){return d_z_unit;};
+	QString zUnit() const {return d_z_unit;};
 	void setZUnit(const QString&);
-	QString xComment(){return d_x_comment;};
+	QString xComment() const {return d_x_comment;};
 	void setXComment(const QString&);
-	QString yComment(){return d_y_comment;};
+	QString yComment() const {return d_y_comment;};
 	void setYComment(const QString&);
-	QString zComment(){return d_z_comment;};
+	QString zComment() const {return d_z_comment;};
 	void setZComment(const QString&);
 
 public slots:
@@ -203,7 +203,7 @@ public slots:
 	void print(const QString& fileName);
 
 	//! Return the width of all columns
-	int columnsWidth(){return d_column_width;};
+	int columnsWidth() const {return d_column_width;};
 	//! Set the width of all columns
 	void setColumnsWidth(int width);
 
@@ -211,11 +211,11 @@ public slots:
 	void setDimensions(int rows, int cols);
 
 	//! Return the content of the cell as a string
-	QString text(int row, int col);
+	QString text(int row, int col) const;
 	//! Set the content of the cell as a string
 	void setText(int row, int col, const QString & new_text );
 	//! Return the value of the cell as a double
-	double cell(int row, int col);
+	double cell(int row, int col) const;
 	//! Set the value of the cell
 	void setCell(int row, int col, double value );
 
@@ -224,14 +224,14 @@ public slots:
 	 *
 	 * \sa setNumerFormat(), setTextFormat()
 	 */
-	QChar textFormat(){return txt_format;};
+	QChar textFormat() const {return txt_format;};
 	/*!
 	 * \brief Return the number precision digits
 	 *
 	 * See arguments of setNumericFormat().
 	 * \sa setNumericFormat(), setTextFormat()
 	 */
-	int precision(){return num_precision;};
+	int precision() const {return num_precision;};
 	/*!
 	 * \brief Set the number of significant digits
 	 *
@@ -251,7 +251,7 @@ public slots:
 	void setNumericFormat(const QChar & f, int prec, bool pushUndo = true);
 
 	//! Return the matrix formula
-	QString formula(){return formula_str;};
+	QString formula() const {return formula_str;};
 	//! Set the matrix forumla
 	void setFormula(const QString &s){formula_str = s;};
 
@@ -283,34 +283,34 @@ public slots:
 	//! Delte the selected columns
 	void deleteSelectedColumns();
 	//! Return the number of selected columns
-	int numSelectedColumns();
+	int numSelectedColumns() const;
 
 	//! Returns the X value corresponding to column 1
-	double xStart(){return x_start;};
+	double xStart() const {return x_start;};
 	//! Returns the X value corresponding to the last column
-	double xEnd(){return x_end;};
+	double xEnd() const {return x_end;};
 	//! Returns the Y value corresponding to row 1
-	double yStart(){return y_start;};
+	double yStart() const {return y_start;};
 	//! Returns the Y value corresponding to the last row
-	double yEnd(){return y_end;};
+	double yEnd() const {return y_end;};
 
 	//! Returns the step of the X axis
-	double dx(){return fabs(x_end - x_start)/static_cast<double>(numCols() - 1);};
+	double dx() const {return fabs(x_end - x_start)/static_cast<double>(numCols() - 1);};
 	//! Returns the step of the Y axis
-	double dy(){return fabs(y_end - y_start)/static_cast<double>(numRows() - 1);};
+	double dy() const {return fabs(y_end - y_start)/static_cast<double>(numRows() - 1);};
 
 	//! Returns the bounding rect of the matrix coordinates
-	QRectF boundingRect();
+	QRectF boundingRect() const;
 	//! Set the X and Y coordinate intervals
 	void setCoordinates(double xs, double xe, double ys, double ye, bool pushUndo = true);
 
 	//! Min and max values of the matrix.
-	void range(double *min, double *max);
+	void range(double *min, double *max) const;
 	//! Returns true if no data values were set for this matrix
-	bool isEmpty();
+	bool isEmpty() const;
 
 	//! Min and max values of the color map.
-	QwtInterval colorRange();
+	QwtInterval colorRange() const;
 
 	//! Scroll to row (row starts with 1)
 	void goToRow(int row);
@@ -322,7 +322,7 @@ public slots:
 	//! Free memory used for a matrix buffer
 	static void freeMatrixData(double **data, int rows);
 
-	int verticalHeaderWidth(){return d_table_view->verticalHeader()->width();}
+	int verticalHeaderWidth() const {return d_table_view->verticalHeader()->width();}
 
 	void copy(Matrix *m);
 	//! Tries to allocate memory for the workspace. Returns a nullptr pointer if failure.

@@ -52,10 +52,10 @@ public:
 	void init(ScriptingEnv *env);
 	void setObjectName(const QString& name);
 	void setTabStopDistance(double length);
-	int indexOf(ScriptEdit* editor);
-	ScriptEdit* editor(int index);
-	ScriptEdit* currentEditor();
-	int tabs(){return d_tab_widget->count();};
+	int indexOf(ScriptEdit* editor) const;
+	ScriptEdit* editor(int index) const;
+	ScriptEdit* currentEditor() const;
+	int tabs() const {return d_tab_widget->count();};
     void renameTab(int, const QString&);
 
 	bool save(const QString& fn, const QString &info, bool = false) override;
@@ -67,7 +67,7 @@ public slots:
 	void modifiedNote();
 
 	// ScriptEdit methods
-        QString text() { if(currentEditor()) return currentEditor()->toPlainText(); return QString();};
+        QString text() const { if(currentEditor()) return currentEditor()->toPlainText(); return QString();};
         void setText(const QString &s) { if(currentEditor()) currentEditor()->setText(s); };
         void print() override { if(currentEditor()) currentEditor()->print(); };
         void print(QPrinter *printer) override { if(currentEditor()) currentEditor()->print(printer); };
@@ -81,7 +81,7 @@ public slots:
 
 	//! Enables/Disables the line number display
 	void showLineNumbers(bool show = true);
-	bool hasLineNumbers(){return d_line_number_enabled;};
+	bool hasLineNumbers() const {return d_line_number_enabled;};
 
     void setFont(const QFont& f);
     void addTab();

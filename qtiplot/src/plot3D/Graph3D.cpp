@@ -977,7 +977,7 @@ void Graph3D::setLabelsDistance(int val)
 	}
 }
 
-QFont Graph3D::numbersFont()
+QFont Graph3D::numbersFont() const
 {
 	return sp->coordinates()->axes[X1].numberFont();
 }
@@ -1042,7 +1042,7 @@ void Graph3D::setZAxisLabelFont(const QStringList& lst)
 	sp->coordinates()->axes[Z4].setLabelFont(fnt);
 }
 
-QStringList Graph3D::axisTickLengths()
+QStringList Graph3D::axisTickLengths() const
 {
 	QStringList lst;
 	double majorl, minorl;
@@ -1335,64 +1335,64 @@ void Graph3D::setZAxisLabel(const QString& label)
 	emit modified();
 }
 
-QFont Graph3D::xAxisLabelFont()
+QFont Graph3D::xAxisLabelFont() const
 {
 	return sp->coordinates()->axes[X1].labelFont();
 }
 
-QFont Graph3D::yAxisLabelFont()
+QFont Graph3D::yAxisLabelFont() const
 {
 	return sp->coordinates()->axes[Y1].labelFont();
 }
 
-QFont Graph3D::zAxisLabelFont()
+QFont Graph3D::zAxisLabelFont() const
 {
 	return sp->coordinates()->axes[Z1].labelFont();
 }
 
-double Graph3D::xStart()
+double Graph3D::xStart() const
 {
 	double start,stop;
 	sp->coordinates()->axes[X1].limits (start,stop);
 	return start;
 }
 
-double Graph3D::xStop()
+double Graph3D::xStop() const
 {
 	double start,stop;
 	sp->coordinates()->axes[X1].limits (start,stop);
 	return stop;
 }
 
-double Graph3D::yStart()
+double Graph3D::yStart() const
 {
 	double start,stop;
 	sp->coordinates()->axes[Y1].limits (start,stop);
 	return start;
 }
 
-double Graph3D::yStop()
+double Graph3D::yStop() const
 {
 	double start,stop;
 	sp->coordinates()->axes[Y1].limits (start,stop);
 	return stop;
 }
 
-double Graph3D::zStart()
+double Graph3D::zStart() const
 {
 	double start,stop;
 	sp->coordinates()->axes[Z1].limits (start,stop);
 	return start;
 }
 
-double Graph3D::zStop()
+double Graph3D::zStop() const
 {
 	double start,stop;
 	sp->coordinates()->axes[Z1].limits(start, stop);
 	return stop;
 }
 
-QStringList Graph3D::scaleTicks()
+QStringList Graph3D::scaleTicks() const
 {
 	QStringList limits;
 	int majors,minors;
@@ -1415,13 +1415,13 @@ QStringList Graph3D::scaleTicks()
 	return limits;
 }
 
-int Graph3D::axisNumericFormat(int /*axis*/)
+int Graph3D::axisNumericFormat(int /*axis*/) const
 {
 	// return (int)sp->coordinates()->axes[axis].numericFormat();
 	return 0;
 }
 
-int Graph3D::axisNumericPrecision(int /*axis*/)
+int Graph3D::axisNumericPrecision(int /*axis*/) const
 {
 	// return sp->coordinates()->axes[axis].numericPrecision();
 	return 6;
@@ -2123,7 +2123,7 @@ void Graph3D::setMeshLineWidth(double lw)
 	sp->update();
 }
 
-int Graph3D::grids()
+int Graph3D::grids() const
 {
 	return sp->coordinates()->grids();
 }
@@ -2434,7 +2434,7 @@ bool Graph3D::eventFilter(QObject *object, QEvent *e)
 	return MdiSubWindow::eventFilter(object, e);
 }
 
-double Graph3D::barsRadius()
+double Graph3D::barsRadius() const
 {
 	if (!d_active_curve)
 		return 0.0;
@@ -2639,7 +2639,7 @@ void Graph3D::setShift(double  xVal,double  yVal,double  zVal)
 	sp->setShift(xVal, yVal, zVal);
 }
 
-Qwt3D::PLOTSTYLE Graph3D::plotStyle()
+Qwt3D::PLOTSTYLE Graph3D::plotStyle() const
 {
 	if (!d_active_curve)
 		return style_;
@@ -2647,7 +2647,7 @@ Qwt3D::PLOTSTYLE Graph3D::plotStyle()
 	return d_active_curve->plotStyle();
 }
 
-Qwt3D::FLOORSTYLE Graph3D::floorStyle()
+Qwt3D::FLOORSTYLE Graph3D::floorStyle() const
 {
 	if (d_active_curve)
 		return d_active_curve->floorStyle();
@@ -2655,12 +2655,12 @@ Qwt3D::FLOORSTYLE Graph3D::floorStyle()
 	return Qwt3D::NOFLOOR;
 }
 
-Qwt3D::COORDSTYLE Graph3D::coordStyle()
+Qwt3D::COORDSTYLE Graph3D::coordStyle() const
 {
 	return sp->coordinates()->style();
 }
 
-QString Graph3D::formula()
+QString Graph3D::formula() const
 {
 	if (d_func)
 		return d_func->function();
@@ -3088,7 +3088,7 @@ if (!sp)
 sp->setRotation(int(sp->xRotation() + 1) % 360, int(sp->yRotation() + 1) % 360, int(sp->zRotation() + 1) % 360);
 }
 
-LinearColorMap Graph3D::colorMap()
+LinearColorMap Graph3D::colorMap() const
 {
 	if (!d_active_curve)
 		return LinearColorMap();

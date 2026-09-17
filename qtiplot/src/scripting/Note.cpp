@@ -166,7 +166,7 @@ void Note::addTab()
 	connect(editor, &ScriptEdit::dirPathChanged, this, &Note::dirPathChanged);
 }
 
-int Note::indexOf(ScriptEdit* editor)
+int Note::indexOf(ScriptEdit* editor) const
 {
 	if (!editor)
 		return -1;
@@ -188,7 +188,7 @@ int Note::indexOf(ScriptEdit* editor)
 	return -1;
 }
 
-ScriptEdit* Note::editor(int index)
+ScriptEdit* Note::editor(int index) const
 {
 	if (index < 0 || index >= d_tab_widget->count())
 		return nullptr;
@@ -206,7 +206,7 @@ ScriptEdit* Note::editor(int index)
 	return nullptr;
 }
 
-ScriptEdit* Note::currentEditor()
+ScriptEdit* Note::currentEditor() const
 {
 	QWidget *w = d_tab_widget->currentWidget();
 	if (!w)

@@ -72,10 +72,10 @@ public:
 	double x(int col) const;
 	double y(int row) const;
 
-	double cell(int row, int col);
+	double cell(int row, int col) const;
 	void setCell(int row, int col, double val);
 
-	QString text(int row, int col);
+	QString text(int row, int col) const;
 	void setText(int row, int col, const QString&);
 
 	QImage renderImage();
@@ -85,6 +85,7 @@ public:
 	bool setData(const QModelIndex & index, const QVariant & value, int role) override;
 
 	double* dataVector(){return d_data;};
+	const double* dataVector() const {return d_data;};
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 	void setImage(const QImage& image);
@@ -109,7 +110,7 @@ public:
 	std::vector<double> dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	void pasteData(const double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 
-	bool hasCalculatedValues(){return d_calculated_values;}
+	bool hasCalculatedValues() const {return d_calculated_values;}
 	void setCalculatedValues(bool on = true){d_calculated_values = on;}
 
 private:

@@ -56,13 +56,13 @@ class Folder : public QObject
 public:
     Folder( Folder *parent, const QString &name );
 
-	QList<MdiSubWindow *> windowsList(){return lstWindows;};
+	QList<MdiSubWindow *> windowsList() const {return lstWindows;};
 
     void addWindow( MdiSubWindow *w );
 	void removeWindow( MdiSubWindow *w );
 
 	//! The list of subfolder names, including first generation children only
-	QStringList subfolders();
+	QStringList subfolders() const;
 
 	//! The list of subfolders
 	QList<Folder*> folders();
@@ -89,10 +89,10 @@ public:
 	Graph3D *plot3D(const QString &name, bool recursive=false);
 
 	//! The complete path of the folder in the project tree
-	QString path();
+	QString path() const;
 
 	//! The depth of the folder in the project tree
-	int depth();
+	int depth() const;
 
 	Folder *folderBelow();
 
@@ -100,22 +100,22 @@ public:
 	Folder* rootFolder();
 
 	//! Size of the folder as a string
-	QString sizeToString();
+	QString sizeToString() const;
 
-	QString birthDate(){return birthdate;};
+	QString birthDate() const {return birthdate;};
 	void setBirthDate(const QString& s){birthdate = s;};
 
-	QString modificationDate(){return modifDate;};
+	QString modificationDate() const {return modifDate;};
 	void setModificationDate(const QString& s){modifDate = s;};
 
 	//! Pointer to the corresponding QListViewItem in the main application
-	FolderListItem * folderListItem(){return myFolderListItem;};
+	FolderListItem * folderListItem() const {return myFolderListItem;};
 	void setFolderListItem(FolderListItem *it){myFolderListItem = it;};
 
-    MdiSubWindow *activeWindow(){return d_active_window;};
+    MdiSubWindow *activeWindow() const {return d_active_window;};
     void setActiveWindow(MdiSubWindow *w){d_active_window = w;};
 
-	QString logInfo(){return d_log_info;};
+	QString logInfo() const {return d_log_info;};
 	void appendLogInfo(const QString& text){d_log_info += text;};
 	void clearLogInfo(){d_log_info = QString();};
 
@@ -143,7 +143,7 @@ public:
     enum {RTTI = 1002};
     virtual int rtti() const {return static_cast<int>(RTTI);};
 
-    MdiSubWindow *window() { return myWindow; };
+    MdiSubWindow *window() const { return myWindow; };
 
 protected:
     MdiSubWindow *myWindow = nullptr;

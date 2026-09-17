@@ -207,7 +207,7 @@ d_common_axes_layout(false)
 	setAcceptDrops(true);
 }
 
-Graph *MultiLayer::layer(int num)
+Graph *MultiLayer::layer(int num) const
 {
     int index = num - 1;
     if (index < 0 || index >= graphsList.count())
@@ -284,7 +284,7 @@ void MultiLayer::activateGraph(LayerButton* button)
 	}
 }
 
-bool MultiLayer::isLayerSelected(Graph* g)
+bool MultiLayer::isLayerSelected(Graph* g) const
 {
 	if (!g || !d_layers_selector)
 		return false;
@@ -353,7 +353,7 @@ void MultiLayer::setActiveLayer(Graph* g)
 	}
 }
 
-QRect MultiLayer::canvasChildrenRect()
+QRect MultiLayer::canvasChildrenRect() const
 {
 	QRect r = QRect();
 	for (Graph *g : graphsList)
@@ -1000,7 +1000,7 @@ void MultiLayer::setRows(int r)
 		d_rows = r;
 }
 
-QList<Graph*> MultiLayer::stackOrderedLayersList()
+QList<Graph*> MultiLayer::stackOrderedLayersList() const
 {
 	QList<Graph*> gLst;
 	QObjectList lst = d_canvas->children();//! this list is sorted according to the stack order
@@ -1716,7 +1716,7 @@ void MultiLayer::wheelEvent(QWheelEvent *e)
 	e->ignore();
 }
 
-bool MultiLayer::isEmpty ()
+bool MultiLayer::isEmpty () const
 {
 	if (graphsList.count() <= 0)
 		return true;
@@ -1933,7 +1933,7 @@ QString MultiLayer::sizeToString()
 	return QString::number(static_cast<double>(size)/1024.0, 'f', 1) + " " + tr("kB");
 }
 
-Graph* MultiLayer::layerAt(const QPoint& pos)
+Graph* MultiLayer::layerAt(const QPoint& pos) const
 {
     for (Graph *g : graphsList){
 		if (g->geometry().contains(pos))
@@ -1942,7 +1942,7 @@ Graph* MultiLayer::layerAt(const QPoint& pos)
 	return nullptr;
 }
 
-bool MultiLayer::hasSelectedLayers()
+bool MultiLayer::hasSelectedLayers() const
 {
     if (d_layers_selector)
         return true;

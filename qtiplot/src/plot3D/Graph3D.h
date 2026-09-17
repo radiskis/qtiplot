@@ -95,12 +95,12 @@ public:
 
 	static Graph3D* restore(ApplicationWindow* app, const QStringList &lst, int fileVersion);
 
-	Qwt3D::SurfacePlot* surface(){return sp;};
+	Qwt3D::SurfacePlot* surface() const {return sp;};
 
-	bool scaleOnPrint(){return d_scale_on_print;};
+	bool scaleOnPrint() const {return d_scale_on_print;};
 	void setScaleOnPrint(bool on){d_scale_on_print = on;};
 
-	bool printCropmarksEnabled(){return d_print_cropmarks;};
+	bool printCropmarksEnabled() const {return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
 	Qwt3D::SHADINGSTYLE shading() const {return d_shading;}//!< Returns shading style
@@ -117,7 +117,7 @@ public slots:
 						int columns, int rows, bool uPeriodic, bool vPeriodic);
 	void insertNewData(Table* table, const QString& colName);
 
-	Matrix * matrix(){return d_matrix;};
+	Matrix * matrix() const {return d_matrix;};
 	void addMatrixData(Matrix* m);//used to plot matrixes
 	void addMatrixData(Matrix* m,double xl,double xr,double yl,double yr,double zl,double zr);
 	void updateMatrixData(Matrix* m);
@@ -129,10 +129,10 @@ public slots:
 	void loadData(Table* table, int xCol, int yCol, int zCol,
 				double xl=0.0, double xr=0.0, double yl=0.0, double yr=0.0, double zl=0.0, double zr=0.0, int axis = -1);
 
-    PlotType tablePlotType(){return d_table_plot_type;};
+    PlotType tablePlotType() const {return d_table_plot_type;};
 
 	void clearData();
-	bool hasData(){return sp->hasData();};
+	bool hasData() const {return sp->hasData();};
 
 	void updateData(Table* table);
 	void updateDataXY(Table* table, int xCol, int yCol);
@@ -141,13 +141,13 @@ public slots:
 
 	//! \name User Functions
 	//@{
-	UserParametricSurface *parametricSurface(){return d_surface;};
+	UserParametricSurface *parametricSurface() const {return d_surface;};
 	//@}
 
 	//! \name User Functions
 	//@{
-	UserFunction* userFunction(){return d_func;};
-	QString formula();
+	UserFunction* userFunction() const {return d_func;};
+	QString formula() const;
 	//@}
 
 	//! \name Event Handlers
@@ -164,10 +164,10 @@ public slots:
 	void setFramed();
 	void setBoxed();
 	void setNoAxes();
-	bool isOrthogonal(){return sp->ortho();};
+	bool isOrthogonal() const {return sp->ortho();};
 	void setOrthogonal(bool on = true){sp->setOrtho(on);};
 
-	QStringList axesLabels(){return labels;};
+	QStringList axesLabels() const {return labels;};
 	void setAxesLabels(const QStringList& lst);
 	void resetAxesLabels();
 
@@ -175,9 +175,9 @@ public slots:
     void setYAxisLabel(const QString&);
 	void setZAxisLabel(const QString&);
 
-	QFont xAxisLabelFont();
-	QFont yAxisLabelFont();
-	QFont zAxisLabelFont();
+	QFont xAxisLabelFont() const;
+	QFont yAxisLabelFont() const;
+	QFont zAxisLabelFont() const;
 
 	void setXAxisLabelFont(const QFont& fnt);
 	void setYAxisLabelFont(const QFont& fnt);
@@ -187,21 +187,21 @@ public slots:
 	void setYAxisLabelFont(const QStringList& lst);
 	void setZAxisLabelFont(const QStringList& lst);
 
-	QFont numbersFont();
+	QFont numbersFont() const;
 	void setNumbersFont(const QFont& font);
 
-	double xStart();
-	double xStop();
-	double yStart();
-	double yStop();
-	double zStart();
-	double zStop();
+	double xStart() const;
+	double xStop() const;
+	double yStart() const;
+	double yStop() const;
+	double zStart() const;
+	double zStop() const;
 
-	int axisType(int axis){return scaleType[axis];};
+	int axisType(int axis) const {return scaleType[axis];};
 	void setAxisType(int axis, int type);
 
-	int axisNumericFormat(int axis);
-	int axisNumericPrecision(int axis);
+	int axisNumericFormat(int axis) const;
+	int axisNumericPrecision(int axis) const;
 	void setAxisNumericFormat(int axis, int format, int precision);
 
 	void setScales(double xl, double xr, double yl, double yr, double zl, double zr, int axis = -1);
@@ -209,7 +209,7 @@ public slots:
 				  		double zl, double zr, int xcol, int ycol);
 	void updateScalesFromMatrix(double xl,double xr,double yl,double yr,double zl,double zr);
 
-	QStringList scaleTicks();
+	QStringList scaleTicks() const;
 	void setTicks(const QStringList& options);
 
 	void setXAxisTickLength(double majorLength, double minorLength);
@@ -218,9 +218,9 @@ public slots:
 
 	void setAxisTickLength(int axis, double majorLength, double minorLength);
 	void setLabelsDistance(int val);
-	int labelsDistance(){return labelsDist;};
+	int labelsDistance() const {return labelsDist;};
 
-	QStringList axisTickLengths();
+	QStringList axisTickLengths() const;
 	void setTickLengths(const QStringList& lst);
 	//@}
 
@@ -237,12 +237,12 @@ public slots:
 	void setEmptyFloor();
 
 	void setMeshLineWidth(double lw);
-	double meshLineWidth(){if (d_active_curve) return d_active_curve->meshLineWidth(); return 0.0;};
+	double meshLineWidth() const {if (d_active_curve) return d_active_curve->meshLineWidth(); return 0.0;};
 	//@}
 
 	//! \name Grid
 	//@{
-	int grids();
+	int grids() const;
 	void setGrid(int s, bool b);
 	void setGrid(int grids);
 
@@ -262,24 +262,24 @@ public slots:
 	void setScale(double  xVal,double  yVal,double  zVal);
 	void setShift(double  xVal,double  yVal,double  zVal);
 
-	double xRotation(){return sp->xRotation();};
-	double yRotation(){return sp->yRotation();};
-	double zRotation(){return sp->zRotation();};
+	double xRotation() const {return sp->xRotation();};
+	double yRotation() const {return sp->yRotation();};
+	double zRotation() const {return sp->zRotation();};
 
-	double xScale(){return sp->xScale();};
-	double yScale(){return sp->yScale();};
-	double zScale(){return sp->zScale();};
+	double xScale() const {return sp->xScale();};
+	double yScale() const {return sp->yScale();};
+	double zScale() const {return sp->zScale();};
 
-	double xShift(){return sp->xShift();};
-	double yShift(){return sp->yShift();};
-	double zShift(){return sp->zShift();};
+	double xShift() const {return sp->xShift();};
+	double yShift() const {return sp->yShift();};
+	double zShift() const {return sp->zShift();};
 
-	double zoom(){return sp->zoom();};
+	double zoom() const {return sp->zoom();};
 	void setZoom(double val);
 
-	Qwt3D::PLOTSTYLE plotStyle();
-	Qwt3D::FLOORSTYLE floorStyle();
-	Qwt3D::COORDSTYLE coordStyle();
+	Qwt3D::PLOTSTYLE plotStyle() const;
+	Qwt3D::FLOORSTYLE floorStyle() const;
+	Qwt3D::COORDSTYLE coordStyle() const;
 
 	void print() override;
 	void print(QPrinter *printer) override;
@@ -310,17 +310,17 @@ public slots:
 
 	void changeTransparency(double t);
 	void setTransparency(double t);
-	double transparency(){return d_alpha;};
+	double transparency() const {return d_alpha;};
 
-	QColor meshColor(){return meshCol;};
-	QColor axesColor(){return axesCol;};
-	QColor labelColor(){return labelsCol;};
-	QColor numColor(){return numCol;};
-	QColor bgColor(){return bgCol;};
-	QColor gridColor(){return gridCol;};
+	QColor meshColor() const {return meshCol;};
+	QColor axesColor() const {return axesCol;};
+	QColor labelColor() const {return labelsCol;};
+	QColor numColor() const {return numCol;};
+	QColor bgColor() const {return bgCol;};
+	QColor gridColor() const {return gridCol;};
 
-	QString colorMapFile(){return d_color_map_file;};
-	LinearColorMap colorMap();
+	QString colorMapFile() const {return d_color_map_file;};
+	LinearColorMap colorMap() const;
 	LinearColorMap *colorMapPointer();
 
 	static bool openColorMapFile(ColorVector& cv, QString fname);
@@ -335,10 +335,10 @@ public slots:
 
 	//! \name Title
 	//@{
-	QFont titleFont(){return titleFnt;};
+	QFont titleFont() const {return titleFnt;};
 	void setTitleFont(const QFont& font);
-	QString plotTitle(){return title;};
-	QColor titleColor(){return titleCol;};
+	QString plotTitle() const {return title;};
+	QColor titleColor() const {return titleCol;};
 	void setTitle(const QStringList& lst);
 	void setTitle(const QString& s, const QColor& color = QColor(Qt::black), const QFont& font = QFont());
 	//@}
@@ -346,13 +346,13 @@ public slots:
 	//! \name Resolution
 	//@{
 	void setResolution(int r);
-	int resolution(){if (d_active_curve) return d_active_curve->resolution(); return 0;};
+	int resolution() const {if (d_active_curve) return d_active_curve->resolution(); return 0;};
 	//@}
 
 	//! \name Legend
 	//@{
 	void showColorLegend(bool show = true);
-	bool isLegendOn(){return legendOn;};
+	bool isLegendOn() const {return legendOn;};
 	//@}
 
 	void setOptions(bool legend, int r, int dist);
@@ -361,55 +361,55 @@ public slots:
 
 	//! \name Bars
 	//@{
-	double barsRadius();
+	double barsRadius() const;
 	void setBarRadius(double rad);
-	bool barLines(){return d_bar_lines;};
+	bool barLines() const {return d_bar_lines;};
 	void setBarLines(bool lines = true);
-	bool filledBars(){return d_filled_bars;};
+	bool filledBars() const {return d_filled_bars;};
 	void setFilledBars(bool filled = true);
 	//@}
 
 	//! \name Scatter Plots
 	//@{
-	double pointsSize(){return d_point_size;};
-	bool smoothPoints(){return d_smooth_points;};
+	double pointsSize() const {return d_point_size;};
+	bool smoothPoints() const {return d_smooth_points;};
 	void setDotOptions(double size, bool smooth);
 
-	bool smoothCrossHair(){return crossHairSmooth;};
-	bool boxedCrossHair(){return crossHairBoxed;};
-	double crossHairRadius(){return crossHairRad;};
-	double crossHairLinewidth(){return crossHairLineWidth;};
+	bool smoothCrossHair() const {return crossHairSmooth;};
+	bool boxedCrossHair() const {return crossHairBoxed;};
+	double crossHairRadius() const {return crossHairRad;};
+	double crossHairLinewidth() const {return crossHairLineWidth;};
 	void setCrossOptions(double rad, double linewidth, bool smooth, bool boxed);
 	void setCrossStyle();
 
-	double coneRadius(){return conesRad;};
-	int coneQuality(){return conesQuality;};
+	double coneRadius() const {return conesRad;};
+	int coneQuality() const {return conesQuality;};
 	void setConeOptions(double rad, int quality);
 	void setConeStyle();
 
-	PointStyle pointType(){return pointStyle;};
+	PointStyle pointType() const {return pointStyle;};
 	//@}
 
-	Table* table(){return d_table;};
+	Table* table() const {return d_table;};
 	Matrix* functionMatrix();
 	void showWorksheet();
 	void setPlotAssociation(const QString& s){plotAssociation = s;};
 	bool hasAssociation(const QString& name) const;
 
 	void setAntialiasing(bool smooth = true);
-	bool antialiasing(){if (d_active_curve) return d_active_curve->smoothDataMesh(); return false;};
+	bool antialiasing() const {if (d_active_curve) return d_active_curve->smoothDataMesh(); return false;};
 
 	//! Used for the animation: rotates the scene with 1/360 degrees
 	void rotate();
 	void animate(bool on = true);
-	bool isAnimated(){return d_timer->isActive();};
+	bool isAnimated() const {return d_timer->isActive();};
 
     void findBestLayout();
-	bool autoscale(){return d_autoscale;};
+	bool autoscale() const {return d_autoscale;};
 	//! Enables/Disables autoscaling using findBestLayout().
 	void setAutoscale(bool on = true){d_autoscale = on;};
 
-	Qwt3D::CoordinateSystem* coordinateSystem() {return sp->coordinates();};
+	Qwt3D::CoordinateSystem* coordinateSystem() const {return sp->coordinates();};
 	void setScale(int axis, double start, double end, int majorTicks, int minorTicks, Qwt3D::SCALETYPE type);
 
 signals:

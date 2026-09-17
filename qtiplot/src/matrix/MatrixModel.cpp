@@ -178,7 +178,7 @@ void MatrixModel::setDimensions(int rows, int cols)
 	QApplication::restoreOverrideCursor();
 }
 
-double MatrixModel::cell(int row, int col)
+double MatrixModel::cell(int row, int col) const
 {
 	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return NAN;
@@ -194,7 +194,7 @@ void MatrixModel::setCell(int row, int col, double val)
 	d_data[d_cols*row + col] = val;
 }
 
-QString MatrixModel::text(int row, int col)
+QString MatrixModel::text(int row, int col) const
 {
 	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
 		return QString();

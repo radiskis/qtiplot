@@ -72,12 +72,12 @@ public:
     MultiLayer (ApplicationWindow* parent = nullptr, int layers = 1, int rows = 1, int cols = 1, const QString& label = "", const char* name=nullptr, Qt::WindowFlags f= {});
 	~MultiLayer() override;
 
-	QList<Graph *> layersList(){return graphsList;};
-	QList<Graph*> stackOrderedLayersList();
-	Graph *layer(int num);
-	int layerIndex(Graph *g){return graphsList.indexOf(g);};
+	QList<Graph *> layersList() const {return graphsList;};
+	QList<Graph*> stackOrderedLayersList() const;
+	Graph *layer(int num) const;
+	int layerIndex(Graph *g) const {return graphsList.indexOf(g);};
 
-    int numLayers(){return graphsList.size();};
+    int numLayers() const {return graphsList.size();};
     void setNumLayers(int n);
 
 	void copy(MultiLayer* ml);
@@ -87,18 +87,18 @@ public:
 	enum AlignPolicy{AlignLayers = 0, AlignCanvases};
 	enum SizePolicy{Expanding = 0, UserSize};
 
-	bool scaleLayersOnPrint(){return d_scale_on_print;};
+	bool scaleLayersOnPrint() const {return d_scale_on_print;};
 	void setScaleLayersOnPrint(bool on){d_scale_on_print = on;};
 
-	bool printCropmarksEnabled(){return d_print_cropmarks;};
+	bool printCropmarksEnabled() const {return d_print_cropmarks;};
 	void printCropmarks(bool on){d_print_cropmarks = on;};
 
-	bool scaleLayersOnResize(){return d_scale_layers;};
+	bool scaleLayersOnResize() const {return d_scale_layers;};
 	void setScaleLayersOnResize(bool ok){d_scale_layers = ok;};
 
-	QWidget *canvas(){return d_canvas;};
-	QRect canvasRect(){return d_canvas->rect();};
-	QRect canvasChildrenRect();
+	QWidget *canvas() const {return d_canvas;};
+	QRect canvasRect() const {return d_canvas->rect();};
+	QRect canvasChildrenRect() const;
 	QString sizeToString() override;
 	QUndoStack *undoStack() const override {return d_undo_stack;};
 
@@ -108,23 +108,23 @@ public:
 
 	void plotProfiles(Matrix* m);
 
-	QHBoxLayout *toolBox(){return toolbuttonsBox;};
+	QHBoxLayout *toolBox() const {return toolbuttonsBox;};
 
-	AlignPolicy alignPolicy(){return d_align_policy;};
+	AlignPolicy alignPolicy() const {return d_align_policy;};
 	void setAlignPolicy(const AlignPolicy& policy){d_align_policy = policy;};
 
-	SizePolicy sizePolicy(){return d_size_policy;};
+	SizePolicy sizePolicy() const {return d_size_policy;};
 	void setSizePolicy(const SizePolicy& policy){d_size_policy = policy;};
 
 	void setCommonLayerAxes(bool verticalAxis = true, bool horizontalAxis = true);
 	void linkXLayerAxes(bool link = true);
-	bool hasLinkedXLayerAxes(){return d_link_x_axes;};
-	bool hasCommonAxes(){return d_common_axes_layout;};
+	bool hasLinkedXLayerAxes() const {return d_link_x_axes;};
+	bool hasCommonAxes() const {return d_common_axes_layout;};
 	void setCommonAxesLayout(bool on = true){d_common_axes_layout = on;};
 
 	void deselect();
-	bool hasSelectedLayers();
-	bool isLayerSelected(Graph*);
+	bool hasSelectedLayers() const;
+	bool isLayerSelected(Graph*) const;
 
 	void adjustLayersToCanvasSize();
 	void setLayerButtonSpeedMode(Graph *g, bool on);
@@ -132,18 +132,18 @@ public:
 public slots:
 	Graph* addLayer(int x = 0, int y = 0, int width = 0, int height = 0, bool = false);
 
-	bool isEmpty();
+	bool isEmpty() const;
     bool removeLayer(Graph *g);
     bool removeActiveLayer();
 	void confirmRemoveLayer();
 
-	Graph* activeLayer(){return active_graph;};
+	Graph* activeLayer() const {return active_graph;};
 	void setActiveLayer(Graph* g);
 	void activateGraph(LayerButton* button);
 	void selectLayerCanvas(Graph* g);
 
     //! Returns the layer at the given position; returns 0 if there is no such layer.
-	Graph* layerAt(const QPoint& pos);
+	Graph* layerAt(const QPoint& pos) const;
 	void setGraphGeometry(int x, int y, int w, int h);
 
 	void findBestLayout(int &rows, int &cols);
@@ -153,27 +153,27 @@ public slots:
 	bool swapLayers(int src, int dest);
 	void updateLayersLayout(Graph *);
 
-	int getRows(){return d_rows;};
+	int getRows() const {return d_rows;};
 	void setRows(int r);
 
-	int getCols(){return d_cols;};
+	int getCols() const {return d_cols;};
 	void setCols(int c);
 
-	int colsSpacing(){return colsSpace;};
-	int rowsSpacing(){return rowsSpace;};
+	int colsSpacing() const {return colsSpace;};
+	int rowsSpacing() const {return rowsSpace;};
 	void setSpacing (int rgap, int cgap);
 
-	int leftMargin(){return left_margin;};
-	int rightMargin(){return right_margin;};
-	int topMargin(){return top_margin;};
-	int bottomMargin(){return bottom_margin;};
+	int leftMargin() const {return left_margin;};
+	int rightMargin() const {return right_margin;};
+	int topMargin() const {return top_margin;};
+	int bottomMargin() const {return bottom_margin;};
 	void setMargins (int lm, int rm, int tm, int bm);
 
-	QSize layerCanvasSize(){return QSize(l_canvas_width, l_canvas_height);};
+	QSize layerCanvasSize() const {return QSize(l_canvas_width, l_canvas_height);};
 	void setLayerCanvasSize (int w, int h);
 
-	int horizontalAlignement(){return hor_align;};
-	int verticalAlignement(){return vert_align;};
+	int horizontalAlignement() const {return hor_align;};
+	int verticalAlignement() const {return vert_align;};
 	void setAlignement (int ha, int va);
 
 	//! \name Print and Export
@@ -217,8 +217,8 @@ public slots:
     void reverseWaterfallOrder();
     void showWaterfallFillDialog();
 	void updateWaterfalls();
-	bool isWaterfallPlot(){return d_is_waterfall_plot;}
-	QColor waterfallFillColor(){return d_waterfall_fill_color;}
+	bool isWaterfallPlot() const {return d_is_waterfall_plot;}
+	QColor waterfallFillColor() const {return d_waterfall_fill_color;}
 	void setWaterfallFillColor(const QColor& c);
     //@}
 
