@@ -1332,7 +1332,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 
 	double** data = static_cast<double **>(malloc(rows * sizeof (double*)));
 	if(!data){
-		QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		QMessageBox::critical(nullptr, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
 		return nullptr;
 	}
@@ -1345,7 +1345,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
 					free(data[j]);
 				free(data);
 
-				QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+				QMessageBox::critical(nullptr, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 				tr("Not enough memory, operation aborted!"));
 				return nullptr;
 			}
@@ -1360,7 +1360,7 @@ double** Matrix::allocateMatrixData(int rows, int columns, bool init)
                 free(data[j]);
 		    free(data);
 
-			QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+			QMessageBox::critical(nullptr, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 			tr("Not enough memory, operation aborted!"));
 			return nullptr;
 		}

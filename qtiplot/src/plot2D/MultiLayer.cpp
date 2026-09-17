@@ -1059,7 +1059,7 @@ QPixmap MultiLayer::canvasPixmap(const QSize& size, double scaleFontsFactor, boo
 void MultiLayer::exportToFile(const QString& fileName)
 {
 	if ( fileName.isEmpty() ){
-		QMessageBox::critical(0, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
+		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("Please provide a valid file name!"));
         return;
 	}
 

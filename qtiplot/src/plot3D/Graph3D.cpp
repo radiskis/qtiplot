@@ -85,7 +85,7 @@ double UserFunction::operator()(double x, double y)
 		parser.SetExpr(formula.toStdWString());
 		result = parser.Eval();
 	} catch(mu::ParserError &e){
-		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
+		QMessageBox::critical(nullptr, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
 	}
 	return result;
 }
@@ -147,7 +147,7 @@ Triple UserParametricSurface::operator()(double u, double v)
 		z = parser.Eval();
 	}
 	catch(mu::ParserError &e){
-		QMessageBox::critical(0, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
+		QMessageBox::critical(nullptr, "QtiPlot - Input function error", QString::fromStdWString(e.GetMsg()));
 	}
 	return Triple(x, y, z);
 }

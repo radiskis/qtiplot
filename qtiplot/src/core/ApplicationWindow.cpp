@@ -7401,7 +7401,7 @@ void ApplicationWindow::showStandAloneHelp()
 	QFile helpFile(helpPath);
 	if (!helpPath.isEmpty() && !helpFile.exists())
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Help Files Not Found!"),
+		QMessageBox::critical(nullptr, tr("QtiPlot - Help Files Not Found!"),
 				tr("The manual can be downloaded from the following internet address:")+
 				"<p><a href = http://soft.proindependent.com/manuals.html>http://soft.proindependent.com/manuals.html</a></p>");
 		exit(0);
@@ -7411,7 +7411,7 @@ void ApplicationWindow::showStandAloneHelp()
 	QString profilePath = QString(fi.absolutePath()+"/qtiplot.adp");
 	if (!QFile(profilePath).exists())
 	{
-		QMessageBox::critical(0, tr("QtiPlot - Help Profile Not Found!"),
+		QMessageBox::critical(nullptr, tr("QtiPlot - Help Profile Not Found!"),
 				tr("The assistant could not start because the file <b>%1</b> was not found in the help file directory!").arg("qtiplot.adp")+"<br>"+
 				tr("This file is provided with the QtiPlot manual which can be downloaded from the following internet address:")+
 				"<p><a href = http://soft.proindependent.com/manuals.html>http://soft.proindependent.com/manuals.html</a></p>");
@@ -10329,7 +10329,7 @@ void ApplicationWindow::enableMdiArea(bool on)
 
 void ApplicationWindow::memoryAllocationError()
 {
-	QMessageBox::critical(0, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+	QMessageBox::critical(nullptr, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
 		tr("Not enough memory, operation aborted!"));
 }
 

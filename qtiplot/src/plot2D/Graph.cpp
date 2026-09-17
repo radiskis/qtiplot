@@ -4281,7 +4281,7 @@ void Graph::insertImageMarker(const QStringList& lst, int fileVersion)
 {
 	QString fn = lst[1];
 	if (!QFile::exists(fn)){
-		QMessageBox::warning(0, tr("QtiPlot - File open error"),
+		QMessageBox::warning(this, tr("QtiPlot - File open error"),
 				tr("Image file: <p><b> %1 </b><p>does not exist anymore!").arg(fn));
 	} else {
 		ImageWidget* mrk = new ImageWidget(this, fn);

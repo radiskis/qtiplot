@@ -1403,7 +1403,7 @@ void Table::setColName(int col, const QString& text, bool enumerateRight, bool w
 
 		if (col_label.contains(newLabel)){
 			if (warn){
-				QMessageBox::critical(0, tr("QtiPlot - Error"),
+				QMessageBox::critical(this, tr("QtiPlot - Error"),
 				tr("There is already a column called : <b>%1</b> in table <b>%2</b>!<p>Please choose another name!").arg(newLabel).arg(caption));
 			}
 			return;
@@ -3869,7 +3869,7 @@ bool Table::exportASCII(const QString& fname, const QString& separator,
 
 	QFile f(fname);
 	if ( !f.open( QIODevice::WriteOnly ) ){
-		QMessageBox::critical(0, tr("QtiPlot - ASCII Export Error"),
+		QMessageBox::critical(this, tr("QtiPlot - ASCII Export Error"),
 				tr("Could not write to file: <br><h4> %1 </h4><p>Please verify that you have the right to write to this location!").arg(fname));
 		return false;
 	}
