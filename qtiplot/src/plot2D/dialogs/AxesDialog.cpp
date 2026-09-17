@@ -1553,7 +1553,7 @@ void AxesDialog::updateScale()
     boxMinorValue->setEditText(QString::number(d_graph->axisMaxMinor(a)));
 }
 
-void AxesDialog::updateTickLabelsList(bool on)
+void AxesDialog::updateTickLabelsList(bool)
 {
 	QString formatInfo = QString();
 	int type = boxAxisType->currentIndex();

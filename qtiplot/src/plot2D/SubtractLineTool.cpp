@@ -42,23 +42,25 @@ SubtractLineTool::SubtractLineTool(Graph *graph, ApplicationWindow *app)
 {
 	Q_UNUSED(app);
 	d_selected_points = 0;
-	d_picker_tool = new ScreenPickerTool(d_graph);
-	connect(d_picker_tool, &ScreenPickerTool::statusText, this, &SubtractLineTool::statusText);
+	d_picker_tool = std::make_unique<ScreenPickerTool>(d_graph);
+	connect(d_picker_tool.get(), &ScreenPickerTool::statusText, this, &SubtractLineTool::statusText);
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	QString msg = tr("Move cursor and click to select and double-click/press 'Enter' to set the position of the first point!");
 	emit statusText(msg);
 
-	connect(d_picker_tool, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &SubtractLineTool::selectPoint);
+	connect(d_picker_tool.get(), QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &SubtractLineTool::selectPoint);
 	d_graph->canvas()->grabMouse();
 }
 
 SubtractLineTool::~SubtractLineTool()
 {
 	d_graph->canvas()->releaseMouse();
-
-	if (d_picker_tool)
-		delete d_picker_tool;
+	if (d_first_point_marker){
+		d_first_point_marker->detach();
+		delete d_first_point_marker;
+		d_first_point_marker = nullptr;
+	}
 }
 
 void SubtractLineTool::selectPoint(const QPointF &pos)
@@ -85,10 +87,13 @@ void SubtractLineTool::selectPoint(const QPointF &pos)
 
 void SubtractLineTool::finalize()
 {
-	delete d_picker_tool; d_picker_tool = nullptr;
+	d_picker_tool.reset();
 	d_graph->canvas()->releaseMouse();
-	d_first_point_marker->detach();
-	delete d_first_point_marker;
+	if (d_first_point_marker){
+		d_first_point_marker->detach();
+		delete d_first_point_marker;
+		d_first_point_marker = nullptr;
+	}
 
 	if (d_graph->activeTool() && d_graph->activeTool()->rtti() == PlotToolInterface::Rtti_RangeSelector){
 		static_cast<RangeSelectorTool *>(d_graph->activeTool())->setEnabled();

@@ -32,6 +32,7 @@
 #include "PlotToolInterface.h"
 #include <QObject>
 #include <QPointF>
+#include <memory>
 
 class ApplicationWindow;
 class QwtPlotCurve;
@@ -52,6 +53,7 @@ class TranslateCurveTool : public QObject, public PlotToolInterface
 		 * during initialization, before there's any other chance of connecting to it.
 		 */
 		TranslateCurveTool(Graph *graph, ApplicationWindow *app, Direction dir);
+		~TranslateCurveTool() override = default;
 
         int rtti() const override {return PlotToolInterface::Rtti_TranslateCurveTool;};
 	signals:
@@ -67,7 +69,7 @@ class TranslateCurveTool : public QObject, public PlotToolInterface
 		void selectDestination(const QPointF &point);
 	private:
 		Direction d_dir;
-		PlotToolInterface *d_sub_tool;
+		std::unique_ptr<PlotToolInterface> d_sub_tool;
 		QwtPlotCurve *d_selected_curve;
 		QPointF d_curve_point;
 		ApplicationWindow *d_app;

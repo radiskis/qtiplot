@@ -43,13 +43,13 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 	d_selected_peaks = 0;
 	d_curve = nullptr;
 
-	d_fit = new MultiPeakFit(app, graph, profile, num_peaks);
+	d_fit = std::make_unique<MultiPeakFit>(app, graph, profile, num_peaks);
 	d_fit->enablePeakCurves(app->generatePeakCurves);
 	d_fit->setPeakCurvesColor(app->peakCurvesColor);
 	d_fit->generateFunction(app->generateUniformFitPoints, app->fitPoints);
 
-	d_picker_tool = new DataPickerTool(d_graph, app, DataPickerTool::Display);
-	connect(d_picker_tool, &DataPickerTool::statusText, this, &MultiPeakFitTool::statusText);
+	d_picker_tool = std::make_unique<DataPickerTool>(d_graph, app, DataPickerTool::Display);
+	connect(d_picker_tool.get(), &DataPickerTool::statusText, this, &MultiPeakFitTool::statusText);
 	d_graph->canvas()->setCursor(QCursor(QPixmap(":/cursor.png")));
 
 	QString msg = tr("Move cursor and click to select a point and double-click/press 'Enter' to set the position of a peak!");
@@ -57,7 +57,7 @@ MultiPeakFitTool::MultiPeakFitTool(Graph *graph, ApplicationWindow *app, MultiPe
 		QMessageBox::information(app, app->objectName(), msg);
 	emit statusText(msg);
 
-	connect(d_picker_tool, &DataPickerTool::selected, this, &MultiPeakFitTool::selectPeak);
+	connect(d_picker_tool.get(), &DataPickerTool::selected, this, &MultiPeakFitTool::selectPeak);
 	d_graph->canvas()->grabMouse();
 }
 
@@ -68,11 +68,6 @@ MultiPeakFitTool::~MultiPeakFitTool()
 	for (QwtPlotMarker *m : d_lines)
 		m->detach();//remove peak line markers
 	d_lines.clear();
-
-	if (d_picker_tool)
-		delete d_picker_tool;
-	if (d_fit)
-		delete d_fit;
 }
 
 void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
@@ -117,7 +112,7 @@ void MultiPeakFitTool::selectPeak(QwtPlotCurve *curve, int point_index)
 
 void MultiPeakFitTool::finalize()
 {
-	delete d_picker_tool; d_picker_tool = nullptr;
+	d_picker_tool.reset();
 	d_graph->canvas()->releaseMouse();
 
 	if (d_fit->setDataFromCurve(d_curve->title().text())){
@@ -128,18 +123,10 @@ void MultiPeakFitTool::finalize()
 
 		size_t imin, imax;
 		gsl_stats_minmax_index(&imin, &imax, y, 1, n);
-#ifdef Q_CC_MSVC
-		QVarLengthArray<double> temp(n);
-#else
-		double temp[n];
-#endif
+		std::vector<double> temp(n);
 		for (int i = 0; i < n; i++)
 			temp[i] = fabs(y[i]);
-#ifdef Q_CC_MSVC
 		size_t imax_temp = gsl_stats_max_index(temp.data(), 1, n);
-#else
-		size_t imax_temp = gsl_stats_max_index(temp, 1, n);
-#endif
         double offset = 0.0;
 		if (imax_temp == imax)
 			offset = y[imin];
@@ -159,7 +146,7 @@ void MultiPeakFitTool::finalize()
 		}
 
 		d_fit->fit();
-		delete d_fit; d_fit = nullptr;
+		d_fit.reset();
 		QApplication::restoreOverrideCursor();
 	}
 

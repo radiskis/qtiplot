@@ -45,12 +45,12 @@ TranslateCurveTool::TranslateCurveTool(Graph *graph, ApplicationWindow *app, Dir
 {
 
 	// Phase 1: select curve point
-	auto *picker = new DataPickerTool(d_graph, app, DataPickerTool::Display);
-	d_sub_tool = picker;
-	connect(picker, &DataPickerTool::statusText,
+	auto picker = std::make_unique<DataPickerTool>(d_graph, app, DataPickerTool::Display);
+	connect(picker.get(), &DataPickerTool::statusText,
 			this, &TranslateCurveTool::statusText);
-	connect(picker, &DataPickerTool::selected,
+	connect(picker.get(), &DataPickerTool::selected,
 			this, &TranslateCurveTool::selectCurvePoint);
+	d_sub_tool = std::move(picker);
 
 	emit statusText(tr("Double-click on plot to select a data point!"));
 }
@@ -68,13 +68,13 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 	    if (d_dir == Horizontal && t->isReadOnlyColumn(t->colIndex(c->xColumnName()))){
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("The column '%1' is read-only! Operation aborted!").arg(c->xColumnName()));
-			delete d_sub_tool;
+			d_sub_tool.reset();
 			d_graph->setActiveTool(nullptr);
 			return;
         } else if (d_dir == Vertical && t->isReadOnlyColumn(t->colIndex(c->title().text()))){
             QMessageBox::warning(d_app, tr("QtiPlot - Warning"),
             tr("The column '%1' is read-only! Operation aborted!").arg(c->title().text()));
-			delete d_sub_tool;
+			d_sub_tool.reset();
 			d_graph->setActiveTool(nullptr);
 			return;
         }
@@ -82,25 +82,25 @@ void TranslateCurveTool::selectCurvePoint(QwtPlotCurve *curve, int point_index)
 
 	d_selected_curve = curve;
 	d_curve_point = QPointF(curve->sample(point_index).x(), curve->sample(point_index).y());
-	delete d_sub_tool;
+	d_sub_tool.reset();
 
 	// Phase 2: select destination
-	auto *spt = new ScreenPickerTool(d_graph);
-	d_sub_tool = spt;
-	connect(spt, &ScreenPickerTool::statusText,
+	auto spt = std::make_unique<ScreenPickerTool>(d_graph);
+	connect(spt.get(), &ScreenPickerTool::statusText,
 			this, &TranslateCurveTool::statusText);
 	spt->append(d_curve_point);
 	ScreenPickerTool::MoveRestriction moveRestriction = ScreenPickerTool::Vertical;
 	if (d_dir == Horizontal)
 		moveRestriction = ScreenPickerTool::Horizontal;
 	spt->setMoveRestriction(moveRestriction);
-	connect(spt, QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &TranslateCurveTool::selectDestination);
+	connect(spt.get(), QOverload<const QPointF&>::of(&ScreenPickerTool::selected), this, &TranslateCurveTool::selectDestination);
+	d_sub_tool = std::move(spt);
 	emit statusText(tr("Curve selected! Move cursor and click to choose a point and double-click/press 'Enter' to finish!"));
 }
 
 void TranslateCurveTool::selectDestination(const QPointF &point)
 {
-	delete d_sub_tool;
+	d_sub_tool.reset();
 	if (!d_selected_curve)
 		return;
 

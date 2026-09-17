@@ -32,6 +32,7 @@
 #include "PlotToolInterface.h"
 #include "../analysis/MultiPeakFit.h"
 #include <QObject>
+#include <memory>
 
 class DataPickerTool;
 class ApplicationWindow;
@@ -65,8 +66,8 @@ class MultiPeakFitTool : public QObject, public PlotToolInterface
 	private:
 		void finalize();
 		int d_selected_peaks;
-		DataPickerTool *d_picker_tool;
-		MultiPeakFit *d_fit;
+		std::unique_ptr<DataPickerTool> d_picker_tool;
+		std::unique_ptr<MultiPeakFit> d_fit;
 		QwtPlotCurve *d_curve;
 		QList<QwtPlotMarker *> d_lines;
 };

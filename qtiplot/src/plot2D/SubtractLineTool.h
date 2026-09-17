@@ -35,6 +35,8 @@
 
 #include "ScreenPickerTool.h"
 
+#include <memory>
+
 class ApplicationWindow;
 class QwtPlotCurve;
 class QwtPlotMarker;
@@ -61,8 +63,8 @@ class SubtractLineTool : public QObject, public PlotToolInterface
 	private:
 		void finalize();
 		int d_selected_points;
-		ScreenPickerTool *d_picker_tool;
-		QwtPlotMarker *d_first_point_marker;
+		std::unique_ptr<ScreenPickerTool> d_picker_tool;
+		QwtPlotMarker *d_first_point_marker = nullptr;
 		QLineF d_line;
 };
 
