@@ -101,9 +101,8 @@ void PolarGraph::setMinorGridPen(int scaleId, const QPen &p)
 
 void PolarGraph::showSettingsDialog()
 {
-    PolarSettingsDialog *d = new PolarSettingsDialog(this, applicationWindow());
-    d->exec();
-    delete d;
+    PolarSettingsDialog d(this, applicationWindow());
+    d.exec();
 }
 
 void PolarGraph::contextMenuEvent(QContextMenuEvent *e)

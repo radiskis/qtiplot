@@ -30,6 +30,7 @@
 #define TTEST_H
 
 #include <StatisticTest.h>
+#include <memory>
 
 //! Student's t-Test
 class tTest : public StatisticTest
@@ -60,7 +61,7 @@ class tTest : public StatisticTest
 		double t(int size);
 		void freeMemory() override;
 
-		Statistics *d_sample2;
+		std::unique_ptr<Statistics> d_sample2;
 		bool d_independent_test;
 		double d_s12, d_diff;
 };

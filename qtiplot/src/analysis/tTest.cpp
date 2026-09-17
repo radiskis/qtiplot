@@ -240,14 +240,13 @@ QString tTest::logInfo()
 
 bool tTest::setSample2(const QString& colName, bool paired)
 {
-	d_sample2 = new Statistics(qobject_cast<ApplicationWindow *>(this->parent()), colName);
+	d_sample2 = std::make_unique<Statistics>(qobject_cast<ApplicationWindow *>(this->parent()), colName);
 
 	unsigned int d_n2 = d_sample2->dataSize();
 	if (paired && d_n2 != d_n){
 		reportError(QObject::tr("Attention!"),
 					QObject::tr("Paired t-Test requires equal sample sizes."));
-		delete d_sample2;
-		d_sample2 = nullptr;
+		d_sample2.reset();
 		return false;
 	}
 
@@ -262,8 +261,7 @@ bool tTest::setSample2(const QString& colName, bool paired)
 		if (d_s12 == 0){
 			reportError(QObject::tr("Attention!"),
 			QObject::tr("The test statistics t and P can not be computed because the sample variance of the differences between Sample1 and Sample2 is 0."));
-			delete d_sample2;
-			d_sample2 = nullptr;
+			d_sample2.reset();
 			return false;
 		}
 	} else {
@@ -280,8 +278,5 @@ bool tTest::setSample2(const QString& colName, bool paired)
 void tTest::freeMemory()
 {
 	Statistics::freeMemory();
-	if (d_sample2){
-		delete d_sample2;
-		d_sample2 = nullptr;
-	}
+	d_sample2.reset();
 }
