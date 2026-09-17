@@ -123,7 +123,7 @@ bool PolarGraph::eventFilter(QObject *object, QEvent *e)
 }
 
 void PolarGraph::exportImage(const QString& fileName, int quality, bool transparent, int dpi,
-        const QSizeF& customSize, int unit, double fontsFactor, int compression)
+        const QSizeF& customSize, int unit, double /*fontsFactor*/, int compression)
 {
     if (!dpi)
         dpi = logicalDpiX();
@@ -157,7 +157,7 @@ void PolarGraph::exportImage(const QString& fileName, int quality, bool transpar
 }
 
 void PolarGraph::exportVector(const QString& fileName, int res, bool color,
-        const QSizeF& customSize, int unit, double fontsFactor)
+        const QSizeF& customSize, int unit, double /*fontsFactor*/)
 {
     QPrinter printer;
     printer.setOutputFileName(fileName);
@@ -178,7 +178,7 @@ void PolarGraph::exportVector(const QString& fileName, int res, bool color,
     renderer.renderTo(d_plot, printer);
 }
 
-void PolarGraph::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double fontsFactor)
+void PolarGraph::exportSVG(const QString& fname, const QSizeF& customSize, int unit, double /*fontsFactor*/)
 {
     QSvgGenerator svg;
     svg.setFileName(fname);

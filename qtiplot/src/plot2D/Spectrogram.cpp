@@ -809,7 +809,14 @@ QImage Spectrogram::renderImage(const QwtScaleMap &xMap, const QwtScaleMap &yMap
 	const bool hInvert = xxMap.p1() > xxMap.p2();
 	const bool vInvert = yyMap.p1() < yyMap.p2();
 	if (hInvert || vInvert){
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		Qt::Orientations orientations;
+		if (hInvert) orientations |= Qt::Horizontal;
+		if (vInvert) orientations |= Qt::Vertical;
+		image = image.flipped(orientations);
+#else
 		image = image.mirrored(hInvert, vInvert);
+#endif
 	}
 
 	return image;
@@ -833,10 +840,8 @@ double MatrixData::value(double x, double y) const
 
 		if (d_mup->codeLines() == 1)
 			return d_mup->evalSingleLine();
-		else
-			return d_mup->eval().toDouble();
-	} else
-		return d_matrix->cell(i, j);
+		return d_mup->eval().toDouble();
+	}
 
-	return 0.0;
+	return d_matrix->cell(i, j);
 }

@@ -146,7 +146,7 @@ bool Anova::twoWayANOVA()
 	long J[2] = {static_cast<long>(aLevels.size()), static_cast<long>(bLevels.size())};
 
     std::vector<long> f_storage(n * 2);
-    long (*f)[2] = (long (*)[2])f_storage.data();
+    long (*f)[2] = reinterpret_cast<long (*)[2]>(f_storage.data());
 	for (unsigned int i = 0; i < d_n; i++){
 		data[i] = d_data[i];
 		f[i][0] = d_factorA_levels[0];
@@ -183,7 +183,7 @@ bool Anova::oneWayANOVA()
 	std::vector<double> data(n);
 
 	for (unsigned int i = 0; i < d_n; i++){
-		factor[i] = 1.0;
+		factor[i] = 1;
 		data[i] = d_data[i];
 	}
 
@@ -376,7 +376,7 @@ void Anova::outputResultsTo(Table *t)
 		t->table()->adjustColumn(i);
 }
 
-Table * Anova::resultTable(const QString& name)
+Table * Anova::resultTable(const QString& /*name*/)
 {
 	ApplicationWindow *app = qobject_cast<ApplicationWindow *>(parent());
 	if (!app)

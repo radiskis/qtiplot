@@ -294,19 +294,19 @@ void QwtHistogram::loadLabels()
 		int y_axis = yAxis();
 		m->setAxes(x_axis, y_axis);
 
-		QSize size = t.textSize().toSize();
-		int dx = int(d_labels_x_offset*0.01*size.height());
-		int dy = -int((d_labels_y_offset*0.01 + 0.5)*size.height());
+		QSize labelSize = t.textSize().toSize();
+		int dx = static_cast<int>(d_labels_x_offset*0.01*labelSize.height());
+		int dy = -static_cast<int>((d_labels_y_offset*0.01 + 0.5)*labelSize.height());
 		int x2 = d_plot->transform(x_axis, x(index)) + dx;
 		int y2 = d_plot->transform(y_axis, y(index)) + dy;
 		switch(d_labels_align){
 			case Qt::AlignLeft:
 			break;
 			case Qt::AlignHCenter:
-				x2 -= size.width()/2;
+				x2 -= labelSize.width()/2;
 			break;
 			case Qt::AlignRight:
-				x2 -= size.width();
+				x2 -= labelSize.width();
 			break;
 		}
 		m->setXValue(d_plot->invTransform(x_axis, x2));
