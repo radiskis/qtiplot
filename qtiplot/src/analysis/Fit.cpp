@@ -72,7 +72,6 @@ void Fit::init()
 	d_n = 0;
 	d_x = nullptr;
 	d_y = nullptr;
-	d_w = nullptr;
 	d_curveColor = Qt::red;
 	d_solver = ScaledLevenbergMarquardt;
 	d_tolerance = 1e-4;
@@ -240,17 +239,7 @@ gsl_multimin_fminimizer * Fit::fitSimplex(gsl_multimin_function f, int &iteratio
 bool Fit::setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from, int to, bool sort)
 {
 	if (Filter::setDataFromTable(t, xColName, yColName, from, to, sort)){
-    	if (d_w)
-			free(d_w);
-
-    	d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
-        if (!d_w){
-            memoryErrorMessage();
-            return false;
-        }
-
-    	for (int i = 0; i < d_n; i++)//initialize the weighting data to 1.0
-       		d_w[i] = 1.0;
+		d_w.assign(d_n, 1.0);
 		return true;
 	} else
 		return false;
@@ -260,16 +249,7 @@ void Fit::setDataCurve(PlotCurve *curve, double start, double end)
 {
     Filter::setDataCurve(curve, start, end);
 
-    if (d_w) {
-        free(d_w);
-        d_w = nullptr;
-    }
-
-    d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
-    if (!d_w){
-        memoryErrorMessage();
-        return;
-    }
+    d_w.assign(d_n, 1.0);
 
     DataCurve *dc = dynamic_cast<DataCurve *>(d_curve);
     if (d_graph && dc && dc->type() != Graph::Function)
@@ -455,22 +435,13 @@ QString Fit::legendInfo()
 
 bool Fit::setWeightingData(WeightingMethod w, const QString& colName)
 {
-	if (d_w)
-		free(d_w);
-
-	d_w = static_cast<double *>(malloc(d_n*sizeof(double)));
-	if (!d_w){
-		memoryErrorMessage();
-		return false;
-	}
+	d_w.assign(d_n, 1.0);
 
 	switch (w)
 	{
 		case NoWeighting:
 			{
 				weighting_dataset = QString();
-				for (int i=0; i<d_n; i++)
-					d_w[i] = 1.0;
 			}
 			break;
 		case Instrumental:
@@ -913,7 +884,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 
 void Fit::calculateFit(int &iterations, int &status)
 {
-	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w, this};
+	struct FitData d_data = {d_n, d_p, d_x, d_y, d_w.data(), this};
 
 	iterations = d_max_iterations;
 	if(d_solver == NelderMeadSimplex){
@@ -1206,11 +1177,7 @@ void Fit::freeWorkspace()
 void Fit::freeMemory()
 {
 	Filter::freeMemory();
-	if (d_w){
-		free(d_w);
-		d_w = nullptr;
-	}
-
+	d_w.clear();
 	d_residuals.clear();
 }
 

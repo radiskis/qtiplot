@@ -181,7 +181,7 @@ void PolynomialFit::fit()
 		}
 
 		gsl_vector_view y = gsl_vector_view_array(d_y, d_n);
-		gsl_vector_view w = gsl_vector_view_array(d_w, d_n);
+		gsl_vector_view w = gsl_vector_view_array(d_w.data(), d_n);
 		GslRAII::UniqueMultifitLinearWorkspace work(gsl_multifit_linear_alloc(d_n, d_p));
 
 		if (d_weighting == NoWeighting)
@@ -310,7 +310,7 @@ void LinearFit::fit()
 	if (d_weighting == NoWeighting)
 		gsl_fit_linear(d_x, 1, d_y, 1, d_n, &c0, &c1, &cov00, &cov01, &cov11, &chi_2);
 	else
-		gsl_fit_wlinear(d_x, 1, d_w, 1, d_y, 1, d_n, &c0, &c1, &cov00, &cov01, &cov11, &chi_2);
+		gsl_fit_wlinear(d_x, 1, d_w.data(), 1, d_y, 1, d_n, &c0, &c1, &cov00, &cov01, &cov11, &chi_2);
 
 	d_results[0] = c0;
 	d_results[1] = c1;
@@ -411,7 +411,7 @@ void LinearSlopeFit::fit()
 	if (d_weighting == NoWeighting)
 		gsl_fit_mul(d_x, 1, d_y, 1, d_n, &c1, &cov11, &chi_2);
 	else
-		gsl_fit_wmul(d_x, 1, d_w, 1, d_y, 1, d_n, &c1, &cov11, &chi_2);
+		gsl_fit_wmul(d_x, 1, d_w.data(), 1, d_y, 1, d_n, &c1, &cov11, &chi_2);
 
 	d_results[0] = c1;
 

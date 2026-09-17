@@ -203,7 +203,7 @@ class Fit : public Filter
 		bool is_non_linear = true;
 
 		//! weighting data set used for the fit
-		double *d_w = nullptr;
+		std::vector<double> d_w;
 
 		//! Names of the fit parameters
 		QStringList d_param_names;

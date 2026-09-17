@@ -388,7 +388,7 @@ bool NonLinearFit::removeDataSingularities()
 
 void NonLinearFit::removePole(int pole)
 {
-	if (pole < 0 || pole >= d_n || d_n <= 1 || !d_x || !d_y || !d_w)
+	if (pole < 0 || pole >= d_n || d_n <= 1 || !d_x || !d_y || d_w.empty())
 		return;
 
 	// In-place shift avoids dynamic heap reallocations and failure modes
