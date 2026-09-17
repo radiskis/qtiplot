@@ -3199,7 +3199,7 @@ void Table::setNormalRandomValues()
 	emit modifiedWindow(this);
 }
 
-void Table::loadHeader(QStringList header)
+void Table::loadHeader(const QStringList& header)
 {
 	col_label = QStringList();
 	col_plot_type = QList <int>();
@@ -3208,7 +3208,8 @@ void Table::loadHeader(QStringList header)
 		if (header[i].isEmpty())
 			continue;
 
-		QString s = header[i].replace("_","-");
+		QString s = header[i];
+		s.replace("_","-");
 		if (s.contains("[X]"))
 		{
 			col_label << s.remove("[X]");
@@ -3248,7 +3249,7 @@ void Table::loadHeader(QStringList header)
 	setHeaderColType();
 }
 
-void Table::setHeader(QStringList header)
+void Table::setHeader(const QStringList& header)
 {
 	col_label = header;
 	setHeaderColType();

@@ -249,8 +249,8 @@ public slots:
 	void setPlotDesignation(PlotDesignation pd, bool rightColumns = false);
 	QList<int> plotDesignations() const {return col_plot_type;};
 
-	void setHeader(QStringList header);
-	void loadHeader(QStringList header);
+	void setHeader(const QStringList& header);
+	void loadHeader(const QStringList& header);
 	void setHeaderColType();
 	void setText(int row,int col,const QString & text, bool pushUndo = true, const double *exact = nullptr);
 	void setRandomValues();

@@ -530,7 +530,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void remove(ArrowMarker* arrow);
 
 		//! Used when opening a project file
-		void addArrow(QStringList list, int fileVersion);
+		void addArrow(const QStringList& list, int fileVersion);
 		QList<ArrowMarker *> arrowsList() const {return d_lines;};
 		int numArrows() const {return d_lines.count();};
 

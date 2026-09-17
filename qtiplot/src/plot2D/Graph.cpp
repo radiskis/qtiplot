@@ -2947,7 +2947,7 @@ LegendWidget* Graph::insertText(const QStringList& list, int fileVersion)
     return l;
 }
 
-void Graph::addArrow(QStringList list, int fileVersion)
+void Graph::addArrow(const QStringList& list, int fileVersion)
 {
 	ArrowMarker* mrk = new ArrowMarker();
 	if(!mrk)
