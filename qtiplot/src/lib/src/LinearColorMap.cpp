@@ -72,7 +72,7 @@ QColor LinearColorMap::color(int index) const
 	return QwtColorMap::color(QwtInterval(0, 1), stops[index]);
 }
 
-QString LinearColorMap::toXmlString()
+QString LinearColorMap::toXmlString() const
 {
 	QString s = "<ColorMap>\n";
 	s += "\t<Mode>" + QString::number(mode()) + "</Mode>\n";
@@ -103,7 +103,7 @@ LinearColorMap LinearColorMap::fromXmlStringList(const QStringList& lst)
 	QColor color2 = QColor(s.remove("<MaxColor>").remove("</MaxColor>").trimmed());
 
 	LinearColorMap colorMap = LinearColorMap(color1, color2);
-	colorMap.setMode((QwtLinearColorMap::Mode)mode);
+	colorMap.setMode(static_cast<QwtLinearColorMap::Mode>(mode));
 
 	s = *(++line);
 	if (s.contains("<Range>")){

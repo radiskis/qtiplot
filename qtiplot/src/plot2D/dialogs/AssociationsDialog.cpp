@@ -205,7 +205,7 @@ void AssociationsDialog::initTablesList(QList<MdiSubWindow *> lst, int curve)
 	associations->setCurrentRow (curve);
 }
 
-Table * AssociationsDialog::findTable(int index)
+Table * AssociationsDialog::findTable(int index) const
 {
 	QString text = associations->item(index)->text();
 	QStringList lst= text.split(":", Qt::SkipEmptyParts);

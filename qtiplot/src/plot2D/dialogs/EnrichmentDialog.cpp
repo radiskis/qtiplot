@@ -708,7 +708,7 @@ void EnrichmentDialog::apply()
 		setCoordinates(unitBox->currentIndex());
 		FrameWidget *fw = qobject_cast<FrameWidget *>(d_widget);
         if (fw)
-            fw->setAttachPolicy((FrameWidget::AttachPolicy)attachToBox->currentIndex());
+            fw->setAttachPolicy(static_cast<FrameWidget::AttachPolicy>(attachToBox->currentIndex()));
 
 		if (d_app)
 			d_app->d_keep_aspect_ration = keepAspectBox->isChecked();
@@ -878,7 +878,7 @@ void EnrichmentDialog::setCoordinates(int unit)
 			fw->setCoordinates(left, top, left + widthBox->value(), top - heightBox->value());
 	} else
 		FrameWidget::setRect(d_widget, xBox->value(), yBox->value(),
-		widthBox->value(), heightBox->value(), (FrameWidget::Unit)unit);
+		widthBox->value(), heightBox->value(), static_cast<FrameWidget::Unit>(unit));
 
 	if (d_plot)
 		d_plot->multiLayer()->notifyChanges();
@@ -914,10 +914,10 @@ void EnrichmentDialog::displayCoordinates(int unit)
 		heightBox->setSingleStep(0.1);
 	}
 
-	xBox->setValue(FrameWidget::xIn(d_widget, (FrameWidget::Unit)unit));
-	yBox->setValue(FrameWidget::yIn(d_widget, (FrameWidget::Unit)unit));
-	widthBox->setValue(FrameWidget::widthIn(d_widget, (FrameWidget::Unit)unit));
-	heightBox->setValue(FrameWidget::heightIn(d_widget, (FrameWidget::Unit)unit));
+	xBox->setValue(FrameWidget::xIn(d_widget, static_cast<FrameWidget::Unit>(unit)));
+	yBox->setValue(FrameWidget::yIn(d_widget, static_cast<FrameWidget::Unit>(unit)));
+	widthBox->setValue(FrameWidget::widthIn(d_widget, static_cast<FrameWidget::Unit>(unit)));
+	heightBox->setValue(FrameWidget::heightIn(d_widget, static_cast<FrameWidget::Unit>(unit)));
 
 	aspect_ratio = widthBox->value()/heightBox->value();
 }

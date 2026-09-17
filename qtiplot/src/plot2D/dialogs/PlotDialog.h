@@ -199,7 +199,7 @@ private:
 	void setLabelsFontToPlotItem(const QFont& font, const QwtPlotItem *);
 	void setLabelsFontToLayer(const QFont& font, Graph *);
 
-    int labelsAlignment();
+    int labelsAlignment() const;
 	void closeEvent(QCloseEvent* e) override;
 
     void clearTabWidget();
@@ -232,7 +232,7 @@ private:
     void contextMenuEvent(QContextMenuEvent *e) override;
 	void showAllLabelControls(bool show = true, int curveType = 0);
     void updateContourLevelsDisplay(Spectrogram *sp);
-    QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit);
+    QRect layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit) const;
 
 	double aspect_ratio = 0.0, plot_aspect_ratio = 0.0;
 
@@ -397,7 +397,7 @@ public:
     enum {LayerTreeItem = 1001};
     LayerItem(Graph *g, QTreeWidgetItem *parent, const QString& s);
 
-    Graph *graph() { return d_graph; };
+    Graph *graph() const { return d_graph; };
     void setActive(bool select);
 
 protected:
@@ -418,17 +418,17 @@ public:
     enum {PlotCurveTreeItem = 1002};
     CurveTreeItem(QwtPlotItem *curve, LayerItem *parent, const QString& s);
 
-    Graph* graph(){
-        LayerItem *p = static_cast<LayerItem *>(parent());
+    Graph* graph() const {
+        const LayerItem *p = static_cast<const LayerItem *>(parent());
         return p ? p->graph() : nullptr;
     }
     void setActive(bool on);
 
     QwtPlotItem *plotItem() { return d_curve; };
     const QwtPlotItem *plotItem() const { return d_curve; };
-    int plotItemType();
-    int plotItemStyle();
-    int plotItemIndex();
+    int plotItemType() const;
+    int plotItemStyle() const;
+    int plotItemIndex() const;
 
 protected:
     QwtPlotItem *d_curve = nullptr;
@@ -446,16 +446,16 @@ public:
 	enum {FrameWidgetItem = 1003};
 	FrameWidgetTreeItem(FrameWidget *w, LayerItem *parent, const QString& s);
 
-	Graph* graph(){
-        LayerItem *p = static_cast<LayerItem *>(parent());
+	Graph* graph() const {
+        const LayerItem *p = static_cast<const LayerItem *>(parent());
         return p ? p->graph() : nullptr;
     }
-	FrameWidget *frameWidget(){return d_widget;};
+	FrameWidget *frameWidget() const {return d_widget;};
 
 	 void setActive(bool on);
 
 protected:
-	QPixmap frameWidgetPixmap();
+	QPixmap frameWidgetPixmap() const;
 
 	FrameWidget *d_widget = nullptr;
 };

@@ -113,11 +113,11 @@ private:
     void initFontsTab();
     void initPrintTab();
 
-    int curveStyle();
+    int curveStyle() const;
     void setSymbolsList(const QList<int>& symbList);
     void setColorsList(const QList<QColor>& colList, const QStringList& colNames);
-    int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
-    double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
+    int convertToPixels(double w, FrameWidget::Unit unit, int dimension) const;
+    double convertFromPixels(int w, FrameWidget::Unit unit, int dimension) const;
 
     ApplicationWindow *d_app = nullptr;
 

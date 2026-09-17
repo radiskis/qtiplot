@@ -262,7 +262,7 @@ void ImageWidget::clone(ImageWidget* t)
 	setCoordinates(t->xValue(), t->yValue(), t->right(), t->bottom());
 }
 
-QString ImageWidget::saveToString()
+QString ImageWidget::saveToString() const
 {
 	QString s = "<Image>\n";
 	s += FrameWidget::saveToString();
@@ -309,7 +309,7 @@ void ImageWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<attachTo>"))
-			attachTo = (FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt();
+			attachTo = static_cast<FrameWidget::AttachPolicy>(s.remove("<attachTo>").remove("</attachTo>").toInt());
 		else if (s.contains("<onTop>"))
 			onTop = s.remove("<onTop>").remove("</onTop>").toInt();
 		else if (s.contains("<path>"))

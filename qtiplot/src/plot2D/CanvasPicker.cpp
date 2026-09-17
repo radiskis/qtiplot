@@ -51,7 +51,7 @@ CanvasPicker::CanvasPicker(Graph *graph):
 	canvas->installEventFilter(this);
 }
 
-Graph *CanvasPicker::plot()
+Graph *CanvasPicker::plot() const
 {
 	return qobject_cast<Graph*>(parent());
 }
@@ -182,7 +182,7 @@ bool CanvasPicker::eventFilter(QObject *object, QEvent *e)
 
 					ArrowMarker mrk;
 					mrk.attach(g);
-					mrk.setAttachPolicy((ArrowMarker::AttachPolicy)app->d_graph_attach_policy);
+					mrk.setAttachPolicy(static_cast<ArrowMarker::AttachPolicy>(app->d_graph_attach_policy));
 					mrk.setStartPoint(startLinePoint);
 					mrk.setEndPoint(QPoint(me->position().toPoint().x(), me->position().toPoint().y()));
 					mrk.setColor(app->defaultArrowColor);

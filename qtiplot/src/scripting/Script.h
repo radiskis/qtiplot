@@ -76,7 +76,7 @@ class Script : public QObject, public Tracked<Script>
     void setObjectName(const QString &name) { Name = name; compiled = notCompiled; }
     //! Set whether errors / exceptions are to be emitted or silently ignored
     void setEmitErrors(bool yes) { EmitErrors = yes; }
-    ScriptingEnv *scriptingEnv(){return Env;};
+    ScriptingEnv *scriptingEnv() const {return Env;};
 
   public slots:
     //! Compile the Code. Return true if the implementation doesn't support compilation.

@@ -49,7 +49,7 @@ public:
 	//! Set the current color to be displayed
 	void setColor(const QColor& c){setCurrentColor (c);};
 	//! Get the current color
-	QColor color(){return currentColor();};
+	QColor color() const { return currentColor(); }
 
 signals:
     void colorChanged();

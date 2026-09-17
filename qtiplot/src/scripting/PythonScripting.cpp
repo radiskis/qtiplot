@@ -203,7 +203,7 @@ bool PythonScripting::exec (const QString &code, PyObject *argDict, const char *
 	d_isExecuting.store(false);
 	if (tmp) Py_DECREF(tmp);
 	PyGILState_Release(state);
-	return (bool) tmp;
+	return tmp != nullptr;
 }
 
 QString PythonScripting::errorMsg()
@@ -462,7 +462,7 @@ bool PythonScripting::setQObject(QObject *val, const char *name, PyObject *dict)
 	}
 
 	PyGILState_Release(state);
-	return (bool) pyobj;
+	return pyobj != nullptr;
 }
 
 bool PythonScripting::setInt(int val, const char *name, PyObject *dict)
@@ -477,7 +477,7 @@ bool PythonScripting::setInt(int val, const char *name, PyObject *dict)
 		Py_DECREF(pyobj);
 	}
 	PyGILState_Release(state);
-	return (bool) pyobj;
+	return pyobj != nullptr;
 }
 
 bool PythonScripting::setDouble(double val, const char *name, PyObject *dict)
@@ -492,7 +492,7 @@ bool PythonScripting::setDouble(double val, const char *name, PyObject *dict)
 		Py_DECREF(pyobj);
 	}
 	PyGILState_Release(state);
-	return (bool) pyobj;
+	return pyobj != nullptr;
 }
 
 const QStringList PythonScripting::mathFunctions() const

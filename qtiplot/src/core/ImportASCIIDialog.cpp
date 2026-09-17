@@ -416,7 +416,7 @@ void ImportASCIIDialog::closeEvent(QCloseEvent* e)
 	e->accept();
 }
 
-QLocale ImportASCIIDialog::decimalSeparators()
+QLocale ImportASCIIDialog::decimalSeparators() const
 {
 	QLocale locale;
     switch (boxDecimalSeparator->currentIndex()){
@@ -480,7 +480,7 @@ void ImportASCIIDialog::previewTable()
 	d_preview_table->importASCII(d_current_path, columnSeparator(), d_ignored_lines->value(),
 						renameColumns(), d_strip_spaces->isChecked(),
 						d_simplify_spaces->isChecked(), importComments(),
-						d_comment_string->text(), (Table::ImportMode)importMode, decimalSeparators(),
+						d_comment_string->text(), static_cast<Table::ImportMode>(importMode), decimalSeparators(),
 						boxEndLine->currentIndex(), d_preview_lines_box->value());
 
     if (!d_preview_table->isVisible())
@@ -546,7 +546,7 @@ void ImportASCIIDialog::setNewWindowsOnly(bool on)
     d_preview_button->setChecked(false);
 }
 
-bool ImportASCIIDialog::importComments()
+bool ImportASCIIDialog::importComments() const
 {
 	if (!d_rename_columns->isChecked())
 		return false;

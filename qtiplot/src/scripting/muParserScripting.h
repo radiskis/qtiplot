@@ -109,7 +109,7 @@ class muParserScripting: public ScriptingEnv
 	static double bessel_J1(double x){ return gsl_sf_bessel_J1 (x);};
 	static double bessel_Jn(double x, double n){ return gsl_sf_bessel_Jn (static_cast<int>(n), x);};
 	static double bessel_Yn(double x, double n){ return gsl_sf_bessel_Yn (static_cast<int>(n), x);};
-	static double bessel_Jn_zero(double n, double s){ return gsl_sf_bessel_zero_Jnu(n, (unsigned int) s);};
+	static double bessel_Jn_zero(double n, double s){ return gsl_sf_bessel_zero_Jnu(n, static_cast<unsigned int>(s));};
 	static double bessel_Y0(double x){ return gsl_sf_bessel_Y0 (x);};
 	static double bessel_Y1(double x){ return gsl_sf_bessel_Y1 (x);};
 	static double beta(double a, double b){ return gsl_sf_beta (a,b);};

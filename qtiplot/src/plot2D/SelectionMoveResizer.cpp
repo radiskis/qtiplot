@@ -446,11 +446,11 @@ void SelectionMoveResizer::paintEvent(QPaintEvent *e)
 	p.drawRect(QRect(QPoint(drawn_rect.left(), drawn_rect.top()), drawn_rect.size()));
 	white_pen.setWidth(2); p.setPen(white_pen);
 	for (int i=0; i<8; i++)
-		p.drawRect(handlerRect(drawn_rect, (Operation)i));
+		p.drawRect(handlerRect(drawn_rect, static_cast<Operation>(i)));
 	p.setPen(QPen(Qt::black,1,Qt::SolidLine));
 	p.drawRect(QRect(QPoint(drawn_rect.left(), drawn_rect.top()), drawn_rect.size()));
 	for (int i=0; i<8; i++)
-		p.fillRect(handlerRect(drawn_rect, (Operation)i), QBrush(Qt::black));
+		p.fillRect(handlerRect(drawn_rect, static_cast<Operation>(i)), QBrush(Qt::black));
 
 	e->accept();
 }
@@ -495,8 +495,8 @@ void SelectionMoveResizer::mousePressEvent(QMouseEvent *me)
 	d_op_start = me->pos();
 	d_op = Move;
 	for (int i=0; i<8; i++)
-		if (handlerRect(d_bounding_rect, (Operation)i).contains(d_op_start)) {
-			d_op = (Operation)i;
+		if (handlerRect(d_bounding_rect, static_cast<Operation>(i)).contains(d_op_start)) {
+			d_op = static_cast<Operation>(i);
 			break;
 		}
 

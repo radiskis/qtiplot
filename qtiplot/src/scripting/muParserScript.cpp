@@ -122,7 +122,7 @@ double muParserScript::col(const QString &arg)
 		local_parser.SetExpr(items[1].toStdWString());
 		row = qRound(local_parser.Eval()) - 1;
 	} else if (variables.value("i"))
-		row = (int) *(variables.value("i")) - 1;
+		row = static_cast<int>(*(variables.value("i"))) - 1;
 	else
 		return 0;
 	rvariables.clear();
@@ -185,7 +185,7 @@ double muParserScript::tablecol(const QString &arg)
 		col = qRound(local_parser.Eval()) - 1;
 	}
 	if (variables.value("i"))
-		row = (int) *(variables.value("i")) - 1;
+		row = static_cast<int>(*(variables.value("i"))) - 1;
 	else
 		row = -1;
 	rvariables.clear();

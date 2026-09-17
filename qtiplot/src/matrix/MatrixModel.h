@@ -49,7 +49,7 @@ public:
 	MatrixModel(const QImage& image, QObject *parent);
 	~MatrixModel() override;
 
-	Matrix *matrix(){return d_matrix;};
+	Matrix *matrix() const {return d_matrix;};
 
 	Qt::ItemFlags flags( const QModelIndex & index ) const override;
 
@@ -78,7 +78,7 @@ public:
 	QString text(int row, int col) const;
 	void setText(int row, int col, const QString&);
 
-	QImage renderImage();
+	QImage renderImage() const;
 
 	double data(int row, int col) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -107,7 +107,7 @@ public:
 	void clear(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	bool calculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
 	bool muParserCalculate(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
-	std::vector<double> dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1);
+	std::vector<double> dataCopy(int startRow = 0, int endRow = -1, int startCol = 0, int endCol = -1) const;
 	void pasteData(const double *clipboardBuffer, int topRow, int leftCol, int rows, int cols);
 
 	bool hasCalculatedValues() const {return d_calculated_values;}

@@ -70,7 +70,7 @@ void FunctionCurve::copy(FunctionCurve* f)
 	d_to = f->endRange();
 }
 
-QString FunctionCurve::saveToString()
+QString FunctionCurve::saveToString() const
 {
 	QString s = "<Function>\n";
 	s += "<Type>" + QString::number(d_function_type) + "</Type>\n";
@@ -137,12 +137,12 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 		} else if (s.contains("<Style>")){
 			style = s.remove("<Style>").remove("</Style>").trimmed().toInt();
 		} else if (s.contains("<LineStyle>")){
-			lineStyle = (QwtPlotCurve::CurveStyle)(s.remove("<LineStyle>").remove("</LineStyle>").trimmed().toInt());
+			lineStyle = static_cast<QwtPlotCurve::CurveStyle>(s.remove("<LineStyle>").remove("</LineStyle>").trimmed().toInt());
 			break;
 		}
 	}
 
-	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, title);
+	FunctionCurve *c = new FunctionCurve(static_cast<FunctionCurve::FunctionType>(type), title);
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
@@ -160,7 +160,7 @@ void FunctionCurve::restore(Graph *g, const QStringList& lst)
 	g->updatePlot();
 }
 
-QString FunctionCurve::legend()
+QString FunctionCurve::legend() const
 {
 	QString label = title().text() + ": ";
 	if (d_function_type == Normal)
@@ -311,7 +311,7 @@ bool FunctionCurve::loadData(int points, bool xLog10Scale)
 	return true;
 }
 
-QString FunctionCurve::parameterName(int index)
+QString FunctionCurve::parameterName(int index) const
 {
 	int size = d_constants.size();
 	if (index < 0 || index >= size)
@@ -328,7 +328,7 @@ QString FunctionCurve::parameterName(int index)
 	return QString();
 }
 
-double FunctionCurve::parameterValue(int index)
+double FunctionCurve::parameterValue(int index) const
 {
 	int size = d_constants.size();
 	if (index < 0 || index >= size)
@@ -345,7 +345,7 @@ double FunctionCurve::parameterValue(int index)
 	return 0.0;
 }
 
-double FunctionCurve::parameterValue(const QString& name)
+double FunctionCurve::parameterValue(const QString& name) const
 {
 	QMap<QString, double>::const_iterator it = d_constants.find(name);
 	if (it != d_constants.end())

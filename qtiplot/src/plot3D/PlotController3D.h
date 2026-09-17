@@ -84,7 +84,7 @@ public:
     void plot3DTrajectory();
     void plot3DBars();
     void initPolarPlot(PolarGraph *w);
-    bool validFor3DPlot(Table *table);
+    bool validFor3DPlot(Table *table) const;
     void toggle3DAnimation(bool on = true);
     void togglePerspective(bool on = true);
     void resetRotation();

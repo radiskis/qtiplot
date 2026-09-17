@@ -52,38 +52,38 @@ public:
 
 	QRectF boundingRect() const override;
 
-	QString vectorEndXAColName(){return d_end_x_a;};
-	QString vectorEndYMColName(){return d_end_y_m;};
+	QString vectorEndXAColName() const {return d_end_x_a;};
+	QString vectorEndYMColName() const {return d_end_y_m;};
 	void setVectorEnd(const QString& xColName, const QString& yColName);
 
-	double width();
+	double width() const;
 	void setWidth(double w);
 
-	QColor color();
+	QColor color() const;
 	void setColor(const QColor& c);
 
-	int headLength(){return d_headLength;};
+	int headLength() const {return d_headLength;};
 	void setHeadLength(int l);
 
-	int headAngle(){return d_headAngle;};
+	int headAngle() const {return d_headAngle;};
 	void setHeadAngle(int a);
 
-	bool filledArrowHead(){return filledArrow;};
+	bool filledArrowHead() const {return filledArrow;};
 	void fillArrowHead(bool fill);
 
-	int position(){return d_position;};
+	int position() const {return d_position;};
 	void setPosition(int pos){d_position = pos;};
 
-	int vectorStyle(){return d_style;};
+	int vectorStyle() const {return d_style;};
 	void setVectorStyle(int style){d_style = style;};
 
 	bool updateData(Table *t, const QString& colName) override;
 	void loadData() override;
 
-	QStringList plotAssociation() override;
+	QStringList plotAssociation() const override;
 	void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName) override;
 
-	QPen vectorPen(){return d_pen;};
+	QPen vectorPen() const {return d_pen;};
 	void setVectorPen(const QPen& pen){d_pen = pen;};
 
 private:

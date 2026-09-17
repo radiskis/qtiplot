@@ -39,10 +39,10 @@ namespace {
         if (hFile != INVALID_HANDLE_VALUE) {
             char buf[1024];
             int len = snprintf(buf, sizeof(buf), "QtiPlot Crash Report\nPID: %lu\nReason: %s\nActive Autosave: %s\n",
-                               (unsigned long)GetCurrentProcessId(), reason, s_recoveryPathBuf);
+                               static_cast<unsigned long>(GetCurrentProcessId()), reason, s_recoveryPathBuf);
             if (len > 0) {
                 DWORD written = 0;
-                WriteFile(hFile, buf, (DWORD)len, &written, nullptr);
+                WriteFile(hFile, buf, static_cast<DWORD>(len), &written, nullptr);
             }
             CloseHandle(hFile);
         }
@@ -51,7 +51,7 @@ namespace {
         if (fd >= 0) {
             char buf[1024];
             int len = snprintf(buf, sizeof(buf), "QtiPlot Crash Report\nPID: %d\nReason: %s\nActive Autosave: %s\n",
-                               (int)getpid(), reason, s_recoveryPathBuf);
+                               static_cast<int>(getpid()), reason, s_recoveryPathBuf);
             if (len > 0) {
                 ::write(fd, buf, len);
             }
@@ -65,7 +65,7 @@ namespace {
     {
         char reason[128];
         snprintf(reason, sizeof(reason), "Unhandled Windows Exception code: 0x%08lx",
-                 (unsigned long)ep->ExceptionRecord->ExceptionCode);
+                 static_cast<unsigned long>(ep->ExceptionRecord->ExceptionCode));
         writeCrashReport(reason);
         return EXCEPTION_CONTINUE_SEARCH;
     }
@@ -147,7 +147,7 @@ QStringList findRecoveryFiles()
                     continue; // Skip our own running instance
 
 #if defined(_WIN32) || defined(WIN32)
-                HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, (DWORD)pid);
+                HANDLE hProcess = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, static_cast<DWORD>(pid));
                 if (hProcess != nullptr) {
                     DWORD exitCode = 0;
                     if (GetExitCodeProcess(hProcess, &exitCode) && exitCode == STILL_ACTIVE) {
@@ -157,7 +157,7 @@ QStringList findRecoveryFiles()
                     CloseHandle(hProcess);
                 }
 #else
-                if (kill((pid_t)pid, 0) == 0) {
+                if (kill(static_cast<pid_t>(pid), 0) == 0) {
                     continue; // Process is still running
                 }
 #endif

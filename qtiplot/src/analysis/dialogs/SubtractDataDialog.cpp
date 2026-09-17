@@ -175,7 +175,7 @@ void SubtractDataDialog::updateTableColumns(int tabnr)
 	boxColumnName->addItems(columns);
 }
 
-double SubtractDataDialog::combineValues(double v1, double v2)
+double SubtractDataDialog::combineValues(double v1, double v2) const
 {
 	double res = v1;
 	switch(boxOperation->currentIndex()){

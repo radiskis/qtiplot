@@ -57,7 +57,7 @@ class TableStatistics : public Table
 		void setColumnStatsTypes(const QList<int>& colStatTypes);
 		void setRange(int start, int end);
 
-		QString baseName(){return d_base_name;}
+		QString baseName() const {return d_base_name;}
 		void setBaseName(const QString& name){d_base_name = name;}
 
     public slots:

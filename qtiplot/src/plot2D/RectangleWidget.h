@@ -38,7 +38,7 @@ class RectangleWidget: public FrameWidget
 public:
 	RectangleWidget(Graph *);
 
-	QString saveToString() override;
+	QString saveToString() const override;
 
 	void clone(RectangleWidget* t);
 	static void restore(Graph *g, const QStringList& lst);

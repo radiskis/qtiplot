@@ -185,7 +185,7 @@ void ShapiroWilkTest::swilk(int *init,/* logical: is a[] already initialized ? *
     if (*n < 3) {	*ifault = 1; return;
     }
 
-	an = (double) (*n);
+	an = static_cast<double>(*n);
     nn2 = *n / 2;
     if (*n2 < nn2) {	*ifault = 3; return;
     }
@@ -195,7 +195,7 @@ void ShapiroWilkTest::swilk(int *init,/* logical: is a[] already initialized ? *
     if (ncens < 0 || (ncens > 0 && *n < 20)) {	*ifault = 4; return;
     }
     if (ncens > 0) {
-	delta = (double) ncens / an;
+	delta = static_cast<double>(ncens) / an;
 	if (delta > .8f) {	*ifault = 5; return;
 	}
     } /* just for -Wall:*/ else { delta = 0.f; }
@@ -353,10 +353,10 @@ L70:
 
 	ld = -log(delta);
 	bf = one + xx * bf1;
-	r__1 = pow(xx90, (double) xx);
-	z90f = z90 + bf * pow(poly(c7, 2, r__1), (double) ld);
-	r__1 = pow(xx95, (double) xx);
-	z95f = z95 + bf * pow(poly(c8, 2, r__1), (double) ld);
+	r__1 = pow(xx90, static_cast<double>(xx));
+	z90f = z90 + bf * pow(poly(c7, 2, r__1), static_cast<double>(ld));
+	r__1 = pow(xx95, static_cast<double>(xx));
+	z95f = z95 + bf * pow(poly(c8, 2, r__1), static_cast<double>(ld));
 	z99f = z99 + bf * pow(poly(c9, 2, xx), static_cast<double>(ld));
 
 /*	Regress Z90F,...,Z99F on normal deviates Z90,...,Z99 to get

@@ -60,7 +60,7 @@ private:
 	 */
 	bool selectMarker(const QMouseEvent *e);
 
-	Graph *plot();
+	Graph *plot() const;
 
 	QPoint startLinePoint, endLinePoint;
 

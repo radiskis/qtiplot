@@ -77,7 +77,7 @@ class ScriptingEnv : public QObject
     //! Construct a filter expression from fileExtension(), suitable for QFileDialog.
     const QString fileFilter() const;
 
-	ApplicationWindow *application(){return d_parent;};
+	ApplicationWindow *application() const {return d_parent;};
 
 	virtual int lastExitStatus() const { return d_last_exit_status; }
 	virtual void setLastExitStatus(int status) { d_last_exit_status = status; }

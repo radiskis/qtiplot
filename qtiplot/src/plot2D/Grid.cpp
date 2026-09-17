@@ -128,7 +128,7 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 
 	Graph *g = qobject_cast<Graph *>(this->plot());
 	if (g && g->canvasFrameWidth()){
-		for (uint i = 0; i < (uint)values.count(); i++){
+		for (int i = 0; i < values.count(); i++){
 			const int value = map.transform(values[i]);
 			if ( orientation == Qt::Horizontal ){
 				if ((value > y1 + 1) && (value < y2 - 1))
@@ -139,7 +139,7 @@ void Grid::drawLines(QPainter *painter, const QRect &rect,
 			}
 		}
 	} else {
-		for (uint i = 0; i < (uint)values.count(); i++){
+		for (int i = 0; i < values.count(); i++){
 			const int value = map.transform(values[i]);
 			if ( orientation == Qt::Horizontal ){
 				if ((value > y1) && (value < y2))
@@ -268,7 +268,7 @@ void Grid::enableZeroLineY(bool enable)
 	}
 }
 
-const QPen& Grid::xZeroLinePen()
+const QPen& Grid::xZeroLinePen() const
 {
 	if (mrkX)
 		return mrkX->linePen();
@@ -283,7 +283,7 @@ void Grid::setXZeroLinePen(const QPen &p)
 		mrkX->setLinePen(p);
 }
 
-const QPen& Grid::yZeroLinePen()
+const QPen& Grid::yZeroLinePen() const
 {
 	if (mrkY)
 		return mrkY->linePen();
@@ -321,7 +321,7 @@ void Grid::copy(Grid *grid)
 	setRenderHint(QwtPlotItem::RenderAntialiased, grid->testRenderHint(QwtPlotItem::RenderAntialiased));
 }
 
-QString Grid::saveToString()
+QString Grid::saveToString() const
 {
 	QString s = "grid\t";
 	s += QString::number(xEnabled())+"\t";

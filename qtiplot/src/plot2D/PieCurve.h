@@ -40,49 +40,49 @@ public:
 	PieCurve(Table *t, const QString& name, int startRow, int endRow);
     void clone(PieCurve* c);
 
-    double viewAngle(){return d_view_angle;};
+    double viewAngle() const {return d_view_angle;};
     void setViewAngle(double a){d_view_angle = a;};
 
-    double thickness(){return d_thickness;};
+    double thickness() const {return d_thickness;};
     void setThickness(double t){d_thickness = t;};
 
-    double horizontalOffset(){return d_horizontal_offset;};
+    double horizontalOffset() const {return d_horizontal_offset;};
     void setHorizontalOffset(double d){d_horizontal_offset = d;};
 
-	bool counterClockwise(){return d_counter_clockwise;};
+	bool counterClockwise() const {return d_counter_clockwise;};
 	void setCounterClockwise(bool on){d_counter_clockwise = on;};
 
-	double startAzimuth(){return d_start_azimuth;};
+	double startAzimuth() const {return d_start_azimuth;};
 	void setStartAzimuth(double angle){d_start_azimuth = angle;};
 
-    double labelsEdgeDistance(){return d_edge_dist;};
+    double labelsEdgeDistance() const {return d_edge_dist;};
     void setLabelsEdgeDistance(double d){d_edge_dist = d;};
 
-    bool labelsAutoFormat(){return d_auto_labeling;};
+    bool labelsAutoFormat() const {return d_auto_labeling;};
     void setLabelsAutoFormat(bool on){d_auto_labeling = on;};
 
-    bool labelsValuesFormat(){return d_values;};
+    bool labelsValuesFormat() const {return d_values;};
     void setLabelValuesFormat(bool on){d_values = on;};
 
-    bool labelsPercentagesFormat(){return d_percentages;};
+    bool labelsPercentagesFormat() const {return d_percentages;};
     void setLabelPercentagesFormat(bool on){d_percentages = on;};
 
-	bool labelCategories(){return d_categories;};
+	bool labelCategories() const {return d_categories;};
     void setLabelCategories(bool on){d_categories = on;};
 
-    bool fixedLabelsPosition(){return d_fixed_labels_pos;};
+    bool fixedLabelsPosition() const {return d_fixed_labels_pos;};
     void setFixedLabelsPosition(bool on){d_fixed_labels_pos = on;};
 
 	QColor color(int i) const;
 
-	int radius(){return d_pie_ray;};
+	int radius() const {return d_pie_ray;};
 	void setRadius(int size){d_pie_ray = size;};
 
-	Qt::BrushStyle pattern(){return QwtPlotCurve::brush().style();};
+	Qt::BrushStyle pattern() const {return QwtPlotCurve::brush().style();};
 	void setBrushStyle(const Qt::BrushStyle& style);
 
 	void setFirstColor(int index){d_first_color = index;};
-	int firstColor(){return d_first_color;};
+	int firstColor() const {return d_first_color;};
 
 	void loadData() override;
 	void initLabels();
@@ -90,7 +90,7 @@ public:
 
 	PieLabel* addLabel(PieLabel *l, bool clone = false);
 
-	QList <PieLabel *> labelsList(){return d_texts_list;};
+	QList <PieLabel *> labelsList() const {return d_texts_list;};
 
 private:
 	void draw(QPainter *painter,const QwtScaleMap &xMap,
@@ -124,12 +124,12 @@ class QTI_EXPORT PieLabel: public LegendWidget
 public:
     PieLabel(Graph *, PieCurve *pie = nullptr);
 
-	QString customText();
+	QString customText() const;
 	void setCustomText(const QString& s){d_custom_text = s;};
 
 	void setPieCurve(PieCurve *pie){d_pie_curve = pie;};
 
-	QString saveToString() override;
+	QString saveToString() const override;
 	static void restore(Graph *g, const QStringList& lst);
 
 private:

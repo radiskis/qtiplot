@@ -64,58 +64,58 @@ public:
 	void setEndPoint(const QPoint& p);
 
 	//! Axes values coordinates of the start point
-	QPointF startPointCoord();
+	QPointF startPointCoord() const;
 	//! Sets the start point in axes values coordinates
 	void setStartPoint(double x, double y);
 
 	//! Axes values coordinates of the end point
-	QPointF endPointCoord();
+	QPointF endPointCoord() const;
 	//! Sets the end point in axes values coordinates
 	void setEndPoint(double x, double y);
 
 	void setColor(const QColor& c);
-	QColor color(){return linePen().color();};
+	QColor color() const {return linePen().color();};
 
 	//! Sets the width of the arrow line
 	void setWidth(double w);
 	//! The width of the arrow line
-	double width(){return linePen().widthF();};
+	double width() const {return linePen().widthF();};
 
 	//! Returns half of the arrow width;
-	double arrowWidth();
+	double arrowWidth() const;
 
 	//! Sets the pen style for the arrow line
 	void setStyle(Qt::PenStyle s);
 	//! The pen style of the arrow line
-	Qt::PenStyle style(){return linePen().style ();};
+	Qt::PenStyle style() const {return linePen().style ();};
 
 	//! Specifies weather the start arrow should be drawn
 	void drawStartArrow(bool on = true){d_start_arrow = on;};
-	bool hasStartArrow(){return d_start_arrow;};
+	bool hasStartArrow() const {return d_start_arrow;};
 
 	//! Specifies weather the end arrow should be drawn
 	void drawEndArrow(bool on = true){d_end_arrow = on;};
-	bool hasEndArrow(){return d_end_arrow;};
+	bool hasEndArrow() const {return d_end_arrow;};
 
 	//! Length of the arrow head
-	int headLength(){return d_head_length;};
+	int headLength() const {return d_head_length;};
 	//! Sets the length of the arrow head
 	void setHeadLength(int l);
 
 	//! The angle of the arrow head
-	int headAngle(){return d_head_angle;};
+	int headAngle() const {return d_head_angle;};
 	//! Sets the angle of the arrow head
 	void setHeadAngle(int a);
 
-	bool filledArrowHead(){return d_fill_head;};
+	bool filledArrowHead() const {return d_fill_head;};
 	//! Specifies weather the arrow head should be filled with a brush
 	void fillArrowHead(bool fill = true);
 
 	//! Returns the shortest distance to the arrow line or to one of the arrow heads
-	double dist(int x, int y);
+	double dist(int x, int y) const;
 
 	//! Returns the length of the arrow line
-	double length();
+	double length() const;
 
     //! Returns the bounding rectangle in paint coordinates.
 	QRect rect() const {return QRect(startPoint(), endPoint()).normalized();};
@@ -136,7 +136,7 @@ public:
 	bool eventFilter(QObject *o, QEvent *e) override;
 
 	void setAttachPolicy(AttachPolicy attachTo);
-	AttachPolicy attachPolicy(){return d_attach_policy;};
+	AttachPolicy attachPolicy() const {return d_attach_policy;};
 
 	int rtti() const override {return Rtti_PlotLineArrow;}
 

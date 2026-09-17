@@ -57,11 +57,11 @@ private slots:
 
 private:
 	void changePlotAssociation(int curve, const QStringList& lst);
+	QStringList plotAssociation(const QString& text);
 	void updateColumnTypes();
 	void uncheckCol(int col);
 	void updatePlotAssociation(int row, int col);
-	QStringList plotAssociation(const QString& text);
-	Table *findTable(int index);
+	Table *findTable(int index) const;
 	bool eventFilter(QObject *object, QEvent *e) override;
 
 	QList <MdiSubWindow*> tables;

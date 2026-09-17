@@ -58,7 +58,7 @@ public:
 private slots:
 	void addCurves();
 	void removeCurves();
-	int curveStyle();
+	int curveStyle() const;
 	void showCurveRangeDialog();
 	void showPlotAssociations();
 	void showFunctionDialog();
@@ -116,7 +116,7 @@ public:
 	TreeWidgetFolderItem( QTreeWidget *parent, Folder *f );
 	TreeWidgetFolderItem( QTreeWidgetItem *parent, Folder *f );
 
-	Folder *folder() { return myFolder; };
+	Folder *folder() const { return myFolder; }
 
 protected:
 	Folder *myFolder = nullptr;

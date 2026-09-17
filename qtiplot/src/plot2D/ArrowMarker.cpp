@@ -159,7 +159,7 @@ double ArrowMarker::theta(int xs, int ys, int xe, int ye) const
     return t;
 }
 
-double ArrowMarker::length()
+double ArrowMarker::length() const
 {
 	if (!plot())
 		return -1.0;
@@ -176,7 +176,7 @@ double ArrowMarker::length()
 	return fabs(l);
 }
 
-double ArrowMarker::dist(int x, int y)
+double ArrowMarker::dist(int x, int y) const
 {
 	if (!plot())
 		return -1.0;
@@ -211,7 +211,7 @@ double ArrowMarker::dist(int x, int y)
 	return fabs(d);
 }
 
-double ArrowMarker::arrowWidth()
+double ArrowMarker::arrowWidth() const
 {
 	if (d_head_angle < 90.0)
 		return qRound(width() + floor(d_head_length*tan(M_PI*d_head_angle/180.0) + 0.5));
@@ -310,7 +310,7 @@ QPoint ArrowMarker::startPoint() const
                 plot()->transform(yAxis(), d_rect.top()));
 }
 
-QPointF ArrowMarker::startPointCoord()
+QPointF ArrowMarker::startPointCoord() const
 {
 	return QPointF(d_rect.left(), d_rect.top());
 }
@@ -354,7 +354,7 @@ plot()->updateLayout();
 d_end = QPoint(plot()->transform(xAxis(), x), plot()->transform(yAxis(), y));
 }
 
-QPointF ArrowMarker::endPointCoord()
+QPointF ArrowMarker::endPointCoord() const
 {
 return QPointF(d_rect.right(), d_rect.bottom());
 }

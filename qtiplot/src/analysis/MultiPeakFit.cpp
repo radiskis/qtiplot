@@ -393,7 +393,7 @@ double MultiPeakFit::eval(double *par, double x)
 	return y + par[d_p - 1];//add offset
 }
 
-double MultiPeakFit::evalPeak(double *par, double x, int peak)
+double MultiPeakFit::evalPeak(double *par, double x, int peak) const
 {
 	int aux = 3*peak;
     double diff = x - par[aux + 1];

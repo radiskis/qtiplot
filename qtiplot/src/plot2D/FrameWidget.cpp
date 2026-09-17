@@ -50,7 +50,7 @@ FrameWidget::FrameWidget(Graph *plot):QWidget(plot->multiLayer()->canvas()),
 	d_brush(QBrush()),
 	d_angle(0),
 	d_shadow_width(5),
-	d_attach_policy((AttachPolicy)plot->multiLayer()->applicationWindow()->d_graph_attach_policy),
+	d_attach_policy(static_cast<AttachPolicy>(plot->multiLayer()->applicationWindow()->d_graph_attach_policy)),
 	d_on_top(true)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -262,7 +262,7 @@ void FrameWidget::mousePressEvent (QMouseEvent *)
 	d_plot->select(this);
 }
 
-QString FrameWidget::saveToString()
+QString FrameWidget::saveToString() const
 {
 	QString s = "<Frame>" + QString::number(d_frame) + "</Frame>\n";
 	s += "<Color>" + d_frame_pen.color().name() + "</Color>\n";

@@ -55,7 +55,7 @@ void EllipseWidget::clone(EllipseWidget* r)
 	setCoordinates(r->xValue(), r->yValue(), r->right(), r->bottom());
 }
 
-QString EllipseWidget::saveToString()
+QString EllipseWidget::saveToString() const
 {
 	QString s = "<Ellipse>\n";
 	s += FrameWidget::saveToString();
@@ -96,7 +96,7 @@ void EllipseWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<attachTo>"))
-			r->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
+			r->setAttachPolicy(static_cast<FrameWidget::AttachPolicy>(s.remove("<attachTo>").remove("</attachTo>").toInt()));
 		else if (s.contains("<onTop>"))
 			r->setOnTop(s.remove("<onTop>").remove("</onTop>").toInt());
 		else if (s.contains("<visible>"))

@@ -1358,12 +1358,12 @@ void AxesDialog::showGeneralSettings()
 	boxMajorTicksLength->blockSignals(false);
 }
 
-int AxesDialog::mapToQwtAxisId()
+int AxesDialog::mapToQwtAxisId() const
 {
 	return mapToQwtAxis(axesTitlesList->currentRow());
 }
 
-int AxesDialog::mapToQwtAxis(int axis)
+int AxesDialog::mapToQwtAxis(int axis) const
 {
 	int a = -1;
 	switch(axis)
@@ -1430,7 +1430,7 @@ void AxesDialog::updateScale()
 			boxUnit->setCurrentIndex(1);
 			boxStep->setValue(step*24);
 		} else if (step < 30){
-			if (int(step) % 7){
+			if (static_cast<int>(step) % 7){
 				boxUnit->setCurrentIndex(2);
 				boxStep->setValue(step);
 			} else {
@@ -1779,7 +1779,7 @@ void AxesDialog::showAxis(int axis, int type, const QString& labelsColName, bool
 		return;
 	d_graph->showAxis(axis, type, labelsColName, w, axisOn, majTicksType, minTicksType, labelsOn,
 			c, format, prec, rotation, baselineDist, formula, labelsColor, spacing, backbone,
-			(ScaleDraw::ShowTicksPolicy)showTicks, boxPrefix->text(), boxSuffix->text());
+			static_cast<ScaleDraw::ShowTicksPolicy>(showTicks), boxPrefix->text(), boxSuffix->text());
 }
 
 void AxesDialog::applyCanvasFormatTo(Graph *g)
@@ -1886,7 +1886,7 @@ void AxesDialog::applyAxisFormatToLayer(Graph *g)
 		if (sd){
 			sd->setSpacing(boxTickLabelDistance->value());
 			sd->enableComponent (QwtAbstractScaleDraw::Backbone, boxAxisBackbone->isChecked());
-			sd->setShowTicksPolicy((ScaleDraw::ShowTicksPolicy)showTicksPolicyBox->currentIndex());
+			sd->setShowTicksPolicy(static_cast<ScaleDraw::ShowTicksPolicy>(showTicksPolicyBox->currentIndex()));
 		}
 
 		axis->repaint();

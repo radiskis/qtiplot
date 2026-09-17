@@ -123,9 +123,9 @@ private:
     void loadUserFunctions();
 	void initBuiltInFunctions();
 	void modifyGuesses(double* initVal);
-	QStringList builtInFunctionNames();
-	QStringList userFunctionNames();
-	QStringList plugInNames();
+	QStringList builtInFunctionNames() const;
+	QStringList userFunctionNames() const;
+	QStringList plugInNames() const;
 	QString parseFormula(const QString& s);
 	void setEditorTextColor(const QColor& c);
 	void setCurrentFit(int);

@@ -49,33 +49,33 @@ public:
 
 	QRectF boundingRect() const override;
 
-	QwtSymbol::Style minStyle(){return min_style;};
+	QwtSymbol::Style minStyle() const {return min_style;};
 	void setMinStyle(QwtSymbol::Style s){min_style = s;};
 
-	QwtSymbol::Style maxStyle(){return max_style;};
+	QwtSymbol::Style maxStyle() const {return max_style;};
 	void setMaxStyle(QwtSymbol::Style s){max_style = s;};
 
 	void setMeanStyle(QwtSymbol::Style s){mean_style = s;};
-	QwtSymbol::Style meanStyle(){return mean_style;};
+	QwtSymbol::Style meanStyle() const {return mean_style;};
 
 	void setP99Style(QwtSymbol::Style s){p99_style = s;};
-	QwtSymbol::Style p99Style(){return p99_style;};
+	QwtSymbol::Style p99Style() const {return p99_style;};
 
 	void setP1Style(QwtSymbol::Style s){p1_style = s;};
-	QwtSymbol::Style p1Style(){return p1_style;};
+	QwtSymbol::Style p1Style() const {return p1_style;};
 
-	int boxStyle(){return b_style;};
+	int boxStyle() const {return b_style;};
 	void setBoxStyle(int style);
 
-	int boxWidth(){return b_width;};
+	int boxWidth() const {return b_width;};
 	void setBoxWidth(int width){b_width=width;};
 
-	double boxRange(){return b_coeff;};
-	int boxRangeType(){return b_range;};
+	double boxRange() const {return b_coeff;};
+	int boxRangeType() const {return b_range;};
 	void setBoxRange(int type, double coeff);
 
-	double whiskersRange(){return w_coeff;};
-	int whiskersRangeType(){return w_range;};
+	double whiskersRange() const {return w_coeff;};
+	int whiskersRangeType() const {return w_range;};
 	void setWhiskersRange(int type, double coeff = 0.0);
 
 	LabelsDisplayPolicy labelsDisplayPolicy() const {return d_labels_display;};

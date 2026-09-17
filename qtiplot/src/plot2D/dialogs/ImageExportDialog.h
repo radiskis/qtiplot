@@ -101,9 +101,9 @@ public:
 	//! For vector formats: returns whether colors should be enabled for ouput (default: true).
 	bool color() const { return d_color->isChecked(); };
 	//! For TeX format: returns whether special characters should be escaped for ouput (default: true).
-	bool escapeStrings(){return d_escape_tex_strings->isChecked();};
+	bool escapeStrings() const {return d_escape_tex_strings->isChecked();};
 	//! For TeX format: returns whether font sizes should be exported (default: true).
-	bool exportFontSizes(){return d_tex_font_sizes->isChecked();};
+	bool exportFontSizes() const {return d_tex_font_sizes->isChecked();};
 
 	//! For raster formats: returns the output resolution the user selected, defaulting to the screen resolution.
 	int bitmapResolution() const { return d_bitmap_resolution->value(); };
@@ -122,11 +122,11 @@ public:
 
 	void selectFilter(const QString & filter);
 	//! Return the custom export size.
-	QSizeF customExportSize();
+	QSizeF customExportSize() const;
 	//! Return the unit used for the custom export size
-	int sizeUnit(){return unitBox->currentIndex();};
+	int sizeUnit() const {return unitBox->currentIndex();};
 	//! Return the scale fonts factor
-	double scaleFontsFactor();
+	double scaleFontsFactor() const;
 
 public slots:
 	void accept();

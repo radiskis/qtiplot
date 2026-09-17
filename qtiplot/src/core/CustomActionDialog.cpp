@@ -543,7 +543,7 @@ void CustomActionDialog::chooseFolder()
     }
 }
 
-QAction * CustomActionDialog::actionAt(int row)
+QAction * CustomActionDialog::actionAt(int row) const
 {
 	ApplicationWindow *mainWindow = app();
 	if (!mainWindow)

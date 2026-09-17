@@ -380,7 +380,7 @@ void ImageExportDialog::selectFilter(const QString & filter)
 	updateAdvancedOptions(filter);
 }
 
-QSizeF ImageExportDialog::customExportSize()
+QSizeF ImageExportDialog::customExportSize() const
 {
 	if (!d_custom_size_box->isChecked())
 		return QSizeF();
@@ -396,7 +396,7 @@ bool ImageExportDialog::transparency() const
 	return false;
 }
 
-double ImageExportDialog::scaleFontsFactor()
+double ImageExportDialog::scaleFontsFactor() const
 {
 	if (!d_custom_size_box->isChecked())
 		return 1.0;

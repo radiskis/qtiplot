@@ -86,9 +86,6 @@ void Fit::init()
 	d_weighting = NoWeighting;
 	weighting_dataset = QString();
 	is_non_linear = true;
-	d_results = nullptr;
-	d_errors = nullptr;
-	d_residuals = nullptr;
 	d_init_err = false;
 	chi_2 = -1;
 	d_rss = 0.0;
@@ -102,8 +99,6 @@ void Fit::init()
 	covar = nullptr;
 	d_param_init = nullptr;
 	d_fit_type = BuiltIn;
-	d_param_range_left = nullptr;
-	d_param_range_right = nullptr;
 }
 
 gsl_multifit_fdfsolver * Fit::fitGSL(gsl_multifit_function_fdf f, int &iterations, int &status)
@@ -399,8 +394,8 @@ QString Fit::logFitInfo(int iterations, int status)
 */
 double Fit::rSquare()
 {
-	if (!d_residuals)
-		d_residuals = new double[d_n];
+	if (d_residuals.empty())
+		d_residuals.resize(d_n);
 
 	//double sst = gsl_stats_wtss_m (d_w, 1, d_y, 1, d_n, gsl_stats_mean (d_y, 1, d_n));
 	double mean = gsl_stats_mean (d_y, 1, d_n);
@@ -409,7 +404,7 @@ double Fit::rSquare()
 	for (int i = 0; i < d_n; i++){
 		double w = d_w[i];
 		double y = d_y[i];
-		double dy = y - eval(d_results, d_x[i]);
+		double dy = y - eval(d_results.data(), d_x[i]);
 		d_residuals[i] = dy;
 		d_rss += w*dy*dy;
 
@@ -660,8 +655,8 @@ Matrix* Fit::covarianceMatrix(const QString& matrixName)
 
 double *Fit::errors()
 {
-	if (!d_errors)
-		d_errors = new double[d_p];
+	if (d_errors.empty())
+		d_errors.resize(d_p);
 
 	double chi_2_dof = chi_2/(d_n - d_p);
 	for (int i = 0; i < d_p; i++){
@@ -670,25 +665,25 @@ double *Fit::errors()
 		else
 			d_errors[i] = sqrt(gsl_matrix_get(covar,i,i));
 	}
-	return d_errors;
+	return d_errors.empty() ? nullptr : d_errors.data();
 }
 
 double* Fit::residuals()
 {
-	if (!d_residuals){
+	if (d_residuals.empty()){
 		if (!d_n || error())
 			return nullptr;
 
-		d_residuals = new double[d_n];
+		d_residuals.resize(d_n);
 		for (int i=0; i<d_n; i++)
-			d_residuals[i] = d_y[i] - eval(d_results, d_x[i]);
+			d_residuals[i] = d_y[i] - eval(d_results.data(), d_x[i]);
 	}
-	return d_residuals;
+	return d_residuals.empty() ? nullptr : d_residuals.data();
 }
 
 PlotCurve* Fit::showResiduals()
 {
-	if (!d_residuals){
+	if (d_residuals.empty()){
 		reportError(tr("QtiPlot - Fit Error"), tr("Please perform a fit first!"));
 		return nullptr;
 	}
@@ -717,7 +712,7 @@ PlotCurve* Fit::showResiduals()
 
 	QString tableName = outputTable->objectName();
 	DataCurve *c = new DataCurve(outputTable, tableName + "_1", tableName + "_residue");
-	c->setSamples(d_x, d_residuals, d_n);
+	c->setSamples(d_x, d_residuals.data(), d_n);
 	c->setPen(QPen(ColorBox::color(ColorBox::colorIndex(d_curveColor) + 1), 1));
 
 	d_output_graph->insertPlotItem(c, Graph::Line);
@@ -781,7 +776,7 @@ void Fit::showConfidenceLimits(double confidenceLevel)
 		double aux = t*sqrt(mse*(1.0/static_cast<double>(d_n) + dx*dx/sxx));
 
 		outputTable->setCell(i, 0, x);
-		double y = eval(d_results, x);
+		double y = eval(d_results.data(), x);
 		double lowLimit = y - aux;
 		outputTable->setCell(i, 1, lowLimit);
 		lcl[i] = lowLimit;
@@ -886,7 +881,7 @@ void Fit::showPredictionLimits(double confidenceLevel)
 		double aux = t*sqrt(mse*(1 + 1.0/static_cast<double>(d_n) + dx*dx/sxx));
 
 		outputTable->setCell(i, 0, x);
-		double y = eval(d_results, x);
+		double y = eval(d_results.data(), x);
 		double lowLimit = y - aux;
 		outputTable->setCell(i, 1, lowLimit);
 		lcl[i] = lowLimit;
@@ -1125,7 +1120,7 @@ bool Fit::load(const QString& fileName)
 			if (name == "model")
 				setObjectName(reader.readElementText());
 			else if (name == "type")
-				setType((Fit::FitType)reader.readElementText().toInt());
+				setType(static_cast<Fit::FitType>(reader.readElementText().toInt()));
 			else if (name == "function")
 				formula = reader.readElementText().replace("&lt;", "<").replace("&gt;", ">");
 			else if (name == "parameter") {
@@ -1164,7 +1159,7 @@ bool Fit::load(const QString& fileName)
 
 void Fit::setParameterRange(int parIndex, double left, double right)
 {
-	if (!d_param_range_left || !d_param_range_right || parIndex < 0 || parIndex >= d_p)
+	if (d_param_range_left.empty() || d_param_range_right.empty() || parIndex < 0 || parIndex >= d_p)
 		return;
 
 	d_param_range_left[parIndex] = left;
@@ -1185,13 +1180,9 @@ void Fit::initWorkspace(int par)
 		return;
 	}*/
 
-	d_results = new double[par];
-	d_param_range_left = new double[par];
-	d_param_range_right = new double[par];
-	for (int i = 0; i<par; i++){
-		d_param_range_left[i] = -DBL_MAX;
-		d_param_range_right[i] = DBL_MAX;
-	}
+	d_results.assign(par, 0.0);
+	d_param_range_left.assign(par, -DBL_MAX);
+	d_param_range_right.assign(par, DBL_MAX);
 }
 
 void Fit::freeWorkspace()
@@ -1206,25 +1197,10 @@ void Fit::freeWorkspace()
 		covar = nullptr;
 	}
 
-	if (d_results){
-		delete[] d_results;
-		d_results = nullptr;
-	}
-
-	if (d_errors){
-		delete[] d_errors;
-		d_errors = nullptr;
-	}
-
-	if (d_param_range_left){
-		delete[] d_param_range_left;
-		d_param_range_left = nullptr;
-	}
-
-	if (d_param_range_right){
-		delete[] d_param_range_right;
-		d_param_range_right = nullptr;
-	}
+	d_results.clear();
+	d_errors.clear();
+	d_param_range_left.clear();
+	d_param_range_right.clear();
 }
 
 void Fit::freeMemory()
@@ -1235,10 +1211,7 @@ void Fit::freeMemory()
 		d_w = nullptr;
 	}
 
-    if (d_residuals) {
-		delete[] d_residuals;
-		d_residuals = nullptr;
-    }
+	d_residuals.clear();
 }
 
 Fit::~Fit()

@@ -222,7 +222,7 @@ void ReciprocalScaleEngine::buildMinorTicks(
         return;
 
     // # ticks per interval
-    int numTicks = (int)::ceil(qAbs(stepSize / minStep)) - 1;
+    int numTicks = static_cast<int>(::ceil(qAbs(stepSize / minStep))) - 1;
 
     // Do the minor steps fit into the interval?
     if ( compareEps((numTicks +  1) * qAbs(minStep),

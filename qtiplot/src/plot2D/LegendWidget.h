@@ -51,30 +51,30 @@ public:
 
 	void clone(LegendWidget* t);
 
-	QString text(){return d_text->text();};
+	QString text() const {return d_text->text();};
 	void setText(const QString& s, bool pushUndo = true);
 
-	QColor textColor(){return d_text->color();};
+	QColor textColor() const {return d_text->color();};
 	void setTextColor(const QColor& c, bool pushUndo = true);
 
-	QFont font(){return d_text->font();};
+	QFont font() const {return d_text->font();};
 	void setFont(const QFont& font, bool pushUndo = true);
 
 	void showTextEditor();
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
 
-	QString saveToString() override;
+	QString saveToString() const override;
 	static void restore(Graph *g, const QStringList& lst);
 
-	bool isAutoUpdateEnabled(){return d_auto_update;};
+	bool isAutoUpdateEnabled() const {return d_auto_update;};
 	void setAutoUpdate(bool on = true){d_auto_update = on;};
 
-	int angle(){return d_angle;};
+	int angle() const {return d_angle;};
 	void setAngle(int angle);
 
 	QSize textSize(QPainter *p, const QwtText& text);
 
-	bool hasTeXOutput(){return d_tex_output;};
+	bool hasTeXOutput() const {return d_tex_output;};
 	void setTeXOutput(bool on = true){d_tex_output = on;};
 
 private:

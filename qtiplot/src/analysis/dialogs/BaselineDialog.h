@@ -63,7 +63,7 @@ private slots:
 
 private:
 	void disableBaselineTool();
-	double combineValues(double v1, double v2, bool add = false);
+	double combineValues(double v1, double v2, bool add = false) const;
 	void closeEvent(QCloseEvent* e) override;
 
 	Graph *graph = nullptr;

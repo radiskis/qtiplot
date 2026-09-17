@@ -45,7 +45,7 @@ public:
 
     FrameWidget(Graph *);
 
-	Graph *plot(){return d_plot;};
+	Graph *plot() const {return d_plot;};
 
 	//! The kinds of frame a FrameWidget can draw around.
 	enum FrameStyle{None = 0, Line = 1, Shadow = 2};
@@ -53,9 +53,9 @@ public:
 	enum AttachPolicy {Page, Scales};
 
     //! Returns the x axis coordiante of the top left corner
-    double xValue(){return d_x;};
+    double xValue() const {return d_x;};
     //! Returns the y axis coordiante of the top left corner
-	double yValue(){return d_y;};
+	double yValue() const {return d_y;};
 	//! Sets the position of the top left corner in axis coordinates
 	void setOriginCoord(double x, double y);
 	//! Sets the position of the top left corner in paint coordinates
@@ -73,8 +73,8 @@ public:
     //! Set geometry, giving everything in paint coordinates.
 	void setRect(int x, int y, int w, int h);
 
-	double right(){return d_x_right;};
-	double bottom(){return d_y_bottom;};
+	double right() const {return d_x_right;};
+	double bottom() const {return d_y_bottom;};
 
 	static double xIn(QWidget *w, Unit unit);
 	static double yIn(QWidget *w, Unit unit);
@@ -83,28 +83,28 @@ public:
     //! Set geometry of a widget in arbitrary units.
     static void setRect(QWidget *, double x, double y, double w, double h, Unit unit = Pixel);
 
-	int frameStyle(){return d_frame;};
+	int frameStyle() const {return d_frame;};
 	void setFrameStyle(int style);
 
-	QPen framePen(){return d_frame_pen;};
+	QPen framePen() const {return d_frame_pen;};
 	void setFramePen(const QPen& p){d_frame_pen = p;};
 
-	Qt::PenStyle frameLineStyle(){return d_frame_pen.style();};
+	Qt::PenStyle frameLineStyle() const {return d_frame_pen.style();};
 	void setFrameLineStyle(const Qt::PenStyle& s){d_frame_pen.setStyle(s);};
 
-	QColor frameColor(){return d_frame_pen.color();};
+	QColor frameColor() const {return d_frame_pen.color();};
 	void setFrameColor(const QColor& c){d_frame_pen.setColor(c);};
 
-	double frameWidth(){return d_frame_pen.widthF();};
+	double frameWidth() const {return d_frame_pen.widthF();};
 	void setFrameWidth(double w){d_frame_pen.setWidthF(w);};
 
-	QColor backgroundColor(){return palette().color(QPalette::Window);};
+	QColor backgroundColor() const {return palette().color(QPalette::Window);};
 	void setBackgroundColor(const QColor& c){QPalette pal = palette(); pal.setColor(QPalette::Window, c); setPalette(pal);};
 
-	QBrush brush(){return d_brush;};
+	QBrush brush() const {return d_brush;};
 	void setBrush(const QBrush& b){d_brush = b;};
 
-	int angle(){return d_angle;};
+	int angle() const {return d_angle;};
 	void setAngle(int ang){d_angle = ang;};
 
 	void showContextMenu(){emit showMenu();};
@@ -115,12 +115,12 @@ public:
 	void resetCoordinates(){setCoordinates(d_x, d_y, d_x_right, d_y_bottom);};
 
     virtual void updateCoordinates();
-	virtual QString saveToString();
+	virtual QString saveToString() const;
 
 	void setAttachPolicy(AttachPolicy attachTo);
-	AttachPolicy attachPolicy(){return d_attach_policy;};
+	AttachPolicy attachPolicy() const {return d_attach_policy;};
 
-	bool isOnTop(){return d_on_top;};
+	bool isOnTop() const {return d_on_top;};
 	void setOnTop(bool on = true);
 
 	void mousePressEvent(QMouseEvent *) override;

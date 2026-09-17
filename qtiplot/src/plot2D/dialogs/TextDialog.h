@@ -67,7 +67,7 @@ public:
 	/**
 	 * \sa setAlignment()
 	 */
-	int alignment();
+	int alignment() const;
 
 public slots:
 	//! Set the contents of the text editor box

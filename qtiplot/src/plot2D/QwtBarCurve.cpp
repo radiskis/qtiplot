@@ -236,7 +236,7 @@ void QwtBarCurve::setOffset(int offset)
 	bar_offset = offset;
 }
 
-double QwtBarCurve::dataOffset()
+double QwtBarCurve::dataOffset() const
 {
 	if (bar_style == Vertical){
 		const QwtScaleMap &xMap = plot()->canvasMap(xAxis());
@@ -270,7 +270,7 @@ double QwtBarCurve::dataOffset()
 	return 0;
 }
 
-QString QwtBarCurve::saveToString()
+QString QwtBarCurve::saveToString() const
 {
 	QString s = DataCurve::saveToString();
 	if (d_is_stacked)

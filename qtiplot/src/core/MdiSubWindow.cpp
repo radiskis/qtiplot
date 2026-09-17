@@ -133,7 +133,7 @@ void MdiSubWindow::closeEvent( QCloseEvent *e )
     }
 }
 
-QString MdiSubWindow::aspect()
+QString MdiSubWindow::aspect() const
 {
 QString s = tr("Normal");
 switch (d_status)
@@ -156,7 +156,7 @@ switch (d_status)
 return s;
 }
 
-QString MdiSubWindow::sizeToString()
+QString MdiSubWindow::sizeToString() const
 {
 return QString::number(sizeof(MdiSubWindow), 'f', 1) + " " + tr("B");
 }

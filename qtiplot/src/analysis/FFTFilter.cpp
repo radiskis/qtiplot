@@ -88,7 +88,7 @@ void FFTFilter::setFilterType(int type)
         tr("Unknown filter type. Valid values are: 1 - Low pass, 2 - High Pass, 3 - Band Pass, 4 - Band block."));
         return;
     }
-    d_filter_type = (FilterType)type;
+    d_filter_type = static_cast<FilterType>(type);
 }
 
 void FFTFilter::setCutoff(double f)

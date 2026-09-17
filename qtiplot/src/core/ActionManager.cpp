@@ -2204,7 +2204,7 @@ void ActionManager::loadCustomActions()
 }
 
 
-QList<QMenu *> ActionManager::customizableMenusList()
+QList<QMenu *> ActionManager::customizableMenusList() const
 {
 	if (!d_app) return QList<QMenu *>();
 	auto &analysisMenu = d_app->analysisMenu;
@@ -2251,7 +2251,7 @@ QList<QMenu *> ActionManager::customizableMenusList()
 }
 
 
-QList<QMenu *> ActionManager::menusList()
+QList<QMenu *> ActionManager::menusList() const
 {
 	if (!d_app) return QList<QMenu *>();
 #ifdef HAVE_ALGLIB
@@ -2274,7 +2274,7 @@ QList<QMenu *> ActionManager::menusList()
 }
 
 
-QList<QToolBar *> ActionManager::toolBarsList()
+QList<QToolBar *> ActionManager::toolBarsList() const
 {
 	if (!d_app) return QList<QToolBar *>();
 #ifdef HAVE_ALGLIB

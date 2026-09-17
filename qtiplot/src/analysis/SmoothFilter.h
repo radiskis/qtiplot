@@ -45,7 +45,7 @@ public:
 
     enum SmoothMethod{SavitzkyGolay = 1, FFT = 2, Average = 3, Lowess = 4};
 
-    int method(){return static_cast<int>(d_method);};
+    int method() const {return static_cast<int>(d_method);};
     void setMethod(int m);
 
     void setSmoothPoints(int points, int left_points = 0);

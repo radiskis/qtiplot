@@ -1407,7 +1407,7 @@ void ApplicationWindow::initTable(Table* w, const QString& caption)
  */
 TableStatistics *ApplicationWindow::newTableStatistics(Table *base, int type, QList<int> target, int start, int end, const QString &caption)
 {
-	TableStatistics* s = new TableStatistics(scriptEnv, this, base, (TableStatistics::Type) type, target, start, end);
+	TableStatistics* s = new TableStatistics(scriptEnv, this, base, static_cast<TableStatistics::Type>(type), target, start, end);
 	if (caption.isEmpty())
 		initTable(s, s->objectName());
 	else
@@ -2656,7 +2656,7 @@ void ApplicationWindow::importASCII(const QString& fileName)
     d_ASCII_comment_string = import_dialog->commentString();
     d_ASCII_import_comments = import_dialog->useSecondRow();
     d_ASCII_import_read_only = import_dialog->readOnly();
-	d_ASCII_end_line = (EndLineChar)import_dialog->endLineChar();
+	d_ASCII_end_line = static_cast<EndLineChar>(import_dialog->endLineChar());
     saveSettings();
 
 	importASCII(import_dialog->selectedFiles(),
@@ -2993,14 +2993,14 @@ void ApplicationWindow::readSettings()
 	d_app_rect = d_app_settings->d_app_rect;
 	autoSearchUpdates = d_app_settings->autoSearchUpdates;
 	appLanguage = d_app_settings->appLanguage;
-	show_windows_policy = (ShowWindowsPolicy)d_app_settings->show_windows_policy;
+	show_windows_policy = static_cast<ShowWindowsPolicy>(d_app_settings->show_windows_policy);
 	recentProjects = d_app_settings->recentProjects;
-	d_excel_import_method = (ExcelImportMethod)d_app_settings->d_excel_import_method;
+	d_excel_import_method = static_cast<ExcelImportMethod>(d_app_settings->d_excel_import_method);
 	appStyle = d_app_settings->appStyle;
 	autoSave = d_app_settings->autoSave;
 	autoSaveTime = d_app_settings->autoSaveTime;
 	d_backup_files = d_app_settings->d_backup_files;
-	d_init_window_type = (WindowType)d_app_settings->d_init_window_type;
+	d_init_window_type = static_cast<WindowType>(d_app_settings->d_init_window_type);
 	d_completion = d_app_settings->d_completion;
 	d_open_last_project = d_app_settings->d_open_last_project;
 	defaultScriptingLang = d_app_settings->defaultScriptingLang;
@@ -3014,7 +3014,7 @@ void ApplicationWindow::readSettings()
 	d_matrix_undo_stack_size = d_app_settings->d_matrix_undo_stack_size;
 	d_table_undo_stack_size = d_app_settings->d_table_undo_stack_size;
 	d_undo_memory_budget_mb = d_app_settings->d_undo_memory_budget_mb;
-	d_eol = (EndLineChar)d_app_settings->d_eol;
+	d_eol = static_cast<EndLineChar>(d_app_settings->d_eol);
 	appFont = d_app_settings->appFont;
 	d_indexed_colors = d_app_settings->d_indexed_colors;
 	d_indexed_color_names = d_app_settings->d_indexed_color_names;
@@ -3244,7 +3244,7 @@ void ApplicationWindow::readSettings()
 	d_ASCII_import_read_only = d_app_settings->d_ASCII_import_read_only;
 	d_ASCII_import_preview = d_app_settings->d_ASCII_import_preview;
 	d_preview_lines = d_app_settings->d_preview_lines;
-	d_ASCII_end_line = (EndLineChar)d_app_settings->d_ASCII_end_line;
+	d_ASCII_end_line = static_cast<EndLineChar>(d_app_settings->d_ASCII_end_line);
 	d_ASCII_import_first_row_role = d_app_settings->d_ASCII_import_first_row_role;
 	d_import_ASCII_dialog_size = d_app_settings->d_import_ASCII_dialog_size;
 
@@ -3344,14 +3344,14 @@ void ApplicationWindow::saveSettings()
 
 	d_app_settings->autoSearchUpdates = autoSearchUpdates;
 	d_app_settings->appLanguage = appLanguage;
-	d_app_settings->show_windows_policy = (ApplicationSettings::ShowWindowsPolicy)show_windows_policy;
+	d_app_settings->show_windows_policy = static_cast<ApplicationSettings::ShowWindowsPolicy>(show_windows_policy);
 	d_app_settings->recentProjects = recentProjects;
-	d_app_settings->d_excel_import_method = (ApplicationSettings::ExcelImportMethod)d_excel_import_method;
+	d_app_settings->d_excel_import_method = static_cast<ApplicationSettings::ExcelImportMethod>(d_excel_import_method);
 	d_app_settings->appStyle = appStyle;
 	d_app_settings->autoSave = autoSave;
 	d_app_settings->autoSaveTime = autoSaveTime;
 	d_app_settings->d_backup_files = d_backup_files;
-	d_app_settings->d_init_window_type = (ApplicationSettings::WindowType)d_init_window_type;
+	d_app_settings->d_init_window_type = static_cast<ApplicationSettings::WindowType>(d_init_window_type);
 	d_app_settings->d_completion = d_completion;
 	d_app_settings->d_open_last_project = d_open_last_project;
 	d_app_settings->defaultScriptingLang = defaultScriptingLang;
@@ -3363,7 +3363,7 @@ void ApplicationWindow::saveSettings()
 	d_app_settings->d_matrix_undo_stack_size = d_matrix_undo_stack_size;
 	d_app_settings->d_table_undo_stack_size = d_table_undo_stack_size;
 	d_app_settings->d_undo_memory_budget_mb = d_undo_memory_budget_mb;
-	d_app_settings->d_eol = (ApplicationSettings::EndLineChar)d_eol;
+	d_app_settings->d_eol = static_cast<ApplicationSettings::EndLineChar>(d_eol);
 	d_app_settings->appFont = appFont;
 	d_app_settings->d_indexed_colors = d_indexed_colors;
 	d_app_settings->d_indexed_color_names = d_indexed_color_names;
@@ -3578,7 +3578,7 @@ void ApplicationWindow::saveSettings()
 	d_app_settings->d_ASCII_import_read_only = d_ASCII_import_read_only;
 	d_app_settings->d_ASCII_import_preview = d_ASCII_import_preview;
 	d_app_settings->d_preview_lines = d_preview_lines;
-	d_app_settings->d_ASCII_end_line = (ApplicationSettings::EndLineChar)d_ASCII_end_line;
+	d_app_settings->d_ASCII_end_line = static_cast<ApplicationSettings::EndLineChar>(d_ASCII_end_line);
 	d_app_settings->d_ASCII_import_first_row_role = d_ASCII_import_first_row_role;
 	d_app_settings->d_import_ASCII_dialog_size = d_import_ASCII_dialog_size;
 
@@ -3897,7 +3897,7 @@ bool ApplicationWindow::saveWindow(MdiSubWindow *w, const QString& fn, bool comp
 	}
 
 	if (compress)
-		file_compress(tempFn.toUtf8().data(), (char*)"wb9");
+		file_compress(tempFn.toUtf8().data(), const_cast<char*>("wb9"));
 
 	if (QFile::exists(fn)) {
 		if (!QFile::remove(fn)) {
@@ -7942,9 +7942,8 @@ void ApplicationWindow::setReadOnlyCol()
 	Table *t = activeWindow<Table>();
 	if (!t)
 		return;
-    QStringList list = t->selectedColumns();
-	for (int i=0; i<(int) list.count(); i++)
-		t->setReadOnlyColumn(t->colIndex(list[i]), actionReadOnlyCol->isChecked());
+	for (const QString &col : t->selectedColumns())
+		t->setReadOnlyColumn(t->colIndex(col), actionReadOnlyCol->isChecked());
 }
 
 void ApplicationWindow::setReadOnlyColumns()
@@ -7952,9 +7951,8 @@ void ApplicationWindow::setReadOnlyColumns()
 	Table *t = activeWindow<Table>();
 	if (!t)
 		return;
-    QStringList list = t->selectedColumns();
-	for (int i=0; i<(int) list.count(); i++)
-		t->setReadOnlyColumn(t->colIndex(list[i]));
+	for (const QString &col : t->selectedColumns())
+		t->setReadOnlyColumn(t->colIndex(col));
 }
 
 void ApplicationWindow::setReadWriteColumns()
@@ -7962,9 +7960,8 @@ void ApplicationWindow::setReadWriteColumns()
 	Table *t = activeWindow<Table>();
 	if (!t)
 		return;
-    QStringList list = t->selectedColumns();
-	for (int i=0; i<(int) list.count(); i++)
-		t->setReadOnlyColumn(t->colIndex(list[i]), false);
+	for (const QString &col : t->selectedColumns())
+		t->setReadOnlyColumn(t->colIndex(col), false);
 }
 
 void ApplicationWindow::setAscValues()
@@ -8467,10 +8464,10 @@ void ApplicationWindow::showFolderPopupMenu(QTreeWidgetItem *it, const QPoint &p
 
 void ApplicationWindow::setShowWindowsPolicy(int p)
 {
-	if (show_windows_policy == (ShowWindowsPolicy)p)
+	if (show_windows_policy == static_cast<ShowWindowsPolicy>(p))
 		return;
 
-	show_windows_policy = (ShowWindowsPolicy)p;
+	show_windows_policy = static_cast<ShowWindowsPolicy>(p);
 	if (show_windows_policy == HideAll){
 		QList<MdiSubWindow *> windows = windowsList();
 		for (MdiSubWindow *w : windows){
@@ -10063,17 +10060,17 @@ void ApplicationWindow::loadCustomActions()
 		d_action_manager->loadCustomActions();
 }
 
-QList<QMenu *> ApplicationWindow::customizableMenusList()
+QList<QMenu *> ApplicationWindow::customizableMenusList() const
 {
 	return d_action_manager ? d_action_manager->customizableMenusList() : QList<QMenu *>();
 }
 
-QList<QMenu *> ApplicationWindow::menusList()
+QList<QMenu *> ApplicationWindow::menusList() const
 {
 	return d_action_manager ? d_action_manager->menusList() : QList<QMenu *>();
 }
 
-QList<QToolBar *> ApplicationWindow::toolBarsList()
+QList<QToolBar *> ApplicationWindow::toolBarsList() const
 {
 	return d_action_manager ? d_action_manager->toolBarsList() : QList<QToolBar *>();
 }

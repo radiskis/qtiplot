@@ -354,7 +354,7 @@ MultiLayer* PlotController2D::multilayerPlot(int c, int r, int style, const Mult
     if (!t)
 		return nullptr;
 
-	if (!validFor2DPlot(t, (Graph::CurveType)style))
+	if (!validFor2DPlot(t, static_cast<Graph::CurveType>(style)))
 		return nullptr;
 
 	QStringList list = t->drawableColumnSelection();
@@ -695,7 +695,7 @@ void PlotController2D::plotCustomLayout(bool sharedAxes)
 	auto &defaultCurveStyle = d_app->defaultCurveStyle;
 
 	Table *t = d_app->activeWindow<Table>();
-	if (!t || !validFor2DPlot(t, (Graph::CurveType)defaultCurveStyle))
+	if (!t || !validFor2DPlot(t, static_cast<Graph::CurveType>(defaultCurveStyle)))
 		return;
 
 	QStringList list = t->drawableColumnSelection();
@@ -1325,7 +1325,7 @@ MultiLayer* PlotController2D::plotImageProfiles(Matrix *m)
 	return g;
 }
 
-bool PlotController2D::validFor2DPlot(Table *table, Graph::CurveType type)
+bool PlotController2D::validFor2DPlot(Table *table, Graph::CurveType type) const
 {
 	if (!d_app) return false;
 

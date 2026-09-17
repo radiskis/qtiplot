@@ -54,14 +54,14 @@ public:
 	//! Get the intensity range
 	QwtInterval intensityRange() const;
 	//! Get the lower range limit
-	double lowerBound(){return d_range.minValue();}
+	double lowerBound() const {return d_range.minValue();}
 	//! Get the upper range limit
-	double upperBound(){return d_range.maxValue();}
+	double upperBound() const {return d_range.maxValue();}
 	//! Get the color at a stop index
 	QColor color(int index) const;
 
 	//! Exports the map to a pseudo-XML string
-	QString toXmlString();
+	QString toXmlString() const;
 	//! Used when restoring from project files
 	static LinearColorMap fromXmlStringList(const QStringList& lst);
 

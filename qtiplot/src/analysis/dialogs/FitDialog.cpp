@@ -1471,7 +1471,7 @@ void FitDialog::accept()
 		d_current_fit->setInitialGuesses(paramsInit.data());
 
 		if (!d_current_fit->setDataFromCurve(d_graph->curve(boxCurve->currentText()), start, end) ||
-			!d_current_fit->setWeightingData ((Fit::WeightingMethod)boxWeighting->currentIndex(),
+			!d_current_fit->setWeightingData (static_cast<Fit::WeightingMethod>(boxWeighting->currentIndex()),
 						   tableNamesBox->currentText() + "_" + colNamesBox->currentText())) return;
 
 		if (btnParamRange->isEnabled()){
@@ -1481,7 +1481,7 @@ void FitDialog::accept()
 
 		d_current_fit->setTolerance(eps);
 		d_current_fit->setOutputPrecision(app->fit_output_precision);
-		d_current_fit->setAlgorithm((Fit::Algorithm)boxAlgorithm->currentIndex());
+		d_current_fit->setAlgorithm(static_cast<Fit::Algorithm>(boxAlgorithm->currentIndex()));
 		d_current_fit->setColor(boxColor->color());
 		d_current_fit->generateFunction(generatePointsBtn->isChecked(), generatePointsBox->value());
 		d_current_fit->setMaximumIterations(boxPoints->value());
@@ -1681,7 +1681,7 @@ void FitDialog::setNumPeaks(int peaks)
 	showExpression(funcBox->currentRow());
 }
 
-QStringList FitDialog::builtInFunctionNames()
+QStringList FitDialog::builtInFunctionNames() const
 {
 	QStringList lst;
 	for (Fit *fit : d_built_in_functions)
@@ -1736,7 +1736,7 @@ void FitDialog::loadUserFunctions()
         boxUseBuiltIn->setEnabled(false);
 }
 
-QStringList FitDialog::userFunctionNames()
+QStringList FitDialog::userFunctionNames() const
 {
 	QStringList lst;
 	for (Fit *fit : d_user_functions)
@@ -1829,7 +1829,7 @@ void FitDialog::guessInitialValues()
 		updatePreview();
 }
 
-QStringList FitDialog::plugInNames()
+QStringList FitDialog::plugInNames() const
 {
 	QStringList lst;
 	for (Fit *fit : d_plugins)

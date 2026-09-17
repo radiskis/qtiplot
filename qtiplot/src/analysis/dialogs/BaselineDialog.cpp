@@ -353,7 +353,7 @@ void BaselineDialog::subtractBaseline(bool add)
 	}
 }
 
-double BaselineDialog::combineValues(double v1, double v2, bool add)
+double BaselineDialog::combineValues(double v1, double v2, bool add) const
 {
 	double res = v1;
 	if (add)

@@ -805,7 +805,7 @@ void LegendWidget::clone(LegendWidget* t)
 	setAttachPolicy(t->attachPolicy());
 }
 
-QString LegendWidget::saveToString()
+QString LegendWidget::saveToString() const
 {
 	QString s = "<Legend>\n";
 	s += FrameWidget::saveToString();
@@ -850,7 +850,7 @@ void LegendWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<y>"))
 			y = s.remove("<y>").remove("</y>").toDouble();
 		else if (s.contains("<attachTo>"))
-			l->setAttachPolicy((FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt());
+			l->setAttachPolicy(static_cast<FrameWidget::AttachPolicy>(s.remove("<attachTo>").remove("</attachTo>").toInt()));
 		else if (s.contains("<onTop>"))
 			l->setOnTop(s.remove("<onTop>").remove("</onTop>").toInt());
 		else if (s.contains("<visible>"))

@@ -278,7 +278,7 @@ void LayerDialog::setMultiLayer(MultiLayer *g)
 	boxTopSpace->setValue(g->topMargin());
 	boxBottomSpace->setValue(g->bottomMargin());
 
-	FrameWidget::Unit unit = (FrameWidget::Unit)g->applicationWindow()->d_layer_geometry_unit;
+	FrameWidget::Unit unit = static_cast<FrameWidget::Unit>(g->applicationWindow()->d_layer_geometry_unit);
 	unitBox->blockSignals(true);
 	unitBox->setCurrentIndex(unit);
 	unitBox->blockSignals(false);
@@ -361,7 +361,7 @@ void LayerDialog::update()
 		multi_layer->setRows(rows);
 	}
 
-	FrameWidget::Unit unit = (FrameWidget::Unit)unitBox->currentIndex();
+	FrameWidget::Unit unit = static_cast<FrameWidget::Unit>(unitBox->currentIndex());
 	if (GroupCanvasSize->isChecked()){
 		ApplicationWindow *app = multi_layer->applicationWindow();
 		if (app)
@@ -382,7 +382,7 @@ void LayerDialog::update()
 	multi_layer->setScaleLayersOnResize(!fixedSizeBox->isChecked());
 	multi_layer->linkXLayerAxes(linkXAxesBox->isChecked());
 
-	multi_layer->setAlignPolicy((MultiLayer::AlignPolicy)alignPolicyBox->currentIndex());
+	multi_layer->setAlignPolicy(static_cast<MultiLayer::AlignPolicy>(alignPolicyBox->currentIndex()));
 	multi_layer->setSpacing(boxRowsGap->value(), boxColsGap->value());
 	multi_layer->arrangeLayers(fitBox->isChecked(), GroupCanvasSize->isChecked());
 	if (!buttonApply){
@@ -424,7 +424,7 @@ void LayerDialog::swapLayers()
 	multi_layer->swapLayers(boxLayerSrc->value(), boxLayerDest->value());
 }
 
-int LayerDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension)
+int LayerDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension) const
 {
 	if (!multi_layer)
 		return qRound(w);
@@ -454,7 +454,7 @@ int LayerDialog::convertToPixels(double w, FrameWidget::Unit unit, int dimension
 	return qRound(w);
 }
 
-double LayerDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimension)
+double LayerDialog::convertFromPixels(int w, FrameWidget::Unit unit, int dimension) const
 {
 	if (!multi_layer)
 		return w;
@@ -506,8 +506,8 @@ void LayerDialog::updateSizes(int unit)
 
 	aspect_ratio = static_cast<double>(multi_layer->layerCanvasSize().width())/static_cast<double>(multi_layer->layerCanvasSize().height());
 
-	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), (FrameWidget::Unit)unit, 0));
-	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), (FrameWidget::Unit)unit, 1));
+	boxCanvasWidth->setValue(convertFromPixels(multi_layer->layerCanvasSize().width(), static_cast<FrameWidget::Unit>(unit), 0));
+	boxCanvasHeight->setValue(convertFromPixels(multi_layer->layerCanvasSize().height(), static_cast<FrameWidget::Unit>(unit), 1));
 }
 
 void LayerDialog::adjustCanvasHeight(double width)
@@ -544,10 +544,10 @@ void LayerDialog::setLayers(int layers)
 void LayerDialog::setLayerCanvasSize(int w, int h, int unit)
 {
 	boxCanvasWidth->blockSignals(true);
-	boxCanvasWidth->setValue(convertFromPixels(w, (FrameWidget::Unit)unit, 0));
+	boxCanvasWidth->setValue(convertFromPixels(w, static_cast<FrameWidget::Unit>(unit), 0));
 	boxCanvasWidth->blockSignals(false);
 	boxCanvasHeight->blockSignals(true);
-	boxCanvasHeight->setValue(convertFromPixels(h, (FrameWidget::Unit)unit, 1));
+	boxCanvasHeight->setValue(convertFromPixels(h, static_cast<FrameWidget::Unit>(unit), 1));
 	boxCanvasHeight->blockSignals(false);
 	unitBox->blockSignals(true);
 	unitBox->setCurrentIndex(unit);

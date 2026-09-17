@@ -37,7 +37,7 @@ public:
     void setMajorGridPen(int scaleId, const QPen &p);
     void setMinorGridPen(int scaleId, const QPen &p);
     
-    QwtPolarGrid* grid() { return d_grid; }
+    QwtPolarGrid* grid() const { return d_grid; }
     
     QList<QwtPolarCurve*> curves() const;
 

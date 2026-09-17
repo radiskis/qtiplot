@@ -69,7 +69,7 @@ private:
 	ApplicationWindow *app() const;
 	void init();
 	void updateDisplayList();
-	QAction* actionAt(int row);
+	QAction* actionAt(int row) const;
 	void saveAction(QAction *action);
 	void customizeAction(QAction *action);
 	bool validUserInput();

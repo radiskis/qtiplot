@@ -98,8 +98,8 @@ class PythonScripting: public ScriptingEnv
 		const QString mathFunctionDoc (const QString &name) const override;
 		const QStringList fileExtensions() const override;
 
-		PyObject *globalDict() { return globals; }
-		PyObject *sysDict() { return sys; }
+		PyObject *globalDict() const { return globals; }
+		PyObject *sysDict() const { return sys; }
 
 		void stopExecution() override;
 		void startExecution() override;

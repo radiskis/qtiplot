@@ -100,7 +100,7 @@ QRectF PlotCurve::boundingRect() const
 	return r;
 }
 
-QString PlotCurve::saveCurveSymbolImage()
+QString PlotCurve::saveCurveSymbolImage() const
 {
 	const QwtSymbol *sym = symbol();
 	if (!sym || sym->style() != QwtSymbol::Pixmap)
@@ -123,7 +123,7 @@ QString PlotCurve::saveCurveSymbolImage()
 	return s + "</SymbolImage>\n";
 }
 
-QString PlotCurve::saveCurveLayout()
+QString PlotCurve::saveCurveLayout() const
 {
 	QString s = "<Style>" + QString::number(d_plot_style) + "</Style>\n";
 	if (d_plot_style == Graph::Spline)
@@ -267,7 +267,7 @@ void PlotCurve::restoreCurveLayout(const QStringList& lst)
 		else if (s.contains("<yAxis>"))
 			setYAxis(s.remove("<yAxis>").remove("</yAxis>").toInt());
 		else if (s.contains("<CurveType>"))
-			setCurveType((PlotCurve::CurveType)s.remove("<CurveType>").remove("</CurveType>").toInt());
+			setCurveType(static_cast<PlotCurve::CurveType>(s.remove("<CurveType>").remove("</CurveType>").toInt()));
 		else if (s.contains("<Visible>"))
 			setVisible(s.remove("<Visible>").remove("</Visible>").toInt());
 	}
@@ -452,7 +452,7 @@ void DataCurve::setFullRange()
 		c->loadData();
 }
 
-bool DataCurve::isFullRange()
+bool DataCurve::isFullRange() const
 {
 	if (d_start_row != 0 || d_end_row != d_table->numRows() - 1)
 		return false;
@@ -460,7 +460,7 @@ bool DataCurve::isFullRange()
 		return true;
 }
 
-QStringList DataCurve::plotAssociation()
+QStringList DataCurve::plotAssociation() const
 {
 	QStringList lst = QStringList() << title().text();
 	if (!d_x_column.isEmpty())
@@ -681,7 +681,7 @@ void DataCurve::setVisible(bool on)
 		m->setVisible(on);
 }
 
-int DataCurve::tableRow(int point)
+int DataCurve::tableRow(int point) const
 {
 	if (!d_table)
 		return -1;
@@ -1014,7 +1014,7 @@ void DataCurve::clone(DataCurve* c)
     }
 }
 
-QString DataCurve::saveToString()
+QString DataCurve::saveToString() const
 {
 	if (!validCurveType())
 		return QString();
@@ -1094,7 +1094,7 @@ void DataCurve::restoreLabels(const QStringList& lst)
 				bc->showWhiskerLabels(s.remove("<whiskerLabels>").remove("</whiskerLabels>").toInt());
 		} else if (s.contains("<display>")){
 			if (BoxCurve *bc = dynamic_cast<BoxCurve *>(this))
-				bc->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)s.remove("<display>").remove("</display>").toInt());
+				bc->setLabelsDisplayPolicy(static_cast<BoxCurve::LabelsDisplayPolicy>(s.remove("<display>").remove("</display>").toInt()));
 		}
     }
     setLabelsOffset(xoffset, yoffset);
@@ -1130,7 +1130,7 @@ bool DataCurve::selectedLabels(const QPoint& pos)
 	return selected;
 }
 
-bool DataCurve::hasSelectedLabels()
+bool DataCurve::hasSelectedLabels() const
 {
 	if (!validCurveType())
 		return false;
@@ -1174,7 +1174,7 @@ void DataCurve::setLabelsSelected(bool on)
         plot()->replot();
 }
 
-bool DataCurve::validCurveType()
+bool DataCurve::validCurveType() const
 {
 	int style = type();
 	if (style == Graph::Function || style == Graph::Pie ||

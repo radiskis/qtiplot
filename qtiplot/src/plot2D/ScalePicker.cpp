@@ -47,7 +47,7 @@ ScalePicker::ScalePicker(Graph *plot):
 	refresh();
 }
 
-Graph *ScalePicker::plot()
+Graph *ScalePicker::plot() const
 {
 	return qobject_cast<Graph*>(parent());
 }

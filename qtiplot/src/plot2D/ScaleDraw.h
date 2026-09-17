@@ -55,11 +55,11 @@ public:
 
     ~ScaleDraw() override;
 
-	Graph *plot(){return d_plot;};
+	Graph *plot() const {return d_plot;};
 
-	QString formatString(){return d_format_info;}
+	QString formatString() const {return d_format_info;}
 
-	QString formula() {return d_formula;};
+	QString formula() const {return d_formula;};
 	void setFormula(const QString& formula);
 
 	double transformValue(double value) const;
@@ -75,19 +75,19 @@ public:
 	int minorTicksStyle()const {return d_minTicks;};
 	void setMinorTicksStyle(TicksStyle type){d_minTicks = type;};
 
-	ShowTicksPolicy showTicksPolicy(){return d_show_ticks_policy;};
+	ShowTicksPolicy showTicksPolicy() const {return d_show_ticks_policy;};
 	void setShowTicksPolicy(const ShowTicksPolicy& policy){d_show_ticks_policy = policy;};
 
 	void setSelected(bool select = true){d_selected = select;};
 
 	int axis() const;
 
-	ScaleType scaleType(){return d_type;};
+	ScaleType scaleType() const {return d_type;};
 	void setScaleType(ScaleType type){d_type = type;};
 
 	void labelFormat(char &f, int &prec) const;
 
-	NumericFormat labelNumericFormat(){return d_numeric_format;};
+	NumericFormat labelNumericFormat() const {return d_numeric_format;};
 	void setNumericFormat(NumericFormat format);
 
 	void setDayFormat(NameFormat format);
@@ -95,14 +95,14 @@ public:
 	void setTimeFormat(const QString& format);
 	void setDateFormat(const QString& format);
 
-	QStringList labelsList(){return d_text_labels;};
+	QStringList labelsList() const {return d_text_labels;};
 	void setLabelsList(const QStringList& list){d_text_labels = list;};
 
-	NameFormat nameFormat(){return d_name_format;};
+	NameFormat nameFormat() const {return d_name_format;};
 
-	QString prefix(){return d_prefix;};
+	QString prefix() const {return d_prefix;};
 	void setPrefix(const QString& s){d_prefix = s;};
-	QString suffix(){return d_suffix;};
+	QString suffix() const {return d_suffix;};
 	void setSuffix(const QString& s){d_suffix = s;};
 
 protected:

@@ -135,7 +135,7 @@ void TexWidget::clone(TexWidget* t)
 	setSize(t->size());
 }
 
-QString TexWidget::saveToString()
+QString TexWidget::saveToString() const
 {
 	QString s = "<TexFormula>\n";
 	s += FrameWidget::saveToString();
@@ -182,7 +182,7 @@ void TexWidget::restore(Graph *g, const QStringList& lst)
 		else if (s.contains("<bottom>"))
 			bottom = s.remove("<bottom>").remove("</bottom>").toDouble();
 		else if (s.contains("<attachTo>"))
-			attachTo = (FrameWidget::AttachPolicy)s.remove("<attachTo>").remove("</attachTo>").toInt();
+			attachTo = static_cast<FrameWidget::AttachPolicy>(s.remove("<attachTo>").remove("</attachTo>").toInt());
 		else if (s.contains("<onTop>"))
 			onTop = s.remove("<onTop>").remove("</onTop>").toInt();
 		else if (s.contains("<visible>"))

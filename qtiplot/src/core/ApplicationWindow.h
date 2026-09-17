@@ -200,17 +200,17 @@ public:
 	void reloadCustomActions();
     void removeCustomAction(QAction *);
 	void addCustomAction(QAction *, const QString& parentName, int index = -1);
-    QList<QAction *> customActionsList(){return d_user_actions;};
-	QList<QMenu *> customizableMenusList();
+    QList<QAction *> customActionsList() const {return d_user_actions;};
+	QList<QMenu *> customizableMenusList() const;
 
 	void reloadCustomMenus();
 	QMenu* addCustomMenu(const QString& title, const QString& parentName);
 	void removeCustomMenu(const QString& title);
-	QList<QMenu *> customMenusList(){return d_user_menus;};
+	QList<QMenu *> customMenusList() const {return d_user_menus;};
 	//@}
 
-	QList<QMenu *> menusList();
-	QList<QToolBar *> toolBarsList();
+	QList<QMenu *> menusList() const;
+	QList<QToolBar *> toolBarsList() const;
 
 	MdiSubWindow *activeWindow(WindowType type = NoWindow);
 	template <typename T>
@@ -236,19 +236,19 @@ public:
 
 	QString endOfLine();
 	static QString guessEndOfLine(const QString& sample);
-	bool autoUpdateTableValues(){return d_auto_update_table_values;};
+	bool autoUpdateTableValues() const {return d_auto_update_table_values;};
 	void setAutoUpdateTableValues(bool on = true);
 
-	QCompleter* completer(){return d_completer;};
+	QCompleter* completer() const {return d_completer;};
 	void enableCompletion(bool on = true);
 	void addWindowsListToCompleter();
 
-	QLocale clipboardLocale(){return d_clipboard_locale;};
+	QLocale clipboardLocale() const {return d_clipboard_locale;};
 	void setClipboardLocale(const QLocale& locale){d_clipboard_locale = locale;};
 
-	QTextEdit *resultsLog(){return results;};
+	QTextEdit *resultsLog() const {return results;};
 #ifdef SCRIPTING_CONSOLE
-	QTextEdit *scriptingConsole(){return console;};
+	QTextEdit *scriptingConsole() const {return console;};
 #endif
 
 	static QString imageFilter();
@@ -260,18 +260,18 @@ public:
 	QColor readColorFromProject(const QString& name);
 
 	void enableMdiArea(bool on = true);
-	bool isMdiAreaEnabled(){return d_mdi_windows_area;};
+	bool isMdiAreaEnabled() const {return d_mdi_windows_area;};
 
 	void displayInfo(const QString& text){info->setText(text);};
-	QLineEdit *infoLineEdit(){return info;};
+	QLineEdit *infoLineEdit() const {return info;};
 
-	QList<QColor> indexedColors(){return d_indexed_colors;};
+	QList<QColor> indexedColors() const {return d_indexed_colors;};
 	void setIndexedColors(const QList<QColor>& lst){d_indexed_colors = lst;};
 
-	QList<int> indexedSymbols(){return d_symbols_list;};
+	QList<int> indexedSymbols() const {return d_symbols_list;};
 	void setIndexedSymbols(const QList<int>& lst){d_symbols_list = lst;};
 
-	QStringList indexedColorNames(){return d_indexed_color_names;};
+	QStringList indexedColorNames() const {return d_indexed_color_names;};
 	void setIndexedColorNames(const QStringList& lst){d_indexed_color_names = lst;};
 
 	void connectScriptEditor(ScriptEdit *);
@@ -285,27 +285,27 @@ public:
 	bool isFileReadable(const QString&);
 #ifdef Q_OS_WIN
 	bool importUsingExcel();
-	bool isExcelInstalled(){return d_has_excel;};
+	bool isExcelInstalled() const {return d_has_excel;};
 #endif
 
-	ExcelImportMethod excelImportMethod(){return d_excel_import_method;};
+	ExcelImportMethod excelImportMethod() const {return d_excel_import_method;};
 	void setExcelImportMethod(const ExcelImportMethod& method){d_excel_import_method = method;};
 
 	void showNoDataMessage();
 	//! Write fit output information to Result Log
-	bool writeFitResultsToLog(){return d_write_fit_results_to_log;}
+	bool writeFitResultsToLog() const {return d_write_fit_results_to_log;}
 	void setWriteFitResultsToLog(bool on = true){d_write_fit_results_to_log = on;}
 
-	int speedModeExport(){return d_speed_mode_export;}
+	int speedModeExport() const {return d_speed_mode_export;}
 	void setSpeedModeExport(bool on = true){d_speed_mode_export = on;}
 
-	int speedModeMaxPoints(){return d_speed_mode_points;}
+	int speedModeMaxPoints() const {return d_speed_mode_points;}
 	void setSpeedMaxPoints(int points){d_speed_mode_points = points;}
 
-	double getDouglasPeukerTolerance(){return d_Douglas_Peuker_tolerance;}
+	double getDouglasPeukerTolerance() const {return d_Douglas_Peuker_tolerance;}
 	void setDouglasPeukerTolerance(double tolerance){d_Douglas_Peuker_tolerance = tolerance;}
 
-	bool scale3DPlotFonts(){return d_3D_scale_fonts;}
+	bool scale3DPlotFonts() const {return d_3D_scale_fonts;}
 	void setScale3DPlotFonts(bool on = true){d_3D_scale_fonts = on;}
 
 	ApplicationSettings *settings() const { return d_app_settings; }
@@ -891,7 +891,7 @@ public slots:
 	//! \name Folders
 	//@{
 	//! Returns a pointer to the current folder in the project
-	Folder* currentFolder(){return current_folder;};
+	Folder* currentFolder() const {return current_folder;};
 	//! Adds a new folder to the project
 	void addFolder();
 	Folder* addFolder(QString name, Folder* parent = nullptr);

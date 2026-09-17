@@ -495,7 +495,7 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 	return true;
 }
 
-QImage MatrixModel::renderImage()
+QImage MatrixModel::renderImage() const
 {
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -865,7 +865,7 @@ void MatrixModel::clear(int startRow, int endRow, int startCol, int endCol)
 	QApplication::restoreOverrideCursor();
 }
 
-std::vector<double> MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCol)
+std::vector<double> MatrixModel::dataCopy(int startRow, int endRow, int startCol, int endCol) const
 {
 	if (startRow < 0)
 		startRow = 0;

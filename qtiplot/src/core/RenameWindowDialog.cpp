@@ -113,7 +113,7 @@ void RenameWindowDialog::setWidget(MdiSubWindow *w)
 	}
 }
 
-MdiSubWindow::CaptionPolicy RenameWindowDialog::getCaptionPolicy()
+MdiSubWindow::CaptionPolicy RenameWindowDialog::getCaptionPolicy() const
 {
 	MdiSubWindow::CaptionPolicy policy = MdiSubWindow::Name;
 	if (boxLabel->isChecked())

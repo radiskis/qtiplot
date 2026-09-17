@@ -111,7 +111,7 @@ public:
         }
     }
 
-    bool isRowSelected(int row, bool full = false) {
+    bool isRowSelected(int row, bool full = false) const {
         for (const auto &r : selectedRanges()) {
             if (r.topRow() <= row && r.bottomRow() >= row)
                 return !full || (r.leftColumn() == 0 && r.rightColumn() == numCols() - 1);
@@ -119,7 +119,7 @@ public:
         return false;
     }
     
-    bool isColumnSelected(int col, bool full = false) {
+    bool isColumnSelected(int col, bool full = false) const {
         for (const auto &r : selectedRanges()) {
             if (r.leftColumn() <= col && r.rightColumn() >= col)
                 return !full || (r.topRow() == 0 && r.bottomRow() == numRows() - 1);
@@ -132,7 +132,7 @@ public:
         if (d_model && selectionModel())
             selectionModel()->setCurrentIndex(d_model->index(r, c), QItemSelectionModel::NoUpdate);
     }
-    int currentSelection() { return selectedRanges().isEmpty() ? -1 : 0; }
+    int currentSelection() const { return selectedRanges().isEmpty() ? -1 : 0; }
 
     void insertColumn(int col) { if (d_model) d_model->insertColumn(col); }
     void removeColumn(int col) { if (d_model) d_model->removeColumn(col); }
@@ -146,7 +146,7 @@ public:
     void activateNextCell();
 
     QTableWidgetSelectionRange selection(int index) {
-        auto ranges = selectedRanges();
+        QList<QTableWidgetSelectionRange> ranges = selectedRanges();
         return (index >= 0 && index < ranges.count()) ? ranges[index] : QTableWidgetSelectionRange();
     }
     void addSelection(const QTableWidgetSelectionRange &sel) { setRangeSelected(sel, true); }
@@ -155,7 +155,7 @@ public:
         std::sort(sorted.begin(), sorted.end(), std::greater<int>());
         for (int r : sorted) removeRow(r);
     }
-    bool isSelected(int r, int c) { return d_model && selectionModel() && selectionModel()->isSelected(d_model->index(r, c)); }
+    bool isSelected(int r, int c) const { return d_model && selectionModel() && selectionModel()->isSelected(d_model->index(r, c)); }
     void setReadOnly(bool ro) {
         setEditTriggers(ro ? QAbstractItemView::NoEditTriggers
                            : (QAbstractItemView::DoubleClicked | QAbstractItemView::SelectedClicked | QAbstractItemView::EditKeyPressed));
@@ -200,14 +200,14 @@ public:
 	Table(ScriptingEnv *env, int r,int c, const QString &label, ApplicationWindow* parent, const QString& name = QString(), Qt::WindowFlags f= {});
 	~Table() override;
 
-	QTableWidgetSelectionRange getSelection();
+	QTableWidgetSelectionRange getSelection() const;
 
 	//! Sets the number of significant digits
 	void setNumericPrecision(int prec);
 	//! Updates the decimal separators when importing ASCII files on user request
 	void updateDecimalSeparators(const QLocale& oldSeparators);
 	void setAutoUpdateValues(bool on = true);
-	QString sizeToString() override;
+	QString sizeToString() const override;
 
 	double avg(int col, int startRow = 0, int endRow = -1);
 	double sum(int col, int startRow = 0, int endRow = -1);
@@ -241,13 +241,13 @@ public slots:
 	QString colName(int col) const;
 	void setColName(int col, const QString& text, bool enumerateRight = false, bool warn = true);
 	void setColNames(int startCol, const QStringList& names);
-	QString colLabel(int col);
-	int colIndex(const QString& name);
+	QString colLabel(int col) const;
+	int colIndex(const QString& name) const;
 
-	int colPlotDesignation(int col){return col_plot_type[col];};
+	int colPlotDesignation(int col) const {return col_plot_type[col];};
 	void setColPlotDesignation(int col, PlotDesignation pd, bool pushUndo = true);
 	void setPlotDesignation(PlotDesignation pd, bool rightColumns = false);
-	QList<int> plotDesignations(){return col_plot_type;};
+	QList<int> plotDesignations() const {return col_plot_type;};
 
 	void setHeader(QStringList header);
 	void loadHeader(QStringList header);
@@ -263,9 +263,9 @@ public slots:
 	void cellDoubleClicked(int, int);
 	void moveCurrentCell();
 	void clearCell(int row, int col);
-	bool isEmptyRow(int row);
-	bool isEmptyColumn(int col);
-	int nonEmptyRows();
+	bool isEmptyRow(int row) const;
+	bool isEmptyColumn(int col) const;
+	int nonEmptyRows() const;
 
 	void print() override;
 	void print(QPrinter *) override;
@@ -293,7 +293,7 @@ public slots:
 	void hideSelectedColumns();
 	void showAllColumns();
 	void hideColumn(int col, bool = true);
-	bool isColumnHidden(int col){return d_table->isColumnHidden(col);};
+	bool isColumnHidden(int col) const {return d_table->isColumnHidden(col);};
 	//@}
 
 	//! \name Sorting
@@ -344,13 +344,13 @@ public slots:
 	QVarLengthArray<double> col(int ycol);
 	void columnRange(int c, double *min, double *max);
 
-	int firstXCol();
-	bool noXColumn();
-	bool noYColumn();
-	int colX(int col);
-	int colY(int col, int xCol = -1, const QStringList& lst = QStringList());
+	int firstXCol() const;
+	bool noXColumn() const;
+	bool noYColumn() const;
+	int colX(int col) const;
+	int colY(int col, int xCol = -1, const QStringList& lst = QStringList()) const;
 
-	QStringList getCommands(){return commands;};
+	QStringList getCommands() const {return commands;};
 	//! Clear all column formulae.
 	void clearCommands();
 	//! Set all column formulae.
@@ -391,28 +391,28 @@ public slots:
 
 	void init(int rows, int cols);
 	QStringList writableSelectedColumns();
-	QStringList selectedColumns();
-	QStringList selectedYColumns();
-	QStringList selectedErrColumns();
-	QStringList selectedYLabels();
-	QStringList drawableColumnSelection();
-	QStringList YColumns();
-	int selectedColsNumber();
+	QStringList selectedColumns() const;
+	QStringList selectedYColumns() const;
+	QStringList selectedErrColumns() const;
+	QStringList selectedYLabels() const;
+	QStringList drawableColumnSelection() const;
+	QStringList YColumns() const;
+	int selectedColsNumber() const;
 
 	void setColumnWidth(int width, bool allCols, bool pushUndo);
 	void setColumnWidth(int width, bool allCols = false) { setColumnWidth(width, allCols, true); }
 	void setColumnWidth(int col, int width, bool pushUndo = true);
-	int columnWidth(int col);
-	QStringList columnWidths();
+	int columnWidth(int col) const;
+	QStringList columnWidths() const;
 	void setColWidths(const QStringList& widths);
 	void adjustColumnsWidth(bool selection = true);
 
 	void setSelectedCol(int col){selectedCol = col;};
-	int selectedColumn(){return selectedCol;};
-	int firstSelectedColumn();
-	int numSelectedRows();
-	bool isRowSelected(int row, bool full=false) { return d_table->isRowSelected(row, full); }
-	bool isColumnSelected(int col, bool full=false) { return d_table->isColumnSelected(col, full); }
+	int selectedColumn() const {return selectedCol;};
+	int firstSelectedColumn() const;
+	int numSelectedRows() const;
+	bool isRowSelected(int row, bool full=false) const { return d_table->isRowSelected(row, full); }
+	bool isColumnSelected(int col, bool full=false) const { return d_table->isColumnSelected(col, full); }
 	void setSelectedRange(int topRow, int leftCol, int bottomRow, int rightCol, bool sel = true) {
 		if (d_table) d_table->setRangeSelected(QTableWidgetSelectionRange(topRow, leftCol, bottomRow, rightCol), sel);
 	}
@@ -482,14 +482,14 @@ public slots:
 	void setTextFont(const QFont& fnt);
 	void setHeaderFont(const QFont& fnt);
 
-	int verticalHeaderWidth(){return d_table->verticalHeader()->width();};
+	int verticalHeaderWidth() const {return d_table->verticalHeader()->width();};
 
-	QString comment(int col);
+	QString comment(int col) const;
 	void setColComment(int col, const QString& s, bool pushUndo = true);
-	QStringList colComments(){return comments;};
+	QStringList colComments() const {return comments;};
 	void setColComments(const QStringList& lst){comments = lst;};
 	void showComments(bool on = true);
-	bool commentsEnabled(){return d_show_comments;}
+	bool commentsEnabled() const {return d_show_comments;}
 
 	//! This slot notifies the main application that the table has been modified. Triggers the update of 2D plots.
 	void notifyChanges();

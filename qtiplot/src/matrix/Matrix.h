@@ -98,7 +98,7 @@ public:
 	HeaderViewType headerViewType() const {return d_header_view_type;};
 	void setHeaderViewType(HeaderViewType type, bool pushUndo = true);
 
-	QImage image();
+	QImage image() const;
 	void displayImage(const QImage& image);
 	void importImage(const QString& fn);
 	void importImage(const QImage& image);
@@ -173,7 +173,7 @@ public:
 					bool simplifySpaces, const QString& commentString, ImportMode importAs = Overwrite,
 					const QLocale& l = QLocale(), int endLineChar = 0, int maxRows = -1);
 
-	QString sizeToString() override;
+	QString sizeToString() const override;
 
 	QString xLabel() const {return d_x_label;};
 	void setXLabel(const QString&);

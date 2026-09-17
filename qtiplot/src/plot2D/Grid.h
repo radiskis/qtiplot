@@ -40,14 +40,14 @@ public:
     Grid();
 
 	void enableXMaj(bool on = true){return enableX(on);};
-	bool xMajEnabled(){return xEnabled();};
+	bool xMajEnabled() const {return xEnabled();};
 
 	void enableYMaj(bool on = true){return enableY(on);};
-	bool yMajEnabled(){return yEnabled();};
+	bool yMajEnabled() const {return yEnabled();};
 
-    bool xZeroLineEnabled(){return (mrkX != nullptr)?true:false;};
+    bool xZeroLineEnabled() const {return (mrkX != nullptr)?true:false;};
     void enableZeroLineX(bool enable = true);
-    bool yZeroLineEnabled(){return (mrkY != nullptr)?true:false;};
+    bool yZeroLineEnabled() const {return (mrkY != nullptr)?true:false;};
     void enableZeroLineY(bool enable = true);
 
 	void setMajPenX(const QPen &p){	setMajorPen(p);};
@@ -64,14 +64,14 @@ public:
 
 	void load(const QStringList& );
 	void copy(Grid *);
-	QString saveToString();
+	QString saveToString() const;
 
-	QwtPlotMarker *xZeroLineMarker(){return mrkX;};
-	QwtPlotMarker *yZeroLineMarker(){return mrkY;};
+	QwtPlotMarker *xZeroLineMarker() const {return mrkX;};
+	QwtPlotMarker *yZeroLineMarker() const {return mrkY;};
 
-	const QPen& xZeroLinePen();
+	const QPen& xZeroLinePen() const;
 	void setXZeroLinePen(const QPen &p);
-	const QPen& yZeroLinePen();
+	const QPen& yZeroLinePen() const;
 	void setYZeroLinePen(const QPen &p);
 
 private:

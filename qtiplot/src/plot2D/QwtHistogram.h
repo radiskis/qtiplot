@@ -45,22 +45,22 @@ public:
 	//! Convenience function. It disables autobinning
 	void setBinning(double binSize, double begin, double end);
 
-	bool autoBinning(){return d_autoBin;};
+	bool autoBinning() const {return d_autoBin;};
 	//! Convenience function to be used in scripts
 	void setAutoBinning(bool autoBin = true);
 
-	double begin(){return d_begin;};
-	double end(){return d_end;};
-	double binSize(){return d_bin_size;};
+	double begin() const {return d_begin;};
+	double end() const {return d_end;};
+	double binSize() const {return d_bin_size;};
 
 	void loadData() override;
 
-	double mean(){return d_mean;};
-	double standardDeviation(){return d_standard_deviation;};
-	double minimum(){return d_min;};
-	double maximum(){return d_max;};
+	double mean() const {return d_mean;};
+	double standardDeviation() const {return d_standard_deviation;};
+	double minimum() const {return d_min;};
+	double maximum() const {return d_max;};
 
-	Matrix* matrix(){return d_matrix;};
+	Matrix* matrix() const {return d_matrix;};
 
 private:
 	void init();

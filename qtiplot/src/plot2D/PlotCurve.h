@@ -63,7 +63,7 @@ public:
 	double xOffset() const {return d_x_offset;};
 	void setXOffset(double dx){d_x_offset = dx;};
 
-	double yOffset(){return d_y_offset;};
+	double yOffset() const {return d_y_offset;};
 	void setYOffset(double dy){d_y_offset = dy;};
 
 	enum CurveType {Yfx, Xfy};
@@ -73,17 +73,17 @@ public:
 	double x(int i) const {return sample(i).x();};
 	double y(int i) const {return sample(i).y();};
 
-	bool sideLinesEnabled(){return d_side_lines;};
+	bool sideLinesEnabled() const {return d_side_lines;};
 	void enableSideLines(bool on){d_side_lines = on;};
 
-	QString saveCurveSymbolImage();
-	QString saveCurveLayout();
+	QString saveCurveSymbolImage() const;
+	QString saveCurveLayout() const;
 	void restoreCurveLayout(const QStringList& lst);
 
 	//! Set the number of symbols not to be drawn: usefull for large data sets
 	void setSkipSymbolsCount(int count);
 	//! Returns the number of symbols not to be drawn
-	int skipSymbolsCount(){return d_skip_symbols;};
+	int skipSymbolsCount() const {return d_skip_symbols;};
 
 	virtual void loadData(){};
 
@@ -124,14 +124,14 @@ public:
 	DataCurve(Table *xt, const QString& xColName, Table *yt, const QString& name, int startRow = 0, int endRow = -1);
     void clone(DataCurve* c);
 
-    virtual QString saveToString();
+    virtual QString saveToString() const;
     void restoreLabels(const QStringList& lst);
 
-	QString xColumnName(){return d_x_column;};
+	QString xColumnName() const {return d_x_column;};
 	void setXColumnName(const QString& name){d_x_column = name;};
 
-	bool hasLabels(){return !d_labels_list.isEmpty();};
-	QString labelsColumnName(){return d_labels_column;};
+	bool hasLabels() const {return !d_labels_list.isEmpty();};
+	QString labelsColumnName() const {return d_labels_column;};
 	void setLabelsColumnName(const QString& name);
 
     int labelsAlignment() const {return d_labels_align;};
@@ -157,18 +157,18 @@ public:
 	Table* xTable() const {return d_x_table;};
 	void setDataSource(Table *yt, int ycol = 1, Table *xt = nullptr, int xcol = 0);
 
-	int startRow(){return d_start_row;};
-	int endRow(){return d_end_row;};
+	int startRow() const {return d_start_row;};
+	int endRow() const {return d_end_row;};
 	void setRowRange(int startRow, int endRow);
 
-	bool isFullRange();
+	bool isFullRange() const;
 	void setFullRange();
 
 	virtual bool updateData(Table *t, const QString& colName);
 	void loadData() override;
 
 	//! Returns the row index in the data source table corresponding to the data point index.
-	int tableRow(int point);
+	int tableRow(int point) const;
 
 	void remove();
 
@@ -184,12 +184,12 @@ public:
 	 *
 	 * Column ids are of the form '&lt;name of table> "_" &lt;name of column>'.
 	 */
-	virtual QStringList plotAssociation();
+	virtual QStringList plotAssociation() const;
 	virtual void updateColumnNames(const QString& oldName, const QString& newName, bool updateTableName);
 	bool hasAssociation(const QString& name) const;
 
 	//! The list of attached error bars.
-	QList<ErrorBarsCurve *> errorBarsList(){return d_error_bars;};
+	QList<ErrorBarsCurve *> errorBarsList() const {return d_error_bars;};
 	//! Adds a single error bars curve to the list of attached error bars.
 	void addErrorBars(ErrorBarsCurve *c){if (c) d_error_bars << c;};
 	//! Remove a single error bars curve from the list of attached error bars.
@@ -202,9 +202,9 @@ public:
 	void setVisible(bool on) override;
 
 	void setVisibleLabels(bool on = true){d_show_labels = on;};
-	bool hasVisibleLabels(){return d_show_labels;};
+	bool hasVisibleLabels() const {return d_show_labels;};
 	bool selectedLabels(const QPoint& pos);
-	bool hasSelectedLabels();
+	bool hasSelectedLabels() const;
 	void setLabelsSelected(bool on = true);
 
 	void moveLabels(const QPoint& pos);
@@ -212,7 +212,7 @@ public:
 
 protected:
 	void drawSeries(QPainter *painter, const QwtScaleMap &xMap, const QwtScaleMap &yMap, const QRectF &canvasRect, int from, int to) const override;
-	bool validCurveType();
+	bool validCurveType() const;
 	virtual void loadLabels();
 
 	//! List of the error bar curves associated to this curve.
@@ -254,14 +254,14 @@ class PlotMarker: public QwtPlotMarker
 public:
 	PlotMarker(int index, double angle);
 
-	int index(){return d_index;};
+	int index() const {return d_index;};
 	void setIndex(int i){d_index = i;};
 
-	double angle(){return d_angle;};
+	double angle() const {return d_angle;};
 	void setAngle(double a){d_angle = a;};
 
-	double xLabelOffset(){return d_label_x_offset;};
-	double yLabelOffset(){return d_label_y_offset;};
+	double xLabelOffset() const {return d_label_x_offset;};
+	double yLabelOffset() const {return d_label_y_offset;};
 	void setLabelOffset(double xOffset, double yOffset){d_label_x_offset = xOffset; d_label_y_offset = yOffset;};
 
 protected:

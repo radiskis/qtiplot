@@ -251,7 +251,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 				windowRect.height() - (table->frameGeometry().height() - table->height()));
 		}
 
-		table->setCaptionPolicy((MdiSubWindow::CaptionPolicy)spread.title);
+		table->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(spread.title));
 		table->setBirthDate(cTimeToString(spread.creationDate));
 
         QLocale locale = mw->locale();
@@ -529,7 +529,7 @@ bool ImportOPJ::importTables(const OriginFile& opj)
 		}
 
 		Matrix->setCoordinates(sheet.coordinates[3], sheet.coordinates[1], sheet.coordinates[2], sheet.coordinates[0]);
-		Matrix->setCaptionPolicy((MdiSubWindow::CaptionPolicy)matrix.title);
+		Matrix->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(matrix.title));
 		Matrix->setBirthDate(cTimeToString(matrix.creationDate));
 
 		Matrix->setWindowLabel(matrix.label.c_str());
@@ -628,7 +628,7 @@ bool ImportOPJ::importNotes(const OriginFile& opj)
 
 		note->setWindowLabel(_note.label.c_str());
 		note->setText(QString(_note.text.c_str()));
-		note->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_note.title);
+		note->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(_note.title));
 		note->setBirthDate(cTimeToString(_note.creationDate));
 
 		Origin::Rect windowRect;
@@ -680,7 +680,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 		if (!ml)
 			return false;
 
-		ml->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
+		ml->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(_graph.title));
 		ml->setBirthDate(cTimeToString(_graph.creationDate));
 		ml->setWindowLabel(_graph.label.c_str());
 
@@ -1061,7 +1061,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				cl.filledArea=(_curve.fillArea || style==Graph::VerticalBars || style==Graph::HorizontalBars || style==Graph::Histogram || style == Graph::Pie || style == Graph::Box) ? 1 : 0;
 				if(cl.filledArea){
 					Origin::Color color;
-					cl.aStyle = _curve.fillAreaPattern == Origin::NoFill ? 0 : patternStyles[(Origin::FillPattern)_curve.fillAreaPattern];
+					cl.aStyle = _curve.fillAreaPattern == Origin::NoFill ? 0 : patternStyles[static_cast<Origin::FillPattern>(_curve.fillAreaPattern)];
 					color = (cl.aStyle == 0 ? _curve.fillAreaColor : _curve.fillAreaPatternColor);
 					cl.aCol = (color.type == Origin::Color::Automatic ? 0 : color.regular); //0xF7 -Automatic color
 					if(style == Graph::VerticalBars || style == Graph::HorizontalBars || style == Graph::Histogram || style == Graph::Pie || style == Graph::Box){
@@ -1094,8 +1094,8 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				} else if(style == Graph::Pie){
 					PieCurve *p = dynamic_cast<PieCurve *>(graph->curve(c));
 					if (p){
-						cl.lStyle = lineStyles[(Origin::GraphCurve::LineStyle)linestyle];
-						p->setPen(QPen(cl.lCol, cl.lWidth, (Qt::PenStyle)cl.lStyle));
+						cl.lStyle = lineStyles[static_cast<Origin::GraphCurve::LineStyle>(linestyle)];
+						p->setPen(QPen(cl.lCol, cl.lWidth, static_cast<Qt::PenStyle>(cl.lStyle)));
 						p->setBrushStyle(PatternBox::brushStyle(cl.aStyle));
 						if(_curve.fillAreaColor.type == Origin::Color::Increment)
 							p->setFirstColor(_curve.fillAreaColor.starting);
@@ -1435,7 +1435,7 @@ bool ImportOPJ::importGraphs(const OriginFile& opj)
 				if (!bkg.isValid())
 					bkg.setAlpha(0);
 				fw->setBackgroundColor(bkg);
-				fw->setBrush(QBrush(originToQtColor(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[(Origin::FillPattern)layer.figures[i].fillAreaPattern])));
+				fw->setBrush(QBrush(originToQtColor(layer.figures[i].useBorderColor ? layer.figures[i].color : layer.figures[i].fillAreaPatternColor), PatternBox::brushStyle(patternStyles[static_cast<Origin::FillPattern>(layer.figures[i].fillAreaPattern)])));
 				graph->add(fw, false);
 			}
 
@@ -1782,7 +1782,7 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 		plot->setObjectName(_graph.name.c_str()); plot->setWindowTitle(_graph.name.c_str());
 		plot->setWindowLabel(_graph.label.c_str());
 
-		plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)_graph.title);
+		plot->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(_graph.title));
 		plot->setBirthDate(cTimeToString(_graph.creationDate));
 		plot->hide();//!hack used in order to avoid resize and repaint events
 
@@ -2007,13 +2007,13 @@ bool ImportOPJ::importGraph3D(const OriginFile& opj, unsigned int g, unsigned in
 
 		if (!layer.isXYY3D){
 			int majorTicks = ceil((layer.xAxis.max - layer.xAxis.min)/layer.xAxis.step);
-			plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.xAxis.scale]);
+			plot->setScale(0, layer.xAxis.min, layer.xAxis.max, majorTicks, layer.xAxis.minorTicks, static_cast<Qwt3D::SCALETYPE>(scaleTypes[static_cast<Origin::GraphAxis::Scale>(layer.xAxis.scale)]));
 
 			majorTicks = ceil((layer.yAxis.max - layer.yAxis.min)/layer.yAxis.step);
-			plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.yAxis.scale]);
+			plot->setScale(1, layer.yAxis.min, layer.yAxis.max, majorTicks, layer.yAxis.minorTicks, static_cast<Qwt3D::SCALETYPE>(scaleTypes[static_cast<Origin::GraphAxis::Scale>(layer.yAxis.scale)]));
 
 			majorTicks = ceil((layer.zAxis.max - layer.zAxis.min)/layer.zAxis.step);
-			plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, (Qwt3D::SCALETYPE)scaleTypes[(Origin::GraphAxis::Scale)layer.zAxis.scale]);
+			plot->setScale(2, layer.zAxis.min, layer.zAxis.max, majorTicks, layer.zAxis.minorTicks, static_cast<Qwt3D::SCALETYPE>(scaleTypes[static_cast<Origin::GraphAxis::Scale>(layer.zAxis.scale)]));
 		}
 		plot->resetAxesLabels();
 

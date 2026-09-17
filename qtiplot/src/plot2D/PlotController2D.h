@@ -110,7 +110,7 @@ public:
     void zoomRectanglePlot();
     QString stemPlot(Table *t = nullptr, const QString& colName = QString(), int power = 0, int startRow = 0, int endRow = -1);
     Note *newStemPlot();
-    bool validFor2DPlot(Table *table, Graph::CurveType type);
+    bool validFor2DPlot(Table *table, Graph::CurveType type) const;
     MultiLayer* generate2DGraph(Graph::CurveType type);
     void copyActiveLayer();
     void custom2DPlotTools(MultiLayer *);

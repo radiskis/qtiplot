@@ -94,7 +94,7 @@ void SmoothFilter::setMethod(int m)
 		tr("Unknown smooth filter. Valid values are: 1 - Savitky-Golay, 2 - FFT, 3 - Moving Window Average, 4 - Lowess."));
 		return;
 	}
-	d_method = (SmoothMethod)m;
+	d_method = static_cast<SmoothMethod>(m);
 }
 
 void SmoothFilter::calculateOutputData(double *x, double *y)

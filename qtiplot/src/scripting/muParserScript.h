@@ -58,7 +58,7 @@ class muParserScript: public Script
     bool setInt(int val, const char* name) override;
     bool setDouble(double val, const char* name) override;
     double* defineVariable(const char *name, double val = 0.0);
-    int codeLines(){return muCode.size();};
+    int codeLines() const {return muCode.size();}
 
   private:
 	double avg(const QString &arg, int start = 0, int end = -1);

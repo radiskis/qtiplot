@@ -3439,7 +3439,7 @@ void PlotDialog::applyCanvasSize()
 			QList<Graph *> layersLst = d_ml->layersList();
 			for (Graph *g : layersLst){
 				size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
-									   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
+									   boxLayerHeight->value(), static_cast<FrameWidget::Unit>(unitBox->currentIndex())).size();
 				g->setCanvasSize(size);
 			}
 			if (size.isValid())
@@ -3459,7 +3459,7 @@ void PlotDialog::applyCanvasSize()
 				QList<Graph *> layersLst = ml->layersList();
 				for (Graph *g : layersLst){
 					size = layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
-										   boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()).size();
+										   boxLayerHeight->value(), static_cast<FrameWidget::Unit>(unitBox->currentIndex())).size();
 					g->setCanvasSize(size);
 				}
 				if (size.isValid())
@@ -3666,7 +3666,7 @@ bool PlotDialog::acceptParams()
 
 	if (privateTabWidget->currentWidget() == plotGeometryPage){
 		FrameWidget::setRect(d_ml, boxPlotX->value(), boxPlotY->value(), boxPlotWidth->value(),
-		boxPlotHeight->value(), (FrameWidget::Unit)plotUnitBox->currentIndex());
+		boxPlotHeight->value(), static_cast<FrameWidget::Unit>(plotUnitBox->currentIndex()));
 		d_ml->setScaleLayersOnResize(!boxResizeLayers->isChecked());
 		d_ml->notifyChanges();
 		return true;
@@ -3706,7 +3706,7 @@ bool PlotDialog::acceptParams()
 			return false;
 
 		g->setCanvasGeometry(layerCanvasRect(g, boxX->value(), boxY->value(), boxLayerWidth->value(),
-								boxLayerHeight->value(), (FrameWidget::Unit)unitBox->currentIndex()));
+								boxLayerHeight->value(), static_cast<FrameWidget::Unit>(unitBox->currentIndex())));
 		g->notifyChanges();
 
 		applyCanvasSize();
@@ -3822,7 +3822,7 @@ bool PlotDialog::acceptParams()
 	   } else
 	   	   sp->setCustomColorMap(colorMapEditor->colorMap());
 
-  	   sp->showColorScale((QwtPlot::Axis)colorScaleBox->currentIndex(), axisScaleBox->isChecked());
+   	   sp->showColorScale(static_cast<QwtPlot::Axis>(colorScaleBox->currentIndex()), axisScaleBox->isChecked());
   	   sp->setColorBarWidth(colorScaleWidthBox->value());
 
   	   //Update axes page
@@ -4376,7 +4376,7 @@ void PlotDialog::setLabelsFont(const QFont& font, Graph *plot, const QwtPlotItem
 	app->modifiedProject();
 }
 
-int PlotDialog::labelsAlignment()
+int PlotDialog::labelsAlignment() const
 {
 	int align = -1;
 	switch (boxLabelsAlign->currentIndex())
@@ -4422,10 +4422,10 @@ void PlotDialog::displayPlotCoordinates(int unit)
 
 	plot_aspect_ratio = static_cast<double>(d_ml->width())/static_cast<double>(d_ml->height());
 
-	boxPlotX->setValue(FrameWidget::xIn(d_ml, (FrameWidget::Unit)unit));
-	boxPlotY->setValue(FrameWidget::yIn(d_ml, (FrameWidget::Unit)unit));
-	boxPlotWidth->setValue(FrameWidget::widthIn(d_ml, (FrameWidget::Unit)unit));
-	boxPlotHeight->setValue(FrameWidget::heightIn(d_ml, (FrameWidget::Unit)unit));
+	boxPlotX->setValue(FrameWidget::xIn(d_ml, static_cast<FrameWidget::Unit>(unit)));
+	boxPlotY->setValue(FrameWidget::yIn(d_ml, static_cast<FrameWidget::Unit>(unit)));
+	boxPlotWidth->setValue(FrameWidget::widthIn(d_ml, static_cast<FrameWidget::Unit>(unit)));
+	boxPlotHeight->setValue(FrameWidget::heightIn(d_ml, static_cast<FrameWidget::Unit>(unit)));
 }
 
 void PlotDialog::displayCoordinates(int unit, Graph *g)
@@ -4464,10 +4464,10 @@ void PlotDialog::displayCoordinates(int unit, Graph *g)
 	QWidget *canvas = g->canvas();
 	aspect_ratio = static_cast<double>(canvas->width())/static_cast<double>(canvas->height());
 
-	boxX->setValue(FrameWidget::xIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::xIn(g, (FrameWidget::Unit)unit));
-	boxY->setValue(FrameWidget::yIn(canvas, (FrameWidget::Unit)unit) + FrameWidget::yIn(g, (FrameWidget::Unit)unit));
-	boxLayerWidth->setValue(FrameWidget::widthIn(canvas, (FrameWidget::Unit)unit));
-	boxLayerHeight->setValue(FrameWidget::heightIn(canvas, (FrameWidget::Unit)unit));
+	boxX->setValue(FrameWidget::xIn(canvas, static_cast<FrameWidget::Unit>(unit)) + FrameWidget::xIn(g, static_cast<FrameWidget::Unit>(unit)));
+	boxY->setValue(FrameWidget::yIn(canvas, static_cast<FrameWidget::Unit>(unit)) + FrameWidget::yIn(g, static_cast<FrameWidget::Unit>(unit)));
+	boxLayerWidth->setValue(FrameWidget::widthIn(canvas, static_cast<FrameWidget::Unit>(unit)));
+	boxLayerHeight->setValue(FrameWidget::heightIn(canvas, static_cast<FrameWidget::Unit>(unit)));
 }
 
 void PlotDialog::setLayerDefaultValues()
@@ -4987,7 +4987,7 @@ void PlotDialog::applyLabelsFormatToItem(QwtPlotItem *it)
 		c->setLabelsAlignment(labelsAlignment());
 
 		if (BoxCurve *bc = dynamic_cast<BoxCurve *>(c))
-			bc->setLabelsDisplayPolicy((BoxCurve::LabelsDisplayPolicy)boxLabelsColumn->currentIndex());
+			bc->setLabelsDisplayPolicy(static_cast<BoxCurve::LabelsDisplayPolicy>(boxLabelsColumn->currentIndex()));
 	}
 }
 
@@ -5047,7 +5047,7 @@ void PlotDialog::applyLabelsFormat(QwtPlotItem *c)
 	app->modifiedProject();
 }
 
-QRect PlotDialog::layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit)
+QRect PlotDialog::layerCanvasRect(QWidget *widget, double x, double y, double w, double h, FrameWidget::Unit unit) const
 {
     if (!widget)
         return QRect(qRound(x), qRound(y), qRound(w), qRound(h));
@@ -5275,7 +5275,7 @@ void CurveTreeItem::setActive(bool on)
 		setIcon(0, QPixmap(":/graph_disabled.png"));
 }
 
-int CurveTreeItem::plotItemIndex()
+int CurveTreeItem::plotItemIndex() const
 {
 	Graph *g = graph();
 	if (!g)
@@ -5285,7 +5285,7 @@ int CurveTreeItem::plotItemIndex()
 	return itemsList.indexOf(d_curve);
 }
 
-int CurveTreeItem::plotItemStyle()
+int CurveTreeItem::plotItemStyle() const
 {
 	if (auto *pc = dynamic_cast<PlotCurve *>(d_curve))
 		return pc->plotStyle();
@@ -5295,7 +5295,7 @@ int CurveTreeItem::plotItemStyle()
 	return -1;
 }
 
-int CurveTreeItem::plotItemType()
+int CurveTreeItem::plotItemType() const
 {
 	if (auto *pc = dynamic_cast<PlotCurve *>(d_curve))
 		return pc->type();
@@ -5328,7 +5328,7 @@ void FrameWidgetTreeItem::setActive(bool on)
 		setIcon(0, QIcon(pix).pixmap(pix.size(), QIcon::Disabled));
 }
 
-QPixmap FrameWidgetTreeItem::frameWidgetPixmap()
+QPixmap FrameWidgetTreeItem::frameWidgetPixmap() const
 {
 	if (!d_widget)
 		return QPixmap();

@@ -71,7 +71,7 @@ private slots:
 
 	void pickTitleFont();
 	void viewAxisOptions(int axis);
-	QFont axisFont(int axis);
+	QFont axisFont(int axis) const;
 	void pickAxisLabelFont();
 	void pickNumbersFont();
 

@@ -69,9 +69,9 @@ public:
     void performCustomAction(QAction *action);
     void loadCustomActions();
 
-    QList<QMenu *> customizableMenusList();
-    QList<QMenu *> menusList();
-    QList<QToolBar *> toolBarsList();
+    QList<QMenu *> customizableMenusList() const;
+    QList<QMenu *> menusList() const;
+    QList<QToolBar *> toolBarsList() const;
 
     QMenu* addCustomMenu(const QString &title, const QString &parentName);
     void removeCustomMenu(const QString &title);

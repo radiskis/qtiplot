@@ -202,7 +202,7 @@ void VectorCurve::setVectorEnd(const QVector<double>&x, const QVector<double>&y)
 	vectorEnd = new QwtPointSeriesData(samples);
 }
 
-double VectorCurve::width()
+double VectorCurve::width() const
 {
 	return d_pen.widthF();
 }
@@ -212,7 +212,7 @@ void VectorCurve::setWidth(double w)
 	d_pen.setWidthF(w);
 }
 
-QColor VectorCurve::color()
+QColor VectorCurve::color() const
 {
 	return d_pen.color();
 }
@@ -318,7 +318,7 @@ void VectorCurve::updateColumnNames(const QString& oldName, const QString& newNa
     }
 }
 
-QStringList VectorCurve::plotAssociation()
+QStringList VectorCurve::plotAssociation() const
 {
 	QStringList lst = QStringList() << d_x_column + "(X)" << title().text() + "(Y)";
 	if (d_style == XYAM)

@@ -123,7 +123,7 @@ Matrix* ProjectSerializer::openMatrix(ApplicationWindow* app, const QStringList 
 
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
-	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || (int64_t)rows * (int64_t)cols > 50000000LL)
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || static_cast<int64_t>(rows) * static_cast<int64_t>(cols) > 50000000LL)
 		return nullptr;
 
 	QString caption = list[0];
@@ -151,7 +151,7 @@ Table* ProjectSerializer::openTable(ApplicationWindow* app, const QStringList &f
 	QString caption = list[0];
 	int rows = list[1].toInt();
 	int cols = list[2].toInt();
-	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || (int64_t)rows * (int64_t)cols > 50000000LL)
+	if (rows < 0 || cols < 0 || rows > 10000000 || cols > 100000 || static_cast<int64_t>(rows) * static_cast<int64_t>(cols) > 50000000LL)
 		return nullptr;
 
 	Table* w = app->newTable(caption, rows, cols);

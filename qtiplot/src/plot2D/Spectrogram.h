@@ -51,39 +51,39 @@ public:
 	enum ColorMapPolicy{GrayScale, Default, Custom};
 
 	Spectrogram* copy(Graph *g);
-	Graph * graph(){return d_graph;};
+	Graph * graph() const {return d_graph;};
 
-	Matrix * matrix(){return d_matrix;};
+	Matrix * matrix() const {return d_matrix;};
 	bool setMatrix(Matrix *m, bool useFormula = false);
 
-	int levels(){return static_cast<int>(contourLevels().size());};
+	int levels() const {return static_cast<int>(contourLevels().size());};
 	void setLevelsNumber(int levels);
 	void setContourLevels (const QList<double> & levels);
 
-	bool hasColorScale();
-	int colorScaleAxis(){return color_axis;};
+	bool hasColorScale() const;
+	int colorScaleAxis() const {return color_axis;};
 	void setColorScaleAxis(int axis){color_axis = axis;};
 	void showColorScale(int axis, bool on = true);
 
-	int colorBarWidth();
+	int colorBarWidth() const;
 	void setColorBarWidth(int width);
 
 	void setGrayScale();
 	void setDefaultColorMap();
 
-	LinearColorMap colorMap(){return color_map;};
+	LinearColorMap colorMap() const {return color_map;};
 	LinearColorMap *colorMapPointer(){return &color_map;};
 	void setCustomColorMap(const LinearColorMap& map);
 
 	//! Used when saving a project file
-	QString saveToString();
+	QString saveToString() const;
 
-	ColorMapPolicy colorMapPolicy(){return color_map_policy;};
+	ColorMapPolicy colorMapPolicy() const {return color_map_policy;};
 
 	QRectF boundingRect() const override;
 
-	bool hasLabels(){return d_show_labels;};
-	QList <PlotMarker *> labelsList(){return d_labels_list;};
+	bool hasLabels() const {return d_show_labels;};
+	QList <PlotMarker *> labelsList() const {return d_labels_list;};
 
 	void showContourLineLabels(bool show = true);
 
@@ -106,7 +106,7 @@ public:
 
     bool selectedLabels(const QPoint& pos);
     void selectLabel(bool on);
-    bool hasSelectedLabels();
+    bool hasSelectedLabels() const;
 	void moveLabel(const QPoint& pos);
 	void clearLabels();
 

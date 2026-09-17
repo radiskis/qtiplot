@@ -65,8 +65,8 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
 		double minYValue() const { return qMin(d_active_marker.yValue(), d_inactive_marker.yValue()); }
 		double maxYValue() const { return qMax(d_active_marker.yValue(), d_inactive_marker.yValue()); }
 		int dataSize() const { return qAbs(d_active_point - d_inactive_point); }
-		int activePoint(){return d_active_point;}
-		int inactivePoint(){return d_inactive_point;}
+		int activePoint() const {return d_active_point;}
+		int inactivePoint() const {return d_inactive_point;}
 		bool eventFilter(QObject *obj, QEvent *event) override;
 		bool keyEventFilter(QKeyEvent *ke);
 
@@ -81,7 +81,7 @@ class RangeSelectorTool : public QwtPlotPicker, public PlotToolInterface
         int rtti() const override {return PlotToolInterface::Rtti_RangeSelector;};
 
 		void setVisible(bool on);
-		bool isVisible(){return d_visible;};
+		bool isVisible() const {return d_visible;};
 
 	public slots:
 		virtual void pointSelected(const QPoint &point);

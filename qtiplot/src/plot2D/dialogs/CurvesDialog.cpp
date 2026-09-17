@@ -384,9 +384,7 @@ void CurvesDialog::addCurves()
 				if (!t)
 					continue;
 
-				QStringList yColumns = t->YColumns();
-				for(int i = 0; i < yColumns.size(); i++){
-					QString s = yColumns[i];
+				for (const QString &s : t->YColumns()){
 					if (!addCurveFromTable(app, t, s))
 						emptyColumns << s;
 				}
@@ -556,7 +554,7 @@ void CurvesDialog::enableContentsBtns()
 	btnDown->setEnabled (lst.size() == 1 && row < contents->count() - 1);
 }
 
-int CurvesDialog::curveStyle()
+int CurvesDialog::curveStyle() const
 {
 	int style = 0;
 	switch (boxStyle->currentIndex())

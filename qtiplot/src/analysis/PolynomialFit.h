@@ -46,7 +46,7 @@ class PolynomialFit : public Fit
 		QString legendInfo() override;
 		void fit() override;
 
-		int order(){return d_order;};
+		int order() const {return d_order;};
 		void setOrder(int order);
 
 		static QString generateFormula(int order);

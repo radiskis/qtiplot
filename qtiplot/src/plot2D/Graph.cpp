@@ -518,7 +518,7 @@ ScaleDraw::ScaleType Graph::axisType(int axis)
 void Graph::setLabelsNumericFormat(int axis, int format, int prec, const QString& formula)
 {
 	ScaleDraw *sd = new ScaleDraw(this, formula);
-	sd->setNumericFormat((ScaleDraw::NumericFormat)format);
+	sd->setNumericFormat(static_cast<ScaleDraw::NumericFormat>(format));
 	sd->setNumericPrecision(prec);
 	sd->setScaleDiv(axisScaleDraw(axis)->scaleDiv());
 	setAxisScaleDraw (axis, sd);
@@ -693,7 +693,7 @@ void Graph::setMajorTicksType(const QList<int>& lst)
 			sd->setTickLength  	(QwtScaleDiv::MediumTick, minorTickLength());
 			sd->setTickLength  	(QwtScaleDiv::MajorTick, majorTickLength());
 		}
-		sd->setMajorTicksStyle((ScaleDraw::TicksStyle)lst[i]);
+		sd->setMajorTicksStyle(static_cast<ScaleDraw::TicksStyle>(lst[i]));
 	}
 }
 
@@ -730,8 +730,8 @@ void Graph::setAxisTicksLength(int axis, int majTicksType, int minTicksType,
 	ScaleDraw *sd = axisScaleDraw(axis);
 	if (!sd)
 		return;
-	sd->setMajorTicksStyle((ScaleDraw::TicksStyle)majTicksType);
-	sd->setMinorTicksStyle((ScaleDraw::TicksStyle)minTicksType);
+	sd->setMajorTicksStyle(static_cast<ScaleDraw::TicksStyle>(majTicksType));
+	sd->setMinorTicksStyle(static_cast<ScaleDraw::TicksStyle>(minTicksType));
 
 	if (majTicksType == ScaleDraw::None && minTicksType == ScaleDraw::None)
 		sd->enableComponent (QwtAbstractScaleDraw::Ticks, false);
@@ -861,7 +861,7 @@ void Graph::showAxis(int axis, int type, const QString& formatInfo, Table *table
 void Graph::setLabelsDayFormat(int axis, int format)
 {
 	ScaleDraw *sd = new ScaleDraw(this);
-	sd->setDayFormat((ScaleDraw::NameFormat)format);
+	sd->setDayFormat(static_cast<ScaleDraw::NameFormat>(format));
 	sd->setScaleDiv(axisScaleDraw(axis)->scaleDiv());
 	setAxisScaleDraw (axis, sd);
 }
@@ -869,7 +869,7 @@ void Graph::setLabelsDayFormat(int axis, int format)
 void Graph::setLabelsMonthFormat(int axis, int format)
 {
 	ScaleDraw *sd = new ScaleDraw(this);
-	sd->setMonthFormat((ScaleDraw::NameFormat)format);
+	sd->setMonthFormat(static_cast<ScaleDraw::NameFormat>(format));
 	sd->setScaleDiv(axisScaleDraw(axis)->scaleDiv());
 	setAxisScaleDraw (axis, sd);
 }
@@ -883,7 +883,7 @@ void Graph::setLabelsTextFormat(int axis, int type, const QString& name, const Q
 	if (sd && sd->scaleType() == type && sd->labelsList() == lst && sd->formatString() == name)
 		return;
 
-	setAxisScaleDraw(axis, new ScaleDraw(this, lst, name, (ScaleDraw::ScaleType)type));
+	setAxisScaleDraw(axis, new ScaleDraw(this, lst, name, static_cast<ScaleDraw::ScaleType>(type)));
 }
 
 void Graph::setLabelsTextFormat(int axis, int type, const QString& labelsColName, Table *table)
@@ -1484,7 +1484,7 @@ void Graph::setScale(int axis, double start, double end, double step,
 	sc_engine->setMinTicksAfterBreak(minTicksAfterBreak);
 	sc_engine->setLog10ScaleAfterBreak(log10AfterBreak);
 	sc_engine->setAttribute(QwtScaleEngine::Inverted, inverted);
-	sc_engine->setType((ScaleTransformation::Type)type);
+	sc_engine->setType(static_cast<ScaleTransformation::Type>(type));
 
 	bool limitInterval = false;
 	switch(type){
@@ -2975,7 +2975,7 @@ void Graph::addArrow(QStringList list, int fileVersion)
 	}
 
 	if (list.count()>13)//introduced in file version 0.9.7.10
-		mrk->setAttachPolicy((ArrowMarker::AttachPolicy)list[13].toInt());
+		mrk->setAttachPolicy(static_cast<ArrowMarker::AttachPolicy>(list[13].toInt()));
 }
 
 ArrowMarker* Graph::addArrow(ArrowMarker* mrk)
@@ -3344,7 +3344,7 @@ void Graph::updateCurveLayout(PlotCurve* c, const CurveLayout *cL)
 			c->setCurveAttribute(QwtPlotCurve::Inverted);
 		break;
 		default:
-			c->setStyle((QwtPlotCurve::CurveStyle)cL->connectType);
+			c->setStyle(static_cast<QwtPlotCurve::CurveStyle>(cL->connectType));
 		break;
 	}
 
@@ -4337,13 +4337,13 @@ void Graph::modifyFunctionCurve(int curve, int type, const QStringList &formulas
 
 	QString oldLegend = c->legend();
 
-	c->setFunctionType((FunctionCurve::FunctionType)type);
+	c->setFunctionType(static_cast<FunctionCurve::FunctionType>(type));
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
 	c->setConstants(constants);
 	if (!c->loadData(points)){
-		c->setFunctionType((FunctionCurve::FunctionType)oldType);
+		c->setFunctionType(static_cast<FunctionCurve::FunctionType>(oldType));
 		c->setRange(oldStartRange, oldEndRange);
 		c->setFormulas(oldFormulas);
 		c->setVariable(oldVar);
@@ -4391,7 +4391,7 @@ FunctionCurve* Graph::addFunction(const QStringList &formulas, double start, dou
 	else
 		name = generateFunctionName();
 
-	FunctionCurve *c = new FunctionCurve((FunctionCurve::FunctionType)type, name);
+	FunctionCurve *c = new FunctionCurve(static_cast<FunctionCurve::FunctionType>(type), name);
 	c->setRange(start, end);
 	c->setFormulas(formulas);
 	c->setVariable(var);
@@ -5332,13 +5332,13 @@ void Graph::setCurveStyle(int index, int s)
 	else {//QwtPlotCurve::Lines || QwtPlotCurve::Dots
 		if (!c->symbol() || c->symbol()->style() == QwtSymbol::NoSymbol)
 			c->setPlotStyle(Line);
-		else if (c->symbol()->style() != QwtSymbol::NoSymbol && (QwtPlotCurve::CurveStyle)s == QwtPlotCurve::NoCurve)
+		else if (c->symbol()->style() != QwtSymbol::NoSymbol && static_cast<QwtPlotCurve::CurveStyle>(s) == QwtPlotCurve::NoCurve)
 			c->setPlotStyle(Scatter);
 		else
 			c->setPlotStyle(LineSymbols);
 	}
 
-	c->setStyle((QwtPlotCurve::CurveStyle)s);
+	c->setStyle(static_cast<QwtPlotCurve::CurveStyle>(s));
 }
 
 BoxCurve* Graph::openBoxDiagram(Table *w, const QStringList& l, int fileVersion)
@@ -6665,7 +6665,7 @@ void Graph::setMajorTicksType(int axis, int type)
 {
 	ScaleDraw *sd = axisScaleDraw(axis);
 	if (sd)
-		sd->setMajorTicksStyle ((ScaleDraw::TicksStyle)type);
+		sd->setMajorTicksStyle(static_cast<ScaleDraw::TicksStyle>(type));
 }
 
 QList<int> Graph::getMinorTicksType()
@@ -6688,7 +6688,7 @@ void Graph::setMinorTicksType(int axis, int type)
 {
 	ScaleDraw *sd = axisScaleDraw(axis);
 	if (sd)
-		sd->setMinorTicksStyle((ScaleDraw::TicksStyle)type);
+		sd->setMinorTicksStyle(static_cast<ScaleDraw::TicksStyle>(type));
 }
 
 int Graph::axisLabelFormat(int axis)

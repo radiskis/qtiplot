@@ -496,7 +496,7 @@ PieLabel::PieLabel(Graph *plot, PieCurve *pie):LegendWidget(plot),
 	plot->add(this, false);
 }
 
-QString PieLabel::customText()
+QString PieLabel::customText() const
 {
 	if (d_custom_text.isEmpty())
 		return text();
@@ -511,7 +511,7 @@ void PieLabel::closeEvent(QCloseEvent* e)
 	e->ignore();
 }
 
-QString PieLabel::saveToString()
+QString PieLabel::saveToString() const
 {
 	if (!d_pie_curve)
 		return LegendWidget::saveToString();

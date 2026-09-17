@@ -145,13 +145,13 @@ void PluginFit::calculateFitCurveData(double *X, double *Y)
 		for (int i=0; i<d_points; i++){
 		    double x = X0+i*step;
 			X[i] = x;
-			Y[i]= f_eval(x, d_results);
+			Y[i]= f_eval(x, d_results.data());
 		}
 	} else {
 		for (int i=0; i<d_points; i++) {
 		    double x = d_x[i];
 			X[i] = x;
-			Y[i]= f_eval(x, d_results);
+			Y[i]= f_eval(x, d_results.data());
 		}
 	}
 }

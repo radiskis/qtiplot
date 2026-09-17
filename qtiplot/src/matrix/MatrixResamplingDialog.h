@@ -58,7 +58,7 @@ private slots:
 	void updateDimensionsInfo();
 
 private:
-	void calculateDimensions(int *newRows, int *newColumns);
+	void calculateDimensions(int *newRows, int *newColumns) const;
 	Matrix *d_matrix = nullptr;
 
 	QDialogButtonBox *buttonBox = nullptr;

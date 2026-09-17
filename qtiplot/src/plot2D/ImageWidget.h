@@ -51,19 +51,19 @@ public:
     //! Import image from #d_file_name. Returns true if successful.
 	bool load(const QString& fn, bool update = true);
 	//! Return #d_file_name.
-	QString fileName(){return d_file_name;};
+	QString fileName() const {return d_file_name;};
 	
-	bool saveInternally(){return d_save_xpm;};
+	bool saveInternally() const {return d_save_xpm;};
 	void setSaveInternally(bool save = true){d_save_xpm = save;};
 
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
-	QString saveToString() override;
+	QString saveToString() const override;
 
 	void clone(ImageWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 
 	//! Return d_window_name.
-	QString windowName(){return d_window_name;};
+	QString windowName() const {return d_window_name;};
 	void setWindowName(const QString& name){d_window_name = name;};
 
 	static QPixmap windowPixmap(ApplicationWindow *mw, const QString& name, const QSize& size);

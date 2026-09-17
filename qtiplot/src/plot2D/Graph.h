@@ -161,8 +161,8 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void setActiveText(LegendWidget *l);
 		void select(QWidget *l, bool add = false);
 
-		FrameWidget *activeEnrichment(){return d_active_enrichment;};
-		QList <FrameWidget *> enrichmentsList(){return d_enrichments;};
+		FrameWidget *activeEnrichment() const {return d_active_enrichment;};
+		QList <FrameWidget *> enrichmentsList() const {return d_enrichments;};
 		QList <FrameWidget *> increasingAreaEnrichmentsList();
 
 		bool hasSeletedItems();
@@ -170,14 +170,14 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void deselect(QWidget *);
 		void selectCanvas();
 
-		QPointer<SelectionMoveResizer> selectionMoveResizer(){return d_markers_selector;};
+		QPointer<SelectionMoveResizer> selectionMoveResizer() const {return d_markers_selector;};
 
 		QwtPlotItem* selectedCurveLabels();
         //! Used when restoring DataCurve curveID from a project file
         void restoreCurveLabels(int curveID, const QStringList& lst);
 
-		Grid *grid(){return (Grid *)d_grid;};
-		QList<QwtPlotItem *> curvesList(){return d_curves;};
+		Grid *grid() const {return d_grid;};
+		QList<QwtPlotItem *> curvesList() const {return d_curves;};
 		void setCurvesList(QList<QwtPlotItem *> lst){d_curves = lst;};
 
 		QwtPlotItem* closestCurve(int xpos, int ypos, int &dist, int &point);
@@ -224,11 +224,11 @@ class Graph: public QwtPlot, public Registered<Graph>
 		QRect boundingRect();
 		void raiseEnrichements();
 		void addLegendItem();
-		bool isPrinting(){return d_is_printing;};
+		bool isPrinting() const {return d_is_printing;};
 
 		void enablePanningMagnifier(bool on = true, int mode = 0);
-		bool hasPanningMagnifierEnabled(){if (d_magnifier && d_panner) return true; return false;};
-		QwtPlotMagnifier* magnifyTool(){return d_magnifier;};
+		bool hasPanningMagnifierEnabled() const {return d_magnifier && d_panner;};
+		QwtPlotMagnifier* magnifyTool() const {return d_magnifier;};
 
 #ifdef TEX_OUTPUT
 		static QString escapeTeXSpecialCharacters(const QString &);
@@ -264,7 +264,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		bool clipDataToFrame() const {return d_clip_data;}
 		void setClipDataToFrame(bool on){d_clip_data = on;}
 
-		QRectF pageGeometry(){return d_page_rect;}
+		QRectF pageGeometry() const {return d_page_rect;}
 		void setPageGeometry(const QRectF& r){d_page_rect = r;}
 
 	public slots:
@@ -377,9 +377,9 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void exportTeX(const QString& fname, bool color = true, bool escapeStrings = true, bool fontSizes = true,
 						const QSizeF& customSize = QSizeF(), int unit = FrameWidget::Pixel, double fontsFactor = 1.0);
 #ifdef TEX_OUTPUT
-		bool isExportingTeX(){return d_is_exporting_tex;};
+		bool isExportingTeX() const {return d_is_exporting_tex;};
 		void setTeXExportingMode(bool on = true){d_is_exporting_tex = on;};
-		bool escapeTeXStrings(){return d_tex_escape_strings;};
+		bool escapeTeXStrings() const {return d_tex_escape_strings;};
 		void setEscapeTeXStringsMode(bool on = true){d_tex_escape_strings = on;};
 #endif
 		void exportVector(const QString& fileName, int res = 0, bool color = true,
@@ -447,7 +447,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void undoSetCurveSymbol(int curveIndex, const QwtSymbol &symbol);
 		void undoSetTitle(const QwtText &title);
 		void undoSetTitle(const QString &title);
-		double axisStep(int axis){return d_user_step[axis];};
+		double axisStep(int axis) const {return d_user_step[axis];};
 		void setAxisStep(int axis, double step){d_user_step[axis] = step;};
 		void setCanvasCoordinates(const QRectF&);
 
@@ -531,13 +531,13 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		//! Used when opening a project file
 		void addArrow(QStringList list, int fileVersion);
-		QList<ArrowMarker *> arrowsList(){return d_lines;};
-		int numArrows(){return d_lines.count();};
+		QList<ArrowMarker *> arrowsList() const {return d_lines;};
+		int numArrows() const {return d_lines.count();};
 
 		//!Draws a line/arrow depending on the value of "arrow"
 		void drawLine(bool on, bool arrow = false);
-		bool drawArrow(){return drawArrowOn;};
-		bool drawLineActive(){return drawLineOn;};
+		bool drawArrow() const {return drawArrowOn;};
+		bool drawLineActive() const {return drawLineOn;};
         bool arrowMarkerSelected();
 		//@}
 
@@ -564,7 +564,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		 * created and stored in #d_markers_selector.
 		 */
 		void setSelectedArrow(ArrowMarker* mrk, bool add = false);
-		ArrowMarker* selectedArrow(){return d_selected_arrow;};
+		ArrowMarker* selectedArrow() const {return d_selected_arrow;};
 		bool markerSelected();
 		//! Reset any selection states on markers.
 		void deselectMarker();
@@ -629,7 +629,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void loadAxesLinewidth(int width);
 
 		void drawAxesBackbones(bool yes);
-		bool axesBackbones(){return drawAxesBackbone;};
+		bool axesBackbones() const {return drawAxesBackbone;};
 		//! used when opening a project file
 		void loadAxesOptions(const QStringList& lst);
 
@@ -672,10 +672,10 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		//! \name Canvas Image Background
 		//@{
-		QString canvasBackgroundFileName(){return d_canvas_bkg_path;};
+		QString canvasBackgroundFileName() const {return d_canvas_bkg_path;};
 		void setCanvasBackgroundImage (const QString & fn = QString(), bool update = true);
 		void setCanvasBackground(const QBrush &brush);
-		QPixmap backgroundPixmap(){return d_canvas_bkg_pix;};
+		QPixmap backgroundPixmap() const {return d_canvas_bkg_pix;};
 		//@}
 
 		//! \name Plot Title
@@ -696,7 +696,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		void disableTools();
 		void disableImageProfilesTool();
-		QPointer<ImageProfilesTool> imageProfilesTool(){return d_image_profiles_tool;}
+		QPointer<ImageProfilesTool> imageProfilesTool() const {return d_image_profiles_tool;}
 
 		/*! Enables the data range selector tool.
 		 *
@@ -706,7 +706,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		 */
 		bool enableRangeSelectors();
 		bool rangeSelectorsEnabled();
-		QPointer<RangeSelectorTool> rangeSelectorTool(){return d_range_selector;};
+		QPointer<RangeSelectorTool> rangeSelectorTool() const {return d_range_selector;};
 		DataCurve *selectedDataCurve();
 		int selectionActivePoint();
 		int selectionInactivePoint();
@@ -718,7 +718,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 
 		void addFitCurve(QwtPlotCurve *c);
 		void deleteFitCurves();
-		QList<QwtPlotCurve *> fitCurvesList(){return d_fit_curves;};
+		QList<QwtPlotCurve *> fitCurvesList() const {return d_fit_curves;};
 		/*! Set start and end to selected X range of curve "curveTitle" or, if there's no selection, to the curve's total range.
 		 *
 		 * \return the number of selected or total points
@@ -776,10 +776,10 @@ class Graph: public QwtPlot, public Registered<Graph>
 		int oppositeAxis(int axis);
 		void updateOppositeScaleDiv(int axis);
 
-		bool isAutoscalingEnabled(){return d_auto_scale;};
+		bool isAutoscalingEnabled() const {return d_auto_scale;};
 		void enableAutoscaling(bool on = true){d_auto_scale = on;};
 
-		bool autoscaleFonts(){return autoScaleFonts;};
+		bool autoscaleFonts() const {return autoScaleFonts;};
 		void setAutoscaleFonts(bool on = true){autoScaleFonts = on;};
 
 		static int obsoleteSymbolStyle(int type);
@@ -808,7 +808,7 @@ class Graph: public QwtPlot, public Registered<Graph>
 		void showGrid(int axis, bool on, bool minor = false);
 		bool isGridEnabled(int axis) const;
 		void setGridOnTop(bool on = true, bool update = true);
-		bool hasGridOnTop(){return d_grid_on_top;}
+		bool hasGridOnTop() const {return d_grid_on_top;}
 
 		void showAxisDialog();
 		void showScaleDialog();
@@ -831,14 +831,14 @@ class Graph: public QwtPlot, public Registered<Graph>
         QwtHistogram* restoreHistogram(Matrix *m, const QStringList& l);
 		//@}
 
-		bool antialiasing(){return d_antialiasing;};
+		bool antialiasing() const {return d_antialiasing;};
 		//! Enables/Disables antialiasing of plot items.
 		void setAntialiasing(bool on = true, bool update = true);
 
 		void disableCurveAntialiasing(bool disable, int maxPoints);
 		bool isCurveAntialiasingEnabled(QwtPlotItem *it);
-		bool isCurveAntialiasingDisabled(){return d_disable_curve_antialiasing;};
-		int maxAntialisingSize(){return d_max_antialising_size;};
+		bool isCurveAntialiasingDisabled() const {return d_disable_curve_antialiasing;};
+		int maxAntialisingSize() const {return d_max_antialising_size;};
 
 		void setCurrentColor(const QColor& c);
 		void notifyColorChange(const QColor& c){emit currentColorChanged(c);};
@@ -847,13 +847,13 @@ class Graph: public QwtPlot, public Registered<Graph>
         void enableTextEditor();
 
 		void showMissingDataGap(bool on = true, bool update = true);
-		bool isMissingDataGapEnabled(){return d_missing_data_gap;}
+		bool isMissingDataGapEnabled() const {return d_missing_data_gap;}
 
 		//! \name Waterfall
 		//@{
-		bool isWaterfallPlot(){return d_waterfall_offset_x != 0.0 || d_waterfall_offset_y != 0.0;};
-		double waterfallXOffset(){return d_waterfall_offset_x;};
-		double waterfallYOffset(){return d_waterfall_offset_y;};
+		bool isWaterfallPlot() const {return d_waterfall_offset_x != 0.0 || d_waterfall_offset_y != 0.0;};
+		double waterfallXOffset() const {return d_waterfall_offset_x;};
+		double waterfallYOffset() const {return d_waterfall_offset_y;};
 		void setWaterfallOffset(double x, double y, bool update = false);
 		void setWaterfallXOffset(double);
 		void setWaterfallYOffset(double);

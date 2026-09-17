@@ -1912,7 +1912,7 @@ bool MultiLayer::swapLayers(int src, int dest)
 	return true;
 }
 
-QString MultiLayer::sizeToString()
+QString MultiLayer::sizeToString() const
 {
 	int layers = graphsList.size();
 	int size = sizeof(MultiLayer) + layers*sizeof(Graph);

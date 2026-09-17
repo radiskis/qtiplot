@@ -42,44 +42,44 @@ public:
 	FunctionCurve(const FunctionType& t, const QString& name = QString());
 	FunctionCurve(const QString& name = QString());
 
-	double startRange(){return d_from;};
-	double endRange(){return d_to;};
+	double startRange() const {return d_from;};
+	double endRange() const {return d_to;};
 	void setRange(double from, double to);
 
-	QStringList formulas(){return d_formulas;};
+	QStringList formulas() const {return d_formulas;};
 	void setFormulas(const QStringList& lst){d_formulas = lst;};
 
 	//! Provided for convenience when dealing with normal functions
 	void setFormula(const QString& s){d_formulas = QStringList() << s;};
 
-	QString variable(){return d_variable;};
+	QString variable() const {return d_variable;};
 	void setVariable(const QString& s){d_variable = s;};
 
-	FunctionType functionType(){return d_function_type;};
+	FunctionType functionType() const {return d_function_type;};
 	void setFunctionType(const FunctionType& t){d_function_type = t;};
 
 	void copy(FunctionCurve *f);
 
 	//! Returns a string used when saving to a project file
-	QString saveToString();
+	QString saveToString() const;
 	//! Used when reading from a project file
 	static void restore(Graph *g, const QStringList& lst);
 
 	//! Returns a string that can be displayed in a plot legend
-	QString legend();
+	QString legend() const;
 
 	bool loadData(int points = 0, bool xLog10Scale = false);
 
 	//! Returns the number of parameters in your function formula
-	int parametersCount(){return d_constants.count();};
+	int parametersCount() const {return d_constants.count();};
 	//! Returns the name of the parameter of rang index
-	QString parameterName(int index);
+	QString parameterName(int index) const;
 	//! Returns the value of the parameter of rang index
-	double parameterValue(int index);
+	double parameterValue(int index) const;
 	//! Returns the value of the name parameter
-	double parameterValue(const QString& name);
+	double parameterValue(const QString& name) const;
 
-	QMap<QString, double> constants(){return d_constants;};
+	QMap<QString, double> constants() const {return d_constants;};
 	void setConstants(const QMap<QString, double>& map){d_constants = map;};
 	void setConstant(const QString& parName, double val){d_constants.insert(parName, val);};
 	void removeConstant(const QString& parName){d_constants.remove(parName);};

@@ -62,8 +62,8 @@ class ScreenPickerTool : public QwtPlotPicker, public PlotToolInterface
 		virtual void append(const QPointF &pos);
 		void setMoveRestriction(ScreenPickerTool::MoveRestriction r){d_move_restriction = r;};
 
-		double xValue(){return d_selection_marker.xValue();};
-		double yValue(){return d_selection_marker.yValue();};
+		double xValue() const {return d_selection_marker.xValue();};
+		double yValue() const {return d_selection_marker.yValue();};
 
 	signals:
 		/*! Emitted whenever a new message should be presented to the user.
@@ -113,12 +113,12 @@ class ImageProfilesTool : public ScreenPickerTool
 		void append(const QPointF &pos) override;
 		int rtti() const override { return Rtti_ImageProfilesTool;};
 
-		int averagePixels(){return averageBox->value();}
+		int averagePixels() const {return averageBox->value();}
 		void setAveragePixels(int pixels);
 
-		QPointer<Matrix> matrix(){return d_matrix;};
-		QPointer<Table> horizontalTable(){return d_hor_table;};
-		QPointer<Table> verticalTable(){return d_ver_table;};
+		QPointer<Matrix> matrix() const {return d_matrix;};
+		QPointer<Table> horizontalTable() const {return d_hor_table;};
+		QPointer<Table> verticalTable() const {return d_ver_table;};
 
 	private slots:
 		void modifiedMatrix(Matrix *);

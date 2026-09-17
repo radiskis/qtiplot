@@ -55,7 +55,7 @@ public:
 	*/
 	ColorMapEditor(const QLocale& locale = QLocale::system(), int precision = 6, QWidget* parent = nullptr);
 	//! Returns the customized color map.
-	LinearColorMap colorMap(){return color_map;};
+	LinearColorMap colorMap() const {return color_map;}
 	//! Use this function to initialize the color map to be edited.
 	void setColorMap(const LinearColorMap& map);
 	//! Use this function to initialize the values range.

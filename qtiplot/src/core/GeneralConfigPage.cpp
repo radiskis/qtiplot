@@ -497,12 +497,12 @@ void GeneralConfigPage::apply(ApplicationWindow *app, ApplicationSettings *setti
 	app->setSaveSettings(boxSave->isChecked(), boxMinutes->value());
 	app->d_backup_files = boxBackupProject->isChecked();
 	app->defaultScriptingLang = boxScriptingLanguage->currentText();
-	app->d_init_window_type = (ApplicationWindow::WindowType)boxInitWindow->currentIndex();
+	app->d_init_window_type = static_cast<ApplicationWindow::WindowType>(boxInitWindow->currentIndex());
 	app->setMatrixUndoStackSize(undoStackSizeBox->value());
-	app->d_eol = (ApplicationWindow::EndLineChar)boxEndLine->currentIndex();
+	app->d_eol = static_cast<ApplicationWindow::EndLineChar>(boxEndLine->currentIndex());
     app->enableCompletion(completionBox->isChecked());
 	app->d_open_last_project = openLastProjectBox->isChecked();
-	app->setExcelImportMethod((ApplicationWindow::ExcelImportMethod)excelImportMethod->currentIndex());
+	app->setExcelImportMethod(static_cast<ApplicationWindow::ExcelImportMethod>(excelImportMethod->currentIndex()));
 
 	app->d_decimal_digits = boxAppPrecision->value();
 	QLocale locale;

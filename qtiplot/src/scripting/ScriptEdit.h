@@ -60,8 +60,8 @@ class ScriptEdit: public QTextEdit, public scripted
     void customEvent(QEvent*) override;
   	//! Map cursor positions to line numbers.
     int lineNumber(int pos) const;
-	bool hasError(){return d_error;};
-	QString text() {return toPlainText();};
+	bool hasError() const {return d_error;};
+	QString text() const {return toPlainText();};
 
     void setCompleter(QCompleter *c);
 	void setFileName(const QString& fn);
@@ -162,7 +162,7 @@ public:
     TextBlockData(){};
     ~TextBlockData() override { qDeleteAll(m_parentheses); }
 
-    QVector<ParenthesisInfo *> parentheses(){return m_parentheses;};
+    QVector<ParenthesisInfo *> parentheses() const {return m_parentheses;};
     void insert(ParenthesisInfo *info)
 	{
 		int i = 0;

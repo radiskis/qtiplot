@@ -39,7 +39,7 @@ class OpenProjectDialog : public ExtensibleFileDialog
 	public:
 		enum OpenMode { NewProject, NewFolder };
 		OpenProjectDialog(QWidget *parent = nullptr, bool extended = true, Qt::WindowFlags flags = {});
-		OpenMode openMode() const { return (OpenMode) d_open_mode->currentIndex(); }
+		OpenMode openMode() const { return static_cast<OpenMode>(d_open_mode->currentIndex()); }
 
 	private:
 		QComboBox *d_open_mode = nullptr;

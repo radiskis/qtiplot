@@ -56,7 +56,7 @@ public slots:
 		void languageChange();
 		void setVisible(bool visible) override;
 
-		ScriptEdit* editor(){return te;};
+		ScriptEdit* editor() const {return te;};
 		void executeAll(){te->executeAll();};
 
 		//! Enables/Disables the line number display

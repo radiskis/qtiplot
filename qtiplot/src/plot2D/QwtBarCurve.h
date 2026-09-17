@@ -51,12 +51,12 @@ public:
 	void setOffset(int offset);
 	int offset() const {return bar_offset;};
 
-	double dataOffset();
+	double dataOffset() const;
 
 	bool isStacked() const {return d_is_stacked;};
 	void setStacked(bool on = true){d_is_stacked = on;};
 
-	QString saveToString() override;
+	QString saveToString() const override;
 
 	QList <QwtBarCurve *> stackedCurvesList() const;
 	double stackOffset(int i, QList <QwtBarCurve *> stack) const;

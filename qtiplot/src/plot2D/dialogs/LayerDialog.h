@@ -67,8 +67,8 @@ protected slots:
 
 private:
 	void closeEvent(QCloseEvent*) override;
-	int convertToPixels(double w, FrameWidget::Unit unit, int dimension);
-	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension);
+	int convertToPixels(double w, FrameWidget::Unit unit, int dimension) const;
+	double convertFromPixels(int w, FrameWidget::Unit unit, int dimension) const;
 
 	MultiLayer *multi_layer = nullptr;
 

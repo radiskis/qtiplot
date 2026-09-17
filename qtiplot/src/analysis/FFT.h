@@ -48,9 +48,9 @@ public:
     void normalizeAmplitudes(bool norm = true){d_normalize = norm;};
     void shiftFrequencies(bool shift = true){d_shift_order = shift;};
 
-	Matrix *amplitudesMatrix(){return d_amp_matrix;}
-	Matrix *realOutputMatrix(){return d_re_out_matrix;}
-	Matrix *imaginaryOutputMatrix(){return d_im_out_matrix;}
+	Matrix *amplitudesMatrix() const {return d_amp_matrix;}
+	Matrix *realOutputMatrix() const {return d_re_out_matrix;}
+	Matrix *imaginaryOutputMatrix() const {return d_im_out_matrix;}
 
     bool setDataFromTable(Table *t, const QString& realColName, const QString& imagColName = QString(), int from = 0, int to = -1, bool unused = false) override;
 

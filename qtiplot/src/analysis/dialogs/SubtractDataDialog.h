@@ -53,7 +53,7 @@ private slots:
 	void setCurrentFolder(bool);
 
 private:
-	double combineValues(double v1, double v2);
+	double combineValues(double v1, double v2) const;
 
 	Graph *graph = nullptr;
 	QPushButton* buttonApply = nullptr;

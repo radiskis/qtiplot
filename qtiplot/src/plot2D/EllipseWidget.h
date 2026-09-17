@@ -38,7 +38,7 @@ class EllipseWidget: public FrameWidget
 public:
 	EllipseWidget(Graph *);
 
-	QString saveToString() override;
+	QString saveToString() const override;
 
 	void clone(EllipseWidget* t);
 	static void restore(Graph *g, const QStringList& lst);

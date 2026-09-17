@@ -269,7 +269,7 @@ QVariant PythonScript::eval()
 	else if (PyFloat_Check(pyret))
 		qret = QVariant(PyFloat_AS_DOUBLE(pyret));
 	else if (PyLong_Check(pyret))
-		qret = QVariant((qlonglong)PyLong_AsLongLong(pyret));
+		qret = QVariant(static_cast<qlonglong>(PyLong_AsLongLong(pyret)));
 	else if (PyNumber_Check(pyret)){
 		PyObject *number = PyNumber_Float(pyret);
 		if (number){

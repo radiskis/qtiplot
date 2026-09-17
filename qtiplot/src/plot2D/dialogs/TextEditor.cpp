@@ -66,7 +66,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		d_target = g->titleLabel();
 		QwtText t = g->title();
 		text = t.text();
-		setAlignment((Qt::Alignment)t.renderFlags());
+		setAlignment(static_cast<Qt::Alignment>(t.renderFlags()));
 		setFont(t.font());
 		setGeometry(d_target->geometry());
 	} else if (QwtScaleWidget *scale = g->selectedScale()){
@@ -90,7 +90,7 @@ TextEditor::TextEditor(Graph *g): QTextEdit(g), d_graph(g)
 		}
 		text = g->axisTitleString(axis);
 
-		setAlignment((Qt::Alignment)t.renderFlags());
+		setAlignment(static_cast<Qt::Alignment>(t.renderFlags()));
 		setFont(t.font());
 
 		QRect rect = g->axisTitleRect(scale);

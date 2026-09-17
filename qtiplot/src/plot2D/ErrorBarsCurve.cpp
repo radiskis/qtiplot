@@ -194,7 +194,7 @@ void ErrorBarsCurve::drawErrorBars(QPainter *painter,
 	}
 }
 
-double ErrorBarsCurve::errorValue(int i)
+double ErrorBarsCurve::errorValue(int i) const
 {
 	if (i >= 0 && i < dataSize())
 		return err[i];
@@ -202,7 +202,7 @@ double ErrorBarsCurve::errorValue(int i)
 		return 0.0;
 }
 
-bool ErrorBarsCurve::xErrors()
+bool ErrorBarsCurve::xErrors() const
 {
 	bool x = false;
 	if (type == Horizontal)
@@ -313,7 +313,7 @@ void ErrorBarsCurve::loadData()
 	setErrors(err);
 }
 
-QStringList ErrorBarsCurve::plotAssociation()
+QStringList ErrorBarsCurve::plotAssociation() const
 {
 	if (!d_master_curve)
 		return QStringList();

@@ -25,6 +25,7 @@ Description          : 3D graph widget
  *                                                                         *
  ***************************************************************************/
 #include "Graph3D.h"
+#include <array>
 #include <ApplicationWindow.h>
 #include <MyParser.h>
 #include <MatrixModel.h>
@@ -187,7 +188,7 @@ void Graph3D::initPlot()
 	sp->setZoom(0.9);
 	sp->setOrtho(app->d_3D_orthogonal);
 	sp->setSmoothMesh(app->d_3D_smooth_mesh);
-	sp->setFloorStyle((Qwt3D::FLOORSTYLE)app->d_3D_projection);
+	sp->setFloorStyle(static_cast<Qwt3D::FLOORSTYLE>(app->d_3D_projection));
 	sp->setLocale(app->locale());
 	setWidget(sp);
 
@@ -200,7 +201,7 @@ void Graph3D::initPlot()
 	titleFnt = app->d_3D_title_font;
 
 	d_color_map_file = QString();
-	d_shading = (Qwt3D::SHADINGSTYLE)app->d_3D_shading;
+	d_shading = static_cast<Qwt3D::SHADINGSTYLE>(app->d_3D_shading);
 	legendOn = app->d_3D_legend;
 	legendMajorTicks = 5;
 
@@ -663,7 +664,7 @@ void Graph3D::changeDataColumn(Table* table, const QString& colName, int type)
 
 void Graph3D::addData(Table* table, int xCol, int yCol, int zCol, int type)
 {
-    d_table_plot_type = (PlotType)type;
+    d_table_plot_type = static_cast<PlotType>(type);
 
 	loadData(table, xCol, yCol, zCol);
 
@@ -2209,7 +2210,7 @@ void Graph3D::print(QPrinter *printer)
 	QRect paperRect = printer->pageLayout().fullRectPixels(printer->resolution());
 	if (d_scale_on_print){
 		int dpiy = printer->logicalDpiY();
-		int margin = (int) ((2/2.54)*dpiy ); // 2 cm margins
+		int margin = static_cast<int>((2/2.54)*dpiy); // 2 cm margins
 
 		int width = qRound(aspect*printer->height()) - 2*margin;
 		int x = qRound(abs(printer->width()- width)*0.5);
@@ -2386,9 +2387,9 @@ void Graph3D::exportVector(const QString& fileName, int textExportMode, int sort
 
     VectorWriter * gl2ps = dynamic_cast<VectorWriter*>(IO::outputHandler(format));
     if (gl2ps){
-		gl2ps->setTextMode((VectorWriter::TEXTMODE)textExportMode);
+		gl2ps->setTextMode(static_cast<VectorWriter::TEXTMODE>(textExportMode));
 		gl2ps->setLandscape(VectorWriter::OFF);
-		gl2ps->setSortMode((VectorWriter::SORTMODE)sortMode);
+		gl2ps->setSortMode(static_cast<VectorWriter::SORTMODE>(sortMode));
 		//gl2ps->setExportSize(cs);
 	}
 
@@ -3366,24 +3367,24 @@ void Graph3D::resetAxesType()
 {
 	CoordinateSystem *coord = sp->coordinates();
 
-	int *majorTics = new int[12];
-	int *minorTics = new int[12];
+	std::array<int, 12> majorTics;
+	std::array<int, 12> minorTics;
 	for (int i = 0; i < 12; i++){
 		majorTics[i] = coord->axes[i].majors();
 		minorTics[i] = coord->axes[i].minors();
 	}
 
-	SCALETYPE type = (SCALETYPE)scaleType[0];
+	SCALETYPE type = static_cast<SCALETYPE>(scaleType[0]);
 	coord->axes[X1].setScale(type);
 	coord->axes[X2].setScale(type);
 	coord->axes[X3].setScale(type);
 	coord->axes[X4].setScale(type);
-	type = (SCALETYPE)scaleType[1];
+	type = static_cast<SCALETYPE>(scaleType[1]);
 	coord->axes[Y1].setScale(type);
 	coord->axes[Y2].setScale(type);
 	coord->axes[Y3].setScale(type);
 	coord->axes[Y4].setScale(type);
-	type = (SCALETYPE)scaleType[2];
+	type = static_cast<SCALETYPE>(scaleType[2]);
 	coord->axes[Z1].setScale(type);
 	coord->axes[Z2].setScale(type);
 	coord->axes[Z3].setScale(type);
@@ -3393,10 +3394,6 @@ void Graph3D::resetAxesType()
 		coord->axes[i].setMajors(majorTics[i]);
 		coord->axes[i].setMinors(minorTics[i]);
 	}
-
-	delete [] majorTics;
-	delete [] minorTics;
-
 }
 
 Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fileVersion)
@@ -3521,7 +3518,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 		fList = lst[20].split("\t"); // using Qt::SkipEmptyParts here causes a crash for empty window labels
 		if (fList.size() >= 3){
 			plot->setWindowLabel(fList[1]);
-			plot->setCaptionPolicy((MdiSubWindow::CaptionPolicy)fList[2].toInt());
+			plot->setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(fList[2].toInt()));
 		}
 	}
 

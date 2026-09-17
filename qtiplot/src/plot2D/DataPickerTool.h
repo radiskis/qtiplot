@@ -51,7 +51,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 		bool keyEventFilter(QKeyEvent *ke);
 		QwtPlotCurve *selectedCurve() const { return d_selected_curve; }
 		void setSelectedCurve(QwtPlotCurve *c){if (c) setSelection(c, 0);};
-		int selectedPointIndex(){return d_selected_point;};
+		int selectedPointIndex() const {return d_selected_point;};
 
         void copySelection();
         void cutSelection();
@@ -59,7 +59,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
         void removePoint();
 
         //! Returns the information about the functioning mode of the tool
-        Mode mode(){return d_mode;};
+        Mode mode() const {return d_mode;};
         void setMode(Mode m){d_mode = m;};
 
         //! Searches the index of the closest point to the given x coordinate
@@ -69,7 +69,7 @@ class DataPickerTool : public QwtPlotPicker, public PlotToolInterface
 
         void selectTableRow();
 
-		ApplicationWindow *applicationWindow(){return d_app;};
+		ApplicationWindow *applicationWindow() const {return d_app;};
 
 	public slots:
 		void pasteSelectionAsLayerText();

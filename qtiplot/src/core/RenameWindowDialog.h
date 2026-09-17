@@ -63,7 +63,7 @@ private:
 
 public slots:
 	void setWidget(MdiSubWindow *w);
-	MdiSubWindow::CaptionPolicy getCaptionPolicy();
+	MdiSubWindow::CaptionPolicy getCaptionPolicy() const;
 	void accept() override;
 
 signals:

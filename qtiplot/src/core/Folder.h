@@ -167,13 +167,13 @@ public:
 
 	virtual int rtti() const {return static_cast<int>(RTTI);};
 
-    Folder *folder() { return myFolder; };
+    Folder *folder() const { return myFolder; };
 
 	//! Checks weather the folder item is a grandchild of the source folder
 	/**
 	 * \param src source folder item
 	 */
-	bool isChildOf(FolderListItem *src);
+	bool isChildOf(FolderListItem *src) const;
 
     // Compatibility methods for Q3ListViewItem usage
     bool isOpen() const { return isExpanded(); }

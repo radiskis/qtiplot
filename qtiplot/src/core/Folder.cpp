@@ -311,7 +311,7 @@ void FolderListItem::setActive( bool o )
 	setSelected(o);
 }
 
-bool FolderListItem::isChildOf(FolderListItem *src)
+bool FolderListItem::isChildOf(FolderListItem *src) const
 {
 	QTreeWidgetItem *p = this->parent();
 	while (p){

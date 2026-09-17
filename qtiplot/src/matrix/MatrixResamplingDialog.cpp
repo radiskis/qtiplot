@@ -99,7 +99,7 @@ MatrixResamplingDialog::MatrixResamplingDialog(Matrix *m, bool shrink, QWidget* 
 	mainLayout->addWidget(buttonBox);
 }
 
-void MatrixResamplingDialog::calculateDimensions(int *newRows, int *newColumns)
+void MatrixResamplingDialog::calculateDimensions(int *newRows, int *newColumns) const
 {
 	int r = boxRows->value();
 	int c = boxColumns->value();
@@ -150,7 +150,7 @@ void MatrixResamplingDialog::apply()
 	if (rows < 2 || cols < 2)
 		return;
 
-	d_matrix->resample(rows, cols, (Matrix::ResamplingMethod)boxMethod->currentIndex());
+	d_matrix->resample(rows, cols, static_cast<Matrix::ResamplingMethod>(boxMethod->currentIndex()));
 }
 
 void MatrixResamplingDialog::buttonClicked(QAbstractButton *btn)

@@ -60,22 +60,22 @@ public:
 	void refresh();
 
 	//! Return my parent casted to Graph.
-	Graph *plot();
+	Graph *plot() const;
 
 	void deselect();
 	
-	bool titleSelected(){return d_title_selected;};
+	bool titleSelected() const {return d_title_selected;};
     void selectTitle(QwtScaleWidget *scale, bool select = true);
 	
-	bool labelsSelected(){return d_labels_selected;};
+	bool labelsSelected() const {return d_labels_selected;};
 	void selectLabels(QwtScaleWidget *scale, bool select = true);
 	
 	/*! Returns a pointer to the selected axis in the plot layer. 
 	 * The selected axis has selected title or selected tick labels (blue frame around texts).
 	 */
-	QwtScaleWidget* selectedAxis(){return d_selected_axis;};
+	QwtScaleWidget* selectedAxis() const {return d_selected_axis;};
 	//! Returns a pointer to the active axis in the plot layer.
-	QwtScaleWidget* currentAxis(){return d_current_axis;};
+	QwtScaleWidget* currentAxis() const {return d_current_axis;};
 
 signals:
 	//! Emitted when the user clicks on one of the monitored axes.

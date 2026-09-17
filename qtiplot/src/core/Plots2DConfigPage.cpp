@@ -1043,7 +1043,7 @@ void Plots2DConfigPage::pickTitleFont()
 	if (ok) titleFont = font;
 }
 
-int Plots2DConfigPage::curveStyle()
+int Plots2DConfigPage::curveStyle() const
 {
 	int style = 0;
 	switch (boxCurveStyle->currentIndex()){
@@ -1292,7 +1292,7 @@ void Plots2DConfigPage::updateGrid()
 	}
 }
 
-int Plots2DConfigPage::convertToPixels(double w, FrameWidget::Unit unit, int dimension)
+int Plots2DConfigPage::convertToPixels(double w, FrameWidget::Unit unit, int dimension) const
 {
 	if (!d_app)
 		return qRound(w);
@@ -1316,7 +1316,7 @@ int Plots2DConfigPage::convertToPixels(double w, FrameWidget::Unit unit, int dim
 	}
 }
 
-double Plots2DConfigPage::convertFromPixels(int w, FrameWidget::Unit unit, int dimension)
+double Plots2DConfigPage::convertFromPixels(int w, FrameWidget::Unit unit, int dimension) const
 {
 	if (!d_app)
 		return w;
@@ -1344,7 +1344,7 @@ void Plots2DConfigPage::updateCanvasSize(int unit)
 {
 	if (!d_app)
 		return;
-	FrameWidget::Unit u = (FrameWidget::Unit)unit;
+	FrameWidget::Unit u = static_cast<FrameWidget::Unit>(unit);
 	boxCanvasWidth->blockSignals(true);
 	boxCanvasHeight->blockSignals(true);
 	boxCanvasWidth->setValue(convertFromPixels(d_app->d_layer_canvas_width, u, 0));

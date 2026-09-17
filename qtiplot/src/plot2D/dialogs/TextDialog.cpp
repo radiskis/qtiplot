@@ -325,7 +325,7 @@ void TextDialog::formatLayerLabels(Graph *g)
 	g->updateMarkersBoundingRect();
 }
 
-int TextDialog::alignment()
+int TextDialog::alignment() const
 {
 	int align = -1;
 	switch (alignmentBox->currentIndex())

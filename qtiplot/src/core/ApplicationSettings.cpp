@@ -126,7 +126,7 @@ void ApplicationSettings::init()
     d_synchronize_graph_scales = true;
     d_print_paper_size = static_cast<int>(QPageSize::A4);
     d_printer_orientation = static_cast<int>(QPageLayout::Landscape);
-    defaultCurveStyle = int(Graph::LineSymbols);
+    defaultCurveStyle = static_cast<int>(Graph::LineSymbols);
     defaultCurveLineWidth = 1;
     d_curve_line_style = 0;
     defaultCurveBrush = 0;
@@ -142,12 +142,12 @@ void ApplicationSettings::init()
     d_disable_curve_antialiasing = true;
     d_curve_max_antialising_size = 1000;
 
-    majTicksStyle = int(ScaleDraw::Out);
-    minTicksStyle = int(ScaleDraw::Out);
+    majTicksStyle = static_cast<int>(ScaleDraw::Out);
+    minTicksStyle = static_cast<int>(ScaleDraw::Out);
     minTicksLength = 5;
     majTicksLength = 9;
 
-    legendFrameStyle = int(LegendWidget::Line);
+    legendFrameStyle = static_cast<int>(LegendWidget::Line);
     d_frame_widget_pen = QPen(Qt::black, 1, Qt::SolidLine);
     legendTextColor = Qt::black;
     legendBackground = Qt::white;
@@ -232,7 +232,7 @@ void ApplicationSettings::init()
     simplify_spaces = false;
     d_ASCII_file_filter = "*";
     d_ASCII_import_locale = QLocale::system();
-    d_ASCII_import_mode = int(ImportASCIIDialog::NewTables);
+    d_ASCII_import_mode = static_cast<int>(ImportASCIIDialog::NewTables);
     d_ASCII_import_first_row_role = 0;
     d_ASCII_comment_string = "#";
     d_ASCII_import_comments = false;
@@ -352,7 +352,7 @@ void ApplicationSettings::load(QSettings &settings)
 
     autoSearchUpdates = settings.value("/AutoSearchUpdates", false).toBool();
     appLanguage = settings.value("/Language", QLocale::system().name().section('_', 0, 0)).toString();
-    show_windows_policy = (ShowWindowsPolicy)settings.value("/ShowWindowsPolicy", ActiveFolder).toInt();
+    show_windows_policy = static_cast<ShowWindowsPolicy>(settings.value("/ShowWindowsPolicy", ActiveFolder).toInt());
 
     recentProjects = settings.value("/RecentProjects").toStringList();
 #ifdef Q_OS_WIN
@@ -364,12 +364,12 @@ void ApplicationSettings::load(QSettings &settings)
             recentProjects = QStringList();
     }
 #endif
-    d_excel_import_method = (ExcelImportMethod)settings.value("/ExcelImportMethod", d_excel_import_method).toInt();
+    d_excel_import_method = static_cast<ExcelImportMethod>(settings.value("/ExcelImportMethod", d_excel_import_method).toInt());
     appStyle = settings.value("/Style", appStyle).toString();
     autoSave = settings.value("/AutoSave", true).toBool();
     autoSaveTime = settings.value("/AutoSaveTime", 15).toInt();
     d_backup_files = settings.value("/BackupProjects", true).toBool();
-    d_init_window_type = (WindowType)settings.value("/InitWindow", TableWindow).toInt();
+    d_init_window_type = static_cast<WindowType>(settings.value("/InitWindow", TableWindow).toInt());
     d_completion = settings.value("/Completion", true).toBool();
     d_open_last_project = settings.value("/OpenLastProject", d_open_last_project).toBool();
     defaultScriptingLang = settings.value("/ScriptingLang", "muParser").toString();
@@ -388,7 +388,7 @@ void ApplicationSettings::load(QSettings &settings)
     d_matrix_undo_stack_size = settings.value("/MatrixUndoStackSize", 10).toInt();
     d_table_undo_stack_size = settings.value("/TableUndoStackSize", 1000).toInt();
     d_undo_memory_budget_mb = settings.value("/UndoMemoryBudgetMB", 64).toInt();
-    d_eol = (EndLineChar)settings.value("/EndOfLine", d_eol).toInt();
+    d_eol = static_cast<EndLineChar>(settings.value("/EndOfLine", d_eol).toInt());
 
     QStringList applicationFont = settings.value("/Font").toStringList();
     if (applicationFont.size() == 4)
@@ -568,8 +568,8 @@ void ApplicationSettings::load(QSettings &settings)
         d_show_axes_labels[i] = settings.value("labels", true).toBool();
     }
     settings.endArray();
-    d_graph_legend_display = (Graph::LegendDisplayMode)settings.value("/LegendDisplayMode", d_graph_legend_display).toInt();
-    d_graph_axis_labeling = (Graph::AxisTitlePolicy)settings.value("/AxisTitlePolicy", d_graph_axis_labeling).toInt();
+    d_graph_legend_display = static_cast<Graph::LegendDisplayMode>(settings.value("/LegendDisplayMode", d_graph_legend_display).toInt());
+    d_graph_axis_labeling = static_cast<Graph::AxisTitlePolicy>(settings.value("/AxisTitlePolicy", d_graph_axis_labeling).toInt());
     d_keep_aspect_ration = settings.value("/KeepAspectRatio", d_keep_aspect_ration).toBool();
     d_synchronize_graph_scales = settings.value("/SynchronizeScales", d_synchronize_graph_scales).toBool();
     d_show_empty_cell_gap = settings.value("/ShowEmptyCellGap", d_show_empty_cell_gap).toBool();
@@ -683,7 +683,7 @@ void ApplicationSettings::load(QSettings &settings)
     d_3D_background_color = settings.value("/Background", d_3D_background_color).value<QColor>();
 
     d_3D_color_map = LinearColorMap(min_color, max_color);
-    d_3D_color_map.setMode((QwtLinearColorMap::Mode)settings.value("/ColorMapMode", QwtLinearColorMap::ScaledColors).toInt());
+    d_3D_color_map.setMode(static_cast<QwtLinearColorMap::Mode>(settings.value("/ColorMapMode", QwtLinearColorMap::ScaledColors).toInt()));
     QList<QVariant> stop_values = settings.value("/ColorMapStops").toList();
     QStringList stop_colors = settings.value("/ColorMapColors").toStringList();
     for (int i = 0; i < stop_colors.size(); i++)
@@ -736,7 +736,7 @@ void ApplicationSettings::load(QSettings &settings)
     d_ASCII_import_read_only = settings.value("/ImportReadOnly", false).toBool();
     d_ASCII_import_preview = settings.value("/Preview", true).toBool();
     d_preview_lines = settings.value("/PreviewLines", 100).toInt();
-    d_ASCII_end_line = (EndLineChar)settings.value("/EndLineCharacter", d_ASCII_end_line).toInt();
+    d_ASCII_end_line = static_cast<EndLineChar>(settings.value("/EndLineCharacter", d_ASCII_end_line).toInt());
     d_ASCII_import_first_row_role = settings.value("/FirstLineRole", 0).toInt();
     d_import_ASCII_dialog_size = settings.value("/DialogSize", d_import_ASCII_dialog_size).toSize();
     settings.endGroup(); // ImportASCII

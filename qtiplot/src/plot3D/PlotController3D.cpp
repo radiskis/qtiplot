@@ -1285,7 +1285,7 @@ void PlotController3D::fitFrameToLayer()
 	g->findBestLayout();
 }
 
-bool PlotController3D::validFor3DPlot(Table *table)
+bool PlotController3D::validFor3DPlot(Table *table) const
 {
 
 	if (!d_app) return false;

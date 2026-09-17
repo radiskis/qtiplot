@@ -149,7 +149,7 @@ void Spectrogram::setContourLevels (const QList<double> & levels)
 	createLabels();
 }
 
-bool Spectrogram::hasColorScale()
+bool Spectrogram::hasColorScale() const
 {
 	if (!d_graph)
 		return false;
@@ -209,7 +209,7 @@ colorAxis->show();
 d_graph->updateLayout();
 }
 
-int Spectrogram::colorBarWidth()
+int Spectrogram::colorBarWidth() const
 {
 	if (!d_graph)
 		return 0;
@@ -309,7 +309,7 @@ void Spectrogram::setCustomColorMap(const LinearColorMap& map)
 		colorAxis->setColorMap(range(), new LinearColorMap(color_map));
 }
 
-QString Spectrogram::saveToString()
+QString Spectrogram::saveToString() const
 {
 QString s = "<spectrogram>\n";
 s += "\t<matrix>" + QString(d_matrix->objectName()) + "</matrix>\n";
@@ -617,7 +617,7 @@ void Spectrogram::selectLabel(bool on)
 	d_graph->replot();
 }
 
-bool Spectrogram::hasSelectedLabels()
+bool Spectrogram::hasSelectedLabels() const
 {
     /*if (d_labels_list.isEmpty())
         return false;

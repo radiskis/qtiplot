@@ -96,17 +96,19 @@ class Filter : public QObject
 		virtual QString legendInfo(){return QString();};
 
 		//! Returns the size of the input data set
-		int dataSize(){return d_n;};
+		int dataSize() const {return d_n;};
         //! Returns the x values of the input data set
 		double* x(){return d_x;};
+		const double* x() const {return d_x;};
 		//! Returns the y values of the input data set
 		double* y(){return d_y;};
+		const double* y() const {return d_y;};
 		//! Returns a pointer to the table created to display the results
-        Table *resultTable(){return d_result_table;};
+        Table *resultTable() const {return d_result_table;};
 		//! Returns a pointer to the graph where the result curve should be displayed
-		Graph *outputGraph(){return d_output_graph;};
+		Graph *outputGraph() const {return d_output_graph;};
 		//! Returns a pointer to the plot curve created to display the results
-		PlotCurve *resultCurve(){return d_result_curve;};
+		PlotCurve *resultCurve() const {return d_result_curve;};
 
 		bool error() const { return d_init_err; }
 		void setError(bool on = true) { d_init_err = on; }

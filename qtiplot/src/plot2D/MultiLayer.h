@@ -99,7 +99,7 @@ public:
 	QWidget *canvas() const {return d_canvas;};
 	QRect canvasRect() const {return d_canvas->rect();};
 	QRect canvasChildrenRect() const;
-	QString sizeToString() override;
+	QString sizeToString() const override;
 	QUndoStack *undoStack() const override {return d_undo_stack;};
 
 	void setWaterfallLayout(bool on = true);

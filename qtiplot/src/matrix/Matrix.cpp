@@ -112,7 +112,7 @@ void Matrix::initGlobals()
 	d_stack->setFocusPolicy(Qt::StrongFocus);
 	setWidget(d_stack);
 
-	d_undo_stack = new QUndoStack();
+	d_undo_stack = new QUndoStack(this);
 	d_undo_stack->setUndoLimit(applicationWindow()->matrixUndoStackSize());
 }
 
@@ -338,15 +338,15 @@ void Matrix::restore(const QStringList &flist, int fileVersion, bool fromTemplat
 				setTextFormat('e', fields[2].toInt());
 		} else if (fields[0] == "WindowLabel" && fields.size() >= 3){//d_file_version > 71
 			setWindowLabel(fields[1]);
-			setCaptionPolicy((MdiSubWindow::CaptionPolicy)fields[2].toInt());
+			setCaptionPolicy(static_cast<MdiSubWindow::CaptionPolicy>(fields[2].toInt()));
 		} else if (fields[0] == "Coordinates"){// d_file_version > 81
 			setCoordinates(fields[1].toDouble(), fields[2].toDouble(), fields[3].toDouble(), fields[4].toDouble());
 		} else if (fields[0] == "ViewType"){// d_file_version > 90
-			setViewType((Matrix::ViewType)fields[1].toInt());
+			setViewType(static_cast<Matrix::ViewType>(fields[1].toInt()));
 		} else if (fields[0] == "HeaderViewType"){// d_file_version > 90
-			setHeaderViewType((Matrix::HeaderViewType)fields[1].toInt());
+			setHeaderViewType(static_cast<Matrix::HeaderViewType>(fields[1].toInt()));
 		} else if (fields[0] == "ColorPolicy"){// d_file_version > 90
-			setColorMapType((Matrix::ColorMapType)fields[1].toInt());
+			setColorMapType(static_cast<Matrix::ColorMapType>(fields[1].toInt()));
 		} else if (fields[0] == "<ColorMap>"){// d_file_version > 90
 			QStringList lst;
 			while (*line != "</ColorMap>")
@@ -1132,7 +1132,7 @@ void Matrix::print(QPrinter *printer)
 		return; // paint on printer
 
 	int dpiy = printer->logicalDpiY();
-	const int margin = (int) ( (1/2.54)*dpiy ); // 1 cm margins
+	const int margin = static_cast<int>((1/2.54)*dpiy); // 1 cm margins
 
 	if (d_view_type == ImageView){
 		p.drawImage (printer->pageLayout().paintRectPoints(), d_matrix_model->renderImage());
@@ -1552,7 +1552,7 @@ void Matrix::initTableView()
 	connect(d_select_all_shortcut, &QShortcut::activated, d_table_view, &QAbstractItemView::selectAll);
 }
 
-QImage Matrix::image()
+QImage Matrix::image() const
 {
 	return d_matrix_model->renderImage();
 }
@@ -1960,7 +1960,7 @@ void Matrix::freeWorkspace()
 	d_workspace.shrink_to_fit();
 }
 
-QString Matrix::sizeToString()
+QString Matrix::sizeToString() const
 {
 	int size = d_matrix_model->rowCount() * d_matrix_model->columnCount();
 	return QString::number((sizeof(Matrix) + size*sizeof(double))/1024.0, 'f', 1) + " " + tr("kB");

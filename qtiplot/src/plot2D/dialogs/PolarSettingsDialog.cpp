@@ -306,14 +306,14 @@ void PolarSettingsDialog::apply()
             QPen cp = c->pen();
             cp.setColor(lineColor->color());
             cp.setWidth(lineWidth->value());
-            cp.setStyle((Qt::PenStyle)lineStyle->itemData(lineStyle->currentIndex()).toInt());
+            cp.setStyle(static_cast<Qt::PenStyle>(lineStyle->itemData(lineStyle->currentIndex()).toInt()));
             c->setPen(cp);
             
             int sStyle = symbolStyle->itemData(symbolStyle->currentIndex()).toInt();
             if (sStyle == QwtSymbol::NoSymbol){
                  c->setSymbol(new QwtSymbol(QwtSymbol::NoSymbol));
             } else {
-                 QwtSymbol *symb = new QwtSymbol((QwtSymbol::Style)sStyle);
+                 QwtSymbol *symb = new QwtSymbol(static_cast<QwtSymbol::Style>(sStyle));
                  symb->setSize(symbolSize->value());
                  symb->setColor(symbolColor->color()); // Brush
                  symb->setPen(QPen(symbolPenColor->color(), symbolPenWidth->value())); // Pen

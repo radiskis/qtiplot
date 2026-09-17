@@ -81,8 +81,8 @@ public:
 	void resetHeader();
 	void clear();
 	void setNumericPrecision(int prec) {d_numeric_precision = prec;};
-	QList<int> columnTypes(){return colTypes;};
-	QStringList columnFormats(){return d_col_format;};
+	QList<int> columnTypes() const {return colTypes;};
+	QStringList columnFormats() const {return d_col_format;};
 	void showColTypeDialog();
 	void setSelectedColumn(int col);
 
@@ -162,7 +162,7 @@ public:
 	/**
 	 * \sa ImportMode
 	 */
-	ImportMode importMode() const { return (ImportMode) d_import_mode->currentIndex(); }
+	ImportMode importMode() const { return static_cast<ImportMode>(d_import_mode->currentIndex()); }
 	//! Return the selected column separator.
 	const QString columnSeparator() const;
 	//! Return the number of lines to be skipped at the start of each file.
@@ -181,20 +181,20 @@ public:
 	void setColumnSeparator(const QString &sep);
 
 	//! Returns a locale having the decimal separators set to user custom settings.
-	QLocale decimalSeparators();
+	QLocale decimalSeparators() const;
 
     //! Returns a string used to comment lines when importing ASCII files
-	QString commentString(){return d_comment_string->text();};
+	QString commentString() const {return d_comment_string->text();};
 
     //! Returns true if the second line of the ASCII file should be used to set comments in table
-    bool importComments();
+    bool importComments() const;
     bool useSecondRow() const { return d_import_comments->isChecked();};
 
 	//! Returns the convention used for the end line character!
-	inline int endLineChar(){return boxEndLine->currentIndex();};
+	inline int endLineChar() const {return boxEndLine->currentIndex();};
 
-	QList<int> columnTypes(){if (d_preview_table) return d_preview_table->columnTypes(); return QList<int>();};
-	QStringList columnFormats(){if (d_preview_table) return d_preview_table->columnFormats(); return QStringList();};
+	QList<int> columnTypes() const {if (d_preview_table) return d_preview_table->columnTypes(); return QList<int>();};
+	QStringList columnFormats() const {if (d_preview_table) return d_preview_table->columnFormats(); return QStringList();};
 
 	void setCurrentPath(const QString& path);
 

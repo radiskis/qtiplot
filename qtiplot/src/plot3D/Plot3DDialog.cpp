@@ -1173,7 +1173,7 @@ bool Plot3DDialog::updatePlot()
 	} else if (generalDialog->currentWidget() == scale){
 		double start = qMin(boxFrom->value(), boxTo->value());
 		double end = qMax(boxFrom->value(), boxTo->value());
-		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value() - 1, boxMinors->value() + 1, (Qwt3D::SCALETYPE)boxType->currentIndex());
+		d_plot->setScale(axesList->currentRow(), start, end, boxMajors->value() - 1, boxMinors->value() + 1, static_cast<Qwt3D::SCALETYPE>(boxType->currentIndex()));
 		d_plot->setAxisNumericFormat(axesList->currentRow(), boxTickLabelsFormat->currentIndex(), boxPrecision->value());
 		viewScaleLimits(axesList->currentRow());
 	} else if (generalDialog->currentWidget() == axes){
@@ -1242,7 +1242,7 @@ void Plot3DDialog::pickAxisLabelFont()
 	}
 }
 
-QFont Plot3DDialog::axisFont(int axis)
+QFont Plot3DDialog::axisFont(int axis) const
 {
 	QFont f;
 	switch(axis)

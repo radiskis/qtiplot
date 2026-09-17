@@ -367,8 +367,8 @@ void TableDeleteColsCommand::undo()
 		d_table->insertColumn(col, false);
 		d_table->setColName(col, d_names[i], false, false);
 		d_table->setColComment(col, d_comments[i], false);
-		d_table->setColumnType(col, (Table::ColType)d_types[i], false);
-		d_table->setColPlotDesignation(col, (Table::PlotDesignation)d_plot_types[i], false);
+		d_table->setColumnType(col, static_cast<Table::ColType>(d_types[i]), false);
+		d_table->setColPlotDesignation(col, static_cast<Table::PlotDesignation>(d_plot_types[i]), false);
 		d_table->setColumnWidth(col, d_widths[i].toInt());
 		if (i < d_formats.size())
 			d_table->setColumnFormat(col, d_formats[i]);

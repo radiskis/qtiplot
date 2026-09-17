@@ -41,7 +41,7 @@ class Anova : public StatisticTest
 		Anova(ApplicationWindow *parent, bool twoWay = false, double level = 0.05);
 
 		void showAnovaTwoWayInteractions(bool show = true){d_show_interactions = show;};
-		void setAnovaTwoWayModel(int type){d_anova_type = (gsl_anova_twoway_types)type;};
+		void setAnovaTwoWayModel(int type){d_anova_type = static_cast<gsl_anova_twoway_types>(type);};
 		bool addSample(const QString& colName, int aLevel = 1, int bLevel = 1);
 		bool run() override;
 

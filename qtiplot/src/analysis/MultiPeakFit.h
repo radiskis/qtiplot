@@ -42,7 +42,7 @@ class MultiPeakFit : public Fit
 		MultiPeakFit(ApplicationWindow *parent, Table *t, const QString& xCol, const QString& yCol,
 		  			 int startRow = 0, int endRow = -1, PeakProfile profile = Gauss, int peaks = 1);
 
-		int peaks(){return d_peaks;};
+		int peaks() const {return d_peaks;};
 		void setNumPeaks(int n);
 
 		void enablePeakCurves(bool on){generate_peak_curves = on;};
@@ -57,9 +57,9 @@ class MultiPeakFit : public Fit
 		void guessInitialValues() override;
 
 		double eval(double *par, double x) override;
-		double evalPeak(double *par, double x, int peak);
+		double evalPeak(double *par, double x, int peak) const;
 
-		PeakProfile profile(){return d_profile;};
+		PeakProfile profile() const {return d_profile;};
 
 	private:
 		void init(int);

@@ -38,7 +38,7 @@ class TitlePicker: public QObject
 public:
     TitlePicker(Graph *plot);
     void setSelected(bool select = true);
-	bool selected(){return d_selected;};
+	bool selected() const {return d_selected;};
 
 signals:
 	void clicked();

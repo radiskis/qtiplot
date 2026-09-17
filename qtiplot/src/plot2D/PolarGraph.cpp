@@ -380,9 +380,9 @@ PolarGraph* PolarGraph::restore(ApplicationWindow* app, const QStringList& lst)
                      }
                      
                      if (currentCurve){
-                         currentCurve->setPen(QPen(uiLineColor, uiLineWidth, (Qt::PenStyle)uiLineStyle));
+                         currentCurve->setPen(QPen(uiLineColor, uiLineWidth, static_cast<Qt::PenStyle>(uiLineStyle)));
                          if (symbolStyle != -1 && symbolStyle != QwtSymbol::NoSymbol){
-                              QwtSymbol* symb = new QwtSymbol((QwtSymbol::Style)symbolStyle);
+                              QwtSymbol* symb = new QwtSymbol(static_cast<QwtSymbol::Style>(symbolStyle));
                               symb->setSize(symbolSize);
                               symb->setColor(symbolColor);
                               symb->setPen(QPen(symbolPenColor, symbolPenWidth));

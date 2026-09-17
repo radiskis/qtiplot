@@ -392,7 +392,7 @@ void TableDialog::closeEvent( QCloseEvent* ce )
 
 void TableDialog::setPlotDesignation(int i)
 {
-    d_table->setPlotDesignation((Table::PlotDesignation)i, applyToRightCols->isChecked());
+    d_table->setPlotDesignation(static_cast<Table::PlotDesignation>(i), applyToRightCols->isChecked());
     if (i == Table::Label){
         displayBox->setCurrentIndex(1);
 		updateDisplay(1);

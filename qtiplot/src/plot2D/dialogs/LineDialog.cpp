@@ -326,7 +326,7 @@ void LineDialog::apply()
         if (lm->filledArrowHead() != filledBox->isChecked())
             lm->fillArrowHead( filledBox->isChecked() );
 	} else if (tw->currentWidget() == geometry){
-		lm->setAttachPolicy((ArrowMarker::AttachPolicy)attachToBox->currentIndex());
+		lm->setAttachPolicy(static_cast<ArrowMarker::AttachPolicy>(attachToBox->currentIndex()));
         setCoordinates(unitBox->currentIndex());
 	}
 

@@ -30,6 +30,7 @@
 #define FIT_H
 
 #include <QObject>
+#include <vector>
 
 #include <ApplicationWindow.h>
 #include "Filter.h"
@@ -71,16 +72,16 @@ class Fit : public Filter
 		void setDataCurve(PlotCurve *curve, double start, double end) override;
 		bool setDataFromTable(Table *t, const QString& xColName, const QString& yColName, int from = 1, int to = -1, bool sort = false) override;
 
-		QString resultFormula(){return d_result_formula;};
-		QString formula(){return d_formula;};
+		QString resultFormula() const {return d_result_formula;};
+		QString formula() const {return d_formula;};
 		virtual bool setFormula(const QString&, bool = true){return true;};
 
-		int numParameters(){return d_p;};
-		QStringList parameterNames(){return d_param_names;};
+		int numParameters() const {return d_p;};
+		QStringList parameterNames() const {return d_param_names;};
 		virtual bool setParametersList(const QStringList&){return true;};
         void setParameterExplanations(const QStringList& lst){d_param_explain = lst;};
 
-        double initialGuess(int parIndex){return gsl_vector_get(d_param_init, parIndex);};
+        double initialGuess(int parIndex) const {return gsl_vector_get(d_param_init, parIndex);};
 		void setInitialGuess(int parIndex, double val){gsl_vector_set(d_param_init, parIndex, val);};
 		void setInitialGuesses(double *x_init);
 
@@ -96,7 +97,8 @@ class Fit : public Filter
 		QString legendInfo() override;
 
 		//! Returns a vector with the fit results
-		double* results(){return d_results;};
+		double* results(){return d_results.empty() ? nullptr : d_results.data();};
+		const double* results() const {return d_results.empty() ? nullptr : d_results.data();};
 
 		//! Returns a vector with the fit residuals
 		double* residuals();
@@ -115,19 +117,19 @@ class Fit : public Filter
 		double* errors();
 
 		//! Returns the sum of squares of the residuals from the best-fit line
-		double chiSquare() {return chi_2;};
+		double chiSquare() const {return chi_2;};
 
 		//! Returns R^2
 		double rSquare();
 
 		//! Returns adjusted R^2
-		double adjustedRSquare(){return d_adjusted_r_square;};
+		double adjustedRSquare() const {return d_adjusted_r_square;};
 
 		//! Returns the Residual Sum of Squares
-		double rss(){return d_rss;};
+		double rss() const {return d_rss;};
 
 		//! Returns the Root Mean Squared Error
-		double rmse(){return sqrt(d_rss/(d_n - d_p));};
+		double rmse() const {return sqrt(d_rss/(d_n - d_p));};
 
 		//! Specifies wheather the errors must be scaled with sqrt(chi_2/dof)
 		void scaleErrors(bool yes = true){d_scale_errors = yes;};
@@ -140,10 +142,10 @@ class Fit : public Filter
         bool save(const QString& fileName);
         bool load(const QString& fileName);
 
-        FitType type(){return d_fit_type;};
+        FitType type() const {return d_fit_type;};
         void setType(FitType t){d_fit_type = t;};
 
-        QString fileName(){return d_file_name;};
+        QString fileName() const {return d_file_name;};
 		void setFileName(const QString& fn){d_file_name = fn;};
 
         //! Calculates the data for the output fit curve
@@ -231,13 +233,13 @@ class Fit : public Filter
 		QString weighting_dataset;
 
 		//! Stores the result parameters
-		double *d_results = nullptr;
+		std::vector<double> d_results;
 
 		//! Stores standard deviations of the result parameters
-		double *d_errors = nullptr;
+		std::vector<double> d_errors;
 
 		//! Stores fit residuals
-		double *d_residuals = nullptr;
+		std::vector<double> d_residuals;
 
 		//! The sum of squares of the residuals from the best-fit line
 		double chi_2 = -1.0;
@@ -263,10 +265,10 @@ class Fit : public Filter
         QString d_file_name;
 
 		//! Stores the left limits of the research interval for the result parameters
-		double *d_param_range_left = nullptr;
+		std::vector<double> d_param_range_left;
 
 		//! Stores the right limits of the research interval for the result parameters
-		double *d_param_range_right = nullptr;
+		std::vector<double> d_param_range_right;
 };
 
 #endif

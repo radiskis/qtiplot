@@ -47,42 +47,42 @@ public:
 
 	QRectF boundingRect() const override;
 
-	double errorValue(int i);
-	QVector<double> errors(){return err;};
+	double errorValue(int i) const;
+	QVector<double> errors() const {return err;};
 	void setErrors(const QVector<double>&data){err=data;};
 
-	double capLength(){return d_cap_length;};
+	double capLength() const {return d_cap_length;};
 	void setCapLength(double t){d_cap_length = t;};
 
-	double width(){return pen().widthF();};
+	double width() const {return pen().widthF();};
 	void setWidth(double w);
 
-	QColor color(){return pen().color();};
+	QColor color() const {return pen().color();};
 	void setColor(const QColor& c);
 
-	int direction(){return type;};
+	int direction() const {return type;};
 	void setDirection(int o){type = o;};
 
-	bool xErrors();
+	bool xErrors() const;
 	void setXErrors(bool yes);
 
-	bool throughSymbol(){return through;};
+	bool throughSymbol() const {return through;};
 	void drawThroughSymbol(bool yes){through=yes;};
 
-	bool plusSide(){return plus;};
+	bool plusSide() const {return plus;};
 	void drawPlusSide(bool yes){plus=yes;};
 
-	bool minusSide(){return minus;};
+	bool minusSide() const {return minus;};
 	void drawMinusSide(bool yes){minus=yes;};
 
 	//! Returns the master curve to which this error bars curve is attached.
-	DataCurve* masterCurve(){return d_master_curve;};
+	DataCurve* masterCurve() const {return d_master_curve;};
 	void setMasterCurve(DataCurve *c);
 
 	//! Causes the master curve to delete this curve from its managed error bars list.
 	void detachFromMasterCurve(){d_master_curve->removeErrorBars(this);};
 
-	QStringList plotAssociation() override;
+	QStringList plotAssociation() const override;
 
 	bool updateData(Table *t, const QString& colName) override;
 	void loadData() override;

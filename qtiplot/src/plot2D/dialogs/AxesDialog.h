@@ -125,8 +125,8 @@ private slots:
 
 private:
 	void showAxis(int, int, const QString&, bool, int, int, bool, const QColor&, int, int, int, int, const QString&, const QColor&, int, bool, int);
-	int mapToQwtAxis(int axis);
-	int mapToQwtAxisId();
+	int mapToQwtAxis(int axis) const;
+	int mapToQwtAxisId() const;
 	void showGeneralSettings();
 	void applyCanvasFormatTo(Graph *g);
 	//! generate UI for the axes page

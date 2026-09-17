@@ -43,16 +43,16 @@ public:
 	QPixmap pixmap() const {return d_pix;};
 	void setPixmap(const QPixmap&);
 	
-	QString formula(){return d_formula;};
+	QString formula() const {return d_formula;};
 	void setFormula(const QString& s){d_formula = s;};
 	
 	void print(QPainter *p, const QwtScaleMap map[QwtPlot::axisCnt]) override;
-	QString saveToString() override;
+	QString saveToString() const override;
 	
 	void clone(TexWidget* t);
 	static void restore(Graph *g, const QStringList& lst);
 	
-	int margin(){return d_margin;}
+	int margin() const {return d_margin;}
 
 	void setBestSize();
 

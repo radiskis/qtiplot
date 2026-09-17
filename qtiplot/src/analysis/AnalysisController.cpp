@@ -879,7 +879,7 @@ void AnalysisController::fitMultiPeak(int profile)
 		int peaks = QInputDialog::getInt(d_app, d_app->tr("QtiPlot - Enter the number of peaks"),
 				d_app->tr("Peaks"), 2, 2, 1000000, 1, &ok, d_app->windowFlags());
 		if (ok && peaks){
-			MultiPeakFitTool *tool = new MultiPeakFitTool(g, d_app, (MultiPeakFit::PeakProfile)profile, peaks);
+			MultiPeakFitTool *tool = new MultiPeakFitTool(g, d_app, static_cast<MultiPeakFit::PeakProfile>(profile), peaks);
 			connect(tool, &MultiPeakFitTool::statusText, info, &QLineEdit::setText);
 			g->setActiveTool(tool);
 			displayBar->show();

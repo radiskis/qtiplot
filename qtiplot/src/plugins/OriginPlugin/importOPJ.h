@@ -48,7 +48,7 @@ public:
 	bool importGraphs(const OriginFile& opj);
 	bool importNotes(const OriginFile& opj);
 	bool importGraph3D(const OriginFile& opj, unsigned int graph, unsigned int layer);
-	int error(){return parse_error;};
+	int error() const { return parse_error; }
 
 private:
 	void importSpectrogram(Graph *graph, Spectrogram *sp, const Origin::GraphLayer& layer, const Origin::GraphCurve& _curve, double fFontScaleFactor);
@@ -57,7 +57,7 @@ private:
 
 	QwtSymbol::Style originToQwtSymbolStyle(unsigned char type);
 	LinearColorMap qwtColorMap(const Origin::ColorMap& colorMap);
-    int arrowAngle(double length, double width){return ceil(45*atan(0.5*width/length)/atan(1.0));};
+    int arrowAngle(double length, double width) const { return ceil(45 * atan(0.5 * width / length) / atan(1.0)); }
 	QString parseOriginText(const QString &str);
 	QString parseOriginTags(const QString &str);
 	void addText(const Origin::TextBox& text, Graph* graph, double fFontScaleFactor, double fScale);

@@ -53,7 +53,7 @@ public:
 	void setMinimum(double min);
 	void setRange(double min, double max);
 
-	int decimals(){return d_prec;};
+	int decimals() const {return d_prec;}
 	void setDecimals(int prec){if (prec >= 0) d_prec = prec;};
 
 	double value(){interpretText(); return d_value;};
@@ -99,7 +99,7 @@ public:
     RangeLimitBox(LimitType type, QWidget * parent = nullptr);	
 	void setDecimals(int prec){d_spin_box->setDecimals(prec);};
 	double value();
-	bool isChecked(){return d_checkbox->isChecked();};
+	bool isChecked() const {return d_checkbox->isChecked();}
 
 private:
     DoubleSpinBox *d_spin_box = nullptr;
