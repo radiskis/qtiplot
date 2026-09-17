@@ -211,7 +211,7 @@ Graph *MultiLayer::layer(int num) const
 {
     int index = num - 1;
     if (index < 0 || index >= graphsList.count())
-        return 0;
+        return nullptr;
 
 	return graphsList.at(index);
 }
@@ -296,7 +296,7 @@ bool MultiLayer::isLayerSelected(Graph* g) const
 Graph* MultiLayer::clickedLayer(Graph* g)
 {
 	if (!g)
-		return 0;
+		return nullptr;
 
 	QRect ar = g->frameGeometry();
 	for (Graph *gr : graphsList){

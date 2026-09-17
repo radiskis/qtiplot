@@ -313,7 +313,7 @@ PolarGraph* PolarGraph::restore(ApplicationWindow* app, const QStringList& lst)
             name = s.remove("<Name>").remove("</Name>").trimmed();
     }
     PolarGraph* w = new PolarGraph(name, app);
-    if (!w) return 0;
+    if (!w) return nullptr;
 
     app->restoreWindowGeometry(w, lst[0]);
     

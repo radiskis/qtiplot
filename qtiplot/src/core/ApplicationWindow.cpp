@@ -1169,7 +1169,7 @@ Matrix* ApplicationWindow::importImage(const QString& fileName, bool newWindow)
 	QImage image = reader.read();
 	if (image.isNull()){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), reader.errorString());
-		return 0;
+		return nullptr;
 	}
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -1692,7 +1692,7 @@ Table* ApplicationWindow::convertMatrixToTableDirect()
 {
 	Matrix* m = activeWindow<Matrix>();
 	if (!m)
-		return 0;
+		return nullptr;
 
 	return matrixToTable(m, Direct);
 }
@@ -1701,7 +1701,7 @@ Table* ApplicationWindow::convertMatrixToTableXYZ()
 {
 	Matrix* m = activeWindow<Matrix>();
 	if (!m)
-		return 0;
+		return nullptr;
 
 	return matrixToTable(m, XYZ);
 }
@@ -1710,7 +1710,7 @@ Table* ApplicationWindow::convertMatrixToTableYXZ()
 {
 	Matrix* m = activeWindow<Matrix>();
 	if (!m)
-		return 0;
+		return nullptr;
 
 	return matrixToTable(m, YXZ);
 }
@@ -1718,7 +1718,7 @@ Table* ApplicationWindow::convertMatrixToTableYXZ()
 Table* ApplicationWindow::matrixToTable(Matrix* m, MatrixToTableConversion conversionType)
 {
 	if (!m)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -1917,7 +1917,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 	if (!t)
 		t = activeWindow<Table>();
 	if (!t)
-		return 0;
+		return nullptr;
 
 	int startRow = 0;
 	int endRow = t->numRows() - 1;
@@ -1929,7 +1929,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 			t->colPlotDesignation(t->colIndex(t->selectedColumns()[0])) != Table::Z ||
 			fabs(sel.topRow() - sel.bottomRow()) < 2){
 			QMessageBox::warning(this, tr("QtiPlot - Column selection error"), tr("You must select exactly one Z column!"));
-			return 0;
+			return nullptr;
 		}
 		zcol = t->colIndex(t->selectedColumns()[0]);
 		startRow = sel.topRow();
@@ -1938,7 +1938,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 		zcol = t->colIndex(colName);
 
 	if (zcol < 0 || zcol >= t->numCols())
-		return 0;
+		return nullptr;
 
 	int ycol = t->colY(zcol);
 	int xcol = t->colX(ycol);
@@ -1953,7 +1953,7 @@ Matrix* ApplicationWindow::tableToMatrixRegularXYZ(Table* t, const QString& colN
 	}
 
 	if (!cells)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -2055,7 +2055,7 @@ Matrix* ApplicationWindow::convertTableToMatrix()
 {
 	Table* t = activeWindow<Table>();
 	if (!t)
-		return 0;
+		return nullptr;
 
 	return tableToMatrix (t);
 }
@@ -2063,7 +2063,7 @@ Matrix* ApplicationWindow::convertTableToMatrix()
 Matrix* ApplicationWindow::tableToMatrix(Table* t)
 {
 	if (!t)
-		return 0;
+		return nullptr;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
@@ -2077,7 +2077,7 @@ Matrix* ApplicationWindow::tableToMatrix(Table* t)
         if (!cols){
             QApplication::restoreOverrideCursor();
             QMessageBox::critical(this, tr("QtiPlot - Error"), tr("The selected table is empty, operation aborted!"));
-            return 0;
+            return nullptr;
         }
 
 	Matrix* m = newMatrix(rows, cols);
@@ -2122,7 +2122,7 @@ Table* ApplicationWindow::table(const QString& name)
 		}
 		f = f->folderBelow();
 	}
-	return  0;
+	return  nullptr;
 }
 
 Matrix* ApplicationWindow::matrix(const QString& name)
@@ -2144,7 +2144,7 @@ Matrix* ApplicationWindow::matrix(const QString& name)
 		}
 		f = f->folderBelow();
 	}
-	return  0;
+	return  nullptr;
 }
 
 MdiSubWindow *ApplicationWindow::activeWindow(WindowType type)
@@ -2438,7 +2438,7 @@ Table * ApplicationWindow::importOdfSpreadsheet(const QString& fileName, int she
 	if (plugin)
 		return plugin->import(fn, sheet);
 
-	return 0;
+	return nullptr;
 }
 
 
@@ -2497,7 +2497,7 @@ Table * ApplicationWindow::importExcel(const QString& fileName, int sheet)
 	if (plugin)
 		return plugin->import(fn, sheet);
 
-	return 0;
+	return nullptr;
 }
 
 Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
@@ -2515,14 +2515,14 @@ Table * ApplicationWindow::importDatabase(const QString& fileName, int table)
 
 		fn = getFileName(this, tr("Open Database"), QString(), filters.join(";"), 0, false);
 		if (fn.isEmpty())
-			return 0;
+			return nullptr;
 	}
 
 	ImportExportPlugin *plugin = importPlugin(fn);
 	if (plugin)
 		return plugin->import(fn, table);
 
-	return 0;
+	return nullptr;
 }
 
 Table * ApplicationWindow::importWaveFile()
@@ -4235,11 +4235,11 @@ AssociationsDialog* ApplicationWindow::showPlotAssociations(int curve)
 {
 	MultiLayer* w = activeWindow<MultiLayer>();
 	if (!w)
-		return 0;
+		return nullptr;
 
 	Graph *g = w->activeLayer();
 	if (!g)
-		return 0;
+		return nullptr;
 
 	AssociationsDialog* ad = new AssociationsDialog(this);
 	ad->setAttribute(Qt::WA_DeleteOnClose);
@@ -4897,18 +4897,18 @@ QDialog* ApplicationWindow::showScaleDialog()
 {
 	MdiSubWindow *w = activeWindow();
 	if (!w)
-		return 0;
+		return nullptr;
 
 	if (MultiLayer *ml = qobject_cast<MultiLayer *>(w)){
 		if (ml->isEmpty())
-			return 0;
+			return nullptr;
 
 		Graph* g = ml->activeLayer();
 		if (!g)
-			return 0;
+			return nullptr;
 		if (g->isPiePlot()){
             QMessageBox::warning(this, tr("QtiPlot - Warning"), tr("This functionality is not available for pie plots!"));
-		    return 0;
+		    return nullptr;
 		}
 
 		AxesDialog* ad = new AxesDialog(this);
@@ -4918,7 +4918,7 @@ QDialog* ApplicationWindow::showScaleDialog()
 	} else if (qobject_cast<Graph3D *>(w))
 		return showPlot3dDialog();
 
-	return 0;
+	return nullptr;
 }
 
 AxesDialog* ApplicationWindow::showScalePageFromAxisDialog(int axisPos)
@@ -4944,13 +4944,13 @@ QDialog* ApplicationWindow::showPlot3dDialog()
 {
 	Graph3D *g = activeWindow<Graph3D>();
 	if (!g)
-		return 0;
+		return nullptr;
 
 	if (!g->hasData()){
 		QApplication::restoreOverrideCursor();
 		QMessageBox::warning(this, tr("QtiPlot - Warning"),
 					tr("Not available for empty 3D surface plots!"));
-		return 0;
+		return nullptr;
 	}
 
 	Plot3DDialog* pd = new Plot3DDialog(this);
@@ -5398,14 +5398,14 @@ Graph* ApplicationWindow::activePlotLayer(bool resetPointerBtn)
 {
 	MultiLayer *plot = activeWindow<MultiLayer>();
 	if (!plot)
-		return 0;
+		return nullptr;
 
 	Graph* g = plot->activeLayer();
 	if (!g){
 		QMessageBox::critical(this, tr("QtiPlot - Error"), tr("There are no plot layers available in this window!"));
 		if (resetPointerBtn)
 			btnPointer->setChecked(true);
-		return 0;
+		return nullptr;
 	}
 	return g;
 }
@@ -5883,7 +5883,7 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		if (!w){
 			QMessageBox::critical(this,tr("QtiPlot - Duplicate window error"),
 				tr("There are no windows available in this folder!"));
-			return 0;
+			return nullptr;
 		}
 	}
 
@@ -5906,11 +5906,11 @@ MdiSubWindow* ApplicationWindow::clone(MdiSubWindow* w)
 		if (!g3d->hasData()){
         	QApplication::restoreOverrideCursor();
         	QMessageBox::warning(this, tr("QtiPlot - Duplicate error"), tr("Empty 3D surface plots cannot be duplicated!"));
-        	return 0;
+        	return nullptr;
     	}
 		Graph3D *newPlot = newPlot3D();
 		if (!newPlot)
-			return 0;
+			return nullptr;
         if (status == MdiSubWindow::Maximized)
             newPlot->hide();
 		newPlot->copy(g3d);
@@ -7500,7 +7500,7 @@ void ApplicationWindow::showCurveRangeDialog()
 CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 {
 	if (!g)
-		return 0;
+		return nullptr;
 
 	CurveRangeDialog* crd = new CurveRangeDialog(this);
 	crd->setCurveToModify(g, curve);
@@ -7511,7 +7511,7 @@ CurveRangeDialog* ApplicationWindow::showCurveRangeDialog(Graph *g, int curve)
 FunctionDialog* ApplicationWindow::showFunctionDialog(Graph *g, int curve)
 {
 	if ( !g )
-		return 0;
+		return nullptr;
 
 	FunctionDialog* fd = functionDialog();
 	fd->setWindowTitle(tr("QtiPlot - Edit function"));
@@ -7850,7 +7850,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 {	
 	ImportExportPlugin *op = importPlugin(filename);
 	if (!op)
-		return 0;
+		return nullptr;
 
 	if (filename.endsWith(".opj", Qt::CaseInsensitive) || filename.endsWith(".ogg", Qt::CaseInsensitive)){
 		ApplicationWindow *app = this;
@@ -7876,7 +7876,7 @@ ApplicationWindow* ApplicationWindow::importOPJ(const QString& filename, bool fa
 		QApplication::restoreOverrideCursor();
 		return this;
 	}
-	return 0;
+	return nullptr;
 }
 
 
@@ -10594,7 +10594,7 @@ ImportExportPlugin * ApplicationWindow::exportPlugin(const QString& suffix)
 	}
 
 	showProVersionMessage();
-	return 0;
+	return nullptr;
 }
 
 ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
@@ -10605,7 +10605,7 @@ ImportExportPlugin * ApplicationWindow::importPlugin(const QString& fileName)
 	}
 
 	showProVersionMessage();
-	return 0;
+	return nullptr;
 }
 
 void ApplicationWindow::loadPlugins()

@@ -518,9 +518,9 @@ ExportDialog* ExportManager::showExportASCIIDialog()
 
     MdiSubWindow* t = d_app->activeWindow();
     if (!t)
-		return 0;
+		return nullptr;
 	if (!qobject_cast<Matrix*>(t) && !qobject_cast<Table*>(t))
-		return 0;
+		return nullptr;
 
     ExportDialog* ed = new ExportDialog(t, d_app, true);
 	ed->open();

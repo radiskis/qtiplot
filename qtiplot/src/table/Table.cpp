@@ -1024,12 +1024,12 @@ Table* Table::extractData(const QString& name, const QString& condition, int sta
 
 	if (!mup->compile()){
 		QApplication::restoreOverrideCursor();
-		return 0;
+		return nullptr;
 	}
 
 	ApplicationWindow *app = applicationWindow();
 	if (!app)
-		return 0;
+		return nullptr;
 
 	int cols = d_table->numCols();
 	Table *dest = app->table(name);
@@ -1040,7 +1040,7 @@ Table* Table::extractData(const QString& name, const QString& condition, int sta
 		dest = app->newTable(numRows(), cols, name);
 
 	if (!dest)
-		return 0;
+		return nullptr;
 
 	int aux = 0;
 	if (mup->codeLines() == 1){

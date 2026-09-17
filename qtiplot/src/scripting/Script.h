@@ -126,10 +126,10 @@ class ScriptingLangManager
 
   private:
     using ScriptingEnvConstructor = ScriptingEnv*(*)(ApplicationWindow*);
-    typedef struct {
+    struct ScriptingLang {
       const char *name;
       ScriptingEnvConstructor constructor;
-    } ScriptingLang;
+    };
 //! global registry of available languages
     static ScriptingLang langs[];
 };

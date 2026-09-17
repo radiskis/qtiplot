@@ -518,7 +518,7 @@ PlotCurve* Filter::addResultCurve(double *x, double *y)
 
 	d_result_table = app->newHiddenTable(tableName, d_explanation + " " + tr("of") + " " + dataSet, d_points, 2);
 	if (!d_result_table)
-		return 0;
+		return nullptr;
 
 	for (int i = 0; i < d_points; i++){
 		d_result_table->setText(i, 0, locale.toString(x[i], 'g', app->d_decimal_digits));

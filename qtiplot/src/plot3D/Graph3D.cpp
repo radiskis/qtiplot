@@ -3030,7 +3030,7 @@ void Graph3D::setTransparency(double t)
 Matrix * Graph3D::functionMatrix()
 {
 	if (!d_func)
-		return 0;
+		return nullptr;
 
 	Matrix *m = applicationWindow()->newMatrix(d_func->rows(), d_func->columns());
 	if (m){
@@ -3415,20 +3415,20 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			formula.remove("(X)").remove("(Y)");
 			QStringList l = formula.split(",");
 			if (l.size() < 2)
-				return 0;
+				return nullptr;
 			Table* t = app->table(l[0]);
 			if (!t)
-				return 0;
+				return nullptr;
 			plot->addRibbon(t, l[0], l[1], fList[2].toDouble(), fList[3].toDouble(),
 					fList[4].toDouble(), fList[5].toDouble(), fList[6].toDouble(), fList[7].toDouble());
 		} else if (formula.contains("(Z)")){
 			formula.remove("(X)").remove("(Y)").remove("(Z)");
 			QStringList l = formula.split(",");
 			if (l.size() < 3)
-				return 0;
+				return nullptr;
 			Table* t = app->table(l[0]);
 			if (!t)
-				return 0;
+				return nullptr;
 			plot->show();
 			plot->loadData(t, t->colIndex(l[0]), t->colIndex(l[1]), t->colIndex(l[2]),
 							fList[2].toDouble(), fList[3].toDouble(), fList[4].toDouble(),
@@ -3437,7 +3437,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 			formula.remove("matrix<", Qt::CaseInsensitive).remove(">");
 			Matrix* m = app->matrix(formula);
 			if (!m)
-				return 0;
+				return nullptr;
 			plot->addMatrixData(m, fList[2].toDouble(),fList[3].toDouble(),
 					fList[4].toDouble(),fList[5].toDouble(),fList[6].toDouble(),fList[7].toDouble());
 		} else if (formula.contains(",")){
@@ -3458,7 +3458,7 @@ Graph3D* Graph3D::restore(ApplicationWindow* app, const QStringList &lst, int fi
 	}
 
 	if (!plot)
-		return 0;
+		return nullptr;
 
 	app->setListViewDate(caption, date);
 	plot->setBirthDate(date);

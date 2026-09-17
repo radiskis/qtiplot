@@ -82,7 +82,7 @@ class TexWidget;
 class LegendWidget;
 
 //! Structure containing curve layout parameters
-typedef struct{
+struct CurveLayout {
   QColor lCol;     //!< line color
   float lWidth;    //!< line width
   int lStyle;      //!< line style
@@ -95,7 +95,7 @@ typedef struct{
   int sSize;       //!< symbol size
   int sType;       //!< symbol type (shape)
   int connectType; //!< symbol connection type
-}  CurveLayout;
+};
 
 /**
  * \brief A 2D-plotting widget.

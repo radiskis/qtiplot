@@ -3064,7 +3064,7 @@ QwtPlotItem* Graph::plotItem(int index)
 {
 	int curves = d_curves.size();
     if (!curves || index >= curves || index < 0)
-		return 0;
+		return nullptr;
 
 	return d_curves.at(index);
 }
@@ -3128,7 +3128,7 @@ DataCurve * Graph::dataCurve(const QString &s)
 		int pos1 = s.indexOf(" [");
 		QStringList range = title.right(title.length() - pos1 - 2).split(":");
 		if (range.size() != 2)
-			return 0;
+			return nullptr;
 		title = title.left(pos1);
 		startRow = range[0].toInt() - 1;
 		endRow = range[1].toInt() - 1;
@@ -3750,14 +3750,14 @@ QwtHistogram * Graph::histogram(int index)
 	if (c && c->type() == Histogram)
 		return static_cast<QwtHistogram*>(c);
 
-	return 0;
+	return nullptr;
 }
 
 //! Convenience function provided for Python scripts
 QwtHistogram* Graph::addHistogram(Table* w, const QString& colName, int startRow, int endRow)
 {
 	if (!w)
-		return 0;
+		return nullptr;
 
 	QString name(colName);
 	QString aux = w->objectName() + "_";
@@ -4244,7 +4244,7 @@ void Graph::enablePanningMagnifier(bool on, int mode)
 ImageWidget* Graph::addImage(ImageWidget* i)
 {
 	if (!i)
-		return 0;
+		return nullptr;
 
 	ImageWidget* i2 = new ImageWidget(this, i->fileName());
 	if (i2){
@@ -4257,7 +4257,7 @@ ImageWidget* Graph::addImage(ImageWidget* i)
 ImageWidget* Graph::addImage(const QString& fileName)
 {
 	if (fileName.isEmpty() || !QFile::exists(fileName))
-		return 0;
+		return nullptr;
 
 	ImageWidget* i = new ImageWidget(this, fileName);
 	if (i){
@@ -5534,7 +5534,7 @@ Spectrogram* Graph::spectrogram(Matrix *m)
 Spectrogram* Graph::plotSpectrogram(Matrix *m, CurveType type)
 {
 	if (!m || (type != GrayScale && type != ColorMap && type != Contour))
-  		return 0;
+  		return nullptr;
 
 	if (plotItemsList().contains(m->objectName()))
 		return spectrogram(m);
