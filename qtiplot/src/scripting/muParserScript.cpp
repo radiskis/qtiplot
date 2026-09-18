@@ -308,7 +308,7 @@ bool muParserScript::setDouble(double val, const char *name)
 
 bool muParserScript::setInt(int val, const char *name)
 {
-  return setDouble((double) val, name);
+  return setDouble(static_cast<double>(val), name);
 }
 
 bool muParserScript::setQObject(QObject*, const char*)

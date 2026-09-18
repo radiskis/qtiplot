@@ -551,7 +551,7 @@ QString Graph::saveAxesLabelsType()
 			continue;
 		}
 
-		int type = (int) sd->scaleType();
+		int type = static_cast<int>(sd->scaleType());
 		s += QString::number(type);
 		if (type == ScaleDraw::Time || type == ScaleDraw::Date || type == ScaleDraw::Text ||
 			type == ScaleDraw::ColHeader || type == ScaleDraw::Day || type == ScaleDraw::Month)
@@ -4051,7 +4051,7 @@ void Graph::removeLegendItem(int index)
 			QString text = l->text();
 			QStringList items = text.split( "\n", Qt::SkipEmptyParts);
 
-			if (index >= (int) items.count())
+			if (index >= static_cast<int>(items.count()))
 				continue;
 
 			QStringList lst = items.filter( "\\l(" + QString::number(index + 1) + ")" );
