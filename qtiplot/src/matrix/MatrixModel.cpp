@@ -82,7 +82,6 @@ MatrixModel::MatrixModel(const QImage& image, QObject *parent)
 
 MatrixModel::~MatrixModel()
 {
-	free(d_data);
 }
 
 void MatrixModel::init()
@@ -95,7 +94,7 @@ void MatrixModel::init()
 	d_rows = 1;
 	d_cols = 1;
 	d_data_block_size = QSize(1, 1);
-	d_data = static_cast<double *>(malloc(sizeof(double)));
+	d_data.assign(1, 0.0);
 }
 
 void MatrixModel::setImage(const QImage& image)
@@ -180,7 +179,7 @@ void MatrixModel::setDimensions(int rows, int cols)
 
 double MatrixModel::cell(int row, int col) const
 {
-	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || d_data.empty())
 		return NAN;
 
 	return d_data[d_cols*row + col];
@@ -188,7 +187,7 @@ double MatrixModel::cell(int row, int col) const
 
 void MatrixModel::setCell(int row, int col, double val)
 {
-	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || d_data.empty())
 		return;
 
 	d_data[d_cols*row + col] = val;
@@ -196,7 +195,7 @@ void MatrixModel::setCell(int row, int col, double val)
 
 QString MatrixModel::text(int row, int col) const
 {
-	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || d_data.empty())
 		return QString();
 
 	int i = d_cols*row + col;
@@ -213,7 +212,7 @@ QString MatrixModel::text(int row, int col) const
 
 void MatrixModel::setText(int row, int col, const QString& text)
 {
-	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || d_data.empty())
 		return;
 
 	int i = d_cols*row + col;
@@ -229,7 +228,7 @@ void MatrixModel::setText(int row, int col, const QString& text)
 
 double MatrixModel::data(int row, int col) const
 {
-	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || !d_data)
+	if (row < 0 || row >= d_rows || col < 0 || col >= d_cols || d_data.empty())
 		return 0.0;
 
 	return d_data[d_cols*row + col];
@@ -299,7 +298,7 @@ QVariant MatrixModel::headerData ( int section, Qt::Orientation orientation, int
 
 QVariant MatrixModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() < 0 || index.row() >= d_rows || index.column() < 0 || index.column() >= d_cols || !d_data)
+	if (!index.isValid() || index.row() < 0 || index.row() >= d_rows || index.column() < 0 || index.column() >= d_cols || d_data.empty())
 		return QVariant();
 
 	int i = d_cols*index.row() + index.column();
@@ -318,7 +317,7 @@ QVariant MatrixModel::data(const QModelIndex &index, int role) const
 
 bool MatrixModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
-	if (!index.isValid() || index.row() < 0 || index.column() < 0 || !d_data)
+	if (!index.isValid() || index.row() < 0 || index.column() < 0 || d_data.empty())
 		return false;
 
 	if (index.row() >= d_rows) {
@@ -374,22 +373,21 @@ bool MatrixModel::canResize(int rows, int cols)
 	if (d_data_block_size.width()*d_data_block_size.height() >= rows*cols)
 		return true;
 
-	double *new_data = static_cast<double *>(realloc(d_data, rows*cols*sizeof(double)));
-	if (new_data){
-		d_data = new_data;
+	try {
+		d_data.resize(static_cast<size_t>(rows) * cols);
 		d_data_block_size = QSize(rows, cols);
 		return true;
+	} catch (const std::bad_alloc &) {
+		QApplication::restoreOverrideCursor();
+		QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
+		tr("Not enough memory, operation aborted!"));
+		return false;
 	}
-
-	QApplication::restoreOverrideCursor();
-	QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Memory Allocation Error"),
-	tr("Not enough memory, operation aborted!"));
-	return false;
 }
 
 bool MatrixModel::removeColumns(int column, int count, const QModelIndex & parent)
 {
-	if (column < 0 || count <= 0 || column + count > d_cols || !d_data)
+	if (column < 0 || count <= 0 || column + count > d_cols || d_data.empty())
 		return false;
 
 	beginRemoveColumns(parent, column, column + count - 1);
@@ -404,9 +402,7 @@ bool MatrixModel::removeColumns(int column, int count, const QModelIndex & paren
 	}
 
 	if (size > 0) {
-		double *newData = static_cast<double *>(realloc(d_data, size * sizeof(double)));
-		if (newData)
-			d_data = newData;
+		d_data.resize(size);
 	}
 
 	d_calculated_values = false;
@@ -471,7 +467,7 @@ bool MatrixModel::insertRows(int row, int count, const QModelIndex & parent)
 
 bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 {
-	if (row < 0 || count <= 0 || row + count > d_rows || !d_data)
+	if (row < 0 || count <= 0 || row + count > d_rows || d_data.empty())
 		return false;
 
 	beginRemoveRows(parent, row, row + count - 1);
@@ -485,9 +481,7 @@ bool MatrixModel::removeRows(int row, int count, const QModelIndex & parent)
 		d_data[i] = d_data[i + removedCells];
 
 	if (size > 0) {
-		double *newData = static_cast<double *>(realloc(d_data, size * sizeof(double)));
-		if (newData)
-			d_data = newData;
+		d_data.resize(size);
 	}
 
 	d_calculated_values = false;
@@ -806,7 +800,7 @@ bool MatrixModel::initWorkspace()
 
 void MatrixModel::invert()
 {
-	if (d_rows != d_cols || d_rows <= 0 || !d_data) {
+	if (d_rows != d_cols || d_rows <= 0 || d_data.empty()) {
 		if (d_matrix)
 			QMessageBox::critical(d_matrix, tr("QtiPlot") + " - " + tr("Error"),
 				tr("Inversion failed, the matrix is not square!"));
@@ -851,7 +845,7 @@ void MatrixModel::clear(int startRow, int endRow, int startCol, int endCol)
 	if (endCol < 0 || endCol >= d_cols)
 		endCol = d_cols - 1;
 
-	if (startRow > endRow || startCol > endCol || !d_data)
+	if (startRow > endRow || startCol > endCol || d_data.empty())
 		return;
 
 	QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -878,7 +872,7 @@ std::vector<double> MatrixModel::dataCopy(int startRow, int endRow, int startCol
 
 	int num_rows = endRow - startRow + 1;
 	int num_cols = endCol - startCol + 1;
-	if (num_rows <= 0 || num_cols <= 0 || !d_data)
+	if (num_rows <= 0 || num_cols <= 0 || d_data.empty())
 		return {};
 
 	std::vector<double> buffer;
@@ -1141,7 +1135,7 @@ void MatrixModel::pasteData(const double *clipboardBuffer, int topRow, int leftC
 	if (newRows > d_rows && !insertRows(d_rows, newRows - d_rows))
 		return;
 
-	if (!d_data)
+	if (d_data.empty())
 		return;
 
 	int cell = 0;

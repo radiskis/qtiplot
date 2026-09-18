@@ -84,8 +84,8 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 	bool setData(const QModelIndex & index, const QVariant & value, int role) override;
 
-	double* dataVector(){return d_data;};
-	const double* dataVector() const {return d_data;};
+	double* dataVector(){return d_data.data();};
+	const double* dataVector() const {return d_data.data();};
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 	void setImage(const QImage& image);
@@ -117,7 +117,7 @@ private:
 	void init();
 	int d_rows = 1;
 	int d_cols = 1;
-	double *d_data = nullptr;
+	std::vector<double> d_data;
 	Matrix *d_matrix = nullptr;
 	//! Format code for displaying numbers
 	char d_txt_format = 'g';
